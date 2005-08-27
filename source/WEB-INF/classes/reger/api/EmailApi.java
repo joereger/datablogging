@@ -1,0 +1,746 @@
+package reger.api;
+
+import reger.core.db.Db;
+import reger.core.ValidationException;
+import reger.Account;
+import reger.Media.MediaType;
+import reger.Media.MediaTypeFactory;
+
+import javax.mail.Transport;
+import javax.mail.Session;
+import javax.mail.BodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMultipart;
+import java.util.Calendar;
+import java.util.Properties;
+import java.io.File;
+import java.io.FileOutputStream;
+
+
+
+/**
+ * This EmailApi accepts a raw rfc 2822 message as text, creates javax.mail objects from it
+ * and proceeds to try to apply it to a web log.
+ *
+ * This class also needs to deal with spam and be aware that people will try to use it
+ * as a relay.
+ */
+public class EmailApi {
+    //Utility vars
+    public String rawMailMessage;
+    javax.mail.internet.MimeMessage mimeMessage;
+    javax.mail.internet.MimeMultipart multiPart;
+    int accountuserid = -1;
+    boolean isMultipart = false;
+
+    //Actual message vars
+    String[] allRecipients;
+    //String to;
+    String subject;
+    String body;
+
+    //Derived message vars
+    //String accounturl;
+    //int plid;
+    //String username;
+    String friendlyname;
+    String emailsecret;
+    String timezoneid;
+    int logid;
+
+    int accountid;
+    String uniquekey;
+
+
+    //Some default settings - stored for user in table emailapi
+    int overridecamphonesubject = 0;
+    String overridecamphonesubjecttext = "Camera Phone Picture(s) For Today";
+    int ignorecamphonebody = 0;
+    int consolidatecamphonetoonedailyentry = 0;
+    int saveemailpostsasdraft = 0;
+    int savecamphonepostsasdraft = 0;
+    String camphoneimagetags = "";
+
+    //These are the types of actions that can be taken
+    public static final int CAMPHONEPOST = 0;
+    public static final int EMAILPOST = 1;
+
+    //And this is what type of incoming message this is
+    int mailtype = EMAILPOST;
+
+
+    /**
+     * Constructor
+     */
+    public EmailApi(javax.mail.internet.MimeMessage mimeMessage){
+        this.mimeMessage = mimeMessage;
+        if (mimeMessage!=null){
+            startWorking();
+        }
+    }
+
+    /**
+     * Constructor with ability to set debug
+     * @param rawMailMessage
+     */
+    public EmailApi(String rawMailMessage){
+        this.rawMailMessage = rawMailMessage;
+        mimeMessage = turnStringIntoEmail(rawMailMessage);
+        if (mimeMessage!=null){
+            startWorking();
+        }
+    }
+
+    private void startWorking(){
+        //Set some vars
+        reger.core.Util.debug(3, "Starting to process mail message.");
+
+        //Parse the message
+        boolean parseIn = parseIncomingMessage();
+        reger.core.Util.debug(3, "Result of parsing incoming raw message:" + parseIn);
+
+        //Iterate all recipients, looking for valid logs
+        if (parseIn){
+            if (allRecipients!=null && allRecipients.length>0){
+                for (int i = 0; i < allRecipients.length; i++) {
+                    //Parse the to address
+                    boolean parseTo = parseToAddress(allRecipients[i]);
+                    reger.core.Util.debug(3, "Result of parsing to address:" + parseTo);
+
+                    //If we have what appears to be good incoming data, let's try for a post
+                    if (parseIn && parseTo){
+                        newPost();
+                    }
+                }
+            }
+        }
+    }
+
+    public static javax.mail.internet.MimeMessage turnStringIntoEmail(String rawMailMessage){
+        reger.core.Util.debug(3, "rawMailMessage:<br>" + rawMailMessage);
+        javax.mail.internet.MimeMessage mimeMessage = null;
+        try{
+            //Turn the raw message into a mimeMessage using an inputstream
+            java.util.Properties properties = new java.util.Properties();
+            javax.mail.Session session = javax.mail.Session.getDefaultInstance(properties);
+            java.io.ByteArrayInputStream in = new java.io.ByteArrayInputStream(rawMailMessage.getBytes());
+            mimeMessage = new javax.mail.internet.MimeMessage(session, in);
+            in.close();
+        } catch (java.io.UnsupportedEncodingException e){
+            //Do nothing... the user sent something like CHINESEBIG5 or BIG5
+            reger.core.Util.debug(5, e);
+        } catch (javax.mail.MessagingException e){
+            //Some sort of message formatting problem on the part of the sender
+            reger.core.Util.debug(5, e);
+        } catch (Exception e) {
+            reger.core.Util.errorsave(e);
+        }
+
+        return mimeMessage;
+    }
+
+    /**
+     * Parses rawMailMessage, creating the more abstracted and powerful javax.mail objects.
+     * The rawMailMessage var must already be populated with the raw mail message.
+     */
+    private boolean parseIncomingMessage(){
+        try{
+
+
+            //Forward emails that should be forwarded
+            try {
+                //forwardIfNecessary(mimeMessage);
+            } catch (Exception e){
+                //Do nothing
+            }
+
+            //Figure out the content type of this message
+            try{
+                if (mimeMessage.getContentType().toLowerCase().indexOf("multipart")>-1){
+                    isMultipart = true;
+                }
+            } catch (Exception e){
+                //Do nothing
+            }
+            //Only if content type = multipart
+            if (isMultipart){
+                //Turn the message into a data source
+                javax.mail.internet.MimePartDataSource mpds = new javax.mail.internet.MimePartDataSource(mimeMessage);
+                //Turn the data source into a MimeMultipart
+                multiPart = new javax.mail.internet.MimeMultipart(mpds);
+
+                //At this point the rawMailMessage is into two much more powerful javax objects.
+                //We can work with our shiny new MimeMultipart and MimeMessage.
+                //MimeMessage holds the overall message while MimeMultipart holds the body, attachments, etc.
+
+                //If in debug mode, list the parts
+                if (reger.core.DegubLevel.getDebugLevel()>=3){
+                    reger.core.Util.debug(3, "Number of Multiparts = " + multiPart.getCount());
+                    for(int i=0; i<multiPart.getCount(); i++){
+                        reger.core.Util.debug(3, "Multipart #" + i + "<br>" + multiPart.getBodyPart(i).getContent() + "<br>class.getName()=" + multiPart.getBodyPart(i).getContent().getClass().getName());
+                        if (multiPart.getBodyPart(i).getContent().getClass().getName().equals("com.sun.mail.Util.BASE64DecoderStream")){
+                            String filename = multiPart.getBodyPart(i).getFileName();
+                            String contenttype = multiPart.getBodyPart(i).getContentType();
+                            reger.core.Util.debug(3, "We have an attachment called: " + filename + "<br>contenttype=" + contenttype);
+                        }
+                    }
+                }
+            }
+
+            //Get the recipient(s)
+            javax.mail.Address[] addresses = mimeMessage.getAllRecipients();
+            //Only use the first recipient as the to address
+            if (addresses!=null  && addresses.length>0){
+                //to = addresses[0].toString();
+                allRecipients = new String[addresses.length];
+                for (int i = 0; i < addresses.length; i++) {
+                    allRecipients[i] = addresses[i].toString();
+                    reger.core.Util.debug(3, "To:" + addresses[i]);
+                }
+            }
+
+            //Get the subject
+            subject = mimeMessage.getSubject();
+            reger.core.Util.debug(3, "Subject:" + subject);
+
+            //Get the body
+            getBody();
+
+
+        } catch (java.io.UnsupportedEncodingException e){
+            //Do nothing... the user sent something like CHINESEBIG5 or BIG5
+            reger.core.Util.debug(3, e);
+            return false;
+        } catch (javax.mail.MessagingException e){
+            //Some sort of message formatting problem on the part of the sender
+            reger.core.Util.debug(3, e);
+            return false;
+        } catch (Exception e) {
+            reger.core.Util.errorsave(e);
+            return false;
+        }
+        return true;
+    }
+
+    private void getBody(){
+        //Get the body of the message
+        body="";
+        try{
+            if (isMultipart){
+                 tryToGetBodyOfEmailFromAPart(multiPart);
+
+            } else {
+                body = body + String.valueOf(mimeMessage.getContent());
+                reger.core.Util.debug(3, "Body found as non multipart message:" + body);
+            }
+        } catch (Exception e){
+            reger.core.Util.debug(3, e);
+        }
+        reger.core.Util.debug(3, "Final Body:" + body);
+    }
+
+    private void tryToGetBodyOfEmailFromAPart(MimeMultipart bodyPart){
+        try{
+            //Iterate all parts of the part
+            boolean foundBodyFromPlain = false;
+            boolean foundBodyFromHtml = false;
+            boolean foundBodyFromElse = false;
+            //reger.core.Util.debug(5, "Iterating all parts of a bodyPart.");
+            for(int i=0; i<bodyPart.getCount(); i++){
+                //reger.core.Util.debug(5, "Starting new bodyPart.");
+                if (bodyPart.getBodyPart(i).getContentType().toLowerCase().indexOf("multipart")>-1){
+                    //It's a part. Send it back to this function, recursively
+                    try{
+                        tryToGetBodyOfEmailFromAPart((MimeMultipart)bodyPart.getBodyPart(i).getContent());
+                    } catch (Exception e){
+                        reger.core.Util.errorsave(e);
+                    }
+                } else if (bodyPart.getBodyPart(i).getContentType().toLowerCase().indexOf("message")>-1){
+                    //It's a message
+                    MimeMessage nestedMsg = null;
+                    try{
+                        nestedMsg = (MimeMessage)bodyPart.getBodyPart(i).getContent();
+                    } catch (java.lang.ClassCastException ex){
+                        reger.core.Util.debug(5, ex);
+                    }
+                    if (nestedMsg!=null && nestedMsg.getContentType().toLowerCase().indexOf("multipart")>-1){
+                        //Convert it from a message to a multipart
+                        javax.mail.internet.MimePartDataSource mpds = new javax.mail.internet.MimePartDataSource(nestedMsg);
+                        tryToGetBodyOfEmailFromAPart(new javax.mail.internet.MimeMultipart(mpds));
+                    } else {
+                        if (nestedMsg!=null){
+                            body = body + String.valueOf(nestedMsg.getContent());
+                            reger.core.Util.debug(3, "Body found as nested message content:" + String.valueOf(nestedMsg.getContent()));
+                        } else {
+                            body = body + bodyPart.getBodyPart(i).getContent();
+                        }
+                    }
+                } else if (bodyPart.getBodyPart(i).getContentType().toLowerCase().indexOf("text/plain")>-1){
+                    if (!foundBodyFromHtml && !foundBodyFromPlain){
+                        body = body + String.valueOf(bodyPart.getBodyPart(i).getContent());
+                        foundBodyFromPlain = true;
+                        reger.core.Util.debug(3, "Body found as text/plain:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                    } else {
+                        reger.core.Util.debug(3, "Body found as text/plain but not added because previous body was found:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                    }
+                } else if (bodyPart.getBodyPart(i).getContentType().toLowerCase().indexOf("text/html")>-1){
+                    if (!foundBodyFromHtml && !foundBodyFromPlain){
+                        body = body + String.valueOf(bodyPart.getBodyPart(i).getContent());
+                        foundBodyFromHtml = true;
+                        reger.core.Util.debug(3, "Body found as text/html:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                    } else {
+                        reger.core.Util.debug(3, "Body found as text/html but not added because previous body was found:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                    }
+                } else {
+                    //body = body + String.valueOf(bodyPart.getBodyPart(i).getContent());
+                    //foundBodyFromElse = true;
+                    //reger.core.Util.debug(5, "Body found as else:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                }
+            }
+        } catch (javax.mail.MessagingException e){
+            reger.core.Util.debug(3, e);
+        } catch (Exception e){
+            reger.core.Util.errorsave(e, "EmailApi.java");
+        }
+    }
+
+    /**
+     * Here's what it looks like: T5RF8TG.pass@host.com
+     *
+     */
+    private boolean parseToAddress(String to){
+        //Split on the ampersand and take the left/right sides
+        if (to==null){
+            return false;
+        }
+        String[] emailSplitInHalf = to.split("@");
+        String left="";
+        String right="";
+        if (emailSplitInHalf.length==2){
+            //Left half has the important stuff
+            left = emailSplitInHalf[0];
+            //Right half has little to do with it and can generally be anything as long as it gets to the server
+            right = emailSplitInHalf[1];
+        } else {
+            reger.core.Util.debug(3, "Failed parseToAddress because emailSplitInHalf.length is not == 2.  It equals:" + emailSplitInHalf.length);
+            return false;
+        }
+
+
+        //The left must be parsed some more
+        String[] leftSplitOnDot = left.split("\\.");
+        if (leftSplitOnDot.length>=2){
+            uniquekey = leftSplitOnDot[0].toLowerCase();
+            emailsecret = leftSplitOnDot[1].toLowerCase();
+
+            reger.core.Util.debug(3, "EmailApi.ParseTo() - uniquekey:" + uniquekey);
+            reger.core.Util.debug(3, "EmailApi.ParseTo() - emailsecret:" + emailsecret);
+        } else {
+            reger.core.Util.debug(3, "Failed parseToAddress because leftSplitOnDot.length is not >= 2.  It equals:" + leftSplitOnDot.length);
+            return false;
+        }
+        return true;
+    }
+
+
+
+//    /**
+//     * Check for a valid account that has this username, emailsecret, logid and servername
+//     */
+//    private boolean checkForAccount(){
+//
+//        //-----------------------------------
+//        //-----------------------------------
+//        String[][] rstAccount= Db.RunSQL("SELECT accounttypeid, accountuser.accountuserid, accountuser.friendlyname FROM account, accountuser, megalog, emailapi, pl WHERE account.plid=pl.plid AND account.plid='"+plid+"' AND account.accountid=accountuser.accountid AND account.accountid=megalog.accountid AND emailapi.accountuserid=accountuser.accountuserid AND account.accounturl='"+accounturl+"' AND accountuser.username='"+username+"' AND emailapi.emailsecret='"+emailsecret+"' AND megalog.logid='"+logid+"'");
+//        //-----------------------------------
+//        //-----------------------------------
+//        if (rstAccount!=null && rstAccount.length>0){
+//            accountuserid = Integer.parseInt(rstAccount[0][1]);
+//            reger.Accountuser au = new reger.Accountuser(accountuserid, true);
+//            friendlyname =  au.getFriendlyname();
+//            //If this is the account owner, return true
+//            if (reger.core.Util.isinteger(rstAccount[0][0])){
+//                if (Integer.parseInt(rstAccount[0][0])>=reger.Vars.ACCTYPETRIAL){
+//                    //Now we know that this is a Pro or Trial account that can use this feature.
+//                    //Need to see if this user has the right to use this log.
+//                    if (au.userCanViewLog(logid)){
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
+
+
+    /**
+     * New Entry method.
+     */
+ 	private void newPost(){
+
+        //Create an instance of the backend object
+        reger.Entry entry = new reger.Entry();
+
+        try {
+            reger.core.Util.debug(3, "EmailApi - newPost() - uniquekey: " + uniquekey);
+
+            //See if we have a valid account in the hizzouse
+            EmailApiAddress emaddr = new EmailApiAddress(uniquekey);
+            if (emaddr.getEmailapiaddressid()>0){
+
+                reger.core.Util.debug(3, "EmailApi - newPost() - emaddr.getUniquekey(): " + emaddr.getUniquekey() + "<br>emaddr.getAccountid():" + emaddr.getAccountid() + "<br>emaddr.getAccountuserid():" + emaddr.getAccountuserid());
+
+
+                //Get the emailapi settings
+                //-----------------------------------
+                //-----------------------------------
+                String[][] rstApisettings= Db.RunSQL("SELECT overridecamphonesubject, overridecamphonesubjecttext, ignorecamphonebody, consolidatecamphonetoonedailyentry, saveemailpostsasdraft, savecamphonepostsasdraft, camphoneimagetags, emailsecret FROM emailapi WHERE emailapi.accountuserid='"+emaddr.getAccountuserid()+"'");
+                //-----------------------------------
+                //-----------------------------------
+                if (rstApisettings!=null && rstApisettings.length>0){
+
+                    reger.core.Util.debug(3, "EmailApi - newPost() loading emailapi settings.");
+
+                    if (!rstApisettings[0][0].equals("") && reger.core.Util.isinteger(rstApisettings[0][0])){
+                        overridecamphonesubject = Integer.parseInt(rstApisettings[0][0]);
+                    }
+                    if (!rstApisettings[0][1].equals("")){
+                        overridecamphonesubjecttext = rstApisettings[0][1];
+                    }
+                    if (!rstApisettings[0][2].equals("") && reger.core.Util.isinteger(rstApisettings[0][2])){
+                        ignorecamphonebody = Integer.parseInt(rstApisettings[0][2]);
+                    }
+                    if (!rstApisettings[0][3].equals("") && reger.core.Util.isinteger(rstApisettings[0][3])){
+                        consolidatecamphonetoonedailyentry = Integer.parseInt(rstApisettings[0][3]);
+                    }
+                    if (!rstApisettings[0][4].equals("") && reger.core.Util.isinteger(rstApisettings[0][4])){
+                        saveemailpostsasdraft = Integer.parseInt(rstApisettings[0][4]);
+                    }
+                    if (!rstApisettings[0][5].equals("") && reger.core.Util.isinteger(rstApisettings[0][5])){
+                        savecamphonepostsasdraft = Integer.parseInt(rstApisettings[0][5]);
+                    }
+                    if (!rstApisettings[0][6].equals("")){
+                        camphoneimagetags = rstApisettings[0][6];
+                    }
+                    if (!rstApisettings[0][7].equals("")){
+                        emailsecret = rstApisettings[0][7];
+                    }
+                    reger.core.Util.debug(3, "EmailApi - newPost() - found emailsecret=" + emailsecret);
+                }
+
+                //Get this user's timezone
+                accountid = emaddr.getAccountid();
+                timezoneid = reger.Account.getTimezoneidFromAccountid(accountid);
+                reger.Account accountOfEntry = new reger.Account(accountid);
+                reger.PrivateLabel plOfEntry = new reger.PrivateLabel(accountOfEntry.getPlid());
+                reger.Accountuser accountuserOfPersonAccessing = new reger.Accountuser(emaddr.getAccountuserid(), false);
+                friendlyname = accountuserOfPersonAccessing.getFriendlyname();
+                accountuserOfPersonAccessing.userAuthenticateEmailsecret(accountuserOfPersonAccessing.getUsername(), emailsecret);
+                logid = emaddr.getLogid();
+                accountuserid = emaddr.getAccountuserid();
+                mailtype = emaddr.getEmailtype();
+
+                reger.core.Util.debug(3, "EmailApi newPost() - accountuserOfPersonAccessing.getAccountuserid()=" + accountuserOfPersonAccessing.getAccountuserid());
+
+                //Create the entry
+                entry = new reger.Entry(accountuserOfPersonAccessing, accountOfEntry, plOfEntry, logid);
+                entry.accountid = accountid;
+
+                //Set the title
+                if (mailtype==CAMPHONEPOST && overridecamphonesubject==1){
+                    overridecamphonesubjecttext = overridecamphonesubjecttext.replaceAll("\\<\\$Date\\$\\>", reger.core.TimeUtils.dateformatcompact(reger.core.TimeUtils.nowInUserTimezone(timezoneid)));
+                    entry.title=reger.core.Util.truncateString(overridecamphonesubjecttext, 255);
+                } else {
+                    entry.title=reger.core.Util.truncateString(subject, 255);
+                }
+
+                //If the title is blank, use the description
+                if (entry.title==null || entry.title.equals("")) {
+                    entry.title=reger.core.Util.truncateString(body ,255);
+                }
+
+                if (entry.title==null || entry.title.equals("")){
+                    entry.title=reger.core.Util.truncateString(subject, 255);
+                }
+
+                if (entry.title==null || entry.title.equals("")){
+                    entry.title="Email Post";
+                }
+
+                //Set the comments
+                if (mailtype==CAMPHONEPOST && ignorecamphonebody==1){
+                    entry.comments="";
+                } else {
+                    entry.comments=body;
+                }
+
+                //Set the draft/live status
+                if (mailtype==CAMPHONEPOST && savecamphonepostsasdraft==1){
+                    entry.isDraft = 1;
+                } else if (mailtype==EMAILPOST && saveemailpostsasdraft==1){
+                    entry.isDraft = 1;
+                } else {
+                    entry.isDraft = 0;
+                }
+
+                entry.isApproved=1;
+
+                //Set the logid
+                entry.logid=logid;
+
+                //Get the current time in the user's timezone
+                Calendar nowInUsertimezone = reger.core.TimeUtils.nowInUserTimezone(timezoneid);
+
+                //Populate the date/time vars in the event object
+                entry.populateThisEventTimeVarsFromCal(nowInUsertimezone);
+
+                //Set the author in the EmailApi posts.
+                entry.accountuserid = accountuserid;
+
+                //Create or find the entry
+                if (mailtype==EMAILPOST || (mailtype==CAMPHONEPOST && consolidatecamphonetoonedailyentry==0)){
+                    try{
+                        //Save the entry to the database
+                        entry.newEntryTemporary();
+                        entry.editEntryAll(entry.eventid);
+                    } catch (ValidationException error){
+                        //@todo Handle the exception and send it back to user via email?
+                        reger.core.Util.debug(3, "EmailApi Error:" + error.getErrorsAsSingleString());
+                    }
+
+                } else {
+                    //Do camphone consolidation of entries into one daily entry.
+                    //All I need to do is find an entry today... or create one.
+                    //I need to know the GMT time of the start of today in the user's timezone.
+                    //I have tmpCal which is now in the user's timezone.
+                    //Email comes in at servertime and must be converted usertime first.
+                    //Then inside of eventGeneric.java it's converted to GMT.
+                    Calendar tmpCal = Calendar.getInstance();
+                    tmpCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(tmpCal, tmpCal.getTimeZone().getID(), timezoneid);
+
+                    //So I should set that time to 00:00:00 in their timezone.
+                    Calendar startOfDay = reger.core.TimeUtils.xDaysAgoStart(tmpCal, 0);
+
+                    //And then convert that value to GMT.
+                    Calendar startOfDayGMT = reger.core.TimeUtils.usertogmttime(startOfDay, timezoneid);
+
+                    //And then do the same for the end of the day.
+                    Calendar endOfDay = reger.core.TimeUtils.xDaysAgoEnd(tmpCal, 0);
+
+                    //And then convert that value to GMT.
+                    Calendar endOfDayGMT = reger.core.TimeUtils.usertogmttime(endOfDay, timezoneid);
+
+                    //And then search for an eventid within this range.
+                    //-----------------------------------
+                    //-----------------------------------
+                    String[][] rstEventToday= Db.RunSQL("SELECT eventid FROM event WHERE date>'"+reger.core.TimeUtils.dateformatfordb(startOfDayGMT)+"' AND date<'"+reger.core.TimeUtils.dateformatfordb(endOfDayGMT)+"' AND logid='"+logid+"' AND accountid='"+accountid+"' AND title='"+reger.core.Util.cleanForSQL(overridecamphonesubjecttext)+"' ORDER BY eventid DESC LIMIT 0,1");
+                    //-----------------------------------
+                    //-----------------------------------
+                    if (rstEventToday!=null && rstEventToday.length>0){
+                        //And if there is one, set entry.eventid to it.
+                        if (reger.core.Util.isinteger(rstEventToday[0][0])){
+                            entry.eventid = Integer.parseInt(rstEventToday[0][0]);
+                        }
+                    } else {
+                        try{
+                            //And if there isn't one, create one with a call to entry.newEntryAll();
+                            entry.newEntryTemporary();
+                            entry.editEntryAll(entry.eventid);
+                            reger.core.Util.debug(3, "EmailApi.java - New eventid:" + entry.eventid);
+                        } catch (ValidationException error){
+                            //@todo Handle the exception and send it back to user via email?
+                            reger.core.Util.debug(3, "EmailApi.java - There was an error in EmailApi.java:" + error.getErrorsAsSingleString());
+                            return;
+                        }
+                    }
+
+                }
+
+                //Debug
+                //for(int i=0; i<multiPart.getCount(); i++){
+                    //BodyPart bodyPart = multiPart.getBodyPart(i);
+                    //reger.core.Util.debug(5, "EmailApi.java<br>bodyPart.getContentType()="+bodyPart.getContentType()+"<br>(String)bodyPart.getContent()="+(String)bodyPart.getContent());
+                //}
+
+                reger.core.Util.debug(3, "EmailApi.java - newPost() Ready to start processing attachments.");
+
+                //Deal with attachments
+                if (isMultipart){
+                    for(int i=0; i<multiPart.getCount(); i++){
+                        findAttachments(multiPart.getBodyPart(i), entry.eventid);
+                    }
+                }
+
+                reger.core.Util.debug(3, "EmailApi.java - newPost() Done processing attachments.");
+            }
+
+        } catch (Exception e) {
+            reger.core.Util.errorsave(e);
+        }
+
+    }
+
+    private void findAttachments(BodyPart bodyPart, int eventid){
+        try {
+            reger.core.Util.debug(3, "EmailApi.java<br>Deciding whether to treat bodyPart as an attachment.");
+            if (bodyPart.getFileName()!=null && !bodyPart.getFileName().equals("")){
+                treatBodyPartAsAttachment(eventid, bodyPart);
+            } else if (bodyPart.getContentType().toLowerCase().indexOf("multipart")>-1){
+                MimeMultipart nestedMultiPart = (MimeMultipart)bodyPart.getContent();
+                for(int i=0; i<nestedMultiPart.getCount(); i++){
+                    findAttachments(nestedMultiPart.getBodyPart(i), eventid);
+                }
+            } else if (bodyPart.getContentType().toLowerCase().indexOf("message")>-1){
+                //It's a message
+                MimeMessage nestedMsg = (MimeMessage)bodyPart.getContent();
+                if (nestedMsg.getContentType().toLowerCase().indexOf("multipart")>-1){
+                    javax.mail.internet.MimePartDataSource mpds = new javax.mail.internet.MimePartDataSource(nestedMsg);
+                    MimeMultipart nestedMultiPart = new javax.mail.internet.MimeMultipart(mpds);
+                    for(int i=0; i<nestedMultiPart.getCount(); i++){
+                        findAttachments(nestedMultiPart.getBodyPart(i), eventid);
+                    }
+                }
+            } else {
+                reger.core.Util.debug(3, "EmailApi.java<br>Not treating bodyPart as an attachment.");
+            }
+        } catch (Exception e){
+            reger.core.Util.errorsave(e);
+        }
+    }
+
+    /**
+     * This method attaches all attachments from a message to an event.
+     * @param eventid
+     * @return
+     */
+    public boolean treatBodyPartAsAttachment(int eventid, BodyPart bodyPart) {
+
+        try {
+
+
+
+            //Start with the #1, not #0 (which is the main body)
+            //for(int i=1; i<multiPart.getCount(); i++){
+                //if (bodyPart.equals()){
+                    int contentlength=0;
+                    String filename="";
+                    byte[] bits = new byte[0];
+
+
+                    //Get the filename
+                    filename = bodyPart.getFileName();
+
+                    reger.core.Util.debug(3, "About to decode multipart.bodyPart with filename=" + filename);
+
+
+
+
+                    //Make sure there's enough space left for this user
+                    //Get the size of the incoming file
+                    contentlength=bits.length - 1;
+                    reger.Account acct = new reger.Account(accountid);
+                    long freespace = acct.getFreespace();
+                    if ((long)contentlength>freespace) {
+                        reger.core.Util.debug(3, "Failed due to freeSpace limitations.<br>contentlength=" + contentlength + "<br>freeSpace=" + freespace);
+
+                        return false;
+                    }
+
+                    //Figure out a filename
+                    String incomingname = filename;
+                    String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
+                    String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
+
+                    //Here's the file naming convention I'm using:
+                    //(2003-10-23)18-43-32-accountid(76382)-eventid(6732234)-ver(incrementer)filename.ext
+                    String stamp = reger.core.TimeUtils.dateformatfilestamp(Calendar.getInstance());
+                    stamp=stamp+"-accountid("+accountid+")";
+                    stamp=stamp+"-eventid("+eventid+")";
+                    stamp=stamp+"-";
+
+                    //Test for file existence... if it exists does, add an incrementer
+                    File savedFile  = new File((String)reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), stamp+incomingname);
+                    int incrementer = 0;
+                    String incrementerstring="";
+                    while (savedFile.exists()){
+                        incrementer=incrementer+1;
+                        incrementerstring="("+incrementer+")";
+                        savedFile  = new File((String)reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), stamp+incomingnamebase+incrementerstring+"."+incomingnameext);
+                    }
+                    String finalfilename = stamp+incomingnamebase+incrementerstring+"."+incomingnameext;
+
+                    reger.core.Util.debug(3, "finalfilename="+finalfilename);
+
+
+                     //Save the file with the updated filename
+                     //Turn the content into an inputstream
+                     FileOutputStream fileOut = new FileOutputStream(savedFile);
+                     java.io.InputStream is = (java.io.InputStream)bodyPart.getContent();
+                     byte[] buffer = new byte[64000];
+                     int read = 0;
+                     while(read != -1){
+                        read = is.read(buffer,0,buffer.length);
+                        if(read!=-1){
+                            fileOut.write(buffer,0,read);
+                        }
+                     }
+                     fileOut.flush();
+                     is.close();
+                     fileOut.close();
+
+                    reger.core.Util.debug(3, "File should be saved to filesystem now.="+finalfilename);
+
+
+
+
+                    //Get now in user's timezone
+                    Calendar tmpCal = Calendar.getInstance();
+                    tmpCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(tmpCal, tmpCal.getTimeZone().getID(), timezoneid);
+                    //Author and timestamp in subject
+                    String timestamp = reger.core.TimeUtils.dateformatcompactwithtime(tmpCal);
+                    String authtimestamp = " (" + friendlyname + " - " + timestamp + ")";
+
+                    //Finalize the subject
+                    String finalsubject = "";
+                    if (subject!=null){
+                            finalsubject = finalsubject + subject;
+                    }
+                    finalsubject=finalsubject + authtimestamp;
+
+
+                    //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???
+
+                    //@todo Not correctly getting size of file in
+
+                    //-----------------------------------
+                    //-----------------------------------
+                    int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename) VALUES('"+eventid+"', '"+finalfilename+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(finalsubject)+"', '"+reger.core.Util.cleanForSQL(incomingname)+"')");
+                    //-----------------------------------
+                    //-----------------------------------
+
+                    //Get a MediaType handler
+                    MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
+                    //Generate a thumbnail
+                    mt.createThumbnail(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"thumbnails/"+finalfilename, 100);
+                    //Handle any parsing required
+                    mt.saveToDatabase(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, imageid);
+
+                    //Do the imagetags
+                    reger.ImageTag.addMultipleTagsToImage(camphoneimagetags, imageid);
+
+                    reger.core.Util.debug(3, "Imageid="+imageid);
+                //}
+            //}
+
+        } catch (Exception e) {
+            reger.core.Util.errorsave(e);
+            return false;
+        }
+        return true;
+
+    }
+
+    
+}

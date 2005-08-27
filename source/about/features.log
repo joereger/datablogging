@@ -1,0 +1,120 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONFEATURES;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append(reger.core.Util.popup());
+
+mb.append("<blockquote>");
+
+if (request.getParameter("feature")!=null) {
+    if (request.getParameter("feature").equals("admin")){
+        mb.append(reger.marketingSite.TourHtml.admin());
+    } else if (request.getParameter("feature").equals("api")){
+        mb.append(reger.marketingSite.TourHtml.api());
+    } else if (request.getParameter("feature").equals("api")){
+        mb.append(reger.marketingSite.TourHtml.api());
+    } else if (request.getParameter("feature").equals("chartsandgraphs")){
+        mb.append(reger.marketingSite.TourHtml.chartsAndGraphs());
+    } else if (request.getParameter("feature").equals("comparison")){
+        mb.append(reger.marketingSite.TourHtml.comparison());
+    } else if (request.getParameter("feature").equals("freehosting")){
+        mb.append(reger.marketingSite.TourHtml.freehosting(userSession.getPl().getPlbasedomain()));
+    } else if (request.getParameter("feature").equals("getstarted")){
+        mb.append(reger.marketingSite.TourHtml.getstarted());
+    } else if (request.getParameter("feature").equals("messages")){
+        mb.append(reger.marketingSite.TourHtml.messages());
+    } else if (request.getParameter("feature").equals("onthisday")){
+        mb.append(reger.marketingSite.TourHtml.onthisday());
+    } else if (request.getParameter("feature").equals("pro")){
+        mb.append(reger.marketingSite.TourHtml.pro());
+    } else if (request.getParameter("feature").equals("relatedlinks")){
+        mb.append(reger.marketingSite.TourHtml.relatedlinks());
+    } else if (request.getParameter("feature").equals("rss")){
+        mb.append(reger.marketingSite.TourHtml.rss());
+    } else if (request.getParameter("feature").equals("search")){
+        mb.append(reger.marketingSite.TourHtml.search());
+    } else if (request.getParameter("feature").equals("share")){
+        mb.append(reger.marketingSite.TourHtml.share());
+    } else if (request.getParameter("feature").equals("templates")){
+        mb.append(reger.marketingSite.TourHtml.templates(userSession));
+    } else if (request.getParameter("feature").equals("traffic")){
+        mb.append(reger.marketingSite.TourHtml.traffic());
+    } else if (request.getParameter("feature").equals("wap")){
+        mb.append(reger.marketingSite.TourHtml.wap());
+    } else if (request.getParameter("feature").equals("password")){
+        mb.append(reger.marketingSite.TourHtml.password());
+    } else if (request.getParameter("feature").equals("emailnewsletter")){
+        mb.append(reger.marketingSite.TourHtml.emailnewsletter());
+    } else if (request.getParameter("feature").equals("multiplecontributors")){
+        mb.append(reger.marketingSite.TourHtml.multiplecontributors());
+    } else if (request.getParameter("feature").equals("homepagecustomization")){
+        mb.append(reger.marketingSite.TourHtml.homepagecustomization());
+    } else if (request.getParameter("feature").equals("customservername")){
+        mb.append(reger.marketingSite.TourHtml.customservername());
+    } else if (request.getParameter("feature").equals("activityspecificlogtypes")){
+        mb.append(reger.marketingSite.TourHtml.activityspecificlogtypes(userSession.getPl().getPlid()));
+    } else if (request.getParameter("feature").equals("favesites")){
+        mb.append(reger.marketingSite.TourHtml.favesites());
+    } else if (request.getParameter("feature").equals("gps")){
+        mb.append(reger.marketingSite.TourHtml.gps());
+    } else if (request.getParameter("feature").equals("acl")){
+        mb.append(reger.marketingSite.TourHtml.acl());
+    } else if (request.getParameter("feature").equals("approval")){
+        mb.append(reger.marketingSite.TourHtml.approval());
+    } else {
+        //Display default page
+        mb.append(reger.marketingSite.TourHtml.defaultHtml(userSession.getPl().getPlid()));
+    }
+} else if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+    //mb.append(reger.marketingSite.TourHtml.logDetail(Integer.parseInt(request.getParameter("eventtypeid")), pageProps.pathToAppRoot, request, userSession, pageProps, response));
+    response.sendRedirect("signup-log-type-detail.log?eventtypeid=" + request.getParameter("eventtypeid"));
+    return;
+} else {
+    //Display default page
+    mb.append(reger.marketingSite.TourHtml.defaultHtml(userSession.getPl().getPlid()));
+}
+
+mb.append("</blockquote>");
+
+if (request.getParameter("feature")!=null && !request.getParameter("feature").equals("")) {
+    mb.append("<br>");
+    mb.append("<center>");
+    mb.append("<a href='features.log'>");
+    mb.append("<font face=arial size=+1 color=#0000ff>");
+    mb.append("-- Tour Main Page >>");
+    mb.append("</font>");
+    mb.append("</a>");
+    mb.append("</center>");
+}
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

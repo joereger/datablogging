@@ -1,0 +1,102 @@
+<%@ page import="reger.SideColumn,
+                 java.awt.image.BufferedImage,
+                 java.awt.*,
+                 javax.imageio.ImageIO,
+                 java.awt.geom.*"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Get the incoming text
+String textToWrite = "This is some sample text.  It is cool and shiny.";
+if (request.getParameter("textToWrite")!=null && !request.getParameter("textToWrite").equals("")){
+    textToWrite = request.getParameter("textToWrite");
+}
+
+//Create the image
+int width = 500;
+int height = 500;
+
+// Create a buffered image in which to draw
+BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+// Create a graphics contents on the buffered image
+Graphics2D g2d = bufferedImage.createGraphics();
+
+// Draw graphics
+g2d.setColor(Color.white);
+g2d.fillRect(0, 0, width, height);
+//g2d.setColor(Color.white);
+//g2d.fillOval(0, 0, width, height);
+
+//Draw text
+Font thisFont = new Font("Arial", Font.BOLD, 12);
+g2d.setFont(thisFont);
+g2d.setColor(Color.black);
+FontMetrics metrics = g2d.getFontMetrics();
+int textwidth = metrics.stringWidth( textToWrite );
+int textheight = metrics.getHeight();
+//g2d.drawString( change, width/2-textwidth/2, height/2-textheight/2 );
+g2d.drawString( textToWrite, 0, textheight );
+
+//Rotate the image
+AffineTransform tx = new AffineTransform();
+
+double radians = -Math.PI/2;
+tx.rotate(radians, height/2, height/2);
+
+g2d.drawRenderedImage(bufferedImage, tx);
+
+//Crop the mofo
+bufferedImage = bufferedImage.getSubimage(0, height-textwidth, textheight, textwidth);
+
+
+
+// Graphics context no longer needed so dispose it
+g2d.dispose();
+
+//Output it
+try {
+    // Save as JPEG
+    //file = new File("newimage.jpg");
+
+    // Use getOutputStream instead of getWriter
+    ServletOutputStream outStream = response.getOutputStream();
+
+    ImageIO.write(bufferedImage, "jpg", outStream);
+} catch (Exception e) {
+    reger.core.Util.errorsave(e);
+}
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%//@ include file="globalfooter.jsp" %>
+

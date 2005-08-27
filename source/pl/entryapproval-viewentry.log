@@ -1,0 +1,159 @@
+
+<%@ page import="java.util.*,
+                 javax.naming.Context,
+                 javax.naming.InitialContext,
+                 reger.Help,
+                 reger.core.db.Db,
+                 reger.core.db.Db" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.navButtonName = "plentryapproval";
+pageProps.title = "Entry Approval - Detail";
+pageProps.isPasswordProtected = true;
+pageProps.aclObjectName = "PLADMIN";
+pageProps.pathToAppRoot="../";
+pageProps.isLogidRequired=true;
+pageProps.isEventidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Start PLID-choosing SQL
+String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
+if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
+    plidSql = " (pl.plid>'-1') ";
+}
+//End PLID-choosing SQL
+
+//Start make sure this user can view this eventid
+//-----------------------------------
+//-----------------------------------
+String[][] rstCheck= Db.RunSQL("SELECT eventid FROM event, account, pl WHERE event.accountid=account.accountid AND account.plid=pl.plid AND " + plidSql + " AND event.eventid='"+pageProps.entry.eventid+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstCheck!=null && rstCheck.length>0){
+    //Do nothing
+} else {
+    out.print("Sorry.  You don't have permission to view this eventid.");
+    return;
+}
+//End make sure this user can view this eventid
+
+
+//Load the entry
+pageProps.entry.getEntryAll();
+
+
+//Do the work of approving
+if (pageProps.action.equals("approve")){
+
+    pageProps.entry.clearFlaggedStatusByModerator();
+    pageProps.entry.approveEntryByModerator();
+
+    try {
+        if (request.getParameter("returnto")!=null && !request.getParameter("returnto").equals("")){
+            response.sendRedirect(request.getParameter("returnto"));
+        } else {
+            response.sendRedirect("index.log");
+        }
+        return;
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+    }
+
+}
+
+//Do the work of declining
+if (pageProps.action.equals("decline")){
+
+    pageProps.entry.clearFlaggedStatusByModerator();
+    pageProps.entry.declineEntryByModerator();
+
+    try {
+        if (request.getParameter("returnto")!=null && !request.getParameter("returnto").equals("")){
+            response.sendRedirect(request.getParameter("returnto"));
+        } else {
+            response.sendRedirect("index.log");    
+        }
+        return;
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+    }
+}
+
+
+//Start Approve/decline buttons
+mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td>");
+
+mb.append("<form action=entryapproval-viewentry.log method=post>");
+mb.append("<input type=hidden name='action' value='approve'>");
+mb.append("<input type=hidden name='returnto' value=\""+request.getParameter("returnto")+"\">");
+mb.append("<input type=hidden name='eventid' value='"+pageProps.entry.eventid+"'>");
+mb.append("<input type=submit value=\"Approve\">");
+mb.append("</form>");
+
+mb.append("</td>");
+mb.append("<td>");
+
+mb.append("<form action=entryapproval-viewentry.log method=post>");
+mb.append("<input type=hidden name='action' value='decline'>");
+mb.append("<input type=hidden name='returnto' value=\""+request.getParameter("returnto")+"\">");
+mb.append("<input type=hidden name='eventid' value='"+pageProps.entry.eventid+"'>");
+mb.append("<input type=submit value=\"Decline\">");
+//mb.append("<textarea name='declinationcomment'></textarea>");
+mb.append("</form>");
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+//End Approve/decline buttons
+
+//Start the entry
+//Determine which mode to display the page
+boolean displayasadmin=false;
+
+//Append the top of the form
+mb.append(reger.MegaHtmlFormTop.getHtml(userSession, pageProps, displayasadmin, request));
+//Append the center of the page
+mb.append(reger.MegaHtmlFormCenter.getHtml(userSession, pageProps, displayasadmin, request));
+//Append the bottom of the form
+mb.append(reger.MegaHtmlFormBottom.getHtml(userSession, pageProps, displayasadmin, request, response));
+
+
+
+%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

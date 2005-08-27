@@ -1,0 +1,224 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Keyword Tag Wizard";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "tools";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+
+
+
+//Start page display
+//Currentpage
+int currentpage=1;
+if (request.getParameter("currentpage")!=null && reger.core.Util.isinteger(request.getParameter("currentpage"))){
+    currentpage=Integer.parseInt(request.getParameter("currentpage"));
+}
+
+int perpage = 50;
+
+
+
+
+//Start paging
+//reger.core.Util.logtodb(sqlSelectCount+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry);
+//-----------------------------------
+//-----------------------------------
+String[][] rstCount= Db.RunSQL(reger.ImageListHtml.sqlBuilder(true, userSession, userSession.getAccount().getAccountid(), -1, -1, false, true));
+//-----------------------------------
+//-----------------------------------
+int recordcount = 0;
+if (rstCount!=null && rstCount.length>0){
+    recordcount = Integer.parseInt(rstCount[0][0]);
+}
+
+//reger.core.Util.logtodb("ImageListHtml.java - recordcount=" + recordcount);
+
+if (currentpage<0){
+    currentpage=1;
+}
+
+if (perpage<=0){
+    perpage = 500;
+}
+
+
+StringBuffer pagingOut = new StringBuffer();
+if (recordcount>perpage){
+    pagingOut.append("<tr>");
+    pagingOut.append("<td colspan=4>");
+    pagingOut.append(reger.pagingLinkPrint.getHtml(recordcount, currentpage, perpage, request));
+    pagingOut.append("</td>");
+    pagingOut.append("</tr>");
+    //And finally put it on the page
+    mb.append(pagingOut);
+}
+//Limit vars
+int limitMin = (currentpage * perpage) - perpage;
+int limitMax = perpage;
+String sqlLimit = " LIMIT "+ limitMin +","+ limitMax;
+
+//End paging
+
+
+//Do the work
+if (pageProps.action.equals("edittags")){
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstImages= reger.core.db.Db.RunSQL(reger.ImageListHtml.sqlBuilder(false, userSession, userSession.getAccount().getAccountid(), -1, -1, false, true)+sqlLimit);
+    //-----------------------------------
+    //-----------------------------------
+    if (rstImages!=null){
+        for(int i=0; i<rstImages.length; i++){
+            String effectiveTag = "";
+            if (request.getParameter("useoverall-"+rstImages[i][0])!=null && request.getParameter("useoverall-"+rstImages[i][0]).equals("1")){
+                if (request.getParameter("useoverall")!=null){
+                    effectiveTag = effectiveTag + " " + request.getParameter("useoverall");
+                }
+            }
+            if (request.getParameter("imagetag-"+rstImages[i][0])!=null){
+                effectiveTag = effectiveTag + " " + request.getParameter("imagetag-"+rstImages[i][0]);
+                //reger.core.Util.logtodb("request.getParameter(\"imagetag-\"+rstImages[i][0])=" + request.getParameter("imagetag-"+rstImages[i][0]));
+            }
+
+            reger.ImageTag.addMultipleTagsToImage(effectiveTag, Integer.parseInt(rstImages[i][0]));
+        }
+    }
+}
+
+
+
+//Helper text
+mb.append("<font face=arial size=+1>");
+mb.append("The Keyword Tag Wizard finds files that have no tags associated with them.  It allows you to quickly enter tags for these files and move on to others that have no tags.");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+
+//Add the popup javascript
+mb.append(reger.core.Util.popup());
+
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
+mb.append("<form action=tools-tagwizard.log method=post>");
+mb.append("<input type=hidden name='currentpage' value='"+currentpage+"'>");
+mb.append("<input type=hidden name='action' value='edittags'>");
+
+
+
+
+mb.append("<table cellpadding=5 cellspacing=2 border=0>");
+
+//reger.core.Util.logtodb("tools-tagwizard.log<br>" + reger.ImageListHtml.sqlBuilder(false, userSession, userSession.getAccount().getAccountid(), -1, -1, false, true)+sqlLimit);
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left colspan=3>");
+mb.append("<center>");
+mb.append("<input type=submit value='Save Keyword Tags'>");
+mb.append("</center>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#cccccc>");
+mb.append("<font face=arial size=-1>");
+mb.append("");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#cccccc>");
+mb.append("<font face=arial size=-1>");
+mb.append("Keyword Tags");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#cccccc>");
+mb.append("<font face=arial size=-1>");
+mb.append("Check the box to apply the tags in this box to the file.  This allows you to quickly apply the same tags to multiple file.  When you check the box you can still add additional tags in each file... they'll simply be added to what's in the box.");
+mb.append("<br>");
+String useoverall = "";
+if (request.getParameter("useoverall")!=null){
+    useoverall =  request.getParameter("useoverall");
+}
+mb.append("<input type=text name='useoverall' size=35 maxlength=254 value=\""+reger.core.Util.cleanForHtml(useoverall)+"\">");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+//Display the images
+//-----------------------------------
+//-----------------------------------
+String[][] rstImagelist= reger.core.db.Db.RunSQL(reger.ImageListHtml.sqlBuilder(false, userSession, userSession.getAccount().getAccountid(), -1, -1, false, true)+sqlLimit);
+//-----------------------------------
+//-----------------------------------
+if (rstImagelist!=null && rstImagelist.length>0){
+    for(int i=0; i<rstImagelist.length; i++){
+        mb.append("<tr>");
+        mb.append("<td valign=top align=left>");
+        mb.append("<a href='"+pageProps.pathToAppRoot+"mediaouthtml.log?logid="+rstImagelist[i][8]+"&imageid="+rstImagelist[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
+        mb.append("<img src='"+pageProps.pathToAppRoot+"mediaout.log?logid="+rstImagelist[i][8]+"&imageid="+rstImagelist[i][0]+"&isthumbnail=yes' border=0></a>");
+        mb.append("</td>");
+        mb.append("<td valign=top align=left>");
+        mb.append("<font face=arial size=-2>");
+        String tags = reger.ImageTag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
+        mb.append("<input type='text' name='imagetag-"+rstImagelist[i][0]+"' value=\""+reger.core.Util.cleanForSQL(tags)+"\" size=35 maxlength=254 style=\"font-size: 10px;\">");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top align=left>");
+        mb.append("<input type=checkbox name='useoverall-"+rstImagelist[i][0]+"' value=1>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+} else {
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left colspan=3>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("There are no files without keyword tags.  Good job!");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+}
+
+mb.append("</table>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+mb.append("</form>");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

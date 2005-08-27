@@ -1,0 +1,80 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Private Label";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+mb.append("A private label is a good way to dip your toes in the web logging space.  It allows you to offer web logs to your customers with a small initial investment.");
+
+mb.append("<br>");
+mb.append("<h1>Features</h1>");
+mb.append("<ul>");
+mb.append("<li>A marketing and signup site with your corporate branding");
+mb.append("<li>Your customers will create web log entries with a site that has your branding");
+mb.append("<li>People who read your customers' sites will see your corporate branding");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Benefits</h1>");
+mb.append("<ul>");
+mb.append("<li>Short time-to-market");
+mb.append("<li>Brand affinity and reach");
+mb.append("<li>Offering for your customers");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Notes</h1>");
+mb.append("<ul>");
+mb.append("<li>No control over the price of the service for your customers");
+mb.append("<li>No control over the advertising on the site (all advertising is tasteful... but the base private label doesn't include the ability to turn it off)");
+mb.append("<li>Powered by reger.com logo will be present");
+mb.append("</ul>");
+
+
+
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

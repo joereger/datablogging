@@ -1,0 +1,224 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*,
+                 reger.MegaLogType,
+                 org.jdom.Document,
+                 org.jdom.Element,
+                 reger.mega.FieldType,
+                 org.jdom.output.XMLOutputter,
+                 org.jdom.output.Format,
+                 reger.Location,
+                 java.awt.*"%><%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%><%@ include file="../globalheader.jsp" %><%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+try{
+
+    Document doc = new Document();
+
+    //Whole schema doc
+//            Element schema = new Element("schema", MegaLogTypeXmlSchemaRenderer.xsNs);
+//            schema.setAttribute("xs","http://www.w3.org/2001/XMLSchema", Namespace.getNamespace("XXXxmlns","http://www.w3.org/2001/XMLSchema"));
+//            doc.addContent(schema);
+
+        //Entry
+        Element pageTag = new Element("page");
+        doc.addContent(pageTag);
+
+            try{
+                //Title
+                Element elTit = new Element("title");
+                elTit.addContent("Test Page");
+                pageTag.addContent(elTit);
+            } catch (org.jdom.IllegalDataException ex){
+                reger.core.Util.debug(5, ex);
+            }
+
+            try{
+                //Query
+                Element query = new Element("query");
+                query.addContent("Why?");
+                pageTag.addContent(query);
+            } catch (org.jdom.IllegalDataException ex){
+                reger.core.Util.debug(5, ex);
+            }
+
+            try{
+                //Request
+                Element req = new Element("request");
+                pageTag.addContent(req);
+            } catch (org.jdom.IllegalDataException ex){
+                reger.core.Util.debug(5, ex);
+            }
+
+
+
+
+
+            try{
+                //Overlay
+                Element overlay = new Element("overlay");
+                overlay.setAttribute("panelStyle", "googlemapsidepanel.xsl");
+                pageTag.addContent(overlay);
+
+                //Some vars
+                double maxLat = 0;
+                double minLat = 0;
+                double maxLon = 0;
+                double minLon = 0;
+
+
+                int locationid=0;
+                if (request.getParameter("locationid")!=null && !request.getParameter("locationid").equals("") && reger.core.Util.isinteger(request.getParameter("locationid"))){
+                    locationid=Integer.parseInt(request.getParameter("locationid"));
+                }
+
+
+                     if (userSession!=null){
+                        Location[] locations = Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());
+                        for (int i = 0; i < locations.length; i++) {
+                            Location loc = locations[i];
+                            reger.core.Util.debug(5, "googlemapxml.java - location=" + loc.getLocationname() + "<br>lat=" + loc.getLatitude() + "<br>lon=" + loc.getLongitude());
+                            if (locationid==0 || locationid==loc.getLocationid()){
+                                if (loc.getLatitude()>0 || loc.getLongitude()>0){
+
+                                    //Max/mins
+                                    if (loc.getLatitude()>maxLat){
+                                        maxLat = loc.getLatitude();
+                                    }
+                                    if (loc.getLatitude()<minLat){
+                                        minLat = loc.getLatitude();
+                                    }
+                                    if (loc.getLongitude()>maxLon){
+                                        maxLon = loc.getLongitude();
+                                    }
+                                    if (loc.getLatitude()<minLon){
+                                        minLon = loc.getLongitude();
+                                    }
+
+
+                                    //Location
+                                    Element location = new Element("location");
+                                    location.setAttribute("infoStyle", "googlemap-geocodeinfo-demo1.xsl");
+                                    location.setAttribute("id", "A"+i);
+                                    overlay.addContent(location);
+
+
+                                        //Point
+                                        Element point = new Element("point");
+                                        point.setAttribute("lat", String.valueOf(loc.getLatitude()));
+                                        point.setAttribute("lng", String.valueOf(loc.getLongitude()));
+                                        location.addContent(point);
+
+                                        //Icon
+                                        Element icon = new Element("icon");
+                                        icon.setAttribute("image", "http://maps.google.com/mapfiles/marker.png");
+                                        icon.setAttribute("class", "local");
+                                        location.addContent(icon);
+
+                                        //Info
+                                        Element info = new Element("info");
+                                        location.addContent(info);
+
+                                            //Info Title
+                                            Element infoTitle = new Element("title");
+                                            infoTitle.addContent("Title" + i);
+                                            infoTitle.setAttribute("xmlspace", "preserve");
+                                            infoTitle.setAttribute("class", "local");
+                                            info.addContent(infoTitle);
+
+                                            //Info Address
+                                            Element infoAddress = new Element("address");
+                                            info.addContent(infoAddress);
+
+                                                //Info Address Line
+                                                Element infoAddressLine = new Element("line");
+                                                infoAddressLine.addContent("<b>" + loc.getLocationname() + "</b><br><a href='locations.log?locationid="+loc.getLocationid()+"'>View Entries from this Location</a>");
+                                                infoAddress.addContent(infoAddressLine);
+
+                                            //Info Image
+                                            //Element infoImage = new Element("image");
+                                            //infoImage.addContent("http://reger.com/privatelabel/reger/images/reger-logo.gif");
+                                            //info.addContent(infoImage);
+
+
+                                }
+                            }
+                        }
+                    }
+
+                    try{
+                        //Center
+                        double centerLat = (maxLat - minLat)/2;
+                        double centerLon = (maxLon - minLon)/2;
+                        Element center = new Element("center");
+                        center.setAttribute("lat", String.valueOf(centerLat));
+                        center.setAttribute("lng", String.valueOf(centerLon));
+                        pageTag.addContent(center);
+                    } catch (org.jdom.IllegalDataException ex){
+                        reger.core.Util.debug(5, ex);
+                    }
+
+                    try{
+                        //Span
+                        double spanLat = (maxLat - minLat);
+                        double spanLon = (maxLon - minLon);
+                        Element span = new Element("span");
+                        span.setAttribute("lat", String.valueOf(spanLat));
+                        span.setAttribute("lng", String.valueOf(spanLon));
+                        pageTag.addContent(span);
+                   } catch (org.jdom.IllegalDataException ex){
+                        reger.core.Util.debug(5, ex);
+                   }
+
+
+
+
+            } catch (org.jdom.IllegalDataException ex){
+                reger.core.Util.debug(5, ex);
+            }
+
+
+
+
+
+
+    response.setContentType("text/xml");
+    XMLOutputter outp = new XMLOutputter();
+    outp.setFormat(Format.getPrettyFormat());
+    out.print(outp.outputString(doc));
+
+} catch (Exception e){
+    reger.core.Util.errorsave(e);
+}
+
+
+
+%><%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%><%//@ include file="../globalfooter.jsp" %>
+

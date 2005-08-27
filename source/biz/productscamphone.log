@@ -1,0 +1,73 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Camera Phone Service";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+mb.append("Whether you're a carrier or a portal, our camera phone service can help you get your customers web logging from anywhere.  Unlike many basic phone logging sites, we have a set of specialized features that dramatically increase the quality of your customers' experience with phone logging.");
+
+mb.append("<br>");
+mb.append("<h1>What it is</h1>");
+mb.append("<ul>");
+mb.append("<li><strong>A complete solution</strong> - Everything you need to offer your mobile customers phone blogging.");
+mb.append("<li><strong>Server side</strong> - A server application provides all of the presentation and data management.");
+mb.append("<li><strong>Standards-driven</strong> - Web logging works with industry standard MMS, SMS, WAP and email.  Users don't need specialized software to save phone pictures to their web log.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Features</h1>");
+mb.append("<ul>");
+mb.append("<li><strong>Daily Camera Phone Photo Aggregation</strong> - If you post a lot of camera phone images to your site it can make your site look somewhat messy. You can choose to aggregate all camera phone entries from one day into a single entry. That keeps things nice and clean.");
+mb.append("<li><strong>Override Camera Phone Subject</strong> - When posting with your camera phone it's often difficult to type a meaningful message with those tiny phone keys. This setting allows you to override any subject that is sent from the phone with what's in the box to the right. This is convenient because it allows you to quickly click and send without worrying about how the subject appears on your site. Use <$Date$> to have the server put a date in the title for you. For example \"Phone Cam Pics From <$Date$>\"");
+mb.append("<li><strong>Default Image Category</strong> - Configure your site so that camera phone images are automatically stored in the correct image category.");
+mb.append("<li><strong>Log Specific</strong> - You can target camera phone messages to specific web logs.");
+mb.append("<li><strong>Save Incoming Camera Phone Images as Draft</strong> - Allows you to send camera phone entries to your web log without publishing them. They will remain in Draft until you log in to your Admin section and publish them. This is a convenient way to start entries by camera phone and then finish and publish them with the more powerful Admin section.");
+mb.append("</ul>");
+
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

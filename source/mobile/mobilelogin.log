@@ -1,0 +1,107 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MOBILEPUBLIC;
+pageProps.isPasswordProtected = false;
+pageProps.aclObjectName = "MOBILE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String errortext = "";
+
+if (pageProps.action.equals("login")){
+    try {
+        //See if we have a valid admin password
+        String username = reger.core.Util.getParameterClean(request.getParameter("username"));
+        String password = reger.core.Util.getParameterClean(request.getParameter("password"));
+
+        //Log in
+        reger.Accountuser au = new reger.Accountuser(username, password);
+
+        if (au.isLoggedIn && request.getHeader("x-up-subno")!=null && !request.getHeader("x-up-subno").equals("")) {
+
+            //Create the association between this phone and this account
+            //-----------------------------------
+            //-----------------------------------
+            int identity = Db.RunSQLInsert("INSERT INTO mobile(xupsubno, accountuserid) VALUES('"+ request.getHeader("x-up-subno") +"', '"+ au.getAccountuserid() +"')");
+            //-----------------------------------
+            //-----------------------------------
+
+            //Then redirect to the correct place
+            response.sendRedirect("home.log");
+            return;
+
+        //Else that was an invalid login or xupsubno isn't working.
+        } else {
+            errortext = "Sorry.  Login Failed.";
+        }
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+    }
+}
+
+
+// set content type for wireless data
+response.setContentType("text/vnd.wap.wml");
+
+// write the data
+mb.append("<?xml version=\"1.0\"?>");
+mb.append("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\"");
+mb.append(" \"http://www.wapforum.org/DTD/wml_1.1.xml\">");
+mb.append("<wml>");
+
+
+mb.append("<card id=\"login\" title=\"Please Login\">");
+mb.append("<p align=\"center\">");
+
+if (!errortext.equals("")){
+    mb.append("Login failed.  Please try again.");
+    mb.append("<br/>");
+}
+
+mb.append("<br/>");
+mb.append("Username: <input name=\"username\" type=\"text\" emptyok=\"false\"  value=\"\"/>");
+mb.append("<br/>");
+mb.append("Password: <input name=\"password\" type=\"password\" emptyok=\"false\" value=\"\"/>");
+mb.append("<a href=\"login.log?username=$(username)&password=$(password)&action=login\">");
+mb.append("Go");
+mb.append("</a>");
+mb.append("<br/>");
+mb.append("<br/>");
+mb.append("</p>");
+//mb.append("<do type=\"accept\" label=\"Go\">");
+//mb.append("<go href=\"login.log\" method=\"get\">");
+//mb.append("<postfield name=\"username\" value=\"$(username)\"/>");
+//mb.append("<postfield name=\"password\" value=\"$(password)\"/>");
+//mb.append("</go>");
+//mb.append("</do>");
+
+mb.append("</card>");
+
+
+
+mb.append("</wml>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

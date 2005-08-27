@@ -1,0 +1,124 @@
+
+<%@ page import="java.util.*,
+                 reger.template.Template,
+                 reger.core.db.Db,
+                 reger.AllLogsInSystem,
+                 reger.Log" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+//pageProps.title = "MasterAdmin Control Center Home Page";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loetemplatesuser";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Get templateid
+int templateid = -1;
+if (request.getParameter("templateid")!=null && reger.core.Util.isinteger(request.getParameter("templateid"))){
+    templateid = Integer.parseInt(request.getParameter("templateid"));
+}
+
+//Edit is simply a redirect to the edit screen
+if (pageProps.action.equals("edit")){
+    response.sendRedirect("settings-template-edit.log?templateid=" + templateid+ "&type=" + request.getParameter("type"));
+    return;
+}
+
+//Delete is simply a redirect to the edit screen
+if (pageProps.action.equals("delete")){
+    response.sendRedirect("settings-template-delete.log?templateid=" + templateid);
+    return;
+}
+
+//Edit is simply a redirect to the edit screen
+if (pageProps.action.equals("export")){
+    response.sendRedirect("settings-template-export.log?templateid=" + templateid);
+    return;
+}
+
+
+mb.append(reger.core.Util.popup());
+
+
+
+mb.append("<br>");
+mb.append("<br>");
+
+//Site Template
+//reger.UserSession userSession;
+Template activeTemplate = null;
+Template[] siteUserTemplates = null;
+Template[] siteSystemTemplates = reger.template.AllTemplatesInSystem.getUserTemplatesByType(Template.TEMPLATETYPESITE);
+mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "USER Site Templates", "This is the overall template that determines the general look of your site.", -1, Template.TEMPLATETYPESITE, "settings-template-main.log", "settings-template-edit.log", true, false, true, true, "templateid", true));
+
+//Spacer
+mb.append("<br>");
+mb.append("<img src=images/clear.gif width=1 height=1>");
+mb.append("<br>");
+
+//Entry Template
+//reger.UserSession userSession;
+Template activeEntryListTemplate = null;
+Template[] entUserTemplates = null;
+Template[] entSystemTemplates = reger.template.AllTemplatesInSystem.getUserTemplatesByType(Template.TEMPLATETYPEENTRYLIST);
+mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "USER Entry List Templates", "This template governs entries as they appear in a list on the homepage. This template can be overridden for each log on your site.", -1, Template.TEMPLATETYPEENTRYLIST, "settings-template-main.log", "settings-template-edit.log", true, false, true, true, "templateid", true));
+
+//Spacer
+mb.append("<br>");
+mb.append("<img src=images/clear.gif width=1 height=1>");
+mb.append("<br>");
+
+//Hp Template
+//reger.UserSession userSession;
+Template activeHpTemplate = null;
+Template[] hpUserTemplates = null;
+Template[] hpSystemTemplates = reger.template.AllTemplatesInSystem.getUserTemplatesByType(Template.TEMPLATETYPEHOMEPAGE);
+mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "USER Site Homepage Templates", "This template controls how the homepage of your site operates.", -1, Template.TEMPLATETYPEHOMEPAGE, "settings-template-main.log", "settings-template-edit.log", true, false, true, true, "templateid", true));
+
+//Spacer
+mb.append("<br>");
+mb.append("<img src=images/clear.gif width=1 height=1>");
+mb.append("<br>");
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

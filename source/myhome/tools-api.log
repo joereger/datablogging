@@ -1,0 +1,131 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Open APIs";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "toolsapi";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<br><br>");
+
+mb.append("<table cellpadding=5 width=100% cellspacing=4 border=0 bgcolor=#cccccc>");
+mb.append("<tr>");
+mb.append("<td valign=center align=center bgcolor=#ffffff>");
+mb.append("<font face=arial size=+2>");
+mb.append(""+reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + "/api.log");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("<strong>");
+mb.append("This is the URL where you can access the APIs for your site.");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+
+mb.append("<br><br>");
+
+mb.append("<font face=arial size=-1>");
+mb.append("In addition to the API URL you also need to use your username, password and logid.  You know your username and password.  Your logid is listed in a table below.");
+mb.append("<br><br>");
+mb.append("There are a number of external pieces of software that allow you to post to your site.  One popular one is <a href='http://www.wbloggar.com' target='wbloggar'>W.Bloggar</a>");
+mb.append("</font>");
+
+mb.append("<br><br>");
+
+
+
+//The API description
+mb.append(reger.api.ApiDescription.getHtml());
+
+mb.append("<br><br>");
+
+mb.append("<table cellpadding=10 cellspacing=1 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=+1>");
+mb.append("<strong>");
+mb.append("Log:");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=+1>");
+mb.append("<strong>");
+mb.append("Logid to use:");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+//Only display logs that an accountuser explicitly has access to... in other words, an account owner may want to create a contributor who can't contribute to a particular public log.
+String sql = "SELECT logid, name, eventtypeid, logaccess FROM megalog WHERE accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY name ASC";
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstEventtype= Db.RunSQL(sql);
+//-----------------------------------
+//-----------------------------------
+if (rstEventtype!=null){
+	for(int i=0; i<rstEventtype.length; i++){
+
+	    //Output to the user
+        mb.append("<tr>");
+        mb.append("<td valign=top bgcolor=#cccccc>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("<strong>");
+        mb.append(rstEventtype[i][1]);
+        mb.append("</strong>");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top bgcolor=#e6e6e6>");
+        mb.append("<font face=arial size=+1>");
+        mb.append(rstEventtype[i][0]);
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+
+    }
+}
+
+
+
+
+mb.append("</table>");
+
+mb.append("<br><br>");
+
+
+
+%>
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

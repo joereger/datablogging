@@ -1,0 +1,133 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 reger.nav.NavButton,
+                 reger.nav.NavPanel,
+                 reger.core.db.Db,
+                 reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "<img src='../images/icon-log-type-med-notext.gif' align=top> Custom Log Types";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logslogtypes";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+//pageProps.isLogidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Messages
+if (request.getParameter("msg")!=null && request.getParameter("msg").equals("logtypeadded")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your new log type has been added.  For convenience, we've also created a log of this type for you.<br><br>Next Steps:<ul><li><a href='logs-newfield.log?logid=0&eventtypeid="+request.getParameter("neweventtypeid")+"&action=addfield&returntopage=logs-type-fieldlayout.log'>Add datablogging fields</a> to your log type</li><li><a href='entry.log?logid="+request.getParameter("newlogid")+"&action=add'>Start logging</a> using this log type</li><li><a href='people-friends-invite.log?eventtypeid="+request.getParameter("neweventtypeid")+"'>Invite friends</a> to use this log type</li></ul>"));
+}
+
+
+//Log Header start
+String currentNavButtonName = "";
+%>
+<%@ include file="logs-header.jsp" %>
+<%
+//Log Header end
+
+
+
+//Log Types
+
+mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Log types are different than logs.  Sometimes we don't have a log to fit your needs.  Like, say, llama racing.  There are specific types of data that llama racers like to track but we don't have a llama racing log type.   Luckily, you can create a custom llama racing log type on your own.  Or any other log type for that matter.<br><br>First, click 'Create a New Custom Log Type' below and give your log type a name.  Next, choose to give it some custom activity-specific data fields... whatever it is you want to track, chart and graph."));
+
+
+mb.append("<br>");
+
+String cellbgcolor="#ffffff";
+
+mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0 bgcolor=#ffffff>");
+
+mb.append("<tr><td valign=top align=left bgcolor=#ffffff nowrap colspan=2><br><a href='logs-type-properties.log?action=startadd'><img src='images/add_16.gif' alt='' border='0'><font face=arial size=-1><b>Create a New Custom Log Type</b></a></td></tr>");
+
+
+mb.append("<tr><td valign=top align=left bgcolor=#666666 colspan=2>");
+mb.append("<font face=arial size=-1 color=#ffffff>");
+mb.append("Below are your custom log types:");
+mb.append("</font>");
+mb.append("</tr>");
+
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstLogtype= Db.RunSQL("SELECT eventtypeid, megalogname, description FROM megalogtype WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstLogtype!=null && rstLogtype.length>0){
+    for(int i=0; i<rstLogtype.length; i++){
+
+        //Flip flop colors
+        if (cellbgcolor.equals("#ffffff")) {
+            cellbgcolor="#e6e6e6";
+        } else {
+            cellbgcolor="#ffffff";
+        }
+
+        //Each log type output
+        mb.append("<tr>");
+        mb.append("<td valign=top align=left bgcolor="+ cellbgcolor +" nowrap><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>"+ Util.cleanForHtml(rstLogtype[i][1]) +"</b></td>");
+
+        mb.append("<td valign=top align=left bgcolor="+ cellbgcolor +" nowrap>");
+        mb.append("<a href='logs-type-properties.log?eventtypeid="+ rstLogtype[i][0] +"'><font face=arial size=-2>Properties</a>");
+        mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
+        mb.append("<a href='logs-type-fieldlayout.log?eventtypeid="+ rstLogtype[i][0] +"'><font face=arial size=-2>datablogging Fields</a>");
+        mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
+        mb.append("<a href='logs-type-detail.log?eventtypeid="+ rstLogtype[i][0] +"'><font face=arial size=-2>Log Type Summary</a>");
+        mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
+        mb.append("<a href='logs-type-msgusers.log?eventtypeid="+ rstLogtype[i][0] +"'><font face=arial size=-2>Message to Users of Log Type</a>");
+        mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
+        mb.append("<a href='people-friends-invite.log?eventtypeid="+ rstLogtype[i][0] +"'><font face=arial size=-2>Invite Friends</a>");
+        mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
+        mb.append("<a href='logs-type-delete.log?eventtypeid="+ rstLogtype[i][0] +"'><font face=arial size=-2>Delete</a>");
+        mb.append("</td>");
+
+        mb.append("</tr>");
+
+
+    }
+} else {
+    mb.append("<tr><td valign=top align=left bgcolor="+ cellbgcolor +" nowrap><img src='../images/info-icon.gif' alt='' border='0'><font face=arial size=-1>This Account Has No Custom Log Types Defined.</td><td valign=center align=left bgcolor="+ cellbgcolor +"><font face=arial size=-2>&nbsp;</td></tr>");
+}
+
+
+mb.append("</table>");
+mb.append("<br><br>");
+
+
+
+//Log Footer start
+%>
+<%@ include file="logs-footer.jsp" %>
+<%
+//Log Footer end
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

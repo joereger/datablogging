@@ -1,0 +1,243 @@
+
+<%@ page import="java.util.*,
+                 reger.core.db.Db,
+                 reger.core.Util,
+                 reger.mega.FieldLayout,
+                 reger.mega.FieldType,
+                 reger.MegaLogType" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+//pageProps.title = "MasterAdmin Control Center Home Page";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loelogtypes";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Make sure we have an eventtypeid
+int eventtypeid=-1;
+if (request.getParameter("eventtypeid")!=null && !request.getParameter("eventtypeid").equals("") && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+    eventtypeid=Integer.parseInt(request.getParameter("eventtypeid"));
+}
+
+//Create a megalogtype
+MegaLogType megaLogType = new MegaLogType(eventtypeid);
+
+//Get some request vars if they're there
+if (request.getParameter("megalogname")!=null && !request.getParameter("megalogname").equals("")){
+    megaLogType.setMegalogname(request.getParameter("megalogname"));
+}
+if (request.getParameter("description")!=null && !request.getParameter("description").equals("")){
+    megaLogType.setDescription(request.getParameter("description"));
+}
+if (request.getParameter("showlocation")!=null && !request.getParameter("showlocation").equals("")){
+    if(request.getParameter("showlocation").equals("1")){
+        megaLogType.setShowlocation(true);
+    } else {
+        megaLogType.setShowlocation(false);
+    }
+}
+if (request.getParameter("showonhomepage")!=null && !request.getParameter("showonhomepage").equals("")){
+    if(request.getParameter("showonhomepage").equals("1")){
+        megaLogType.setShowonhomepage(true);
+    } else {
+        megaLogType.setShowonhomepage(false);
+    }
+}
+
+//If the user is not a masteradmin, they must be editing their own log and it must be userdefined
+if (!userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    //Make sure this is a valid field for the user to be editing, and if this is valid
+    //-----------------------------------
+    //-----------------------------------
+        String[][] rstCheckLog= Db.RunSQL("SELECT accountuserid FROM megalogtype WHERE eventtypeid='"+ eventtypeid +"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstCheckLog!=null && rstCheckLog.length>0){
+        if (!rstCheckLog[0][0].equals(String.valueOf(userSession.getAccountuser().getAccountuserid()))) {
+            out.println("<font face=arial size=+3 color=red>Sorry. That log can't be edited.</font>");
+            return;
+        }
+    } else {
+        out.println("<font face=arial size=+3 color=red>Sorry. That log can't be edited.</font>");
+        return;
+    }
+}
+
+//Process any layout changes
+FieldLayout.processLayoutChange(request);
+
+
+String errortext = "";
+if (pageProps.action.equals("endadd")){
+    megaLogType.setIssystemlogtype(1);
+    megaLogType.setAccountuserid(0);
+    megaLogType.save();
+    response.sendRedirect("logtypes-list-system.log");
+    return;
+}
+
+if (pageProps.action.equals("go")) {
+    megaLogType.save();
+    response.sendRedirect("logtypes-list-system.log");
+    return;
+}
+
+
+
+
+
+//Display any error messages
+if (!errortext.equals("")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+
+//Start the page display
+mb.append("<br><br>");
+mb.append("<table cellpadding=0 cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top>");
+
+
+
+mb.append("<form action='logtypes-type.log' method=post>");
+if (pageProps.action.equals("startadd") || pageProps.action.equals("endadd")){
+    mb.append("<input type=hidden name=action value=endadd>");
+} else {
+    mb.append("<input type=hidden name=action value=go>");
+}
+
+mb.append("<input type=hidden name=eventtypeid value="+eventtypeid+">");
+
+mb.append("<table cellpadding=5 cellspacing=1 border=0 width=100% align=center>");
+
+//Log type-specific fields
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc align=left colspan=2>");
+mb.append("<font face=arial size=+1><strong>Log Type Properties</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right bgcolor='#eeeeee'><font face=arial size=-1><strong>Log Type Name:</strong></font><br><font face=arial size=-2><strong>This is not the name of your log on your site.  You are defining a log type here.</strong></font></td>");
+mb.append("<td valign=top align=left><input type=text name=megalogname value=\""+reger.core.Util.cleanForHtml(megaLogType.getMegalogname())+"\"></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right bgcolor='#eeeeee'><font face=arial size=-1><strong>Log Type Description:</strong></font></td>");
+mb.append("<td valign=top align=left><textarea name=description cols='35' rows='2'>"+megaLogType.getDescription()+"</textarea></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#eeeeee' valign=top align=right>");
+mb.append("<font face=arial size=-1><strong>Show Location</strong></font><br><font face=arial size=-2><strong>Does this log type need to have locations associated with it?</strong></font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top align=left>");
+//Radio Control
+String showlocationTxt = "1";
+if (!megaLogType.getShowlocation()){
+    showlocationTxt = "0";
+}
+TreeMap radiosShowlocation=new TreeMap();
+radiosShowlocation.put("0","No");
+radiosShowlocation.put("1","Yes (Recommended)");
+mb.append(reger.formControl.radioList(radiosShowlocation, showlocationTxt, "showlocation", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#eeeeee' valign=top align=right>");
+mb.append("<font face=arial size=-1><strong>Show On Homepage</strong></font><br><font face=arial size=-2><strong>Should entries from this log type appear on the main web log homepage?  This can be overridden at the individual log level.</strong></font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top align=left>");
+//Radio Control
+String showonhomepageTxt = "1";
+if (!megaLogType.getShowonhomepage()){
+    showonhomepageTxt = "0";
+}
+TreeMap radiosShowonhomepage=new TreeMap();
+radiosShowonhomepage.put("0","No");
+radiosShowonhomepage.put("1","Yes (Recommended)");
+mb.append(reger.formControl.radioList(radiosShowonhomepage, showonhomepageTxt, "showonhomepage", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+//Save changes
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff colspan=2 align=center><input type='submit' value='Save Log Type'></td>");
+mb.append("</tr>");
+mb.append("</form>");
+
+//Log type-specific fields
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc align=left colspan=2>");
+mb.append("<font face=arial size=+1><strong>Activity-specific Field Layout</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+
+//Main fields display
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff align=left colspan=2>");
+
+//Display the fields
+mb.append(FieldLayout.getHtml(eventtypeid, 0, FieldLayout.LAYOUTMODEEDIT, userSession, "logtypes-type.log", "logtypes-field.log", "logtypes-choosefieldtype.log", pageProps));
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+mb.append("</table>");
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+mb.append("<br><br>");
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

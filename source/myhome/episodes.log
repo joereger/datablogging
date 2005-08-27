@@ -1,0 +1,114 @@
+<%@ page import="reger.core.Util,
+                 reger.core.db.Db,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Episodes";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "episodesmain";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="Episodes are collections of entries.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Edit
+if (pageProps.action.equals("editepisode")){
+    if (request.getParameter("episodeid")!=null && reger.core.Util.isinteger(request.getParameter("episodeid"))){
+        reger.episodes.Episode episode = new reger.episodes.Episode(Integer.parseInt(request.getParameter("episodeid")), userSession.getAccountuser());
+        //Permission
+        if (episode.getAccountid()==userSession.getAccount().getAccountid()){
+            if (request.getParameter("episodename")!=null || !request.getParameter("episodename").equals("")){
+                episode.setName(request.getParameter("episodename"));
+            }
+            if (request.getParameter("episodedescription")!=null || !request.getParameter("episodedescription").equals("")){
+                episode.setDescription(request.getParameter("episodedescription"));
+            } else {
+                episode.setDescription("");
+            }
+            //Save it
+            try{
+                episode.save();
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Episode \""+episode.getName()+"\" saved successfully."));
+            } catch (reger.core.ValidationException ex){
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, ex.getErrorsAsSingleString()));
+            }
+        }
+    }
+}
+
+//Delete
+if (pageProps.action.equals("deleteepisode")){
+    if (request.getParameter("episodeid")!=null && reger.core.Util.isinteger(request.getParameter("episodeid"))){
+        reger.episodes.Episode episode = new reger.episodes.Episode(Integer.parseInt(request.getParameter("episodeid")), userSession.getAccountuser());
+        //Permission
+        if (episode.getAccountid()==userSession.getAccount().getAccountid()){
+            episode.delete();
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Episode \""+episode.getName()+"\" has been deleted."));
+        }
+    }
+}
+
+//Remove entry
+if (pageProps.action.equals("removeentry")){
+    if (request.getParameter("episodeid")!=null && reger.core.Util.isinteger(request.getParameter("episodeid"))){
+        reger.episodes.Episode episode = new reger.episodes.Episode(Integer.parseInt(request.getParameter("episodeid")), userSession.getAccountuser());
+        //Permission
+        if (episode.getAccountid()==userSession.getAccount().getAccountid()){
+            if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+                episode.removeEntryFromEpisode(Integer.parseInt(request.getParameter("eventid")));
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "The entry has been removed from the episode."));
+            }
+        }
+    }
+}
+
+mb.append("<br><br>");
+mb.append("<font face=arial size=-1 class=mediumfont>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstEpisode= Db.RunSQL("SELECT DISTINCT(episode.episodeid) FROM episode, event, megalog, eventtoepisode WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.eventid=eventtoepisode.eventid AND eventtoepisode.episodeid=episode.episodeid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND event.logid=megalog.logid AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + " ORDER BY episode.episodeid DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstEpisode!=null && rstEpisode.length>0){
+    for(int i=0; i<rstEpisode.length; i++){
+        reger.episodes.Episode episode = new reger.episodes.Episode(Integer.parseInt(rstEpisode[i][0]), userSession.getAccountuser());
+        mb.append(reger.episodes.EpisodeRender.getHtml(episode, userSession.getAccount(), true, "episodes.log"));
+        mb.append("<br><br>");
+    }
+} else {
+    mb.append("You do not have any episodes defined at this time.  You can <a href='episodes-whatare.log'>learn about episodes here</a>.");
+}
+mb.append("</font>");
+
+
+mb.append("<br><br>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

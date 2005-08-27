@@ -1,0 +1,288 @@
+
+<%@ page import="java.util.*, reger.core.db.Db" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loebugs";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+int bugid=-1;
+if (request.getParameter("bugid")!=null && reger.core.Util.isinteger(request.getParameter("bugid"))){
+    bugid=Integer.parseInt(request.getParameter("bugid"));
+}
+
+//Update
+if (pageProps.action.equals("update")){
+    int bugcategoryid=-1;
+    if (request.getParameter("bugcategoryid")!=null && reger.core.Util.isinteger(request.getParameter("bugcategoryid"))){
+        bugcategoryid=Integer.parseInt(request.getParameter("bugcategoryid"));
+    }
+    if (request.getParameter("newbugcategory")!=null && !request.getParameter("newbugcategory").equals("")){
+        //-----------------------------------
+        //-----------------------------------
+        bugcategoryid = Db.RunSQLInsert("INSERT INTO bugcategory(bugcategory) VALUES('"+reger.core.Util.cleanForSQL(request.getParameter("newbugcategory"))+"')");
+        //-----------------------------------
+        //-----------------------------------
+    }
+
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("UPDATE bug SET isopen='"+request.getParameter("isopen")+"', severity='"+request.getParameter("severity")+"', bugcategoryid='"+bugcategoryid+"', title='"+reger.core.Util.cleanForSQL(request.getParameter("title"))+"' WHERE bugid='"+bugid+"'");
+    //-----------------------------------
+    //-----------------------------------
+
+    if (request.getParameter("comment")!=null && !request.getParameter("comment").equals("")){
+        //-----------------------------------
+        //-----------------------------------
+        int identity = Db.RunSQLInsert("INSERT INTO bugcomment(bugid, date, comment) VALUES('"+bugid+"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+reger.core.Util.cleanForSQL(request.getParameter("comment"))+"')");
+        //-----------------------------------
+        //-----------------------------------
+    }
+
+    response.sendRedirect("bugs.log?currentpage=" + request.getParameter("currentpage"));
+    return;
+
+}
+
+
+
+
+
+
+//Start the page display
+
+mb.append("<style type=text/css>");
+mb.append("<--");
+mb.append(".bug:link {color:#0000ff; text-decoration:none; font-size: 9px;}");
+mb.append(".bug:active {color:#0000ff; text-decoration:underline; font-size: 9px;}");
+mb.append(".bug:visited {color:#0000ff; text-decoration:none; font-size: 9px;}");
+mb.append(".bug:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 9px;}");
+mb.append(".bug {color:#000000; text-decoration:none; font-size: 9px;}");
+mb.append(".bugbig:link {color:#0000ff; text-decoration:none; font-size: 12px;}");
+mb.append(".bugbig:active {color:#0000ff; text-decoration:underline; font-size: 12px;}");
+mb.append(".bugbig:visited {color:#0000ff; text-decoration:none; font-size: 12px;}");
+mb.append(".bugbig:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 12px;}");
+mb.append(".bugbig {color:#000000; text-decoration:none; font-size: 12px;}");
+mb.append(".bugsmall:link {color:#0000ff; text-decoration:none; font-size: 8px;}");
+mb.append(".bugsmall:active {color:#0000ff; text-decoration:underline; font-size: 8px;}");
+mb.append(".bugsmall:visited {color:#0000ff; text-decoration:none; font-size: 8px;}");
+mb.append(".bugsmall:hover {color: #000000; text-decoration:underline; background-color: #e6e6e6; font-size: 8px;}");
+mb.append(".bugsmall {color:#000000; text-decoration:none; font-size: 8px;}");
+mb.append("-->");
+mb.append("<style></style>");
+
+mb.append("<a href='bugs.log'><img src=images/bugs.jpg border=0></a><br>");
+
+mb.append("<form action=bugdetail.log method=post>");
+mb.append("<input type=hidden name=action value=update>");
+mb.append("<input type=hidden name=bugid value="+request.getParameter("bugid")+">");
+mb.append("<input type=hidden name=currentpage value="+request.getParameter("currentpage")+">");
+mb.append("<table cellpadding=5 cellspacing=0 width=100% border=1>");
+
+//-----------------------------------
+//-----------------------------------
+    String[][] rs = Db.RunSQL("SELECT bugid, createdate, isopen, severity, bug.bugcategoryid, bugcategory.bugcategory, bug.title FROM bug, bugcategory WHERE bug.bugcategoryid=bugcategory.bugcategoryid AND bug.bugid='"+bugid+"'");
+//-----------------------------------
+//-----------------------------------
+if (rs!=null && rs.length>0){
+    for(int i=0; i<rs.length; i++){
+        mb.append("<tr>");
+
+        //Date
+        mb.append("<td valign=top align=left nowrap bgcolor=#e6e6e6>");
+        mb.append("<font face=arial size=-2 class=bug>");
+        mb.append(rs[i][1]);
+        mb.append("<br>");
+        mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rs[i][1])));
+        mb.append("</font>");
+        mb.append("</td>");
+
+
+        //Bug title
+        mb.append("<td valign=top align=left>");
+        mb.append("<input type=text name=title size=35 maxlength=255 value=\""+reger.core.Util.cleanForHtml(rs[i][6])+"\" style='font: 14pt Arial'>");
+        mb.append("</td>");
+
+
+        //Status
+        String bgcolor = "";
+        String isopen = rs[i][2];
+        if (isopen.equals("0")){
+            bgcolor = "#ffffff";
+        } else if (isopen.equals("1")) {
+            bgcolor = "#ff0000";
+        }
+        String isChecked="";
+
+        //Status
+        mb.append("<td valign=top bgcolor="+bgcolor+" align=left>");
+        mb.append("<font face=arial size=-1 class=bug>");
+        mb.append("<select name=isopen style=\"font-size: 10px;\">");
+        if (isopen.equals("1")){
+            isChecked="selected";
+        } else {
+            isChecked="";
+        }
+        mb.append("<option value='1' "+isChecked+">Open</option>");
+        if (isopen.equals("0")){
+            isChecked="selected";
+        } else {
+            isChecked="";
+        }
+        mb.append("<option value='0' "+isChecked+">Closed</option>");
+        mb.append("</select>");
+
+
+
+        mb.append("</td>");
+
+        //Severity
+        bgcolor = "";
+        String severity = rs[i][3];
+        if (severity.equals("1")){
+            bgcolor = "#ffcc00";
+        } else if (severity.equals("2")) {
+            bgcolor = "#ffffcc";
+        } else if (severity.equals("3")) {
+            bgcolor = "#ffffff";
+        }
+        isChecked="";
+
+        //Status
+        mb.append("<td valign=top bgcolor="+bgcolor+" align=left>");
+        mb.append("<font face=arial size=-1 class=bug>");
+        mb.append("<select name=severity style=\"font-size: 10px;\">");
+        for(int j=1; j<=3; j++){
+            if (rs[i][3].equals(String.valueOf(j))){
+                isChecked="selected";
+            } else {
+                isChecked="";
+            }
+            String sevText="";
+            if (j==1){
+                sevText="High";
+            } else if (j==2){
+                sevText="Med";
+            } else if (j==3){
+                sevText="Low";
+            }
+            mb.append("<option value='"+j+"' "+isChecked+">"+j+ " - " +sevText+"</option>");
+        }
+        mb.append("</select>");
+        mb.append("</font>");
+        mb.append("</td>");
+
+
+
+
+        //Bug category
+        mb.append("<td valign=top align=left nowrap>");
+        mb.append("<select name=bugcategoryid style=\"font-size: 10px;\">");
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rsCat= Db.RunSQL("SELECT bugcategory.bugcategoryid, bugcategory.bugcategory FROM bugcategory");
+        //-----------------------------------
+        //-----------------------------------
+        if (rsCat!=null && rsCat.length>0){
+        	for(int j=0; j<rsCat.length; j++){
+        	    if (rsCat[j][0].equals(rs[i][4])){
+                    isChecked="selected";
+                } else {
+                    isChecked="";
+                }
+                mb.append("<option value='"+rsCat[j][0]+"' "+isChecked+">"+rsCat[j][1]+ "</option>");
+        	}
+        }
+        mb.append("</select>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=-2 class=bugsmall>");
+        mb.append("Or add new:");
+        mb.append("</font>");
+        mb.append("<br>");
+        mb.append("<input type=text name=newbugcategory size=10 maxlength=50 style=\"font-size: 10px;\">");
+        mb.append("</td>");
+
+
+        mb.append("</tr>");
+    }
+}
+
+
+//-----------------------------------
+//-----------------------------------
+String[][] rsComment= Db.RunSQL("SELECT bugcommentid, date, comment FROM bugcomment WHERE bugid='"+bugid+"' ORDER BY date ASC");
+//-----------------------------------
+//-----------------------------------
+if (rsComment!=null && rsComment.length>0){
+	for(int i=0; i<rsComment.length; i++){
+        mb.append("<tr>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+        mb.append("<font face=arial size=-2 class=bug>");
+        mb.append(rsComment[i][1]);
+        mb.append("<br>");
+        mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rsComment[i][1])));
+        mb.append("</font>");
+        mb.append("</tr>");
+        mb.append("<td valign=top align=left colspan=4>");
+        mb.append("<font face=arial size=-1>");
+        mb.append(rsComment[i][2].replaceAll("<", "&lt;"));
+        mb.append("</font>");
+        mb.append("</tr>");
+        mb.append("</tr>");
+	}
+}
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=center bgcolor=#e6e6e6>");
+mb.append("<input type=submit value=Save>");
+mb.append("</tr>");
+mb.append("<td valign=top align=left colspan=4>");
+mb.append("<textarea cols='45' rows='10' name='comment' wrap='hard' style='width: 80%;font: 10pt Arial'>");
+mb.append("</textarea>");
+mb.append("</tr>");
+mb.append("</tr>");
+
+
+mb.append("</form>");
+mb.append("</table>");
+
+
+%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

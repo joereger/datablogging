@@ -1,0 +1,80 @@
+<%@ page import="reger.core.db.Db, java.util.Hashtable,
+                 reger.core.licensing.License,
+                 reger.core.licensing.RegerLicensingApiClient"%>
+<%@ page import="reger.InfoBox"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Account Cancel";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingsacctstatus";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+String infoboxmessage="";
+if (pageProps.action.equals("submit")) {
+    License newLicense = new License(null, request.getParameter("encryptedlicense"));
+    if (newLicense.getEncryptedLicense()!=null && newLicense.getDecryptedLicense()!=null && !newLicense.getDecryptedLicense().equals("")){
+        userSession.getAccount().setEncryptedLicense(request.getParameter("encryptedlicense"));
+        mb.append(InfoBox.get(InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "The license has been updated."));
+    } else {
+        mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "That license doesn't appear to be valid.  No change has been made."));
+    }
+}
+
+mb.append(InfoBox.get(InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Be careful!  If you edit a license it can invalidate your account.  If you want to cancel your license, use the cancel license page.  A license key is a long string of letters, numbers and symbols.  You'll generally get it via email and can copy & paste it into this box."));
+
+
+mb.append("<center>");
+mb.append("<!-- Body Table Start -->");
+mb.append("<!-- Left Main Body Begin -->");
+mb.append("<form action=accountlicensemanualentry.log method=post>");
+mb.append("<input type=hidden name=action value=submit>");
+mb.append("<table cellpadding=3 spacing=0 border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=center colspan=2 bgcolor=#ffffff>");
+mb.append("<font face=arial size=+1>Enter your license in the box below.</font>");
+mb.append("<br><br>");
+mb.append("<textarea name=encryptedlicense rows=5 cols=35>"+userSession.getAccount().getLicense().getEncryptedLicense()+"</textarea>");
+mb.append("<br><br>");
+mb.append("<input type='submit' value='Save the New License'>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+mb.append("</form>");
+mb.append("</center>");
+
+
+
+mb.append("<br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

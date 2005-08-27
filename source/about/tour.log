@@ -1,0 +1,137 @@
+<%@ page import="reger.demos.Demo,
+                 reger.demos.DemoCategory"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONTOUR;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append("<font face=arial size=-2>");
+mb.append("<br>");
+mb.append("<center>");
+mb.append("<img src=images/onlinejournals.gif border=0>");
+mb.append("</center>");
+mb.append("<br>");
+//mb.append("<ul>");
+//mb.append("<li><b>Web Logging</b> - Simple one-click publishing of thoughts, observations and ideas to the web.  You can password-protect any log or keep it public.  Web logging is your way to keep track of your life and share it with the world.</li>");
+//mb.append("<li><b>Activity-specific Web Log Types</b> - From Running and Biking logs to Caffeine and Headache logs, we allow you to track the quantifiable data from your personal life.  You then get to analyze that data with powerful charts and graphs.");
+//mb.append("<li><b>Social Networking</b> - You choose your friends.  They choose you.  You can then communicate with and get updates from your network of friends and their friends.</li>");
+//mb.append("<li><b>Online Photo/Video/Sound Sharing</b> - Your personal repository of digital nostalgia.  Organized chronologically.  Searchable.  Annotated.  Interlinked.  You'll get more from your pictures.</li>");
+//mb.append("</ul>");
+//mb.append("</font>");
+
+
+//mb.append("<center>");
+//mb.append("<table cellpadding=15 width=50% cellspacing=2 border=0>");
+//
+////Overview Tour
+//mb.append("<tr>");
+//mb.append("<td valign=top nowrap>");
+//mb.append("<a href='tour-overview-01.log'>");
+//mb.append("<img src='images/forward-button.gif' border=0>");
+//mb.append("</a>");
+//mb.append("</td>");
+//mb.append("<td valign=top>");
+//mb.append("<a href='tour-overview-01.log'>");
+//mb.append("<font face=arial size=+2>");
+//mb.append("Overview Tour");
+//mb.append("</font>");
+//mb.append("</a>");
+//mb.append("<br>");
+//mb.append("<font face=arial size=-1>");
+//mb.append("The Overview Tour gives you a general introduction to the site and what it can do for you.");
+//mb.append("</font>");
+//mb.append("<br>");
+//mb.append("<a href='tour-overview-01.log'>");
+//mb.append("<font face=arial size=-2>");
+//mb.append("Start the aTour >>");
+//mb.append("</font>");
+//mb.append("</a>");
+//mb.append("</td>");
+//mb.append("</tr>");
+//
+//
+//mb.append("</table>");
+//mb.append("</center>");
+
+mb.append(reger.Vars.LINEBREAKCHARFORHTML + reger.core.Util.popup() + reger.Vars.LINEBREAKCHARFORHTML);
+
+reger.demos.DemoCategory[] demoCategories = reger.demos.AllDemos.getAllDemoCategories();
+    for (int j = 0; j < demoCategories.length; j++) {
+
+        mb.append("<center>");
+        mb.append("<br><br>");
+        mb.append("<font face=arial size=+3 color=#cccccc><b>");
+        mb.append(demoCategories[j].getCategoryName());
+        mb.append("</b></font>");
+        mb.append("</center>");
+        mb.append("<br>");
+
+        reger.demos.Demo[] demos = demoCategories[j].getDemos();
+        if (demos.length>0){
+            int numofcols = 3;
+            int currentcol = 0;
+            int width = 100/numofcols;
+            mb.append("<center>");
+            mb.append("<table cellpadding=3 width=85% cellspacing=1 border=0>");
+
+            for (int i = 0; i < demos.length; i++) {
+                Demo demo = demos[i];
+                currentcol = currentcol + 1;
+                if (currentcol==1){
+                    mb.append("<tr>");
+                }
+                mb.append("<td valign=top width="+width+"% >");
+                mb.append(reger.demos.DemoRenderHtml.getSummary(demo, pageProps.pathToAppRoot));
+                mb.append("</td>");
+                if (currentcol==numofcols){
+                    mb.append("</tr>");
+                    currentcol=0;
+                }
+            }
+            if (currentcol<numofcols){
+                for (int i = 0; i < (numofcols-currentcol); i++) {
+                    mb.append("<td valign=top width="+width+"% >");
+                    mb.append("&nbsp;");
+                    mb.append("</td>");
+                }
+                mb.append("</tr>");
+            }
+
+            mb.append("</table>");
+            mb.append("</center>");
+        }
+
+    }
+
+
+
+
+mb.append("<br><br><br><br>");
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

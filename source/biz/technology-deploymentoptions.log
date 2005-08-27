@@ -1,0 +1,67 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Deployment Options";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+mb.append("We have a number of flexible options that allow you to deploy your weblogging offering in the best possible way.");
+
+mb.append("<br>");
+mb.append("<h1>We Host</h1>");
+mb.append("<ul>");
+mb.append("<li>We will setup your server in our data center");
+mb.append("<li>Data segregation and security");
+mb.append("<li>We handle server updates and maintenance");
+mb.append("<li>Data backup and integrity");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>You Host</h1>");
+mb.append("<ul>");
+mb.append("<li>We can license you to install our software on your servers for increased security of corporate data");
+mb.append("<li>Technical training and consulting");
+mb.append("<li>Installation and support services");
+mb.append("</ul>");
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

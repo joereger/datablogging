@@ -1,0 +1,192 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.core.db.Db,
+                 reger.SystemMessage,
+                 reger.core.db.Db" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "System Messages";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loesystemmessage";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Create the object
+SystemMessage systemMessage = new SystemMessage(0);
+if (request.getParameter("systemmessageid")!=null && reger.core.Util.isinteger(request.getParameter("systemmessageid"))){
+    systemMessage = new SystemMessage( Integer.parseInt(request.getParameter("systemmessageid")) );
+}
+
+//Save it if necessary
+if (pageProps.action.equals("save")){
+    if (request.getParameter("systemmessage")!=null){
+        systemMessage.setSystemMessage(request.getParameter("systemmessage"));
+    } else {
+        systemMessage.setSystemMessage("");
+    }
+
+    if (request.getParameter("islive")!=null && request.getParameter("islive").equals("1")){
+        systemMessage.setLive(true);
+    } else {
+        systemMessage.setLive(false);
+    }
+
+    if (request.getParameter("isautooldonrestart")!=null && request.getParameter("isautooldonrestart").equals("1")){
+        systemMessage.setAutoOldOnRestart(true);
+    } else {
+        systemMessage.setAutoOldOnRestart(false);
+    }
+
+    if (request.getParameter("showtologgedinusers")!=null && request.getParameter("showtologgedinusers").equals("1")){
+        systemMessage.setShowToLoggedInUsers(true);
+    } else {
+        systemMessage.setShowToLoggedInUsers(false);
+    }
+
+    if (request.getParameter("showtonotloggedinusers")!=null && request.getParameter("showtonotloggedinusers").equals("1")){
+        systemMessage.setShowToNotLoggedInUsers(true);
+    } else {
+        systemMessage.setShowToNotLoggedInUsers(false);
+    }
+
+    systemMessage.setDate(reger.core.TimeUtils.nowInGmtCalendar());
+
+    systemMessage.save();
+
+}
+
+//Delete
+if (pageProps.action.equals("delete")){
+    systemMessage.delete();
+    systemMessage = new SystemMessage(0);
+}
+
+
+
+
+
+//Form
+mb.append("<form action=systemmessage.log method=post>");
+mb.append("<input type=hidden name=systemmessageid value='"+systemMessage.getSystemmessageid()+"'>");
+mb.append("<input type=hidden name=action value=save>");
+
+String liveTxt = "";
+if (systemMessage.isLive()){
+    liveTxt = " checked";
+}
+mb.append("<br>");
+mb.append("<input type=checkbox name=islive value='1' "+liveTxt+"> Live");
+
+String autoTxt = "";
+if (systemMessage.isAutoOldOnRestart()){
+    autoTxt = " checked";
+}
+mb.append("<br>");
+mb.append("<input type=checkbox name=isautooldonrestart value='1' "+autoTxt+"> Auto Old On Server Restart");
+
+String showLiTxt = "";
+if (systemMessage.isShowToLoggedInUsers()){
+    showLiTxt = " checked";
+}
+mb.append("<br>");
+mb.append("<input type=checkbox name=showtologgedinusers value='1' "+showLiTxt+"> Show to Logged-in Users");
+
+
+String showNotLiTxt = "";
+if (systemMessage.isShowToNotLoggedInUsers()){
+    showNotLiTxt = " checked";
+}
+mb.append("<br>");
+mb.append("<input type=checkbox name=showtonotloggedinusers value='1' "+showNotLiTxt+"> Show to Not Logged-in Users");
+
+
+mb.append("<br>");
+mb.append("<textarea name=systemmessage rows=5 cols=35 style=\"width: 75%;\">"+systemMessage.getSystemMessage()+"</textarea>");
+
+mb.append("<br>");
+mb.append("<input type=submit value='Save'>");
+
+
+
+
+
+mb.append("<style>");
+mb.append("div.systemmessagelive{");
+mb.append("background: #ffffcc;");
+mb.append("margin: 5px;");
+mb.append("padding: 5px;");
+mb.append("border: #666666 dotted 1px;");
+mb.append("font-size: 10px;");
+mb.append("font: arial;");
+mb.append("}");
+mb.append("div.systemmessagedead{");
+mb.append("background: #ffffff;");
+mb.append("margin: 5px;");
+mb.append("padding: 5px;");
+mb.append("border: #666666 dotted 1px;");
+mb.append("font-size: 10px;");
+mb.append("font: arial;");
+mb.append("}");
+mb.append("</style>");
+
+//List system messages
+//-----------------------------------
+//-----------------------------------
+String[][] rstSystemMessage= Db.RunSQL("SELECT systemmessageid FROM systemmessage ORDER BY date DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstSystemMessage!=null && rstSystemMessage.length>0){
+    for(int i=0; i<rstSystemMessage.length; i++){
+        SystemMessage sysMsg = new SystemMessage(Integer.parseInt(rstSystemMessage[i][0]));
+        if (sysMsg.isLive()){
+            mb.append("<div class=systemmessagelive>");
+        } else {
+            mb.append("<div class=systemmessagedead>");
+        }
+        mb.append("<b>"+reger.core.TimeUtils.dateformatcompactwithtime(sysMsg.getDate())+"</b>");
+        mb.append("<br>");
+        mb.append("isLive: " + sysMsg.isLive());
+        mb.append("<br>");
+        mb.append("autoOldOnRestart: " + sysMsg.isAutoOldOnRestart());
+        mb.append("<br>");
+        mb.append("showToLoggedInUsers: " + sysMsg.isShowToLoggedInUsers());
+        mb.append("<br>");
+        mb.append("showToNotLoggedInUsers: " + sysMsg.isShowToNotLoggedInUsers());
+        mb.append("<br>");
+        mb.append(sysMsg.getSystemMessage());
+        mb.append("<br>");
+        mb.append("<a href='systemmessage.log?systemmessageid="+sysMsg.getSystemmessageid()+"&action=delete'>Delete</a>");
+        mb.append(" | ");
+        mb.append("<a href='systemmessage.log?systemmessageid="+sysMsg.getSystemmessageid()+"'>Edit</a>");
+        mb.append("</div>");
+    }
+}
+
+
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>

@@ -1,0 +1,9 @@
+<%
+if (request.getParameter("msg")!=null && request.getParameter("msg").equals("congratulations")){
+    response.sendRedirect("../login.log?msg=congratulations");
+    return;
+} else {
+    response.sendRedirect("../login.log");
+    return;
+}
+%>

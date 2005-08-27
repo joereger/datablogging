@@ -1,0 +1,131 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 java.util.TreeMap,
+                 reger.mega.FieldType,
+                 reger.mega.FieldLayout,
+                 reger.MegaLogType,
+                 reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "<img src='../images/icon-log-type-med-notext.gif' align=top> Delete Log Type";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logslogtypes";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+//pageProps.isLogidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Make sure we have an eventtypeid
+int eventtypeid=-1;
+if (request.getParameter("eventtypeid")!=null && !request.getParameter("eventtypeid").equals("") && Util.isinteger(request.getParameter("eventtypeid"))){
+    eventtypeid=Integer.parseInt(request.getParameter("eventtypeid"));
+}
+
+//Create a megalogtype
+MegaLogType megaLogType = new MegaLogType(eventtypeid);
+
+
+if (pageProps.action.equals("finalizedelete")){
+    if (megaLogType.getAccountuserid()!=userSession.getAccountuser().getAccountuserid()) {
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, you don't have permission to delete that log type."));
+    } else {
+        //Now, do the delete
+        megaLogType.delete();
+
+        response.sendRedirect("logs-type-list.log");
+        return;
+    }
+}
+
+
+
+
+//Log Header start
+String currentNavButtonName = "logs-type-delete";
+%>
+<%@ include file="logs-header.jsp" %>
+<%
+//Log Header end
+
+//Start the page display
+
+mb.append("<font face=arial size=+1 color=#ff0000>");
+mb.append("Are you sure you want to delete this log type?");
+mb.append("</font>");
+
+mb.append("<br>");
+mb.append("<br>");
+
+mb.append("<font face=arial size=-1>");
+
+int numberOfLogsOfType = reger.AllLogsInSystem.howManyOfThisTypeExist(eventtypeid);
+
+mb.append("There are " + numberOfLogsOfType + " logs of this type." );
+
+mb.append("<br>");
+mb.append("<br>");
+
+if (numberOfLogsOfType>0){
+    mb.append("Logs of this type that currently exist will still exist.  This log type will continue to exist, but it will be considered \"orphaned\", meaning that, without an owner, it will not change any more.  You will not be able to change it any more.");
+    mb.append("<br>");
+    mb.append("<br>");
+}
+
+
+
+mb.append("</font>");
+
+mb.append("<form action='logs-type-delete.log' method=post>");
+mb.append("<input type=hidden name=action value=finalizedelete>");
+mb.append("<input type=hidden name=eventtypeid value="+eventtypeid+">");
+mb.append("<input type=submit value='Yes, Delete this Log Type'>");
+mb.append("</form>");
+
+mb.append("<br>");
+
+mb.append("<a href='log-type-list.log'>");
+mb.append("<font face=arial size=-2>");
+mb.append("No, Just Kidding. Don't Delete.");
+mb.append("</font>");
+mb.append("</a>");
+
+
+
+
+mb.append("<br><br>");
+
+
+//Log Footer start
+%>
+<%@ include file="logs-footer.jsp" %>
+<%
+//Log Footer end
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

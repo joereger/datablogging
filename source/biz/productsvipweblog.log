@@ -1,0 +1,62 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "VIP Web Log";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+mb.append("We provide VIP web logs for any high-volume high-profile authors.  These include columnists, authors, celebrities, athletes, musicians and politicians.  Our package is a turnkey solution that gets your VIP's web log site up and running quickly and with a high level of quality.");
+
+mb.append("<br>");
+mb.append("<h1>What's Included</h1>");
+mb.append("<ul>");
+mb.append("<li>Site design so that your VIP web log reflects the quality of its author");
+mb.append("<li>Account setup with passwords and URLs");
+mb.append("<li>Server hosting");
+mb.append("<li>VIP training on the world of web logging and how to have the most impact");
+mb.append("<li>Moderated executive session to discuss the launch, pr, marketing and branding side of the VIP web log");
+mb.append("</ul>");
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

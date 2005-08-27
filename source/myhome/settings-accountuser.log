@@ -1,0 +1,329 @@
+<%@ page import="reger.core.db.Db,
+                 java.util.TimeZone,
+                 java.util.Iterator,
+                 java.util.TreeSet"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Your User Settings";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingssettings";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String errortext="";
+
+int tempAccountuserid = userSession.getAccountuser().getAccountuserid();
+
+
+//Create an accountuser object... this is not the one held in userSession
+reger.Accountuser au = new reger.Accountuser(userSession.getAccount().getAccountid(), tempAccountuserid);
+
+//Grab data from the request
+au.populateFromRequest(request);
+
+
+//Do the work of editing and adding new
+if (pageProps.action.equals("edit")){
+
+    //User must have permission to do this
+    if (!userSession.getAccountuser().userCanDoAcl("MANAGEACCOUNTS", userSession.getAccount().getAccountid()) && (au.getAccountuserid()!=userSession.getAccountuser().getAccountuserid())){
+        errortext=errortext+"Your account does not have permission to manage other accounts.<br>";
+    }
+
+
+    //Only do something if we have good data.
+    if (errortext.equals("")){
+
+
+        //Do the account edits
+        errortext = errortext + au.saveSettings(userSession.getPl());
+
+        //Accountuser permissions
+        //au.permissionsUpdateFromRequest(request, userSession.getAccountuser(), userSession.getAccount().getAccountid());
+
+        //Accountuser logaccess
+        //au.logaccessUpdateFromRequest(request, userSession);
+
+        //If it's the current logged-in user, repopulate the account
+        if (au.getAccountuserid()==userSession.getAccountuser().getAccountuserid()){
+            userSession.getAccount().refresh();
+            userSession.getAccountuser().populate();
+        }
+
+        //Repopulate the object
+        au = new reger.Accountuser(userSession.getAccount().getAccountid(), au.getAccountuserid());
+
+    }
+
+}
+
+//Display error messages
+if (!errortext.equals("")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+
+
+mb.append("<form action=settings-accountuser.log method=post>");
+mb.append("<input type=hidden name=action value=edit>");
+
+
+if (au.getAccountuserid()!=-1){
+    mb.append("<input type=hidden name=accountuserid value='"+au.getAccountuserid()+"'>");
+}
+
+
+
+//Display the title
+mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#ffffff>");
+mb.append("<font face=arial size=+2 color=#666666>");
+if (!au.getFriendlyname().equals("")){
+    mb.append(au.getFriendlyname());
+} else if (!au.getUsername().equals("")) {
+    mb.append(au.getUsername());
+}
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#cccccc>");
+mb.append("&nbsp;");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+//Output the main form only if this is your own account
+if (userSession.getAccountuser().getAccountuserid()==au.getAccountuserid()){
+    mb.append(au.accountSettingsHtmlForm(userSession.getPl()));
+}
+
+////Wrapper table
+//mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+//mb.append("<tr>");
+//mb.append("<td valign=top align=left bgcolor=#ffffff>");
+//
+//
+//
+////Private logs this user is allowed to view
+////Only display logs that the logged-in user can view.
+//mb.append("<table cellpadding=5 cellspacing=1 width=100% border=0>");
+//mb.append("<tr>");
+//mb.append("<td valign=top align=left bgcolor=#e6e6e6 colspan=3>");
+//mb.append("<b>");
+//mb.append("<font face=arial size=-1>");
+//mb.append("Log Access Permissions");
+//mb.append("</font>");
+//mb.append("</b>");
+//mb.append("</td>");
+//mb.append("</tr>");
+//mb.append("<tr>");
+//mb.append("<td valign=top align=center bgcolor=#eeeeee>");
+//mb.append("&nbsp;");
+//mb.append("</td>");
+//mb.append("<td valign=top align=center bgcolor=#eeeeee>");
+//mb.append("<b>");
+//mb.append("<font face=arial size=-1>");
+//mb.append("Read");
+//mb.append("</font>");
+//mb.append("</b>");
+//mb.append("</td>");
+//mb.append("<td valign=top align=center bgcolor=#eeeeee>");
+//mb.append("<b>");
+//mb.append("<font face=arial size=-1>");
+//mb.append("Author");
+//mb.append("</font>");
+//mb.append("</b>");
+//mb.append("</td>");
+//mb.append("</tr>");
+////-----------------------------------
+////-----------------------------------
+//String[][] rsAllLgs=Db.RunSQL("SELECT logid FROM megalog WHERE accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY name ASC");
+////-----------------------------------
+////-----------------------------------
+//if (rsAllLgs!=null && rsAllLgs.length>0){
+//    for(int i=0; i<rsAllLgs.length; i++){
+//
+//        reger.Log log = reger.AllLogsInSystem.getLogByLogid(Integer.parseInt(rsAllLgs[i][0]));
+//
+//        //If the logged-in user can view this log
+//        if (log!=null && userSession.getAccountuser().userCanViewLog(log.getLogid())){
+//            mb.append("<tr>");
+//            mb.append("<td valign=top align=right bgcolor=#ffffff>");
+//            mb.append("<font face=arial size=-1>");
+//            mb.append("<b>");
+//            mb.append(log.getName());
+//            mb.append("</b> ");
+//            mb.append("</font>");
+//            mb.append("</td>");
+//            mb.append("<td bgcolor='#ffffff' valign=top align=center>");
+//            if (!au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid())){
+//                if (log.getLogaccess()==reger.Vars.LOGACCESSPUBLIC){
+//                    mb.append("<font face=arial size=-2 color=#cccccc>");
+//                    mb.append("Yes.  This is a public log.");
+//                    mb.append("</font>");
+//                } else {
+//                    if (au.userCanViewLog(log.getLogid())){
+//                        mb.append("<input type=checkbox name='canviewlogid-"+log.getLogid()+"' value='1' checked>");
+//                    } else {
+//                        mb.append("<input type=checkbox name='canviewlogid-"+log.getLogid()+"' value='1'>");
+//                    }
+//                }
+//            } else {
+//                mb.append("<font face=arial size=-2>");
+//                mb.append("Yes.  This is the site owner.");
+//                mb.append("</font>");
+//            }
+//            mb.append("</td>");
+//            mb.append("<td bgcolor='#ffffff' valign=top align=center>");
+//            if (!au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid())){
+//                if (au.userCanAuthorLog(log.getLogid())){
+//                    mb.append("<input type=checkbox name='canauthorlogid-"+log.getLogid()+"' value='1' checked>");
+//                } else {
+//                    mb.append("<input type=checkbox name='canauthorlogid-"+log.getLogid()+"' value='1'>");
+//                }
+//            } else {
+//                mb.append("<font face=arial size=-2>");
+//                mb.append("Yes.  This is the site owner.");
+//                mb.append("</font>");
+//            }
+//            mb.append("</td>");
+//            mb.append("</tr>");
+//
+//        }
+//    }
+//} else {
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left bgcolor=#ffffff colspan=2>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("This account does not have any logs.");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//}
+//mb.append("</table>");
+//
+//
+////Wrapper table
+//mb.append("</td>");
+//mb.append("<td valign=top align=left bgcolor=#ffffff>");
+//
+////Permissions
+//mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+//mb.append("<tr>");
+//mb.append("<td valign=top align=left bgcolor=#e6e6e6 colspan=2>");
+//mb.append("<b>");
+//mb.append("<font face=arial size=-1>");
+//mb.append("Permissions </font><br><font face=arial size=-2>(User Can Do Checked Items):");
+//mb.append("</font>");
+//mb.append("</b>");
+//mb.append("</td>");
+//mb.append("</tr>");
+//
+//
+////Iterate on all acl objects
+//reger.acl.AclObject[] allAclObjects = reger.acl.AllAclObjects.getAllAclObjects();
+//for (int i = 0; i < allAclObjects.length; i++) {
+//    reger.acl.AclObject aclObject = allAclObjects[i];
+//
+//    //Only display the permission if the logged-in user can do it for this account
+//    if (userSession.getAccountuser().userCanDoAcl(aclObject.aclobjectid, userSession.getAccount().getAccountid())){
+//        mb.append("<tr>");
+//        mb.append("<td valign=top align=right bgcolor=#ffffff>");
+//        mb.append("<font face=arial size=-1>");
+//        mb.append(aclObject.aclfriendlyname);
+//        mb.append("</font>");
+//        mb.append("<br>");
+//        mb.append("<font face=arial size=-2>");
+//        mb.append(aclObject.acldesc);
+//        mb.append("</font>");
+//        mb.append("</td>");
+//        mb.append("<td valign=top align=left bgcolor=#ffffff>");
+//        if (au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid())){
+//            mb.append("<font face=arial size=-2 color=#cccccc>");
+//            mb.append("Owner Guaranteed Permission");
+//            mb.append("</font>");
+//        } else {
+//            mb.append("<input type=checkbox name=aclobjectid-"+aclObject.aclobjectid+" value=1");
+//            //Check the actual user's account... not the logged-in user's account
+//            if ((au.getAccountuserid()!=-1 && (au.userCanDoAcl(aclObject.aclobjectid, userSession.getAccount().getAccountid()))) || (request.getParameter("aclobjectid-"+aclObject.aclobjectid)!=null && request.getParameter("aclobjectid-"+aclObject.aclobjectid).equals("1"))){
+//                mb.append(" checked");
+//            }
+//            mb.append(">");
+//        }
+//        mb.append("</td>");
+//        mb.append("</tr>");
+//    }
+//
+//}
+//mb.append("</table>");
+//
+//
+////Wrapper table
+//mb.append("</td>");
+//mb.append("</tr>");
+//mb.append("</table>");
+
+//Action buttons
+mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top align=center bgcolor=#ffffff colspan=2>");
+mb.append("<br>");
+mb.append("<input type=submit value='Save Changes'>");
+mb.append("</form>");
+//if (!au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid()) && !au.userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+//    mb.append("<br><p align=right>");
+//    mb.append("<font face=arial size=-2>");
+//    mb.append("<b>");
+//    mb.append("<a href='settings-accountuser.log?action=deleteauthor&accountuserid="+au.getAccountuserid()+"'>");
+//    mb.append("Remove This User's Special Permissions");
+//    mb.append("</a>");
+//    mb.append("</b>");
+//    mb.append("</font>");
+//    mb.append("</p>");
+//}
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+//End action buttons
+
+
+
+
+
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

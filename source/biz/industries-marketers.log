@@ -1,0 +1,77 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Marketers";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+mb.append("Our activity-specific web logging concept instantly segments users into defined markets.  People using or reading a Running Log, for example are clearly interested in running.  We have over thirty distinct web log types and are adding more all the time.  This creates great targeted marketing opportunities.");
+
+mb.append("<br>");
+mb.append("<h1>Targeted Marketing Programs</h1>");
+mb.append("Because users sign up for specific log types you have a good idea what interests them.  Next, they invite their friends and family to read their web log.  This means that your advertising will be viewed by people very interested in the content at hand.");
+
+
+mb.append("<br>");
+mb.append("<h1>Special Promotions</h1>");
+mb.append("We're interested in working with you to develop smart marketing programs.  From basic log sponsorships to site-wide banner campaigns.");
+
+
+mb.append("<br>");
+mb.append("<h1>Data-driven Programs</h1>");
+mb.append("Unlike in other web logging tools, users on our network capture quantifuable data about their activity.  For example, a runner may keep track of the numbre of miles run and the pair of shoes worn on each run.  With this data we can target an ad saying \"Running shoes are less effective after 450 miles.\" to all Running Log users with shoes that have over 400 miles on them.");
+
+mb.append("<br>");
+mb.append("<h1>Email Programs</h1>");
+mb.append("Each of the thousands of web loggers in our network has the opportunity to create their own email newsletter.  Combined with their activity-specific log types this gives you a potent email marketing channel.  For example, you can buy space on \"All email newsletters from users with a Running Log\".");
+
+
+mb.append("<br>");
+mb.append("<h1>Custom Log Types</h1>");
+mb.append("We can work with you to develop a special log type that tracks exactly what your market is interested in.");
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//XML-DEV//DTD XHTML RDDL 1.0//EN"
+  "http://www.rddl.org/rddl-xhtml.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:rddl="http://www.rddl.org/"
+   xml:lang="en"
+   xml:base="http://www.reger.com/about/specs/entrydata.rddl">
+<head>
+   <title>RDDL Document for the EntryData Namespace</title>
+   <link href="http://www.rddl.org/xrd.css" type="text/css"
+     rel="stylesheet"/>
+</head>
+<body>
+   <h1>RDDL Document for the EntryData Namespace</h1>
+
+   <p>The EntryData Namespace is used by bloggers who engage in dataBlogging... adding activity-specific data fields to their blog entries.  This spec defines a way to add name/value data pairs to entries.</p>
+
+   <rddl:resource
+     xlink:href="http://www.reger.com/about/specs/entrydata.xsd"
+     xlink:title="EntryDataField Schema">
+
+      <p>
+      The XML Schema for EntryDataField documents is
+      <a href="http://www.reger.com/about/specs/entrydata.xsd">
+     available from here</a>.
+      </p>
+
+   </rddl:resource>
+
+</body>
+</html>

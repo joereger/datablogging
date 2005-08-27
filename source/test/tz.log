@@ -1,0 +1,170 @@
+<%@ page import="reger.SideColumn,
+                 java.util.Calendar"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Quick populate
+userSession.getAccount().refresh();
+
+//Test 1
+mb.append("<br><br><b>Test 1 ---------------- </b>");
+
+//Select user's create date
+//-----------------------------------
+//-----------------------------------
+String[][] rstCreateDate= db.RunSQL("SELECT createdate FROM account WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstCreateDate!=null && rstCreateDate.length>0){
+	for(int i=0; i<rstCreateDate.length; i++){
+
+	    mb.append("<br><br>Raw date from database: " + rstCreateDate[i][0]);
+
+	    //Convert to cal
+	    Calendar cal = reger.core.TimeUtils.dbstringtocalendar(rstCreateDate[i][0]);
+	    mb.append("<br><br>Converted to calendar.  Output with cal.toString(): " + cal.toString());
+
+	    //Output cal withdateformatfordb
+        mb.append("<br><br>TimeUtils.dateformatfordb(cal): " + reger.core.TimeUtils.dateformatfordb(cal));
+
+        //Convert to user time
+        cal = reger.core.TimeUtils.gmttousertime(cal, userSession.getAccount().getTimezoneid());
+        mb.append("<br><br>Converted to usertime with gmttousertime().  Output with cal.toString(): " + cal.toString());
+
+        //Output cal withdateformatfordb
+        mb.append("<br><br>TimeUtils.dateformatfordb(cal): " + reger.core.TimeUtils.dateformatfordb(cal));
+
+
+	}
+}
+
+
+//Test 2
+mb.append("<br><br><b>Test 2 ---------------- </b>");
+
+//Create a cal with now
+String date = "2004-01-30 04:10:00";
+
+mb.append("<br><br>Raw input: " + date);
+
+//Convert to cal
+Calendar now = reger.core.TimeUtils.dbstringtocalendar(date);
+mb.append("<br><br>Converted to calendar.  Output with now.toString(): " + now.toString());
+
+//Output cal withdateformatfordb
+mb.append("<br><br>TimeUtils.dateformatfordb(now): " + reger.core.TimeUtils.dateformatfordb(now));
+
+//Call usertogmttime
+now = reger.core.TimeUtils.usertogmttime(now, userSession.getAccount().getTimezoneid());
+
+//Convert to cal
+mb.append("<br><br>Converted to gmt time with usertogmttime(). Output with now.toString(): " + now.toString());
+
+//Output cal withdateformatfordb
+mb.append("<br><br>TimeUtils.dateformatfordb(now): " + reger.core.TimeUtils.dateformatfordb(now));
+
+//Output cal with dateformatUtc
+mb.append("<br><br>TimeUtils.dateformatUtc(now): " + reger.core.TimeUtils.dateformatUtc(now));
+
+
+
+//Test 3
+mb.append("<br><br><b>Test 3 ---------------- </b>");
+
+//Create a cal with now
+String date2 = "2004-01-30 04:10:00";
+String oldtimezoneid = "America/New_York";
+String newtimezoneid = "US/Pacific";
+
+mb.append("<br><br>Raw input: " + date2);
+mb.append("<br><br>oldtimezoneid: " + oldtimezoneid);
+mb.append("<br><br>newtimezoneid: " + newtimezoneid);
+
+//Convert to cal
+java.util.Calendar now2 = reger.core.TimeUtils.dbstringtocalendar(date2);
+mb.append("<br><br>Converted to calendar.  Output with now2.toString(): " + now2.toString());
+
+//Output cal withdateformatfordb
+mb.append("<br><br>TimeUtils.dateformatfordb(now2): " + reger.core.TimeUtils.dateformatfordb(now2));
+
+//Convert to another timezone
+now2 = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(now2, oldtimezoneid, newtimezoneid);
+
+mb.append("<br><br>Converted to another timezone with convertFromOneTimeZoneToAnother().  Output with now2.toString(): " + now2.toString());
+
+//Output cal withdateformatfordb
+mb.append("<br><br>TimeUtils.dateformatfordb(now2): " + reger.core.TimeUtils.dateformatfordb(now2));
+
+
+
+
+
+//Test 4
+mb.append("<br><br><b>Test 4 ---------------- </b>");
+
+//Create a cal with now
+String date4 = "2004-01-30 04:10:00";
+
+mb.append("<br><br>Raw input: " + date4);
+
+//Convert to cal
+Calendar now4 = reger.core.TimeUtils.dbstringtocalendar(date4);
+mb.append("<br><br>Created now4.  Output with now4.toString(): " + now4.toString());
+
+//Output cal withdateformatfordb
+mb.append("<br><br>TimeUtils.dateformatfordb(now4): " + reger.core.TimeUtils.dateformatfordb(now4));
+
+//Convert to cal
+Calendar now4a = reger.core.TimeUtils.dbstringtocalendar(date4);
+mb.append("<br><br>Created now4a.  Output with now4a.toString(): " + now4a.toString());
+
+//Output cal withdateformatfordb
+mb.append("<br><br>TimeUtils.dateformatfordb(now4a): " + reger.core.TimeUtils.dateformatfordb(now4a));
+
+//Call usertogmttime
+now4a = reger.core.TimeUtils.usertogmttime(now4, userSession.getAccount().getTimezoneid());
+
+//Convert to cal
+mb.append("<br><br>Converted to gmt time with usertogmttime().  Passed now4.  Returned to now4a.  Expect now4a to be changed but now4 to be the same.  Output with now.toString(): " + now.toString());
+
+//Output cal withdateformatfordb
+mb.append("<br><br>Output with now4.toString(): " + now4.toString());
+mb.append("<br><br>TimeUtils.dateformatfordb(now4): " + reger.core.TimeUtils.dateformatfordb(now4));
+mb.append("<br><br>Output with now4a.toString(): " + now4a.toString());
+mb.append("<br><br>TimeUtils.dateformatfordb(now4a): " + reger.core.TimeUtils.dateformatfordb(now4a));
+
+
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

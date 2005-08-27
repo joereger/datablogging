@@ -1,0 +1,90 @@
+<%@ page import="reger.core.db.Db,
+                 reger.mega.FieldType,
+                 reger.mega.MegaChartHtmlRenderer"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICMISC;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+<%@ include file="globalheader.jsp" %>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//@todo Apply public stylesheet font classes to this chart page.
+
+//@todo Come to page with only logid=1 set... need to determine how to deal with yAxis.  Could to here and pass to graph.log via url line.  Could go in graph.log.
+
+//Create a new megachart using the incoming request
+reger.mega.MegaChart megaChart = new reger.mega.MegaChart(request);
+
+//Start saving chart
+if (request.getParameter("savechart")!=null && request.getParameter("savechart").equals("1")){
+    if (userSession.getAccountuser().userCanDoAcl("SAVECHARTS", userSession.getAccount().getAccountid())) {
+        //It's a masteradmin saving for all users
+        //megaChart.setxLogid(0);
+
+        //It's a normal save for a single user
+        megaChart.setXeventtypeid(0);
+        megaChart.setAccountid(userSession.getAccount().getAccountid());
+
+        //Do the save
+        megaChart.save();
+    }
+}
+//End saving chart
+
+//Start getting chart from database
+if (request.getParameter("megachartid")!=null && reger.core.Util.isinteger(request.getParameter("megachartid"))){
+    megaChart.load(Integer.parseInt(request.getParameter("megachartid")));
+}
+//End getting chart from database
+
+
+//Previews
+boolean isPreview = false;
+if (request.getParameter("ispreview")!=null && request.getParameter("ispreview").equals("1")){
+    //Need to manually set the pageProps.logProps.eventtypeid
+    pageProps.logProps.eventtypeid = megaChart.getXeventtypeid();
+    isPreview = true;
+}
+
+//If not a preview, make sure this user can view the megalogid
+if (!isPreview){
+    if (megaChart.getMegachartid()>0){
+        if (megaChart.getAccountid()!=0 && megaChart.getAccountid()!=userSession.getAccount().getAccountid()){
+            response.sendRedirect("graphs.log");
+            return;
+        }
+    }
+}
+
+//Output the html
+mb.append(MegaChartHtmlRenderer.getHtml(megaChart, userSession, isPreview, pageProps.pathToAppRoot, false, false));
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+<%@ include file="globalfooter.jsp" %>
+

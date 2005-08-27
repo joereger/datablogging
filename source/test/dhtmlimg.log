@@ -1,0 +1,226 @@
+<%@ page import="reger.SideColumn,
+                 java.util.ArrayList,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 java.util.ListIterator,
+                 java.util.Iterator,
+                 reger.core.db.Db,
+                 java.util.Calendar,
+                 java.util.HashMap"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Javascripts
+mb.append(reger.core.Util.popup());
+mb.append("<script src=\""+pageProps.pathToAppRoot+"js/hideshowlayer.js\" type=\"text/javascript\"></script>");
+
+
+//Page Config Parameters
+int xStart = 100;
+int yStart = 100;
+int xOffset = 3;
+int yOffset = 10;
+int xSpacingBetweenColumns = 10; //Could be calculated...
+int thumbNailWidth = 50;
+int thumbNailHeight = 33;
+int zoomWidth = 100;
+
+//Now in user's timezone
+Calendar nowForUser = reger.core.TimeUtils.nowInUserTimezone(userSession.getAccountuser().getUsertimezoneid());
+//reger.core.Util.logtodb("nowForUser:" + reger.core.TimeUtils.dateformatdateMmddyyyy(nowForUser));
+//Start date
+Calendar defaultStartDate = reger.core.TimeUtils.xMonthsAgoStart(nowForUser, 3);
+int startyear = defaultStartDate.get(Calendar.YEAR);
+if (request.getParameter("startyear")!=null && reger.core.Util.isinteger(request.getParameter("startyear"))){
+    startyear = Integer.parseInt(request.getParameter("startyear"));
+}
+int startmonth = defaultStartDate.get(Calendar.MONTH);
+if (request.getParameter("startmonth")!=null && reger.core.Util.isinteger(request.getParameter("startmonth"))){
+    startmonth = Integer.parseInt(request.getParameter("startmonth"));
+}
+int startday = defaultStartDate.get(Calendar.DAY_OF_MONTH);
+if (request.getParameter("startday")!=null && reger.core.Util.isinteger(request.getParameter("startday"))){
+    startday = Integer.parseInt(request.getParameter("startday"));
+}
+Calendar actualStartDate = reger.core.TimeUtils.formtocalendar(startyear, startmonth+1, startday, 0, 0, 0, "am");
+//reger.core.Util.logtodb("startyear: " + startyear + " startmonth: " + startmonth + " startday: " + startday);
+//reger.core.Util.logtodb("actualStartDate:" + reger.core.TimeUtils.dateformatdateMmddyyyy(actualStartDate));
+
+//End Date
+int endyear = nowForUser.get(Calendar.YEAR);
+if (request.getParameter("endyear")!=null && reger.core.Util.isinteger(request.getParameter("endyear"))){
+    endyear = Integer.parseInt(request.getParameter("endyear"));
+}
+int endmonth = nowForUser.get(Calendar.MONTH);
+if (request.getParameter("endmonth")!=null && reger.core.Util.isinteger(request.getParameter("endmonth"))){
+    endmonth = Integer.parseInt(request.getParameter("endmonth"));
+}
+int endday = nowForUser.get(Calendar.DAY_OF_MONTH);
+if (request.getParameter("endday")!=null && reger.core.Util.isinteger(request.getParameter("endday"))){
+    endday = Integer.parseInt(request.getParameter("endday"));
+}
+Calendar actualEndDate = reger.core.TimeUtils.formtocalendar(endyear, endmonth+1, endday, 0, 0, 0, "am");
+//reger.core.Util.logtodb("endyear: " + endyear + " endmonth: " + endmonth + " endday: " + endday);
+//reger.core.Util.logtodb("actualEndDate:" + reger.core.TimeUtils.dateformatdateMmddyyyy(actualEndDate));
+
+//Form begin
+mb.append("<form method=post action='dhtmlimg.log'>");
+
+//Start date selection form
+mb.append("<select name='startyear'>");
+for(int i=1900; i<=2020; i++){
+    mb.append("<option value='" + i + "' ");
+    if (i==startyear) {
+        mb.append("selected");
+    }
+    mb.append(">" + i + "</option>");
+}
+mb.append("</select>");
+
+mb.append("<select name='startmonth'>");
+for(int i=0; i<=11; i++){
+    mb.append("<option value='" + i + "' ");
+    if (i==startmonth) {
+        mb.append("selected");
+    }
+    mb.append(">" + (i+1) + "</option>");
+}
+mb.append("</select>");
+
+mb.append("<select name='startday'>");
+for(int i=1; i<=31; i++){
+    mb.append("<option value='" + i + "' ");
+    if (i==startday) {
+        mb.append("selected");
+    }
+    mb.append(">" + i + "</option>");
+}
+mb.append("</select>");
+
+mb.append(" through ");
+
+//End date selection form
+mb.append("<select name='endyear'>");
+for(int i=1900; i<=2020; i++){
+    mb.append("<option value='" + i + "' ");
+    if (i==endyear) {
+        mb.append("selected");
+    }
+    mb.append(">" + i + "</option>");
+}
+mb.append("</select>");
+
+mb.append("<select name='endmonth'>");
+for(int i=0; i<=11; i++){
+    mb.append("<option value='" + i + "' ");
+    if (i==endmonth) {
+        mb.append("selected");
+    }
+    mb.append(">" + (i+1) + "</option>");
+}
+mb.append("</select>");
+
+mb.append("<select name='endday'>");
+for(int i=1; i<=31; i++){
+    mb.append("<option value='" + i + "' ");
+    if (i==endday) {
+        mb.append("selected");
+    }
+    mb.append(">" + i + "</option>");
+}
+mb.append("</select>");
+
+//Form end
+mb.append("<input type=submit value='Go'>");
+mb.append("</form>");
+
+
+//This Hashmap holds the count of the number of images in each stack.  This is important because it determines the offset
+HashMap stackCount = new HashMap();
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstImg= Db.RunSQL("SELECT image.imageid, event.eventid, image.image, image.description, event.logid, event.date FROM image, event, megalog WHERE event.accountid='"+userSession.getAccount().getAccountid()+"' AND image.eventid=event.eventid AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+" AND date>='"+reger.core.TimeUtils.dateformatfordb(reger.core.TimeUtils.usertogmttime(actualStartDate, userSession.getAccountuser().getUsertimezoneid()))+"' AND date<='"+reger.core.TimeUtils.dateformatfordb(reger.core.TimeUtils.usertogmttime(actualEndDate, userSession.getAccountuser().getUsertimezoneid()))+"' ORDER BY event.date DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstImg!=null && rstImg.length>0){
+	for(int i=0; i<rstImg.length; i++){
+
+	    //Links and images
+	    String imgThumbnailSrc = pageProps.pathToAppRoot+"mediaout.log?imageid="+rstImg[i][0]+"&isthumbnail=yes";
+	    String imgLink = pageProps.pathToAppRoot+"mediaouthtml.log?logid="+rstImg[i][4]+"&imageid="+rstImg[i][0];
+
+        //Date
+        java.util.Calendar imgDate = reger.core.TimeUtils.gmttousertime(rstImg[i][5], userSession.getAccountuser().getUsertimezoneid());
+
+        //Calculate number of days from start date
+        int daysSinceStart = reger.core.DateDiff.dateDiff("day", nowForUser, imgDate);
+
+        //Get the current stack count for the proper days offset
+        int imgInStack = 1;
+        if (stackCount.get(String.valueOf(daysSinceStart))!=null){
+            imgInStack = Integer.valueOf(stackCount.get(String.valueOf(daysSinceStart)).toString()).intValue();
+            imgInStack = imgInStack+1;
+
+        }
+        //Increment the stackCount
+        stackCount.put(String.valueOf(daysSinceStart), String.valueOf(imgInStack));
+
+        //Now, distance from left is determined by the number of days and the offset
+        int xCurrent = xStart; //The starting position
+        xCurrent = xCurrent + (daysSinceStart * thumbNailWidth); // The width of the images
+        xCurrent = xCurrent + (daysSinceStart * xSpacingBetweenColumns); //The distance between the images
+        xCurrent = xCurrent + (imgInStack * xOffset); //The offset as you go lower in the column
+
+        //The distance from the
+        int yCurrent = yStart; //The starting position
+        yCurrent = yCurrent + (imgInStack * yOffset); //Position down the stack
+
+	    //Output the div for this image
+        mb.append("<!-- Begin Image -->");
+        mb.append("<div id=\"img"+i+"\" style=\"position:absolute; z-index:"+(rstImg.length-i)+"; left: "+xCurrent+"px; top: "+yCurrent+"px\" onmouseover=\"javascript:show('img"+i+"-zoom')\" onmouseout=\"javascript:hide('img"+i+"-zoom')\"><a href='"+imgLink+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\"><img src='"+imgThumbnailSrc+"' width="+thumbNailWidth+" height="+thumbNailHeight+" style=\"border: #000000 solid 1px;\"></a></div>");
+        mb.append("<div id=\"img"+i+"-zoom\" style=\"position:absolute; visibility:hidden; dispay:none; z-index:2000; left: "+(xCurrent+thumbNailWidth)+"px; top: "+yCurrent+"px\"><table width="+zoomWidth+" cellpadding=0 cellspacing=0 border=0><tr><td bgcolor=#000000><img src='"+imgThumbnailSrc+"' width="+zoomWidth+" style=\"border: #000000 solid 1px;\"><br><font face=arial size=-2 style=\"font-size:8px; font-family:Helvetica, Arial, sans-serif;\" color=#ffffff>"+reger.core.TimeUtils.dateformatcompactwithtime(imgDate)+"<br>"+reger.core.Util.truncateString(rstImg[i][3], 300)+"</font></td></tr></table></div>");
+        mb.append("<!-- End Image -->");
+
+
+     }
+}
+
+
+
+
+mb.append("<br><br><br><br><br>");
+
+
+//Manually write out the html
+out.print(mb.toString());
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%//@ include file="../globalfooter.jsp" %>
+

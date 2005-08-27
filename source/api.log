@@ -1,0 +1,60 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.API;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEAPI;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%
+//Can't use globalheader here because https and other constraints make it difficult.
+//@ include file="globalheader.jsp" %>
+
+<%@ page import="java.io.IOException,
+                 reger.core.db.Db,
+                 java.awt.*" %>
+<%@ page import="java.io.OutputStream" %>
+<%@ page import="javax.servlet.ServletException" %>
+<%@ page import="javax.servlet.http.HttpServlet" %>
+<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="javax.servlet.http.HttpServletResponse" %>
+<%@ page import="org.apache.xmlrpc.*" %>
+
+<%
+//Create our output stream to the browser
+OutputStream outStream = response.getOutputStream();
+
+//reger.core.Util.logtodb("Made it to api.log.");
+
+XmlRpc.setDebug(true);
+
+XmlRpcServer xmlrpc = new XmlRpcServer();
+xmlrpc.addHandler ("blogger", new reger.api.BloggerApi());
+xmlrpc.addHandler ("metaWeblog", new reger.api.MetaWebLogApi());
+xmlrpc.addHandler ("weblogGroup", new reger.api.weblogGroupApi());
+
+//reger.core.Util.logtodb("Created the XmlRpcServer object in api.log.");
+//reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));
+
+byte[] result = xmlrpc.execute(request.getInputStream());
+response.setContentType ("text/xml");
+response.setContentLength (result.length);
+
+//reger.core.Util.logtodb("Have generated result.");
+//reger.core.Util.logtodb(result);
+
+outStream.write (result);
+outStream.flush ();
+
+//Close the output stream
+outStream.close();
+
+//Record the size of the output
+//@todo Decode accountid from username and password so that api.log traffic is properly applied
+reger.Bandwidth.addActivity(0, result.length);
+reger.core.Util.debug(5, "api.log<br>Output Length: "+result.length);
+
+%>

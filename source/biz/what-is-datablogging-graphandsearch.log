@@ -1,0 +1,61 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Adv Search + Graph";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.core.Util.popup());
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+
+mb.append("<br clear=all>");
+mb.append("<h1>Combine Advanced Data Searching and Graphing</h1>");
+mb.append("You're able to define a subset of entries using the advanced saved search tool.  Build a query and save it.  Next, go to the graphing tool and you'll be able to define a custom graph and tell it to only use entries from the advanced search query parameters.  In this way you can truly leverage the power of the data that you're putting into the system.  The possibilities for reporting and data mining are endless.");
+
+mb.append("<br clear=all>");
+mb.append("<br clear=all>");
+mb.append("<img src='images/advsrchflow.gif'>");
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

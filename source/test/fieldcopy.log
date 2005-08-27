@@ -1,0 +1,81 @@
+<%@ page import="com.swabunga.spell.event.SpellCheckEvent,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*,
+                 reger.*,
+                 reger.mega.FieldType"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append("<br><br><b>Loading logbylogid1=4243</b>");
+Log logByLogid1 = AllLogsInSystem.getLogByLogid(4243);
+FieldType[] fields1 = AllFieldsInSystem.copyFieldTypeArray(logByLogid1.getFields());
+if (fields1!=null) {
+    for (int i = 0; i < fields1.length; i++) {
+        fields1[i].loadDataForEventid(16956, 4243);
+        mb.append("<br>"+fields1[i].getFieldname() + "=" + fields1[i].getDataForField()[0].getValue());
+    }
+}
+
+mb.append("<br><br><b>Loading logbylogid2=4243</b>");
+Log logByLogid2 = AllLogsInSystem.getLogByLogid(4243);
+FieldType[] fields2 = AllFieldsInSystem.copyFieldTypeArray(logByLogid2.getFields());
+if (fields2!=null) {
+    for (int i = 0; i < fields2.length; i++) {
+        fields2[i].loadDataForEventid(16957, 4243);
+        mb.append("<br>"+fields2[i].getFieldname() + "=" + fields2[i].getDataForField()[0].getValue());
+    }
+}
+
+mb.append("<br><br><b>fields1:</b>");
+if (fields1!=null) {
+    for (int i = 0; i < fields1.length; i++) {
+        mb.append("<br>"+fields1[i].getFieldname() + "=" + fields1[i].getDataForField()[0].getValue());
+    }
+}
+
+mb.append("<br><br><b>fields2:</b>");
+if (fields2!=null) {
+    for (int i = 0; i < fields2.length; i++) {
+        mb.append("<br>"+fields2[i].getFieldname() + "=" + fields2[i].getDataForField()[0].getValue());
+    }
+}
+
+mb.append("<br><br><br><br><br>");
+
+out.print(mb.toString());
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

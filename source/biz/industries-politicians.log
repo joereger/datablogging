@@ -1,0 +1,66 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Politicians";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+
+mb.append("<br>");
+mb.append("<h1>Blogs Deliver Grassroots Involvement</h1>");
+mb.append("As evidenced in the 2004 presidential election, blogs can play a major role in generating grassroots involvement.  Using our technology you are able to offer your constituents a private label blog with your campaign logos/colors on it.  In doing this, every time a constituent writes about your campaign they expand your internet footprint.");
+mb.append("<ul>");
+mb.append("<li>All major political campaigns now have a web log component.");
+mb.append("<li>Howard Dean used his web log to organize events, raise money and explain his platform.");
+mb.append("<li>Allows candidates to get feedback via mechanisms like Trackback, comments and link exchanges.");
+mb.append("<li>Some are more open and successful, some still hold on to a one-way vision of communication.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Not for the Faint of Heart</h1>");
+mb.append("Blogs work for campaigns because they are a communication format based on honesty and openness. We strongly feel that while blogs have already shown value, they have not shown all they're capable of.  In many cases candidates still edited content for their blogs through public relations experts.  This editing has a general effect of sanitizing the communications. Blogs work because they are raw.  They prove that the author, in your case a candidate, is a person.  People identify with other people who share common interests, faults and beliefs.  By full embracing a blog program that includes open, unedited content straight from the candidate's keyboard, we are convinced that they can have more impact.  Please allow us to convince you to take the jump of faith.");
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

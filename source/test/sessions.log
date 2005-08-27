@@ -1,0 +1,76 @@
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+int numberOfSessions = 2000;
+
+
+//Get current memory footprint
+Runtime rt = Runtime.getRuntime();
+long startMem = rt.totalMemory();
+mb.append("<br><br>Before Starting "+numberOfSessions+" Sessions:");
+mb.append("Total memory allocated: " + startMem + "<br><br>");
+
+
+//Start lots of sessions
+reger.AllUserSessions aus = new reger.AllUserSessions();
+
+for(int i=0; i<numberOfSessions; i++){
+    //Create a user session
+    reger.UserSession us = new reger.UserSession(request);
+    //Add to the collection of sessions
+    aus.addSession("sessionid"+i, us);
+    //Record
+    if (i % 100 == 0){
+        rt = Runtime.getRuntime();
+        long currMem = rt.totalMemory();
+        mb.append("<br>Mem: " + (currMem-startMem) + " - "+i+" sessions");
+    }
+}
+
+
+
+//Get current memory footprint
+rt = Runtime.getRuntime();
+long endMem = rt.totalMemory();
+mb.append("<br><br>After Starting "+numberOfSessions+" Sessions:");
+mb.append("Total memory allocated: " + endMem + "<br>");
+
+mb.append("<br><br>Total Memory used: " + (endMem - startMem));
+
+mb.append("<br><br>Memory/session: " + ((endMem - startMem)/numberOfSessions));
+
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

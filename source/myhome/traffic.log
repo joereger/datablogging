@@ -1,0 +1,215 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Traffic Main Page";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "trafficmain";
+pageProps.aclObjectName = "TRAFFIC";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String trafficSection = "Home";
+
+
+//HtmlCache
+String cachekey = "TrafficMain ACCOUNTUSERID="+userSession.getAccountuser().getAccountuserid()+ " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+int refreshintervalinseconds = 300;
+%><%@ include file="../htmlcachestart.jsp" %><%
+
+mb.append(reger.core.Util.popup());
+
+//mb.append(reger.Help.htmlButton("TRAFFICHOME", "../"));
+
+mb.append(reger.ui.BubbleBox.start("Public Homepage Summary", pageProps.pathToAppRoot));
+
+mb.append("<table cellpadding=3 cellspacing=2 width=100% border=0>");
+
+//mb.append("<tr>");
+//mb.append("<td valign=top bgcolor=#666666 align=left colspan=3>");
+//mb.append("<font face=arial size=-1 color=#ffffff><strong>Public Homepage Summary</strong></font>");
+//mb.append("</td>");
+//mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>Today</strong></font>");
+mb.append("</td>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>Last 7 Days</strong></font>");
+mb.append("</td>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>All Time</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+if (userSession.getAccount().isPro()) {
+    mb.append(reger.trafficHtmlOut.homeTrafficList(0,50, userSession));
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='Click Here For Info' border='0'></a>");
+}
+mb.append("<br>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append(reger.trafficHtmlOut.homeTrafficList(7,50, userSession));
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append(reger.trafficHtmlOut.homeTrafficList(10000,50, userSession));
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+mb.append("<img src=images/clear.gif width=1 height=3><br>");
+
+mb.append(reger.ui.BubbleBox.start("Log Summary", pageProps.pathToAppRoot));
+mb.append("<table cellpadding=3 cellspacing=2 width=100% border=0>");
+//mb.append("<tr>");
+//mb.append("<td valign=top bgcolor=#666666 align=left colspan=3>");
+//mb.append("<font face=arial size=-1 color=#ffffff><strong>Log Summary</strong></font>");
+//mb.append("</td>");
+//mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>Today</strong></font>");
+mb.append("</td>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>Last 7 Days</strong></font>");
+mb.append("</td>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>All Time</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+if (userSession.getAccount().isPro()) {
+    mb.append(reger.trafficHtmlOut.logsTrafficList(0,5, userSession));
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='Click Here For Info' border='0'></a>");
+}
+mb.append("<br>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append(reger.trafficHtmlOut.logsTrafficList(7,5,userSession));
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append(reger.trafficHtmlOut.logsTrafficList(10000,5,userSession));
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+mb.append("<img src=images/clear.gif width=1 height=3><br>");
+
+mb.append(reger.ui.BubbleBox.start("Entries Summary", pageProps.pathToAppRoot));
+mb.append("<table cellpadding=3 cellspacing=2 width=100% border=0>");
+//mb.append("<tr>");
+//mb.append("<td valign=top bgcolor=#666666 align=left colspan=3>");
+//mb.append("<font face=arial size=-1 color=#ffffff><strong>Entries Summary</strong></font>");
+//mb.append("</td>");
+//mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>Today</strong></font>");
+mb.append("</td>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>Last 7 Days</strong></font>");
+mb.append("</td>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>All Time</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+if (userSession.getAccount().isPro()) {
+    mb.append(reger.trafficHtmlOut.entryTrafficList(0,5,userSession, true, -1));
+} else {
+mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='Click Here For Info' border='0'></a>");
+}
+mb.append("<br>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append(reger.trafficHtmlOut.entryTrafficList(7,5,userSession, true, -1));
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append(reger.trafficHtmlOut.entryTrafficList(10000,5,userSession, true, -1));
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+mb.append("<img src=images/clear.gif width=1 height=3><br>");
+
+mb.append(reger.ui.BubbleBox.start("Images Summary", pageProps.pathToAppRoot));
+mb.append("<table cellpadding=3 cellspacing=2 width=100% border=0>");
+//mb.append("<tr>");
+//mb.append("<td valign=top bgcolor=#666666 align=left colspan=3>");
+//mb.append("<font face=arial size=-1 color=#ffffff><strong>Images Summary</strong></font>");
+//mb.append("</td>");
+//mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>Today</strong></font>");
+mb.append("</td>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>Last 7 Days</strong></font>");
+mb.append("</td>");
+mb.append("<td valign=top width=33% bgcolor=#cccccc align=left>");
+mb.append("<font face=arial size=-1 color=#000000><strong>All Time</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+if (userSession.getAccount().isPro()) {
+    mb.append(reger.trafficHtmlOut.imageTrafficList(0,5,userSession));
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='Click Here For Info' border='0'></a>");
+}
+mb.append("<br>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append(reger.trafficHtmlOut.imageTrafficList(7,5,userSession));
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append(reger.trafficHtmlOut.imageTrafficList(10000,5,userSession));
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+%><%@ include file="../htmlcacheend.jsp" %><%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

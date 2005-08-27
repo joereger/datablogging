@@ -1,0 +1,55 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=99999;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%//@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//The goal of this page is simply to accept a filename via url line and output an image tag with that filename
+mb.append("<html><head><title></title></head><body bgcolor=#ffffff link='#0000ff' vlink='#0000ff' text='#000000' LEFTMARGIN='0' TOPMARGIN='0' MARGINWIDTH='0' MARGINHEIGHT='0'>");
+
+if (request.getParameter("imagename")!=null && !request.getParameter("imagename").equals("")){
+
+    //Output the image tag
+    mb.append("<img src='images/databloggingscreens/");
+    mb.append(request.getParameter("imagename"));
+    mb.append("' border=0>");
+
+} else {
+    mb.append("Image not found.");
+    reger.core.Util.debug(5, "imagedisplay.log called with no imagename.");
+}
+
+mb.append("</body></html>");
+
+//Output to the client
+out.print(mb.toString());
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%//@ include file="../globalfooter.jsp" %>
+

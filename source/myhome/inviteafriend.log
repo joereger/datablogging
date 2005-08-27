@@ -1,0 +1,106 @@
+<%@ page import="reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Invite a Friend to Your Site";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "adminhome";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String youremail = "";
+String friendemail = "";
+String message="";
+boolean mailSent=false;
+String errortext="";
+
+//Get email addresses
+if (request.getParameter("youremail")!=null && !request.getParameter("youremail").equals("")){
+    youremail=request.getParameter("youremail");
+}
+if (request.getParameter("friendemail")!=null && !request.getParameter("friendemail").equals("")){
+    friendemail=request.getParameter("friendemail");
+}
+//Get message
+if (request.getParameter("message")!=null && !request.getParameter("message").equals("")){
+    message=request.getParameter("message");
+}
+
+//@todo Invite a Friend email text.
+String mainMessage = "A friend wants you to see "+ reger.Vars.getHttpUrlPrefix() + request.getServerName() + ".";
+
+if (pageProps.action.equals("sendemail")) {
+    //Clear up blanks
+    if (friendemail.equals("")){
+        errortext=errortext + "You must provide a friend's email address.";
+    } else {
+        //Send the email
+        reger.core.EmailSend.sendMail(youremail, friendemail, youremail + " wants you to see their site.", message + mainMessage);
+    }
+    //Set a sent flag
+    mailSent=true;
+}
+
+mb.append("<table cellpadding=10 cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td nowrap>");
+mb.append("&nbsp;&nbsp;");
+mb.append("</td>");
+mb.append("<td valign=top>");
+
+
+mb.append("<form action=inviteafriend.log method=post>");
+mb.append("<input type=hidden name=action value=sendemail>");
+
+if (mailSent){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Thanks!  Your message is now zipping through cyberspace to your friend.  We appreciate the help.  Happy logging!"));
+    mb.append("<br>");
+}
+
+mb.append("<font face=arial size=-1>");
+
+mb.append("<b>Your Email Address (optional):</b><br><input type=text name=email value=\""+reger.core.Util.cleanForHtml(youremail)+"\">");
+
+mb.append("<br><br><b>Friend's Email Address (required):</b><br><input type=text name=email value=\""+reger.core.Util.cleanForHtml(friendemail)+"\">");
+
+mb.append("<br><br><b>This is what we'll send your friend:</b><br>" + mainMessage);
+
+mb.append("<br><br><b>You can add your own comments:</b><br><textarea name=message cols='35' rows='6'></textarea>");
+
+mb.append("<br><br><input type=submit value='Tell a Friend'>");
+
+mb.append("</font>");
+
+mb.append("</form>");
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

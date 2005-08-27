@@ -1,0 +1,67 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 reger.core.db.Db,
+                 reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<br><p align=right>");
+mb.append("<font face=arial size=+3>");
+mb.append(userSession.getPl().getTermsofuselinktext());
+mb.append("</font>");
+mb.append("</p>");
+
+
+
+
+
+
+String termsofservice = "";
+//-----------------------------------
+//-----------------------------------
+String[][] rstTos= Db.RunSQL("SELECT termsofservice FROM pl WHERE plid='"+userSession.getPl().getPlid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstTos!=null && rstTos.length>0){
+	termsofservice = rstTos[0][0];
+}
+
+mb.append("<center>");
+mb.append("<form action='' method=post>");
+mb.append("<textarea cols='70' rows='40' name='termsofservice' style=\"font-size: 14px;font-face: arial;\" disabled=\"true\">"+Util.cleanForHtml(termsofservice)+"</textarea>");
+mb.append("</form>");
+mb.append("</center>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

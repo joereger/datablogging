@@ -1,0 +1,142 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<br><p align=right>");
+mb.append("<font face=arial size=+3>");
+mb.append("Manifesto");
+mb.append("</font>");
+mb.append("</p>");
+
+mb.append("<blockquote>");
+
+mb.append("<font face=arial size=+1>");
+mb.append("<b>");
+mb.append("Standing on the Shoulders of Giants");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<br><br>");
+
+mb.append("<font face=arial size=-1>");
+mb.append("Weblogging companies have mastered the art of personal publishing, public syndication and information sharing.");
+mb.append("<br><br>");
+mb.append("Online photo sites have mastered the task of gathering personal images online.");
+mb.append("<br><br>");
+mb.append("Analytic data mining companies have mastered the art of unearthing valuable nuggets of wisdom from otherwise garbled data.");
+mb.append("<br><br>");
+mb.append("Bulletin boards have mastered the art of creating valuable resource communities from a cacophony of otherwise disconnected people.");
+mb.append("<br><br>");
+mb.append("<strong>Reger.com brings these fields together into a single holistic application that helps individuals capture, organize, share, visualize, analyze and learn from their lives.</strong>");
+mb.append("<br><br>");
+
+
+mb.append("<font face=arial size=+1>");
+mb.append("<b>");
+mb.append("Reger.com is here today.  But what comes next?");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<br><br>");
+
+mb.append("<font face=arial size=-1>");
+mb.append("<b>The current state of technology for capturing our lives needs to grow and advance.</b>");
+mb.append("<br><br>");
+mb.append("We can take pictures.  We can record video with sound.  We can write down our words.  We can create charts of our progress.  ");
+mb.append("<br><br>");
+mb.append("But nothing ties all of our 'collected' life together.  Technology can, but to date has not.  We need a repository... a 360 degree view of our mental, physical and emotional state at any given point in history.  This repository will not supplant our memories.  It will complement them, sparking nostalgia and speeding our acquisition of wisdom.");
+
+mb.append("<br><br>");
+mb.append("<b>Tools to collect data, images and video need to be more automatic, aggregating easily and simply into a personally organized repository.</b>");
+mb.append("<br><br>");
+mb.append("Much as the human brain has a neural network, the repository we need is a fortified network of events, images, sounds, thoughts and emotions.  The fuel of this repository is the collection of these events, images, sounds, thoughts and emotions.");
+mb.append("<br><br>");
+mb.append("With current technology we must admit that capturing, storing, indexing and manipulating our lives is a hassle at best.  With no standardization, rhyme or reason most of us end up with disparate piles of imagery, video and writing.  A scrap book in the basement.  A diary under the bed.");
+mb.append("<br><br>");
+mb.append("As time goes by we are left to guess at the way that one picture led to a writing... or how a video taped event led to a certain diary entry... or what we felt when we took the picture.  ");
+mb.append("<br><br>");
+mb.append("We need technologies that make it simple to snap a picture, write down our thoughts and emotions, store it and then correlate it to other events. ");
+mb.append("<br><br>");
+mb.append(" As we envision such a system, we also realize that we do not want our lives to be obscured by the capturing technology itself.  We do not want a personal self-imposed paparazzi.  Therefore...");
+
+mb.append("<br><br>");
+mb.append("<b>The building of our personal repositories will be as passive and non-obtrusive as possible.</b>");
+mb.append("<br><br>");
+mb.append("Contact lens cameras.  Earpiece dictators.  Brainwave emotion-state recorders.");
+mb.append("<br><br>");
+mb.append("Technology must not interfere with our lives.  All attempts must be made to minimize the Hawthorne Effect of classical psychology.  This effect says that people act differently when they're being observed.  Technology must be developed that allows us to capture our lives without changing it.");
+
+mb.append("<br><br>");
+mb.append("<b>The analysis of this data will use state-of-the-art artificial intelligence and data mining techniques to turn data into information, information into knowledge and knowledge into wisdom.</b>");
+mb.append("<br><br>");
+mb.append("Business and academia have created incredibly powerful tools to analyze data.  These tools will be pointed at personal data.");
+mb.append("<br><br>");
+mb.append("Take artificial intelligence and fuzzy logic as an example.  These technologies have been applied to commerce websites with great results.  One site in particular had its artificial intelligence rip through gigabytes of sales data and quickly learned through its algorithms that people who bought a certain Mozart CD also liked The Cure.  This would be almost impossible for any human to recognize because it is so hidden in the data.  The power of technology is that it can find hundreds of such data correlations in our personal lives. (i.e Did you know that when you eat steak you leave for work an average of 17 minutes later and run an average of 29% slower in your evening workout?)");
+mb.append("<br><br>");
+mb.append("Our repository will be a vast interconnected source of personal data.  From what we eat to who we eat with.  From what we wear to when we buy it.  Mining this information can give us insights into our lives that we would otherwise not get.");
+mb.append("<br><br>");
+mb.append("This will not supplant conventional wisdom... instead it will fuel it with additional information.");
+
+mb.append("<br><br>");
+mb.append("<b>Advanced access interfaces must be developed.</b>");
+mb.append("<br><br>");
+mb.append("A simple search engine.  A calendar interface.  A list of entries.  These are available today.  They work.  But they are less than optimal.");
+mb.append("<br><br>");
+mb.append("What if you could ask your repository for \"some happy days where I felt a feeling of accomplishment\" or \"workout days where I overcame a slow period\"?  What if the repository automatically showed you interesting connections to the past?  For example, \"did you know that the last time you ate at that restaurant five times in a week your running performance increased 43%?\"");
+mb.append("<br><br>");
+mb.append("Computers need to be more helpful.  Hollywood has painted an expectation and we will work to live up to it.");
+
+
+
+mb.append("<br><br>");
+mb.append("<b>People need to be able to share their lives with others but at the same time they need advanced privacy controls to filter or limit what they share.</b>");
+mb.append("<br><br>");
+mb.append("The power of a repository is its completeness.  The power of sharing is the connection with others.  But nobody wants to share their entire life online.  And nobody wants personally identifiable data to get into marketer's hands.");
+mb.append("<br><br>");
+mb.append("Advanced controls will allow an individual to easily and selectively give access to portions of their life to others.  For example, group A can view all writings, but not view pictures.  Group B can view only writings that you mark as world-viewable. ");
+mb.append("<br><br>");
+mb.append("At no time will personal repositories be opened to marketers in a personally identifiable manner.  This repository is viewed as being as sacred and personal as a written diary or journal. ");
+
+
+mb.append("<br><br>");
+mb.append("<b>This work has societal implications.</b>");
+mb.append("<br><br>");
+mb.append("We learn from our lessons.  We grow tolerance.  We remember that we all make mistakes.  We remember that there are good times and there are bad times.  If we all learn these lessons then we can increase the pace toward human happiness.  We do not take this persuit lightly.");
+mb.append("<br><br>");
+mb.append("Wars are not fought between people... they are fought between governments and religions.  Technology enables us to get to know each other on a personal level.  With time we will realize that all people are inherently good.  Tolerance will lead to less wars, conflicts and crimes.");
+
+
+mb.append("</blockquote>");
+
+mb.append("</font>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

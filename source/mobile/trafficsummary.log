@@ -1,0 +1,106 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MOBILEPRIVATE;
+pageProps.isPasswordProtected = true;
+pageProps.aclObjectName = "MOBILE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//@todo Test and verify these numbers... I know that the hits today isn't working properly because the sql generated has no space between dates
+
+// set content type for wireless data
+response.setContentType("text/vnd.wap.wml");
+
+// write the data
+mb.append("<?xml version=\"1.0\"?>");
+mb.append("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\"");
+mb.append(" \"http://www.wapforum.org/DTD/wml_1.1.xml\">");
+mb.append("<wml>");
+mb.append("<card title=\"Traffic Summary\">");
+
+String allToday="";
+String allWeek="";
+String homeToday="";
+String homeWeek="";
+String entriesToday="";
+String entriesWeek="";
+String newMessages="";
+
+try {
+    if (userSession.getAccount().isPro()) {
+        allToday=reger.TrafficNumericSummary.countAll(userSession.getAccount(), 1) + " Hits Today";
+        allWeek=reger.TrafficNumericSummary.countAll(userSession.getAccount(), 7) + " Hits Week";
+        homeToday=reger.TrafficNumericSummary.countHome(userSession.getAccount(), 1) + " Home Today";
+        homeWeek=reger.TrafficNumericSummary.countHome(userSession.getAccount(), 7) + " Home Week";
+        entriesToday=reger.TrafficNumericSummary.countEntries(userSession.getAccount(), 1) + " Entry Today";
+        entriesWeek=reger.TrafficNumericSummary.countEntries(userSession.getAccount(), 7) + " Entry Week";
+        newMessages=reger.TrafficNumericSummary.countMessages(userSession.getAccount().getAccountid()) + " Unapproved Messages";
+    } else {
+        allToday=reger.TrafficNumericSummary.countAll(userSession.getAccount(), 2) + " Hits Yesterday";
+        allWeek=reger.TrafficNumericSummary.countAll(userSession.getAccount(), 7) + " Hits Week";
+        homeToday=reger.TrafficNumericSummary.countHome(userSession.getAccount(), 2) + " Home Yesterday";
+        homeWeek=reger.TrafficNumericSummary.countHome(userSession.getAccount(), 7) + " Home Week";
+        entriesToday=reger.TrafficNumericSummary.countEntries(userSession.getAccount(), 2) + " Entry Yesterday";
+        entriesWeek=reger.TrafficNumericSummary.countEntries(userSession.getAccount(), 7) + " Entry Week";
+        newMessages=reger.TrafficNumericSummary.countMessages(userSession.getAccount().getAccountid()) + " Unapproved Messages";
+    }
+} catch (Exception e) {
+    reger.core.Util.errorsave(e);
+}
+
+mb.append("<p>");
+mb.append(allToday);
+mb.append("</p>");
+
+mb.append("<p>");
+mb.append(allWeek);
+mb.append("</p>");
+
+mb.append("<p>");
+mb.append(homeToday);
+mb.append("</p>");
+
+mb.append("<p>");
+mb.append(homeWeek);
+mb.append("</p>");
+
+mb.append("<p>");
+mb.append(entriesToday);
+mb.append("</p>");
+
+mb.append("<p>");
+mb.append(entriesWeek);
+mb.append("</p>");
+
+mb.append("<p>");
+mb.append(newMessages);
+mb.append("</p>");
+
+
+mb.append("</card>");
+mb.append("</wml>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

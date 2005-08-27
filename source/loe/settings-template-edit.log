@@ -1,0 +1,177 @@
+
+<%@ page import="java.util.*,
+                 reger.template.Template,
+                 reger.core.db.Db,
+                 reger.AllLogsInSystem,
+                 reger.Log,
+                 reger.template.TemplateProcessor,
+                 reger.template.TemplateProcessorFactory,
+                 reger.template.TemplateTag" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+//pageProps.title = "MasterAdmin Control Center Home Page";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loetemplates";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Get type
+int type = -1;
+if (request.getParameter("type")!=null && reger.core.Util.isinteger(request.getParameter("type"))){
+    type = Integer.parseInt(request.getParameter("type"));
+}
+
+//Get templateid
+int templateid = -1;
+if (request.getParameter("templateid")!=null && reger.core.Util.isinteger(request.getParameter("templateid"))){
+    templateid = Integer.parseInt(request.getParameter("templateid"));
+}
+
+//Load the template
+Template template = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(templateid, type);
+if (template==null){
+    template = reger.template.AllTemplatesInSystem.getSystemDefaultByType(type);
+}
+
+
+//Load a handler
+TemplateProcessor tp = TemplateProcessorFactory.getProcessorByType(type);
+
+
+
+//Edit
+if (pageProps.action.equals("edit")){
+    //Populate the template
+    template.setTemplate(request.getParameter("template"));
+    template.setName(request.getParameter("name"));
+    template.setAccountid(0);
+    template.setIssystemtemplate(true);
+    try{
+        if (tp.validateTemplate(request.getParameter("template"))){
+            template.save();
+        }
+    } catch (reger.template.TemplateValidationException e) {
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, e.getError()));
+    }
+    //Redirect to the template homepage
+    if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl").equals("null")){
+        response.sendRedirect(request.getParameter("returnurl")+"?logid=" + request.getParameter("logid"));
+    } else {
+        response.sendRedirect("settings-template-main.log");
+    }
+}
+
+
+
+if (template.getAccountid()>0){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "This is a user template.  Editing it will create a new System template available to everybody."));
+}
+
+
+mb.append("<form action=settings-template-edit.log method=post>");
+mb.append("<input type=hidden name=action value='edit'>");
+mb.append("<input type=hidden name=templateid value='"+request.getParameter("templateid")+"'>");
+mb.append("<input type=hidden name=type value='"+request.getParameter("type")+"'>");
+mb.append("<input type=hidden name=logid value='"+request.getParameter("logid")+"'>");
+mb.append("<input type=hidden name=returnurl value='"+request.getParameter("returnurl")+"'>");
+
+
+mb.append("<table cellpadding=10 cellspacing=0 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top width=75% >");
+//Display the edit box
+mb.append("<textarea name='template' cols=45 rows=15 style='width: 100%;font: 12px monospace'>"+template.getTemplate()+"</textarea>");
+mb.append("<br><br>");
+mb.append("<font face=arial size=-1>");
+mb.append("<b>");
+mb.append("Template Name:");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<input type='text' name=name value=\""+reger.core.Util.cleanForHtml(template.getName())+"\" size=25 maxlength=255>");
+mb.append("<br><br>");
+mb.append("<input type=submit value='Save this Template'>");
+mb.append("<br><br>");
+mb.append("<font face=arial size=-2>");
+mb.append("<a href='settings-template-delete.log?templateid="+template.getTemplateid()+"'>");
+mb.append("Delete this Template");
+mb.append("</a>");
+mb.append("</font>");
+
+mb.append("</td>");
+mb.append("<td valign=top bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=+1>");
+mb.append("<b>");
+mb.append("Tags You Can Use");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<br><br>");
+//Display the tags available
+TemplateTag[] tags = tp.getTagsThisProcessorCanHandle();
+for (int i = 0; i < tags.length; i++) {
+    mb.append("<font face=arial size=-1>");
+    mb.append("<b>");
+    mb.append("<$"+tags[i].getSyntax()+"$>");
+    mb.append("</b>");
+    mb.append("</font>");
+    mb.append("<br>");
+    if (tags[i].isRequired()){
+        mb.append("<font face=arial size=-1 color=#ff0000>");
+        mb.append("<b>");
+        mb.append("Required");
+        mb.append("</b>");
+        mb.append("</font>");
+        mb.append("<br>");
+    }
+    mb.append("<font face=arial size=-2>");
+    mb.append(tags[i].getDescription());
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<br>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("</form>");
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

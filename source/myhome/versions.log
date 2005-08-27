@@ -1,0 +1,77 @@
+<%@ page import="reger.core.db.Db,
+                 java.util.Calendar,
+                 reger.pageFramework.PageProps,
+                 reger.Help,
+                 reger.Log,
+                 java.util.Hashtable,
+                 java.util.Enumeration"%>
+
+<%@ page import="java.text.*"%>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "versionsmain";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINHOMEPAGE;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="This page lists updates to the software.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+//Display page performance in milliseconds
+//out.println("Top of page: " + reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
+
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+if (request.getParameter("versionid")==null || !reger.core.Util.isinteger(request.getParameter("versionid")) || reger.versioninfo.VersionInfo.getVersion(Integer.parseInt(request.getParameter("versionid")))==null){
+    pageProps.title = "Release Notes";
+    mb.append(reger.versioninfo.VersionInfoRenderer.getVersionList("versions.log"));
+} else {
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<a href='versions.log'>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("List All Versions");
+    mb.append("</font>");
+    mb.append("</a>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append(reger.versioninfo.VersionInfoRenderer.getVersionAsHtml(Integer.parseInt(request.getParameter("versionid"))));
+
+}
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

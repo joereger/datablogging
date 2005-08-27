@@ -1,0 +1,404 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 reger.mega.FieldType,
+                 reger.mega.FieldLayout,
+                 reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Customize Log Properties";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingslogs";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+//pageProps.isLogidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Get the eventtypeid from the request
+int eventtypeid = 0;
+if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+    eventtypeid = Integer.parseInt(request.getParameter("eventtypeid"));
+}
+
+//Determine whether this field is being edited for a log or for an eventtypeid
+int EDITFIELDFOR = reger.mega.Field.EDITFIELDFORLOG;
+if (eventtypeid>0){
+    EDITFIELDFOR = reger.mega.Field.EDITFIELDFOREVENTTYPE;
+}
+
+
+//This Field variable represents the field that we're working with on this page
+reger.mega.FieldType field = null;
+reger.mega.FieldAllParams fieldAllParams = null;
+String systemDefaultsHtml = "";
+
+
+//Get the fieldtype from the request
+int fieldtype = 0;
+if (request.getParameter("fieldtype")!=null && reger.core.Util.isinteger(request.getParameter("fieldtype"))){
+    fieldtype = Integer.parseInt(request.getParameter("fieldtype"));
+}
+
+
+//Get the megafieldid from the request
+int megafieldid = 0;
+if (request.getParameter("megafieldid")!=null && reger.core.Util.isinteger(request.getParameter("megafieldid"))){
+    megafieldid = Integer.parseInt(request.getParameter("megafieldid"));
+}
+
+
+//If we have a megafieldid, use it to get a field and determine which type of editing is being done
+if (megafieldid>0){
+    field = reger.AllFieldsInSystem.getMegaFieldByMegafieldid(megafieldid);
+} else {
+    //It must be a new one... Create an empty field of the correct type
+    if (fieldtype>0){
+        field = reger.mega.FieldTypeFactory.getHandlerByFieldtype(fieldtype);
+    } else {
+        out.println("Sorry.  A field type is not specified for this field.");
+        return;
+    }
+}
+
+//Check permissions to make sure user can work with this field
+if (!field.isFieldOwnedByAccountuser(userSession.getAccountuser()) && field.getMegafieldid()>0){
+    out.println("<font face=arial size=+3 color=red>Sorry. Your account doesn't appear to have the required permission to view this resource (logid="+pageProps.logProps.logid+").</font>");
+    return;
+}
+
+//Get the page to redirect to after a successful request
+String pageToRedirectToAfterEdit = request.getParameter("returntopage");
+if (request.getParameter("returntopage")==null || request.getParameter("returntopage").equals("") || request.getParameter("returntopage").equals("null")){
+    if (EDITFIELDFOR == reger.mega.Field.EDITFIELDFORLOG){
+        pageToRedirectToAfterEdit = "logs-log-fieldlayout.log";
+    } else if (EDITFIELDFOR ==reger.mega.Field.EDITFIELDFOREVENTTYPE){
+        pageToRedirectToAfterEdit = "logs-type-fieldlayout.log";
+    } else {
+        pageToRedirectToAfterEdit = "logs-log-list.log";
+    }
+}
+reger.core.Util.debug(5, "logs-field.log - pageToRedirectToAfterEdit = " + pageToRedirectToAfterEdit);
+
+//If the field isn't null
+if (field!=null){
+    //Populate the main field object from the request
+    if (request.getParameter("fieldname")!=null && !request.getParameter("fieldname").equals("")){
+        field.setFieldname(request.getParameter("fieldname"));
+    }
+    if (request.getParameter("fielddescription")!=null && !request.getParameter("fielddescription").equals("")){
+        field.setFielddescription(request.getParameter("fielddescription"));
+    }
+    if (request.getParameter("megadatatypeid")!=null && reger.core.Util.isinteger(request.getParameter("megadatatypeid"))){
+        field.setMegadatatypeid(Integer.parseInt(request.getParameter("megadatatypeid")));
+    }
+    if (request.getParameter("isrequired")!=null && reger.core.Util.isinteger(request.getParameter("isrequired"))){
+        if (Integer.parseInt(request.getParameter("isrequired"))==1){
+            field.setIsrequired(true);
+        } else {
+            field.setIsrequired(false);
+        }
+    }
+    if (request.getParameter("fieldtype")!=null && reger.core.Util.isinteger(request.getParameter("fieldtype")) && Integer.parseInt(request.getParameter("fieldtype"))>0){
+        field.setFieldtype(Integer.parseInt(request.getParameter("fieldtype")));
+    }
+    //Populate the field params from the request object
+    fieldAllParams = field.getParams();
+    //First, load from DB
+    fieldAllParams.loadData();
+    //Next, load from request, overwriting any values from DB
+    fieldAllParams.loadFromRequest(request);
+    //Pass the request object to the systemDefaults handler and if I get something back, display it.
+    systemDefaultsHtml = field.processSystemDefaultDataConfig(request);
+} else {
+    //If we don't have a valid field at this point, redirect them
+    response.sendRedirect(pageToRedirectToAfterEdit + "?eventtypeid="+request.getParameter("eventtypeid")+"&logid="+pageProps.logProps.logid+"&mode=editlayout");
+    return;
+}
+
+reger.core.Util.debug(5, "logs-field.log - pageProps.action="+pageProps.action+"");
+
+//Edit field
+String errortext="";
+if (pageProps.action.equals("editfield")) {
+    if (field.getEventtypeid()>0 || field.getLogid()>0){
+        //Save the field data
+        field.saveField();
+        //Check the parameters
+        errortext = errortext + fieldAllParams.saveParams();
+    } else {
+        errortext = errortext + "No log or log type specified for this field.  Please use your browser's back button and try again.";
+    }
+    //If no errors, redirect
+    if (errortext.equals("")) {
+        response.sendRedirect(pageToRedirectToAfterEdit+"?eventtypeid="+request.getParameter("eventtypeid")+"&logid=" + pageProps.logProps.logid + "&mode=editlayout");
+        return;
+    }
+}
+
+//Delete field
+if (pageProps.action.equals("deletefield") && userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())) {
+    //@todo Alert the user to the final nature of this action... "Are you sure?  All Data for this field will be lost."
+    //Call the FieldType deleteField method to delete this field and all data
+    field.deleteField();
+    //Delete the params
+    fieldAllParams.deleteAllParams();
+    //Redirect
+    response.sendRedirect(pageToRedirectToAfterEdit+"?eventtypeid="+request.getParameter("eventtypeid")+"&logid=" + pageProps.logProps.logid + "&mode=editlayout");
+    return;
+}
+
+//New field
+if (pageProps.action.equals("finishaddfield")) {
+    //Save the field data
+    if (eventtypeid>0){
+        field.setEventtypeid(eventtypeid);
+        field.setLogid(0);
+    } else if (pageProps.logProps.logid>0){
+        field.setEventtypeid(0);
+        field.setLogid(pageProps.logProps.logid);
+    }
+    if (field.getEventtypeid()>0 || field.getLogid()>0){
+        field.saveField();
+        //Set the megafieldid on all parameter objects. I get megafieldid from insert identity from DB which is saved in field.
+        fieldAllParams.setMegafieldidOnAll(field.getMegafieldid());
+        //Check the parameters
+        errortext = errortext + fieldAllParams.saveParams();
+    } else {
+        errortext = errortext + "No log or log type specified for this field.  Please use your browser's back button and try again.";
+    }
+    //If no errors, redirect
+    if (errortext.equals("")) {
+        response.sendRedirect(pageToRedirectToAfterEdit+"?eventtypeid="+request.getParameter("eventtypeid")+"&logid=" + pageProps.logProps.logid + "&mode=editlayout");
+        return;
+    }
+}
+
+
+
+
+
+
+
+if (!errortext.equals("")) {
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+
+//Log Header start
+String currentNavButtonName = "logs-fieldlayout";
+%>
+<%@ include file="logs-header.jsp" %>
+<%
+//Log Header end
+
+
+
+
+if (pageProps.action.equals("addfield")) {
+    pageProps.action="finishaddfield";
+} else {
+    pageProps.action="editfield";
+}
+
+mb.append("<form action='logs-field.log' method=post>");
+mb.append("<input type=hidden name=action value="+pageProps.action+">");
+mb.append("<input type=hidden name=megafieldid value='"+megafieldid+"'>");
+mb.append("<input type=hidden name=fieldtype value='"+fieldtype+"'>");
+mb.append("<input type=hidden name=logid value='"+pageProps.logProps.logid+"'>");
+mb.append("<input type=hidden name=eventtypeid value="+request.getParameter("eventtypeid")+">");
+mb.append("<input type=hidden name=returntopage value="+request.getParameter("returntopage")+">");
+
+
+mb.append("<table cellpadding=5 cellspacing=1 border=0 width=80% align=center>");
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc align=left colspan=4>");
+mb.append("<font face=arial size=+1><strong>Field Details</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right bgcolor=#eeeeee width=50% colspan=2><font face=arial size=-1><strong>Field Name:</strong></font></font></td>");
+mb.append("<td valign=top align=left colspan=2>");
+if (field.getMegafieldid()<=0 || field.isFieldOwnedByAccountuser(userSession.getAccountuser())){
+    mb.append("<input type=text size=20 maxlength=49 name=fieldname value=\""+reger.core.Util.cleanForHtml(field.getFieldname())+"\">");
+} else {
+    mb.append("<font face=arial size=-1>"+field.getFieldname()+"</font>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right bgcolor=#eeeeee colspan=2><font face=arial size=-1><strong>Field Description:</strong></font></font></td>");
+mb.append("<td valign=top align=left colspan=2>");
+if (field.getMegafieldid()<=0 || field.isFieldOwnedByAccountuser(userSession.getAccountuser())){
+    mb.append("<input type=text size=20 maxlength=250 name=fielddescription value=\""+Util.cleanForHtml(field.getFielddescription())+"\">");
+} else {
+    mb.append("<font face=arial size=-1>"+field.getFielddescription()+"</font>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#eeeeee valign=top align=right colspan=2>");
+mb.append("<font face=arial size=-1><strong>Required?</strong></font><br><font face=arial size=-2><strong>Do users have to input this field in order to complete a log entry for this log type?</strong></font></td>");
+mb.append("<td bgcolor=#ffffff valign=top align=left colspan=2>");
+if (field.getMegafieldid()<=0 || field.isFieldOwnedByAccountuser(userSession.getAccountuser())){
+    //Radio Control
+    java.util.TreeMap radiosIsrequired=new java.util.TreeMap();
+    radiosIsrequired.put("0","No");
+    radiosIsrequired.put("1","Yes");
+    mb.append(reger.formControl.radioList(radiosIsrequired, String.valueOf(field.getIsrequired()), "isrequired", "vertical"));
+    //End Radio Control
+} else {
+    if (field.getIsrequired()==1){
+        mb.append("<font face=arial size=-1>Yes.</font>");
+    } else {
+        mb.append("<font face=arial size=-1>No.</font>");
+    }
+}
+
+mb.append("</td>");
+mb.append("</tr>");
+
+//If editing an eventtype or new field, show datatype
+if (field.getMegafieldid()<=0 || field.isFieldOwnedByAccountuser(userSession.getAccountuser())){
+
+    //Get a list of data types that this field type will accept
+    int[] acceptableTypes = field.getAcceptableDataTypes();
+
+    if (acceptableTypes.length<=1){
+        //If there's only one possible datatype, don't force the user to choose one.
+        mb.append("<input type=hidden name=megadatatypeid value="+acceptableTypes[0]+">");
+    } else {
+        mb.append("<tr>");
+        mb.append("<td bgcolor='#eeeeee' valign=top align=right colspan=2>");
+        mb.append("<font face=arial size=-1><strong>Data Type</strong></font><br><font face=arial size=-2><strong>What type of data is allowed in this field?  This will only affect newly added data and will not change data already in the system for this log (if there is any).</strong></font></td>");
+        mb.append("<td bgcolor='#ffffff' valign=top align=left colspan=2>");
+        mb.append("<font face=arial size=-1>");
+        String checked="";
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstDatType= Db.RunSQL("SELECT megadatatypeid, megadatatypename, megadatatypedescription FROM megadatatype");
+        //-----------------------------------
+        //-----------------------------------
+        //First figure out which one should be checked
+        int checkedType = field.getMegadatatypeid();
+        if (field.getMegadatatypeid()==0){
+            checkedType = field.getDefaultDataType();
+        }
+        if (rstDatType!=null && rstDatType.length>0){
+            for(int i=0; i<rstDatType.length; i++){
+                //Loop through acceptable types
+                for (int j = 0; j < acceptableTypes.length; j++) {
+                    //If this type is acceptable for this field
+                    if (acceptableTypes[j]==Integer.parseInt(rstDatType[i][0])){
+                        //Determine whether or not it's checked
+                        if (acceptableTypes[j]==checkedType) {
+                            checked=" checked";
+                        } else {
+                            checked="";
+                        }
+                        //Output the html
+                        mb.append("<input type=radio name=megadatatypeid value="+acceptableTypes[j]+" "+checked+"> <strong>"+rstDatType[i][1]+"</strong><br>" + rstDatType[i][2]);
+                        mb.append("<br><br>");
+                    }
+                }
+            }
+        }
+    }
+    mb.append("</font></td>");
+    mb.append("</tr>");
+}
+
+//If editing an eventtype, show fieldparams
+if (field.getMegafieldid()<=0 || field.isFieldOwnedByAccountuser(userSession.getAccountuser())){
+    //Get all params object
+    if (fieldAllParams!=null && fieldAllParams.getParams().size()>0){
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#cccccc align=left colspan=4>");
+        mb.append("<font face=arial size=+1><strong>Field Configuration Parameters</strong></font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+        //Get the vector of individual parameters
+        java.util.Vector params = fieldAllParams.getParams();
+        //Iterate the vector
+        for (int i = 0; i < params.size(); i++) {
+            reger.mega.FieldParam param = (reger.mega.FieldParam) params.elementAt(i);
+
+            mb.append("<tr>");
+            mb.append("<td valign=top align=right bgcolor=#eeeeee colspan=2><font face=arial size=-1><strong>"+param.name+"</strong></font><br><font face=arial size=-2>"+param.description+"</font></td>");
+            mb.append("<td valign=top align=left colspan=2><input type=text size=20 maxlength=250 name='fieldparam-"+param.onewordDatabaseKey+"' value=\""+Util.cleanForHtml(param.value)+"\"></td>");
+            mb.append("</tr>");
+        }
+    }
+
+    //Display systemDefaultsHtml
+    if (!systemDefaultsHtml.equals("")){
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#cccccc align=left colspan=4>");
+        mb.append("<font face=arial size=+1><strong>System Defaults</strong></font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#ffffff align=left colspan=4>");
+        mb.append(systemDefaultsHtml);
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+}
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc colspan=4 align=center>");
+mb.append("<input type='submit' value='Save'>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr><td bgcolor=#ffffff></td><td bgcolor=#ffffff></td><td bgcolor=#ffffff></td><td bgcolor=#ffffff></td></tr>");
+
+mb.append("</table>");
+
+
+mb.append("</form>");
+mb.append("<br><br>");
+
+//Log Footer start
+%>
+<%@ include file="logs-footer.jsp" %>
+<%
+//Log Footer end
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

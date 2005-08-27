@@ -1,0 +1,121 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Telco Carriers";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+
+mb.append("Reger.com offers a complete software system that <b>allows mobile network operators give their customers easy-to-use online journal websites called web logs</b>.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Web logging is personal publishing. It gives mobile users the ability to create a unique, interesting and personal website from a mobile phone - including text, pictures and sounds.  Users are able to run their own web sites without technical knowledge, web experience or special software.  All they need is a camera phone or a web browser.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("It transforms mobile phones into powerful internet publishing tools that will inspire people to communicate with each other.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Giving your wireless phone customers a web logging offering is easy with our turnkey solutions. ");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("The adoption of smart camera phones creates a <b>potent revenue opportunity for carriers</b> in the form of SMS and MMS sales. Users want applications that provide value and carriers want applications that drive data network traffic.  Web logging is a powerful application that fulfills both of these requirements.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<b>Mobile operators are in a unique position</b> to take advantage of the power hidden in camera phones, internet and messaging technology.  Just like in the early days of text messaging, operators are waiting for the killer application to engage users in addictive and revenue-generating behavior.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Reger.com offers a killer application that combines camera phones and text messaging with the now-mature internet technologies called web logging and social networking.  By combining them together users get a unique and addictive publishing tool that encourages them to use their phone's camera feature.  Social networks reinforce the addiction and encourage further usage.");
+
+
+mb.append("<br>");
+mb.append("<h1>How It Works</h1>");
+mb.append("When a mobile user signs up with a carrier they are <b>given a web log</b>... essentially a personal web site where they can store their pictures, sounds and text... a journal.  <b>They take pictures with their camera phone</b> and automatically have them posted to their web log (<b>which generates MMS revenue</b>) where their friends and family can view them.  When their <b>friends and family view the images</b> they are encased in your brand name (called a private label) which <b>extends your brand reach</b> and helps to increase sales.  Your users become invested in their personalized sites which <b>increases their loyalty to you</b>.  They may even pay for additional premium services which generates <b>more revenue</b> for you.");
+
+mb.append("<br>");
+mb.append("<h1>Why Web Logs Make Sense for Carriers</h1>");
+mb.append("<ul>");
+mb.append("<li>Increase SMS and MMS traffic.  As users enjoy their online web log and develop a readership they feel more prideful in their updating.  This increases their MMS and SMS usage.  Web logging drives this compulsion to update because unlike other solutions it doesn't just give a way to store camera photos... it provides the publishing and syndication tools to develop a readership for each site.");
+mb.append("<li>Premium service offerings with rich feature sets help to differentiate your offering from your competitors.");
+mb.append("<li>Lower churn rates because users' investment in their web log site is tied to you as a carrier");
+mb.append("<li>An easy-to-use way to get users into data services for the first time");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Why Mobile Users Love Web Logs</h1>");
+mb.append("<ul>");
+mb.append("<li>Instant publishing capability");
+mb.append("<li>Sharing pictures with friends and family");
+mb.append("<li>Personalized look and feel for their web site");
+mb.append("<li>Site traffic reports show users how many people are reading their site");
+mb.append("<li>The ability to post from their WAP-enabled device");
+mb.append("<li>Feedback from their friends and family in the form of site comments");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Market</h1>");
+mb.append("Early adopters will be the lucrative youth market demographic.  Sharing pictures with friends and creating online communities comes naturally to this demographic.  As they share the tool with their friends and family more mature demographics will adopt the value proposition.");
+
+mb.append("<br>");
+mb.append("<h1>ROI</h1>");
+mb.append("<ul>");
+mb.append("<li><b>Increased SMS and MMS traffic</b>");
+mb.append("<li><b>Increased camera phone sales</b>");
+mb.append("<li><b>User upgrade revenue</b> - Users choose between a free offering and a premium offering with more features.  Reger.com charges a base price for those features.  You can markup above that price and keep the difference.");
+mb.append("<li><b>Traffic and storage revenue</b> - Users pay for what they use.  They pay for traffic and storage.  Reger.com charges a base fee per unit of traffic and storage.  You can markup and keep the difference.  This means that high volume users make you more money.");
+mb.append("<li>Free users' sites are paid for by advertising revenue.  While the margins are short on this side of the business, there is some room to share this revenue stream with you.");
+mb.append("<li><b>Special promotions</b> - Once you have a user base using activity-specific web logs you can work with us to develop special promotions that take advantage of this marketing segmentation and share in the revenue.");
+mb.append("<li><b>Brand reach</b> - Your brand will be extended in a user-friendly manner.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Recommended Products</h1>");
+mb.append("<ul>");
+mb.append("<li><a href='productscamphone.log'>Camera Phone Service</a>");
+mb.append("<li><a href='productsenterpriseweblogging.log'>Enterprise Web Logging Service</a>");
+mb.append("<li><a href='productsprivatelabel.log'>Private Label</a>");
+mb.append("</ul>");
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

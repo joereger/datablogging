@@ -1,0 +1,184 @@
+<%@ page import="reger.core.Util, reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Post By Email and Camera Phone";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "toolsemailcamphonephone";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Some vars
+String emailsecret = "";
+
+//Make sure we have emailapi settings... if not, redirect to settings page
+//-----------------------------------
+//-----------------------------------
+String[][] rstCheck= Db.RunSQL("SELECT emailsecret FROM emailapi WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstCheck!=null && rstCheck.length>0){
+	emailsecret = rstCheck[0][0];
+} else {
+    try {
+        response.sendRedirect("tools-emailapi-settings.log?action=newsettings");
+        return;
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+    }
+}
+
+
+
+String emailapisection = "phoneaddresses";
+%>
+<%@ include file="tools-emailapi-navbar.jsp" %>
+<%
+
+
+
+mb.append("<table cellpadding=5 cellspacing=1 border=0 width=100% bgcolor=#000000>");
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff>");
+mb.append("<font face=arial size=-1>");
+
+
+
+
+
+mb.append("<table cellpadding=10 cellspacing=1 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#666666>");
+mb.append("<font face=arial size=+1>");
+mb.append("<strong>");
+mb.append("To Post To:");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top bgcolor=#666666>");
+mb.append("<font face=arial size=+1>");
+mb.append("<strong>");
+mb.append("Send Email To:");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+//Only display logs that an accountuser explicitly has access to... in other words, an account owner may want to create a contributor who can't contribute to a particular public log.
+String sql = "SELECT logid, name, eventtypeid, logaccess FROM megalog WHERE accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY name ASC";
+
+//See if the pl has an emailapiuniqueidentifier
+String emailapiuniqueidentifierText = "";
+if (!userSession.getPl().getEmailapiuniqueidentifier().equals("")){
+    emailapiuniqueidentifierText = "." + userSession.getPl().getEmailapiuniqueidentifier();
+}
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstEventtype= Db.RunSQL(sql);
+//-----------------------------------
+//-----------------------------------
+if (rstEventtype!=null){
+	for(int i=0; i<rstEventtype.length; i++){
+
+        //Get the domain name setup for this PL to use on email
+        String emailDomain = reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERHOSTNAME");
+
+        //Get the EmailApiAddress unique identifier
+        reger.api.EmailApiAddress addr = new reger.api.EmailApiAddress(userSession.getAccountuser().getAccountuserid(), userSession.getAccount().getAccountid(), Integer.parseInt(rstEventtype[i][0]), reger.api.EmailApi.CAMPHONEPOST);
+
+        //Build the email address that should be used
+        //String emailaddress = userSession.getAccount().getAccounturl()+"."+userSession.getPl().getPlid()+"."+userSession.getAccountuser().getUsername()+"."+emailsecret+"."+rstEventtype[i][0]+".email"+emailapiuniqueidentifierText+"@"+emailDomain;
+        String emailaddress = addr.getUniquekey()+"."+emailsecret+emailapiuniqueidentifierText+"@"+emailDomain;
+
+        mb.append("<tr>");
+        mb.append("<td valign=top bgcolor=#cccccc>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("<strong>");
+        mb.append(rstEventtype[i][1]);
+        mb.append("</strong>");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top bgcolor=#e6e6e6>");
+        if (userSession.getAccount().isPro()) {
+            mb.append("<a href='mailto:"+emailaddress+"'>");
+            mb.append("<font face=arial size=-1>");
+            mb.append(emailaddress);
+            mb.append("</font>");
+            mb.append("</a>");
+        } else {
+            mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+        }
+        mb.append("</td>");
+        mb.append("</tr>");
+
+
+
+
+
+
+    }
+}
+
+mb.append("<tr>");
+mb.append("<td colspan=2>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("Why are the addresses so long?");
+mb.append("</strong>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("These addresses are so long for security reasons.  Before the system posts anything to your web log it needs to collect a number of critical pieces of information like username, email secret, which log to post to, your site url, etc.  With email posts you'll be using the subject as your title and the body as your post which leaves us with only the email address to use to collect the information we need for security.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("We recommend setting up easy-to-use email aliases in your email client or your phone so that you don't have to type these addresses each time you post via email or camera phone.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("</table>");
+
+
+
+
+
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("<br><br>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

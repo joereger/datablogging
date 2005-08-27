@@ -1,0 +1,66 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<br><p align=right>");
+mb.append("<font face=arial size=+3>");
+mb.append("Major Technical Milestones");
+mb.append("</font>");
+mb.append("</p>");
+
+
+
+mb.append("<br><br>");
+mb.append("<font face=arial size=-1>");
+mb.append("<ul>");
+mb.append("<li><strong>V0.1: Jul 1997: Conceptualization</strong> - Paper sketches of how personal sites should work to collect personal information into a contextual repository of data.<br><br></li>");
+mb.append("<li><strong>V0.4: Nov 1997: Foundation</strong> - First attempts to organize the multitude of thoughts on how to create a personal repository of nostalgia-creating information.  It was crude.  One log entry page for many log types.  Few options or features.  But it worked and powered joereger.com.<br><br></li>");
+mb.append("<li><strong>V1.0: Jun 1998: Initial public build</strong> - Implemented core features of web logging and activity-specific log types, launching to the public for the first time. <br><br></li>");
+mb.append("<li><strong>V1.1: Jan 1999: Architecture redo</strong> - Rebuilt architecture to better deal with maintenance and daily support of an active user base.  In short, rebuilt it to make sense... system design is always easier the second time around.<br><br></li>");
+mb.append("<li><strong>V1.2: Mar 2001: Private Label Engine</strong> - Added header/footer private labeling features so that others could rebrand the offering as their own.<br><br></li>");
+mb.append("<li><strong>V2.0: Jun 2002: Template Engine</strong> - Rich templating engine was implemented allowing users to completely customize their site to their own taste.  This effort involved upgrading every line of code in the system.<br><br></li>");
+mb.append("<li><strong>V3.0: Dec 2002: OO Upgrade</strong> - The upgrade to OO provided an doubling of performance along with scaling capability to support the growing user base.<br><br></li>");
+mb.append("<li><strong>V3.01: Jan 2003: APIs</strong> - Launch of metaWeblogAPI, BloggerAPI, XML-RPC and WAP APIs.<br><br></li>");
+mb.append("<li><strong>V3.1: Feb 2003: Qlogger Pro Beta</strong> - Beta launch of a premium offering called Pro.  User feedback collected.<br><br></li>");
+mb.append("<li><strong>V4.0: Feb 2004: Platform Rebuild</strong> - System completely rewritten to run on Java/Tomcat/MySQL.  Performance gains via smarter object abstractions.  Many new features.<br><br></li>");
+mb.append("<li><strong>V4.1: Mar 2004: Reger.com Rename and Pro Launch</strong> - Site renamed to reger.com.  Pro features launched incorporating user feedback.<br><br></li>");
+mb.append("<li><strong>V4.2: Mar 2004: Social Networking</strong> - Personal profile and social networking features added.<br><br></li>");
+mb.append("<li><strong>V4.3: Mar 2004: Enhancements</strong> - Numerous features based on user feedback. Spell check of entries.  Moderator approval capability.  Rebuild of private labeling infrastructure.  Database self-updater, plugin architecture and the ability to run without wildcard DNS entries all point to the near future... a downloadable/distributable version of Reger.com!<br><br></li>");
+
+
+mb.append("</ul>");
+mb.append("</font>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

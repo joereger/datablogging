@@ -1,0 +1,236 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Get incoming friendinvitationid
+int friendinvitationid = -1;
+String friendlyname = "Your Friend";
+int imageid = -1;
+String friendinvitationkey = "";
+String errortext = "";
+int accountuseridsource = -1;
+if (request.getParameter("friendinvitationid")!=null && reger.core.Util.isinteger(request.getParameter("friendinvitationid"))){
+
+    //Get friendinvitationkey
+    if (request.getParameter("friendinvitationkey")!=null){
+        friendinvitationkey = request.getParameter("friendinvitationkey");
+    }
+
+    //Set the friendinvitationid
+    friendinvitationid = Integer.parseInt(request.getParameter("friendinvitationid"));
+
+    //Pull up the details of the invitation
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstInvitation= Db.RunSQL("SELECT friendlyname, accountuseridsource, friendinvitationkey FROM friendinvitation, accountuser WHERE friendinvitation.accountuseridsource=accountuser.accountuserid AND friendinvitationid='"+friendinvitationid+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstInvitation!=null && rstInvitation.length>0){
+        //Friendinvitationkey must match
+        if (friendinvitationkey.equals(rstInvitation[0][2])){
+            //Get the accountuseridsource
+            accountuseridsource = Integer.parseInt(rstInvitation[0][1]);
+
+            //Get friendlyname
+            friendlyname = rstInvitation[0][0];
+
+            //Go get a picture, if one exists
+            //-----------------------------------
+            //-----------------------------------
+            String[][] rstImg= Db.RunSQL("SELECT imageid FROM image WHERE accountuserid='"+rstInvitation[0][1]+"' ORDER BY image.order ASC");
+            //-----------------------------------
+            //-----------------------------------
+            if (rstImg!=null && rstImg.length>0){
+                imageid = Integer.parseInt(rstImg[0][0]);
+            }
+
+            //Update the status of the invitation to viewed
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE friendinvitation SET status='"+reger.Vars.INVITATIONSTATUSVIEWED+"' WHERE friendinvitationid='"+friendinvitationid+"'");
+            //-----------------------------------
+            //-----------------------------------
+
+            //Set the session vars
+            session.setAttribute( "friendinvitationid", String.valueOf(friendinvitationid));
+            session.setAttribute( "friendinvitationkey", friendinvitationkey);
+
+        } else {
+            errortext = errortext + "Sorry.  That invitation is no longer valid.  But you can still sign up for a weblogging account and start logging immediately.<br>";
+        }
+    } else {
+        errortext = errortext + "Sorry.  That invitation is no longer valid.  But you can still sign up for a weblogging account and start logging immediately.<br>";
+    }
+
+}
+
+//Login Action
+if (pageProps.action.equals("login")){
+    userSession.setAccountuser(new reger.Accountuser(request.getParameter("username"), request.getParameter("password")));
+    if (!userSession.getAccountuser().isLoggedIn){
+        errortext = errortext + "Username or password incorrect.  Please try again.<br>";
+    }
+}
+
+//If logged-in, redirect
+if (userSession.getAccountuser().isLoggedIn){
+    String password = "";
+    if (request.getParameter("password")!=null){
+        password = request.getParameter("password");
+    }
+    response.sendRedirect("" + reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() + "/login.log?action=login&username="+java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(password, "UTF-8")+"&friendinvitationid=" + friendinvitationid + "&friendinvitationkey=" + java.net.URLEncoder.encode(friendinvitationkey, "UTF-8"));
+}
+
+if (!errortext.equals("")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+mb.append("<br><br>");
+mb.append("<blockquote>");
+
+mb.append("<table cellpadding=15 cellspacing=10 align=center border=0>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=center colspan=2 bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=+1>");
+mb.append("<b>" + friendlyname + "</b> sent you this invitation.");
+mb.append("</font>");
+mb.append("<br><br>");
+mb.append("<font face=arial size=-1>");
+mb.append("To see the information they have shared you must have a weblogging account.  Please choose from the two options below:");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<tr>");
+
+
+mb.append("<tr>");
+
+mb.append("<td valign=top align=center width=50% bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=+1>");
+mb.append("<a href='signup.log'>");
+mb.append("<b>Click Here To Signup Now For Free</b>");
+mb.append("</a>");
+mb.append("</font>");
+mb.append("<br><br>");
+mb.append("<font face=arial size=-1>");
+mb.append("Signup is free and only takes a few seconds.  Your new weblogging account will automatically be networked with Your Friend's and you will automatically gain access to the things your friend has invited you to.");
+mb.append("</font>");
+mb.append("</td>");
+
+mb.append("<td valign=top align=center width=50% bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=+1>");
+mb.append("<b>Or, If You Already Have an Account on this Weblogging Server, please Log In:</b>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<form action=invitation.log>");
+mb.append("<input type=hidden name=friendinvitationid value='"+request.getParameter("friendinvitationid")+"'>");
+mb.append("<input type=hidden name=action value=login>");
+mb.append("<input type=hidden name=friendinvitationkey value='"+request.getParameter("friendinvitationkey")+"'>");
+
+mb.append("<table cellpadding=10 cellspacing=5 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=middle align=right>");
+mb.append("<font class=mediumfont face=arial size=-1>");
+mb.append("<strong>Username:</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+String incomingUsername = "";
+if (request.getParameter("username")!=null){
+    incomingUsername = request.getParameter("username");
+}
+mb.append("<input type='text' name='username' size=10 maxlength=49 style=\"font-size: 18px;\" value=\""+reger.core.Util.cleanForSQL(incomingUsername)+"\">");
+mb.append("</td>");
+mb.append("<tr>");
+mb.append("<tr>");
+mb.append("<td valign=middle align=right>");
+mb.append("<font class=mediumfont face=arial size=-1>");
+mb.append("<strong>Password:</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append("<input type='password' name='password' size=10 maxlength=49 style=\"font-size: 18px;\">");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+mb.append("<font class=mediumfont face=arial size=-1>");
+mb.append("&nbsp;");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append("<input type='submit' value='Log In'>");
+mb.append("</form>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+mb.append("</td>");
+
+mb.append("</tr>");
+mb.append("</table>");
+
+
+
+
+
+
+
+
+
+
+
+
+mb.append("<br><br>");
+mb.append("<font face=arial size=-1>");
+mb.append("This is the exciting online tool that combines:");
+mb.append("<ul>");
+mb.append("<li><b>Web Logging</b> - Simple one-click publishing of thoughts, observations and ideas to the web.  You can password-protect any log or keep it public.  Web logging is your way to keep track of your life and share it with the world.</li>");
+mb.append("<li><b>Activity-specific Web Log Types</b> - From Running and Biking logs to Caffeine and Headache logs, we allow you to track the quantifiable data from your personal life.  You then get to analyze that data with powerful charts and graphs.");
+mb.append("<li><b>Social Networking</b> - You choose your friends.  They choose you.  You can then communicate with and get updates from your network of friends and their friends.</li>");
+mb.append("<li><b>Online Photo/Video/Sound Sharing</b> - Your personal repository of digital nostalgia.  Organized chronologically.  Searchable.  Annotated.  Interlinked.  You'll get more from your pictures.</li>");
+mb.append("</ul>");
+mb.append("<br>");
+mb.append("Signup is quick, easy and free.  You'll be web logging with your new account in minutes.");
+mb.append("</font>");
+mb.append("<br><br>");
+
+mb.append("</blockquote>");
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

@@ -1,0 +1,155 @@
+
+<%@ page import="java.util.*,
+                 reger.core.db.Db" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "Html Cache";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loehtmlcache";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+if (request.getParameter("action")!=null && request.getParameter("action").equals("reset")){
+    reger.cache.HtmlCache.clearCache();
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Html Cache cleared."));
+}
+
+
+mb.append("<br><br>");
+mb.append("<font face=arial size=+2>");
+mb.append("This page lists html elements that are cached in memory to save CPU time at the cost of memory usage.");
+mb.append("</font>");
+mb.append("<br>");
+
+mb.append("<font face=arial size=-1>");
+mb.append("<a href='htmlcache.log?action=reset'>");
+mb.append("Reset HtmlCache");
+mb.append("</a>");
+mb.append("</font>");
+mb.append("<br><br>");
+
+
+StringBuffer mbTmp = new StringBuffer();
+
+mbTmp.append("<table cellpadding=3 cellspacing=1 border=0 bgcolor=#cccccc>");
+mbTmp.append("<tr>");
+mbTmp.append("<td valign=top bgcolor=#cccccc>");
+mbTmp.append("<font face=arial size=-2>");
+mbTmp.append("Last Updated");
+mbTmp.append("</font>");
+mbTmp.append("</td>");
+mbTmp.append("<td valign=top bgcolor=#cccccc>");
+mbTmp.append("<font face=arial size=-2>");
+mbTmp.append("Updates Every X Seconds");
+mbTmp.append("</font>");
+mbTmp.append("</td>");
+mbTmp.append("<td valign=top bgcolor=#cccccc>");
+mbTmp.append("<font face=arial size=-2>");
+mbTmp.append("Size in Bytes");
+mbTmp.append("</font>");
+mbTmp.append("</td>");
+mbTmp.append("<td valign=top bgcolor=#cccccc>");
+mbTmp.append("<font face=arial size=-2>");
+mbTmp.append("URL Cached");
+mbTmp.append("</font>");
+mbTmp.append("</td>");
+mbTmp.append("</tr>");
+
+int totalbytes = 0;
+Map cache = reger.cache.HtmlCache.getHtmlCache();
+if (cache!=null){
+    for (Iterator i=cache.entrySet().iterator(); i.hasNext(); ) {
+        Map.Entry e = (Map.Entry) i.next();
+        String key = (String)e.getKey();
+        String value = (String)e.getValue();
+
+        int sizeinbytes = reger.core.Util.sizeInBytes(value);
+        totalbytes = totalbytes + sizeinbytes;
+
+        mbTmp.append("<tr>");
+        mbTmp.append("<td valign=top bgcolor=#ffffff>");
+        mbTmp.append("<font face=arial size=-2>");
+        Calendar calTmp = (Calendar)reger.cache.HtmlCache.getLastUpdated().get(key);
+        mbTmp.append(reger.core.TimeUtils.agoText(calTmp));
+        mbTmp.append("</font>");
+        mbTmp.append("</td>");
+        mbTmp.append("<td valign=top bgcolor=#ffffff>");
+        mbTmp.append("<font face=arial size=-2>");
+        mbTmp.append(reger.cache.HtmlCache.getRefreshInterval().get(key));
+        mbTmp.append("</font>");
+        mbTmp.append("</td>");
+        mbTmp.append("<td valign=top bgcolor=#ffffff>");
+        mbTmp.append("<font face=arial size=-2>");
+        mbTmp.append(sizeinbytes);
+        mbTmp.append("</font>");
+        mbTmp.append("</td>");
+        mbTmp.append("<td valign=top bgcolor=#ffffff>");
+        mbTmp.append("<font face=arial size=-2>");
+        mbTmp.append(key);
+        mbTmp.append("</font>");
+        mbTmp.append("</td>");
+        mbTmp.append("<tr>");
+    }
+}
+mbTmp.append("</table>");
+
+mb.append("<font face=arial size=+1>");
+mb.append("Total Bytes Used by Cache:" + totalbytes);
+mb.append("</font>");
+mb.append("<br>");
+
+mb.append("<font face=arial size=+1>");
+mb.append("Total Cache Requests:" + reger.cache.HtmlCache.getTotalcacherequests());
+mb.append("</font>");
+mb.append("<br>");
+
+mb.append("<font face=arial size=+1>");
+mb.append("Total Cache Hits:" + reger.cache.HtmlCache.getTotalcachehits());
+mb.append("</font>");
+mb.append("<br>");
+
+//mb.append("<font face=arial size=+1>");
+//mb.append("Success Rate:" + new Double(reger.cache.HtmlCache.getTotalcachehits() / reger.cache.HtmlCache.getTotalcacherequests()));
+//mb.append("</font>");
+//mb.append("<br>");
+
+//Finally output the table
+mb.append("<br>");
+mb.append(mbTmp);
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

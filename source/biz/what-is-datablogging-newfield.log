@@ -1,0 +1,78 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Adding Custom Fields to a Log";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.core.Util.popup());
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+
+mb.append("<br clear=all>");
+mb.append("<h1>How are Custom Logs Created?</h1>");
+mb.append("Anybody with a datablogging account can create their own custom log type.  It's a simple matter of defining the data fields by choosing from dropdowns, checkboxes, input boxes and other web form controls.  Once a log type is defined, log entries can be created.  Here's a how it works:");
+
+mb.append("<center>");
+
+mb.append("<br clear=all>");
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("saleslogentryscreen-customi.gif", "center", "Step 1:", "From any log entry screen a single click toggles the screen to Customize Mode where you can begin adding, moving or custimizing the log's data fields.  Any user can do this to any log."));
+
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("saleslogentryscreen-startad.gif", "center", "Step 2:", "Choose a location on the screen to add a new field."));
+
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("newfieldtypes.gif", "center", "Step 3:", "Tell the system which type of field to add.  Choose from text fields, dropdowns, numeric ranges and others."));
+
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("fieldprops.gif", "center", "Step 4:", "Give your field a name and description.  Also decide whether it will be required or not."));
+
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("newfielddone.gif", "center", "Step 5:", "You're done!  The field has been added to the log and you can start datablogging with it!"));
+
+mb.append("</center>");
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

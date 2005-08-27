@@ -1,0 +1,82 @@
+
+<%@ page import="java.util.*,
+                 reger.mega.MegaChartHtmlRenderer" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "Graphs";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loegraphs";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Create a new megachart using the incoming request
+reger.mega.MegaChart megaChart = new reger.mega.MegaChart(request);
+
+//Start saving chart
+if (request.getParameter("savechart")!=null && request.getParameter("savechart").equals("1")){
+    if (userSession.getAccountuser().userCanDoAcl("SAVECHARTS", userSession.getAccount().getAccountid())) {
+        //It's a masteradmin saving for all users
+        megaChart.setxLogid(0);
+        megaChart.setAccountid(0);
+
+        //It's a normal save for a single user
+        //megaChart.setXeventtypeid(0);
+        //megaChart.setAccountid(userSession.getAccount().getAccountid());
+
+        //Do the save
+        megaChart.save();
+    }
+}
+//End saving chart
+
+//Start getting chart from database
+if (request.getParameter("megachartid")!=null && reger.core.Util.isinteger(request.getParameter("megachartid"))){
+    megaChart.load(Integer.parseInt(request.getParameter("megachartid")));
+}
+//End getting chart from database
+
+
+//Previews
+boolean isPreview = false;
+if (request.getParameter("ispreview")!=null && request.getParameter("ispreview").equals("1")){
+    //Need to manually set the pageProps.logProps.eventtypeid
+    pageProps.logProps.eventtypeid = megaChart.getXeventtypeid();
+    isPreview = true;
+}
+
+//Output the html
+mb.append(MegaChartHtmlRenderer.getHtml(megaChart, userSession, isPreview, pageProps.pathToAppRoot, true, false));
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

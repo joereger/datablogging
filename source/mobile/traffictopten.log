@@ -1,0 +1,49 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MOBILEPRIVATE;
+pageProps.isPasswordProtected = true;
+pageProps.aclObjectName = "MOBILE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//@todo Test and verify these numbers... I know that the hits today isn't working properly because the sql generated has no space between dates
+
+// set content type for wireless data
+response.setContentType("text/vnd.wap.wml");
+
+// write the data
+mb.append("<?xml version=\"1.0\"?>");
+mb.append("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\"");
+mb.append(" \"http://www.wapforum.org/DTD/wml_1.1.xml\">");
+mb.append("<wml>");
+mb.append("<card title=\"Traffic Top Ten\">");
+
+mb.append(reger.trafficHtmlOut.mobileEntryTrafficList(userSession.getAccount().getAccountid(), 1, 10, userSession.getAccount().getTimezoneid()));
+
+mb.append("</card>");
+mb.append("</wml>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

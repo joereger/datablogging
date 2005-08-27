@@ -1,0 +1,76 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Structured Blogging Support";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.core.Util.popup());
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+mb.append("<style>blockquote.quote {\n" +
+"    padding: 10px;\n" +
+"    border: 1px dotted #999;\n" +
+"    background: #e6e6e6;\n" +
+"}</style>");
+
+String lineBreak = "\n";
+
+mb.append("<br clear=all>");
+mb.append("<h1>Preliminary Support</h1>");
+mb.append("At this point all Reger.com sites include preliminary alpha quality support for the <a href='http://www.structuredblogging.org'>Structured Blogging</a> initiative.");
+
+mb.append("<br clear=all>");
+mb.append("<h1>What this Means</h1>");
+mb.append("This means that you can create a custom log type using the user interface, add entries and the automatically publish your data to the web via xml.  Please note that our implementation is very preliminary and does not include the proper namespace definitions or overall syntax.  We are planning on working with Bob Wyman on the initiative.  Our intention was to solve the initial challenge of getting the data out there first and next move on to standards compliance.");
+
+
+mb.append("<br clear=all>");
+mb.append("<h1>Next Steps</h1>");
+mb.append("Read more about Structured Blogging and watch it evolve.");
+
+
+
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

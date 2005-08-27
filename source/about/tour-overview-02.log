@@ -1,0 +1,96 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONTOUR;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append(reger.core.Util.popup());
+
+
+mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td width=33% valign=top>");
+mb.append("<font face=arial size=+4>");
+mb.append("<strong>");
+mb.append("Overview Tour");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+
+//Tour navigation
+mb.append(reger.marketingSite.TourHtml.tourNavHtml(pageProps.pathToAppRoot, "tour-overview-01.log", "<< Back", "tour-overview-03.log", "Next >>"));
+
+//Screenshots
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+mb.append(reger.marketingSite.TourHtml.screenShotWithDescription("screenshot-adminhome.gif", "left", "Admin Tool", "This is the screen you use to create log entries.  It is simple to start logging."));
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+mb.append("</td>");
+
+mb.append("<td width=67% valign=top>");
+
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+mb.append("<font face=arial size=+2>");
+mb.append("<strong>");
+mb.append("Broadcast Your Wisdom!");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<font face=arial size=+1 color=#666666>");
+
+
+mb.append("Put your words into living, breathing text and enjoy the thrill.  There’s definitely something to be said for putting yourself out there.  A web log gives you the freedom to rant, rave, commemorate or  lament in your own words whenever you want to do it.  Digitize your life for yourself, your kids, your grandkids, your great-great-grand kids.  Discover the empowerment that comes with creating something all about you and your life.");
+mb.append("<br><br>");
+mb.append("There are no rules to blogging.  You can write whatever you want.  Maybe you want to track your miles of running.  Or track your running miles versus your biking miles versus your swimming miles.  All of these options are possible.  Exercise not your schtick?  Not a problem … write about your cooking, or your tv watching, or your caloric intake.  This is your log.  Own it.");
+mb.append("<br><br>");
+mb.append("Publish a quick comment, “Today I bought a Beer Helmet” or “My goldfish, Sushi, is a genius!” or “Hyde needs to get a haircut because Jackie is too hot for him!”  Write a dissertation with your observations of college life, “It seems that the goal of every college co-ed is to discover themselves.  This is a long road, one I have just begun.  Why, the other night … “  You get the picture.");
+
+
+mb.append("</font>");
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+//Tour navigation
+mb.append(reger.marketingSite.TourHtml.tourNavHtml(pageProps.pathToAppRoot, "tour-overview-01.log", "<< Back", "tour-overview-03.log", "Next >>"));
+
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

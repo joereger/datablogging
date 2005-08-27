@@ -1,0 +1,257 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.template.MarketingHpTemplateProcessor.getHtml(userSession, request, pageProps));
+
+
+//mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
+//mb.append("<tr>");
+//mb.append("<td bgcolor=#ffcc00 align=right valign=middle>");
+//mb.append("<a href='signup.log'>");
+//mb.append("<img src='images/createownweblog.gif' border=0>");
+//mb.append("</a>");
+//mb.append("</td>");
+//mb.append("<td bgcolor=#ffcc00 align=left>");
+//mb.append("<img src='images/clear.gif' width='1' height='1' alt='' border='0'>");
+//mb.append("</td>");
+//mb.append("<td bgcolor=#ffcc00 align=right>");
+//mb.append("<img src='images/hp-image-1.gif' width='195' height='168' alt='' border='0'>");
+//mb.append("</td>");
+//mb.append("</tr>");
+//mb.append("</table>");
+
+
+//Get any returnurl
+String returnurl = "";
+if (request.getParameter("returnurl")!=null){
+    returnurl = request.getParameter("returnurl");
+}
+
+//java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")
+
+//Login Action
+if (pageProps.action.equals("login")){
+    userSession.setAccountuser(new reger.Accountuser(request.getParameter("username"), request.getParameter("password")));
+    if (userSession.getAccountuser().isLoggedIn){
+        response.sendRedirect("" + reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() + "/login.log?action=login&username="+java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
+        //response.sendRedirect("" + reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() + "/login.log?action=login&username="+userSession.getAccountuser().getUsername()+"&password="+request.getParameter("password")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
+        return;
+    }
+}
+//
+//
+//
+//
+//
+//mb.append("<table cellpadding=10 cellspacing=0 width=100% border=0>");
+//
+//
+////mb.append("<tr>");
+////mb.append("<td colspan=2 align=center>");
+////mb.append("<img src='images/homepage-concept-diagram-a.gif'>");
+////mb.append("</td>");
+////mb.append("</tr>");
+//
+//
+//
+//
+//mb.append("<tr>");
+//
+//mb.append("<td valign=top>");
+//
+////"<center><a href='signup.log'><img src='images/getone.jpg' border=0></a></center>"
+//mb.append("<!-- Begin Private Label Homepage Content Var -->");
+//mb.append(userSession.getPl().getHpcontent());
+//mb.append("<!-- End Private Label Homepage Content Var -->");
+//
+////mb.append("<font face=arial size=-1><b>Powerful Features:</b></font>");
+////mb.append(reger.marketingSite.ProFeaturesGrid.getHtml(false, pageProps.pathToAppRoot));
+//
+//
+//
+//
+//mb.append("</td>");
+//
+//mb.append("<td width=33% valign=top>");
+//
+////Login
+//mb.append("<font face=arial size=-1><b>Existing Users</b></font>");
+//if (!loginerrortext.equals("")){
+//    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, loginerrortext));
+//}
+//
+//if (userSession.getAccountuser()==null || !userSession.getAccountuser().isLoggedIn){
+//    mb.append("<table>");
+//    mb.append("<form action=index.log method=post>");
+//    mb.append("<input type=hidden name=action value='login'>");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<font face=arial size=-2>");
+//    mb.append("<strong>Username:</strong>");
+//    mb.append("</font>");
+//    mb.append("<br>");
+//    mb.append("<input type=text name=username size=18 maxlength=50 style=\"font-size: 10px;\">");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<font face=arial size=-2>");
+//    mb.append("<strong>Password:</strong>");
+//    mb.append("</font>");
+//    mb.append("<br>");
+//    mb.append("<input type=password name=password size=18 maxlength=50 style=\"font-size: 10px;\">");
+//    mb.append("<br>");
+//    mb.append("<font class=smallfont face=arial size=-2>");
+//    mb.append("<a href='"+pageProps.pathToAppRoot+"about/passwordreset1.log'>");
+//    mb.append("Lost Your Password?");
+//    mb.append("</a>");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<input type='checkbox' name='keepmeloggedin' value='1'>");
+//    mb.append("<font class=smallfont face=arial size=-2>");
+//    mb.append("<strong>Stay Logged-In on this Computer Until I Log Out</strong>");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td>");
+//    mb.append("<input type=submit value='Log In' style=\"font-size: 10px\">");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("</form>");
+//    mb.append("</table>");
+//} else {
+//    //User is logged-in
+//    String userSiteRootUrl = userSession.getAccountuser().getSiteRootUrl();
+//    mb.append("<table>");
+//    mb.append("<form action='"+reger.Vars.getHttpUrlPrefix()+userSiteRootUrl+"/login.log' method=post>");
+//    mb.append("<input type=hidden name=action value='logout'>");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<font face=arial size=-2>");
+//    mb.append("<strong>You are currently logged in.</strong>");
+//    mb.append("<br>Links to your weblog and admin tools are at the top of the screen.");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td>");
+//    mb.append("<input type=submit value='Log Out' style=\"font-size: 10px\">");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("</form>");
+//    mb.append("</table>");
+//}
+//
+//
+////Signup
+//mb.append("<br>");
+//mb.append("<font face=arial size=-1><b>How do I get started?</b></font>");
+//mb.append("<br><font face=arial size=-2>It's free and easy.  It only takes a few seconds to set up your site.");
+//mb.append("<br><a href='signup.log'><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0' align=top>Get Started Here.</a></font>");
+//
+//
+////Site Directory
+//mb.append("<br><br>");
+//mb.append("<font face=arial size=-1><b>Site Directory</b></font>");
+//mb.append("<br><font face=arial size=-2>See some of the sites created here.");
+//mb.append("<br><a href='community.log'><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0' align=top>Site Directory.</a></font>");
+//
+////Recent Entries
+//mb.append("<br><br>");
+//mb.append("<font face=arial size=-1><b>Recent Entries</b></font>");
+//mb.append("<br><font face=arial size=-2>See some of the most recent entries.");
+//mb.append("<br><a href='community-entries.log'><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0' align=top>Go.</a></font>");
+//
+//
+//
+////Search Entries
+//mb.append("<br><br>");
+//mb.append("<form action=search.log method=post>");
+//mb.append("<font face=arial size=-1><b>Search Entries</b></font>");
+//mb.append("<br><font face=arial size=-2>Search entries on this server.<br>");
+//mb.append("<input type=hidden name=nextchunktodisplay value=chunk-chooseaccounts>");
+//mb.append("<input type=hidden name=thischunkuniqueidentifier value=chunk-keywords>");
+//mb.append("<input type=text name=searchterms value='' size=10 maxlength=49>");
+//mb.append("<br><input type='submit' value='Search'>");
+//mb.append("</font>");
+//mb.append("</form>");
+//
+////Find a Site
+//mb.append("<br>");
+//mb.append("<form action='community.log' method=post>");
+//mb.append("<input type=hidden name=action value=search>");
+//mb.append("<font face=arial size=-1><b>Find Sites</b></font>");
+//mb.append("<br><font face=arial size=-2>Find sites that are created here.  Enter a site name or the first letter/number of the site's url:");
+//mb.append("<br>");
+//mb.append("<input type='text' name='searchsites' value=\"\" size=15 maxlength=100 style=\"font-size: 10px\"><br>");
+//mb.append("<input type='submit' value='Search Sites' style=\"font-size: 10px\">");
+//mb.append("</form>");
+//
+//
+//
+////Tell a friend
+//mb.append("<br>");
+//mb.append("<form action='emailafriend.log' method=post>");
+//mb.append("<font face=arial size=-1><b>Tell a Friend.</b></font><br><font face=arial size=-2>Ok, so maybe this gig isn't for you.  But we're willing to bet that you know somebody who'll give you a big hug and a kiss for passing it on to them.  Help out a dot com and round out your cosmic karma for the week.</font>");
+//mb.append("<br>");
+//mb.append("<input type='text' name='friendemail' value=\"Friend's Email**\" size=15 maxlength=100 style=\"font-size: 10px\"><br>");
+//mb.append("<input type='submit' value='Tell A Friend.' style=\"font-size: 10px\">");
+//mb.append("</form>");
+//mb.append("<font face=arial size=-2>**We will not spam your friend. We respect their privacy and will only use this email address one time to tell them about the site.</font><br><br><br>");
+//mb.append("</td>");
+//
+////if (userSession.getPl().getPlid()==reger.Vars.PLIDDEFAULT){
+////    //Manifesto
+////    mb.append("<br><br>");
+////    mb.append("<font face=arial size=-1><b>Where We're Going</b></font>");
+////    mb.append("<br><font face=arial size=-2>We have a plan and we're sticking to it.  Let us know what you think.");
+////    mb.append("<br><a href='manifesto.log'><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0' align=top>Read the Manifesto</a></font>");
+////
+////    //History
+////    mb.append("<br><br>");
+////    mb.append("<font face=arial size=-1><b>History of Reger.com</b></font>");
+////    mb.append("<br><font face=arial size=-2>We've been around for a while.  Growing thanks to your support.");
+////    mb.append("<br><a href='history.log'><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0' align=top>See Our Technology Milestones</a></font>");
+////}
+//
+//mb.append("</tr>");
+//
+//mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

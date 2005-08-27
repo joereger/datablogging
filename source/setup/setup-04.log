@@ -1,0 +1,42 @@
+<%@ page import="reger.core.db.DbConfig,
+                 reger.core.db.Db,
+                 reger.MegaLogType,
+                 reger.Account,
+                 reger.core.Util"%>
+<%
+//Only do this page if we have an invalid database connection.
+//Otherwise, anybody's going to be able to reset the database
+//configuration whenever they want. Which isn't cool.
+if (!DbConfig.haveValidConfig()){
+    response.sendRedirect("setup-01.log");
+    return;
+}
+if (!reger.core.dbupgrade.RequiredDatabaseVersion.havecorrectversion){
+    response.sendRedirect("setup-02.log");
+    return;
+}
+//-----------------------------------
+//-----------------------------------
+String[][] rstUser= Db.RunSQL("SELECT accountuser.accountuserid FROM accountuser, accountuseraclgroup WHERE accountuser.accountuserid=accountuseraclgroup.accountuserid AND accountuseraclgroup.aclgroupid='"+reger.acl.AllAclGroups.getAclGroupByName("LOEAdmin").getAclgroupid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstUser!=null && rstUser.length>0){
+    //There is a user
+} else {
+    //There is not yet a user with LOEAdmin permissions in the database.
+    response.sendRedirect("setup-03.log");
+    return;
+}
+%>
+
+
+
+
+
+
+<font face=arial size=+3 color=#cccccc>Setup Finished!</font>
+<br><br>
+<font face=arial size=-1 color=#cccccc><a href='../index.log'>Click here to go to the homepage where you can log in.</a></font>
+
+
+

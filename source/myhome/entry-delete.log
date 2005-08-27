@@ -1,0 +1,115 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.isEventidRequired=true;
+pageProps.isLogidRequired=true;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//If the user can't do this
+if (!userSession.getAccountuser().userCanDoAcl("ADDEDITENTRIES", userSession.getAccount().getAccountid()) || !userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid)){
+    try {
+        response.sendRedirect("index.log");
+        return;
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+        return;
+    }
+}
+
+//Get Entry Title
+String entrytitle = "";
+//-----------------------------------
+//-----------------------------------
+String[][] rstEntry= Db.RunSQL("SELECT title FROM event, megalog WHERE event.logid=megalog.logid AND eventid='"+pageProps.entry.eventid+"' AND event.accountid='"+userSession.getAccount().getAccountid()+"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
+//-----------------------------------
+//-----------------------------------
+if (rstEntry!=null && rstEntry.length>0){
+    entrytitle = rstEntry[0][0];
+} else {
+    try {
+        response.sendRedirect("index.log");
+        return;
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+        return;
+    }
+}
+
+
+if (pageProps.action.equals("delete")){
+
+    //Now delete the entry itself
+    //-----------------------------------
+    //-----------------------------------
+    //int entries = Db.RunSQLUpdate("DELETE FROM event WHERE eventid='"+pageProps.entry.eventid+"' AND accountid='"+userSession.getAccount().getAccountid()+"'");
+    //-----------------------------------
+    //-----------------------------------
+
+    //Now delete the entry itself
+    pageProps.entry.deleteEntryAll();
+
+     //Redirect user back to the admin homepage
+     try {
+        response.sendRedirect("index.log");
+        return;
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+        return;
+    }
+
+} else {
+
+    //Start displaying the page
+
+    mb.append("<br><br>");
+
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
+    mb.append("<font face=arial size=+2 color=#ff0000>");
+    mb.append("Are you sure you want to delete \""+entrytitle+"\"?<br>Deletion is permanent.  Images, messages, trackbacks, traffic counts and any other information related to this entry will be deleted permanently.");
+    mb.append("</font>");
+
+    mb.append("<form action=entry-delete.log method=post>");
+    mb.append("<input type=hidden name=action value=delete>");
+    mb.append("<input type=hidden name=eventid value="+pageProps.entry.eventid+">");
+
+    mb.append("<input type=submit value='Yes, Delete It'>");
+
+    mb.append("</form>");
+
+    mb.append("<a href='entry.log?eventid="+pageProps.entry.eventid+"&action=edit><font face=arial size=-1>Nevermind, Don't Delete</font></a>");
+
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+}
+
+
+%>
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

@@ -1,0 +1,117 @@
+
+<%@ page import="java.util.*,
+                 reger.core.db.Db" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "404 Lists";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loepagenotfound";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+if (request.getParameter("action")!=null && request.getParameter("action").equals("reset")){
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("DELETE FROM pagenotfound");
+    //-----------------------------------
+    //-----------------------------------
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "404 counters have been reset."));
+}
+
+
+mb.append("<br><br>");
+mb.append("<font face=arial size=+2>");
+mb.append("This page lists 404 errors that have occurred since reset.  404s are generally users who have mistyped urls, but they could also be caused by broken links within the application.  They're just a good thing to keep your eye on from time to time.");
+mb.append("</font>");
+mb.append("<br>");
+
+mb.append("<font face=arial size=-1>");
+mb.append("<a href='pagenotfoundlist.log?action=reset'>");
+mb.append("Reset");
+mb.append("</a>");
+mb.append("</font>");
+mb.append("<br><br>");
+
+mb.append("<table cellpadding=3 cellspacing=1 border=0 bgcolor=#cccccc>");
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc>");
+mb.append("<font face=arial size=-2>");
+mb.append("Count");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top bgcolor=#cccccc>");
+mb.append("<font face=arial size=-2>");
+mb.append("Page Not Found");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top bgcolor=#cccccc>");
+mb.append("<font face=arial size=-2>");
+mb.append("Most Recent Referer");
+mb.append("</font>");
+mb.append("</td>");
+ mb.append("</tr>");
+//-----------------------------------
+//-----------------------------------
+String[][] rst404= Db.RunSQL("SELECT pagename, count, mostrecentreferer FROM pagenotfound ORDER BY count DESC");
+//-----------------------------------
+//-----------------------------------
+if (rst404!=null && rst404.length>0){
+    for(int i=0; i<rst404.length; i++){
+        mb.append("<tr>");
+        mb.append("<td valign=top bgcolor=#ffffff>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(rst404[i][1]);
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top bgcolor=#ffffff>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(rst404[i][0]);
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top bgcolor=#ffffff>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(rst404[i][2]);
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<tr>");
+    }
+}
+mb.append("</table>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

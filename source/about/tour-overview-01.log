@@ -1,0 +1,98 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONTOUR;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append(reger.core.Util.popup());
+
+
+mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td width=33% valign=top>");
+mb.append("<font face=arial size=+4>");
+mb.append("<strong>");
+mb.append("Overview Tour");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+
+//Tour navigation
+mb.append(reger.marketingSite.TourHtml.tourNavHtml(pageProps.pathToAppRoot, "", "", "tour-overview-02.log", "Next >>"));
+
+//Screenshots
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+mb.append(reger.marketingSite.TourHtml.screenShotWithDescription("screenshot-adminhome.gif", "left", "Admin Tool", "This is the screen you use to create log entries.  It is simple to start logging."));
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+mb.append("</td>");
+
+mb.append("<td width=67% valign=top>");
+
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+mb.append("<font face=arial size=+2>");
+mb.append("<strong>");
+mb.append("I Beg your Pardon?  What’s a Web Log?");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<font face=arial size=+1 color=#666666>");
+
+mb.append("<strong>A web log is simply an outlet for thought</strong> … that’s easily published, by you, live on the web.  Need to rant about the price of milk to no one in particular?  You can do it in a web log.  Want to tell the whole world you’re in love with your co-worker?  Simple.  Put it in your web log and make it public.  So it’s like a notebook, but online?  Kind of.  A web log can be simply a notebook or it can be a 12-subject notebook, a picture album, a video gallery, a charting and graphing progression, and a network of folks all in one.  It’s up to you.");
+mb.append("<br><br>");
+mb.append(userSession.getPl().getPlname() + " brings you <strong>activity-specific logs</strong> like a Caffeine Log, or a Running Log, or a Blue Shoes Log … they’re your logs, you can name them whatever you want.  You can also <strong>password protect any of your logs</strong>, or you can keep them public for the world to read.  Share your videos, your photos, your sounds … organized chronologically, annotated, easily searchable.  Create your own network through your web log – choose your friends.  They choose you.  Then communicate with each other and with each other’s friends.  Update the way you correspond.");
+mb.append("<br><br>");
+mb.append("After you craft your entry there are many features you can take advantage of.   Spell check.  Coin your entry title.  Edit complex web log entries with links, fonts, smilies and other formatting just like in a word processor.  Arbitrarily choose the date in the past, present or future.  Choose a location from your previously used list, or create a new one.  Make it yours.");
+mb.append("<br><br>");
+mb.append("Being a blogger is an exciting thing … it’s on the edge of coolness, it’s the hip in hippest.  More than that, it’s a way to capture your life as you live it.  You’re at the zoo and see just the strangest animal.  Unfortunately, you’re alone.  Take a picture with your camera phone and send it to your web log.  You just opened the door and invited your friends into your experience.  Pretty cool, huh?  Bloggers blog anywhere and everywhere.  At home.  At work.  At school.  At a friend’s house.  Think of these as journal entries. They can be short and sweet or long and involved. You can create entries many times a day or once every now and then.  The versatility of this tool is amazing.  Awake at 3:34 AM trying to fix the beeping fire alarm?  Blog it.  Remember it.  Just cooked the most excellent spaghetti ever at 5:59 PM?  Put it in your Cooking Log.  Brag to all of your friends.  It IS that simple.");
+mb.append("<br><br>");
+mb.append("New blogs are popping up everywhere.  From the world of science to the world of teenage angst, bloggers are making a name for themselves.  It’s time you got started, don’t ya’ think?");
+
+mb.append("</font>");
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+//Tour navigation
+mb.append(reger.marketingSite.TourHtml.tourNavHtml(pageProps.pathToAppRoot, "", "", "tour-overview-02.log", "Next >>"));
+
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

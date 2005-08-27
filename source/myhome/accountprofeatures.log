@@ -1,0 +1,46 @@
+<%@ page import="reger.core.db.Db,
+                 java.util.Hashtable,
+                 java.text.NumberFormat,
+                 java.util.Locale"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Account Status";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingsacctstatus";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("<font face=arial size=+1><a href='accountstatus.log'>Upgrade Now.</a></font><br><br>");
+mb.append(reger.marketingSite.ProFeaturesGrid.getHtml(true, pageProps.pathToAppRoot));
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

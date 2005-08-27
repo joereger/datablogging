@@ -1,0 +1,128 @@
+
+<%@ page import="java.util.*,
+                 reger.template.Template,
+                 reger.core.db.Db,
+                 reger.AllLogsInSystem,
+                 reger.Log,
+                 reger.template.AllTemplatesInSystem" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+//pageProps.title = "MasterAdmin Control Center Home Page";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loetemplates";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append(reger.core.Util.popup());
+
+//Get templateid
+int templateid = -1;
+if (request.getParameter("templateid")!=null && reger.core.Util.isinteger(request.getParameter("templateid"))){
+    templateid = Integer.parseInt(request.getParameter("templateid"));
+}
+
+//Get newtemplateid
+int newtemplateid = -1;
+if (request.getParameter("newtemplateid")!=null && reger.core.Util.isinteger(request.getParameter("newtemplateid"))){
+    newtemplateid = Integer.parseInt(request.getParameter("newtemplateid"));
+}
+
+//Load the template
+//Load the template
+Template template = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(templateid, 0);
+if (template==null){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, that template doesn't exist."));
+} else if (template.getAccountid()<=0){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, you can't delete user templates."));
+} else {
+
+
+    //Do the delete
+    if (pageProps.action.equals("deletefinal")){
+        template.delete(newtemplateid);
+        AllTemplatesInSystem.refresh(template.getTemplateid());
+        userSession.getAccount().refresh();
+        response.sendRedirect("settings-template-main.log");
+        return;
+    }
+
+
+
+    //Are you sure ?
+
+    mb.append("<font face=arial size=+1>");
+    mb.append("Are you sure you want to delete this template ("+template.getName()+")?");
+    mb.append("</font>");
+
+    mb.append("<br>");
+    mb.append("<br>");
+
+    int countOfUses = template.countUsesOfTemplate();
+
+    mb.append("This template is in use in " + countOfUses + " place(s)." );
+
+    mb.append("<form action=settings-template-delete.log>");
+    mb.append("<input type=hidden name='templateid' value="+template.getTemplateid()+">");
+    mb.append("<input type=hidden name=action value=deletefinal>");
+    if(countOfUses>0){
+
+        mb.append("<br>");
+        mb.append("<br>");
+
+        //Site Template
+        //reger.UserSession userSession;
+        Template activeTemplate = null;
+        Template[] siteUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(template.getType(), userSession.getAccount().getAccountid());
+        Template[] siteSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(template.getType());
+        mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "Convert Those that Use It to Another Template", "Choose a template on the right.  Any uses of "+template.getName()+" will be converted to using the template to the right.", -1, template.getType(), "settings-template-main.log", "settings-template-edit.log", false, false, false, true, "newtemplateid", false));
+
+    }
+
+    mb.append("<br>");
+    mb.append("<br>");
+
+
+    mb.append("<input type=submit value=\"Delete Template ("+reger.core.Util.cleanForHtml(template.getName())+")\">");
+
+    mb.append("</form>");
+}
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

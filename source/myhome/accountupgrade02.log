@@ -1,0 +1,171 @@
+<%@ page import="reger.core.db.Db,
+                 java.text.NumberFormat,
+                 java.text.DecimalFormat,
+                 java.util.Locale,
+                 reger.core.licensing.License,
+                 reger.core.licensing.RegerLicensingApiClient,
+                 reger.core.licensing.PriceCalculator,
+                 java.util.Calendar,
+                 java.util.Hashtable"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Account Upgrade";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingsacctstatus";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+////Grab some incoming vars
+
+
+
+//Validate incoming
+String errortext = "";
+long storagespace = 0;
+if (request.getParameter("storagespace")!=null && reger.core.Util.isnumeric(request.getParameter("storagespace"))){
+    storagespace = Long.parseLong(request.getParameter("storagespace"));
+}
+long maxbandwidth = 0;
+if (request.getParameter("maxbandwidth")!=null && reger.core.Util.isnumeric(request.getParameter("maxbandwidth"))){
+    maxbandwidth = Long.parseLong(request.getParameter("maxbandwidth"));
+}
+if (request.getParameter("storagespace")==null || request.getParameter("storagespace").equals("")){
+    errortext = errortext + "<br>You must choose a storage limit.";
+}
+if (request.getParameter("maxbandwidth")==null || request.getParameter("maxbandwidth").equals("")){
+    errortext = errortext + "<br>You must choose a maximum monthly bandwidth limit.";
+}
+if (request.getParameter("address1")==null || request.getParameter("address1").equals("")){
+    errortext = errortext + "<br>You must provide an address1.";
+}
+if (request.getParameter("zip")==null || request.getParameter("zip").equals("")){
+    errortext = errortext + "<br>You must provide a zip code.";
+}
+if (request.getParameter("name")==null || request.getParameter("name").equals("")){
+    errortext = errortext + "<br>You must provide a name.";
+}
+if (request.getParameter("cardtype")==null || request.getParameter("cardtype").equals("")){
+    errortext = errortext + "<br>You must choose a card type.";
+}
+if (request.getParameter("ccnum")==null || request.getParameter("ccnum").equals("")){
+    errortext = errortext + "<br>You must enter your credit card number.";
+}
+if (request.getParameter("expirationmonth")==null || request.getParameter("expirationmonth").equals("")){
+    errortext = errortext + "<br>You must select your expiration month.";
+}
+if (request.getParameter("expirationyear")==null || request.getParameter("expirationyear").equals("")){
+    errortext = errortext + "<br>You must select your expiration year.";
+}
+if (request.getParameter("phone")==null || request.getParameter("phone").equals("")){
+    errortext = errortext + "<br>You must enter a phone number.";
+}
+if (request.getParameter("email")==null || request.getParameter("email").equals("")){
+    errortext = errortext + "<br>You must enter a valid email address.";
+}
+
+if (!errortext.equals("")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+
+
+if (pageProps.action.equals("upgrade") && errortext.equals("")) {
+
+    //Calculate the price
+    double price = PriceCalculator.calculatePrice(userSession.getPl().getBaseaccountprice(), userSession.getPl().getPriceper100mbstorage(), userSession.getPl().getPricepergbbandwidth(), storagespace, maxbandwidth);
+
+    //Create a license
+    Hashtable props = new Hashtable();
+    props.put(License.PROPSTRINGAMOUNT, String.valueOf(price));
+    props.put(License.PROPSTRINGISCHARGEDTOCREDITCARD, "1");
+    props.put(License.PROPSTRINGISRECURRINGBILLING, "1");
+    props.put(License.PROPSTRINGCHARGEEVERY, "1");
+    props.put(License.PROPSTRINGCHARGEEVERYUNITS, String.valueOf(License.CHARGEEVERYMONTHS));
+    props.put(License.PROPSTRINGLICENSETYPE, String.valueOf(License.LICENSETYPEACCOUNTSUBSCRIPTION));
+    props.put(License.PROPSTRINGMAXBANDWIDTH, String.valueOf(maxbandwidth));
+    props.put(License.PROPSTRINGMAXSPACEINBYTES, String.valueOf(storagespace));
+    License proposedLicense = new License(null, props);
+
+    //Call the licensing server
+    Hashtable result = RegerLicensingApiClient.createLicense(userSession.getAccount().getLicense().getEncryptedLicense(), proposedLicense.getEncryptedLicense(), request.getParameter("name"), request.getParameter("address1"), request.getParameter("address2"), request.getParameter("city"), request.getParameter("state"), request.getParameter("zip"), request.getParameter("country"), request.getParameter("ccnum"), request.getParameter("expirationmonth"), request.getParameter("expirationyear"), request.getParameter("phone"), request.getParameter("email"));
+
+
+
+    //Display
+    if (result.get("successful")!=null && ((String)result.get("successful")).equals("true")){
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  Your account has been upgraded!"));
+        mb.append("<br>");
+    }
+    if (result.get("errormessage")!=null && !((String)result.get("errormessage")).equals("")){
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "There has been an error: " + result.get("errormessage")));
+        mb.append("<br>");
+    }
+
+
+    //Debug
+    if (1==2){
+        if (result.get("successful")!=null && !((String)result.get("successful")).equals("")){
+            mb.append("successful="+result.get("successful")+"<br>");
+            mb.append("<br>");
+        } else {
+            mb.append("successful=not returned<br>");
+            mb.append("<br>");
+        }
+        if (result.get("errormessage")!=null && !((String)result.get("errormessage")).equals("")){
+            mb.append("error="+result.get("errormessage")+"<br>");
+            mb.append("<br>");
+        }
+    }
+
+
+    if (result.get("encryptedlicense")!=null && !((String)result.get("encryptedlicense")).equals("")){
+        License lic = new License(null, (String)result.get("encryptedlicense"));
+        //Save the license to the account
+        userSession.getAccount().setEncryptedLicense(lic.getEncryptedLicense());
+
+//        mb.append("expdategmt="+lic.getProperty(License.PROPSTRINGEXPDATEGMT)+"<br>");
+//        mb.append("iscommercial="+lic.getProperty(License.PROPSTRINGISCOMMERCIAL)+"<br>");
+//        mb.append("licensetype="+lic.getProperty(License.PROPSTRINGLICENSETYPE)+"<br>");
+//        mb.append("<br>");
+//        mb.append("<b>decryptedlicense</b><br>"+lic.getDecryptedLicense()+"<br>");
+//        mb.append("<br>");
+//        mb.append("<b>encryptedlicense</b><br>"+lic.getEncryptedLicense()+"<br>");
+    } else {
+        mb.append("Error creating license.  The license was empty.  Please try again.");
+    }
+
+}
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

@@ -1,0 +1,37 @@
+
+<project name="RegercomDevQuickbuild" default="QuickBuild" basedir=".">
+  <description>
+        The Best Damn Build Process This Side of Sanity
+  </description>
+
+
+  <!-- Import properties file -->
+  <property file="RegercomDev.properties"/>
+
+
+  <!-- Set internal script properties -->
+  <property name="lastbuild" location="builds/lastbuild/${tomcat.app.name}"/>
+  <property name="wardir" location="builds/WARs/${tomcat.app.name}"/>
+  <property name="javasrc" location="builds/lastbuild/${tomcat.app.name}/WEB-INF/classes"/>
+  <property name="builddir" location="builds"/>
+  <property name="sourcedir" location="source"/>
+
+	
+	<!-- Start Quick and artificial build -->
+	<target name="QuickBuild" description="Compile the java source and put in Tomcat working directory">
+  	 	<echo message="Compiling Java code."/>
+     	<copy todir="${lastbuild}" >
+            <fileset dir="${sourcedir}" excludes="**/Thumbs.db"/>
+        </copy>
+
+     	<javac srcdir="${javasrc}" destdir="C:\SuperFly\Tomcat\webapps\ROOT\WEB-INF\classes" excludes="**.x" debug="on" />
+		<copy todir="C:\SuperFly\Tomcat\webapps\ROOT\">
+			<fileset dir="${lastbuild}">
+			</fileset>
+		</copy>
+		<ant antfile="TomcatDeploy.xml" target="reloadApp" inheritAll="true"/>
+	</target>
+	<!-- End Quick and artificial build -->
+
+	
+</project>

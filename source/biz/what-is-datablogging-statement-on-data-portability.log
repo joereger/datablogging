@@ -1,0 +1,60 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Data Portability";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.core.Util.popup());
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+mb.append("<br clear=all>");
+mb.append("<h1>Open Data</h1>");
+mb.append("While we are a commercial entity we have a strong dedication to open standards for data portability.  It is our intention to take part in the evolving world of microcontent formats.  We have a platform that allows users to define blog types quickly and easily.  This makes us fertile ground for the application of many microcontent formats.  Currently we are working to provide support for the <a href='http://www.structuredblogging.org'>Structured Blogging</a> initiative.  We have proposed a <a href='what-is-datablogging-rss.log'>namespace for RSS</a>.  We have proposed the <a href='what-is-datablogging-rss-in-html.log'>embedding of RSS inside of Html</a>. We will continue to support multiple standards as the space matures.");
+
+mb.append("<h1>APIs</h1>");
+mb.append("In addition to the publishing of extended log data we are working on a set of XML-RPC apis to allow publishing and consumption of extended blog data.");
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

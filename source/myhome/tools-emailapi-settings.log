@@ -1,0 +1,439 @@
+<%@ page import="reger.core.Util,
+                 reger.Help,
+                 reger.core.db.Db,
+                 reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Post By Email and Camera Phone";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "toolsemailcamphonesettings";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Setup some default vars
+int overridecamphonesubject = 1;
+String overridecamphonesubjecttext = "Camera Phone Picture(s) For Today";
+int ignorecamphonebody = 1;
+int consolidatecamphonetoonedailyentry = 1;
+int saveemailpostsasdraft = 0;
+int savecamphonepostsasdraft = 0;
+String camphoneimagetags = "";
+
+int emailapiid = -1;
+
+String emailsecret="";
+
+//Get the values from the database and let them override the default values
+//-----------------------------------
+//-----------------------------------
+String[][] rstSettings= Db.RunSQL("SELECT overridecamphonesubject, overridecamphonesubjecttext, ignorecamphonebody, consolidatecamphonetoonedailyentry, saveemailpostsasdraft, savecamphonepostsasdraft, emailapiid, emailsecret, camphoneimagetags FROM emailapi WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' LIMIT 0,1");
+//-----------------------------------
+//-----------------------------------
+if (rstSettings!=null && rstSettings.length>0){
+
+    emailsecret = rstSettings[0][7];
+
+    emailapiid = Integer.parseInt(rstSettings[0][6]);
+
+    if (!rstSettings[0][0].equals("") && reger.core.Util.isinteger(rstSettings[0][0])){
+        overridecamphonesubject = Integer.parseInt(rstSettings[0][0]);
+    }
+    if (!rstSettings[0][1].equals("")){
+        overridecamphonesubjecttext = rstSettings[0][1];
+    }
+    if (!rstSettings[0][2].equals("") && reger.core.Util.isinteger(rstSettings[0][2])){
+        ignorecamphonebody = Integer.parseInt(rstSettings[0][2]);
+    }
+    if (!rstSettings[0][3].equals("") && reger.core.Util.isinteger(rstSettings[0][3])){
+        consolidatecamphonetoonedailyentry = Integer.parseInt(rstSettings[0][3]);
+    }
+    if (!rstSettings[0][4].equals("") && reger.core.Util.isinteger(rstSettings[0][4])){
+        saveemailpostsasdraft = Integer.parseInt(rstSettings[0][4]);
+    }
+    if (!rstSettings[0][5].equals("") && reger.core.Util.isinteger(rstSettings[0][5])){
+        savecamphonepostsasdraft = Integer.parseInt(rstSettings[0][5]);
+    }
+    if (!rstSettings[0][8].equals("")){
+        camphoneimagetags = rstSettings[0][8];
+    }
+}
+
+
+
+
+//Action of the page
+String errortext = "";
+if (pageProps.action.equals("go")){
+
+    //Get the values from the request and let them override the database values
+    if (request.getParameter("emailsecret")!=null && !request.getParameter("emailsecret").equals("")){
+            emailsecret = request.getParameter("emailsecret");
+    }
+
+    if (request.getParameter("overridecamphonesubject")!=null && request.getParameter("overridecamphonesubject").equals("1")){
+        overridecamphonesubject = 1;
+    } else {
+        overridecamphonesubject = 0;
+    }
+
+    if (request.getParameter("overridecamphonesubjecttext")!=null && !request.getParameter("overridecamphonesubjecttext").equals("")){
+        overridecamphonesubjecttext = request.getParameter("overridecamphonesubjecttext");
+    }
+
+    if (request.getParameter("ignorecamphonebody")!=null && request.getParameter("ignorecamphonebody").equals("1")){
+        ignorecamphonebody = 1;
+    } else {
+        ignorecamphonebody = 0;
+    }
+
+    if (request.getParameter("consolidatecamphonetoonedailyentry")!=null && request.getParameter("consolidatecamphonetoonedailyentry").equals("1")){
+        consolidatecamphonetoonedailyentry = 1;
+    } else {
+        consolidatecamphonetoonedailyentry = 0;
+    }
+
+    if (request.getParameter("saveemailpostsasdraft")!=null && request.getParameter("saveemailpostsasdraft").equals("1")){
+        saveemailpostsasdraft = 1;
+    } else {
+        saveemailpostsasdraft = 0;
+    }
+
+    if (request.getParameter("savecamphonepostsasdraft")!=null && request.getParameter("savecamphonepostsasdraft").equals("1")){
+        savecamphonepostsasdraft = 1;
+    } else {
+        savecamphonepostsasdraft = 0;
+    }
+
+    if (request.getParameter("camphoneimagetags")!=null && !request.getParameter("camphoneimagetags").equals("")){
+        camphoneimagetags = request.getParameter("camphoneimagetags");
+    }
+
+    //Validation
+    if (emailsecret.equals("")){
+        errortext = errortext + "The Email Secret can't be blank.<br>";
+    }
+
+    if (emailsecret.split("[a-zA-Z0-9\\-]").length>1){
+        errortext=errortext + "<br>The Email Secret can only be made up of letters, numbers and dashes.  No spaces or other characters are allowed.<br>";
+    }
+
+
+    if (emailapiid>0){
+        //Update the record
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate("UPDATE emailapi SET emailsecret='"+reger.core.Util.cleanForSQL(emailsecret)+"', overridecamphonesubject='"+overridecamphonesubject+"', overridecamphonesubjecttext='"+reger.core.Util.cleanForSQL(overridecamphonesubjecttext)+"', ignorecamphonebody='"+ignorecamphonebody+"', consolidatecamphonetoonedailyentry='"+consolidatecamphonetoonedailyentry+"', saveemailpostsasdraft='"+saveemailpostsasdraft+"', savecamphonepostsasdraft='"+savecamphonepostsasdraft+"', camphoneimagetags='"+reger.core.Util.cleanForSQL(camphoneimagetags)+"' WHERE emailapiid='"+emailapiid+"'");
+        //-----------------------------------
+        //-----------------------------------
+    } else {
+        //Create the record
+        //-----------------------------------
+        //-----------------------------------
+        int identity = Db.RunSQLInsert("INSERT INTO emailapi(emailsecret, accountuserid, overridecamphonesubject, overridecamphonesubjecttext, ignorecamphonebody, consolidatecamphonetoonedailyentry, saveemailpostsasdraft, savecamphonepostsasdraft, camphoneimagetags) VALUES('"+reger.core.Util.cleanForSQL(emailsecret)+"', '"+userSession.getAccountuser().getAccountuserid()+"', '"+overridecamphonesubject+"', '"+Util.cleanForSQL(overridecamphonesubjecttext)+"', '"+ignorecamphonebody+"', '"+consolidatecamphonetoonedailyentry+"', '"+saveemailpostsasdraft+"', '"+savecamphonepostsasdraft+"', '"+reger.core.Util.cleanForSQL(camphoneimagetags)+"')");
+        //-----------------------------------
+        //-----------------------------------
+
+    }
+
+    //Redirect on success
+    if (errortext.equals("")){
+        try {
+            response.sendRedirect("tools-emailapi-emailaddresses.log");
+            return;
+        } catch (Exception e){
+            reger.core.Util.errorsave(e);
+        }
+    }
+
+
+
+
+
+}
+
+//Display any errors
+if (!errortext.equals("")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+    mb.append("<br>");
+}
+
+if (pageProps.action.equals("newsettings")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Before you post via email you must set your preferences.  Choose your Email Secret and click Save Settings on this page."));
+    mb.append("<br>");
+}
+
+
+String emailapisection = "settings";
+%>
+<%@ include file="tools-emailapi-navbar.jsp" %>
+<%
+
+String tmp = "";
+
+mb.append("<table cellpadding=5 cellspacing=1 border=0 width=100% bgcolor=#000000>");
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff>");
+mb.append("<font face=arial size=-1>");
+
+mb.append("<form action='tools-emailapi-settings.log' method=post>");
+mb.append("<input type=hidden name=action value=go>");
+
+mb.append("<table cellpadding=7 cellspacing=0 border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("Email Secret:");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("You must choose an Email Secret before you can post via email.  This Email Secret is important because it controls access to your email gateway.  Don't share the Email Secret with other people.  If another person gets it they'll be able to post to your site via email.  It should be short (less than five characters) for convenience.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("<input type=text name=emailsecret value=\""+emailsecret+"\" size=5 maxlength=5>");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("Override Camera Phone Subject?");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("When posting with your camera phone it's often difficult to type a meaningful message with those tiny phone keys.  This setting allows you to override any subject that is sent from the phone with what's in the box to the right.  This is convenient because it allows you to quickly click and send without worrying about how the subject appears on your site.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left nowrap>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+if (overridecamphonesubject==1){
+    tmp=" checked";
+} else {
+    tmp="";
+}
+mb.append("<input type=checkbox name=overridecamphonesubject value=\"1\" "+tmp+"> Yes");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("If Yes, With What Subject?");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("What subject would you like to use for incoming camera phone pictures?  Examples: \"Camera Phone Picture\", \"My Cool Phone Pics\", etc.    Use &lt;$Date$> to have the server put a date in the title for you.  For example \"Phone Cam Pics From &lt;$Date$>\"");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left nowrap>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("<input type=text name=overridecamphonesubjecttext size=25 maxlength=255 value=\""+reger.core.Util.cleanForHtml(overridecamphonesubjecttext)+"\">");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+String helpImagetags = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.", false, pageProps.pathToAppRoot);
+mb.append("Optional Automatic Keyword Tags "+helpImagetags+":");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("A default set of keyword tags for phone cam pics to be added to.  You can always change the tags for each image... but this gives you a head start by automatically categorizing them initially.  Most people use something like 'camphone'");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left nowrap>");
+mb.append("<input type='text' name='camphoneimagetags' value=\""+reger.core.Util.cleanForHtml(camphoneimagetags)+"\" size='35' maxlength='254' style=\"font-size: 10px;\">");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("Ignore Camera Phone Message Body?");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Similar to the Override Subject for camera phones.  Some cell phone companies automatically put an advertisement or other text in the body of camera phone messages.  You can use this setting to override such text.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left nowrap>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+if (ignorecamphonebody==1){
+    tmp=" checked";
+} else {
+    tmp="";
+}
+mb.append("<input type=checkbox name=ignorecamphonebody value=\"1\" "+tmp+"> Yes");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("Consolidate Camera Phone Pics Into One Daily Entry?");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("When you send a lot of camera phone pics to your web log it can make your homepage look cluttered.  This setting allows you to put all camera phone pictures from a single day into one entry.  Each day a new entry will be created with as many camera phone pictures as you can send.  It's clean and simple that way.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left nowrap>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+if (consolidatecamphonetoonedailyentry==1){
+    tmp=" checked";
+} else {
+    tmp="";
+}
+mb.append("<input type=checkbox name=consolidatecamphonetoonedailyentry value=\"1\" "+tmp+"> Yes");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("Save Email Posts As Draft?");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Checking this box allows you to send email entries to your web log without publishing them.  They will remain in Draft until you log in to your Admin section and publish them.  This is a convenient way to start entries by email and then finish and publish them with the more powerful Admin section.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left nowrap>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+if (saveemailpostsasdraft==1){
+    tmp=" checked";
+} else {
+    tmp="";
+}
+mb.append("<input type=checkbox name=saveemailpostsasdraft value=\"1\" "+tmp+"> Yes");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("Save Camera Phone Posts As Draft?");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Check this box to post camera phone messages as Draft until you log in and publish them.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left nowrap>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+if (savecamphonepostsasdraft==1){
+    tmp=" checked";
+} else {
+    tmp="";
+}
+mb.append("<input type=checkbox name=savecamphonepostsasdraft value=\"1\" "+tmp+"> Yes");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right>");
+mb.append("&nbsp;");
+mb.append("</td>");
+mb.append("<td valign=top align=left nowrap>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>");
+mb.append("<input type=submit value='Save Settings'>");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("</table>");
+
+
+mb.append("</form>");
+
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("<br><br>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

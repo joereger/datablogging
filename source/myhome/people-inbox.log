@@ -1,0 +1,69 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Inbox";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "peopleinbox";
+pageProps.aclObjectName = "PEOPLE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Delete
+if (pageProps.action.equals("delete")){
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("DELETE FROM friendmessagerecipient WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND friendmessagerecipientid='"+request.getParameter("friendmessagerecipientid")+"'");
+    //-----------------------------------
+    //-----------------------------------
+}
+
+//Mark Unread
+if (pageProps.action.equals("markunread")){
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("UPDATE friendmessagerecipient SET isread='0' WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND friendmessagerecipientid='"+request.getParameter("friendmessagerecipientid")+"'");
+    //-----------------------------------
+    //-----------------------------------
+}
+
+//Mark Read
+if (pageProps.action.equals("markread")){
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("UPDATE friendmessagerecipient SET isread='1' WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND friendmessagerecipientid='"+request.getParameter("friendmessagerecipientid")+"'");
+    //-----------------------------------
+    //-----------------------------------
+}
+
+//Put up the main inbox
+mb.append(reger.InboxHtml.getInboxListing(true, -1, pageProps, userSession, request));
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

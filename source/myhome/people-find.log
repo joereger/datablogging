@@ -1,0 +1,420 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Find People";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "peoplefind";
+pageProps.aclObjectName = "PEOPLE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("<br><br>");
+
+//Find a site by alpha
+mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-1>");
+mb.append("Find a Person or Site Alphabetically");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff>");
+mb.append("<font face=arial size=-2>");
+mb.append("Click on the first letter/number of the site's url or the friendly name of the user:");
+
+java.util.Vector alphas = new java.util.Vector();
+alphas.add("a");
+alphas.add("b");
+alphas.add("c");
+alphas.add("d");
+alphas.add("e");
+alphas.add("f");
+alphas.add("g");
+alphas.add("h");
+alphas.add("i");
+alphas.add("j");
+alphas.add("k");
+alphas.add("l");
+alphas.add("m");
+alphas.add("n");
+alphas.add("o");
+alphas.add("p");
+alphas.add("q");
+alphas.add("r");
+alphas.add("s");
+alphas.add("t");
+alphas.add("u");
+alphas.add("v");
+alphas.add("w");
+alphas.add("x");
+alphas.add("y");
+alphas.add("z");
+alphas.add("0");
+alphas.add("1");
+alphas.add("2");
+alphas.add("3");
+alphas.add("4");
+alphas.add("5");
+alphas.add("6");
+alphas.add("7");
+alphas.add("8");
+alphas.add("9");
+
+mb.append("<table align=center cellpadding=5 cellspacing=2 bgcolor=#e6e6e6>");
+mb.append("<tr>");
+    for (int i = 0; i < alphas.size(); i++) {
+        String s = (String) alphas.elementAt(i);
+        String bgcolor="#ffffff";
+        if (s.equals(request.getParameter("alpha"))){
+            bgcolor="#cccccc";
+        }
+        mb.append("<td valign=top align=left bgcolor="+bgcolor+">");
+        mb.append("<a href='people-find.log?alpha="+s+"'>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(s);
+        mb.append("</font>");
+        mb.append("</a>");
+        mb.append("</td>");
+    }
+mb.append("</tr>");
+mb.append("</table>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+//Find a site by alpha
+
+//Find a site
+mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-1>");
+mb.append("Find a Person or Site by Searching");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff>");
+mb.append("<font face=arial size=-2>");
+mb.append("<form action=people-find.log method=post>");
+mb.append("Type a site's URL or title:<br>");
+mb.append("<input type=text name=searchsites maxlength=50 size=15>");
+mb.append("<input type=submit value='Go'>");
+mb.append("</font>");
+mb.append("</form>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+//Find a site
+
+
+
+
+//Results
+if (request.getParameter("searchsites")!=null || request.getParameter("alpha")!=null){
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#cccccc>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Search Results");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-1>");
+
+    String sql = "";
+
+    if (request.getParameter("searchsites")!=null && !request.getParameter("searchsites").equals("")){
+        sql = "SELECT account.accountid, homepagetitle, friendlyname, accountuserid FROM account, accountuser, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND accountuser.accountid=account.accountid AND (account.islistedindirectory='1') AND (  (friendlyname LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%') OR (accounturl LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%') OR (customservername LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%') OR (homepagetitle LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%')  ) LIMIT 0,100";
+    }
+
+
+    if (request.getParameter("alpha")!=null && !request.getParameter("alpha").equals("")){
+        sql = "SELECT account.accountid, homepagetitle, friendlyname, accountuserid FROM account, accountuser, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND accountuser.accountid=account.accountid AND (account.islistedindirectory='1') AND (  (LCASE(SUBSTRING(accountuser.friendlyname, 1, 1))=LCASE('"+reger.core.Util.cleanForSQL(request.getParameter("alpha"))+"')) OR  (LCASE(SUBSTRING(account.accounturl, 1, 1))=LCASE('"+reger.core.Util.cleanForSQL(request.getParameter("alpha"))+"'))  ) ORDER BY friendlyname ASC";
+    }
+
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstSearch= Db.RunSQL(sql);
+    //-----------------------------------
+    //-----------------------------------
+    if (rstSearch!=null && rstSearch.length>0){
+        mb.append("<table cellpadding=5 cellspacing=3 border=0>");
+        mb.append("<tr>");
+        mb.append("<td valign=top bgcolor=#e6e6e6>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("Author");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top bgcolor=#e6e6e6>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("Site URL");
+        mb.append("</font>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=-2>");
+        mb.append("Click this link to visit their site.");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top bgcolor=#e6e6e6>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("Site Name");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top bgcolor=#e6e6e6>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("Grant User Access to Your Site?");
+        mb.append("</font>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=-2>");
+        mb.append("You are able to give users from other sites access to your site.  You're in control of how much or how little access they get.  You can simply give them access to one private log or you can allow them to add log entries to your site, becoming an author.  By clicking the button below you start the process but don't grant any actual permissions.");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top bgcolor=#e6e6e6>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("Make User a Friend?");
+        mb.append("</font>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=-2>");
+        mb.append("By defining another user as a friend you expand your personal network.");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+        for(int i=0; i<rstSearch.length; i++){
+            mb.append("<tr>");
+            mb.append("<td valign=top bgcolor=#ffffff>");
+            reger.Accountuser au = new reger.Accountuser(Integer.parseInt(rstSearch[i][3]));
+            mb.append("<img src=\"" + au.primaryImage(pageProps.pathToAppRoot, true) + "\" border=0 width=35 align=left>");
+            mb.append("<font face=arial size=-2>");
+            mb.append(rstSearch[i][2]);
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top bgcolor=#ffffff>");
+            mb.append("<font face=arial size=-2>");
+            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSearch[i][0]));
+            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+            mb.append(""+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/");
+            mb.append("</a>");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top bgcolor=#ffffff>");
+            mb.append("<font face=arial size=-2>");
+            mb.append(rstSearch[i][1]);
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top bgcolor=#ffffff>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("<a href='people-accountuser.log?accountuserid="+rstSearch[i][3]+"'>");
+            mb.append("<img src='"+pageProps.pathToAppRoot+"images/icon-private.gif' border=0>");
+            mb.append("Grant Access");
+            mb.append("</a>");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top bgcolor=#ffffff>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("<a href='people-friendassociateend.log?action=addfriend&accountuseridOfFriendToAdd="+rstSearch[i][3]+"'>");
+            mb.append("<img src='"+pageProps.pathToAppRoot+"images/plus-icon.gif' border=0>");
+            mb.append("Create Friendship");
+            mb.append("</a>");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+        mb.append("</table>");
+    } else {
+        mb.append("None found.");
+    }
+
+
+}
+
+
+
+
+
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+//Interesting site stuff
+//if ((request.getParameter("searchsites")==null || request.getParameter("searchsites").equals("")) && (request.getParameter("alpha")==null || request.getParameter("alpha").equals(""))){
+//
+//
+//    mb.append("<table cellpadding=5 width=100% cellspacing=0 border=0>");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top>");
+//
+//    //Start Newest Sites
+//    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+//    mb.append("<tr>");
+//    mb.append("<td bgcolor=#e6e6e6>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("Newest Sites");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td bgcolor=#ffffff>");
+//    mb.append("<font face=arial size=-2>");
+//    //-----------------------------------
+//    //-----------------------------------
+//    String[][] rstSites= Db.RunSQL("SELECT accountid, homepagetitle, accountid FROM account WHERE account.islistedindirectory='1' AND account.plid='"+userSession.getPl().getPlid()+"' ORDER BY createdate DESC LIMIT 0,25");
+//    //-----------------------------------
+//    //-----------------------------------
+//    if (rstSites!=null && rstSites.length>0){
+//        for(int i=0; i<rstSites.length; i++){
+//            mb.append((i+1)+") ");
+//            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSites[i][2]));
+//            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+//            String sitename = rstSites[i][1];
+//            if (sitename.equals("")){
+//                sitename=rstSites[i][2];
+//            }
+//            mb.append(sitename);
+//            mb.append("</a>");
+//            mb.append("<br>");
+//
+//        }
+//    }
+//    mb.append("</font>");
+//    mb.append("<br>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("</table>");
+//    //End Newest Sites
+//
+//
+//    mb.append("</td>");
+//    mb.append("<td valign=top>");
+//
+//
+//    //Start Sites Most Read In Last 7 Days
+//    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+//    mb.append("<tr>");
+//    mb.append("<td bgcolor=#e6e6e6>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("Sites Most Read In Last 7 Days");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td bgcolor=#ffffff>");
+//    mb.append("<font face=arial size=-2>");
+//    //-----------------------------------
+//    //-----------------------------------
+//    String[][] rstStsMstRd= Db.RunSQL("SELECT account.accountid, homepagetitle, account.accountid, sum(traffic.count) as cnt FROM account, traffic WHERE account.islistedindirectory='1' AND account.plid='"+userSession.getPl().getPlid()+"' AND traffic.accountid=account.accountid AND traffic.datetime>'"+reger.core.TimeUtils.dateformatfordb(reger.core.TimeUtils.xDaysAgoStart(java.Util.Calendar.getInstance(), 8))+"' GROUP BY accountid ORDER BY cnt DESC LIMIT 0,25");
+//    //-----------------------------------
+//    //-----------------------------------
+//    if (rstStsMstRd!=null && rstStsMstRd.length>0){
+//        for(int i=0; i<rstStsMstRd.length; i++){
+//            mb.append((i+1)+") ");
+//            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstStsMstRd[i][2]));
+//            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+//            String sitename = rstStsMstRd[i][1];
+//            if (sitename.equals("")){
+//                sitename=rstStsMstRd[i][2];
+//            }
+//            mb.append(sitename);
+//            mb.append("</a>");
+//            mb.append(" ("+rstStsMstRd[i][3]+")");
+//            mb.append("<br>");
+//        }
+//    }
+//    mb.append("</font>");
+//    mb.append("<br>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("</table>");
+//    //End Sites Most Read In Last 7 Days
+//
+//
+//    mb.append("</td>");
+//    mb.append("<td valign=top>");
+//
+//
+//
+//    //Start Sites Most Read All Time
+//    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+//    mb.append("<tr>");
+//    mb.append("<td bgcolor=#e6e6e6>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("Sites Most Read All Time");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td bgcolor=#ffffff>");
+//    mb.append("<font face=arial size=-2>");
+//    //-----------------------------------
+//    //-----------------------------------
+//    String[][] rstStsMstRdAllTime= Db.RunSQL("SELECT account.accountid, homepagetitle, account.accountid, sum(traffic.count) as cnt FROM account, traffic WHERE account.islistedindirectory='1' AND account.plid='"+userSession.getPl().getPlid()+"' AND traffic.accountid=account.accountid GROUP BY accountid ORDER BY cnt DESC LIMIT 0,25");
+//    //-----------------------------------
+//    //-----------------------------------
+//    if (rstStsMstRdAllTime!=null && rstStsMstRdAllTime.length>0){
+//        for(int i=0; i<rstStsMstRdAllTime.length; i++){
+//            mb.append((i+1)+") ");
+//            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstStsMstRdAllTime[i][2]));
+//            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+//            String sitename = rstStsMstRdAllTime[i][1];
+//            if (sitename.equals("")){
+//                sitename=rstStsMstRdAllTime[i][2];
+//            }
+//            mb.append(sitename);
+//            mb.append("</a>");
+//            mb.append(" ("+rstStsMstRdAllTime[i][3]+")");
+//            mb.append("<br>");
+//        }
+//    }
+//    mb.append("</font>");
+//    mb.append("<br>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("</table>");
+//    //End Sites Most Read All Time
+//
+//
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("</table>");
+//
+//}
+
+mb.append("<br><br><br><br>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

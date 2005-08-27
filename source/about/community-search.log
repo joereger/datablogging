@@ -1,0 +1,74 @@
+<%@ page import="reger.core.db.Db,
+                 reger.search.SearchUIFlowAdvSearch"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//HtmlCache
+String cachekey = "CommunitySearchPage" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+int refreshintervalinseconds = 600;
+%><%@ include file="../htmlcachestart.jsp" %><%
+
+
+    String currentNavButtonName = "community-search";
+    %><%@ include file="community-header.jsp" %><%
+
+    mb.append("<br>");
+    mb.append("<br>");
+
+    mb.append("<blockquote>");
+
+    //Create a SearchUI object
+    reger.search.SearchUI searchUI = new reger.search.SearchUI(request, userSession, new SearchUIFlowAdvSearch());
+
+    //In the case of this search.log jsp only the current account is searched
+    //int[] accountidsToSearch = new int[1];
+    //accountidsToSearch[0]=userSession.getAccount().getAccountid();
+    //searchUI.getSearchEntries().setAccountsToSearch(accountidsToSearch);
+
+    //Call the html
+    mb.append(searchUI.wrapperHtml());
+
+    mb.append("</blockquote>");
+
+
+
+
+    mb.append("<br><br>");
+
+
+    %><%@ include file="community-footer.jsp" %><%
+
+//HtmlCache
+%><%@ include file="../htmlcacheend.jsp" %><%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

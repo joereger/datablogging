@@ -1,0 +1,59 @@
+<%@ page import="reger.Help"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//
+////Parse the upload
+//reger.Upload ul = new reger.Upload(request);
+//
+//
+//int localEventid=0;
+//if (ul.requestParams.get("eventid")!=null && reger.core.Util.isinteger(ul.requestParams.get("eventid").toString())){
+//    localEventid = Integer.parseInt(ul.requestParams.get("eventid").toString());
+//}
+//
+//String imagetags = "";
+//if (ul.requestParams.get("imagetags")!=null){
+//    imagetags = ul.requestParams.get("imagetags").toString();
+//}
+//
+////Save the upload
+//if (ul.isMultipart) {
+//    //Note the false indicating that this is not a profile upload.
+//    //Note that accountuserid param is 0 because this is not a profile upload.
+//    reger.core.Util.debug(5, "entry-addmedia.log - Before ul.save()");
+//    ul.save(localEventid, imagetags, 0, new reger.UserSession(request));
+//    reger.core.Util.debug(5, "entry-addmedia.log - After ul.save()");
+//}
+//
+//mb.append("<form name='myform' action='upload.log' method='post' enctype='multipart/form-data'>");
+////mb.append("<input type=hidden name=eventid value="+localEventid+">");
+//mb.append("<table cellpadding=10 cellspacing=0 border=0 align=center>");
+//mb.append("<tr>");
+//mb.append("<td valign=top>");
+//for(int i=0; i<5; i++){
+//    mb.append("<input type='file' name='file"+i+"'>");
+//    mb.append("<br>");
+//}
+//mb.append("</td>");
+//
+//mb.append("</tr>");
+//mb.append("<tr>");
+//mb.append("<td valign=top align=center>");
+//mb.append("<input type='submit' name='Submit' value='Upload Files'/>");
+//mb.append("</td>");
+//mb.append("</tr>");
+//mb.append("</table>");
+//
+//mb.append("</form>");
+//
+//out.print(mb.toString());
+
+%>
+
+
+

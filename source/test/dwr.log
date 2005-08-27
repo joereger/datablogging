@@ -1,0 +1,78 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.Vars.LINEBREAKCHARFORHTML);
+mb.append(reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("<script src='/dwr/interface/Test.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("<script src='/dwr/engine.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("<script type=\"text/javascript\" src=\"/dwr/Util.js\" xml:space=\"preserve\"></script>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("<script type=\"text/javascript\">" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("function add(){" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    Test.add(update)" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("function getAccountid(){" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    Test.getAccountid(update)" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("function getIsloggedin(){" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    Test.getIsloggedin(update)" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("function update(data){" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    DWRUtil.setValue(\"output\", data)" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("</script>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append(reger.Vars.LINEBREAKCHARFORHTML);
+
+
+mb.append("<input value=\"Add\" type=\"button\" onclick=\"getIsloggedin()\">");
+mb.append("<span id='output' style='background:#eeffdd; padding-left:4px; padding-right:4px;'></span>");
+
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

@@ -1,0 +1,92 @@
+<%@ page import="reger.core.db.DbConfig,
+                 org.apache.commons.fileupload.FileItem,
+                 java.io.InputStream,
+                 java.util.Properties,
+                 java.util.Enumeration"%>
+<%
+//Only do this page if we have an invalid database connection.
+//Otherwise, anybody's going to be able to reset the database
+//configuration whenever they want. Which isn't cool.
+if (DbConfig.haveValidConfig()){
+    response.sendRedirect("setup-02.log");
+    return;
+}
+%>
+
+<%
+String errortext = "";
+%>
+
+<%
+//out.print("About to create reger.Upload object.<br>");
+reger.Upload ul = new reger.Upload(request);
+//out.print("About to get FileItems.<br>");
+FileItem[] fileItems = ul.getFileItems();
+if (fileItems!=null && fileItems.length>0){
+    //out.print("There is a FileItem.<br>");
+    for (int i = 0; i < fileItems.length; i++) {
+        FileItem fileItem = fileItems[i];
+        InputStream fileStream = fileItem.getInputStream();
+
+        //Load the file into props
+        Properties props = new Properties();
+        props.load(fileStream);
+
+
+
+        //Let's see what the props look like
+        Enumeration propsKeys = props.keys();
+        while (propsKeys.hasMoreElements()) {
+            String s = (String) propsKeys.nextElement();
+            //out.print("props: " + s + "=" + props.getProperty(s) + "<br>");
+        }
+
+
+        //Put them into the DbConfig
+        reger.core.db.DbConfig.loadPropsFile(props);
+
+        //Let's see what the props look like
+        //out.print("DbConfig.getDbConnectionUrl()= " + reger.core.db.DbConfig.getDbConnectionUrl() + "<br>");
+        //out.print("DbConfig.getDbUsername()= " + reger.core.db.DbConfig.getDbUsername() + "<br>");
+        //out.print("DbConfig.getDbPassword()= " + reger.core.db.DbConfig.getDbPassword() + "<br>");
+
+        //Save the props
+        if (reger.core.db.DbConfig.haveValidConfig()){
+            reger.core.db.DbConfig.save();
+            reger.scheduledtasks.Loader.startAMasterThread();
+            response.sendRedirect("setup-02.log");
+            return;
+        } else {
+            errortext = "There was an error.  This may mean that the application couldn't connect to the database.  This may also mean that the application did connect to the database but that the account it used didn't have enough permissions to run the application properly.";
+        }
+    }
+}
+
+
+%>
+
+<font face=arial size=+3 color=#cccccc>Database Connection Setup</font>
+<br><br>
+
+
+<%
+if (!errortext.equals("")){
+%>
+<font face=arial size=+1 color=#ff0000><%=errortext%></font>
+<%
+}
+%>
+
+<form action=setup-01-upload.log method=post enctype='multipart/form-data'>
+<input type=hidden name=action value=upload>
+
+<input type=file name=file1>
+
+<br>
+
+<input type=submit value='Upload Config'>
+
+
+</form>
+
+

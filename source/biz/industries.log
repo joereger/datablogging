@@ -1,0 +1,58 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Industries";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+
+mb.append("Reger.com's unique datablogging technology applies to many industries.  In general, it acts as a knowledge management tool inside the organization and a community building tool outside the organization.  To the left are listed some distinct industries, but the technology can be applied to most any organization, large or small.  Please give us a call to discuss your interest in blogging.");
+mb.append("<br>");
+mb.append("<br>");
+
+
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

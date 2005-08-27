@@ -1,0 +1,79 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Radio";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+//mb.append("Our activity-specific web logging concept instantly segments users into defined markets.  People using or reading a Running Log, for example are clearly interested in running.  We have over thirty distinct web log types and are adding more all the time.  This creates great targeted marketing opportunities.");
+
+mb.append("<br>");
+mb.append("<h1>Blogs Make Sense for Radio Stations</h1>");
+mb.append("<ul>");
+mb.append("<li>You have a large listener base, they all have opinions");
+mb.append("<li>Increased brand footprint");
+mb.append("<li>Radio station is the host of an active online community");
+mb.append("<li>New source of revenue");
+mb.append("<li>Quick and easy to setup, we can host everything");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>How it Works</h1>");
+mb.append("<ul>");
+mb.append("<li>Listeners go to your station site to sign up for a blog");
+mb.append("<li>They make blog (journal) entries");
+mb.append("<li>They share their site with their friends");
+mb.append("<li>When their friends read their blog, your brand name is at the top of all of their pages");
+mb.append("<li>If they pay to remove your brand, you share in the revenue");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Content Approval</h1>");
+mb.append("One of the biggest concerns for radio stations is content approval.  Radio stations don't want hate blogs, porn blogs or other illicit blogs under their brand name.  We offer a number of features including content approval/moderation, word/phrase flagging and account disabling to help you police your blogosphere community.  We can also provide personnel to monitor and approve content 24/7 so that nothing gets posted to your community without being checked against the guidelines of your community, which you create.");
+
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

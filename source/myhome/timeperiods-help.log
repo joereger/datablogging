@@ -1,0 +1,105 @@
+<%@ page import="java.util.Calendar,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "What Are Time Periods?";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "timeperiodshelp";
+pageProps.aclObjectName = "CREATETIMEPERIODS";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="Time Periods are an important way to give your weblog entries context.  A Time Period is just that... a period of time.  You define a start and end time.  Then, all entries that are/were logged between those times are automatically made part of this time period.  Read more about Time Periods below on this page.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
+mb.append("<font face=arial size=-1>");
+mb.append("Time Periods mark sections of time.  They have a start and a finish.  Web log entries that fall between these dates are automatically considered part of the time period.");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<font face=arial size=+1>");
+mb.append("Why use Time Periods?");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-1>");
+mb.append("Imagine having all of the critical time periods of your life defined.  For example: 'In High School', 'In College', 'Dating SoAndSo', 'Living in Atlanta'.  Many of these periods will overlap.  Now, when you view log entries, you'll automatically be able to see which time periods they were part of.  This creates a context for each entry.");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+
+mb.append("<font face=arial size=+1>");
+mb.append("How You Might Use Time Periods");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-1>");
+
+mb.append("You create a set of time periods to represent, say, periods in your life. The periods that you lived each place. Or the time periods that you attended particular schools. Or the time periods that you dated certain people.");
+
+mb.append("<br><br>Or the time periods you wore your hair long.");
+
+mb.append("<br><br>Or the time periods you worked at a particular company.");
+
+mb.append("<br><br>Or the time periods you listened to a certain band.");
+
+mb.append("<br><br>You get the picture... the possibilities are endless and are not confined to personal time periods.  Organizations have time periods too:");
+
+mb.append("<br><br>First fiscal quarter.");
+
+mb.append("<br><br>Year-end change freeze period.");
+
+mb.append("<br><br>Once you define your time periods you get a cool chart showing the relative length of each one... a timeline, if you will.");
+
+mb.append("<br><br>In and of itself, defining time periods is not compelling.  Here’s the compelling part: at the bottom of each entry, you see those time periods that overlap the time of the entry.");
+
+mb.append("<br><br>This gives you context. It shows you what big picture things were happening in your life at the time of the entry. Remember, we're is dedicated to long-term nostalgia capture, organization and presentation. From any particular entry you can click to view all other entries that occurred in the same time period.");
+
+mb.append("<br><br>And the beauty is that it happens across log types (Running Log, Biking Log, etc). And it happens transparently. Users don't have to create a link from each entry to a timeline. It's done automatically.");
+
+mb.append("<br><br>You can view all time periods for a web log by going to the  home page and clicking on the left side on \"Time Periods.\" From there you can click one of the time periods and it'll pull up all entries that happened during that time. Or you can just surf the site a bit and you'll certainly see the little timeline at the bottom of entries.");
+
+mb.append("<br><br>There is the ability to have private Time Periods. Only you or those you give permission to can see them.");
+
+mb.append("<br><br>Users can also define some periods as open ended. This means that they don't have an actual end date... the automatically inherit the current date/time. This makes sense, for example, for a time period like “Living in Atlanta.”  Since you’re still living in Atlanta you don’t want to have to update the end date every day to keep it accurate.  You can simply leave it open ended until you move to Colorado.");
+
+mb.append("</font>");
+
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

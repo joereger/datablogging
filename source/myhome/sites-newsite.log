@@ -1,0 +1,202 @@
+<%@ page import="java.util.Calendar,
+                 java.util.Hashtable,
+                 java.util.Enumeration,
+                 reger.*,
+                 reger.core.db.Db,
+                 reger.core.licensing.License"%>
+
+<%@ page import="java.text.*"%>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "New Site";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "sitesnewsite";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINHOMEPAGE;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String errortext = "";
+String siteurl=reger.core.Util.getParameterClean(request.getParameter("siteurl"));
+String homepagetitle=reger.core.Util.getParameterClean(request.getParameter("homepagetitle"));
+
+if (pageProps.action.equals("createaccount")) {
+
+    //Servername validation
+    errortext = errortext + Account.validateServername(siteurl, userSession.getPl().getPlid());
+    //Homepagetitle is required
+    if (request.getParameter("homepagetitle")==null || request.getParameter("homepagetitle").equals("")){
+        errortext=errortext + "You must provide a site name.<br>";
+    }
+
+	//If there is any sort of error
+	if (!errortext.equals("")){
+        //@todo Record the signup error somewhere?
+    }else { //create the user and logs, then redirect to signup2
+
+        //maxbandwidth
+        int maxbandwidth = 0;
+        //maxspaceinbytes
+        int maxspaceinbytes = 0;
+        //isnewpendingadminapproval - Need to see if the pl requires approval of accounts by an admin
+        int isactiveaccount = 1;
+        int isnewpendingadminapproval = 0;
+        if (userSession.getPl().getNewaccountsrequireadminapproval()){
+            isactiveaccount = 0;
+            isnewpendingadminapproval = 1;
+        }
+        //Expiration date
+        Calendar xDaysFromNow = reger.core.TimeUtils.xDaysAgoEnd(reger.core.TimeUtils.nowInGmtCalendar(), (-1*reger.Vars.TRIALACCOUNTDAYS));
+        //License Props
+        Hashtable licenseProps = new Hashtable();
+        licenseProps.put(License.PROPSTRINGLICENSETYPE, String.valueOf(License.LICENSETYPEACCOUNTSUBSCRIPTION));
+        licenseProps.put(License.PROPSTRINGEXPDATEGMT, String.valueOf(reger.core.TimeUtils.dateformatfordb(xDaysFromNow)));
+        //Create the license
+        License accountLicense = new License(null, licenseProps);
+        String encryptedLicense = accountLicense.getEncryptedLicense();
+        //Create this this account
+        //-----------------------------------
+        //-----------------------------------
+        int newaccountid = Db.RunSQLInsert("INSERT INTO account(accounturl                              , createdate                             ,plid                                                , timezoneid                                         , messagesstatus, messagesapproval, homepagetitle                                 , homepagecalendar, jspopup, admintools, pingweblogscom, showhometab, hometabtext, showlogintab, displaycharsinsummary, displaynumberofentries, userelatedlinks, favesiteon, onthisday, emailnewsletter, emailsendhour, isactiveaccount      , isnewpendingadminapproval      , hptemplateid                               , entlisttemplateid                             , sitetemplateid                                     , encryptedlicense) " +
+                                                        "VALUES('"+ reger.core.Util.cleanForSQL(siteurl) + "', '"+reger.core.TimeUtils.nowInGmtString()+"'     , '"+ userSession.getPl().getPlid() +"','"+reger.core.Util.cleanForSQL(userSession.getAccountuser().getUsertimezoneid())+"','1'            , '1'             , '"+ reger.core.Util.cleanForSQL(homepagetitle) +"' , '1'             ,'1'     , '0'       , '1'           , '1'        , ''         , '1'         , '0'                  , '15'                  , '1'            , '0'       , '1'      , '1'            , '3'          , '"+isactiveaccount+"', '"+isnewpendingadminapproval+"', '"+userSession.getPl().getHptemplateid()+"', '"+userSession.getPl().getEntlisttemplateid()+"', '"+userSession.getPl().getPublicsitetemplateid()+"', '"+reger.core.Util.cleanForSQL(encryptedLicense)+"')");
+        //-----------------------------------
+        //-----------------------------------
+
+
+        //Grant user access to the site
+        //UserSession userSession;
+        userSession.getAccountuser().addUserToAclGroup("SiteOwner", newaccountid);
+
+        //Insert the new log
+        //-----------------------------------
+        //-----------------------------------
+        //int newlogid = Db.RunSQLInsert("INSERT INTO megalog(accountid, name, eventtypeid, logaccess, showonhomepage, nestednavorder) VALUES('"+ newaccountid +"', '"+reger.core.Util.cleanForSQL(logname)+"', '"+ eventtypeid +"', '"+reger.Vars.LOGACCESSPUBLIC+"', '"+showonhomepage+"', '1')");
+        //-----------------------------------
+        //-----------------------------------
+
+        //Important to refresh the AllLogsInSystem object after megalog changes
+        //reger.AllLogsInSystem.refresh(newlogid);
+
+
+
+        //Calculate the base url of this account
+        String baseUrlOfAccount = siteurl.toLowerCase() + "." + userSession.getPl().getPlbasedomain();
+        if (!userSession.getPl().getUsedynamicdns()){
+            baseUrlOfAccount =  userSession.getPl().getPlbasedomain() + "/~" + siteurl.toLowerCase();
+        }
+
+        //Send the welcome email
+        if (userSession.getAccountuser().getEmail()!=null && !userSession.getAccountuser().getEmail().equals("")) {
+            reger.emailtext.BasicEmails.newAccountWelcome(userSession.getAccountuser(), newaccountid, userSession.getPl(), request.getParameter("password"));
+        }
+
+
+        //If this pl requires approval of accounts, send an email to the admin
+        if (userSession.getPl().getNewaccountsrequireadminapproval()){
+            reger.emailtext.BasicEmails.newAccountRequiringAdminApproval(userSession.getPl(), newaccountid);
+            //Redirect to awaiting approval screen
+            response.sendRedirect("awaitingapproval.log?accountid="+newaccountid);
+            return;
+        }
+
+        //Redirect to log the user in
+        response.sendRedirect("sites.log?msg=Account Created");
+        return;
+
+    }
+
+}
+
+//Sign Up
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+mb.append("<!-- begin  permissions table -->");
+mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
+
+
+mb.append("<form action=sites-newsite.log method=post>");
+mb.append("<input type=hidden name=action value=createaccount>");
+
+mb.append("<tr>");
+mb.append("<td valign=top nowrap align=left bgcolor=#cccccc colspan=2>");
+mb.append("<font face=arial size=-1 color=#000000><b>Site Properties</b></font><br>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</tr>");
+mb.append("<td bgcolor=#ffffff width=50% valign=top align=right><font face=arial size=-1>");
+mb.append("<b>Choose Your Own Web Address!</b>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2 color=#000000>");
+mb.append("This is the URL (web location) where your logs are published.  Once your account is created you can decide to keep these logs private, share them with specific people, or share them with the world!");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td bgcolor=#e6e6e6 valign=top nowrap align=left><font face=arial size=-1>");
+if (userSession.getPl().getUsedynamicdns()){
+    mb.append("<b>"+request.getScheme() + ":// <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> ." + userSession.getPl().getPlbasedomain() + "/ </b>");
+} else {
+    mb.append("<b>"+reger.Vars.getHttpUrlPrefix() +userSession.getPl().getPlbasedomain()+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
+}
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2 color=#000000><b>");
+mb.append("Valid characters: letters, numbers and dash -.<br>Can't start with a dash.");
+mb.append("</b></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff valign=center align=right>");
+mb.append("<font face=arial size=-1 color=#000000><b>Site Name</b></font><br>");
+mb.append("<font face=arial size=-2 color=#000000>");
+mb.append("Give your site a name.  You can easily change it later.  Example: Joe's Cool Site.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td bgcolor=#e6e6e6 valign=top nowrap align=left>");
+mb.append("<input type='text' name='homepagetitle' value='" + reger.core.Util.cleanForHtml(homepagetitle) + "' size='20' maxlength='49'>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' align=center valign=top colspan=2>");
+mb.append("<input type='submit' value='Create Site'>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</form>");
+mb.append("</table>");
+
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

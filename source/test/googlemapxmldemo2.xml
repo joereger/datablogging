@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<page>
+<title>Custom XSL Demo</title>
+<query>Why?</query>
+<request></request>
+<center lat="49.29" lng="-123.12"/>
+<span lat="0.017998" lng="0.027586"/>
+<overlay panelStyle="sidepanel.xsl">
+<location infoStyle="geocodeinfo-demo1.xsl" id="A">
+<point lat="49.286428" lng="-123.116856"/>
+<icon image="http://libgmail.sourceforge.net/man.png" class="local"/>
+<info>
+<title xml:space="preserve">
+</title>
+<address>
+
+<line>Mr G. Oogle</line>
+</address>
+<image>
+http://www.google.co.nz/images/logo_sm.gif
+</image>
+</info>
+</location>
+<location infoStyle="geocodeinfo-demo1.xsl" id="B">
+<point lat="49.287428" lng="-123.126856"/>
+<icon image="http://maps.google.com/mapfiles/marker.png" class="local"/>
+<info>
+<title xml:space="preserve"></title>
+<address>
+<line>Here be spiders...</line>
+</address>
+
+<image>
+http://libgmail.sourceforge.net/spider.png
+</image>
+</info>
+</location>
+
+<location infoStyle="geocodeinfo-demo1.xsl" id="C">
+<point lat="49.285328" lng="-123.129856"/>
+<icon image="http://maps.google.com/mapfiles/marker.png" class="local"/>
+<info>
+<title xml:space="preserve"></title>
+<address>
+<line>Some address</line>
+</address>
+<image>
+http://libgmail.sourceforge.net/man.png
+
+</image>
+</info>
+</location>
+
+</overlay>
+</page>

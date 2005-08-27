@@ -1,0 +1,74 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "XML Schema";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.core.Util.popup());
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+mb.append("<style>blockquote.quote {\n" +
+"    padding: 10px;\n" +
+"    border: 1px dotted #999;\n" +
+"    background: #e6e6e6;\n" +
+"}</style>");
+
+String lineBreak = "\n";
+
+mb.append("<br clear=all>");
+mb.append("<h1>Representing a Log Type as XML Schema</h1>");
+mb.append("XML Schema is a powerful way to describe various types of data.  Currently all Reger.com log types (user and system-created) are published via XML Schema.  For example, see this Biking Log represented as <a href='http://reger.com/about/signup-log-type-detail.log?eventtypeid=1&logtypedetailtoshow=6'>XML Schema</a>.");
+
+
+
+mb.append("<br clear=all>");
+mb.append("<h1>Next Steps</h1>");
+mb.append("We will beef up the power of the XML Schema representation of our log types.  We'll add unique system identifiers.  More data types.  Etc.");
+mb.append("<br><br>");
+mb.append("Then the important part: we'll allow users to import XML Schema to create log types.  In essence this will allow cross-tool trading of log types.  Users can define their log types in XML Schema and then try out various tools to see which one gives them the support they desire.  Initially we will support a subset of XML Schema syntax, but would like to move towards full support.  We will also need to increase the level of documentation of what we're doing.  If you're interested in helping us out please email joe@reger.com.");
+
+
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

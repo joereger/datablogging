@@ -1,0 +1,90 @@
+<%@ page import="reger.core.db.Db,
+                 reger.mega.FieldType,
+                 reger.mega.MegaChartHtmlRenderer,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICMISC;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+<%@ include file="globalheader.jsp" %>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append("<br>");
+mb.append("<font face=arial size=-1>");
+mb.append("<a href='graphs-detail.log'>");
+mb.append("<img src='myhome/images/add_16.gif' width=16 height=16 border=0 align=middle>");
+mb.append("Create a Graph");
+mb.append("</a>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+
+
+String sql = "SELECT DISTINCT megachart.megachartid, chartname, megalog.logid, megachart.accountid FROM megachart, megachartyaxis, megalog" +
+" WHERE "+
+" megachart.megachartid=megachartyaxis.megachartid "+
+" AND "+
+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) +
+" AND "+
+" (megalog.logid=megachart.xlogid OR megalog.logid=megachartyaxis.ylogid OR megalog.eventtypeid=megachart.xeventtypeid OR megalog.eventtypeid=megachartyaxis.yeventtypeid ) "+
+" AND "+
+" (megachart.accountid='"+userSession.getAccount().getAccountid()+"' OR megachart.accountid='0')"+
+" ORDER BY megachart.accountid DESC, megalog.logid ASC, megachart.megachartid DESC";
+reger.core.Util.debug(5, sql);
+//-----------------------------------
+//-----------------------------------
+String[][] rstGraph= Db.RunSQL(sql);
+//-----------------------------------
+//-----------------------------------
+if (rstGraph!=null && rstGraph.length>0){
+    for(int i=0; i<rstGraph.length; i++){
+        mb.append("<font face=arial size=-1 class=mediumfont>");
+        mb.append("<a href='graphs-detail.log?megachartid="+rstGraph[i][0]+"'>");
+        mb.append(rstGraph[i][1]);
+        mb.append("</a>");
+        mb.append("</font>");
+        if (userSession.getAccountuser()!=null && userSession.getAccountuser().userCanDoAcl("DELETECHARTS", userSession.getAccount().getAccountid())){
+            if (Integer.parseInt(rstGraph[i][3])==userSession.getAccount().getAccountid()){
+                mb.append(" <a href='graphs.log?action=delete&megachartid="+rstGraph[i][0]+"'>");
+                mb.append("<img src='images/icon-close.gif' border=0 alt='Delete' align=middle>");
+                mb.append("</a>");
+                mb.append(" ");
+            }
+        }
+        mb.append("<br>");
+    }
+}
+
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+<%@ include file="globalfooter.jsp" %>
+

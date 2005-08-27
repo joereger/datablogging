@@ -1,0 +1,837 @@
+<%@ page import="reger.core.db.Db,
+                 java.util.Calendar,
+                 reger.pageFramework.PageProps,
+                 reger.Help,
+                 reger.Log,
+                 java.util.Hashtable,
+                 java.util.Enumeration"%>
+
+<%@ page import="java.text.*"%>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "&nbsp;";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "adminhome";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINHOMEPAGE;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="This is the control center of your site.  All of the tools you need to manage your weblog are at your fingertips.<br><br>To start blogging, click on a log and you'll be taken to a form where you can add an entry.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+//Display page performance in milliseconds
+//out.println("Top of page: " + reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
+
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Do friendinvitationid work
+if (request.getParameter("friendinvitationid")!=null && reger.core.Util.isinteger(request.getParameter("friendinvitationid"))){
+    if (request.getParameter("friendinvitationkey")!=null){
+        reger.InvitationProcessor.process(userSession.getAccountuser(), Integer.parseInt(request.getParameter("friendinvitationid")), request.getParameter("friendinvitationkey"));
+        userSession.getAccountuser().populate();
+    }
+}
+
+//Toggle help
+if (pageProps.action.equals("togglehelp")){
+    userSession.getAccountuser().toggleHelp();
+    response.sendRedirect("index.log");
+    return;
+}
+
+
+////Mark expired trial accounts and redirect them
+//if (userSession.getAccount().daysuntilexpiration()<1 && userSession.getAccount().getAccounttypeid()==reger.Vars.ACCTYPETRIAL) {
+//	//Mark account as accounttype=reger.Vars.ACCTYPEFREE
+//	//-----------------------------------
+//	//-----------------------------------
+//	int count = reger.core.db.Db.RunSQLUpdate("UPDATE account SET accounttypeid='"+reger.Vars.ACCTYPEFREE+"' WHERE accountid='"+ userSession.getAccount().getAccountid() +"'");
+//	//-----------------------------------
+//	//-----------------------------------
+//
+//	//Repopulate the object
+//	userSession.getAccount().refresh();
+//
+//	//Redirect to the account expiration page
+//	//response.sendRedirect("accountstatus.log?expired=true");
+//	//return;
+//}
+
+//Display page performance in milliseconds
+//out.println("Before special messages: " + reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
+
+
+//Special Messages Section Start
+if (request.getParameter("msg")!=null) {
+	if (request.getParameter("msg").equals("entryadded")) {
+		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log entry has been successfully added.<br><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a>  | <a href=entry-addmedia.log?eventid="+request.getParameter("eventid")+">Add Images</a>"));
+	} else if (request.getParameter("msg").equals("entryedited")) {
+		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log entry has been successfully edited.<br><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a>"));
+	} else if (request.getParameter("msg").equals("newlog")) {
+		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Log(s) added. You can add entries by chosing a log below."));
+	} else if (request.getParameter("msg").equals("eventdeleted")) {
+		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Event Deleted."));
+	} else if (request.getParameter("msg").equals("namesupdated")) {
+		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Log names and messages updated."));
+	} else if (request.getParameter("msg").equals("signupcomplete")) {
+		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Congratulations!  Signup is complete.  You can add entries to your weblog.  Note your site URLs.  Keep your username and password.  Enjoy!"));
+	} else if (request.getParameter("msg").equals("passwordwasreset")) {
+		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your password has successfully been reset.  Please store it in a safe place."));
+	} else if (request.getParameter("msg").equals("logadded")) {
+		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log has been created.  Add an entry to it below.  You can also change its name and customize other properties of it."));
+	    userSession.getAccount().refresh();
+	}
+}
+
+
+//ReturnUrl Link
+if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl").equals("")){
+    reger.core.Util.debug(5, "/myhome/index.log<br>java.net.URLDecoder.decode(returnurl, \"UTF-8\")=" + java.net.URLDecoder.decode(request.getParameter("returnurl"), "UTF-8"));
+    String theLink = java.net.URLDecoder.decode(request.getParameter("returnurl"), "UTF-8");
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "You are logged-in.  We noticed that you were trying to go <a href='"+theLink+"'>here</a>. Please note that you still may not be able to access that resource, depending on your credentials.  Give it a shot."));
+}
+
+
+
+
+
+//Put up the main table
+reger.nestednav.NestedNavDisplayAdminHome navMgrDisplay = new reger.nestednav.NestedNavDisplayAdminHome();
+mb.append(navMgrDisplay.outputNavBarHtml(userSession, request));
+
+
+
+
+mb.append("<br>");
+
+//Draft entries start
+mb.append("<!-- Start Draft List -->");
+String help1 = reger.Help.tip("Saved as Draft", "Draft entries are saved here as works in progress.  They are not shown on your public site until you publish them.  You can do this by editing them (clicking the title link) and then choosing the Yes, Publish Now radio option near the bottom of the edit screen.  Finish by clicking Edit Log Entry.  Also, keep in mind that you can edit your entries as much as you like without publishing them.", false, pageProps.pathToAppRoot);
+mb.append(reger.ui.BubbleBox.start("Saved as Draft " + help1, pageProps.pathToAppRoot));
+mb.append("<table width=100% cellpadding=0 cellspacing=1 border=0>");
+//mb.append("<tr><td bgcolor=#666666 colspan=5><font face=arial size=+1 color=#ffffff><strong>Saved as Draft</strong></font></td></tr>");
+mb.append("<tr>");
+mb.append("<td bgcolor=#e6e6e6 valign=top align=left colspan=2>");
+mb.append("<font face=arial size=-2 color=#666666>Title</font></a></td>");
+mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("Date");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("Log");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("Author");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstDrafts= reger.core.db.Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.username, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstDrafts!=null && rstDrafts.length>0){
+	for(int i=0; i<rstDrafts.length; i++){
+	    mb.append("<tr>");
+		mb.append("<td bgcolor=#ffffff valign=top align=right width=10><a href='log-" + rstDrafts[i][1] + ".log?eventid=" + rstDrafts[i][0] + "&action=edit'><img src='../images/bullet-arrow.gif' width='9' height='9' alt='' border='0'></a>");
+		mb.append("</td>");
+		mb.append("<td bgcolor=#ffffff valign=top align=left>");
+		mb.append("<a href='entry.log?eventid=" + rstDrafts[i][0] + "&action=edit'><font face=arial size=-2>" + reger.core.Util.cleanForHtml(rstDrafts[i][2]) + "</font></a></td>");
+		mb.append("<td bgcolor=#ffffff valign=top align=left>");
+		mb.append("<font face=arial size=-2>");
+		mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstDrafts[i][3])));
+		mb.append("</font>");
+		mb.append("</td>");
+		mb.append("<td bgcolor=#ffffff valign=top align=left>");
+		mb.append("<font face=arial size=-2>");
+		mb.append(" " + rstDrafts[i][4]);
+		mb.append("</font>");
+		mb.append("</td>");
+        mb.append("<td bgcolor=#ffffff valign=top align=left>");
+        mb.append("<font face=arial size=-2>");
+        if (!rstDrafts[i][6].equals("")){
+            mb.append(" " + rstDrafts[i][6]);
+        } else {
+            mb.append(" " + rstDrafts[i][5]);
+        }
+        mb.append("</font>");
+        mb.append("</td>");
+		mb.append("</tr>");
+	}
+} else {
+	mb.append("<tr><td bgcolor=#ffffff valign=top colspan=5>");
+	mb.append("<font face=arial size=-2>No entries are currently Saved As Draft.  You save an entry as draft near the bottom of a new entry.</font>");
+	mb.append("</td></tr>");
+}
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("<!-- End Draft List -->");
+//Draft entries end
+
+mb.append("<br>");
+
+mb.append("<!-- Start last edited -->");
+mb.append(reger.ui.BubbleBox.start("Most Recent Log Entries", pageProps.pathToAppRoot));
+mb.append("<table width=100% cellpadding=5 cellspacing=0 border=0>");
+//@todo Add paging to /myhome/entries.log list
+//-----------------------------------
+//-----------------------------------
+String[][] rstLastentries= Db.RunSQL("SELECT event.eventid, event.title, event.date FROM event, megalog WHERE event.logid=megalog.logid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" AND event.istemporary='0' ORDER BY event.date DESC LIMIT 0,25");
+//-----------------------------------
+//-----------------------------------
+if (rstLastentries!=null && rstLastentries.length>0){
+	for(int i=0; i<rstLastentries.length; i++){
+		mb.append("<tr>");
+        //@todo Check /myhome/entries.log for timezone
+        //@todo Add /myhome/entries.log Agotext
+        mb.append("<td bgcolor=#ffffff valign=top><a href='entry.log?eventid="+rstLastentries[i][0]+"&action=edit'><img src='../images/bullet-arrow.gif' width='9' height='9' alt='' border='0'></a></td>");
+        mb.append("<td bgcolor=#ffffff valign=top><font face=arial size=-2>"+reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstLastentries[i][2]))+"</font></td>");
+        mb.append("<td bgcolor=#ffffff valign=top><font face=arial size=-1><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstLastentries[i][1]), 100)+"</strong></font></td>");
+        mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='../entry.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-2>View</font></a></td>");
+        mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='entry.log?eventid="+rstLastentries[i][0]+"&action=edit'><font face=arial size=-2>Edit</font></a></td>");
+        mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='entry-move.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-2>Move</font></a></td>");
+        //mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='entry-addmedia.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-2>Add File</font></a></td>");
+        mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='entry-delete.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-2>Delete</font></a></td>");
+        mb.append("</tr>");
+	}
+}
+
+
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("<!-- End last edited -->");
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+
+
+sc.append("<!-- Start account stuff -->");
+//sc.append("<img src='../images/clear.gif' width='10' height='90' alt='' border='0'>");
+sc.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+//sc.append("<tr><td bgcolor=#cccccc colspan=2><font face=arial size=+1 color=#000000>Your Account</font></td></tr>");
+
+
+sc.append("<tr>");
+sc.append("<td bgcolor='#ffffff' align=left valign=top colspan=4>");
+if (userSession.getAccount().isPro()) {
+    sc.append("<center>");
+    sc.append("<a href='accountstatus.log'>");
+    sc.append("<img src='images/pro-yel.gif' alt='This is a Pro account.' border=0>");
+    sc.append("</a>");
+    sc.append("<br>");
+    sc.append("<a href='accountstatus.log'>");
+    sc.append("<font face=arial size=-2><strong>Account Status</strong></font>");
+    sc.append("</a>");
+    sc.append("</center>");
+} else {
+    sc.append("<center><img src='images/free-yel.gif' alt='This is a Free account.' border=0>");
+    sc.append("<br>");
+    sc.append("<font face=arial size=-2>You're certainly welcome to use the site for free, but you're missing out on all the great Pro features.  And upgrading removes all banner ads from your site.</font>");
+    sc.append("<br>");
+    sc.append("<a href='accountstatus.log'>");
+    sc.append("<font face=arial size=-2><strong>See what you're missing.</strong></font>");
+    sc.append("</a>");
+    sc.append("</center>");
+}
+sc.append("</td>");
+sc.append("</tr>");
+
+sc.append("</table>");
+sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+sc.append("<!-- End account stuff -->");
+
+
+
+
+sc.append("<!-- Start Alerts -->");
+boolean haveAlerts=false;
+sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+sc.append(reger.ui.BubbleBox.start("Alerts", pageProps.pathToAppRoot));
+
+sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+//Messages
+int totalmessages=0;
+//-----------------------------------
+//-----------------------------------
+String[][] rstMessageCount= Db.RunSQL("SELECT count(*) FROM message, event, megalog WHERE message.isapproved='0' AND message.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"' AND event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY message.messagedate DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstMessageCount!=null && rstMessageCount.length>0){
+    totalmessages=Integer.parseInt(rstMessageCount[0][0]);
+    if (totalmessages>0){
+        haveAlerts=true;
+        sc.append("<tr>");
+        sc.append("<td valign=middle width=25>");
+        sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
+        sc.append("</td>");
+        sc.append("<td valign=middle>");
+        sc.append("<a href='traffic-messages.log'>");
+        sc.append("<font face=arial size=-1>");
+        sc.append("<b>");
+        sc.append(totalmessages);
+        sc.append(" ");
+        sc.append("Unapproved Message");
+        if (totalmessages>1){
+            sc.append("s");
+        }
+        sc.append("</b>");
+        sc.append("</font>");
+        sc.append("</a>");
+        sc.append("</td>");
+        sc.append("</tr>");
+    }
+}
+
+
+//Trackbacks
+int totaltrackback=0;
+//-----------------------------------
+//-----------------------------------
+String[][] rstTbC= Db.RunSQL("SELECT count(*) FROM trackback, event, megalog WHERE trackback.isapproved='0' AND trackback.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"' AND event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+" AND trackback.isoutbound='0' ORDER BY trackback.datetime DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstTbC!=null && rstTbC.length>0){
+    totaltrackback=Integer.parseInt(rstTbC[0][0]);
+    if (totaltrackback>0){
+        haveAlerts=true;
+        sc.append("<tr>");
+        sc.append("<td valign=middle width=25>");
+        sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
+        sc.append("</td>");
+        sc.append("<td valign=middle>");
+        sc.append("<a href='traffic-trackback.log'>");
+        sc.append("<font face=arial size=-1>");
+        sc.append("<b>");
+        sc.append(totaltrackback);
+        sc.append(" ");
+        sc.append("Unapproved Trackback");
+        if (totaltrackback>1){
+            sc.append("s");
+        }
+        sc.append("</b>");
+        sc.append("</font>");
+        sc.append("</a>");
+        sc.append("</td>");
+        sc.append("</tr>");
+    }
+}
+
+
+//Inbox
+int totalinbox = 0;
+//-----------------------------------
+//-----------------------------------
+String[][] rstInboxCount= Db.RunSQL("SELECT count(*) FROM friendmessage, friendmessagerecipient WHERE friendmessagerecipient.isread='0' AND friendmessagerecipient.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND friendmessagerecipient.friendmessageid=friendmessage.friendmessageid");
+//-----------------------------------
+//-----------------------------------
+if (rstInboxCount!=null && rstInboxCount.length>0){
+    totalinbox = Integer.parseInt(rstInboxCount[0][0]);
+    if (totalinbox>0){
+        haveAlerts=true;
+        sc.append("<tr>");
+        sc.append("<td valign=middle width=25>");
+        sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
+        sc.append("</td>");
+        sc.append("<td valign=middle>");
+        sc.append("<a href='people-inbox.log'>");
+        sc.append("<font face=arial size=-1>");
+        sc.append("<b>");
+        sc.append(totalinbox);
+        sc.append(" ");
+        sc.append("New Inbox Message");
+        if (totalinbox>1){
+            sc.append("s");
+        }
+        sc.append("</b>");
+        sc.append("</font>");
+        sc.append("</a>");
+        sc.append("</td>");
+        sc.append("</tr>");
+    }
+}
+
+
+//Require Approval
+int totalrequireapproval = 0;
+if (userSession.getAccountuser().userCanDoAcl("APPROVEENTRIES", userSession.getAccount().getAccountid())){
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstApprovals= reger.core.db.Db.RunSQL("SELECT count(*) FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isapproved='0' AND event.istemporary='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstApprovals!=null && rstApprovals.length>0){
+        totalrequireapproval = Integer.parseInt(rstApprovals[0][0]);
+        if (totalrequireapproval>0){
+            haveAlerts=true;
+            sc.append("<tr>");
+            sc.append("<td valign=middle width=25>");
+            sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
+            sc.append("</td>");
+            sc.append("<td valign=middle>");
+            sc.append("<a href='entries-requireapproval.log'>");
+            sc.append("<font face=arial size=-1>");
+            sc.append("<b>");
+            sc.append(totalrequireapproval);
+            sc.append(" ");
+            if (totalrequireapproval>1){
+                sc.append("Entries Require Approval");
+            } else {
+                sc.append("Entry Requires Approval");
+            }
+            sc.append("</b>");
+            sc.append("</font>");
+            sc.append("</a>");
+            sc.append("</td>");
+            sc.append("</tr>");
+        }
+    }
+}
+
+
+//Declined by Moderator
+int totaldeclines = 0;
+//-----------------------------------
+//-----------------------------------
+String[][] rstDeclines= reger.core.db.Db.RunSQL("SELECT count(*) FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='0' AND event.istemporary='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
+//-----------------------------------
+//-----------------------------------
+if (rstDeclines!=null && rstDeclines.length>0){
+    totaldeclines = Integer.parseInt(rstDeclines[0][0]);
+    if (totaldeclines>0){
+        haveAlerts=true;
+        sc.append("<tr>");
+        sc.append("<td valign=middle width=25>");
+        sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
+        sc.append("</td>");
+        sc.append("<td valign=middle>");
+        sc.append("<a href='entries-moderatordeclined.log'>");
+        sc.append("<font face=arial size=-1>");
+        sc.append("<b>");
+        sc.append(totaldeclines);
+        sc.append(" ");
+        sc.append("Declined by Moderator");
+        sc.append("</b>");
+        sc.append("</font>");
+        sc.append("</a>");
+        sc.append("</td>");
+        sc.append("</tr>");
+    }
+}
+
+
+//Waiting for Moderator
+int totalwaitingmoderator = 0;
+if (userSession.getPl().getDoallpostsneedtobeapproved() || userSession.getPl().getDoesflaggedcontentneedtobeapproved()){
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstApprovals= reger.core.db.Db.RunSQL("SELECT count(*) FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.istemporary='0' AND event.isdraft='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstApprovals!=null && rstApprovals.length>0){
+        totalwaitingmoderator = Integer.parseInt(rstApprovals[0][0]);
+        if (totalwaitingmoderator>0){
+            haveAlerts=true;
+            sc.append("<tr>");
+            sc.append("<td valign=middle width=25>");
+            sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
+            sc.append("</td>");
+            sc.append("<td valign=middle>");
+            sc.append("<a href='entries-awaitingmoderator.log'>");
+            sc.append("<font face=arial size=-1>");
+            sc.append("<b>");
+            sc.append(totalwaitingmoderator);
+            sc.append(" ");
+            sc.append("Waiting for Moderator");
+            sc.append("</b>");
+            sc.append("</font>");
+            sc.append("</a>");
+            sc.append("</td>");
+            sc.append("</tr>");
+        }
+    }
+}
+
+
+//Make sure this account has enough free space
+if (userSession.getAccount().getSpaceused()>userSession.getAccount().getMaxspaceinbytes()){
+    haveAlerts=true;
+    sc.append("<tr>");
+    sc.append("<td valign=middle width=25>");
+    sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
+    sc.append("</td>");
+    sc.append("<td valign=middle>");
+    sc.append("<a href='accountstatus.log'>");
+    sc.append("<font face=arial size=-2>");
+    sc.append("<b>");
+    sc.append("Your account has exceeded its storage limit.  This means that you will not be able to add anything (text or images) to your site.");
+    sc.append("</b>");
+    sc.append("</font>");
+    sc.append("</a>");
+    sc.append("</td>");
+    sc.append("</tr>");
+} else if (userSession.getAccount().getSpaceused()>(userSession.getAccount().getMaxspaceinbytes()*.9)){
+    haveAlerts=true;
+    sc.append("<tr>");
+    sc.append("<td valign=middle width=25>");
+    sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
+    sc.append("</td>");
+    sc.append("<td valign=middle>");
+    sc.append("<a href='accountstatus.log'>");
+    sc.append("<font face=arial size=-2>");
+    sc.append("<b>");
+    sc.append("Your account is within 10% of its storage limit.  This means that soon you will not be able to add anything (text or images) to your site.");
+    sc.append("</b>");
+    sc.append("</font>");
+    sc.append("</a>");
+    sc.append("</td>");
+    sc.append("</tr>");
+}
+
+//Make sure this account has enough free hits to be serving pages
+if (userSession.getAccount().getBandwidthused()>userSession.getAccount().getMaxbandwidth()){
+    haveAlerts=true;
+    sc.append("<tr>");
+    sc.append("<td valign=middle width=25>");
+    sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
+    sc.append("</td>");
+    sc.append("<td valign=middle>");
+    sc.append("<a href='accountstatus.log'>");
+    sc.append("<font face=arial size=-2>");
+    sc.append("<b>");
+    sc.append("Your account has exceeded its bandwidth limit.  This means that for the remainder of this month visitors will not be able to see your site.");
+    sc.append("</b>");
+    sc.append("</font>");
+    sc.append("</a>");
+    sc.append("</td>");
+    sc.append("</tr>");
+} else if (userSession.getAccount().getBandwidthused()>(userSession.getAccount().getMaxbandwidth()*.9)){
+    haveAlerts=true;
+    sc.append("<tr>");
+    sc.append("<td valign=middle width=25>");
+    sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
+    sc.append("</td>");
+    sc.append("<td valign=middle>");
+    sc.append("<a href='accountstatus.log'>");
+    sc.append("<font face=arial size=-2>");
+    sc.append("<b>");
+    sc.append("Your account is within 10% of its bandwidth limit.  If the bandwidth limit is exceeded then for the remainder of this month visitors will not be able to see your site.");
+    sc.append("</b>");
+    sc.append("</font>");
+    sc.append("</a>");
+    sc.append("</td>");
+    sc.append("</tr>");
+}
+
+
+//No Alerts
+if (!haveAlerts){
+    sc.append("<tr>");
+    sc.append("<td valign=middle colspan=2>");
+    sc.append("<font face=arial size=-2>");
+    sc.append("<b>");
+    sc.append("None.");
+    sc.append("</b>");
+    sc.append("</font>");
+    sc.append("</td>");
+    sc.append("</tr>");
+}
+
+sc.append("</table>");
+
+sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+sc.append("<!-- End Alerts -->");
+
+//sc.append("<!-- Start URL's -->");
+//sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+//sc.append(reger.ui.BubbleBox.start("Your URLs", pageProps.pathToAppRoot));
+//sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+////sc.append("<tr><td bgcolor=#cccccc><font face=arial size=+1 color=#000000><strong>Your URLs</strong></font></td></tr>");
+//sc.append("<tr>");
+//sc.append("<td>");
+//sc.append("<font face=arial size=-1 color=#000000><b>Make log entries:");
+//sc.append("</b></font><br>");
+//sc.append("<font face=arial size=-2 color=#000000><a href='"+reger.Vars.getHttpUrlPrefix()+ userSession.getSiteRootUrl() +"/myhome/'>"+reger.Vars.getHttpUrlPrefix()+ userSession.getSiteRootUrl() +"/myhome/</a></font><br>");
+//sc.append("</td>");
+//sc.append("</tr>");
+//
+//sc.append("<tr>");
+//sc.append("<td>");
+//sc.append("<font face=arial size=-1 color=#000000><b>Your log entries are published on your public site:</b></font><br><font face=arial size=-2 color=#000000><a href='"+reger.Vars.getHttpUrlPrefix()+ userSession.getSiteRootUrl() +"/' target=new>"+ reger.Vars.getHttpUrlPrefix() +userSession.getSiteRootUrl() +"/</a></font><br>");
+//sc.append("</td></tr>");
+//
+//
+//sc.append("</table>");
+//sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+//sc.append("<!-- End URL's -->");
+
+
+
+
+//Other Sites Start
+sc.append("<!-- Other Site Start -->");
+sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+sc.append(reger.ui.BubbleBox.start("Sites", pageProps.pathToAppRoot));
+
+
+
+//if (userSession.getAccount().getAccountid()==userSession.getAccountuser().getAccountid()){
+//    sc.append("<font face=arial size=+2 color=#cccccc>");
+//    sc.append("This is your home site.");
+//    sc.append("</font>");
+//}
+
+Hashtable accts = userSession.getAccountuser().getAccountsUserHasAccessTo();
+if (accts!=null){
+    sc.append("<table>");
+    for ( Enumeration e = accts.keys() ; e.hasMoreElements() ; ) {
+        // retrieve the object_key
+        Integer accountid = (Integer) e.nextElement();
+        // retrieve the object associated with the key
+        String sitename = (String) accts.get ( accountid );
+        //Create an account object
+
+        reger.Account acct = userSession.getAccount();
+        if (accountid.intValue()!=userSession.getAccount().getAccountid()){
+            reger.core.Util.debug(5, "/myhome/index.log - About to call on cache for accountid=" + accountid.intValue());
+            acct = reger.cache.AccountCache.get(accountid.intValue());
+            reger.core.Util.debug(5, "/myhome/index.log - Done calling on cache for accountid=" + accountid.intValue());
+        }
+
+        //reger.Account acct = new reger.Account(accountid.intValue());
+        //sc.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/'>");
+        sc.append("<tr>");
+        sc.append("<td valign=top>");
+        if (accountid.intValue()==userSession.getAccount().getAccountid()){
+            sc.append("<img src=\"../images/icon-right-16x16.gif\" alt=\"The site you are on right now.\" border=0>");
+        }
+        sc.append("</td>");
+        sc.append("<td valign=top>");
+        sc.append("<font face=arial size=-1>");
+        sc.append("<b>");
+        sc.append(acct.getHomepagetitle());
+        sc.append("</b>");
+        sc.append("</font>");
+        //sc.append("</a>");
+        sc.append("</td>");
+//        sc.append("</tr>");
+//        sc.append("<tr>");
+//        sc.append("<td valign=top>");
+//        sc.append("</td>");
+        sc.append("<td valign=top nowrap>");
+        sc.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/'>");
+        sc.append("<font face=arial size=-2>");
+        sc.append("<img src=\"../images/icon-public.gif\" alt=\"View this site.\" border=0>");
+        //sc.append("View");
+        sc.append("</font>");
+        sc.append("</a>");
+        if (userSession.getAccountuser().userCanDoAcl("ADMINHOME", accountid.intValue())){
+            //sc.append("&nbsp;&nbsp;|&nbsp;&nbsp;");
+            sc.append(" ");
+            sc.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/myhome/'>");
+            sc.append("<font face=arial size=-2>");
+            sc.append("<img src=\"images/icon-edit.gif\" alt=\"Go to Admin.\" border=0>");
+            //sc.append("Admin");
+            sc.append("</font>");
+            sc.append("</a>");
+        }
+        sc.append("</td>");
+        sc.append("</tr>");
+    }
+    sc.append("</table>");
+}
+sc.append("<br>");
+sc.append("<center>");
+sc.append("<a href='sites.log'>");
+sc.append("<font face=arial size=-1>");
+sc.append("<b>Manage Sites</b>");
+sc.append("</font>");
+sc.append("</a>");
+sc.append("</center>");
+
+sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+sc.append("<!-- Other Site End -->");
+//Other Sites End
+
+
+
+
+
+
+//Search Site Start
+sc.append("<!-- Search Site Start -->");
+sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+sc.append(reger.ui.BubbleBox.start("Search Your Site", pageProps.pathToAppRoot));
+//sc.append("<form action=entries.log method=post>");
+//sc.append("<input type=hidden name=action value=search>");
+//sc.append("<br>");
+//sc.append("<input type=text name=searchterms value=\"\">");
+//sc.append("<br>");
+//sc.append("<input type=submit value='Search'>");
+//sc.append("<br>");
+//sc.append("<font face=arial size=-2>");
+//sc.append("<a href='entries.log'>");
+//sc.append("Advanced Search / Search Other Sites");
+//sc.append("</a>");
+//sc.append("</font>");
+//sc.append("</form>");
+sc.append("<a href='entries-simplesearch.log'>");
+sc.append("<font face=arial size=-2>");
+sc.append("Click Here");
+sc.append("</font>");
+sc.append("</a>");
+sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+sc.append("<!-- Search Site End -->");
+//Search Site End
+
+
+
+
+//Account Usage start
+sc.append("<!-- Start Account Usage -->");
+sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+String helpAcctUsage = Help.tip("Account Usage", "This section shows you how much bandwidth and storage space your web log is using.<br><br>Every time somebody visits your site they use a certain (small) amount of bandwidth.  Over the month this amount is added together.  If you exceed your bandwidth limit your site goes offline until the next month period begins.  For most users the default bandwidth is more than enough for an active site.<br><br>Storage space includes the text in your entries, the text in approved messages and files you've uploaded to your site.", false, pageProps.pathToAppRoot);
+sc.append(reger.ui.BubbleBox.start("Account Usage" + helpAcctUsage, pageProps.pathToAppRoot));
+sc.append("<table width=100% cellpadding=0 cellspacing=1 border=0>");
+//sc.append("<tr><td bgcolor=#666666 colspan=3><font face=arial size=+1 color=#ffffff><strong>Account Usage</strong></font></td></tr>");
+
+sc.append("<tr>");
+
+sc.append("<td valign=top align=left  bgcolor=#e6e6e6>");
+sc.append("<font face=arial size=-2 color=#666666>");
+sc.append("Bandwidth Usage This Month *");
+sc.append("</font>");
+sc.append("</td>");
+
+sc.append("</tr>");
+sc.append("<tr>");
+
+
+NumberFormat formatter = new DecimalFormat("####.##");
+
+sc.append("<td valign=top align=left bgcolor=#ffffff>");
+sc.append("<font face=arial size=-2>");
+sc.append(reger.core.Util.getHtmlBarChart(userSession.getAccount().getBandwidthused(), userSession.getAccount().getMaxbandwidth()));
+sc.append(formatter.format((double)userSession.getAccount().getBandwidthused()/(double)1000000000)+ "Gb / "+((double)userSession.getAccount().getMaxbandwidth()/(double)1000000000)+"Gb Used<br>(" + (100-(long)(((double)userSession.getAccount().getBandwidthused()/(double)userSession.getAccount().getMaxbandwidth())*(double)100)) + "% Remaining)");
+sc.append("</font>");
+sc.append("</td>");
+
+
+sc.append("</tr>");
+sc.append("<tr>");
+
+sc.append("<td valign=top align=left bgcolor=#e6e6e6>");
+sc.append("<font face=arial size=-2 color=#666666>");
+sc.append("Storage Space");
+sc.append("</font>");
+sc.append("</td>");
+
+sc.append("</tr>");
+sc.append("<tr>");
+
+sc.append("<td valign=top align=left  bgcolor=#ffffff>");
+sc.append("<font face=arial size=-2>");
+sc.append(reger.core.Util.getHtmlBarChart(userSession.getAccount().getSpaceused(), userSession.getAccount().getMaxspaceinbytes()));
+sc.append(formatter.format((double)userSession.getAccount().getSpaceused()/(double)1000000)+ "Mb / "+((double)userSession.getAccount().getMaxspaceinbytes()/(double)1000000)+"Mb Used<br>(" + (100-(int)(((double)userSession.getAccount().getSpaceused()/(double)userSession.getAccount().getMaxspaceinbytes())*100)) + "% Free)");
+sc.append("</font>");
+sc.append("</td>");
+
+
+sc.append("</tr>");
+
+sc.append("</table>");
+
+sc.append("<br>");
+sc.append("<font face=arial size=-2>");
+sc.append("* Bandwidth usage is updated when you log in.  A bandwidth month is determined by a month in the GMT timezone.");
+sc.append("</font>");
+
+sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+sc.append("<!-- End Account Usage -->");
+//Account Usage end
+
+
+
+
+//Version Start
+sc.append("<!-- Version Start -->");
+sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+sc.append(reger.ui.BubbleBox.start("You're Using", pageProps.pathToAppRoot));
+//sc.append("<center>");
+//sc.append("<a href='versions.log?versionid="+reger.versioninfo.VersionInfo.getCURRENTVERSIONID()+"'>");
+sc.append("<font face=arial size=+2 color=#cccccc>");
+sc.append("<b>");
+sc.append("Version " + reger.versioninfo.VersionInfo.getCURRENTVERSIONNAME());
+sc.append("</b>");
+sc.append("</font>");
+//sc.append("</a>");
+sc.append("<br>");
+sc.append("<a href='versions.log'>");
+sc.append("<font face=arial size=-2>");
+sc.append("List All Versions");
+sc.append("</font>");
+sc.append("</a>");
+//sc.append("</center>");
+sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+sc.append("<!-- Version End -->");
+//Version End
+
+
+
+
+//if (!userSession.getAccount().isPro()) {
+//	sc.append("<br>");
+//	sc.append("<!-- Start Pro -->");
+//	sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+//	sc.append("<tr><td bgcolor=#ffcc00><font face=arial size=+1 color=#000000><a href='accountstatus.log'><strong><img src='../images/pro-yellow.gif' alt='' border='0'></strong></a></font></td></tr>");
+//	sc.append("<tr><td bgcolor=#ffffff valign=top>");
+//	sc.append("<font face=arial size=-1 color=#000000>The Pro version includes lots of enhanced features and techno-goodies.");
+//	sc.append("<br><a href='accountstatus.log'>Learn More</a>.</font>");
+//	sc.append("</td></tr></table>");
+//	sc.append("<!-- End Pro -->");
+//}
+
+
+
+
+
+
+
+
+sc.append("<br>");
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

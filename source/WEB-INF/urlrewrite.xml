@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 1.0//EN"
+    "http://tuckey.org/res/dtd/urlrewrite1.dtd">
+
+<!--
+
+    configuration file for urlRewriteFilter
+
+-->
+<urlrewrite>
+
+    <!-- Virtual Directory -->
+    <!--
+        The virtual directory rule accepts a username of the form
+        http://plbasedomain/~username/
+    -->
+
+    <!-- These work, more or less
+    <rule>
+        <name>Virtual Directories With Querystring</name>
+        <note>This should be above the one with querystrings.</note>
+        <from>/~([a-zA-Z0-9\-]*)(.*\?)(.*)</from>
+        <to last="false">$2virtualdir=$1&amp;$3</to>
+    </rule>
+
+    <rule>
+    <name>Virtual Directories Without Querystring</name>
+    <note>This should be below the one with querystrings.</note>
+    <from>/~([a-zA-Z0-9\-]*)(.*)</from>
+    <to last="false">$2?virtualdir=$1</to>
+    </rule>
+    -->
+
+    <rule>
+        <name>Tilde URL Encoding</name>
+        <note>%7e encoding of tilde is ugly</note>
+        <from>/(\%7e)(.*)</from>
+        <to type="redirect" last="true">/~$2</to>
+    </rule>
+
+
+    <rule>
+        <name>Forgotten Trailing Slash on Virtual Directory</name>
+        <note>When users type just the virtual directory and forget the slash</note>
+        <from>/(~|\%7e)([a-zA-Z0-9\-]*)($)</from>
+        <to type="redirect" last="true">$1$2/</to>
+    </rule>
+
+    <rule>
+        <name>Forgotten Trailing Slash on Virtual Directory</name>
+        <note>When users type just the virtual directory and forget the slash</note>
+        <from>/(~|\%7e)([a-zA-Z0-9\-]*)/myhome($)</from>
+        <to type="redirect" last="true">/$1$2/myhome/</to>
+    </rule>
+
+
+    <rule>
+        <name>Virtual Directories With Querystring</name>
+        <note>This should be above the one with querystrings.</note>
+        <from>/(~|\%7e)([a-zA-Z0-9\-]*)(.*\?)(.*)</from>
+        <to last="false">$3virtualdir=$2&amp;$4</to>
+    </rule>
+
+    <rule>
+        <name>Virtual Directories Without Querystring</name>
+        <note>This should be below the one with querystrings.</note>
+        <from>/(~|\%7e)([a-zA-Z0-9\-]*)(.*)</from>
+        <to last="false">$3?virtualdir=$2</to>
+    </rule>
+
+    <!--Note that the (\?)*(.*) at the end of each rule below is critical -->
+    <!--It's what allows the above two rules to append the user virtualdir, -->
+    <!--pass it on to the next rule and still have it passed to the engine. -->
+    <!--Note than when using it, ignore the first result if you are already -->
+    <!--manually appending a querystring. See examples. -->
+
+    <!-- Event Rules -->
+    <rule>
+        <name>Entry Redirect Without Logid</name>
+        <note>The main redirect.</note>
+        <from>/entry-([0-9]+).log(\?)*(.*)</from>
+        <to>/entry.log?eventid=$1&amp;$3</to>
+    </rule>
+
+    <rule>
+        <name>Entry Redirect Without Logid</name>
+        <note>The main redirect.</note>
+        <from>/entry-eventid([0-9]+).log(\?)*(.*)</from>
+        <to>/entry.log?eventid=$1&amp;$3</to>
+    </rule>
+
+    <rule>
+        <name>Entry Redirect With Logid</name>
+        <note>The main redirect.</note>
+        <from>/entry-logid([0-9]+)-eventid([0-9]+).log(\?)*(.*)</from>
+        <to>/entry.log?logid=$1&amp;eventid=$2&amp;$4</to>
+    </rule>
+
+    <rule>
+        <name>Entry Redirect With Logid And Title</name>
+        <note>The main redirect. </note>
+        <from>/entry-logid([0-9]+)-eventid([0-9]+)-(.*).log(\?)*(.*)</from>
+        <to>/entry.log?logid=$1&amp;eventid=$2&amp;$5</to>
+    </rule>
+
+    <rule>
+        <name>Entry Redirect With Only Eventid And Title</name>
+        <note>The main redirect. </note>
+        <from>/entry-eventid([0-9]+)-(.*).log(\?)*(.*)</from>
+        <to>/entry.log?eventid=$1&amp;$4</to>
+    </rule>
+
+    <!-- Log Rules -->
+    <rule>
+        <name>Main Log Page</name>
+        <note>The main log page.</note>
+        <from>/logmain([0-9]+).log(\?)*(.*)</from>
+        <to>/logmain.log?logid=$1&amp;$3</to>
+    </rule>
+
+    <!-- Static content page Rules -->
+    <rule>
+        <name>Static Content Page</name>
+        <note>The main redirect.</note>
+        <from>/contentpage([0-9]+).log(\?)*(.*)</from>
+        <to>/contentpage.log?contentpageid=$1&amp;$3</to>
+    </rule>
+
+    <!-- Group Rules -->
+    <rule>
+        <name>Group</name>
+        <note>The group redirect.</note>
+        <from>/groups/group([0-9]+).log(\?)*(.*)</from>
+        <to>/groups/group.log?groupid=$1&amp;$3</to>
+    </rule>
+
+    <!-- Graph Pages -->
+    <rule>
+        <name>Graph Page Logid and Megachartid</name>
+        <note>The main graph page.</note>
+        <from>/graphpage-logid([0-9]+)-megachartid([0-9]+).log(\?)*(.*)</from>
+        <to>/graphs-detail.log?megachartid=$2&amp;$4</to>
+    </rule>
+
+    <rule>
+        <name>Graph Page Only Logid</name>
+        <note>The main graph page.</note>
+        <from>/graphpage-logid([0-9]+).log(\?)*(.*)</from>
+        <to>/graphs-detail.log?logid=$1&amp;$3</to>
+    </rule>
+
+    <rule>
+        <name>Graph Page Only Logid</name>
+        <note>The main graph page.</note>
+        <from>/graphs-detail-graphid([0-9]+).log(\?)*(.*)</from>
+        <to>/graphs-detail.log?megachartid=$1&amp;$3</to>
+    </rule>
+
+    <!-- Trackback -->
+    <rule>
+        <name>Trackback</name>
+        <note>The trackback url.</note>
+        <from>/trackback-eventid([0-9]+).log(\?)*(.*)</from>
+        <to>/trackback.log?eventid=$1&amp;$3</to>
+    </rule>
+
+    <!-- Rss -->
+    <rule>
+        <name>Rss</name>
+        <note>The rss url.</note>
+        <from>/rss.xml(\?)*(.*)</from>
+        <to>/rss-rome.log?logid=-1&amp;type=rss_2.0&amp;$2</to>
+    </rule>
+
+
+    <rule>
+        <name>Rss</name>
+        <note>The rss url.</note>
+        <from>/rss-logid([0-9]+).xml(\?)*(.*)</from>
+        <to>/rss-rome.log?logid=$1&amp;type=rss_2.0&amp;$3</to>
+    </rule>
+
+    <rule>
+        <name>Rss Login</name>
+        <note>The rss login url.</note>
+        <from>/rss-logid([0-9]+).xml\?password=(.*)</from>
+        <to>/rss-rome.log?logid=$1&amp;type=rss_2.0&amp;password=$2</to>
+    </rule>
+
+    <rule>
+        <name>Rss2</name>
+        <note>The rss url.</note>
+        <from>/(.*)-logid([0-9]+).xml(\?)*(.*)</from>
+        <to>/rss-rome.log?logid=$2&amp;type=$1&amp;$4</to>
+    </rule>
+
+    <rule>
+        <name>RssAll</name>
+        <note>The rss url.</note>
+        <from>/(.*)-all.xml(\?)*(.*)</from>
+        <to>/rss-rome.log?logid=-1&amp;type=$1&amp;$3</to>
+    </rule>
+
+    <!-- Google Maps XML -->
+
+    <rule>
+        <name>GoogleMapsTestXML</name>
+        <note>The google maps url.</note>
+        <from>/test/googlemap-locationid([0-9]+).xml(\?)*(.*)</from>
+        <to>/test/googlemapxml.log?locationid=$1&amp;$3</to>
+    </rule>
+
+    <rule>
+        <name>GoogleMapsXML</name>
+        <note>The google maps url.</note>
+        <from>/googlemap-locationid([0-9]+).xml(\?)*(.*)</from>
+        <to>/googlemapxml.log?locationid=$1&amp;$3</to>
+    </rule>
+
+    <!-- Rss Groups -->
+    <rule>
+        <name>Rss Groups</name>
+        <note>The rss url.</note>
+        <from>/groups/group([0-9]+).xml(\?)*(.*)</from>
+        <to>/groups/rss-groups.log?groupid=$1&amp;type=rss_2.0&amp;$3</to>
+    </rule>
+
+    <!-- Invitation -->
+    <rule>
+        <name>Invitation</name>
+        <note>The invitations url.</note>
+        <from>/invitation-([0-9]+).log(\?)*(.*)</from>
+        <to>/invitation.log?friendinvitationid=$1&amp;$3</to>
+    </rule>
+
+    <!-- Invitation -->
+    <rule>
+        <name>Invitation</name>
+        <note>The invitations url.</note>
+        <from>/invitation-([0-9]+)-([a-zA-Z0-9\-]*).log(\?)*(.*)</from>
+        <to>/invitation.log?friendinvitationid=$1&amp;friendinvitationkey=$2&amp;$4</to>
+    </rule>
+
+    <!-- Media File -->
+    <rule>
+        <name>Media files done in a way to preserve extensions</name>
+        <note>The main redirect. </note>
+        <from>/mediaout-imageid([0-9]+)-isprofileimage(.*)-entrykey(.*)-ext.(.*)(\?)*(.*)</from>
+        <to>/mediaout.log?imageid=$1&amp;isProfileImage=$2&amp;entrykey=$3&amp;$6</to>
+    </rule>
+
+    <!--
+
+     EXAMPLES
+
+     Redirect one url
+        <rule>
+            <from>/some/old/page.html</from>
+            <to type="redirect">/very/new/page.html</to>
+        </rule>
+
+    Redirect a directory
+        <rule>
+            <from>/some/olddir/(.*)</from>
+            <to type="redirect">/very/newdir/$1</to>
+        </rule>
+
+    Clean a url
+        <rule>
+            <from>/products/([0-9]+)</from>
+            <to>/products/index.jsp?product_id=$1</to>
+        </rule>
+    eg, /products/1234 will be passed on to /products/index.jsp?product_id=1234 without the user noticing.
+
+    Browser detection
+        <rule>
+            <condition name="user-agent">Mozilla/[1-4]</condition>
+            <from>/some/page.html</from>
+            <to>/some/page-for-old-browsers.html</to>
+        </rule>
+    eg, will pass the request for /some/page.html on to /some/page-for-old-browsers.html only for older
+    browsers whose user agent srtings match Mozilla/1, Mozilla/2, Mozilla/3 or Mozilla/4.
+
+    -->
+
+</urlrewrite>
+

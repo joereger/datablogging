@@ -1,0 +1,28 @@
+ul.sortable li {
+	position: relative;
+}
+
+ul.boxy {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	font-size: 13px;
+	font-family: Arial, sans-serif;
+}
+ul.boxy li {
+	cursor:move;
+	padding: 4px;
+	margin: 4px;
+	border: 1px solid #cccccc;
+	background-color: #e6e6e6;
+}
+.clickable a {
+	display: block;
+	text-decoration: none;
+	cursor: pointer;
+	cursor: hand;
+}
+.clickable li:hover {
+	background-color: #f6f6f6;
+}

@@ -1,0 +1,377 @@
+
+<%@ page import="java.util.*,
+                 reger.core.db.Db,
+                 reger.core.Util,
+                 reger.mega.FieldLayout,
+                 reger.mega.Field,
+                 reger.core.Util" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+//pageProps.title = "MasterAdmin Control Center Home Page";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loelogtypes";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Get the eventtypeid from the request
+int eventtypeid = 0;
+if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+    eventtypeid = Integer.parseInt(request.getParameter("eventtypeid"));
+}
+
+
+//SECURITY: Make sure user is LOEADMIN or owner of this account
+if (!userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    //User isn't LOEADMIN so need to check at log level.
+    //If no logid is present then this user can't edit anything.
+    if (pageProps.logProps.logid>0){
+        //If the user can't view this log or they can't do CUSTOMIZELOG acl on this account
+        if (!userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid) || !userSession.getAccountuser().userCanDoAcl("CUSTOMIZELOG", userSession.getAccount().getAccountid())){
+            out.println("Sorry, that field can't be edited.");
+            return;
+        }
+    } else {
+        out.println("Sorry, that field can't be edited.");
+        return;
+    }
+}
+
+
+
+
+//This Field variable represents the field that we're working with on this page
+reger.mega.FieldType field = null;
+reger.mega.FieldAllParams fieldAllParams = null;
+String systemDefaultsHtml = "";
+
+
+//Get the fieldtype from the request
+int fieldtype = 0;
+if (request.getParameter("fieldtype")!=null && reger.core.Util.isinteger(request.getParameter("fieldtype"))){
+    fieldtype = Integer.parseInt(request.getParameter("fieldtype"));
+}
+
+
+//Get the megafieldid from the request
+int megafieldid = 0;
+if (request.getParameter("megafieldid")!=null && reger.core.Util.isinteger(request.getParameter("megafieldid"))){
+    megafieldid = Integer.parseInt(request.getParameter("megafieldid"));
+}
+
+
+//If we have a megafieldid, use it to get a field
+if (megafieldid>0){
+    field = reger.AllFieldsInSystem.getMegaFieldByMegafieldid(megafieldid);
+    fieldtype = field.getFieldtype();
+} else {
+    //It must be a new one... Create an empty field of the correct type
+    field = reger.mega.FieldTypeFactory.getHandlerByFieldtype(fieldtype);
+}
+
+
+
+//If the field isn't null
+if (field!=null){
+    //Populate the main field object from the request
+    if (request.getParameter("fieldname")!=null && !request.getParameter("fieldname").equals("")){
+        field.setFieldname(request.getParameter("fieldname"));
+    }
+    if (request.getParameter("fielddescription")!=null && !request.getParameter("fielddescription").equals("")){
+        field.setFielddescription(request.getParameter("fielddescription"));
+    }
+    if (request.getParameter("megadatatypeid")!=null && reger.core.Util.isinteger(request.getParameter("megadatatypeid"))){
+        field.setMegadatatypeid(Integer.parseInt(request.getParameter("megadatatypeid")));
+    }
+    if (request.getParameter("isrequired")!=null && reger.core.Util.isinteger(request.getParameter("isrequired"))){
+        if (Integer.parseInt(request.getParameter("isrequired"))==1){
+            field.setIsrequired(true);
+        } else {
+            field.setIsrequired(false);
+        }
+    }
+    if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+        field.setEventtypeid(Integer.parseInt(request.getParameter("eventtypeid")));
+    }
+    if (request.getParameter("fieldtype")!=null && reger.core.Util.isinteger(request.getParameter("fieldtype"))){
+        field.setFieldtype(Integer.parseInt(request.getParameter("fieldtype")));
+    }
+
+    //Populate the field params from the request object
+    fieldAllParams = field.getParams();
+    //First, load from DB
+    fieldAllParams.loadData();
+    //Next, load from request, overwriting any values from DB
+    fieldAllParams.loadFromRequest(request);
+    //Pass the request object to the systemDefaults handler and if I get something back, display it.
+    systemDefaultsHtml = field.processSystemDefaultDataConfig(request);
+
+} else {
+    //If we don't have a valid field at this point, redirect them
+    response.sendRedirect(pageProps.pathToAppRoot + "loe/logtypes-type.log?eventtypeid="+request.getParameter("eventtypeid")+"&logid="+pageProps.logProps.logid+"");
+    return;
+}
+
+reger.core.Util.debug(5, "logtypes-field.log - pageProps.action="+pageProps.action+"");
+
+//Edit field
+String errortext="";
+if (pageProps.action.equals("editfield")) {
+    //Save the field data
+    field.saveField();
+    //Check the parameters
+    errortext = errortext + fieldAllParams.saveParams();
+
+    //If no errors, redirect
+    if (errortext.equals("")) {
+        response.sendRedirect("logtypes-type.log?eventtypeid="+request.getParameter("eventtypeid")+"&logid=" + pageProps.logProps.logid);
+        return;
+    }
+}
+
+//Delete field
+if (pageProps.action.equals("deletefield") && userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())) {
+    //@todo Alert the user to the final nature of this action... "Are you sure?  All Data for this field will be lost."
+
+    //Call the FieldType deleteField method to delete this field and all data
+    field.deleteField();
+
+    //Delete the params
+    fieldAllParams.deleteAllParams();
+
+    //Redirect
+    response.sendRedirect("logtypes-type.log?eventtypeid="+request.getParameter("eventtypeid")+"&logid=" + pageProps.logProps.logid);
+    return;
+}
+
+//New field
+if (pageProps.action.equals("finishaddfield")) {
+    //Save the field data
+    field.saveField();
+    //Set the megafieldid on all parameter objects. I get megafieldid from insert identity from DB which is saved in field.
+    fieldAllParams.setMegafieldidOnAll(field.getMegafieldid());
+    //Check the parameters
+    errortext = errortext + fieldAllParams.saveParams();
+
+    //If no errors, redirect
+    if (errortext.equals("")) {
+        response.sendRedirect("logtypes-type.log?eventtypeid="+request.getParameter("eventtypeid")+"&logid=" + pageProps.logProps.logid);
+        return;
+    }
+}
+
+
+
+
+
+
+
+if (!errortext.equals("")) {
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+
+mb.append("<br><br>");
+mb.append("<table cellpadding=0 cellspacing=0 border=0>");
+mb.append("<tr>");
+
+mb.append("<td valign=top>");
+
+
+if (pageProps.action.equals("addfield")) {
+    pageProps.action="finishaddfield";
+} else {
+    pageProps.action="editfield";
+}
+
+mb.append("<form action='logtypes-field.log' method=post>");
+mb.append("<input type=hidden name=action value="+pageProps.action+">");
+mb.append("<input type=hidden name=megafieldid value='"+megafieldid+"'>");
+mb.append("<input type=hidden name=fieldtype value='"+fieldtype+"'>");
+mb.append("<input type=hidden name=logid value='"+pageProps.logProps.logid+"'>");
+mb.append("<input type=hidden name=eventtypeid value="+request.getParameter("eventtypeid")+">");
+
+mb.append("<table cellpadding=5 cellspacing=1 border=0 width=100% align=center>");
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc align=left colspan=4>");
+mb.append("<font face=arial size=+1><strong>Field Details</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right bgcolor=#eeeeee colspan=2><font face=arial size=-1><strong>Field Name:</strong></font></font></td>");
+mb.append("<td valign=top align=left colspan=2><input type=text size=20 maxlength=49 name=fieldname value=\""+reger.core.Util.cleanForHtml(field.getFieldname())+"\"></td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=right bgcolor=#eeeeee colspan=2><font face=arial size=-1><strong>Field Description:</strong></font></font></td>");
+mb.append("<td valign=top align=left colspan=2><input type=text size=20 maxlength=250 name=fielddescription value=\""+Util.cleanForHtml(field.getFielddescription())+"\"></td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#eeeeee valign=top align=right colspan=2>");
+mb.append("<font face=arial size=-1><strong>Required?</strong></font><br><font face=arial size=-2><strong>Do users have to input this field in order to complete a log entry for this log type?</strong></font></td>");
+mb.append("<td bgcolor=#ffffff valign=top align=left colspan=2>");
+
+//Radio Control
+java.util.TreeMap radiosIsrequired=new java.util.TreeMap();
+radiosIsrequired.put("0","No");
+radiosIsrequired.put("1","Yes");
+mb.append(reger.formControl.radioList(radiosIsrequired, String.valueOf(field.getIsrequired()), "isrequired", "vertical"));
+//End Radio Control
+
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#eeeeee' valign=top align=right colspan=2>");
+mb.append("<font face=arial size=-1><strong>Data Type</strong></font><br><font face=arial size=-2><strong>What type of data is allowed in this field?  This will only affect newly added data and will not change data already in the system for this log (if there is any).</strong></font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top align=left colspan=2>");
+mb.append("<font face=arial size=-1>");
+
+String checked="";
+//Get a list of data types that this field type will accept
+int[] acceptableTypes = field.getAcceptableDataTypes();
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstDatType= Db.RunSQL("SELECT megadatatypeid, megadatatypename, megadatatypedescription FROM megadatatype");
+//-----------------------------------
+//-----------------------------------
+if (rstDatType!=null && rstDatType.length>0){
+	for(int i=0; i<rstDatType.length; i++){
+        //Loop through acceptable types
+        for (int j = 0; j < acceptableTypes.length; j++) {
+            //If this is the type currently from the DB
+            if (acceptableTypes[j]==Integer.parseInt(rstDatType[i][0])){
+                //Determine whether or not it's checked
+                if (acceptableTypes[j]==field.getMegadatatypeid()) {
+                    checked=" checked";
+                } else {
+                    checked="";
+                }
+                //Output the html
+                mb.append("<input type=radio name=megadatatypeid value="+acceptableTypes[j]+" "+checked+"> <strong>"+rstDatType[i][1]+"</strong><br>" + rstDatType[i][2]);
+                mb.append("<br><br>");
+            }
+        }
+	}
+}
+
+
+
+
+mb.append("</font></td>");
+mb.append("</tr>");
+
+
+
+
+//Get all params object
+if (fieldAllParams!=null && fieldAllParams.getParams().size()>0){
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#cccccc align=left colspan=4>");
+    mb.append("<font face=arial size=+1><strong>Field Configuration Parameters</strong></font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    //Get the vector of individual parameters
+    java.util.Vector params = fieldAllParams.getParams();
+    //Iterate the vector
+    for (int i = 0; i < params.size(); i++) {
+        reger.mega.FieldParam param = (reger.mega.FieldParam) params.elementAt(i);
+
+        mb.append("<tr>");
+        mb.append("<td valign=top align=right bgcolor=#eeeeee colspan=2><font face=arial size=-1><strong>"+param.name+"</strong></font><br><font face=arial size=-2>"+param.description+"</font></td>");
+        mb.append("<td valign=top align=left colspan=2><input type=text size=20 maxlength=250 name='fieldparam-"+param.onewordDatabaseKey+"' value=\""+Util.cleanForHtml(param.value)+"\"></td>");
+        mb.append("</tr>");
+    }
+}
+
+//Display systemDefaultsHtml
+if (!systemDefaultsHtml.equals("")){
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#cccccc align=left colspan=4>");
+    mb.append("<font face=arial size=+1><strong>System Defaults</strong></font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff align=left colspan=4>");
+    mb.append(systemDefaultsHtml);
+    mb.append("</td>");
+    mb.append("</tr>");
+}
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc colspan=4 align=center>");
+if (!pageProps.action.equals("finishaddfield")) {
+    mb.append("<table align=right>");
+    mb.append("<tr>");
+    mb.append("<a href='logtypes-field.log?megafieldid="+megafieldid+"&eventtypeid="+request.getParameter("eventtypeid")+"&action=deletefield'><font face=arial size=-1>Delete Field</font></a>");
+    mb.append("<td>");
+    mb.append("</td>");
+    mb.append("</table>");
+}
+mb.append("<input type='submit' value='Save'>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr><td bgcolor=#ffffff></td><td bgcolor=#ffffff></td><td bgcolor=#ffffff></td><td bgcolor=#ffffff></td></tr>");
+
+mb.append("</table>");
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("</form>");
+mb.append("<br><br>");
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

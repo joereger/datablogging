@@ -1,0 +1,79 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "<img src='../images/icon-log-type-med-notext.gif' align=top> Log Type Summary";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logslogtypes";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//HtmlCache
+String cachekey = "MyhomeLogTypeDetail" + " PLID:" + userSession.getPl().getPlid() +  " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request, false); //Anything unique for the page
+int refreshintervalinseconds = 600;
+%><%@ include file="../htmlcachestart.jsp" %><%
+
+
+//Log Header start
+String currentNavButtonName = "logs-type-summary";
+%>
+<%@ include file="logs-header.jsp" %>
+<%
+//Log Header end
+
+
+
+reger.MegaLogType logType = null;
+if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+    logType = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(Integer.parseInt(request.getParameter("eventtypeid")));
+} else {
+    response.sendRedirect("logs-type-list.log");
+    return;
+}
+
+int logtypedetailtoshow = reger.MegaLogTypeHtmlrender.LOGTYPEDETAILTOSHOWENTRYPAGE;
+if (request.getParameter("logtypedetailtoshow")!=null && reger.core.Util.isinteger(request.getParameter("logtypedetailtoshow"))){
+    logtypedetailtoshow = Integer.parseInt(request.getParameter("logtypedetailtoshow"));
+}
+
+mb.append(reger.MegaLogTypeHtmlrender.getSummary(logType, logtypedetailtoshow, "logs-newlog.log", "logs-type-detail.log", request, response, userSession, pageProps));
+
+
+
+
+//Log Footer start
+%>
+<%@ include file="logs-footer.jsp" %>
+<%
+//Log Footer end
+
+%><%@ include file="../htmlcacheend.jsp" %><%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

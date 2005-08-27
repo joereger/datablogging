@@ -1,0 +1,96 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONTOUR;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append(reger.core.Util.popup());
+
+
+mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td width=33% valign=top>");
+mb.append("<font face=arial size=+4>");
+mb.append("<strong>");
+mb.append("Overview Tour");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+
+//Tour navigation
+mb.append(reger.marketingSite.TourHtml.tourNavHtml(pageProps.pathToAppRoot, "tour-overview-02.log", "<< Back", "tour-overview-04.log", "Next >>"));
+
+//Screenshots
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+mb.append(reger.marketingSite.TourHtml.screenShotWithDescription("screenshot-adminhome.gif", "left", "Admin Tool", "This is the screen you use to create log entries.  It is simple to start logging."));
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+mb.append("</td>");
+
+mb.append("<td width=67% valign=top>");
+
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+mb.append("<font face=arial size=+2>");
+mb.append("<strong>");
+mb.append("Retort if you Must; Comment if you Will …");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<font face=arial size=+1 color=#666666>");
+
+
+mb.append("Weave your own web of interaction with your web log.  Ever notice how sometimes your thoughts are just missing that bit of pizzazz?  And then did you notice that when you put those comments out there, someone else’s thoughts provided that zing?  The social networking features enhance your log through the benefit of outside interpretation.  Only want to hear what your chosen friends have to say?  Password protect your log.  Want to hear what anyone has to say, but don’t want everyone to hear them say it?  You have the power to approve or not approve all comments made on your web log.");
+mb.append("<br><br>");
+mb.append("Maybe you’ve grasped by now that you hold the power over your web log.  If not, here’s a simple explanation:  you can password protect the logs in your site and give the password only to those people you want to have it.  Want your Running Log to be public?  Make it public.  Want your Food Log to be private?  Make it private and password protect it.  It’s that simple.  Only those people you want to read about your life can read about your life.  It’s your prerogative.");
+mb.append("<br><br>");
+mb.append("The Message/Comments feature allows your friends or viewers to send you their thoughts from your web log.  You can easily configure your site so that you must approve a message or comment before it appears on your site.  Don’t care to entertain the comments and messages of others?  Turn off the feature with a single click operation.");
+
+
+mb.append("</font>");
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+//Tour navigation
+mb.append(reger.marketingSite.TourHtml.tourNavHtml(pageProps.pathToAppRoot, "tour-overview-02.log", "<< Back", "tour-overview-04.log", "Next >>"));
+
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

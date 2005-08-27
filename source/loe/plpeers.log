@@ -1,0 +1,127 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.core.db.Db,
+                 reger.PrivateLabel" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loepladmin";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Populate the object
+PrivateLabel pl = new PrivateLabel();
+if (request.getParameter("plid")!=null && reger.core.Util.isinteger(request.getParameter("plid"))){
+    pl = new PrivateLabel(Integer.parseInt(request.getParameter("plid")));
+}
+
+//Save
+if (pageProps.action.equals("save")){
+    int[] newPeers = new int[0];
+    if (request.getParameterValues("peerplid")!=null){
+        String[] peerPlidsAsString = request.getParameterValues("peerplid");
+        for (int i = 0; i < peerPlidsAsString.length; i++) {
+            String s = peerPlidsAsString[i];
+            if (reger.core.Util.isinteger(s)){
+                newPeers = reger.core.Util.addToIntArray(newPeers, Integer.parseInt(s));
+            }
+        }
+        //Add the peers
+        pl.setPeersDeletingOldOnes(newPeers);
+        //Refresh the ALl object
+        reger.AllPrivateLabelsInSystem.refresh();
+        //Refresh usersession, if necessary
+        if (pl.getPlid() == userSession.getPl().getPlid()){
+            userSession.getPl().loadPl(userSession.getPl().getPlid());
+            userSession.getAccount().refresh();
+        }
+    }
+}
+
+mb.append("<br><br>");
+mb.append("<font face=arial size=+3>");
+mb.append("Peering Relationships for: " + pl.getPlname());
+mb.append("</font>");
+mb.append("<br><br>");
+
+
+mb.append("<font face=arial size=+1>");
+mb.append("By creating a peering relationship you allow users and entries from other private labels to be accessed inside of your private label.");
+mb.append("<br><br>");
+mb.append("This is a good idea for the social networking features and community features of the system.  For example, when you create a new private label you may want users amongst all of the private labels to be able to see each other and interact.  Do this by creating a peer relationship with other private labels.");
+mb.append("<br><br>");
+mb.append("Creating a peering relationship with another private label does not mean that their users can see users from this private label.");
+mb.append("<br><br>");
+mb.append("There must be at least two private labels in the system before a peering relationship can be created.");
+mb.append("</font>");
+mb.append("<br><br>");
+
+//Form
+PrivateLabel[] pls = reger.AllPrivateLabelsInSystem.getAllPrivateLabels();
+if (pls.length>1){
+    mb.append("<form action='plpeers.log' method=post>");
+    mb.append("<input type=hidden name=plid value='"+pl.getPlid()+"'>");
+    mb.append("<input type=hidden name=action value=save>");
+    mb.append("<input type=submit value='Save Peering Relationships'>");
+    mb.append("<br>");
+    mb.append("<br>");
+
+    for (int i = 0; i < pls.length; i++) {
+        if (pls[i].getPlid()!=pl.getPlid()){
+            String checkedText = "";
+            if (pl.isPlidAPeer(pls[i].getPlid())){
+                checkedText = " checked ";
+            }
+            mb.append("<input type=checkbox name=peerplid value='"+pls[i].getPlid()+"' "+checkedText+">");
+            mb.append("<font face=arial size=-1><b>");
+            mb.append(pls[i].getPlname());
+            mb.append("</b></font>");
+            mb.append("<br>");
+        }
+    }
+
+    mb.append("</form>");
+
+    mb.append("<br><br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Checked = Peering Relationship Exists");
+    mb.append("</font>");
+} else {
+    mb.append("<font face=arial size=+3 color=#ff0000>");
+    mb.append("Not enough private labels found in this installation to create peer relationships.");
+    mb.append("</font>");
+}
+
+
+
+
+
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="plmanage-rightside.jsp" %>
+
+
+<%@ include file="../globalfooter.jsp" %>

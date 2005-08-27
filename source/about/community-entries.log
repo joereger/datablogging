@@ -1,0 +1,179 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//HtmlCache
+String cachekey = "CommunityPageEntries" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+int refreshintervalinseconds = 600;
+%><%@ include file="../htmlcachestart.jsp" %><%
+
+    String currentNavButtonName = "community-entries";
+    %><%@ include file="community-header.jsp" %><%
+
+    mb.append("<br>");
+    mb.append("<br>");
+
+    mb.append("<table cellpadding=5 width=100% cellspacing=0 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+
+
+    //Start Most Recent Entries
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Most Recent Entries");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-2>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstEvent= Db.RunSQL("SELECT eventid, title, account.accountid, megalog.logid FROM event, account, megalog, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND "+reger.Entry.sqlOfLiveEntry+" AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"'  ORDER BY event.date DESC LIMIT 0,100");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstEvent!=null && rstEvent.length>0){
+        for(int i=0; i<rstEvent.length; i++){
+            mb.append((i+1)+") ");
+            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstEvent[i][2]));
+            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/entry-logid"+rstEvent[i][3]+"-eventid"+rstEvent[i][0]+".log'>");
+            mb.append(rstEvent[i][1]);
+            mb.append("</a>");
+            mb.append("<br>");
+        }
+    }
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //End Most Recent Entries
+
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+
+
+    //Start Entries Most Read In Last 7 Days
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Entries Most Read In Last 7 Days");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-2>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstMostRead= Db.RunSQL("SELECT event.eventid, title, account.accountid, sum(traffic.count) as cnt, megalog.logid FROM event, account, traffic, megalog, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND "+reger.Entry.sqlOfLiveEntry+" AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND event.eventid=traffic.eventid AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"' AND traffic.datetime>'"+reger.core.TimeUtils.dateformatfordb(reger.core.TimeUtils.xDaysAgoStart(java.util.Calendar.getInstance(), 8))+"' GROUP BY event.eventid ORDER BY cnt DESC LIMIT 0,100");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstMostRead!=null && rstMostRead.length>0){
+        for(int i=0; i<rstMostRead.length; i++){
+            mb.append((i+1)+") ");
+            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstMostRead[i][2]));
+            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/entry-logid"+rstMostRead[i][4]+"-eventid"+rstMostRead[i][0]+".log?'>");
+            mb.append(rstMostRead[i][1]);
+            mb.append("</a>");
+            mb.append(" ("+rstMostRead[i][3]+")");
+            mb.append("<br>");
+        }
+    }
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //End Entries Most Read In Last 7 Days
+
+
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+
+    //Start Entries Most Read All Time
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Entries Most Read All Time");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-2>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstMostReadAllTime= Db.RunSQL("SELECT event.eventid, title, account.accountid, sum(traffic.count) as cnt, megalog.logid FROM event, account, traffic, megalog, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND "+reger.Entry.sqlOfLiveEntry+" AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND event.eventid=traffic.eventid AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"' GROUP BY event.eventid ORDER BY cnt DESC LIMIT 0,100");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstMostReadAllTime!=null && rstMostReadAllTime.length>0){
+        for(int i=0; i<rstMostReadAllTime.length; i++){
+            mb.append((i+1)+") ");
+            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstMostReadAllTime[i][2]));
+            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/entry-logid"+rstMostReadAllTime[i][4]+"-eventid"+rstMostReadAllTime[i][0]+".log'>");
+            mb.append(rstMostReadAllTime[i][1]);
+            mb.append("</a>");
+            mb.append(" ("+rstMostReadAllTime[i][3]+")");
+            mb.append("<br>");
+        }
+    }
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //End Entries Most Read All Time
+
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+
+
+
+
+
+    %><%@ include file="community-footer.jsp" %><%
+
+//HtmlCache
+%><%@ include file="../htmlcacheend.jsp" %><%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

@@ -1,0 +1,194 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//HtmlCache
+String cachekey = "CommunitySitesPage" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+int refreshintervalinseconds = 600;
+%><%@ include file="../htmlcachestart.jsp" %><%
+
+
+    String currentNavButtonName = "community-sites";
+    %><%@ include file="community-header.jsp" %><%
+
+    mb.append("<br>");
+    mb.append("<br>");
+
+    mb.append("<table cellpadding=5 width=100% cellspacing=0 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+
+    //Start Newest Sites
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Newest Sites");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-2>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstSites= Db.RunSQL("SELECT accountid, homepagetitle, accountid FROM account, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"' ORDER BY createdate DESC LIMIT 0,100");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstSites!=null && rstSites.length>0){
+        for(int i=0; i<rstSites.length; i++){
+            mb.append((i+1)+") ");
+            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSites[i][2]));
+            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+            String sitename = rstSites[i][1];
+            if (sitename.equals("")){
+                sitename=rstSites[i][2];
+            }
+            mb.append(sitename);
+            mb.append("</a>");
+            mb.append("<br>");
+
+        }
+    }
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //End Newest Sites
+
+
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+
+
+    //Start Sites Most Read In Last 7 Days
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Sites Most Read In Last 7 Days");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-2>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstStsMstRd= Db.RunSQL("SELECT account.accountid, homepagetitle, account.accountid, sum(traffic.count) as cnt FROM account, traffic, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"' AND traffic.accountid=account.accountid AND traffic.datetime>'"+reger.core.TimeUtils.dateformatfordb(reger.core.TimeUtils.xDaysAgoStart(java.util.Calendar.getInstance(), 8))+"' GROUP BY accountid ORDER BY cnt DESC LIMIT 0,100");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstStsMstRd!=null && rstStsMstRd.length>0){
+        for(int i=0; i<rstStsMstRd.length; i++){
+            mb.append((i+1)+") ");
+            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstStsMstRd[i][2]));
+            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+            String sitename = rstStsMstRd[i][1];
+            if (sitename.equals("")){
+                sitename=rstStsMstRd[i][2];
+            }
+            mb.append(sitename);
+            mb.append("</a>");
+            mb.append(" ("+rstStsMstRd[i][3]+")");
+            mb.append("<br>");
+        }
+    }
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //End Sites Most Read In Last 7 Days
+
+
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+
+
+
+    //Start Sites Most Read All Time
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Sites Most Read All Time");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-2>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstStsMstRdAllTime= Db.RunSQL("SELECT account.accountid, homepagetitle, account.accountid, sum(traffic.count) as cnt FROM account, traffic, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"' AND traffic.accountid=account.accountid GROUP BY accountid ORDER BY cnt DESC LIMIT 0,100");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstStsMstRdAllTime!=null && rstStsMstRdAllTime.length>0){
+        for(int i=0; i<rstStsMstRdAllTime.length; i++){
+            mb.append((i+1)+") ");
+            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstStsMstRdAllTime[i][2]));
+            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+            String sitename = rstStsMstRdAllTime[i][1];
+            if (sitename.equals("")){
+                sitename=rstStsMstRdAllTime[i][2];
+            }
+            mb.append(sitename);
+            mb.append("</a>");
+            mb.append(" ("+rstStsMstRdAllTime[i][3]+")");
+            mb.append("<br>");
+        }
+    }
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //End Sites Most Read All Time
+
+
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+
+
+    mb.append("<br><br>");
+
+
+    %><%@ include file="community-footer.jsp" %><%
+
+//HtmlCache
+%><%@ include file="../htmlcacheend.jsp" %><%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

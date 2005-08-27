@@ -1,0 +1,185 @@
+<%@ page import="reger.core.db.Db,
+                 reger.template.Template,
+                 reger.Log,
+                 reger.AllLogsInSystem,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Templates";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingstemplate";
+pageProps.aclObjectName = "CHANGESKIN";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Get templateid
+int templateid = -1;
+if (request.getParameter("templateid")!=null && reger.core.Util.isinteger(request.getParameter("templateid"))){
+    templateid = Integer.parseInt(request.getParameter("templateid"));
+}
+
+//Get type
+int type = -1;
+if (request.getParameter("type")!=null && reger.core.Util.isinteger(request.getParameter("type"))){
+    type = Integer.parseInt(request.getParameter("type"));
+}
+
+//Load the template
+Template template = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(templateid, type);
+
+//Use this one sets the
+//reger.UserSession userSession;
+if (pageProps.action.equals("usethisone")){
+    if (template!=null){
+        if (template.getType()==Template.TEMPLATETYPESITE){
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE account SET sitetemplateid='"+templateid+"' WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+            //-----------------------------------
+            //-----------------------------------
+            //Refresh the account
+            userSession.getAccount().refresh();
+        } else if (template.getType()==Template.TEMPLATETYPEENTRYLIST){
+            if (pageProps.logProps.logid<=0){
+                //-----------------------------------
+                //-----------------------------------
+                int count = Db.RunSQLUpdate("UPDATE account SET entlisttemplateid='"+templateid+"' WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+                //-----------------------------------
+                //-----------------------------------
+                //Refresh the account
+                userSession.getAccount().refresh();
+            }
+        } else if (template.getType()==Template.TEMPLATETYPEHOMEPAGE){
+            if (pageProps.logProps.logid<=0){
+                //-----------------------------------
+                //-----------------------------------
+                int count = Db.RunSQLUpdate("UPDATE account SET hptemplateid='"+templateid+"' WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+                //-----------------------------------
+                //-----------------------------------
+                //Refresh the account
+                userSession.getAccount().refresh();
+            }
+        }
+    }
+}
+
+
+
+//Edit is simply a redirect to the edit screen
+if (pageProps.action.equals("edit")){
+    response.sendRedirect("settings-template-edit.log?templateid=" + templateid+ "&type=" + request.getParameter("type")+"&returnurl=" + request.getParameter("returnurl"));
+    return;
+}
+
+//Delete is simply a redirect to the edit screen
+if (pageProps.action.equals("delete")){
+    response.sendRedirect("settings-template-delete.log?templateid=" + templateid +"&returnurl=" + request.getParameter("returnurl"));
+    return;
+}
+
+
+mb.append(reger.core.Util.popup());
+
+
+
+mb.append("<br>");
+mb.append("<br>");
+
+//Site Template
+//reger.UserSession userSession;
+Template activeTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(  userSession.getAccount().getSitetemplateid(), Template.TEMPLATETYPESITE  );
+Template[] siteUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(Template.TEMPLATETYPESITE, userSession.getAccount().getAccountid());
+Template[] siteSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPESITE);
+mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "Site Template", "This is the overall template that determines the general look of your site.", -1, Template.TEMPLATETYPESITE, "settings-template-main.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+
+//Spacer
+mb.append("<br>");
+mb.append("<img src=images/clear.gif width=1 height=1>");
+mb.append("<br>");
+
+//Entry Template
+//reger.UserSession userSession;
+Template activeEntryListTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(  userSession.getAccount().getEntlisttemplateid(), Template.TEMPLATETYPEENTRYLIST  );
+Template[] entUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(Template.TEMPLATETYPEENTRYLIST, userSession.getAccount().getAccountid());
+Template[] entSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEENTRYLIST);
+mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "Default Entry List Template", "This template governs entries as they appear in a list on the homepage. This template can be overridden for each log on your site.", -1, Template.TEMPLATETYPEENTRYLIST, "settings-template-main.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+
+//Spacer
+mb.append("<br>");
+mb.append("<img src=images/clear.gif width=1 height=1>");
+mb.append("<br>");
+
+//Hp Template
+//reger.UserSession userSession;
+Template activeHpTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(  userSession.getAccount().getHptemplateid(), Template.TEMPLATETYPEHOMEPAGE  );
+Template[] hpUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(Template.TEMPLATETYPEHOMEPAGE, userSession.getAccount().getAccountid());
+Template[] hpSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEHOMEPAGE);
+mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "Site Homepage Template", "This template controls how the homepage of your site operates.", -1, Template.TEMPLATETYPEHOMEPAGE, "settings-template-main.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+
+//Spacer
+mb.append("<br>");
+mb.append("<img src=images/clear.gif width=1 height=1>");
+mb.append("<br>");
+
+////Get all logs for this account
+////mb.append("Pre logs[]: "+reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
+//Log[] logs = reger.AllLogsInSystem.allLogsForAccountAlphabetized(userSession.getAccount().getAccountid());
+////mb.append("Post logs[]: "+reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
+//Template[] logHpUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(Template.TEMPLATETYPEHOMEPAGE, userSession.getAccount().getAccountid());
+//Template[] logHpSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEHOMEPAGE);
+//Template[] logElUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(Template.TEMPLATETYPEENTRYLIST, userSession.getAccount().getAccountid());
+//Template[] logElSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEENTRYLIST);
+//
+//for (int i = 0; i < logs.length; i++) {
+//    //mb.append("logs["+i+"]: "+reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
+//
+//    //Log hp
+//    Template activeLogHpTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(  logs[i].getMaintemplateid()  );
+//    mb.append(reger.template.TemplateHtml.getBox(activeLogHpTemplate, logHpUserTemplates, logHpSystemTemplates, logs[i].getName() + " Homepage Template", "This template controls how the homepage of "+logs[i].getName()+" operates.", logs[i].getLogid(), Template.TEMPLATETYPEHOMEPAGE, "settings-template-main.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+//
+//    //Spacer
+//    mb.append("<br>");
+//    mb.append("<img src=images/clear.gif width=1 height=1>");
+//    mb.append("<br>");
+//
+//    //Log entry
+//    Template activeLogElTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(  logs[i].getEntlisttemplateid()  );
+//    mb.append(reger.template.TemplateHtml.getBox(activeLogElTemplate, logElUserTemplates, logElSystemTemplates, logs[i].getName() + " Entry List Template", "This template controls how entry lists on "+logs[i].getName()+" look.", logs[i].getLogid(), Template.TEMPLATETYPEENTRYLIST, "settings-template-main.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+//
+//    //Spacer
+//    mb.append("<br>");
+//    mb.append("<img src=images/clear.gif width=1 height=1>");
+//    mb.append("<br>");
+//
+//}
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

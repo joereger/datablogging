@@ -1,0 +1,12 @@
+.footer P {
+	MARGIN-TOP: 5px
+}
+.footer SPAN.title {
+	COLOR: #f06
+}
+.footer A {
+	TEXT-DECORATION: none
+}
+.footer A:hover {
+	TEXT-DECORATION: underline
+}

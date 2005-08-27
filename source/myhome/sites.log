@@ -1,0 +1,190 @@
+<%@ page import="java.util.Calendar,
+                 java.util.Hashtable,
+                 java.util.Enumeration,
+                 reger.*"%>
+
+<%@ page import="java.text.*"%>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Manage Sites";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "sitesmain";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINHOMEPAGE;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Set default accountid
+if (pageProps.action.equals("makedefault")){
+    if (request.getParameter("accountid")!=null && reger.core.Util.isinteger(request.getParameter("accountid"))){
+        userSession.getAccountuser().setDefaultAccountidForThisUser(Integer.parseInt(request.getParameter("accountid")), userSession.getPl());
+    }
+}
+
+
+
+StringBuffer info = new StringBuffer();
+info.append("You are able to create multiple sites.  You already have at least one site.  A site contains multiple logs.  You may want to simply add another log to your existing site.  A new site has a separate url and is completely unconnected to any site that you have now, other than the fact that you'll be the site owner of it.");
+info.append("<br><br>");
+info.append("You have one home site.  Your home site is the site that you are sent to immediately after login.  It's the site that you're linked to on the links in the upper right of the screen whenever you're logged-in.  Choosing a Home Site is more a matter of convenience than anything else.");
+info.append("<br><br>");
+info.append("Listed below are those sites that you have some sort of special access to.");
+mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, info.toString()));
+
+
+//mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+Hashtable accts = userSession.getAccountuser().getAccountsUserHasAccessTo();
+if (accts!=null){
+    mb.append("<table cellpadding=15 cellspacing=2 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Site You Are On Now");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top bgcolor=#cccccc>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Site Name");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top bgcolor=#cccccc>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("&nbsp;");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top bgcolor=#cccccc>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("&nbsp;");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top bgcolor=#cccccc>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Home Site");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top bgcolor=#cccccc>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Are You the Site Owner?");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    for (Enumeration e = accts.keys(); e.hasMoreElements();) {
+        // retrieve the object_key
+        Integer accountid = (Integer) e.nextElement();
+        // retrieve the object associated with the key
+        String sitename = (String) accts.get ( accountid );
+        //Create an account object
+        reger.Account acct = new reger.Account(accountid.intValue());
+        //sc.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/'>");
+        mb.append("<tr>");
+        mb.append("<td valign=top align=center>");
+        if (accountid.intValue()==userSession.getAccount().getAccountid()){
+            mb.append("<img src='../images/icon-right-16x16.gif' alt=\"The site you are on right now.\" border=0>");
+        }
+        mb.append("</td>");
+        mb.append("<td valign=top>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("<b>");
+        mb.append(acct.getHomepagetitle());
+        mb.append("</b>");
+        mb.append("</font>");
+        //sc.append("</a>");
+        mb.append("</td>");
+        mb.append("<td valign=top nowrap>");
+        mb.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/'>");
+        mb.append("<font face=arial size=-2>");
+        mb.append("<img src='../images/icon-public.gif' border=0>");
+        mb.append("View this Site");
+        mb.append("</font>");
+        mb.append("</a>");
+        mb.append("</td>");
+        mb.append("<td valign=top nowrap>");
+        if (userSession.getAccountuser().userCanDoAcl("ADMINHOME", accountid.intValue())){
+            mb.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/myhome/'>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("<img src='images/icon-edit.gif' border=0>");
+            mb.append("Admin for this Site");
+            mb.append("</font>");
+            mb.append("</a>");
+        }
+        mb.append("</td>");
+        mb.append("<td valign=top nowrap align=center>");
+        if (userSession.getAccountuser().getAccountid()!=acct.getAccountid() && userSession.getAccountuser().userCanDoAcl("ADMINHOME", accountid.intValue())){
+            mb.append("<a href='sites.log?action=makedefault&accountid="+acct.getAccountid()+"'>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("Make this My Home Site");
+            mb.append("</font>");
+            mb.append("</a>");
+        } else{
+            mb.append("<font face=arial size=-2>");
+            mb.append("<img src='../images/icon-home-16x16.gif' alt=\"Your Home Site.\" border=0>");
+            mb.append("</font>");
+        }
+        mb.append("</td>");
+        mb.append("<td valign=top nowrap align=center>");
+        if (userSession.getAccountuser().isInAclgroup("SiteOwner", acct.getAccountid())){
+            mb.append("<font face=arial size=-2>");
+            mb.append("Yes");
+            mb.append("</font>");
+        } else{
+            mb.append("<font face=arial size=-2>");
+            mb.append("No");
+            mb.append("</font>");
+        }
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+    mb.append("</tr>");
+    mb.append("<td valign=top nowrap colspan=1 bgcolor=#ffffff>");
+    mb.append("&nbsp;");
+    mb.append("</td>");
+    mb.append("<td valign=top nowrap colspan=4 bgcolor=#ffffff>");
+    mb.append("<font face=arial size=+1>");
+    mb.append("<a href='sites-newsite.log'><img src='../images/icon-add-site.gif' alt='' border='0' align=middle>Create a New Site</a>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+}
+
+
+
+
+//mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("<!-- Other Site End -->");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

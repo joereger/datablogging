@@ -1,0 +1,96 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONTOUR;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append(reger.core.Util.popup());
+
+
+mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td width=33% valign=top>");
+mb.append("<font face=arial size=+4>");
+mb.append("<strong>");
+mb.append("Overview Tour");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+
+//Tour navigation
+mb.append(reger.marketingSite.TourHtml.tourNavHtml(pageProps.pathToAppRoot, "tour-overview-03.log", "<< Back", "tour.log", "Next >>"));
+
+//Screenshots
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+mb.append(reger.marketingSite.TourHtml.screenShotWithDescription("screenshot-adminhome.gif", "left", "Admin Tool", "This is the screen you use to create log entries.  It is simple to start logging."));
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+mb.append("</td>");
+
+mb.append("<td width=67% valign=top>");
+
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+mb.append("<font face=arial size=+2>");
+mb.append("<strong>");
+mb.append("Friends are Out There – Now Find Them!");
+mb.append("</strong>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<font face=arial size=+1 color=#666666>");
+
+
+mb.append("Want to announce your web log to your friends without making a pesky phone call?  Easy.  Enter their email address and they’ll be invited.  Then enjoy checking the status of your invitations - Open, Viewed, Accepted, Rejected.  Add a list of friends in your profile and then network away.  Send them a note from your log or from their log.  They can send you a note from their log or your log.  Send a note to all of your friends at once.  Weve the web.  Give rise to a cozy little family of bloggers.  You can even see a list of recent posts made by your friends.  Stay in the loop.");
+mb.append("<br><br>");
+mb.append("New friends are hard to come by.  Make it a little easier and take advantage of user profiles.  Search through these profiles and find the folks you want to share with.  Like to rock climb?  And to parasail?  So does Sarah G.  Bingo.  You just made your first friend.  And your network grows.");
+mb.append("<br><br>");
+mb.append("How many times have you heard a story related about 5 steps from the horse’s mouth?  “My brother’s wife’s sister’s husband’s cousin said that you can find orange tennis balls at this store downtown.”  You can create logging “groups” by inviting friends to invite their friends to join your network.  Why hear what Julian Q. has to say from Cheryl L?  Hear the original from Julian Q.  Build your cluster.  Make friends.");
+
+
+mb.append("</font>");
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+//Tour navigation
+mb.append(reger.marketingSite.TourHtml.tourNavHtml(pageProps.pathToAppRoot, "tour-overview-03.log", "<< Back", "tour.log", "Next >>"));
+
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

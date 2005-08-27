@@ -1,0 +1,81 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Portals/Aggregators";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+mb.append("Offering your portal site users a web logging offering is easy with our turnkey solutions. ");
+mb.append("Portal sites need to attract users based on content and features.  They need to build loyalty so that users come back.");
+
+mb.append("<br>");
+mb.append("<h1>Why Web Logs Make Sense</h1>");
+mb.append("<ul>");
+mb.append("<li>Users want web logs.  With millions of web logs already built and over five thousand new web logs each day, users have clearly voted in favor of the concept.");
+mb.append("<li>Brand reach.  Your branding is present on all of your users' sites.  Your users invite their friends and families to their sites where your brand is present.  This halo effect creates high brand awareness.");
+mb.append("<li>Increased revenue per user");
+mb.append("<li>Increased user loyalty. The spirit of web logging includes daily updates.  This means that your users will be coming back daily to your site where they are exposed to your offerings and brand.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>ROI</h1>");
+mb.append("<ul>");
+mb.append("<li>User upgrade revenue - Users choose between a free offering and a premium offering with more features.  Reger.com charges a base price for those features.  You can markup above that price and keep the difference.");
+mb.append("<li>Traffic and storage revenue - Users pay for what they use.  They pay for traffic and storage.  Reger.com charges a base fee per unit of traffic and storage.  You can markup and keep the difference.  This means that high volume users make you more money.");
+mb.append("<li>Free users' sites are paid for by advertising revenue.  While the margins are short on this side of the business, there is some room to share this revenue stream with you.");
+mb.append("<li>Special promotions - Once you have a user base using activity-specific web logs you can work with us to develop special promotions that take advantage of this marketing segmentation and share in the revenue.");
+mb.append("<li>Brand reach - Your brand will be extended in a user-friendly manner.");
+mb.append("<li>Search engine results - The URL of your homepage will be added to the template that appears on all of your free users' sites. This means that search engines will see thousands of inbound links... a criterion that tell them your site has something of value. This translates into higher search engine listings for you.");
+mb.append("<li>Increased portal traffic - Web loggers are an active bunch.  They make log entries many times per day.  This gives you many more user-initiated touches and traffic opportunities within your existing portal.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Recommended Products</h1>");
+mb.append("<ul>");
+mb.append("<li><a href='productsenterpriseweblogging.log'>Enterprise Web Logging Service</a>");
+mb.append("<li><a href='productsprivatelabel.log'>Private Label</a>");
+mb.append("<li><a href='productscustomlogtype.log'>Custom Log Type Development</a>");
+mb.append("</ul>");
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

@@ -1,0 +1,460 @@
+<br>
+
+<b>Setup Outline</b>
+
+1) Install MySQL (See MySQL Config notes below)
+
+2) Install Apache Tomcat 5.0.x (See Configuring Tomcat notes below)
+
+4) Create directories for uploads (See Create Upload Media Directories below)
+
+5) Deploy the application WAR file (See Deploy a New Build notes below)
+
+6) Setup SSL certificates (See SSL Configuration below))
+
+7) Configure Application Properties (See Configure Application below)
+
+8) Login and test installation
+
+3) DNS configuration (Optional) (See DNS Configuration notes below)
+
+
+<b>Mysql Config</b>
+
+1) Optional Step if upgrading: Backup any data, including the mysql database.  Often I backup the entire mysql directory and the entire data directory.  Don't forget about /winnt/my.ini
+
+2) Download the Mysql version from www.mysql.com to install.  Version 4.1 or better is required.  Sometimes they have a nice installer.  Sometimes they don't.  If they don't, extract the zip file contents into the Superfly/mysql directory.
+
+3) Install mysqld-nt as a service by opening a DOS prompt, surfing to /mysql/bin and typing "mysqld-nt --install"
+
+4) Run winmysqladmin.exe from bin.  This will prompt you for an admin password and will create a my.ini config file.
+
+5) Download Mysql's Control Center application from mysql.com. Connect to the localhost with username "root" and password blank.
+
+6) Create a "reger" database and restore a backup or run a SQL script that has base data in it. This script can be found in the /setup/ directory of the distribution.
+
+7) Create two accounts: "databaseusername@%" and "databaseusername@localhost" both with a password of whatever's in the context.xml file in the build ("databasepassword" by default).  Give both accounts all permissions on the reger.com database.
+
+8) Change the root@% and root@localhost passwords for security.
+
+9) Add these lines to my.ini or my.cfg (manually set data directory to the place you want to store the database):
+datadir=C:/SuperFly/mysql/data
+key_buffer_size=40M
+query-cache-size=40M
+query-cache-type=1
+
+10) Make sure Tomcat can talk to the mysql server.  Check the connection string in context.xml.  Also check mysql's config file /winnt/my.ini and, if necessary, bind it to an IP with "bind-address=127.0.0.1"
+
+
+
+<b>Configuring Tomcat</b>
+
+1) Install the latest Tomcat 5.0.x stable version from jakarta.apache.org.  Use a binary version with an installer if possible.
+
+2) There's a ROOT app installed by default.  Stop Tomcat.  Go to the filesystem and rename the "webapps/ROOT" directory to "webapps/rootold".  Restart the Tomcat service.
+
+4) You must get Tomcat bound to a particular IP and port.  Start with the server.xml which is part of the reger.com distribution.  Replace the one in TOMCAT_INSTALL_DIR/conf/server.xml.  Find the Connector tag.  Choose a proper IP and port:
+
+Use: &lt;Connector address="127.0.0.1" port="2222" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="8443" acceptCount="100" debug="0" connectionTimeout="20000" disableUploadTimeout="true"/>
+
+5) MySql's driver must be in TOMCAT_INSTALL_DIR/common/lib. It's called something like mysql-connector-java-3.0.8-stable-bin.jar.  You have to restart the Tomcat service for this addition to take effect.
+
+6) (Optional, not generally required) To setup another instance, say for joereger.com, go to tomcathome/conf/server.xml and copy an entire service tag within the server tree.  Configure the connector to respond to the correct IP address and port number.  Then, remember that you need to deploy an app to it before it'll work.  Look at /loe/server.xml.sample for reference.
+
+7) Be sure to put a basic index.html into the /webapps/ root so that Tomcat doesn't display a directory and allow people to download WAR files between builds.  This index.html can be an empty file.
+
+8) Add java memory setting to \tomcat\bin\catalina.bat.  Add line:
+SET JAVA_OPTS="-Xms48M -Xmx512M"
+
+8a) On Windows with Tomcat as a service, the memory is set with a Start Menu tool.  Go Start->Programs->Apache Tomcat->Configure Tomcat.  Set the JVM memory option -Xmx512M and then restart Tomcat.  Check the memory setting in LOE or in the /manager/html/ app.  This is critical.
+
+<b>Upgrade Tomcat to a new Version</b>
+
+1) Make sure that you have a backup of server.xml and (if possible) the entire tomcat directory.
+
+2) Uninstall (on windows) the service (tomcatroot/bin/service.bat remove)
+
+3) Install the new tomcat.  Sometimes there's an installer.  Sometimes you need to extract files.
+
+4) Overwrite the server.xml file with the one you backed up.
+
+5) Follow instructions above to Configuring Tomcat
+
+
+<b>Optional DNS Configuration</b>
+With the default install, user accounts end up at http://127.0.0.1/~username/.
+
+But there's another way. It's more complex but it's more elegant. The engine sits on a domain like www.reger.com.
+Users then sign up for accounts with URLs like http://user.reger.com
+
+This creates special DNS requirements.  All subdomains must point to the same IP address as the www subdomain.
+We recommend creating a new domain to tie all web logs to.  For example, domain.com.
+We recommend this so that there are no other DNS A or MX records that could conflict with the web log service.
+Wildcard MX records are generally supported but support can be questionable on some clients.
+
+1) Any private label with a base domain name that's not already working needs to have
+   a) DNS wildcard A record setup pointing to 127.0.0.1 or the IP of the server.
+   b) DNS MX record pointing mail to the IP of the server
+
+
+
+<b>Create Upload Media Directories</b>
+
+1) Users can upload files.  These files must be stored somewhere.
+
+2) Create a directory called "uploadmedia" This is the root uploads directory.  Remember its location and make sure it is consistent with the value in context.xml.
+
+3) Create a subdirectory called "thumbnails"  The name "thumbnails" is required and must be setup prior to usage.
+
+4) Make sure the process that Tomcat is running as has read/write/edit/delete permission on both directories.
+
+
+
+<b>Deploy a New Build</b>
+
+In an ideal world we could simply do 8), 9), 10), 11) but for some reason Tomcat doesn't seem to be able to delete all files on a Windows install so we have to manually do some cleanup before a build.
+
+1) Transfer the new ROOT.war build file to the server.
+
+2) Stop the Apache Tomcat service.
+
+3) Make a copy of %TOMCAT_ROOT%/conf/Catalina/localhost/ROOT.xml.  Keep the copy in a directory other than %TOMCAT_ROOT%/conf/Catalina/localhost/... many people use the desktop.  This is your primary current configuration file.
+
+4) Delete the file %TOMCAT_ROOT%/conf/Catalina/localhost/ROOT.xml.
+
+5) Delete the directory %TOMCAT_ROOT%/webapps/ROOT/
+
+6) Delete the file %TOMCAT_ROOT%/webapps/ROOT.war.
+
+7) Start the Apache Tomcat service.
+
+8) Log on to http://localhost/manager/html - This is the Tomcat Manager application.
+
+9) In the "WAR file to deploy" section click the "Browse" button.
+
+10) Find the WAR file on the file system.
+
+11) Click the "Deploy" button.
+
+12) Stop the Apache Tomcat service.
+
+13) Find your primary configuration file created in step 3).  Overwrite %TOMCAT_ROOT%/conf/Catalina/localhost/ROOT.xml
+
+14) Find your primary configuration file created in step 3). Overwrite %TOMCAT_ROOT%/webapps/ROOT/META-INF/context.xml  (Note the different name.)
+
+15) Start the Apache Tomcat service.
+
+16) Let the application work for a few minutes so that it can apply database upgrades.
+
+<b>SSL Configuration (self-signing a certificate)</b>
+
+1) Create a keystore with a certificate.  Create a directory (for this example we'll use: C:\Regerdotcom\regercomLiveData\certificates\)
+
+2) %JAVA_HOME%\bin\keytool -genkey -alias tomcat -keyalg RSA -keystore C:\Regerdotcom\regercomLiveData\certificates\regerdotcom.keystore
+
+3) Enter information that the program asks for.  Choose the same password for the keystore and the certificate for simplicity.   Your keystore file will be generated.
+
+4) Add the following line to %TOMCAT_ROOT%/conf/server.xml:
+<Connector port="443" address="63.173.68.37" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true" scheme="https" secure="true" clientAuth="false" sslProtocol="TLS" keystoreFile="C:\Regerdotcom\regercomLiveData\certificates\regerdotcom.keystore" keystorePass="changeit" keystoreType="JKS"/>
+-- Note the keystoreFile property
+-- If the keystorePass is not "changeit" which is the Tomcat default, you must enter the password here
+
+5) Tomcat must be restarted.  See http://jakarta.apache.org/tomcat/tomcat-5.0-doc/ssl-howto.html for more details.
+
+<b>SSL Configuration (using Verisign or another certificate authority)</b>
+
+Credit: The superb research of Mr. Bob Isaacs
+
+The general summary is this: You use Java to create a certificate request.  You send this request to a certificate signing authority.  They send you back a signed certificate.  You add this cert to your keystore.  You tell Tomcat where the keystore is.  You surf knowing that your data is encrypted across the wire.
+
+1) Open a command prompt on the weblog server.
+
+2) Go to c:\j2sdk1.4.1_05\bin\  (The \bin\ directory of the Java installation that Tomcat uses... path may vary on your install.)
+
+3)  Create your key (this also creates the keystore if it doesn't exist) Make sure to use the full state spelling and cn of your web site.  At the command prompt, type:
+
+keytool -v -genkey -keyalg RSA -keystore weblog.keystore -dname "cn=www.example.com, ou=None, L=Seattle, ST=Washington, o=ExampleOrg, c=US"
+
+4) Generate the CSR (Certificate Signing Request)  Be sure to specify sigalg here or it won't work.
+
+keytool -certreq -sigalg MD5withRSA -file weblogCert.csr -keystore keystore -storepass password
+
+5) Send the file weblogCert.csr to the certificate signing authority.  This may be http://digitalid.verisign.com/ or it may be an internal group.
+
+6) The certificate authority will send you a signed certificate. Save the attachment as  weblogCert.crt, then import it into the keystore  by typing this command:
+
+keytool -import -keystore weblog.keystore -keyalg RSA -import -trustcacerts -file weblogCert.crt
+
+7) Stop the Tomcat application server in the Windows Services tool.
+
+8) Edit %TomcatRoot%\conf\server.xml.  Find the tag that begins "<Connector port="443""  Edit the keystoreFile property to point to the weblogCert.crt file with an absolute path (starting from c:\).
+
+9) Save server.xml.
+
+10) Start Tomcat.  Access the site via https://.
+
+Optional 11) If you chose to get a Global Server ID (128-bit) you will need to import the
+intermediate CA certificate.   You'll know this is the case if you receive this error when you try to install
+the certificate that  the certificate authority emailed to you :
+keytool error: java.lang.Exception: Failed to establish chain from reply
+ More information on intermediate certificates can be found here:
+https://www.verisign.com/support/install/intermediate.html
+
+Optional 12) Save it as  weblogCertIntermediate.cer, then  type:
+
+keytool -keystore keystore -keyalg RSA -import -trustcacerts -alias cacert -file weblogCertIntermediate.cer
+
+You should see: Certificate was added to keystore
+
+Optional 13) Now go back  to step 6) and try importing your signed certificate again.
+
+References:
+Sun's J2EETM Tutorial Setting up a Server Certificate
+http://java.sun.com/j2ee/tutorial/1_3-fcs/doc/Security10.html
+
+Keytool Documentation from Sun
+http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/keytool.html
+
+Using Java's Keytool
+http://www.churchillobjects.com/c/11201e.html
+
+Secure Sockets with JSSE & OpenSSL
+http://www.churchillobjects.com/c/11201g.html
+
+Java.sun.com ToolDocs
+http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/keytool.html
+
+
+
+<b>Configure Application</b>
+The database username/password is held in a file called %APP_ROOT%/META-INF/context.xml.  This XML file should be backed-up and stored out of the %APP_ROOT%/META-INF/ directory because each build will overwrite it.
+
+1) Application must be deployed before you can edit this file.
+
+2) Stop Tomcat.
+
+3) Edit context.xml JDBC parameters including connection string, username and password and other important values..
+
+4) Start Tomcat.
+
+
+
+
+
+<b>SMTP Quirk on Windows Boxes</b>
+Java must bind to port 25 on the IP address that the site uses to operate.
+It needs this to enable email-to-post and camera phone-to-post features.
+
+1) IIS SMTP will bind to port 25 on all IP's even if you tell it not to.
+So you have to go to http://support.microsoft.com/default.aspx?scid=http://support.microsoft.com:80/support/kb/articles/Q281/7/60.ASP&NoWebContent=1
+
+2) To list all bound ports and the processes binding them type "netstat -a -b" at a command prompt.
+
+
+<b>IIS Quirk on Windows Boxes</b>
+Socket pooling will cause IIS 5.0 to listen to all IP addresses, which might present a possible security risk for secure domains with multiple networks. In addition, both bandwidth throttling and performance adjustments will apply to all Web sites configured for the same port, for example port 80. If you intend to use bandwidth throttling or do performance tuning on a per-site basis, you will need to disable socket pooling.
+
+To disable socket pooling, type the following at the command prompt:
+
+Go to c:\inetpub\adminscripts\.  Type "cscript adsutil.vbs set w3svc/disablesocketpooling true"
+
+The command prompt will reply:
+
+disablesocketpooling : (BOOLEAN) True
+
+
+
+<b>Tomcat & Java on RedHat Linux 9</b>
+
+1) Install RedHat from CD or download images.  Don't install Apache http server.
+
+2) Download Java SDK from java.sun.com.  Get the self-extracting RPM.
+
+3) Give execute permissions to the file: chmod +x j2sdk-1.4.2-linux-i586.bin
+
+4) Extract the bin: ./j2sdk-1.4.2-linux-i586.bin
+
+5) Run the rpm: rpm -i j2sdk-1.4.2-linux-i586.bin
+
+6) Add to /etc/profile:
+JAVA_HOME="/usr/java/j2sdk1.4.2_03"
+export JAVA_HOME
+
+7) Download the Tomcat 5.x tarball.gz
+
+8) Unzip the tarball.gz to the directory where you want Tomcat installed.
+tar -xfv -tarball.gz
+
+9) Edit {tomcat_home}/conf/tomcat-users.xml to add users
+&lt;role rolename="manager"/>
+&lt;role rolename="admin"/>
+&lt;user username="admin" password="password" roles="admin,manager"/>
+
+10) Configure server.xml to include the correct IP's, hosts, ports, etc.
+
+11) Add the mySQL driver to {tomcat_home}/common/lib/
+
+12) Configure Tomcat to run on startup.  You can manually start tomcat by going to:
+{tomcat_home}/bin/
+And typing:
+./startup.sh
+And to stop:
+./shutdown.sh
+
+
+<b>mySQL on RedHat Linux 9</b>
+
+1) Go to www.mysql.com and download the RPM for the datbase server.
+
+2) rpi -i {name of rpm downloaded}
+
+3) Download mysqlcc, the Control Center GUI.  Runs on linux.
+
+4) Expand tar and move to /usr/share/mysqlcc/
+
+5) Run /usr/share/mysqlcc/mysqlcc by double-clicking in a gui or typing ./mysqlcc while in the directory
+
+6) Use the mysqlcc gui to setup passwords and users
+webapp@%
+webapp@localhost
+Note: Both are needed.  One covers incoming calls from other networks.
+For some reason on linux I had to setup webapp@192.168.1.103... it wouldn't accept the wildcard.
+
+7) Use the mysqlcc gui to create a database called 'reger'
+
+8) From an existing installation, copy the working directory... not a backup
+to /var/lib/mysql/reger/
+
+9) Stop mySQL with /usr/share/mysql/mysql.server stop
+
+10) Start mySQL with /usr/share/mysql/mysql.server start
+
+11) Update group ownership of the /var/lib/mysql/reger/ directory so that mysql can write
+
+12) Any custom settings go in /etc/my.conf 
+
+
+<b>Setup a MySQL Slave</b>
+MySQL replication is used to maintain running backups of production data.  This method employs idle cpu time to do backups.  The backup slave is generally only a few minutes behind the master.
+
+1) Create an account on the master with "Replication Slave" and "Replication Client" privileges using the grant option.  I've had trouble with this and sometimes need to give full permissions and then back off.
+
+2) On the master, add the following to my.ini or my.cnf, whichever is being used for configuration:
+   log-bin
+   server-id=1
+
+3) Restart the master.
+
+4) On the slave, add the following to my.ini or my.cnf, whichever is being used for config:
+   server-id=2 (set the serverid to something unique)
+   master-host=www.reger.com
+   master-user=repl
+   master-password=replic8
+   master-port=3306
+
+5) Restart the slave
+
+6) Immediately load data from the master:  LOAD DATA FROM MASTER  It may take a while but it'll get all of the data.
+
+7) Check status of the slave with: SHOW slave STATUS
+
+8) Check status of the master with: SHOW master STATUS
+
+
+<b>Library/jar files</b>
+This is a reference showing the jar file to module relationship:
+
+1) Xerces
+    - resolver.jar
+    - xercesSamples.jar
+    - xmlParserAPIs.jar
+    - xercesImpl.jar
+    - xml-apis.jar
+
+2) jFreeChart
+    - jcommon-0.9.3.jar
+    - jfreechart-0.9.18.jar
+    - log4j-1.2.8.jar
+
+3) urlRewriteFilter-1.2
+    - commons-beanutils.jar
+    - commons-collections.jar
+    - commons-digester.jar
+    - jakarta-oro-2.0.8.jar
+    - urlrewrite-1.2.jar
+
+4) Rome Rss
+    - rome-0.1.jar from https://rome.dev.java.net/
+    - jdom.jar from http://www.jdom.org/
+    - commons-codec-1.2.jar
+
+5) XML-RPC
+    - xml-rpc-1.2-b1.jar
+    - commons-codec-1.2.jar
+
+6) Google API
+    - googleapi.jar (CUSTOM VERSION ONLY - SEE BELOW)
+
+7) XStream (http://xstream.codehaus.org/)
+    - xpp3_min-1.1.3.4.I.jar
+    - xstream-1.0.2.jar
+
+8) Password (http://www.opensource.isc.vt.edu/products/password/)
+    - password1_4.jar
+
+9) Hibernate (Currently not installed)
+    - cglib-2.1.jar
+    - dom4j-1.5.2.jar
+    - commons-logging.jar
+    - commons-logging-api.jar
+    - hibernate3.jar
+    - ehcache-1.1.jar
+    - asm.jar
+    - asm-attrs.jar
+    - asm-util.jar
+    - cgilib-nodep-2.1.jar
+
+10) OpenMap (http://openmap.bbn.com)
+    - milStd2525_png.jar
+    - omcorba.jar
+    - omj3d.jar
+    - omsvg.jar
+    - openmap.jar
+
+11) OSCache
+    - oscache-2.1.1.jar
+    - commons-logging.jar
+
+12) jcaptcha
+    - jcaptcha.jar
+    - ehcache.jar 
+
+
+
+
+<b>Google API/Trouble Sending Email</b>
+Googleapi.jar includes problematic versions of mail.jar and activation.jar.  DO NOT USE the downloaded googleapi.jar file without fixing as below.
+
+To fix googleapi.jar:
+1) Open googleapi.jar in WinRar or similar.
+2) Delete the javax/mail directory
+3) Delete the javax/activation directory
+4) Delete the com/sun/mail directory
+5) Delete the com/sun/activation directory
+6) Save the file as googleapi-regercom.jar and put in WEB-INF/lib
+
+<b>Tomcat Access Log COnfiguration</b>
+<Valve className="org.apache.catalina.valves.AccessLogValve" prefix="regerAccess." suffix=".txt" pattern="%v %h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot;"/>
+
+or
+
+<Valve className="org.apache.catalina.valves.AccessLogValve" prefix="regerAccess." suffix=".txt" pattern="combined"/>
+
+
+
+
+
+
+
+
+

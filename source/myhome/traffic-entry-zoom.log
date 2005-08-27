@@ -1,0 +1,79 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Traffic: Entry Detail";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "trafficentries";
+pageProps.aclObjectName = "TRAFFIC";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String trafficSection = "Entries";
+
+
+
+
+
+//Get the name of the log entry
+String title="";
+int entryeventtypeid=-1;
+int eventid=-1;
+if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+    eventid=Integer.parseInt(request.getParameter("eventid"));
+
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstGetName= Db.RunSQL("SELECT title, eventtypeid FROM event WHERE eventid='"+ eventid +"' AND accountid='"+ userSession.getAccount().getAccountid() +"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstGetName!=null && rstGetName.length>0){
+        title=rstGetName[0][0];
+        entryeventtypeid=Integer.parseInt(rstGetName[0][1]);
+    }
+}
+
+
+
+mb.append("<table cellpadding=3 cellspacing=0 width=100% border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#666666 align=left>");
+mb.append("<font face=arial size=-1 color=#cccccc><strong>Last 7 Days of Daily Traffic for: </font><a href='entry.log?&eventid="+eventid+"&action=edit'><font face=arial size=+1 color=#ffffff>"+title+"</font></strong></a>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+mb.append(reger.trafficHtmlOut.entryTrafficZoom(eventid, userSession));
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

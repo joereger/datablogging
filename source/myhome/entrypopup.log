@@ -1,0 +1,54 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.isLogidRequired=false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append("<font face=arial size=+3>This is a popup.</font>");
+
+
+
+
+
+
+//This creates a method that will save the request
+
+
+
+mb.append("<br>");
+mb.append("<a href=\"javascript:returnToEntryPage()\">");
+mb.append("<font face=arial size=+3>Hit Me.</font>");
+mb.append("</a>");
+
+//Output the page
+out.print(mb.toString());
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+<%//@ include file="../globalfooter.jsp" %>

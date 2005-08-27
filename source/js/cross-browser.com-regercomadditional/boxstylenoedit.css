@@ -1,0 +1,79 @@
+.fieldBox {
+  position:absolute;
+  visibility:hidden;
+  overflow:hidden;
+  width:400px;
+  height: 150px;
+  margin:0;
+  padding:0;
+  font-size:x-small;
+  color:#000;
+  background:#ffffff;
+  cursor:default;
+  border:1px solid #999999;
+}
+.fieldBoxWrapper {
+  position:relative;
+  visibility:hidden;
+  overflow:hidden;
+  width:800px;
+  height:400px;
+  margin:0;
+  padding:0;
+  font-size:x-small;
+  color:#000;
+  background:#ffffff;
+  cursor:default;
+  border:0px solid #ffffff;
+}
+.fieldBoxBar {
+  font-family: arial, sans-serif;
+  font-size: 12px;
+  color:#000;
+  font-weight:bold;
+  overflow:hidden;
+  margin:0;
+  padding:1px;
+  background:#cccccc;
+  cursor:default;
+}
+.fieldBoxBarWrapper {
+  overflow:hidden;
+  font-size:x-small;
+  height:0px;
+  margin:0;
+  padding:0px;
+  font-weight:bold;
+  color:#000;
+  background:#ffffff;
+  cursor:default;
+}
+.fieldBoxDesc {
+  font-family: arial, sans-serif;
+  font-size: 10px;
+  color:#000;
+  font-weight:normal;
+  overflow:hidden;;
+  width: 100%;
+  margin:0px;
+  padding:1px;
+  background:#e6e6e6;
+  cursor:default;
+}
+.fieldBoxResBtn {
+  vertical-align: bottom;
+  position:absolute;
+  overflow:hidden;
+  width:15px;
+  height:15px;
+  margin:0;
+  padding:0;
+  cursor:default;
+}
+.fieldBoxContent {
+  width:90%;
+  height:85%;
+  overflow: auto;
+  padding:10px;
+  margin-right: 0px;
+}

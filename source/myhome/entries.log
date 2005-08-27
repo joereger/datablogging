@@ -1,0 +1,61 @@
+<%@ page import="reger.core.Util,
+                 reger.core.db.Db,
+                 reger.search.SearchUIFlowAdvSearch"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Advanced Search";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entriessearch";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="This page helps you find old entries so that you can edit, delete or move them.<br><br>Enter a search term and click Search or browse your most recent entries.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Create a SearchUI object
+reger.search.SearchUI searchUI = new reger.search.SearchUI(request, userSession, new SearchUIFlowAdvSearch());
+
+//In the case of this search.log jsp only the current account is searched
+//int[] accountidsToSearch = new int[1];
+//accountidsToSearch[0]=userSession.getAccount().getAccountid();
+//searchUI.getSearchEntries().setAccountsToSearch(accountidsToSearch);
+
+//Call the html
+mb.append(searchUI.wrapperHtml());
+
+
+mb.append("<br><br>");
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

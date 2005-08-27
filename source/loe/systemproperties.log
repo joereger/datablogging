@@ -1,0 +1,99 @@
+
+<%@ page import="java.util.*,
+                 reger.core.SystemProperty,
+                 reger.systemproperties.AllSystemProperties" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "System Properties";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loesystemconfigprops";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Save
+if (pageProps.action.equals("save")){
+    SystemProperty[] systemProperties = AllSystemProperties.getAllSystemProperties();
+    for (int i = 0; i < systemProperties.length; i++) {
+        if (request.getParameter(systemProperties[i].getPropertyName())!=null && !request.getParameter(systemProperties[i].getPropertyName()).equals("")){
+            systemProperties[i].setPropertyValue(request.getParameter(systemProperties[i].getPropertyName()));
+        }
+        systemProperties[i].save();
+        AllSystemProperties.loadProperties();
+    }
+}
+
+
+
+
+//Display the properties on the page
+SystemProperty[] systemProperties = AllSystemProperties.getAllSystemProperties();
+mb.append("<table cellpadding=20 cellspacing=0 border=0>");
+mb.append("<form action=systemproperties.log method=post>");
+mb.append("<input type=hidden name=action value=save>");
+for (int i = 0; i < systemProperties.length; i++) {
+    mb.append("<tr>");
+    mb.append("<td>");
+    mb.append("<font face=arial size=+1 color=#666666>");
+    mb.append("<b>");
+    mb.append(systemProperties[i].getPropertyName());
+    mb.append("</b>");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<input type=text name='"+systemProperties[i].getPropertyName()+"' value='"+systemProperties[i].getPropertyValue()+"' size=55 maxlength=255>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append(systemProperties[i].getPropertyDescription());
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+}
+
+
+
+mb.append("<tr>");
+mb.append("<td>");
+mb.append("<input type=submit value='Save Properties'>");
+mb.append("</form>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

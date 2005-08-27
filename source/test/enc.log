@@ -1,0 +1,83 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+try {
+    // Generate a temporary key. In practice, you would save this key.
+    // See also e464 Encrypting with DES Using a Pass Phrase.
+    //SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+
+    String secretPassphrase = "booyah";
+    mb.append("<br><br>secretPassphrase:" + secretPassphrase);
+
+    // Create encrypter/decrypter class
+    reger.core.licensing.DesEncrypter encrypter = new reger.core.licensing.DesEncrypter(secretPassphrase);
+
+    //Cleartext
+    String cleartext = "users=50&sites=67&logs=456&owner=ksjdlfkjlk&users=50";
+    mb.append("<br><br>cleartext:" + cleartext);
+
+    // Encrypt
+    String encrypted = encrypter.encrypt(cleartext);
+    mb.append("<br><br>encrypted:" + encrypted);
+
+    // Decrypt
+    String decrypted = encrypter.decrypt(encrypted);
+    mb.append("<br><br>decrypted:" + decrypted);
+
+
+
+    ///test
+    reger.core.licensing.DesEncrypter encrypter2 = new reger.core.licensing.DesEncrypter(secretPassphrase);
+    String decrypted2 = encrypter2.decrypt(encrypted);
+    mb.append("<br><br>decrypted2:" + decrypted2);
+
+
+} catch (Throwable e) {
+    reger.core.Util.errorsave(e);
+}
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

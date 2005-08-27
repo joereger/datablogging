@@ -1,0 +1,153 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+String errortext = "";
+
+//Get any returnurl
+String returnurl = "";
+if (request.getParameter("returnurl")!=null){
+    returnurl = request.getParameter("returnurl");
+}
+
+//Login Action
+if (pageProps.action.equals("login")){
+    userSession.setAccountuser(new reger.Accountuser(request.getParameter("username"), request.getParameter("password")));
+    if (userSession.getAccountuser().isLoggedIn){
+        //With returnurl
+        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() + "/login.log?action=login&username="+java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
+        //Without returnurl
+        //response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() + "/login.log?action=login&username="+userSession.getAccountuser().getUsername()+"&password="+request.getParameter("password")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"");
+    } else {
+        errortext = errortext + "Username or password incorrect.  Please try again.<br>";
+    }
+}
+
+mb.append("<img src='images/login-required.gif' align=right>");
+
+//Errortext
+if (!errortext.equals("")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+
+mb.append("<center>");
+mb.append("<table cellpadding=15 cellspacing=10 width=75% border=0>");
+mb.append("<tr>");
+
+
+mb.append("<td valign=top width=50% align=center bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=+1>");
+mb.append("Please Log In:");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<form action=forcelogin.log>");
+if (!returnurl.equals("")){
+    mb.append("<input type=hidden name=returnurl value=\""+reger.core.Util.cleanForHtml(java.net.URLEncoder.encode(returnurl, "UTF-8"))+"\">");
+}
+mb.append("<input type=hidden name=action value=login>");
+//Begin login table
+mb.append("<table cellpadding=10 cellspacing=5 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=middle align=right>");
+mb.append("<font class=mediumfont face=arial size=-1>");
+mb.append("<strong>Username:</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+String incomingUsername = "";
+if (request.getParameter("username")!=null){
+    incomingUsername = request.getParameter("username");
+}
+mb.append("<input type='text' name='username' size=10 maxlength=49 style=\"font-size: 18px;\" value=\""+reger.core.Util.cleanForSQL(incomingUsername)+"\">");
+mb.append("</td>");
+mb.append("<tr>");
+mb.append("<tr>");
+mb.append("<td valign=middle align=right>");
+mb.append("<font class=mediumfont face=arial size=-1>");
+mb.append("<strong>Password:</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append("<input type='password' name='password' size=10 maxlength=49 style=\"font-size: 18px;\">");
+mb.append("<br>");
+mb.append("<font class=smallfont face=arial size=-2>");
+mb.append("<a href='"+pageProps.pathToAppRoot+"about/passwordreset1.log'>");
+mb.append("Lost Your Password?");
+mb.append("</a>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<tr>");
+mb.append("<td valign=middle align=right>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append("<input type='checkbox' name='keepmeloggedin' value='1'>");
+mb.append("<font class=smallfont face=arial size=-2>");
+mb.append("<strong>Stay Logged-In on this Computer Until I Log Out</strong>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("<td valign=top align=left>");
+mb.append("<font class=mediumfont face=arial size=-1>");
+mb.append("&nbsp;");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left>");
+mb.append("<input type='submit' value='Log In'>");
+mb.append("</form>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+//End login table
+mb.append("</td>");
+
+
+mb.append("<td valign=top width=50% align=center bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=+1>");
+mb.append("<a href='signup.log'>Or Create an Account</a>");
+mb.append("</font>");
+mb.append("<br><br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Creating an account only takes a few seconds and gets you into the weblogging community.");
+mb.append("</font>");
+mb.append("</tr>");
+
+mb.append("</tr>");
+mb.append("</table>");
+mb.append("</center>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

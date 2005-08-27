@@ -1,0 +1,157 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Supercookie";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "toolssupercookie";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+String cookieDomain = userSession.getUrlSplitter().getRawIncomingServername();
+
+//reger.core.Util.logtodb("Supercookie: cookieDomain=" + cookieDomain);
+
+if (pageProps.action.equals("setsupercookie")) {
+	Cookie userCookie = new Cookie("supercookie-" + userSession.getAccount().getAccountid(), "supercookieon");
+    userCookie.setMaxAge(60*60*24*365);
+    userCookie.setDomain(cookieDomain);
+    if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+        userCookie.setSecure(true);
+    }
+    userCookie.setPath("/");
+    response.addCookie(userCookie);
+	response.sendRedirect("tools-supercookie.log");
+	return;
+} else if (pageProps.action.equals("clearsupercookie")){
+	Cookie userCookie = new Cookie("supercookie-" + userSession.getAccount().getAccountid(), "");
+    userCookie.setMaxAge(0);
+    userCookie.setDomain(cookieDomain);
+    if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+        userCookie.setSecure(true);
+    }
+    userCookie.setPath("/");
+    response.addCookie(userCookie);
+	response.sendRedirect("tools-supercookie.log");
+	return;
+}
+
+
+mb.append("<br><br>");
+
+
+mb.append("<table cellpadding=15 cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td width=40% valign=top>");
+
+//Check for the supercookie
+if (reger.core.Util.isSupercookieOn(request, userSession.getAccount().getAccountid())){
+
+	mb.append("<font face=arial size=+1>");
+	mb.append("<a href='tools-supercookie.log?action=clearsupercookie'>Clear the Supercookie!</a><br>");
+	mb.append("</font>");
+	mb.append("<font face=arial size=-1>");
+	mb.append("The Supercookie is currently <strong>on</strong> for this browser on this computer.");
+	mb.append("</font>");
+
+} else {
+
+	if (userSession.getAccount().isPro()) {
+
+		mb.append("<font face=arial size=+1>");
+		mb.append("<a href='tools-supercookie.log?action=setsupercookie'>Set the Supercookie!</a><br>");
+		mb.append("</font>");
+		mb.append("<font face=arial size=-1>");
+		mb.append("The Supercookie is currently <strong>off</strong> for this browser on this computer.");
+		mb.append("</font>");
+
+	} else {
+
+		mb.append("<font face=arial size=-1>");
+		mb.append("The Supercookie is currently only available on upgraded accounts.  Please upgrade your account to use this feature.");
+		mb.append("</font>");
+		mb.append("<br>");
+		mb.append("<font face=arial size=+1>");
+		mb.append("<a href='account.log'>Upgrade my account.</a><br>");
+		mb.append("</font>");
+
+	}
+}
+
+mb.append("<br>");
+mb.append("<center>");
+mb.append("<img src='images/supercookie.jpg' width='306' height='407' alt='' border='0'>");
+mb.append("</center>");
+
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=-1>");
+mb.append("<strong>What is the Supercookie?</strong>");
+mb.append("<br>");
+mb.append("The Supercookie tells your site that it's you visiting it... not a visitor.");
+mb.append("<br><br>");
+mb.append("<strong>So... what good does that do me?</strong>");
+mb.append("<br>");
+mb.append("Glad you asked.  This comes in handy when you are looking at your traffic stats.  You probably don't want to see traffic stats that reflect your own activity. You want to see visitors... other people... not you.");
+mb.append("<br><br>");
+mb.append("This allows you to surf your own site as much as you like without affecting your traffic statistics.  Pretty cool eh?");
+mb.append("<br><br>");
+mb.append("<strong>Makes sense... how do I use the Supercookie?</strong>");
+mb.append("<br>");
+mb.append("It's easy.  On each computer and browser that you don't want your site to record traffic stats, use this page to Set the Supercookie.  One click... that's it.");
+mb.append("<br><br>");
+mb.append("If you ever want to start recording stats for that computer and browser again, simply come to this page again and Clear the Supercookie.");
+mb.append("<br><br>");
+mb.append("It's that easy. You can try it out for a while and then clear it if you don't like it... but we think you will.");
+mb.append("<br><br>");
+mb.append("<strong>Does the Supercookie store information on my computer?</strong>");
+mb.append("<br>");
+mb.append("Yes.  Nothing personally identifiable though.  It stores a cookie with one value that identifies the supercookie as being associated to your account. ");
+mb.append("<br><br>");
+mb.append("<strong>Are there any legal implications to the Supercookie?</strong>");
+mb.append("<br>");
+mb.append("Yes.  By using it you give this site permission to set the cookie.");
+mb.append("<br><br>");
+mb.append("<strong>How long does the Supercookie last?</strong>");
+mb.append("<br>");
+mb.append("It is set to last for one year from the date that it is set.");
+mb.append("<br><br>");
+mb.append("<strong>Why is it called a Supercookie?  Wouldn't Trafficcookie be better?</strong>");
+mb.append("<br>");
+mb.append("Because Supercookie sounds cool.  Very cool.  No, we don't run our business based on coolness... we're professionals... but every now and then we choose something like a name based on the coolness factor.");
+mb.append("<br><br>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

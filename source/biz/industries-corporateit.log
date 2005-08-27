@@ -1,0 +1,65 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Corporate IT";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+mb.append("As a CIO, your users are frequently requesting new applications.  Many of these applications do little more than collect and collate simple row-based data.  You have to decide whether to hand users a tool like Microsoft Access or build a custom web application.  The Microsoft Access solution grants your users expediency and flexibility at the cost of ease-of-use.  The custom application grants your users exactly what they want at a high development cost.");
+
+mb.append("<br>");
+mb.append("<h1>The Solution</h1>");
+mb.append("Our datablogging concept fits somewhere between a Microsoft Access database and a full custom web application.  Here's how it works:");
+mb.append("<ul>");
+mb.append("<li>Corporate IT sets up a datablogging server one time");
+mb.append("<li>From there forward, users are able to create their own custom log types.  Instead of coming to you for custom applications, they can create their own quickly and easily.");
+mb.append("<li>Data is centralized so that you can maintain quality of service and backup/recovery");
+mb.append("<li>APIs allow you to get data into/out of the datablogging system and into/out of legacy or other corporate systems");
+mb.append("</ul>");
+
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

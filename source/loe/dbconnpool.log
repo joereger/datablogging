@@ -1,0 +1,58 @@
+
+<%@ page import="java.util.*" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "Database Connection Pool";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loedbconnpool";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append("<font face=arial size=-1>");
+try{
+    mb.append(reger.core.db.Db.printDriverStats());
+} catch (Exception e){
+    reger.core.Util.errorsave(e);
+    mb.append("Error getting stats: " + e.getMessage());
+}
+
+mb.append("<br>");
+mb.append("<br>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

@@ -1,0 +1,99 @@
+
+<%@ page import="java.util.*,
+                 javax.naming.Context,
+                 javax.naming.InitialContext,
+                 reger.Help,
+                 reger.core.db.Db" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.navButtonName = "plflaggedentries";
+pageProps.title = "Flagged Entries";
+pageProps.isPasswordProtected = true;
+pageProps.aclObjectName = "PLADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Start PLID-choosing SQL
+String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
+if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
+    plidSql = " (pl.plid>'-1') ";
+}
+//End PLID-choosing SQL
+
+
+
+mb.append("<!-- Start List -->");
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+mb.append("<table width=100% cellpadding=0 cellspacing=1 border=0>");
+mb.append("<tr>");
+mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+mb.append("<font face=arial size=-2 color=#666666>Title</font></a></td>");
+mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("Date");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstApprovals= Db.RunSQL("SELECT eventid, title, date FROM event, account, pl WHERE "+plidSql+" AND account.plid=pl.plid AND account.plid='"+userSession.getPl().getPlid()+"' AND event.accountid=account.accountid AND (event.isdraft='0' AND event.isapproved='1' AND event.istemporary='0' AND event.isflaggedformoderator='1') ORDER BY date DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstApprovals!=null && rstApprovals.length>0){
+    for(int i=0; i<rstApprovals.length; i++){
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#ffffff valign=top align=left>");
+        mb.append("<a href='entryapproval-viewentry.log?eventid="+rstApprovals[i][0]+"&returnto=flaggedentries.log'><font face=arial size=-2>" + reger.core.Util.cleanForHtml(rstApprovals[i][1]) + "</font></a></td>");
+        mb.append("<td bgcolor=#ffffff valign=top align=left>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstApprovals[i][2])));
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+} else {
+    mb.append("<tr><td bgcolor=#ffffff valign=top colspan=2>");
+    mb.append("<font face=arial size=-2>No entries are flagged for review.</font>");
+    mb.append("</td></tr>");
+}
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("<!-- End List -->");
+
+
+%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

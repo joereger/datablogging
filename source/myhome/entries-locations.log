@@ -1,0 +1,83 @@
+<%@ page import="reger.core.Util,
+                 reger.core.db.Db,
+                 reger.search.SearchUIFlowAdvSearch,
+                 reger.Location"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Entry Locations";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entrieslocations";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="This page helps you maintain locations that you can use on your entries.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<table cellpadding=10 cellspacing=0 border=0>");
+Location[] locations = reger.Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());
+for (int i = 0; i < locations.length; i++) {
+    Location location = locations[i];
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<a href='entries-locations-edit.log?locationid="+location.getLocationid()+"&action=editstart'>");
+    mb.append("Edit");
+    mb.append("</a>");
+    mb.append(" | ");
+    mb.append("<a href='../locations.log?locationid="+location.getLocationid()+"'>");
+    mb.append("View");
+    mb.append("</a>");
+    mb.append(" | ");
+    mb.append("<a href='entries-locations-edit.log?locationid="+location.getLocationid()+"&action=deletestart'>");
+    mb.append("Delete");
+    mb.append("</a>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top align=left>");
+    mb.append("<font face=arial size=-1><b>");
+    mb.append(location.getLocationname());
+    mb.append("</b></font>");
+    mb.append("</td>");
+
+    mb.append("</tr>");
+}
+mb.append("</table>");
+
+
+
+
+mb.append("<br><br>");
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

@@ -1,0 +1,179 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "RSS Data Publication";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.core.Util.popup());
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+mb.append("<style>blockquote.quote {\n" +
+"    padding: 10px;\n" +
+"    border: 1px dotted #999;\n" +
+"    background: #e6e6e6;\n" +
+"}</style>");
+
+String lineBreak = "\n";
+
+mb.append("<br clear=all>");
+mb.append("<h1>Your RSS Feeds Include Custom Data</h1>");
+mb.append("Once you add custom fields to a log, the data from those fields is included automatically in your RSS data feeds using a custom namespace.");
+
+mb.append("<br clear=all>");
+mb.append("<h1>Custom RSS Namespace</h1>");
+mb.append("A custom namespace has been defined to share your data.  It is specified in RDDL <a href='http://www.reger.com/about/specs/entrydata.rddl'>here</a> and in XSD <a href='http://www.reger.com/about/specs/entrydata.xsd'>here</a>.");
+
+mb.append("<br clear=all>");
+mb.append("<h1>Explanation</h1>");
+mb.append("<br><br>");
+mb.append("It's added to RSS with a namespace.  That namspace is noted in the RSS feed with the following line:" + lineBreak);
+mb.append("<blockquote class=quote>&lt;rss xmlns:entrydata=\"http://www.reger.com/about/specs/entrydata.rddl\" version=\"2.0\"></blockquote>" + lineBreak);
+mb.append("<br><br>");
+mb.append("And that RDDL file points to a schema file:" + lineBreak);
+mb.append("<br><br>");
+mb.append("<blockquote class=quote><pre>&lt;?xml version=\"1.0\"?>" + lineBreak);
+mb.append("&ltxsd:schema xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" + lineBreak);
+mb.append("    &ltxsd:element name=\"field\">" + lineBreak);
+mb.append("        &ltxsd:complexType>" + lineBreak);
+mb.append("        &ltxsd:sequence>" + lineBreak);
+mb.append("                &ltxsd:element name=\"fieldname\" type=\"xsd:string\"/>" + lineBreak);
+mb.append("                &ltxsd:element name=\"fieldid\" type=\"xsd:integer\"/>" + lineBreak);
+mb.append("                &ltxsd:element name=\"data\" maxOccurs=\"unbounded\">" + lineBreak);
+mb.append("                    &ltxsd:complexType>" + lineBreak);
+mb.append("                        &ltxsd:sequence>" + lineBreak);
+mb.append("                            &ltxsd:element name=\"name\" type=\"xsd:string\"/>" + lineBreak);
+mb.append("                            &ltxsd:element name=\"value\" type=\"xsd:integer\"/>" + lineBreak);
+mb.append("                        &lt;/xsd:sequence>" + lineBreak);
+mb.append("                    &lt;/xsd:complexType>" + lineBreak);
+mb.append("                &lt;/xsd:element>" + lineBreak);
+mb.append("            &lt;/xsd:sequence>" + lineBreak);
+mb.append("        &lt;/xsd:complexType>" + lineBreak);
+mb.append("    &lt;/xsd:element>" + lineBreak);
+mb.append("&lt;/xsd:schema></pre></blockquote>" + lineBreak);
+mb.append("<br><br>");
+mb.append("Inside of RSS it fits into an Item tag:" + lineBreak);
+mb.append("<br><br>");
+mb.append("<blockquote class=quote><pre>" + lineBreak);
+mb.append("&lt;rss version=\"2.0\">" + lineBreak);
+mb.append("&lt;channel>" + lineBreak);
+mb.append("&lt;title>joereger.com&lt;/title>" + lineBreak);
+mb.append("&lt;link>http://www.joereger.com/&lt;/link>" + lineBreak);
+mb.append("&lt;description>A web log called http://www.joereger.com/&lt;/description>" + lineBreak);
+mb.append("&lt;generator>" + lineBreak);
+mb.append("Reger.com datablogging Server Technology" + lineBreak);
+mb.append("&lt;/generator>" + lineBreak);
+mb.append("&lt;item>" + lineBreak);
+mb.append("   &lt;title>78 Mile Ride, Fast Ending&lt;/title>" + lineBreak);
+mb.append("   &lt;link>" + lineBreak);
+mb.append("   http://www.joereger.com/entry-logid2-eventid3820-78-Mile-Ride-Fast-Ending.log" + lineBreak);
+mb.append("   &lt;/link>" + lineBreak);
+mb.append("   &lt;description>" + lineBreak);
+mb.append("   Wow, that was a great ride." + lineBreak);
+mb.append("   &lt;/description>" + lineBreak);
+mb.append("   &lt;category>Triathlon&lt;/category>" + lineBreak);
+mb.append("   &lt;pubDate>Tue, 12 Apr 2005 04:27:00 GMT&lt;/pubDate>" + lineBreak);
+mb.append("   &lt;author>Joe Reger, Jr.&lt;/author>" + lineBreak);
+mb.append("   &lt;comments>" + lineBreak);
+mb.append("   http://www.joereger.com/entry-logid2-eventid3820-78-Mile-Ride-Fast-Ending.log" + lineBreak);
+mb.append("   &lt;/comments>" + lineBreak);
+mb.append("   &lt;guid>" + lineBreak);
+mb.append("   http://www.joereger.com/entry-logid2-eventid3820-78-Mile-Ride-Fast-Ending.log" + lineBreak);
+mb.append("   &lt;/guid>" + lineBreak);
+mb.append("   &lt;entrydata:field>" + lineBreak);
+mb.append("      &lt;entrydata:fieldname>Run Distance&lt;/entrydata:fieldname>" + lineBreak);
+mb.append("      &lt;entrydata:fieldid>100&lt;/entrydata:fieldid>" + lineBreak);
+mb.append("         &lt;entrydata:data>" + lineBreak);
+mb.append("            &lt;entrydata:name>&lt;entrydata:name>" + lineBreak);
+mb.append("           &lt;entrydata:value>8.1&lt;/entrydata:value>" + lineBreak);
+mb.append("         &lt;/entrydata:data>" + lineBreak);
+mb.append("   &lt;/entrydata:field>" + lineBreak);
+mb.append("   &lt;entrydata:field>" + lineBreak);
+mb.append("       &lt;entrydata:fieldname>Swim Distance&lt;/entrydata:fieldname>" + lineBreak);
+mb.append("       &lt;entrydata:fieldid>107&lt;/entrydata:fieldid>" + lineBreak);
+mb.append("       &lt;entrydata:data>" + lineBreak);
+mb.append("           &lt;entrydata:name>&lt;entrydata:name>" + lineBreak);
+mb.append("           &lt;entrydata:value>2.4&lt;/entrydata:value>" + lineBreak);
+mb.append("       &lt;/entrydata:data>" + lineBreak);
+mb.append("   &lt;/entrydata:field>" + lineBreak);
+mb.append("&lt;/item>" + lineBreak);
+mb.append("&lt;/channel>" + lineBreak);
+mb.append("&lt;/rss>" + lineBreak);
+mb.append("</pre></blockquote>" + lineBreak);
+mb.append("<br><br>");
+mb.append("You see all of the normal stuff for an RSS feed... title, description, generator.  Then in the item tag you see all of the normal stuff again.  It gets to the data when you see the first entrydata:field tag." + lineBreak);
+mb.append("<br><br>");
+mb.append("So let's dissect this a bit, shall we?" + lineBreak);
+mb.append("<br><br>");
+mb.append("You can have as many entrydata:field tags as you want.  A field is a generalization of something that you would enter onto a form.  It could be a dropdown or a textbox.  But it could also be multiple check boxes or something completely different.  Keep this in mind for when we get to the data part.  For now, think of the entrydata:field simply." + lineBreak);
+mb.append("<br><br>");
+mb.append("Each entrydata:field has an entrydata:fieldname.  This is the user-friendly name.  In the example it's \"Run Distance\" and \"Swim Distance\".  The name itself is largely for display on the consuming system.  It also makes the feed much simpler to debug/develop/understand." + lineBreak);
+mb.append("<br><br>");
+mb.append("Each entrydata:field also has an entrydata:fieldid.  This is a machine-friendly unique id.  It can be numbers, as in the example's \"100\" and \"107\".  Or it can be alphanumeric... something like \"kjh798yoihiu\".  Or it could just be a copy of the fieldname \"Run Distance\".  In our case the fieldid corresponds to a database key." + lineBreak);
+mb.append("<br><br>");
+mb.append("We decided to separate the user-friendly name from the machine-friendly name so that the user could change the name without affecting the way that machines were using the data.  Imagine having thousands of readers, each with datablogging tools to consume your data in different ways.  If they're keying off of your field name and you change it, all of their configuration is out the window.  They'll be pissed.  So we keep the fieldid constant." + lineBreak);
+mb.append("<br><br>");
+mb.append("At this point the xml has described the field a bit.  Now it's got to communicate the data.  We thought long and hard about really fancy and complex schemas for communicating the data, but eventually settled on the simpler name/value pair metaphor.  It's the baseline for http forms and works for most of what we wanted to do." + lineBreak);
+mb.append("<br><br>");
+mb.append("Each entrydata:field can have many entrydata:data.   And each entrydata:data has one entrydata:name and one entrydata:value." + lineBreak);
+mb.append("<br><br>");
+mb.append("For example:" + lineBreak);
+mb.append("<br><br>");
+mb.append("<blockquote class=quote><pre>&lt;entrydata:field>" + lineBreak);
+mb.append("       &lt;entrydata:fieldname>Swim Distance&lt;/entrydata:fieldname>" + lineBreak);
+mb.append("       &lt;entrydata:fieldid>107&lt;/entrydata:fieldid>" + lineBreak);
+mb.append("       &lt;entrydata:data>" + lineBreak);
+mb.append("           &lt;entrydata:name>&lt;entrydata:name>" + lineBreak);
+mb.append("           &lt;entrydata:value>2.4&lt;/entrydata:value>" + lineBreak);
+mb.append("       &lt;/entrydata:data>" + lineBreak);
+mb.append("   &lt;/entrydata:field></pre></blockquote>" + lineBreak);
+mb.append("<br><br>");
+mb.append("This example tells you that the Swim Distance for the item (blog entry) it's attached to is 2.4.  Note that we leave an empty name.  In many cases we don't need to name the data.  It's a simple data point.  In other cases we need to name it, so we do." + lineBreak);
+mb.append("<br><br>");
+mb.append("In this way we can describe some fairly complex data and append it to RSS entries.  We're open for ideas on how to do it better, so please don't hesitate to contact us." + lineBreak);
+mb.append("<br><br>");
+mb.append("Thanks." + lineBreak);
+
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

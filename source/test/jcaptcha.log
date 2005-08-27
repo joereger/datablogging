@@ -1,0 +1,79 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+<%@ page import="com.octo.captcha.service.CaptchaServiceException"%>
+<%@ page import="reger.jcaptcha.CaptchaServiceSingleton"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+if (pageProps.action.equals("login")){
+    Boolean isResponseCorrect =Boolean.FALSE;
+   //remenber that we need an id to validate!
+   String captchaId = request.getSession().getId();
+   //retrieve the response
+   String resp = request.getParameter("j_captcha_response");
+   // Call the Service method
+    try {
+        isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
+    } catch (CaptchaServiceException e) {
+         //should not happen, may be thrown if the id is not valid
+    }
+
+    if (isResponseCorrect.booleanValue()){
+        mb.append("<font face=arial size=+3 color=green>Correct, sir!</font><br>");
+    } else {
+        mb.append("<font face=arial size=+3 color=red>Fail, sir!</font><br>");
+    }
+
+
+
+}
+
+
+mb.append("<form method=post action=jcaptcha.log>");
+mb.append("<input type='hidden' name='action' value='login'>");
+mb.append("<img src=\"/jcaptcha\">");
+mb.append("<input type='text' name='j_captcha_response' value=''>");
+mb.append("<input type=submit>");
+mb.append("</form>");
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

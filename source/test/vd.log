@@ -1,0 +1,37 @@
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("Testing Virtual Directories Page");
+
+mb.append("<br>request.getParameter(\"virtualdir\")="+request.getParameter("virtualdir")+"<br>");
+mb.append("<br>request.getParameter(\"action\")="+request.getParameter("action")+"<br>");
+
+
+mb.append("<br>");
+mb.append("<form action=vd.log method=post>");
+mb.append("<input type=hidden name=action value=gogetsome>");
+mb.append("<input type=submit value=RipIt>");
+mb.append("<br>");
+
+
+mb.append("<br>Request:<br>");
+
+mb.append(reger.ErrorDissect.ServletUtilsdissect(request));
+
+
+out.print(mb.toString());
+
+
+%>
+
+
+

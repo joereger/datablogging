@@ -1,0 +1,434 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.core.db.Db,
+                 reger.Account, reger.core.licensing.License" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.title = "Account Detail";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "placcounts";
+pageProps.aclObjectName = "PLADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Start PLID-choosing SQL
+String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
+if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
+    plidSql = " (pl.plid>'-1') ";
+}
+//End PLID-choosing SQL
+
+//Make sure user has permission
+if (!userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    if (request.getParameter("accountid")!=null && reger.core.Util.isinteger(request.getParameter("accountid"))){
+        Account tmpAcct = reger.cache.AccountCache.get(Integer.parseInt(request.getParameter("accountid")));
+        if (tmpAcct.getPlid()!=userSession.getPl().getPlid()){
+            response.sendRedirect("accounts.log");
+            return;
+        }
+    }
+}
+//End make sure user has permission
+
+
+
+
+
+//Start edit
+String errortext = "";
+String infotext = "";
+if (pageProps.action.equals("editaccount")) {
+
+    //Get the plid of this account.  This is done to verify that the user doing the work is allowed to work with this plid.
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstAcctVrfy= Db.RunSQL("SELECT account.accountid, pl.plid FROM account, pl WHERE account.plid=pl.plid AND " + plidSql + " AND account.accountid='"+request.getParameter("accountid")+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstAcctVrfy!=null && rstAcctVrfy.length>0){
+        //Servername validation
+        errortext = errortext + Account.validateServername(request.getParameter("accounturl"), Integer.parseInt(rstAcctVrfy[0][0]));
+
+        //Make sure customservername is acceptable
+        String internalcustomdomain = "";
+        if (request.getParameter("customservername")!=null && !request.getParameter("customservername").equals("")) {
+            if (!Account.validateCustomServerName(request.getParameter("customservername"), Integer.parseInt(rstAcctVrfy[0][0]))){
+                errortext=errortext+"That custom domain name is in use.  Please choose another.";
+            } else {
+                internalcustomdomain = reger.core.Util.stripHttpHttpsAndTrailingSlashFromUrl(request.getParameter("customservername"));
+            }
+        }
+
+        //Make sure customservername2 is acceptable
+        String internalcustomdomain2 = "";
+        if (request.getParameter("customservername2")!=null && !request.getParameter("customservername2").equals("")) {
+            if (!Account.validateCustomServerName(request.getParameter("customservername2"), Integer.parseInt(rstAcctVrfy[0][0]))){
+                errortext=errortext+"That custom domain name 2 is in use.  Please choose another.";
+            } else {
+                internalcustomdomain2 = reger.core.Util.stripHttpHttpsAndTrailingSlashFromUrl(request.getParameter("customservername2"));
+            }
+        }
+
+        //Make sure customservername3 is acceptable
+        String internalcustomdomain3 = "";
+        if (request.getParameter("customservername3")!=null && !request.getParameter("customservername3").equals("")) {
+            if (!Account.validateCustomServerName(request.getParameter("customservername3"), Integer.parseInt(rstAcctVrfy[0][0]))){
+                errortext=errortext+"That custom domain name 3 is in use.  Please choose another.";
+            } else {
+                internalcustomdomain3 = reger.core.Util.stripHttpHttpsAndTrailingSlashFromUrl(request.getParameter("customservername3"));
+            }
+        }
+
+
+
+        //If we're still seeing no errors, proceed to make the edit final
+        if (errortext.equals("")){
+            //Set the isactive flag
+            int isactiveaccount = 1;
+            if (request.getParameter("isactiveaccount")!=null && reger.core.Util.isinteger(request.getParameter("isactiveaccount"))) {
+                if (Integer.parseInt(request.getParameter("isactiveaccount"))==0){
+                    isactiveaccount = 0;
+                }
+            }
+
+            //Get the current active status
+            int currentIsactiveaccount = 1;
+            //-----------------------------------
+            //-----------------------------------
+            String[][] rstIsactive= Db.RunSQL("SELECT isactiveaccount FROM account WHERE accountid='"+rstAcctVrfy[0][0]+"'");
+            //-----------------------------------
+            //-----------------------------------
+            if (rstIsactive!=null && rstIsactive.length>0){
+            	currentIsactiveaccount = Integer.parseInt(rstIsactive[0][0]);
+            }
+
+            //If the admin is approving, notify the user
+            if (currentIsactiveaccount==0 && isactiveaccount==1){
+                reger.emailtext.BasicEmails.accountActivated(Integer.parseInt(rstAcctVrfy[0][0]));
+            }
+
+            //If the admin is activating, put up info msg
+            if (currentIsactiveaccount==0 && isactiveaccount==1){
+                infotext = infotext + "This account has been activated.  An email has been sent to the user to notify them.";
+            }
+
+
+            //Set the isnewpendingadminapproval flag
+            int isnewpendingadminapproval = 0;
+
+            //License
+            String encLic = "";
+            if (request.getParameter("encryptedlicense")!=null){
+                encLic = request.getParameter("encryptedlicense");
+            }
+
+
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE account SET accounturl='"+reger.core.Util.cleanForSQL(request.getParameter("accounturl"))+"', customservername='"+reger.core.Util.cleanForSQL(internalcustomdomain)+"', customservername2='"+reger.core.Util.cleanForSQL(internalcustomdomain2)+"', customservername3='"+reger.core.Util.cleanForSQL(internalcustomdomain3)+"', isactiveaccount='"+isactiveaccount+"', isnewpendingadminapproval='"+isnewpendingadminapproval+"', encryptedlicense='"+reger.core.Util.cleanForSQL(encLic)+"' WHERE accountid='"+rstAcctVrfy[0][0]+"'");
+            //-----------------------------------
+            //-----------------------------------
+        }
+
+    } else {
+        errortext = errortext + "<br>You don't appear to have permission to edit this account.";
+    }
+
+}
+
+//End edit
+
+if (pageProps.action.equals("dobilling")) {
+    if (request.getParameter("accountid")!=null && reger.core.Util.isinteger(request.getParameter("accountid"))){
+        //-----------------------------------
+        //-----------------------------------
+        int count = reger.core.db.Db.RunSQLUpdate("UPDATE account SET lastbillingcheck='1900-01-01 01:01:01' WHERE accountid='"+request.getParameter("accountid")+"'");
+        //-----------------------------------
+        //-----------------------------------
+        //Now call the dobilling
+        Account tmpAcct2 = reger.cache.AccountCache.get(Integer.parseInt(request.getParameter("accountid")));
+        tmpAcct2.refresh();
+        tmpAcct2.doBilling();
+        tmpAcct2.refresh();
+        //Put it into the cache
+        //reger.cache.AccountCache.put(request.getParameter("accountid"), tmpAcct2);
+    }
+}
+
+
+mb.append("<style type=text/css>");
+mb.append("<--");
+mb.append(".acct:link {color:#0000ff; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:active {color:#0000ff; text-decoration:underline; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:visited {color:#0000ff; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct {color:#000000; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acctbig:link {color:#0000ff; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:active {color:#0000ff; text-decoration:underline; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:visited {color:#0000ff; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig {color:#000000; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:link {color:#0000ff; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:active {color:#0000ff; text-decoration:underline; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:visited {color:#0000ff; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:hover {color: #000000; text-decoration:underline; background-color: #e6e6e6; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall {color:#000000; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append("-->");
+mb.append("<style></style>");
+
+
+//Get the account
+//-----------------------------------
+//-----------------------------------
+String[][] rstAcct= Db.RunSQL("SELECT accountid, accounturl, customservername, account.plid, createdate, isactiveaccount, customservername2, customservername3, account.encryptedlicense, account.isbillingokencrypted, account.billingerror, account.lastbillingcheck FROM account, pl WHERE account.plid=pl.plid AND " + plidSql + " AND account.accountid='"+reger.core.Util.cleanForSQL(request.getParameter("accountid"))+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstAcct!=null && rstAcct.length>0){
+    String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAcct[0][0]));
+
+    //mb.append("<center>");
+    //mb.append("<iframe src=\""+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"\" width=800 height=300 name=\"internal\"></iframe>");
+    //mb.append("</center>");
+
+
+    //Display the account-specific stuff.
+    mb.append("<br><br>");
+    if (!infotext.equals("")){
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, infotext));
+        mb.append("<br>");
+    }
+    if (!errortext.equals("")){
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+        mb.append("<br>");
+    }
+    mb.append("<form action=accountdetail.log method=post>");
+    mb.append("<input type=hidden name=action value=editaccount>");
+    mb.append("<input type=hidden name=accountid value=\""+reger.core.Util.cleanForHtml(request.getParameter("accountid"))+"\">");
+    mb.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#999999 class=acctbig colspan=2>Account Details</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc width=33% class=acct>Base Site Url</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct><a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"'>"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/</a></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Accounturl</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=accounturl value=\""+reger.core.Util.cleanForHtml(rstAcct[0][1])+"\"></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Customservername</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=customservername value=\""+reger.core.Util.cleanForHtml(rstAcct[0][2])+"\"></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Customservername2</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=customservername2 value=\""+reger.core.Util.cleanForHtml(rstAcct[0][6])+"\"></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Customservername3</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=customservername3 value=\""+reger.core.Util.cleanForHtml(rstAcct[0][7])+"\"></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Accountid</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct>"+rstAcct[0][0]+"</td>");
+    mb.append("</tr>");
+
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Plid</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct>"+rstAcct[0][3]+"</td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Create Date (GMT)</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct>"+rstAcct[0][4]+"</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Encrypted License</td>");
+    License lic1 = new License(null, rstAcct[0][8]);
+    mb.append("<td valign=top bgcolor=#ffffff class=acct><textarea name=encryptedlicense rows=5 cols=45>"+lic1.getEncryptedLicense()+"</textarea></td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Decrypted License</td>");
+    License lic = new License(null, rstAcct[0][8]);
+    mb.append("<td valign=top bgcolor=#ffffff class=acct><textarea rows=5 cols=45>"+lic.getDecryptedLicense()+"</textarea></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Is Account Active?</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct>");
+    mb.append("<input type='radio' name='isactiveaccount' value='1' ");
+    if (rstAcct[0][5].equals("1")) {
+        mb.append(" checked");
+    }
+    mb.append(">Yes");
+    mb.append("<br>");
+    mb.append("<input type='radio' name='isactiveaccount' value='0' ");
+    if (rstAcct[0][5].equals("0")) {
+        mb.append(" checked");
+    }
+    mb.append(">No");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Is Billing Ok?</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct>");
+    if (reger.IsBillingOk.isbillingok(rstAcct[0][9], Integer.parseInt(rstAcct[0][0]))){
+        mb.append("Yes");
+    } else {
+        mb.append("No");
+    }
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Billing Error</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct>");
+    if (!rstAcct[0][10].equals("")){
+        mb.append(rstAcct[0][10]);
+    } else {
+        mb.append("None");
+    }
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Last Billing Check</td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct>");
+    if (!rstAcct[0][11].equals("")){
+        Calendar lastCheck = reger.core.TimeUtils.dbstringtocalendar(rstAcct[0][11]);
+        mb.append(reger.core.TimeUtils.agoText(lastCheck));
+    } else {
+        mb.append("Never");
+    }
+    mb.append("<br><a href='accountdetail.log?accountid="+rstAcct[0][0]+"&action=dobilling'>Update Billing Now</a>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct></td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=submit value='Save'></td>");
+    mb.append("</tr>");
+
+    mb.append("</table>");
+    mb.append("</form>");
+
+    //Show the users for this account
+    mb.append("<br><br>");
+    mb.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#999999 class=acctbig colspan=10>Account Users</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>createdate</td>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Friendly Name</td>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>username</td>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>accountuserid</td>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>isactive</td>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>passphrasequestion</td>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>passphraseanswer</td>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>lastlogindate</td>");
+    mb.append("<tr>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstUsers= Db.RunSQL("SELECT accountuserid, isactive, username, password, passphrasequestion, passphraseanswer, lastlogindate, createdate, friendlyname FROM accountuser WHERE accountid='"+request.getParameter("accountid")+"' ORDER BY createdate ASC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstUsers!=null && rstUsers.length>0){
+        for(int i=0; i<rstUsers.length; i++){
+            mb.append("<tr>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][7]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct><a href='accountuserdetail.log?accountuserid="+rstUsers[i][0]+"'>"+rstUsers[i][8]+" </a></td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][2]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][0]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][1]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][4]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][5]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][6]+"</td>");
+            mb.append("<tr>");
+        }
+    }
+    mb.append("</table>");
+
+
+    //Now display event log items for this account
+    mb.append("<br><br>");
+    mb.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#999999 class=acctbig colspan=2>Event Log Items Tied To This Account</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Date</td>");
+    mb.append("<td valign=top bgcolor=#cccccc class=acct>Error</td>");
+    mb.append("<tr>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstErrors= Db.RunSQL("SELECT date, description FROM error WHERE accountid='"+request.getParameter("accountid")+"' ORDER BY date DESC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstErrors!=null && rstErrors.length>0){
+        for(int i=0; i<rstErrors.length; i++){
+            mb.append("<tr>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct nowrap>"+rstErrors[i][0]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstErrors[i][1]+"</td>");
+            mb.append("<tr>");
+            mb.append("<tr>");
+            mb.append("<td valign=top bgcolor=#999999 class=acctsmall colspan=2>&nbsp;</td>");
+            mb.append("<tr>");
+        }
+    }
+    mb.append("</table>");
+}
+
+
+
+
+
+
+
+
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>

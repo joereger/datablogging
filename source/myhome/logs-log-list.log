@@ -1,0 +1,67 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 reger.nestednav.NestedNavItem,
+                 reger.nestednav.NestedNavCollection"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "<img src='../images/icon-log-med-notext.gif' align=top> Your Logs";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logsyourlogs";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+//pageProps.isLogidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Log Header start
+String currentNavButtonName = "";
+%>
+<%@ include file="logs-header.jsp" %>
+<%
+//Log Header end
+
+mb.append("<br><br>");
+
+reger.nestednav.NestedNavDisplayLayoutManager navMgrDisplay = new reger.nestednav.NestedNavDisplayLayoutManager();
+mb.append(navMgrDisplay.outputNavBarHtml(userSession, request));
+
+mb.append("<br><br><br><br><br>");
+
+
+
+//Log Footer start
+%>
+<%@ include file="logs-footer.jsp" %>
+<%
+//Log Footer end
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

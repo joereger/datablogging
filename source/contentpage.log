@@ -1,0 +1,49 @@
+<%@ page import="reger.ContentPage"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired=false;
+pageProps.isEventidRequired=false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICMISC;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+if (request.getParameter("contentpageid")!=null && reger.core.Util.isinteger(request.getParameter("contentpageid"))){
+    ContentPage contentPage = new ContentPage();
+    contentPage = new ContentPage(Integer.parseInt(request.getParameter("contentpageid")));
+    if (contentPage.userCanViewNavItem(userSession.getAccountuser())){
+        mb.append(contentPage.getContent());
+    }
+}
+
+
+%>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append(reger.SideColumn.favorites(pageProps.logProps.logid, pageProps.logProps.megalogname));
+
+%>
+
+<%@ include file="globalfooter.jsp" %>
+

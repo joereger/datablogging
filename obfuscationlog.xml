@@ -1,0 +1,2185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yguard version="1.1">
+<!--
+  yGuard Bytecode Obfuscator, v1.3.2, a Product of yWorks GmbH - http://www.yworks.com
+
+  Logfile created on Sun Oct 24 12:19:48 EDT 2004
+
+  Jar file to be obfuscated:           reger.jar
+  Target Jar file for obfuscated code: regerObfuscated.jar
+
+-->
+<!-- WARNING
+Methods are called which may break in obfuscated version at runtime.
+Please review your source code to ensure that the dangerous methods are not intended
+to act on classes which have been obfuscated.
+-->
+<!--
+     Your class reger.FindInterfaceImplementations seems to be using the '.class' construct!
+-->
+<!--
+     Your class reger.FindInterfaceImplementationsLauncher seems to be using the '.class' construct!
+-->
+<!--
+  Memory in use after class data structure built: 2995784 bytes
+  Total memory available                        : 18948096 bytes
+-->
+<expose>
+  <class name="reger.licensing.LicenseManager"/>
+  <method class="reger.licensing.LicenseManager" name="int getMaxLogs()"/>
+  <method class="reger.licensing.LicenseManager" name="boolean canAddOneLog()"/>
+  <method class="reger.licensing.LicenseManager" name="int getMaxSites()"/>
+  <method class="reger.licensing.LicenseManager" name="boolean canAddOneUser()"/>
+  <method class="reger.licensing.LicenseManager" name="int getMaxUsers()"/>
+  <method class="reger.licensing.LicenseManager" name="boolean canAddOneSite()"/>
+  <class name="reger.licensing.DesEncrypter"/>
+  <method class="reger.licensing.DesEncrypter" name="java.lang.String decrypt(java.lang.String)"/>
+  <method class="reger.licensing.DesEncrypter" name="java.lang.String encrypt(java.lang.String)"/>
+  <class name="reger.marketingSite.ProFeature"/>
+  <field class="reger.marketingSite.ProFeature" name="isfree"/>
+  <field class="reger.marketingSite.ProFeature" name="url"/>
+  <field class="reger.marketingSite.ProFeature" name="name"/>
+  <field class="reger.marketingSite.ProFeature" name="description"/>
+  <field class="reger.marketingSite.ProFeature" name="screenshot"/>
+  <field class="reger.marketingSite.ProFeature" name="freetext"/>
+  <field class="reger.marketingSite.ProFeature" name="protext"/>
+  <class name="reger.marketingSite.ProCategory"/>
+  <field class="reger.marketingSite.ProCategory" name="name"/>
+  <field class="reger.marketingSite.ProCategory" name="features"/>
+  <method class="reger.marketingSite.ProCategory" name="void addFeature(reger.marketingSite.ProFeature)"/>
+  <class name="reger.marketingSite.TourHtml"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer getstarted()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer homepagecustomization()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer logDetail(int, java.lang.String, javax.servlet.http.HttpServletRequest, reger.core, reger.pageProps, javax.servlet.http.HttpServletResponse)"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer onthisday()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer favesites()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer comparison()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer share()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer password()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer relatedlinks()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer defaultHtml(int)"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer listLogTypes(int)"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer wap()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer freehosting(java.lang.String)"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer admin()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer search()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer pro()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer multiplecontributors()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer approval()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer emailnewsletter()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer activityspecificlogtypes(int)"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer acl()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer messages()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer gps()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer templates()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer traffic()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer rss()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer customservername()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer api()"/>
+  <method class="reger.marketingSite.TourHtml" name="java.lang.StringBuffer chartsAndGraphs()"/>
+  <class name="reger.marketingSite.ProFeaturesGrid"/>
+  <method class="reger.marketingSite.ProFeaturesGrid" name="java.lang.StringBuffer getHtml(boolean, java.lang.String)"/>
+  <method class="reger.marketingSite.ProFeaturesGrid" name="java.lang.StringBuffer getCss(boolean)"/>
+  <method class="reger.marketingSite.ProFeaturesGrid" name="java.util.Vector getFeaturesVector()"/>
+  <class name="reger.marketingSite.TourSideNav"/>
+  <method class="reger.marketingSite.TourSideNav" name="java.lang.StringBuffer navBar(java.lang.String)"/>
+  <class name="reger.marketingSite.SignupProgressBar"/>
+  <method class="reger.marketingSite.SignupProgressBar" name="java.lang.StringBuffer tab(java.lang.String, java.lang.String, int, boolean)"/>
+  <method class="reger.marketingSite.SignupProgressBar" name="java.lang.StringBuffer getBar(int)"/>
+  <class name="reger.marketingSite.Biz"/>
+  <method class="reger.marketingSite.Biz" name="java.lang.StringBuffer smallButton(java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.marketingSite.Biz" name="java.lang.StringBuffer pageTitle(java.lang.String)"/>
+  <method class="reger.marketingSite.Biz" name="java.lang.StringBuffer mainButton(java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.marketingSite.Biz" name="java.lang.StringBuffer getCss()"/>
+  <method class="reger.marketingSite.Biz" name="java.lang.StringBuffer leftNav(java.lang.String)"/>
+  <class name="reger.emailtext.BasicEmails"/>
+  <method class="reger.emailtext.BasicEmails" name="java.lang.StringBuffer showRssEmail(java.lang.String, int, java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.emailtext.BasicEmails" name="java.lang.StringBuffer invitationEmail(java.lang.String, java.lang.String, java.lang.String, int)"/>
+  <method class="reger.emailtext.BasicEmails" name="java.lang.StringBuffer showWebLogEmail(java.lang.String, int, java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.emailtext.BasicEmails" name="java.lang.StringBuffer friendEmailTop(java.lang.String)"/>
+  <method class="reger.emailtext.BasicEmails" name="java.lang.StringBuffer messagesEmailNotify(java.lang.String, int, java.lang.String)"/>
+  <class name="reger.scheduler.Loader"/>
+  <method class="reger.scheduler.Loader" name="void doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)"/>
+  <method class="reger.scheduler.Loader" name="void init(javax.servlet.ServletConfig)"/>
+  <class name="reger.scheduler.LinkrotSpider"/>
+  <method class="reger.scheduler.LinkrotSpider" name="void deleteAllEventidLinkrotidRelationships()"/>
+  <method class="reger.scheduler.LinkrotSpider" name="java.lang.String getUrlFromAnchorTag(java.lang.String)"/>
+  <method class="reger.scheduler.LinkrotSpider" name="void deleteOrphanLinkrotids()"/>
+  <method class="reger.scheduler.LinkrotSpider" name="java.lang.String[] parseUrlsFromText(java.lang.String)"/>
+  <method class="reger.scheduler.LinkrotSpider" name="int startSpider()"/>
+  <method class="reger.scheduler.LinkrotSpider" name="void processUrl(java.lang.String, int)"/>
+  <class name="reger.scheduler.StorageSpaceUpdate"/>
+  <method class="reger.scheduler.StorageSpaceUpdate" name="int updateStorageSpace()"/>
+  <class name="reger.scheduler.DeleteOldAutosavedEntries"/>
+  <method class="reger.scheduler.DeleteOldAutosavedEntries" name="int delete()"/>
+  <class name="reger.scheduler.EmailSubscription"/>
+  <method class="reger.scheduler.EmailSubscription" name="int sendEmails()"/>
+  <class name="reger.scheduler.MasterThread"/>
+  <field class="reger.scheduler.MasterThread" name="masterthreadid"/>
+  <field class="reger.scheduler.MasterThread" name="secondstosleep"/>
+  <field class="reger.scheduler.MasterThread" name="threadstartedat"/>
+  <field class="reger.scheduler.MasterThread" name="path"/>
+  <method class="reger.scheduler.MasterThread" name="void updateTask(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.scheduler.MasterThread" name="void setupThread()"/>
+  <method class="reger.scheduler.MasterThread" name="void run()"/>
+  <method class="reger.scheduler.MasterThread" name="void init()"/>
+  <class name="reger.scheduler.trafficCleanse"/>
+  <method class="reger.scheduler.trafficCleanse" name="void doCleanse()"/>
+  <class name="reger.spell.RegerSpellCheck"/>
+  <method class="reger.spell.RegerSpellCheck" name="java.lang.String getDebugInfo()"/>
+  <method class="reger.spell.RegerSpellCheck" name="void spellingError(com.swabunga.spell.event.SpellCheckEvent)"/>
+  <method class="reger.spell.RegerSpellCheck" name="void clearSessionVars(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.spell.RegerSpellCheck" name="java.lang.String getTextWithSuggestionsAsDropdowns()"/>
+  <method class="reger.spell.RegerSpellCheck" name="int getNumberOfSpellingErrors()"/>
+  <method class="reger.spell.RegerSpellCheck" name="java.lang.String replaceWithChosenRecommendation(javax.servlet.http.HttpServletRequest)"/>
+  <class name="reger.mega.FieldTypeDropdown"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getFielddescription()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getHtmlAdmin(int)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getHtmlAdminSample()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void getDefaultData(int)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String validateCurrentData()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void moveDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void deleteField()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void moveDataToAnotherLog(int, int, int)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getHtmlPublic(int)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void copyDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getBackEndDescription()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getHtmlPublicSample()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="int[] getAcceptableDataTypes()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getBackEndFriendlyName()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void saveDefaultToDb(int)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.String getValuesAsStringForOffensiveContentValidation()"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void deleteData(int)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void populateFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void getDataForEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeDropdown" name="void saveToDb(int, int)"/>
+  <class name="reger.mega.FieldTypeVerticalradios"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getFielddescription()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getHtmlAdmin(int)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getHtmlAdminSample()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void getDefaultData(int)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String validateCurrentData()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void moveDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void deleteField()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void moveDataToAnotherLog(int, int, int)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getHtmlPublic(int)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void copyDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getBackEndDescription()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getHtmlPublicSample()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="int[] getAcceptableDataTypes()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getBackEndFriendlyName()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void saveDefaultToDb(int)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.String getValuesAsStringForOffensiveContentValidation()"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void deleteData(int)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void populateFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void getDataForEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="void saveToDb(int, int)"/>
+  <class name="reger.mega.FieldDAO"/>
+  <method class="reger.mega.FieldDAO" name="void loadData(int, int, int)"/>
+  <method class="reger.mega.FieldDAO" name="java.util.TreeMap loadDataForMultipleEvents(int[], reger.mega.Field)"/>
+  <method class="reger.mega.FieldDAO" name="void saveData(int, int, int)"/>
+  <method class="reger.mega.FieldDAO" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest, int)"/>
+  <method class="reger.mega.FieldDAO" name="void copyDataToNewEventid(int, int, int)"/>
+  <method class="reger.mega.FieldDAO" name="void saveDefaultData(int, int)"/>
+  <method class="reger.mega.FieldDAO" name="void moveDataToNewLogid(int, int, int, int)"/>
+  <method class="reger.mega.FieldDAO" name="void deleteAllDataForAFieldAcrossAllLogsAndEntries(int)"/>
+  <method class="reger.mega.FieldDAO" name="void loadDefaultData(int, int)"/>
+  <method class="reger.mega.FieldDAO" name="void moveDataToNewEventid(int, int, int)"/>
+  <method class="reger.mega.FieldDAO" name="void deleteData(int, int)"/>
+  <class name="reger.mega.ChartFieldEntryMonthsAgo"/>
+  <method class="reger.mega.ChartFieldEntryMonthsAgo" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.ChartFieldEntryMonthsAgo" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartFieldEntryMonthsAgo" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartFieldEntryMonthsAgo" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartFieldEntryMonthsAgo" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartFieldEntryMonthsAgo" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartFieldEntryMonthsAgo" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartFieldEntryMonthsAgo" name="java.lang.String getFielddescription()"/>
+  <class name="reger.mega.ChartFieldEntryDayofweek"/>
+  <method class="reger.mega.ChartFieldEntryDayofweek" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.ChartFieldEntryDayofweek" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartFieldEntryDayofweek" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartFieldEntryDayofweek" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartFieldEntryDayofweek" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartFieldEntryDayofweek" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartFieldEntryDayofweek" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartFieldEntryDayofweek" name="java.lang.String getFielddescription()"/>
+  <class name="reger.mega.ChartFieldEntrycount"/>
+  <method class="reger.mega.ChartFieldEntrycount" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.ChartFieldEntrycount" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartFieldEntrycount" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartFieldEntrycount" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartFieldEntrycount" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartFieldEntrycount" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartFieldEntrycount" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartFieldEntrycount" name="java.lang.String getFielddescription()"/>
+  <class name="reger.mega.ChartFieldEntrydatetime"/>
+  <method class="reger.mega.ChartFieldEntrydatetime" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.ChartFieldEntrydatetime" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartFieldEntrydatetime" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartFieldEntrydatetime" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartFieldEntrydatetime" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartFieldEntrydatetime" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartFieldEntrydatetime" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartFieldEntrydatetime" name="java.lang.String getFielddescription()"/>
+  <class name="reger.mega.FieldTypeTextbox"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getFielddescription()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getHtmlAdmin(int)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getHtmlAdminSample()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void getDefaultData(int)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String validateCurrentData()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void moveDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void deleteField()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void moveDataToAnotherLog(int, int, int)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getHtmlPublic(int)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void copyDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getBackEndDescription()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getHtmlPublicSample()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="int[] getAcceptableDataTypes()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getBackEndFriendlyName()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void saveDefaultToDb(int)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="java.lang.String getValuesAsStringForOffensiveContentValidation()"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void deleteData(int)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void populateFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void getDataForEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeTextbox" name="void saveToDb(int, int)"/>
+  <class name="reger.mega.Field"/>
+  <field class="reger.mega.Field" name="fieldname"/>
+  <field class="reger.mega.Field" name="eventtypeid"/>
+  <field class="reger.mega.Field" name="fieldtype"/>
+  <field class="reger.mega.Field" name="fieldorder"/>
+  <field class="reger.mega.Field" name="isrequired"/>
+  <field class="reger.mega.Field" name="megadatatypeid"/>
+  <field class="reger.mega.Field" name="fielddescription"/>
+  <field class="reger.mega.Field" name="megafieldid"/>
+  <method class="reger.mega.Field" name="void populateFromMegafieldid(int)"/>
+  <method class="reger.mega.Field" name="reger.mega.FieldAllParams getParams()"/>
+  <method class="reger.mega.Field" name="java.lang.String saveField()"/>
+  <method class="reger.mega.Field" name="void delete()"/>
+  <class name="reger.mega.FieldAllParams"/>
+  <method class="reger.mega.FieldAllParams" name="java.lang.String validateAllParams()"/>
+  <method class="reger.mega.FieldAllParams" name="java.util.Vector getParams()"/>
+  <method class="reger.mega.FieldAllParams" name="void setMegafieldidOnAll(int)"/>
+  <method class="reger.mega.FieldAllParams" name="java.lang.String getParamValueByOneworddatabasekey(java.lang.String)"/>
+  <method class="reger.mega.FieldAllParams" name="void loadData()"/>
+  <method class="reger.mega.FieldAllParams" name="void deleteAllParams()"/>
+  <method class="reger.mega.FieldAllParams" name="java.lang.String saveParams()"/>
+  <method class="reger.mega.FieldAllParams" name="void addParam(reger.mega.FieldParam)"/>
+  <method class="reger.mega.FieldAllParams" name="reger.mega.FieldParam getFieldParamByName(java.lang.String)"/>
+  <method class="reger.mega.FieldAllParams" name="void loadFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldAllParams" name="java.lang.String getParamValue(java.lang.String)"/>
+  <class name="reger.mega.FieldParam"/>
+  <field class="reger.mega.FieldParam" name="onewordDatabaseKey"/>
+  <field class="reger.mega.FieldParam" name="name"/>
+  <field class="reger.mega.FieldParam" name="ParamTypeBoolean"/>
+  <field class="reger.mega.FieldParam" name="ParamTypeNumber"/>
+  <field class="reger.mega.FieldParam" name="isRequired"/>
+  <field class="reger.mega.FieldParam" name="acceptableFieldTypesOfOtherField"/>
+  <field class="reger.mega.FieldParam" name="acceptableDataTypesOfOtherField"/>
+  <field class="reger.mega.FieldParam" name="megafieldid"/>
+  <field class="reger.mega.FieldParam" name="type"/>
+  <field class="reger.mega.FieldParam" name="ParamTypeText"/>
+  <field class="reger.mega.FieldParam" name="value"/>
+  <field class="reger.mega.FieldParam" name="description"/>
+  <field class="reger.mega.FieldParam" name="defaultvalue"/>
+  <field class="reger.mega.FieldParam" name="ParamTypeFieldid"/>
+  <field class="reger.mega.FieldParam" name="megafieldparamid"/>
+  <field class="reger.mega.FieldParam" name="ParamTypeInteger"/>
+  <method class="reger.mega.FieldParam" name="void deleteParam()"/>
+  <method class="reger.mega.FieldParam" name="void loadFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldParam" name="java.lang.String saveParam()"/>
+  <method class="reger.mega.FieldParam" name="java.lang.String validate()"/>
+  <method class="reger.mega.FieldParam" name="void loadValue()"/>
+  <class name="reger.mega.FieldTypeHorizontalradios"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getFielddescription()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getHtmlAdmin(int)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getHtmlAdminSample()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void getDefaultData(int)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String validateCurrentData()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void moveDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void deleteField()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void moveDataToAnotherLog(int, int, int)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getHtmlPublic(int)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void copyDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getBackEndDescription()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getHtmlPublicSample()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="int[] getAcceptableDataTypes()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getBackEndFriendlyName()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void saveDefaultToDb(int)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.String getValuesAsStringForOffensiveContentValidation()"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void deleteData(int)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void populateFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void getDataForEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="void saveToDb(int, int)"/>
+  <class name="reger.mega.FieldType"/>
+  <field class="reger.mega.FieldType" name="XAXISCALENDARWEEKS"/>
+  <field class="reger.mega.FieldType" name="YAXISCOUNT"/>
+  <field class="reger.mega.FieldType" name="FIELDTYPEDROPDOWN"/>
+  <field class="reger.mega.FieldType" name="XAXISDATETIME"/>
+  <field class="reger.mega.FieldType" name="FIELDTYPETEXTBOX"/>
+  <field class="reger.mega.FieldType" name="XAXISCALENDARMONTHS"/>
+  <field class="reger.mega.FieldType" name="XAXISDAYOFWEEK"/>
+  <field class="reger.mega.FieldType" name="FIELDTYPEVERTICALRADIOS"/>
+  <field class="reger.mega.FieldType" name="XAXISTIMEOFDAY"/>
+  <field class="reger.mega.FieldType" name="XAXISCALENDARDAYS"/>
+  <field class="reger.mega.FieldType" name="XAXISENTRYORDER"/>
+  <field class="reger.mega.FieldType" name="FIELDTYPENUMERICRANGE"/>
+  <field class="reger.mega.FieldType" name="FIELDTYPEHORIZONTALRADIOS"/>
+  <field class="reger.mega.FieldType" name="XAXISDAYOFMONTH"/>
+  <field class="reger.mega.FieldType" name="FIELDTYPETIME"/>
+  <method class="reger.mega.FieldType" name="java.lang.String getFielddescription()"/>
+  <method class="reger.mega.FieldType" name="java.lang.String getHtmlAdmin(int)"/>
+  <method class="reger.mega.FieldType" name="java.lang.String getHtmlAdminSample()"/>
+  <method class="reger.mega.FieldType" name="void getDefaultData(int)"/>
+  <method class="reger.mega.FieldType" name="java.lang.String validateCurrentData()"/>
+  <method class="reger.mega.FieldType" name="void moveDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldType" name="void deleteField()"/>
+  <method class="reger.mega.FieldType" name="void moveDataToAnotherLog(int, int, int)"/>
+  <method class="reger.mega.FieldType" name="java.lang.String getHtmlPublic(int)"/>
+  <method class="reger.mega.FieldType" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.FieldType" name="void populateFromMegafieldid(int)"/>
+  <method class="reger.mega.FieldType" name="void copyDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldType" name="java.lang.String getBackEndDescription()"/>
+  <method class="reger.mega.FieldType" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldType" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.FieldType" name="reger.mega.FieldAllParams getParams()"/>
+  <method class="reger.mega.FieldType" name="java.lang.String getHtmlPublicSample()"/>
+  <method class="reger.mega.FieldType" name="int[] getAcceptableDataTypes()"/>
+  <method class="reger.mega.FieldType" name="java.lang.String getBackEndFriendlyName()"/>
+  <method class="reger.mega.FieldType" name="void saveDefaultToDb(int)"/>
+  <method class="reger.mega.FieldType" name="java.lang.String getValuesAsStringForOffensiveContentValidation()"/>
+  <method class="reger.mega.FieldType" name="void deleteData(int)"/>
+  <method class="reger.mega.FieldType" name="void populateFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldType" name="void getDataForEventid(int, int)"/>
+  <method class="reger.mega.FieldType" name="void saveToDb(int, int)"/>
+  <class name="reger.mega.FieldDAOSimple"/>
+  <method class="reger.mega.FieldDAOSimple" name="void loadData(int, int, int)"/>
+  <method class="reger.mega.FieldDAOSimple" name="java.util.TreeMap loadDataForMultipleEvents(int[], reger.mega.Field)"/>
+  <method class="reger.mega.FieldDAOSimple" name="void saveData(int, int, int)"/>
+  <method class="reger.mega.FieldDAOSimple" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest, int)"/>
+  <method class="reger.mega.FieldDAOSimple" name="void copyDataToNewEventid(int, int, int)"/>
+  <method class="reger.mega.FieldDAOSimple" name="void saveDefaultData(int, int)"/>
+  <method class="reger.mega.FieldDAOSimple" name="void moveDataToNewLogid(int, int, int, int)"/>
+  <method class="reger.mega.FieldDAOSimple" name="void deleteAllDataForAFieldAcrossAllLogsAndEntries(int)"/>
+  <method class="reger.mega.FieldDAOSimple" name="java.lang.String getValue()"/>
+  <method class="reger.mega.FieldDAOSimple" name="void moveDataToNewEventid(int, int, int)"/>
+  <method class="reger.mega.FieldDAOSimple" name="void loadDefaultData(int, int)"/>
+  <method class="reger.mega.FieldDAOSimple" name="void setValue(java.lang.String)"/>
+  <method class="reger.mega.FieldDAOSimple" name="void deleteData(int, int)"/>
+  <class name="reger.mega.ChartFieldEntryHourofday"/>
+  <method class="reger.mega.ChartFieldEntryHourofday" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.ChartFieldEntryHourofday" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartFieldEntryHourofday" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartFieldEntryHourofday" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartFieldEntryHourofday" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartFieldEntryHourofday" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartFieldEntryHourofday" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartFieldEntryHourofday" name="java.lang.String getFielddescription()"/>
+  <class name="reger.mega.ChartFieldEntryDayofmonth"/>
+  <method class="reger.mega.ChartFieldEntryDayofmonth" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.ChartFieldEntryDayofmonth" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartFieldEntryDayofmonth" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartFieldEntryDayofmonth" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartFieldEntryDayofmonth" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartFieldEntryDayofmonth" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartFieldEntryDayofmonth" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartFieldEntryDayofmonth" name="java.lang.String getFielddescription()"/>
+  <class name="reger.mega.ChartFieldEntryDaysAgo"/>
+  <method class="reger.mega.ChartFieldEntryDaysAgo" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.ChartFieldEntryDaysAgo" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartFieldEntryDaysAgo" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartFieldEntryDaysAgo" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartFieldEntryDaysAgo" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartFieldEntryDaysAgo" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartFieldEntryDaysAgo" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartFieldEntryDaysAgo" name="java.lang.String getFielddescription()"/>
+  <class name="reger.mega.ChartFieldEntryorder"/>
+  <method class="reger.mega.ChartFieldEntryorder" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.ChartFieldEntryorder" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartFieldEntryorder" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartFieldEntryorder" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartFieldEntryorder" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartFieldEntryorder" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartFieldEntryorder" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartFieldEntryorder" name="java.lang.String getFielddescription()"/>
+  <class name="reger.mega.ChartFieldFactory"/>
+  <method class="reger.mega.ChartFieldFactory" name="reger.mega.ChartField getHandlerByFieldtype(int)"/>
+  <class name="reger.mega.ChartField"/>
+  <method class="reger.mega.ChartField" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartField" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartField" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartField" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartField" name="void populateFromMegafieldid(int)"/>
+  <method class="reger.mega.ChartField" name="java.lang.String getFielddescription()"/>
+  <method class="reger.mega.ChartField" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartField" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartField" name="reger.mega.Field getField()"/>
+  <class name="reger.mega.ChartFieldEntryWeeksAgo"/>
+  <method class="reger.mega.ChartFieldEntryWeeksAgo" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.ChartFieldEntryWeeksAgo" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.ChartFieldEntryWeeksAgo" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.ChartFieldEntryWeeksAgo" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.ChartFieldEntryWeeksAgo" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.ChartFieldEntryWeeksAgo" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.ChartFieldEntryWeeksAgo" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.ChartFieldEntryWeeksAgo" name="java.lang.String getFielddescription()"/>
+  <class name="reger.mega.MegaChartNew"/>
+  <field class="reger.mega.MegaChartNew" name="rawChartData"/>
+  <field class="reger.mega.MegaChartNew" name="yFieldtype"/>
+  <field class="reger.mega.MegaChartNew" name="yAxisTitle"/>
+  <field class="reger.mega.MegaChartNew" name="daterange"/>
+  <field class="reger.mega.MegaChartNew" name="yMegadatatype"/>
+  <field class="reger.mega.MegaChartNew" name="yMegafieldid"/>
+  <field class="reger.mega.MegaChartNew" name="rawListOfEventids"/>
+  <field class="reger.mega.MegaChartNew" name="logid"/>
+  <field class="reger.mega.MegaChartNew" name="cleanData"/>
+  <field class="reger.mega.MegaChartNew" name="core"/>
+  <field class="reger.mega.MegaChartNew" name="xMegafieldid"/>
+  <field class="reger.mega.MegaChartNew" name="avgCount"/>
+  <field class="reger.mega.MegaChartNew" name="dateSql"/>
+  <field class="reger.mega.MegaChartNew" name="xMegadatatype"/>
+  <field class="reger.mega.MegaChartNew" name="xFieldtype"/>
+  <field class="reger.mega.MegaChartNew" name="xAxisTitle"/>
+  <field class="reger.mega.MegaChartNew" name="yaxiswhattodo"/>
+  <method class="reger.mega.MegaChartNew" name="int getFieldType(int)"/>
+  <method class="reger.mega.MegaChartNew" name="java.util.TreeMap doCountEntriesValues(java.util.TreeMap)"/>
+  <method class="reger.mega.MegaChartNew" name="void massageData()"/>
+  <method class="reger.mega.MegaChartNew" name="java.lang.String imageUrlForPreviewFromMegachartid(int)"/>
+  <method class="reger.mega.MegaChartNew" name="void setXTitleBasedOnFieldId()"/>
+  <method class="reger.mega.MegaChartNew" name="java.lang.String[][] combineTwoTreeMapsIntoDataArray(java.util.TreeMap, java.util.TreeMap, int[])"/>
+  <method class="reger.mega.MegaChartNew" name="void setYTitleBasedOnFieldId()"/>
+  <method class="reger.mega.MegaChartNew" name="void incrementAvgCount(java.lang.Object)"/>
+  <method class="reger.mega.MegaChartNew" name="java.util.TreeMap getFieldData(int, int, int[])"/>
+  <method class="reger.mega.MegaChartNew" name="java.util.TreeMap doAverage(java.util.TreeMap)"/>
+  <class name="reger.mega.DataTypeValidation"/>
+  <method class="reger.mega.DataTypeValidation" name="java.lang.String validateDataType(int, java.lang.String)"/>
+  <class name="reger.mega.FieldTypeNumericrange"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getFielddescription()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getHtmlAdmin(int)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getHtmlAdminSample()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void getDefaultData(int)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String validateCurrentData()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void moveDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void deleteField()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void moveDataToAnotherLog(int, int, int)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getHtmlPublic(int)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void copyDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getBackEndDescription()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="reger.mega.FieldAllParams getParams()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getHtmlPublicSample()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="int[] getAcceptableDataTypes()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getBackEndFriendlyName()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void saveDefaultToDb(int)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="java.lang.String getValuesAsStringForOffensiveContentValidation()"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void deleteData(int)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void populateFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void getDataForEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeNumericrange" name="void saveToDb(int, int)"/>
+  <class name="reger.mega.FieldTypeFactory"/>
+  <method class="reger.mega.FieldTypeFactory" name="reger.mega.FieldType getHandlerByFieldtype(int)"/>
+  <class name="reger.mega.FieldDAOListOfOptions"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void loadData(int, int, int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="java.util.TreeMap loadDataForMultipleEvents(int[], reger.mega.Field)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void saveData(int, int, int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="java.lang.String[] getPossibleValues()"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest, int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void copyDataToNewEventid(int, int, int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void saveDefaultData(int, int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void moveDataToNewLogid(int, int, int, int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void deleteAllDataForAFieldAcrossAllLogsAndEntries(int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="java.lang.String getValue()"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void moveDataToNewEventid(int, int, int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void loadDefaultData(int, int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void deleteData(int, int)"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void setValue(java.lang.String)"/>
+  <class name="reger.mega.FieldTypeTimeperiod"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getFielddescription()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getHtmlAdmin(int)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getHtmlAdminSample()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="int getMegadatatypeid()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void getDefaultData(int)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void setTimezoneid(java.lang.String)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.util.TreeMap getChartDataForField(int[])"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String validateCurrentData()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void moveDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void deleteField()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void moveDataToAnotherLog(int, int, int)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getHtmlPublic(int)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="reger.mega.Field getField()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void copyDataToNewEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getBackEndDescription()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.util.TreeMap fillEmptyXAxis(java.util.TreeMap)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String processSystemDefaultDataConfig(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getFieldname()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getHtmlPublicSample()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="int[] getAcceptableDataTypes()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getBackEndFriendlyName()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void saveDefaultToDb(int)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="java.lang.String getValuesAsStringForOffensiveContentValidation()"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void deleteData(int)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void populateFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void getDataForEventid(int, int)"/>
+  <method class="reger.mega.FieldTypeTimeperiod" name="void saveToDb(int, int)"/>
+  <class name="reger.mega.MegaChartPreview"/>
+  <class name="reger.api.MetaWebLogApi"/>
+  <field class="reger.api.MetaWebLogApi" name="core"/>
+  <field class="reger.api.MetaWebLogApi" name="pageProps"/>
+  <method class="reger.api.MetaWebLogApi" name="java.util.Vector getRecentPosts(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)"/>
+  <method class="reger.api.MetaWebLogApi" name="java.lang.String newPost(java.lang.String, java.lang.String, java.lang.String, java.util.Hashtable, boolean)"/>
+  <method class="reger.api.MetaWebLogApi" name="java.util.Hashtable getPost(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.api.MetaWebLogApi" name="java.util.Vector getRecentPosts(java.lang.String, java.lang.String, java.lang.String, int)"/>
+  <method class="reger.api.MetaWebLogApi" name="java.lang.String newMediaObject(java.lang.String, java.lang.String, java.lang.String, java.util.Hashtable)"/>
+  <method class="reger.api.MetaWebLogApi" name="java.util.Hashtable getPost(java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.api.MetaWebLogApi" name="boolean editPost(java.lang.String, java.lang.String, java.lang.String, java.util.Hashtable, boolean)"/>
+  <class name="reger.api.RssRome"/>
+  <method class="reger.api.RssRome" name="java.lang.StringBuffer getFeed(reger.core, int, int, java.lang.String, java.lang.String)"/>
+  <method class="reger.api.RssRome" name="java.lang.StringBuffer getFeedRss(reger.core, int, int, java.lang.String)"/>
+  <method class="reger.api.RssRome" name="java.lang.StringBuffer getFeedAtom(reger.core, int, int, java.lang.String)"/>
+  <method class="reger.api.RssRome" name="boolean verifyType(java.lang.String)"/>
+  <class name="reger.api.Rss"/>
+  <method class="reger.api.Rss" name="java.lang.StringBuffer getFeed(reger.core, int, int)"/>
+  <class name="reger.api.TrackbackPing"/>
+  <field class="reger.api.TrackbackPing" name="urlsToPing"/>
+  <field class="reger.api.TrackbackPing" name="core"/>
+  <field class="reger.api.TrackbackPing" name="eventid"/>
+  <field class="reger.api.TrackbackPing" name="rawUrlsToPing"/>
+  <method class="reger.api.TrackbackPing" name="void run()"/>
+  <method class="reger.api.TrackbackPing" name="void init()"/>
+  <class name="reger.api.BloggerApi"/>
+  <field class="reger.api.BloggerApi" name="core"/>
+  <field class="reger.api.BloggerApi" name="pageProps"/>
+  <method class="reger.api.BloggerApi" name="java.util.Vector getRecentPosts(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)"/>
+  <method class="reger.api.BloggerApi" name="java.lang.String newPost(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Hashtable, boolean)"/>
+  <method class="reger.api.BloggerApi" name="java.util.Hashtable getPostgetPost(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.api.BloggerApi" name="java.util.Vector getUsersBlogs(java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.api.BloggerApi" name="boolean editPost(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Hashtable, boolean)"/>
+  <class name="reger.api.ApiDescription"/>
+  <method class="reger.api.ApiDescription" name="java.lang.StringBuffer getHtml()"/>
+  <class name="reger.api.WebLogsComPing"/>
+  <method class="reger.api.WebLogsComPing" name="void ping(reger.core)"/>
+  <class name="reger.api.EmailApi"/>
+  <field class="reger.api.EmailApi" name="rawMailMessage"/>
+  <method class="reger.api.EmailApi" name="boolean doAttachments(int)"/>
+  <class name="reger.linkrot.LinkrotProcessRequests"/>
+  <method class="reger.linkrot.LinkrotProcessRequests" name="void completeFixForEventid(int, int, java.lang.String)"/>
+  <method class="reger.linkrot.LinkrotProcessRequests" name="void addUpdateRecommendation(int, java.lang.String, java.lang.String)"/>
+  <method class="reger.linkrot.LinkrotProcessRequests" name="void process301(reger.Http, int)"/>
+  <method class="reger.linkrot.LinkrotProcessRequests" name="void updateLinkrotEventidRelationship(int, int)"/>
+  <method class="reger.linkrot.LinkrotProcessRequests" name="void process500(reger.Http, int)"/>
+  <method class="reger.linkrot.LinkrotProcessRequests" name="void process404(reger.Http, int)"/>
+  <method class="reger.linkrot.LinkrotProcessRequests" name="void processRequest(reger.Http, int)"/>
+  <method class="reger.linkrot.LinkrotProcessRequests" name="void process200(reger.Http, int)"/>
+  <method class="reger.linkrot.LinkrotProcessRequests" name="void updateLinkrot(java.lang.String, int, java.lang.String, boolean, java.lang.String, int)"/>
+  <class name="reger.linkrot.GenerateKeywords"/>
+  <field class="reger.linkrot.GenerateKeywords" name="mostusedwords"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String removeHeadSection(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String removeMisc(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String getKeywords(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String truncateToXWords(java.lang.String, int)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String[] mostUsedWords()"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.util.HashMap getUsedWords(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="boolean isPopularWord(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String removePunctuation(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String getKeywordsFromHashmap(java.util.HashMap, int)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String removeHtmlTags(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String[] SortHashMapOnValue(java.util.HashMap)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String removeScripts(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.util.HashMap addWordToHashMapCounter(java.util.HashMap, java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String removeStyles(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String[] breakIntoWordArray(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="java.lang.String getTitleKeywords(java.lang.String)"/>
+  <method class="reger.linkrot.GenerateKeywords" name="int getMaxValue(java.util.HashMap)"/>
+  <class name="reger.linkrot.Google"/>
+  <method class="reger.linkrot.Google" name="com.google.soap.search.GoogleSearchResult search(java.lang.String)"/>
+  <method class="reger.linkrot.Google" name="java.lang.StringBuffer searchResultsHtml(java.lang.String)"/>
+  <class name="reger.ui.BubbleBox"/>
+  <method class="reger.ui.BubbleBox" name="java.lang.StringBuffer end(java.lang.String)"/>
+  <method class="reger.ui.BubbleBox" name="java.lang.StringBuffer start(java.lang.String, java.lang.String)"/>
+  <method class="reger.ui.BubbleBox" name="java.lang.StringBuffer wholebox(java.lang.String, java.lang.String, java.lang.String)"/>
+  <class name="reger.dbupgrade.version.Version6ToVersion7"/>
+  <method class="reger.dbupgrade.version.Version6ToVersion7" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version6ToVersion7" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version15ToVersion16"/>
+  <method class="reger.dbupgrade.version.Version15ToVersion16" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version15ToVersion16" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version9ToVersion10"/>
+  <method class="reger.dbupgrade.version.Version9ToVersion10" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version9ToVersion10" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version1ToVersion2"/>
+  <method class="reger.dbupgrade.version.Version1ToVersion2" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version1ToVersion2" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version16ToVersion17"/>
+  <method class="reger.dbupgrade.version.Version16ToVersion17" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version16ToVersion17" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version10ToVersion11"/>
+  <method class="reger.dbupgrade.version.Version10ToVersion11" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version10ToVersion11" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version2ToVersion3"/>
+  <method class="reger.dbupgrade.version.Version2ToVersion3" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version2ToVersion3" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version17ToVersion18"/>
+  <method class="reger.dbupgrade.version.Version17ToVersion18" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version17ToVersion18" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version11ToVersion12"/>
+  <method class="reger.dbupgrade.version.Version11ToVersion12" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version11ToVersion12" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version3ToVersion4"/>
+  <method class="reger.dbupgrade.version.Version3ToVersion4" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version3ToVersion4" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version0ToVersion1"/>
+  <method class="reger.dbupgrade.version.Version0ToVersion1" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version0ToVersion1" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version12ToVersion13"/>
+  <method class="reger.dbupgrade.version.Version12ToVersion13" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version12ToVersion13" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version7ToVersion8"/>
+  <method class="reger.dbupgrade.version.Version7ToVersion8" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version7ToVersion8" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version19ToVersion20"/>
+  <method class="reger.dbupgrade.version.Version19ToVersion20" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version19ToVersion20" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version4ToVersion5"/>
+  <method class="reger.dbupgrade.version.Version4ToVersion5" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version4ToVersion5" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version13ToVersion14"/>
+  <method class="reger.dbupgrade.version.Version13ToVersion14" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version13ToVersion14" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version8ToVersion9"/>
+  <method class="reger.dbupgrade.version.Version8ToVersion9" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version8ToVersion9" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version20ToVersion21"/>
+  <method class="reger.dbupgrade.version.Version20ToVersion21" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version20ToVersion21" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version5ToVersion6"/>
+  <method class="reger.dbupgrade.version.Version5ToVersion6" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version5ToVersion6" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version14ToVersion15"/>
+  <method class="reger.dbupgrade.version.Version14ToVersion15" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version14ToVersion15" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.version.Version18ToVersion19"/>
+  <method class="reger.dbupgrade.version.Version18ToVersion19" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.version.Version18ToVersion19" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.UpgradeCheckAtStartup"/>
+  <method class="reger.dbupgrade.UpgradeCheckAtStartup" name="void doCheck()"/>
+  <class name="reger.dbupgrade.RequiredDatabaseVersion"/>
+  <field class="reger.dbupgrade.RequiredDatabaseVersion" name="version"/>
+  <class name="reger.dbupgrade.BackupDatabase"/>
+  <method class="reger.dbupgrade.BackupDatabase" name="void doBackup()"/>
+  <class name="reger.dbupgrade.DatabaseToString"/>
+  <method class="reger.dbupgrade.DatabaseToString" name="boolean dumpDB()"/>
+  <class name="reger.dbupgrade.UpgradeDatabaseOneVersion"/>
+  <method class="reger.dbupgrade.UpgradeDatabaseOneVersion" name="int versionAfterUpgrade()"/>
+  <method class="reger.dbupgrade.UpgradeDatabaseOneVersion" name="reger.dbupgrade.UpgradeResult doUpgrade()"/>
+  <class name="reger.dbupgrade.UpgradeResult"/>
+  <field class="reger.dbupgrade.UpgradeResult" name="errorText"/>
+  <field class="reger.dbupgrade.UpgradeResult" name="originalDbVersion"/>
+  <field class="reger.dbupgrade.UpgradeResult" name="wasSuccessful"/>
+  <field class="reger.dbupgrade.UpgradeResult" name="comments"/>
+  <field class="reger.dbupgrade.UpgradeResult" name="newDbVersion"/>
+  <class name="reger.dbupgrade.ExecuteSQLFile"/>
+  <method class="reger.dbupgrade.ExecuteSQLFile" name="boolean execute(java.lang.String)"/>
+  <class name="reger.Media.BitmapImage"/>
+  <method class="reger.Media.BitmapImage" name="void deleteData(int)"/>
+  <method class="reger.Media.BitmapImage" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.BitmapImage" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.BitmapImage" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.BitmapImage" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.BitmapImage" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.MsPowerpoint"/>
+  <method class="reger.Media.MsPowerpoint" name="void deleteData(int)"/>
+  <method class="reger.Media.MsPowerpoint" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.MsPowerpoint" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.MsPowerpoint" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.MsPowerpoint" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.MsPowerpoint" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.Zip"/>
+  <method class="reger.Media.Zip" name="void deleteData(int)"/>
+  <method class="reger.Media.Zip" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.Zip" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.Zip" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.Zip" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.Zip" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.MediaType"/>
+  <method class="reger.Media.MediaType" name="void deleteData(int)"/>
+  <method class="reger.Media.MediaType" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.MediaType" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.MediaType" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.MediaType" name="java.lang.String getMimeType()"/>
+  <method class="reger.Media.MediaType" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <class name="reger.Media.MediaTypeFactory"/>
+  <method class="reger.Media.MediaTypeFactory" name="reger.Media.MediaType getHandlerByFileExtension(java.lang.String)"/>
+  <class name="reger.Media.PngImage"/>
+  <method class="reger.Media.PngImage" name="void deleteData(int)"/>
+  <method class="reger.Media.PngImage" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.PngImage" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.PngImage" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.PngImage" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.PngImage" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.QuicktimeMov"/>
+  <method class="reger.Media.QuicktimeMov" name="void deleteData(int)"/>
+  <method class="reger.Media.QuicktimeMov" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.QuicktimeMov" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.QuicktimeMov" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.QuicktimeMov" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.QuicktimeMov" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.PolarHRM"/>
+  <method class="reger.Media.PolarHRM" name="java.lang.String getMimeType()"/>
+  <method class="reger.Media.PolarHRM" name="void deleteData(int)"/>
+  <method class="reger.Media.PolarHRM" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.PolarHRM" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.PolarHRM" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.PolarHRM" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <class name="reger.Media.MsExcel"/>
+  <method class="reger.Media.MsExcel" name="void deleteData(int)"/>
+  <method class="reger.Media.MsExcel" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.MsExcel" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.MsExcel" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.MsExcel" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.MsExcel" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.MsWordDoc"/>
+  <method class="reger.Media.MsWordDoc" name="void deleteData(int)"/>
+  <method class="reger.Media.MsWordDoc" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.MsWordDoc" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.MsWordDoc" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.MsWordDoc" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.MsWordDoc" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.JpegImage"/>
+  <method class="reger.Media.JpegImage" name="void deleteData(int)"/>
+  <method class="reger.Media.JpegImage" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.JpegImage" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.JpegImage" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.JpegImage" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.JpegImage" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.UnknownFileType"/>
+  <method class="reger.Media.UnknownFileType" name="void deleteData(int)"/>
+  <method class="reger.Media.UnknownFileType" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.UnknownFileType" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.UnknownFileType" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.UnknownFileType" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.UnknownFileType" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.Photoshop"/>
+  <method class="reger.Media.Photoshop" name="void deleteData(int)"/>
+  <method class="reger.Media.Photoshop" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.Photoshop" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.Photoshop" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.Photoshop" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.Photoshop" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.MpegVideo"/>
+  <method class="reger.Media.MpegVideo" name="void deleteData(int)"/>
+  <method class="reger.Media.MpegVideo" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.MpegVideo" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.MpegVideo" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.MpegVideo" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.MpegVideo" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.MsProject"/>
+  <method class="reger.Media.MsProject" name="void deleteData(int)"/>
+  <method class="reger.Media.MsProject" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.MsProject" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.MsProject" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.MsProject" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.MsProject" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.Visio"/>
+  <method class="reger.Media.Visio" name="void deleteData(int)"/>
+  <method class="reger.Media.Visio" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.Visio" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.Visio" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.Visio" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.Visio" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.Html"/>
+  <method class="reger.Media.Html" name="void deleteData(int)"/>
+  <method class="reger.Media.Html" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.Html" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.Html" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.Html" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.Html" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.AdobePdf"/>
+  <method class="reger.Media.AdobePdf" name="void deleteData(int)"/>
+  <method class="reger.Media.AdobePdf" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.AdobePdf" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.AdobePdf" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.AdobePdf" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.AdobePdf" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.AviVideo"/>
+  <method class="reger.Media.AviVideo" name="void deleteData(int)"/>
+  <method class="reger.Media.AviVideo" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.AviVideo" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.AviVideo" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.AviVideo" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.AviVideo" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.Exe"/>
+  <method class="reger.Media.Exe" name="void deleteData(int)"/>
+  <method class="reger.Media.Exe" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.Exe" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.Exe" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.Exe" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.Exe" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.mp3Audio"/>
+  <method class="reger.Media.mp3Audio" name="void deleteData(int)"/>
+  <method class="reger.Media.mp3Audio" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.mp3Audio" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.mp3Audio" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.mp3Audio" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.mp3Audio" name="java.lang.String getMimeType()"/>
+  <class name="reger.Media.GifImage"/>
+  <method class="reger.Media.GifImage" name="void deleteData(int)"/>
+  <method class="reger.Media.GifImage" name="void saveToDatabase(java.lang.String, int)"/>
+  <method class="reger.Media.GifImage" name="java.lang.String[] getAcceptableFileExtensions()"/>
+  <method class="reger.Media.GifImage" name="void createThumbnail(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.Media.GifImage" name="java.lang.String getMediaOutHtml(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Media.GifImage" name="java.lang.String getMimeType()"/>
+  <class name="reger.search.SearchResult"/>
+  <method class="reger.search.SearchResult" name="java.lang.String standardHtmlDisplay()"/>
+  <class name="reger.search.SearchEntries"/>
+  <field class="reger.search.SearchEntries" name="trackbackTotalNumberOfResults"/>
+  <field class="reger.search.SearchEntries" name="messagesSearchResults"/>
+  <field class="reger.search.SearchEntries" name="trackbackSearchResults"/>
+  <field class="reger.search.SearchEntries" name="entrySearchResults"/>
+  <field class="reger.search.SearchEntries" name="filesSearchResults"/>
+  <field class="reger.search.SearchEntries" name="messagesTotalNumberOfResults"/>
+  <field class="reger.search.SearchEntries" name="entryTotalNumberOfResults"/>
+  <field class="reger.search.SearchEntries" name="filesTotalNumberOfResults"/>
+  <method class="reger.search.SearchEntries" name="void setSearchTerms(java.lang.String)"/>
+  <method class="reger.search.SearchEntries" name="void setCurrentPage(int)"/>
+  <method class="reger.search.SearchEntries" name="void setLocationsToSearch(int[])"/>
+  <method class="reger.search.SearchEntries" name="void setCoreOfSearcher(reger.core)"/>
+  <method class="reger.search.SearchEntries" name="void setNumberOfResultsToReturn(int)"/>
+  <method class="reger.search.SearchEntries" name="void setAccountsToSearch(int[])"/>
+  <method class="reger.search.SearchEntries" name="void doSearch()"/>
+  <method class="reger.search.SearchEntries" name="void setLogsToSearch(int[])"/>
+  <class name="reger.RequestSaver"/>
+  <field class="reger.RequestSaver" name="nameValuePairs"/>
+  <method class="reger.RequestSaver" name="java.lang.String getAsQueryString()"/>
+  <class name="reger.TimePeriod"/>
+  <method class="reger.TimePeriod" name="int getTimeperiodid()"/>
+  <method class="reger.TimePeriod" name="java.lang.String getHtml(boolean, java.lang.String)"/>
+  <method class="reger.TimePeriod" name="java.util.Calendar getEndDateGMT()"/>
+  <method class="reger.TimePeriod" name="int getPrivate()"/>
+  <method class="reger.TimePeriod" name="java.lang.String getTitle()"/>
+  <method class="reger.TimePeriod" name="void populateEndTimeFromCal(java.util.Calendar)"/>
+  <method class="reger.TimePeriod" name="java.util.Calendar getStartDateGMT()"/>
+  <method class="reger.TimePeriod" name="java.lang.String getTimePeriodRowHtml(java.util.Calendar, java.util.Calendar, java.util.Calendar, java.lang.String, int, reger.core)"/>
+  <method class="reger.TimePeriod" name="java.lang.String getDescription()"/>
+  <method class="reger.TimePeriod" name="int getAccountid()"/>
+  <method class="reger.TimePeriod" name="void populateStartTimeFromCal(java.util.Calendar)"/>
+  <method class="reger.TimePeriod" name="java.lang.String save()"/>
+  <method class="reger.TimePeriod" name="void delete()"/>
+  <class name="reger.OffensiveContentList"/>
+  <method class="reger.OffensiveContentList" name="java.util.Vector getWordsForPl(int)"/>
+  <method class="reger.OffensiveContentList" name="java.util.Vector getWordsDefaults()"/>
+  <class name="reger.Accountuser"/>
+  <field class="reger.Accountuser" name="isLoggedIn"/>
+  <field class="reger.Accountuser" name="isactive"/>
+  <field class="reger.Accountuser" name="accounturl"/>
+  <field class="reger.Accountuser" name="accountuserid"/>
+  <field class="reger.Accountuser" name="accountid"/>
+  <method class="reger.Accountuser" name="void userLogout()"/>
+  <method class="reger.Accountuser" name="java.lang.String getVerifypassword()"/>
+  <method class="reger.Accountuser" name="boolean userCanAdministerLog(int)"/>
+  <method class="reger.Accountuser" name="java.lang.String getSiteRootUrl()"/>
+  <method class="reger.Accountuser" name="void setQuickpass(java.lang.String[])"/>
+  <method class="reger.Accountuser" name="void logaccessUpdateFromRequest(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Accountuser" name="java.lang.String LogsUserCanViewQueryend()"/>
+  <method class="reger.Accountuser" name="java.lang.String getUsertimezoneid()"/>
+  <method class="reger.Accountuser" name="java.lang.String getAccounturl()"/>
+  <method class="reger.Accountuser" name="java.lang.String getOnelinesummary()"/>
+  <method class="reger.Accountuser" name="void setAccountuserid(int)"/>
+  <method class="reger.Accountuser" name="void updateAccountuserfieldsFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.Accountuser" name="java.lang.String validateAccountuser()"/>
+  <method class="reger.Accountuser" name="java.lang.String[] getQuickpass()"/>
+  <method class="reger.Accountuser" name="java.lang.String changePassword(java.lang.String, reger.core)"/>
+  <method class="reger.Accountuser" name="void setPassphraseanswer(java.lang.String)"/>
+  <method class="reger.Accountuser" name="java.lang.String[] getAclperms()"/>
+  <method class="reger.Accountuser" name="void setIsactive(boolean)"/>
+  <method class="reger.Accountuser" name="boolean userCanViewLog(int)"/>
+  <method class="reger.Accountuser" name="void setLastlogindate(java.util.Calendar)"/>
+  <method class="reger.Accountuser" name="boolean getIsactive()"/>
+  <method class="reger.Accountuser" name="int getAccountid()"/>
+  <method class="reger.Accountuser" name="int getEntrymode()"/>
+  <method class="reger.Accountuser" name="int[] getLogaccess()"/>
+  <method class="reger.Accountuser" name="void setPassphrasequestion(java.lang.String)"/>
+  <method class="reger.Accountuser" name="void populate()"/>
+  <method class="reger.Accountuser" name="java.lang.String getFriendlyname()"/>
+  <method class="reger.Accountuser" name="int getAccountusertypeid()"/>
+  <method class="reger.Accountuser" name="void saveAccountuserfields(reger.core)"/>
+  <method class="reger.Accountuser" name="void setAclperms(java.lang.String[])"/>
+  <method class="reger.Accountuser" name="boolean userAuthenticate(int, java.lang.String, java.lang.String)"/>
+  <method class="reger.Accountuser" name="int getAccountuserid()"/>
+  <method class="reger.Accountuser" name="java.lang.String getPassword()"/>
+  <method class="reger.Accountuser" name="void setAccountuserfields(java.util.Vector)"/>
+  <method class="reger.Accountuser" name="void deleteAccountuser(reger.core)"/>
+  <method class="reger.Accountuser" name="void setEmail(java.lang.String)"/>
+  <method class="reger.Accountuser" name="java.lang.StringBuffer accountSettingsHtmlForm()"/>
+  <method class="reger.Accountuser" name="java.util.Vector getAccountuserfields()"/>
+  <method class="reger.Accountuser" name="java.lang.String LogsUserCanAdministerQueryend()"/>
+  <method class="reger.Accountuser" name="java.lang.String newAccountuser()"/>
+  <method class="reger.Accountuser" name="void setUsertimezoneid(java.lang.String)"/>
+  <method class="reger.Accountuser" name="java.lang.String getPassphrasequestion()"/>
+  <method class="reger.Accountuser" name="void setAdminlogaccess(int[])"/>
+  <method class="reger.Accountuser" name="java.util.Calendar getLastlogindate()"/>
+  <method class="reger.Accountuser" name="void setOnelinesummary(java.lang.String)"/>
+  <method class="reger.Accountuser" name="void setAccounturl(java.lang.String)"/>
+  <method class="reger.Accountuser" name="void deleteImage(int, reger.core)"/>
+  <method class="reger.Accountuser" name="void deleteFriend(int)"/>
+  <method class="reger.Accountuser" name="void setLogaccess(int[])"/>
+  <method class="reger.Accountuser" name="boolean userCanDoAcl(java.lang.String)"/>
+  <method class="reger.Accountuser" name="java.lang.StringBuffer htmlFormatSingleRelationship(int[])"/>
+  <method class="reger.Accountuser" name="void setAlllogsforaccountid(int[])"/>
+  <method class="reger.Accountuser" name="java.lang.String primaryImage(java.lang.String, boolean)"/>
+  <method class="reger.Accountuser" name="void setUsername(java.lang.String)"/>
+  <method class="reger.Accountuser" name="int[] getAdminlogaccess()"/>
+  <method class="reger.Accountuser" name="void setLoggedIn(boolean)"/>
+  <method class="reger.Accountuser" name="java.lang.StringBuffer primaryImageHtml(java.lang.String, boolean)"/>
+  <method class="reger.Accountuser" name="void toggleEntryMode()"/>
+  <method class="reger.Accountuser" name="java.lang.String getEmail()"/>
+  <method class="reger.Accountuser" name="java.lang.String getUsername()"/>
+  <method class="reger.Accountuser" name="java.lang.StringBuffer htmlAllRelationshipsToPerson(int)"/>
+  <method class="reger.Accountuser" name="java.lang.String saveSettings()"/>
+  <method class="reger.Accountuser" name="boolean userCanDoAcl(int)"/>
+  <method class="reger.Accountuser" name="void populateFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.Accountuser" name="boolean isFriend(int)"/>
+  <method class="reger.Accountuser" name="void setVerifypassword(java.lang.String)"/>
+  <method class="reger.Accountuser" name="java.util.Calendar getCreatedate()"/>
+  <method class="reger.Accountuser" name="void addFriend(int)"/>
+  <method class="reger.Accountuser" name="void setEntrymode(int)"/>
+  <method class="reger.Accountuser" name="int[] getAlllogsforaccountid()"/>
+  <method class="reger.Accountuser" name="void setAccountusertypeid(int)"/>
+  <method class="reger.Accountuser" name="void setPassword(java.lang.String)"/>
+  <method class="reger.Accountuser" name="void setAccountid(int)"/>
+  <method class="reger.Accountuser" name="boolean userAuthenticateEmailsecret(int, java.lang.String, java.lang.String)"/>
+  <method class="reger.Accountuser" name="boolean getIsLoggedIn()"/>
+  <method class="reger.Accountuser" name="void setFriendlyname(java.lang.String)"/>
+  <method class="reger.Accountuser" name="void permissionsUpdateFromRequest(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Accountuser" name="boolean quickLogLogin(java.lang.String)"/>
+  <method class="reger.Accountuser" name="java.lang.StringBuffer htmlShortestRelationshipToPerson(int)"/>
+  <method class="reger.Accountuser" name="java.lang.String getPassphraseanswer()"/>
+  <class name="reger.core"/>
+  <field class="reger.core" name="issignupenabled"/>
+  <field class="reger.core" name="istrackbackon"/>
+  <field class="reger.core" name="isValidPl"/>
+  <field class="reger.core" name="trackbackrequiresapproval"/>
+  <field class="reger.core" name="islistedindirectory"/>
+  <field class="reger.core" name="accountuser"/>
+  <field class="reger.core" name="isValidAccount"/>
+  <field class="reger.core" name="accountid"/>
+  <method class="reger.core" name="void setTemplatestatus(int)"/>
+  <method class="reger.core" name="void setTemplateentry(java.lang.String)"/>
+  <method class="reger.core" name="void setHometabtext(java.lang.String)"/>
+  <method class="reger.core" name="void setIstimeperiodon(boolean)"/>
+  <method class="reger.core" name="int getPlid()"/>
+  <method class="reger.core" name="boolean getIsActiveAccount()"/>
+  <method class="reger.core" name="int getShowlogintab()"/>
+  <method class="reger.core" name="java.lang.String getSiteRootUrl()"/>
+  <method class="reger.core" name="void setGps(int)"/>
+  <method class="reger.core" name="boolean getDoallpostsneedtobeapproved()"/>
+  <method class="reger.core" name="int getIssearchmysiteon()"/>
+  <method class="reger.core" name="java.lang.String getPlhostFromPlid(int)"/>
+  <method class="reger.core" name="java.lang.String getFavesitetitle()"/>
+  <method class="reger.core" name="java.lang.String getIncomingServername()"/>
+  <method class="reger.core" name="java.lang.String getAccounturl()"/>
+  <method class="reger.core" name="int getJspopup()"/>
+  <method class="reger.core" name="java.lang.String getHomepagehtml()"/>
+  <method class="reger.core" name="int getShowhometab()"/>
+  <method class="reger.core" name="int getImagespaceused()"/>
+  <method class="reger.core" name="int getHomepagecalendar()"/>
+  <method class="reger.core" name="java.lang.String getSectionsignup()"/>
+  <method class="reger.core" name="int getTemplatestatus()"/>
+  <method class="reger.core" name="boolean getIsValidPl()"/>
+  <method class="reger.core" name="boolean getIscreditcarduserupgradeon()"/>
+  <method class="reger.core" name="int getMessagesstatus()"/>
+  <method class="reger.core" name="int daysuntilexpiration()"/>
+  <method class="reger.core" name="void setIstrackbackon(boolean)"/>
+  <method class="reger.core" name="void setHomepagehtml(java.lang.String)"/>
+  <method class="reger.core" name="int getDefaultmaxmonthlyhits()"/>
+  <method class="reger.core" name="void toggleGpsMode()"/>
+  <method class="reger.core" name="java.lang.String getHometabtext()"/>
+  <method class="reger.core" name="java.lang.String getSectionhome()"/>
+  <method class="reger.core" name="int getAccountid()"/>
+  <method class="reger.core" name="java.lang.String getPlname()"/>
+  <method class="reger.core" name="int getDisplaycharsinsummary()"/>
+  <method class="reger.core" name="java.lang.String getHomepagetitle()"/>
+  <method class="reger.core" name="int getShowadsmarketing()"/>
+  <method class="reger.core" name="java.lang.String getPlbasedomain()"/>
+  <method class="reger.core" name="int getMessagesapproval()"/>
+  <method class="reger.core" name="java.lang.String getTimezoneid()"/>
+  <method class="reger.core" name="void updateTraffichitsused()"/>
+  <method class="reger.core" name="java.lang.String getTimezoneidFromAccountid(int)"/>
+  <method class="reger.core" name="int getGps()"/>
+  <method class="reger.core" name="boolean getIslistedindirectory()"/>
+  <method class="reger.core" name="boolean getUsedynamicdns()"/>
+  <method class="reger.core" name="boolean checkWebSite(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.core" name="void updateAfterPurchase(double, int, int)"/>
+  <method class="reger.core" name="int getEmailsendhour()"/>
+  <method class="reger.core" name="int getPingweblogscom()"/>
+  <method class="reger.core" name="java.lang.String getTemplatemainbody()"/>
+  <method class="reger.core" name="boolean getIsValidAccount()"/>
+  <method class="reger.core" name="void updateImagespaceused()"/>
+  <method class="reger.core" name="void setIssignupenabled(boolean)"/>
+  <method class="reger.core" name="java.lang.String getPlbasedomainFromPlid(int)"/>
+  <method class="reger.core" name="boolean getIstrackbackon()"/>
+  <method class="reger.core" name="int getTemplateid()"/>
+  <method class="reger.core" name="java.lang.String getTemplateentry()"/>
+  <method class="reger.core" name="boolean checkWebSite(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.core" name="void setIslistedindirectory(boolean)"/>
+  <method class="reger.core" name="void setHomepagetitle(java.lang.String)"/>
+  <method class="reger.core" name="void setAccounturl(java.lang.String)"/>
+  <method class="reger.core" name="void setIsValidAccount(boolean)"/>
+  <method class="reger.core" name="void updateTextspaceused()"/>
+  <method class="reger.core" name="java.lang.String getPlmarketingtemplate()"/>
+  <method class="reger.core" name="java.lang.String getSiteRootUrlViaAccountid(int)"/>
+  <method class="reger.core" name="int getFavesiteon()"/>
+  <method class="reger.core" name="java.lang.String getTitlebar()"/>
+  <method class="reger.core" name="boolean getIssignupenabled()"/>
+  <method class="reger.core" name="int getUserelatedlinks()"/>
+  <method class="reger.core" name="void updateSpaceused()"/>
+  <method class="reger.core" name="int getAccountidFromAccountUrlAndPlbasedomain(java.lang.String, java.lang.String)"/>
+  <method class="reger.core" name="boolean getTrackbackrequiresapproval()"/>
+  <method class="reger.core" name="java.lang.String getPlhost()"/>
+  <method class="reger.core" name="java.lang.String getHomelink()"/>
+  <method class="reger.core" name="int getMaxspace()"/>
+  <method class="reger.core" name="int getAccountidFromAccountUrlAndPlid(java.lang.String, int)"/>
+  <method class="reger.core" name="boolean istimeperiodon()"/>
+  <method class="reger.core" name="int getTraffichitsused()"/>
+  <method class="reger.core" name="int getOnthisday()"/>
+  <method class="reger.core" name="int getAccounttypeid()"/>
+  <method class="reger.core" name="boolean getIscontentflaggingon()"/>
+  <method class="reger.core" name="void setTemplatemainbody(java.lang.String)"/>
+  <method class="reger.core" name="void setFavesitetitle(java.lang.String)"/>
+  <method class="reger.core" name="int getAdmintools()"/>
+  <method class="reger.core" name="java.lang.String getSectiontour()"/>
+  <method class="reger.core" name="java.lang.String getCustomservername()"/>
+  <method class="reger.core" name="boolean getDoesflaggedcontentneedtobeapproved()"/>
+  <method class="reger.core" name="boolean userLoginEmailsecret(java.lang.String, java.lang.String)"/>
+  <method class="reger.core" name="int getDefaultmaxspaceinbytes()"/>
+  <method class="reger.core" name="int getMaxtraffichits()"/>
+  <method class="reger.core" name="java.util.Calendar getCreatedate()"/>
+  <method class="reger.core" name="void corePopulate()"/>
+  <method class="reger.core" name="boolean mobileCheckLogin(java.lang.String)"/>
+  <method class="reger.core" name="int getIslive()"/>
+  <method class="reger.core" name="int getDefaultaccounttypeidatsignup()"/>
+  <method class="reger.core" name="int getTextspaceused()"/>
+  <method class="reger.core" name="int getEmailnewsletter()"/>
+  <method class="reger.core" name="java.lang.String getSectionhelp()"/>
+  <method class="reger.core" name="boolean userLogin(java.lang.String, java.lang.String)"/>
+  <method class="reger.core" name="int getSpaceused()"/>
+  <method class="reger.core" name="int getDisplaynumberofentries()"/>
+  <method class="reger.core" name="java.lang.String getPlusertemplate()"/>
+  <method class="reger.core" name="boolean getIsNewPendingAdminApproval()"/>
+  <class name="reger.Entry"/>
+  <field class="reger.Entry" name="accountid"/>
+  <field class="reger.Entry" name="fields"/>
+  <field class="reger.Entry" name="isDraft"/>
+  <field class="reger.Entry" name="lonew"/>
+  <field class="reger.Entry" name="comments"/>
+  <field class="reger.Entry" name="requiresmoderatorapproval"/>
+  <field class="reger.Entry" name="gooddata"/>
+  <field class="reger.Entry" name="latdeg"/>
+  <field class="reger.Entry" name="ismoderatorapproved"/>
+  <field class="reger.Entry" name="lonsec"/>
+  <field class="reger.Entry" name="author"/>
+  <field class="reger.Entry" name="accountuserid"/>
+  <field class="reger.Entry" name="trackbackurl"/>
+  <field class="reger.Entry" name="eventtypeid"/>
+  <field class="reger.Entry" name="entryTimezoneid"/>
+  <field class="reger.Entry" name="mm"/>
+  <field class="reger.Entry" name="textWithSuggestionsAsDropdowns"/>
+  <field class="reger.Entry" name="dd"/>
+  <field class="reger.Entry" name="sqlOfLiveEntry"/>
+  <field class="reger.Entry" name="dospellcheck"/>
+  <field class="reger.Entry" name="lastmodifiedbyuserdate"/>
+  <field class="reger.Entry" name="locationid"/>
+  <field class="reger.Entry" name="lonmin"/>
+  <field class="reger.Entry" name="favorite"/>
+  <field class="reger.Entry" name="latsec"/>
+  <field class="reger.Entry" name="ampm"/>
+  <field class="reger.Entry" name="core"/>
+  <field class="reger.Entry" name="title"/>
+  <field class="reger.Entry" name="isApproved"/>
+  <field class="reger.Entry" name="latns"/>
+  <field class="reger.Entry" name="validateRequiredFields"/>
+  <field class="reger.Entry" name="isflaggedformoderator"/>
+  <field class="reger.Entry" name="newlocationname"/>
+  <field class="reger.Entry" name="logid"/>
+  <field class="reger.Entry" name="latmin"/>
+  <field class="reger.Entry" name="haveSpellingErrors"/>
+  <field class="reger.Entry" name="m"/>
+  <field class="reger.Entry" name="istemporary"/>
+  <field class="reger.Entry" name="errortext"/>
+  <field class="reger.Entry" name="londeg"/>
+  <field class="reger.Entry" name="h"/>
+  <field class="reger.Entry" name="yyyy"/>
+  <field class="reger.Entry" name="eventid"/>
+  <method class="reger.Entry" name="boolean newEntryTemporary()"/>
+  <method class="reger.Entry" name="java.util.Calendar getCalendar()"/>
+  <method class="reger.Entry" name="java.lang.String convertUsingEntrytimezoneid()"/>
+  <method class="reger.Entry" name="void deleteEntryAll()"/>
+  <method class="reger.Entry" name="boolean getEntryAll()"/>
+  <method class="reger.Entry" name="boolean getEntryAll(int)"/>
+  <method class="reger.Entry" name="java.lang.String getTimezoneIdFromAccountuserid(int)"/>
+  <method class="reger.Entry" name="boolean setDefaultMega()"/>
+  <method class="reger.Entry" name="void pingTrackback()"/>
+  <method class="reger.Entry" name="boolean clearFlaggedStatusByModerator()"/>
+  <method class="reger.Entry" name="boolean editEntryAll(int)"/>
+  <method class="reger.Entry" name="boolean declineEntryByModerator()"/>
+  <method class="reger.Entry" name="void populateThisEventTimeVarsFromCal(java.util.Calendar)"/>
+  <method class="reger.Entry" name="void populateGenericObjectFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.Entry" name="java.lang.String entryFileNameStatic(int, int, java.lang.String)"/>
+  <method class="reger.Entry" name="boolean getBlankEntryAll()"/>
+  <method class="reger.Entry" name="void moveEntryToLogId(int, int)"/>
+  <method class="reger.Entry" name="void populateMegafieldValuesFromRequest(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.Entry" name="java.lang.String entryFileNameStatic(int, java.lang.String)"/>
+  <method class="reger.Entry" name="boolean validateEntryAll()"/>
+  <method class="reger.Entry" name="void saveLocationGetLocationid(int)"/>
+  <method class="reger.Entry" name="boolean isSpellingError(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.Entry" name="boolean approveEntryByModerator()"/>
+  <method class="reger.Entry" name="java.lang.String setAuthorFromAccountuserid(int)"/>
+  <method class="reger.Entry" name="void populate(int, int, int, javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <method class="reger.Entry" name="boolean validateEntryMega()"/>
+  <class name="reger.templateValidator"/>
+  <method class="reger.templateValidator" name="java.lang.String validateEntry(java.lang.String)"/>
+  <method class="reger.templateValidator" name="java.lang.String validateBody(java.lang.String)"/>
+  <class name="reger.Vars"/>
+  <field class="reger.Vars" name="CHARTTYPESTEPCHART"/>
+  <field class="reger.Vars" name="INVITATIONSTATUSVIEWED"/>
+  <field class="reger.Vars" name="TEMPLATESTATUSPRIVATE"/>
+  <field class="reger.Vars" name="CUSTOMMATHSUBTRACT"/>
+  <field class="reger.Vars" name="TRAFFICTYPEIMAGE"/>
+  <field class="reger.Vars" name="DATERANGETHISMONTH"/>
+  <field class="reger.Vars" name="DATERANGETHISWEEK"/>
+  <field class="reger.Vars" name="TRAFFICTYPEADMINHOMEPAGE"/>
+  <field class="reger.Vars" name="TEMPLATESTATUSPUBLIC"/>
+  <field class="reger.Vars" name="ENTRYMODESIMPLE"/>
+  <field class="reger.Vars" name="CHARTTYPEBAR"/>
+  <field class="reger.Vars" name="CHARTTYPESTACKEDBARCHART3DHORIZONTAL"/>
+  <field class="reger.Vars" name="PROFILEGENERICIMAGE"/>
+  <field class="reger.Vars" name="CHARTTYPE3DPIE"/>
+  <field class="reger.Vars" name="EMAILDEFAULTFROM"/>
+  <field class="reger.Vars" name="ENTRYMODEADVANCED"/>
+  <field class="reger.Vars" name="LINEBREAK"/>
+  <field class="reger.Vars" name="TRAFFICTYPEPUBLICENTRYDETAIL"/>
+  <field class="reger.Vars" name="CHARTSIZEMASSIVE"/>
+  <field class="reger.Vars" name="HELPSECTIONLOGSPECIFIC"/>
+  <field class="reger.Vars" name="DEFAULTLOGNAME"/>
+  <field class="reger.Vars" name="YAXISWHATTODOAVG"/>
+  <field class="reger.Vars" name="CHARTSIZEMEDIUM"/>
+  <field class="reger.Vars" name="CUSTOMMATHADD"/>
+  <field class="reger.Vars" name="EMAILDEFAULTTO"/>
+  <field class="reger.Vars" name="INVITATIONSTATUSDECLINED"/>
+  <field class="reger.Vars" name="DATATYPENUMBER"/>
+  <field class="reger.Vars" name="CHARTTYPESCATTERPLOT"/>
+  <field class="reger.Vars" name="ERRORIMAGE"/>
+  <field class="reger.Vars" name="INVITATIONSTATUSOPEN"/>
+  <field class="reger.Vars" name="TRAFFICTYPEPUBLICHOMEPAGE"/>
+  <field class="reger.Vars" name="USERTYPEMASTERADMIN"/>
+  <field class="reger.Vars" name="TRAFFICTYPEJAVASCRIPTEMBEDDED"/>
+  <field class="reger.Vars" name="CHARTTYPEAREACHART"/>
+  <field class="reger.Vars" name="DATATYPEDATE"/>
+  <field class="reger.Vars" name="USERTYPEOWNER"/>
+  <field class="reger.Vars" name="DATERANGELASTXWEEKS"/>
+  <field class="reger.Vars" name="CHARTSIZEMINISCULE"/>
+  <field class="reger.Vars" name="CHARTTYPEPIE"/>
+  <field class="reger.Vars" name="DATERANGELASTXMONTHS"/>
+  <field class="reger.Vars" name="CALENDARTYPEEMPTYEVENTLINKS"/>
+  <field class="reger.Vars" name="DATERANGELASTMONTH"/>
+  <field class="reger.Vars" name="TRIALACCOUNTDAYS"/>
+  <field class="reger.Vars" name="CHARTTYPEHORIZONTALBAR"/>
+  <field class="reger.Vars" name="TRAFFICTYPERSSFEED"/>
+  <field class="reger.Vars" name="PLIDDEFAULT"/>
+  <field class="reger.Vars" name="LINEBREAKCHARFOREMAIL"/>
+  <field class="reger.Vars" name="ACCTYPEPRO"/>
+  <field class="reger.Vars" name="INVITATIONSTATUSACCEPTED"/>
+  <field class="reger.Vars" name="LOGACCESSPUBLIC"/>
+  <field class="reger.Vars" name="CARRIAGERETURN"/>
+  <field class="reger.Vars" name="CHARTTYPEHORIZONTAL3DBAR"/>
+  <field class="reger.Vars" name="ACCOUNTLIMITSPACE"/>
+  <field class="reger.Vars" name="CUSTOMMATHMULTIPLY"/>
+  <field class="reger.Vars" name="CUSTOMMATHDIVIDE"/>
+  <field class="reger.Vars" name="CHARTSIZESMALL"/>
+  <field class="reger.Vars" name="LOGACCESSPRIVATE"/>
+  <field class="reger.Vars" name="DATERANGELASTYEAR"/>
+  <field class="reger.Vars" name="DATERANGEALLTIME"/>
+  <field class="reger.Vars" name="CHARTTYPESTACKEDBARCHART3D"/>
+  <field class="reger.Vars" name="CUSTOMMATHNUMBER"/>
+  <field class="reger.Vars" name="HELPSECTIONPUBLICSITE"/>
+  <field class="reger.Vars" name="DATERANGELASTXDAYS"/>
+  <field class="reger.Vars" name="DATERANGESPECIFIED"/>
+  <field class="reger.Vars" name="LINEBREAKCHAR"/>
+  <field class="reger.Vars" name="THUMBNAILGENERIC"/>
+  <field class="reger.Vars" name="DATATYPEINTEGER"/>
+  <field class="reger.Vars" name="CHARTTYPESTACKEDAREA"/>
+  <field class="reger.Vars" name="PRICEPERMEGABYTE"/>
+  <field class="reger.Vars" name="DATERANGETHISYEAR"/>
+  <field class="reger.Vars" name="TRAFFICTYPEDONTRECORD"/>
+  <field class="reger.Vars" name="CHARTTYPESTACKEDBARCHART"/>
+  <field class="reger.Vars" name="debugLevel"/>
+  <field class="reger.Vars" name="YAXISWHATTODOSUM"/>
+  <field class="reger.Vars" name="CHARTTYPE3DBAR"/>
+  <field class="reger.Vars" name="TRAFFICTYPEPUBLICLOGSECTION"/>
+  <field class="reger.Vars" name="USERTYPEUSER"/>
+  <field class="reger.Vars" name="ACCOUNTLIMITMONTHLYTRAFFIC"/>
+  <field class="reger.Vars" name="CHARTTYPELINE"/>
+  <field class="reger.Vars" name="HELPSECTIONADMINSITE"/>
+  <field class="reger.Vars" name="TEMPLATEIDDEFAULT"/>
+  <field class="reger.Vars" name="TRAFFICTYPEADMINLOGSECTION"/>
+  <field class="reger.Vars" name="TIMEZONEIDDEFAULT"/>
+  <field class="reger.Vars" name="CHARTSIZELARGE"/>
+  <field class="reger.Vars" name="ACCTYPETRIAL"/>
+  <field class="reger.Vars" name="DATATYPEALPHANUMERIC"/>
+  <field class="reger.Vars" name="TRAFFICTYPEMOBILE"/>
+  <field class="reger.Vars" name="DEFAULTLOGEVENTTYPEID"/>
+  <field class="reger.Vars" name="DATERANGELASTWEEK"/>
+  <field class="reger.Vars" name="BASEACCOUNTPRICE"/>
+  <field class="reger.Vars" name="TRAFFICTYPEEMAILAPI"/>
+  <field class="reger.Vars" name="TRAFFICTYPEADMINMISC"/>
+  <field class="reger.Vars" name="CALENDARTYPEEMPTYEVENTFINDER"/>
+  <field class="reger.Vars" name="TRAFFICTYPEPUBLICMISC"/>
+  <field class="reger.Vars" name="HELPSECTIONSIGNUPSITE"/>
+  <field class="reger.Vars" name="ACCTYPEFREE"/>
+  <field class="reger.Vars" name="CHARTTYPESTACKEDBARCHARTHORIZONTAL"/>
+  <field class="reger.Vars" name="TEMPLATESTATUSDELETED"/>
+  <field class="reger.Vars" name="PRICEPERTHOUSANDHITS"/>
+  <field class="reger.Vars" name="DATERANGELASTXYEARS"/>
+  <field class="reger.Vars" name="TRAFFICTYPEMARKETINGSITEMISC"/>
+  <method class="reger.Vars" name="java.lang.Object getEnvVar(java.lang.String)"/>
+  <class name="reger.Tab"/>
+  <field class="reger.Tab" name="url"/>
+  <field class="reger.Tab" name="text"/>
+  <class name="reger.FriendList"/>
+  <method class="reger.FriendList" name="java.lang.StringBuffer getList(reger.core, java.lang.String, int)"/>
+  <class name="reger.OffensiveContentFlagger"/>
+  <method class="reger.OffensiveContentFlagger" name="boolean isOffensive(reger.Entry, int)"/>
+  <method class="reger.OffensiveContentFlagger" name="boolean isOffensive(reger.Entry)"/>
+  <method class="reger.OffensiveContentFlagger" name="boolean isOffensive(java.lang.String)"/>
+  <method class="reger.OffensiveContentFlagger" name="boolean isOffensive(java.lang.String, int)"/>
+  <class name="reger.entryNumericrange"/>
+  <method class="reger.entryNumericrange" name="java.lang.StringBuffer HTMLOut(int, int, int, java.lang.String, int, java.lang.String, java.lang.String, boolean)"/>
+  <class name="reger.CalendarHtmlPlugin"/>
+  <field class="reger.CalendarHtmlPlugin" name="cellHtml"/>
+  <method class="reger.CalendarHtmlPlugin" name="void getHtml(java.util.Calendar, java.util.Calendar, int, reger.core, boolean, java.lang.String)"/>
+  <class name="reger.MegaHtmlFormJscalendar"/>
+  <method class="reger.MegaHtmlFormJscalendar" name="java.lang.StringBuffer theScript(reger.pageProps)"/>
+  <method class="reger.MegaHtmlFormJscalendar" name="java.lang.StringBuffer scriptHtmlSetup(java.lang.String, java.lang.String)"/>
+  <class name="reger.MegaGetSingleEventData"/>
+  <field class="reger.MegaGetSingleEventData" name="fieldTypes"/>
+  <field class="reger.MegaGetSingleEventData" name="cleanData"/>
+  <class name="reger.ImageListHtml"/>
+  <method class="reger.ImageListHtml" name="java.lang.StringBuffer tableEnd()"/>
+  <method class="reger.ImageListHtml" name="java.lang.StringBuffer htmlOut(int, int, int, int, boolean, java.lang.String, int, int, javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.ImageListHtml" name="java.lang.StringBuffer tableStart()"/>
+  <class name="reger.executionTime"/>
+  <field class="reger.executionTime" name="starttime"/>
+  <method class="reger.executionTime" name="long getElapsedMillis()"/>
+  <method class="reger.executionTime" name="java.lang.String getElapsed()"/>
+  <class name="reger.Upload"/>
+  <field class="reger.Upload" name="isMultipart"/>
+  <field class="reger.Upload" name="hasenoughfreespace"/>
+  <field class="reger.Upload" name="requestParams"/>
+  <method class="reger.Upload" name="void save(int, int, int, reger.core)"/>
+  <method class="reger.Upload" name="void save(int, int, reger.core)"/>
+  <class name="reger.SideColumn"/>
+  <method class="reger.SideColumn" name="java.lang.StringBuffer sideColTableStart(java.lang.String)"/>
+  <method class="reger.SideColumn" name="java.lang.StringBuffer chartsngraphs(int, int, reger.core)"/>
+  <method class="reger.SideColumn" name="java.lang.StringBuffer favorites(int, java.lang.String)"/>
+  <method class="reger.SideColumn" name="java.lang.StringBuffer messages(int, java.lang.String)"/>
+  <method class="reger.SideColumn" name="java.lang.StringBuffer sideColTableEnd(java.lang.String)"/>
+  <method class="reger.SideColumn" name="java.lang.StringBuffer chartsngraphs(int, reger.core)"/>
+  <method class="reger.SideColumn" name="java.lang.StringBuffer sideColHeaderRow(java.lang.String)"/>
+  <method class="reger.SideColumn" name="java.lang.StringBuffer sideColContentRow(java.lang.String)"/>
+  <method class="reger.SideColumn" name="java.lang.StringBuffer logHtml(int, int)"/>
+  <class name="reger.uriVars"/>
+  <method class="reger.uriVars" name="java.lang.String getVar(java.lang.String, java.lang.String)"/>
+  <class name="reger.db"/>
+  <field class="reger.db" name="defaultRecordstoreturn"/>
+  <method class="reger.db" name="int RunSQLInsert(java.lang.String)"/>
+  <method class="reger.db" name="int RunSQLUpdate(java.lang.String)"/>
+  <method class="reger.db" name="java.lang.String[][] RunSQL(java.lang.String, int)"/>
+  <method class="reger.db" name="java.lang.String[][] RunSQL(java.lang.String)"/>
+  <method class="reger.db" name="java.sql.Connection getConnection()"/>
+  <class name="reger.ImageOrder"/>
+  <method class="reger.ImageOrder" name="void swapOrder(int, int)"/>
+  <method class="reger.ImageOrder" name="void moveImageidDown(int, int)"/>
+  <method class="reger.ImageOrder" name="int getOrderForNewImage(int)"/>
+  <method class="reger.ImageOrder" name="void moveImageidUp(int, int)"/>
+  <method class="reger.ImageOrder" name="void cleanOrderForEventid(int)"/>
+  <class name="reger.entryTextbox"/>
+  <method class="reger.entryTextbox" name="java.lang.StringBuffer HTMLOut(int, int, int, java.lang.String, int, java.lang.String, java.lang.String, boolean)"/>
+  <class name="reger.MegaHtmlFormBottom"/>
+  <method class="reger.MegaHtmlFormBottom" name="java.lang.StringBuffer getHtml(reger.core, reger.pageProps, boolean, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)"/>
+  <class name="reger.MegaHtmlFormImageEdits"/>
+  <method class="reger.MegaHtmlFormImageEdits" name="boolean saveEdits(reger.core, reger.pageProps, javax.servlet.http.HttpServletRequest)"/>
+  <class name="reger.HomePage15MostRecent"/>
+  <method class="reger.HomePage15MostRecent" name="java.lang.StringBuffer getHtml(reger.core, javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <class name="reger.logProps"/>
+  <field class="reger.logProps" name="megalogname"/>
+  <field class="reger.logProps" name="logid"/>
+  <field class="reger.logProps" name="eventtypeid"/>
+  <field class="reger.logProps" name="megalogtypeicon"/>
+  <field class="reger.logProps" name="showlocation"/>
+  <field class="reger.logProps" name="megalogaccess"/>
+  <method class="reger.logProps" name="void populateWithEventtypeidForPreview(int)"/>
+  <method class="reger.logProps" name="void populateEventidData(int, int)"/>
+  <method class="reger.logProps" name="void populate(int, javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.logProps" name="void populateLogidData(int, int)"/>
+  <class name="reger.entryTimefield"/>
+  <method class="reger.entryTimefield" name="java.lang.StringBuffer HTMLOut(int, int, int, java.lang.String, int, java.lang.String, java.lang.String, boolean)"/>
+  <class name="reger.OnThisDay"/>
+  <method class="reger.OnThisDay" name="java.lang.StringBuffer getHtml(int, java.lang.String, boolean)"/>
+  <class name="reger.HoursMinutesSeconds"/>
+  <method class="reger.HoursMinutesSeconds" name="int getHours()"/>
+  <method class="reger.HoursMinutesSeconds" name="int getbaseSeconds()"/>
+  <method class="reger.HoursMinutesSeconds" name="int getSeconds()"/>
+  <method class="reger.HoursMinutesSeconds" name="int getMinutes()"/>
+  <class name="reger.qTime"/>
+  <method class="reger.qTime" name="java.util.Calendar SubtractOneMonth(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.util.Calendar dbstringtocalendar(java.lang.String)"/>
+  <method class="reger.qTime" name="java.lang.String dateformatcompact(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.util.Calendar nowInGmtCalendar()"/>
+  <method class="reger.qTime" name="java.lang.String monthname(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.lang.String dayname(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.lang.String dateformatdateSlashes(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.util.Calendar xYearsAgoStart(java.util.Calendar, int)"/>
+  <method class="reger.qTime" name="java.util.Calendar convertFromOneTimeZoneToAnother(java.util.Calendar, java.lang.String, java.lang.String)"/>
+  <method class="reger.qTime" name="java.util.Calendar maxTime(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.util.Calendar xMonthsAgoStart(java.util.Calendar, int)"/>
+  <method class="reger.qTime" name="java.lang.String agoTextSuffix(int)"/>
+  <method class="reger.qTime" name="java.lang.String agoTextEnd(int, java.lang.String)"/>
+  <method class="reger.qTime" name="java.lang.String dateformatUtc(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.lang.String dateformatfordb(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.lang.String dateformattime(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.util.Calendar xMonthsAgoEnd(java.util.Calendar, int)"/>
+  <method class="reger.qTime" name="java.util.Calendar xDaysAgoStart(java.util.Calendar, int)"/>
+  <method class="reger.qTime" name="java.util.Calendar xWeeksAgoStart(java.util.Calendar, int)"/>
+  <method class="reger.qTime" name="boolean isInTimeAgoPeriod(int, java.util.Calendar, java.lang.String)"/>
+  <method class="reger.qTime" name="java.util.Calendar xDaysAgoEnd(java.util.Calendar, int)"/>
+  <method class="reger.qTime" name="java.lang.String agoGraphicText(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.lang.String dateformatdate(java.util.Calendar)"/>
+  <method class="reger.qTime" name="int GetWeekdayMonthStartsOn(int, int)"/>
+  <method class="reger.qTime" name="java.util.Calendar gmttousertime(java.lang.String, java.lang.String)"/>
+  <method class="reger.qTime" name="java.util.Calendar AddOneMonth(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.lang.String dateformatcompactwithtime(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.lang.String agoTextEss(int)"/>
+  <method class="reger.qTime" name="java.util.Calendar usertogmttime(java.util.Calendar, java.lang.String)"/>
+  <method class="reger.qTime" name="java.util.Calendar gmttousertime(java.util.Calendar, java.lang.String)"/>
+  <method class="reger.qTime" name="java.util.Calendar xWeeksAgoEnd(java.util.Calendar, int)"/>
+  <method class="reger.qTime" name="java.lang.String dateformatdateMmddyyyy(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.util.Calendar xYearsAgoEnd(java.util.Calendar, int)"/>
+  <method class="reger.qTime" name="int GetDaysInMonth(int, int)"/>
+  <method class="reger.qTime" name="java.lang.String agoText(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.lang.String dateformatfilestamp(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.util.Calendar formtocalendar(int, int, int, int, int, int, java.lang.String)"/>
+  <method class="reger.qTime" name="java.lang.String nowInGmtString()"/>
+  <method class="reger.qTime" name="java.util.Calendar nowInUserTimezone(java.lang.String)"/>
+  <method class="reger.qTime" name="java.util.Calendar minTime(java.util.Calendar)"/>
+  <method class="reger.qTime" name="java.util.Calendar formtocalendar(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"/>
+  <class name="reger.entryOption"/>
+  <method class="reger.entryOption" name="java.lang.StringBuffer HTMLOut(int, int, int, java.lang.String, int, java.lang.String, int, java.lang.String, boolean, java.lang.String, java.lang.String)"/>
+  <class name="reger.tRexAdminNavBarButton"/>
+  <field class="reger.tRexAdminNavBarButton" name="adminsection"/>
+  <field class="reger.tRexAdminNavBarButton" name="url"/>
+  <field class="reger.tRexAdminNavBarButton" name="buttontext"/>
+  <class name="reger.MessageListHtml"/>
+  <method class="reger.MessageListHtml" name="java.lang.StringBuffer tableEnd()"/>
+  <method class="reger.MessageListHtml" name="java.lang.StringBuffer htmlOut(int, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, int, javax.servlet.http.HttpServletRequest, boolean, javax.servlet.http.HttpServletResponse)"/>
+  <method class="reger.MessageListHtml" name="java.lang.StringBuffer saveMessage(java.lang.String, java.lang.String, int, int, java.lang.String, java.lang.String, java.lang.String, boolean, reger.core)"/>
+  <method class="reger.MessageListHtml" name="void emailNotifications(reger.core, int)"/>
+  <method class="reger.MessageListHtml" name="java.lang.StringBuffer tableStart()"/>
+  <class name="reger.Accountuserfield"/>
+  <field class="reger.Accountuserfield" name="order"/>
+  <field class="reger.Accountuserfield" name="fieldtitle"/>
+  <field class="reger.Accountuserfield" name="fielddata"/>
+  <field class="reger.Accountuserfield" name="accountuserid"/>
+  <field class="reger.Accountuserfield" name="accountuserfieldid"/>
+  <method class="reger.Accountuserfield" name="void deleteThisField(reger.core)"/>
+  <method class="reger.Accountuserfield" name="boolean saveFieldToDatabase(int)"/>
+  <class name="reger.FriendMessage"/>
+  <field class="reger.FriendMessage" name="havevalidmessage"/>
+  <field class="reger.FriendMessage" name="subject"/>
+  <field class="reger.FriendMessage" name="message"/>
+  <field class="reger.FriendMessage" name="friendmessageid"/>
+  <field class="reger.FriendMessage" name="accountuserid"/>
+  <field class="reger.FriendMessage" name="datetime"/>
+  <method class="reger.FriendMessage" name="java.lang.String newMessage(int, int[], java.lang.String, java.lang.String)"/>
+  <class name="reger.HomePage15MostReadLast7Days"/>
+  <method class="reger.HomePage15MostReadLast7Days" name="java.lang.StringBuffer getHtml(reger.core, javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <class name="reger.HomePage15RandomImagesVertical"/>
+  <method class="reger.HomePage15RandomImagesVertical" name="java.lang.StringBuffer getHtml(reger.core, javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <class name="reger.MegaHtmlFormTop"/>
+  <method class="reger.MegaHtmlFormTop" name="java.lang.StringBuffer getHtml(reger.core, reger.pageProps, boolean, javax.servlet.http.HttpServletRequest)"/>
+  <class name="reger.ResizeImage"/>
+  <method class="reger.ResizeImage" name="boolean resize(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.ResizeImage" name="int getHeightForFixedWidth(int, int, int)"/>
+  <class name="reger.HomePage15FavoriteEntries"/>
+  <method class="reger.HomePage15FavoriteEntries" name="java.lang.StringBuffer getHtml(reger.core, javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <class name="reger.tRexMasterAdminPageEngine"/>
+  <method class="reger.tRexMasterAdminPageEngine" name="java.lang.StringBuffer pageout(java.lang.StringBuffer, java.lang.StringBuffer, reger.core, reger.pageProps)"/>
+  <class name="reger.pagingLinkPrint"/>
+  <method class="reger.pagingLinkPrint" name="java.lang.StringBuffer getHtml(int, int, int, javax.servlet.http.HttpServletRequest)"/>
+  <class name="reger.Banner"/>
+  <method class="reger.Banner" name="java.lang.String getBannerHtml(java.lang.String)"/>
+  <method class="reger.Banner" name="java.lang.String getVerticalGoogleBanner()"/>
+  <class name="reger.FindInterfaceImplementationsLauncher"/>
+  <method class="reger.FindInterfaceImplementationsLauncher" name="void find(java.lang.String)"/>
+  <class name="reger.CalendarDayPlugin"/>
+  <field class="reger.CalendarDayPlugin" name="cellHtml"/>
+  <method class="reger.CalendarDayPlugin" name="void getHtml(java.util.Calendar, java.util.Calendar, int, reger.core, boolean, java.lang.String)"/>
+  <class name="reger.MegaHtmlFormEditor"/>
+  <method class="reger.MegaHtmlFormEditor" name="java.lang.StringBuffer getHtml(reger.core, reger.pageProps, boolean)"/>
+  <class name="reger.tRexHelpPopupEngine"/>
+  <method class="reger.tRexHelpPopupEngine" name="java.lang.StringBuffer pageout(java.lang.StringBuffer, java.lang.StringBuffer, reger.core, reger.pageProps)"/>
+  <class name="reger.HomePage"/>
+  <method class="reger.HomePage" name="java.lang.StringBuffer getHtml(boolean, reger.core, javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <method class="reger.HomePage" name="void homepageconfigAdd(int, int, int)"/>
+  <method class="reger.HomePage" name="void homepageconfigidDelete(int, int)"/>
+  <class name="reger.Help"/>
+  <method class="reger.Help" name="java.lang.String spellTip(java.lang.String, java.lang.String, boolean, java.lang.String)"/>
+  <method class="reger.Help" name="java.lang.StringBuffer htmlTipLink(java.lang.String, java.lang.String, boolean)"/>
+  <method class="reger.Help" name="java.lang.StringBuffer htmlLinkPopup(java.lang.String, java.lang.String)"/>
+  <method class="reger.Help" name="java.lang.String tip(java.lang.String, java.lang.String, boolean, java.lang.String)"/>
+  <class name="reger.EmailSend"/>
+  <method class="reger.EmailSend" name="void sendMail(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.EmailSend" name="void sendMail(java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean)"/>
+  <class name="reger.FieldOrder"/>
+  <method class="reger.FieldOrder" name="void moveFieldDown(int, int)"/>
+  <method class="reger.FieldOrder" name="int getFieldorderForNewField(int)"/>
+  <method class="reger.FieldOrder" name="void swapFieldOrder(int, int)"/>
+  <method class="reger.FieldOrder" name="void cleanFieldorderForEventtype(int)"/>
+  <method class="reger.FieldOrder" name="void moveFieldUp(int, int)"/>
+  <class name="reger.VeriSign"/>
+  <field class="reger.VeriSign" name="submitString"/>
+  <field class="reger.VeriSign" name="ProxyAddress"/>
+  <field class="reger.VeriSign" name="HostPort"/>
+  <field class="reger.VeriSign" name="profilename"/>
+  <field class="reger.VeriSign" name="tender"/>
+  <field class="reger.VeriSign" name="expdate"/>
+  <field class="reger.VeriSign" name="start"/>
+  <field class="reger.VeriSign" name="amt"/>
+  <field class="reger.VeriSign" name="acct"/>
+  <field class="reger.VeriSign" name="profileid"/>
+  <field class="reger.VeriSign" name="street"/>
+  <field class="reger.VeriSign" name="HostAddress"/>
+  <field class="reger.VeriSign" name="term"/>
+  <field class="reger.VeriSign" name="accountid"/>
+  <field class="reger.VeriSign" name="action"/>
+  <field class="reger.VeriSign" name="trxtype"/>
+  <field class="reger.VeriSign" name="payperiod"/>
+  <field class="reger.VeriSign" name="ProxyPort"/>
+  <field class="reger.VeriSign" name="zip"/>
+  <field class="reger.VeriSign" name="ProxyPassword"/>
+  <field class="reger.VeriSign" name="ProxyLogon"/>
+  <field class="reger.VeriSign" name="Timeout"/>
+  <method class="reger.VeriSign" name="java.util.Hashtable transaction()"/>
+  <method class="reger.VeriSign" name="java.util.Hashtable parseNVpairs(java.lang.String)"/>
+  <method class="reger.VeriSign" name="java.lang.String upgradeAccount(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.VeriSign" name="java.util.Hashtable queryAccount()"/>
+  <method class="reger.VeriSign" name="double calculatePrice(int, int)"/>
+  <method class="reger.VeriSign" name="void buildSubmitString()"/>
+  <method class="reger.VeriSign" name="java.util.Hashtable cancelAccount()"/>
+  <class name="reger.Tabs"/>
+  <field class="reger.Tabs" name="thispagename"/>
+  <method class="reger.Tabs" name="void addTab(reger.Tab)"/>
+  <method class="reger.Tabs" name="java.lang.StringBuffer getHtml()"/>
+  <class name="reger.TrafficNumericSummary"/>
+  <method class="reger.TrafficNumericSummary" name="int countHome(int, int, int, int, java.lang.String)"/>
+  <method class="reger.TrafficNumericSummary" name="int countAll(int, int, int, int, java.lang.String)"/>
+  <method class="reger.TrafficNumericSummary" name="int countMessages(int)"/>
+  <method class="reger.TrafficNumericSummary" name="java.lang.String getTimeAgo(int, java.lang.String)"/>
+  <method class="reger.TrafficNumericSummary" name="int countEntries(int, int, int, int, java.lang.String)"/>
+  <class name="reger.MegaHtmlFormWysiwyg"/>
+  <method class="reger.MegaHtmlFormWysiwyg" name="java.lang.StringBuffer theScript(reger.pageProps)"/>
+  <method class="reger.MegaHtmlFormWysiwyg" name="java.lang.StringBuffer getHtml(reger.core, reger.pageProps, boolean)"/>
+  <class name="reger.dbNoErrorsave"/>
+  <field class="reger.dbNoErrorsave" name="defaultRecordstoreturn"/>
+  <method class="reger.dbNoErrorsave" name="int RunSQLInsert(java.lang.String)"/>
+  <method class="reger.dbNoErrorsave" name="int RunSQLUpdate(java.lang.String)"/>
+  <method class="reger.dbNoErrorsave" name="java.lang.String[][] RunSQL(java.lang.String, int)"/>
+  <method class="reger.dbNoErrorsave" name="java.lang.String[][] RunSQL(java.lang.String)"/>
+  <class name="reger.tRexEntryEngine"/>
+  <method class="reger.tRexEntryEngine" name="java.lang.StringBuffer entryout(java.lang.String, java.util.Calendar, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, int, int)"/>
+  <method class="reger.tRexEntryEngine" name="java.lang.StringBuffer entryout(java.lang.String, java.util.Calendar, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, int)"/>
+  <class name="reger.TimeLine"/>
+  <method class="reger.TimeLine" name="java.lang.String getTimelineHtml(java.lang.String, int)"/>
+  <class name="reger.UrlSplitter"/>
+  <method class="reger.UrlSplitter" name="java.lang.String getVirtualdir()"/>
+  <method class="reger.UrlSplitter" name="java.lang.String getAccounturl()"/>
+  <method class="reger.UrlSplitter" name="java.lang.String getServername()"/>
+  <method class="reger.UrlSplitter" name="java.lang.String getPlhost()"/>
+  <method class="reger.UrlSplitter" name="int getPort()"/>
+  <method class="reger.UrlSplitter" name="java.lang.String getPlbasedomain()"/>
+  <class name="reger.TrackbackAdmin"/>
+  <method class="reger.TrackbackAdmin" name="java.lang.StringBuffer htmlOut(reger.core, int, javax.servlet.http.HttpServletRequest, boolean, java.lang.String, java.lang.String)"/>
+  <class name="reger.HomePageOnThisDay"/>
+  <method class="reger.HomePageOnThisDay" name="java.lang.StringBuffer getHtml(reger.core, javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <class name="reger.HomePageObject"/>
+  <method class="reger.HomePageObject" name="java.lang.StringBuffer getHtml(reger.core, javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <class name="reger.Friend"/>
+  <field class="reger.Friend" name="maxFriendidAtLastUpdate"/>
+  <field class="reger.Friend" name="friends"/>
+  <field class="reger.Friend" name="countFriendsAtLastUpdate"/>
+  <field class="reger.Friend" name="lastPopulatedDate"/>
+  <field class="reger.Friend" name="hasBeenPopulatedFromDB"/>
+  <field class="reger.Friend" name="isLocked"/>
+  <method class="reger.Friend" name="void debugWriteFriendsToDb()"/>
+  <method class="reger.Friend" name="void dataload(int)"/>
+  <method class="reger.Friend" name="java.util.HashMap getFriends()"/>
+  <method class="reger.Friend" name="int[] getFriends(int)"/>
+  <method class="reger.Friend" name="int[] getShortestRelationship(int, int)"/>
+  <method class="reger.Friend" name="void refreshFriendsFromDb()"/>
+  <method class="reger.Friend" name="int[][] getAllRelationships(int, int)"/>
+  <class name="reger.debugInfo"/>
+  <method class="reger.debugInfo" name="java.lang.StringBuffer requestVars(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.debugInfo" name="java.lang.StringBuffer pagePropsOut(reger.pageProps)"/>
+  <method class="reger.debugInfo" name="java.lang.StringBuffer monsterDebug(javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <method class="reger.debugInfo" name="java.lang.StringBuffer exececutionTimeOutput(long)"/>
+  <method class="reger.debugInfo" name="java.lang.StringBuffer examineClass(java.lang.Object)"/>
+  <class name="reger.CalendarPluginVars"/>
+  <field class="reger.CalendarPluginVars" name="comparator"/>
+  <field class="reger.CalendarPluginVars" name="numberOfEntries"/>
+  <field class="reger.CalendarPluginVars" name="mathopmegafieldid"/>
+  <field class="reger.CalendarPluginVars" name="calTypeEntriesOnDate"/>
+  <field class="reger.CalendarPluginVars" name="calTypeFieldEquals"/>
+  <field class="reger.CalendarPluginVars" name="fieldequals"/>
+  <field class="reger.CalendarPluginVars" name="mathOperation"/>
+  <field class="reger.CalendarPluginVars" name="calType"/>
+  <field class="reger.CalendarPluginVars" name="mathOperationSum"/>
+  <field class="reger.CalendarPluginVars" name="mathOperationAvg"/>
+  <field class="reger.CalendarPluginVars" name="mathopvalue"/>
+  <field class="reger.CalendarPluginVars" name="greaterThan"/>
+  <field class="reger.CalendarPluginVars" name="mathOperationMax"/>
+  <field class="reger.CalendarPluginVars" name="calTypeFieldMath"/>
+  <field class="reger.CalendarPluginVars" name="lessThan"/>
+  <field class="reger.CalendarPluginVars" name="fieldequalsmegafieldid"/>
+  <field class="reger.CalendarPluginVars" name="mathOperationMin"/>
+  <class name="reger.formControl"/>
+  <method class="reger.formControl" name="java.lang.StringBuffer radioList(java.util.TreeMap, java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.formControl" name="java.lang.StringBuffer dropdownWithAddnewInput(java.lang.String, java.lang.String, java.util.TreeMap, java.lang.String, int, int)"/>
+  <method class="reger.formControl" name="java.lang.StringBuffer dropdownFixedNumberRange(int, int, int, java.util.TreeMap, java.lang.String, java.lang.String)"/>
+  <method class="reger.formControl" name="java.lang.StringBuffer simpleSelect(java.util.TreeMap, java.lang.String, java.lang.String)"/>
+  <method class="reger.formControl" name="java.util.TreeMap processFromDb(java.lang.String, java.lang.String, java.util.TreeMap)"/>
+  <method class="reger.formControl" name="java.util.TreeMap turnoffallselected(java.util.TreeMap)"/>
+  <class name="reger.HomePageListOfEntries"/>
+  <method class="reger.HomePageListOfEntries" name="java.lang.StringBuffer getHtml(reger.core, javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <class name="reger.RelatedLinks"/>
+  <field class="reger.RelatedLinks" name="relatedTitles"/>
+  <field class="reger.RelatedLinks" name="relatedEventid"/>
+  <field class="reger.RelatedLinks" name="relatedRank"/>
+  <class name="reger.pageProps"/>
+  <field class="reger.pageProps" name="MASTERADMINSITE"/>
+  <field class="reger.pageProps" name="entry"/>
+  <field class="reger.pageProps" name="PUBLICSITE"/>
+  <field class="reger.pageProps" name="onunloadJavascriptMethod"/>
+  <field class="reger.pageProps" name="isEventidRequired"/>
+  <field class="reger.pageProps" name="MARKETINGSITE"/>
+  <field class="reger.pageProps" name="templatePreviewId"/>
+  <field class="reger.pageProps" name="PLADMINSITE"/>
+  <field class="reger.pageProps" name="hd"/>
+  <field class="reger.pageProps" name="aclObjectName"/>
+  <field class="reger.pageProps" name="logProps"/>
+  <field class="reger.pageProps" name="nb"/>
+  <field class="reger.pageProps" name="adminSection"/>
+  <field class="reger.pageProps" name="onloadJavascriptMethod"/>
+  <field class="reger.pageProps" name="ADMINSITE"/>
+  <field class="reger.pageProps" name="siteSection"/>
+  <field class="reger.pageProps" name="masterAdminSection"/>
+  <field class="reger.pageProps" name="isPreview"/>
+  <field class="reger.pageProps" name="API"/>
+  <field class="reger.pageProps" name="MOBILE"/>
+  <field class="reger.pageProps" name="isCurrentRequestSSL"/>
+  <field class="reger.pageProps" name="trafficType"/>
+  <field class="reger.pageProps" name="action"/>
+  <field class="reger.pageProps" name="isLogidRequired"/>
+  <field class="reger.pageProps" name="pathToAppRoot"/>
+  <field class="reger.pageProps" name="isPasswordProtected"/>
+  <field class="reger.pageProps" name="plAdminSection"/>
+  <field class="reger.pageProps" name="HELPPOPUP"/>
+  <field class="reger.pageProps" name="title"/>
+  <method class="reger.pageProps" name="boolean isRequestSSL(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.pageProps" name="void populate(javax.servlet.http.HttpServletRequest, reger.core)"/>
+  <class name="reger.HomePage15MostRecentImagesVertical"/>
+  <method class="reger.HomePage15MostRecentImagesVertical" name="java.lang.StringBuffer getHtml(reger.core, javax.servlet.http.HttpServletRequest, reger.pageProps)"/>
+  <class name="reger.InboxHtml"/>
+  <method class="reger.InboxHtml" name="java.lang.StringBuffer getInboxListing(boolean, int, reger.pageProps, reger.core, javax.servlet.http.HttpServletRequest)"/>
+  <class name="reger.tRexPageEngine"/>
+  <method class="reger.tRexPageEngine" name="java.lang.StringBuffer pageout(java.lang.StringBuffer, java.lang.StringBuffer, reger.core, reger.pageProps)"/>
+  <method class="reger.tRexPageEngine" name="java.lang.StringBuffer wrapInPlUserTemplate(java.lang.StringBuffer, java.lang.String, reger.pageProps, reger.core)"/>
+  <class name="reger.tRexAdminPageEngine"/>
+  <method class="reger.tRexAdminPageEngine" name="java.lang.StringBuffer pageout(java.lang.StringBuffer, java.lang.StringBuffer, reger.core, reger.pageProps)"/>
+  <method class="reger.tRexAdminPageEngine" name="java.lang.StringBuffer topNavbar(java.util.Vector, java.lang.String, java.lang.String)"/>
+  <class name="reger.navbarMarketing"/>
+  <method class="reger.navbarMarketing" name="java.lang.StringBuffer htmlOut(java.lang.String)"/>
+  <class name="reger.util"/>
+  <method class="reger.util" name="void logtodbCleanForSQLWithSlashes(java.lang.String)"/>
+  <method class="reger.util" name="void errorsave(java.lang.Throwable, int, java.lang.String, javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.util" name="java.lang.StringBuffer screenshotWithThumbnail(java.lang.String)"/>
+  <method class="reger.util" name="boolean isTime(int, int, int)"/>
+  <method class="reger.util" name="java.lang.StringBuffer leaveEntryPageJavascript()"/>
+  <method class="reger.util" name="java.lang.StringBuffer popup()"/>
+  <method class="reger.util" name="java.lang.StringBuffer pageFooter(java.lang.String)"/>
+  <method class="reger.util" name="boolean isDate(int, int, int)"/>
+  <method class="reger.util" name="java.lang.String getDayOfWeekAbbreviated(int)"/>
+  <method class="reger.util" name="java.lang.StringBuffer poweredby(java.lang.String)"/>
+  <method class="reger.util" name="boolean isLogidValidForAccountid(int, int)"/>
+  <method class="reger.util" name="int imageCount(int)"/>
+  <method class="reger.util" name="boolean isDate(java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.util" name="void errorsave(java.lang.Throwable, int)"/>
+  <method class="reger.util" name="java.lang.String validateServername(java.lang.String, int, int)"/>
+  <method class="reger.util" name="java.lang.String cleanForjavascript(java.lang.String)"/>
+  <method class="reger.util" name="boolean checkAccountOwnerPassword(int, java.lang.String)"/>
+  <method class="reger.util" name="java.lang.String xmlclean(java.lang.String)"/>
+  <method class="reger.util" name="reger.search.SearchResult[] addToSearchResultArray(reger.search.SearchResult[], reger.search.SearchResult)"/>
+  <method class="reger.util" name="java.lang.String xmlFieldNameClean(java.lang.String)"/>
+  <method class="reger.util" name="int[] contractIntArray(int[], int)"/>
+  <method class="reger.util" name="boolean isTime(java.lang.String, java.lang.String, java.lang.String)"/>
+  <method class="reger.util" name="int messageCount(int)"/>
+  <method class="reger.util" name="boolean isinteger(java.lang.String)"/>
+  <method class="reger.util" name="int getCurrentPage(java.lang.String)"/>
+  <method class="reger.util" name="java.lang.String logNameFromLogid(int)"/>
+  <method class="reger.util" name="int[] addToIntArray(int[], int)"/>
+  <method class="reger.util" name="java.lang.StringBuffer textFileRead(java.lang.String)"/>
+  <method class="reger.util" name="java.lang.String getParameterClean(java.lang.String)"/>
+  <method class="reger.util" name="void deleteFile(java.lang.String)"/>
+  <method class="reger.util" name="boolean copyFile(java.lang.String, java.lang.String)"/>
+  <method class="reger.util" name="java.lang.String validateServername(java.lang.String, int)"/>
+  <method class="reger.util" name="void logRequestObjectToDb(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.util" name="reger.mega.FieldType[] addToFieldTypeArray(reger.mega.FieldType[], reger.mega.FieldType)"/>
+  <method class="reger.util" name="int[][] combineTwoDoubleIntArrays(int[][], int[][])"/>
+  <method class="reger.util" name="java.lang.String cleanForHtmlAdvanced(java.lang.String)"/>
+  <method class="reger.util" name="java.lang.String getCookieValue(javax.servlet.http.Cookie[], java.lang.String, java.lang.String)"/>
+  <method class="reger.util" name="boolean isSupercookieOn(javax.servlet.http.HttpServletRequest, int)"/>
+  <method class="reger.util" name="java.lang.String[][] cleanArray(java.lang.String[][])"/>
+  <method class="reger.util" name="int getEventtypeidLogid(int, int)"/>
+  <method class="reger.util" name="long qAbs(long)"/>
+  <method class="reger.util" name="java.lang.String getFilenameBase(java.lang.String)"/>
+  <method class="reger.util" name="int getLogidFromImageid(int, int)"/>
+  <method class="reger.util" name="java.lang.String validatePassword(java.lang.String, java.lang.String)"/>
+  <method class="reger.util" name="int sizeInBytes(java.lang.String)"/>
+  <method class="reger.util" name="java.util.TreeMap requestToTreeMap(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.util" name="int getLogidFromEventid(int, int)"/>
+  <method class="reger.util" name="void errorsave(java.lang.Throwable, java.lang.String, javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.util" name="void errorsave(java.lang.Throwable, int, java.lang.String)"/>
+  <method class="reger.util" name="byte[] addByteToByteArray(byte[], byte)"/>
+  <method class="reger.util" name="int randomInt(int)"/>
+  <method class="reger.util" name="void logtodb(java.lang.String)"/>
+  <method class="reger.util" name="java.lang.String[] addToStringArray(java.lang.String[], java.lang.String)"/>
+  <method class="reger.util" name="void logTreeMapToDb(java.lang.String, java.util.TreeMap)"/>
+  <method class="reger.util" name="java.lang.String cleanForSQL(java.lang.String)"/>
+  <method class="reger.util" name="java.lang.StringBuffer infobox(java.lang.String, java.lang.String)"/>
+  <method class="reger.util" name="boolean intIsInArray(int[], int)"/>
+  <method class="reger.util" name="java.lang.String stripHttpHttpsAndTrailingSlashFromUrl(java.lang.String)"/>
+  <method class="reger.util" name="void logStringArrayToDb(java.lang.String, java.lang.String[])"/>
+  <method class="reger.util" name="void logDoubleIntArrayToDb(java.lang.String, int[][])"/>
+  <method class="reger.util" name="void debug(int, java.lang.Throwable)"/>
+  <method class="reger.util" name="int usedSpace(int)"/>
+  <method class="reger.util" name="java.lang.String[][] contractArray(java.lang.String[][], int)"/>
+  <method class="reger.util" name="int getImageIndicatorWidth(int, int, int)"/>
+  <method class="reger.util" name="java.lang.String cleanForSQLWithSlashes(java.lang.String)"/>
+  <method class="reger.util" name="int[][] extendArray(int[][], int)"/>
+  <method class="reger.util" name="void errorsave(java.lang.Throwable)"/>
+  <method class="reger.util" name="boolean dbToBoolean(java.lang.String)"/>
+  <method class="reger.util" name="java.lang.String getJspName(java.lang.String)"/>
+  <method class="reger.util" name="int freeSpace(int)"/>
+  <method class="reger.util" name="java.lang.String cleanForAppendreplacement(java.lang.String)"/>
+  <method class="reger.util" name="int bugcategoryidForUserComments()"/>
+  <method class="reger.util" name="byte[] extendByteArray(byte[])"/>
+  <method class="reger.util" name="int getAccountidFromEventid(int)"/>
+  <method class="reger.util" name="java.lang.StringBuffer textFileRead(java.io.File)"/>
+  <method class="reger.util" name="java.lang.String cleanForHtml(java.lang.String)"/>
+  <method class="reger.util" name="boolean userCanDoAcl(int, int)"/>
+  <method class="reger.util" name="void logHashMapToDb(java.lang.String, java.util.HashMap)"/>
+  <method class="reger.util" name="boolean isIntInIntArray(int, int[])"/>
+  <method class="reger.util" name="void logIntArrayToDb(java.lang.String, int[])"/>
+  <method class="reger.util" name="int stringToInt(java.lang.String)"/>
+  <method class="reger.util" name="java.lang.StringBuffer getHtmlBarChart(float, float)"/>
+  <method class="reger.util" name="boolean userCanAccessLog(int, int)"/>
+  <method class="reger.util" name="java.lang.String[][] extendArray(java.lang.String[][], int)"/>
+  <method class="reger.util" name="java.lang.String returnSubstringAroundMatch(java.lang.String, java.lang.String, int)"/>
+  <method class="reger.util" name="java.lang.String validateUsername(java.lang.String)"/>
+  <method class="reger.util" name="java.lang.StringBuffer popupCloseReturnToEntryJavascript()"/>
+  <method class="reger.util" name="java.lang.String getDayOfWeek(int)"/>
+  <method class="reger.util" name="java.lang.StringBuffer screenshotTextLink(java.lang.String, java.lang.String)"/>
+  <method class="reger.util" name="boolean copyFile(java.io.File, java.io.File)"/>
+  <method class="reger.util" name="java.lang.String getLogNameFromLogid(int, int)"/>
+  <method class="reger.util" name="boolean isMastercookieOn(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.util" name="void debug(int, java.lang.String)"/>
+  <method class="reger.util" name="void logDoubleStringArrayToDb(java.lang.String, java.lang.String[][])"/>
+  <method class="reger.util" name="java.lang.Object[] addToObjectArray(java.lang.Object[], java.lang.Object)"/>
+  <method class="reger.util" name="java.lang.String[][] crunchArray(java.lang.String[][])"/>
+  <method class="reger.util" name="java.lang.String getFriendlyNameFromAclobjectname(java.lang.String)"/>
+  <method class="reger.util" name="boolean validateCustomServerName(java.lang.String, int)"/>
+  <method class="reger.util" name="java.lang.String getFilenameExtension(java.lang.String)"/>
+  <method class="reger.util" name="void logHashTableToDb(java.lang.String, java.util.Hashtable)"/>
+  <method class="reger.util" name="java.lang.String entryTitleFromEventid(int)"/>
+  <method class="reger.util" name="java.lang.StringBuffer disableLinksJavascript(java.lang.String)"/>
+  <method class="reger.util" name="void errorsave(java.lang.Throwable, java.lang.String)"/>
+  <method class="reger.util" name="java.lang.String prefillZeroes(java.lang.String, int)"/>
+  <method class="reger.util" name="java.lang.String getHttpOrHttpsString(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.util" name="boolean isnumeric(java.lang.String)"/>
+  <method class="reger.util" name="java.util.HashMap hashMapAppendValue(java.util.HashMap, java.lang.String, java.lang.String)"/>
+  <method class="reger.util" name="java.lang.String truncateString(java.lang.String, int)"/>
+  <class name="reger.ErrorDissect"/>
+  <method class="reger.ErrorDissect" name="java.lang.String getStackTraceAsString(java.lang.Throwable)"/>
+  <method class="reger.ErrorDissect" name="java.lang.String dissect(java.lang.Throwable, javax.servlet.http.HttpServletRequest, java.lang.String)"/>
+  <method class="reger.ErrorDissect" name="java.lang.String dissect(java.lang.Throwable)"/>
+  <method class="reger.ErrorDissect" name="java.lang.String ServletUtilsdissect(javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.ErrorDissect" name="java.lang.String dissect(java.lang.Throwable, boolean, java.lang.String)"/>
+  <class name="reger.MegaHtmlFormCenter"/>
+  <method class="reger.MegaHtmlFormCenter" name="java.lang.StringBuffer getHtml(reger.core, reger.pageProps, boolean)"/>
+  <class name="reger.Http"/>
+  <field class="reger.Http" name="responsebody"/>
+  <field class="reger.Http" name="url"/>
+  <field class="reger.Http" name="statusCode"/>
+  <field class="reger.Http" name="headers"/>
+  <field class="reger.Http" name="successfulCallWasMade"/>
+  <method class="reger.Http" name="void getUrl(java.lang.String, int)"/>
+  <class name="reger.dateDiff"/>
+  <method class="reger.dateDiff" name="int pureDateDiff(java.lang.String, java.util.Calendar, java.util.Calendar)"/>
+  <method class="reger.dateDiff" name="int dateDiff(java.lang.String, java.util.Calendar, java.util.Calendar)"/>
+  <method class="reger.dateDiff" name="int mathDateDiff(java.lang.String, java.util.Calendar, java.util.Calendar)"/>
+  <class name="reger.tRexMarketingPageEngine"/>
+  <method class="reger.tRexMarketingPageEngine" name="java.lang.StringBuffer pageout(java.lang.StringBuffer, java.lang.StringBuffer, java.lang.StringBuffer, java.lang.StringBuffer, reger.pageProps, reger.core)"/>
+  <class name="reger.FriendFind"/>
+  <field class="reger.FriendFind" name="successFullPaths"/>
+  <class name="reger.navBars"/>
+  <method class="reger.navBars" name="java.lang.StringBuffer generateNavbar(int, reger.core, reger.pageProps)"/>
+  <class name="reger.trafficHtmlOut"/>
+  <field class="reger.trafficHtmlOut" name="filterAdminEntries"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer mobileEntryTrafficList(int, int, int, int, java.lang.String)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer entryTrafficZoom(int, reger.core)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer entryTrafficList(int, int, reger.core, boolean)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer logsTrafficList(int, int, reger.core)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer outputEntryZoomRow(java.util.Calendar, int, int)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer mobileLogsTrafficList(int, int, int, java.lang.String)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer homeTrafficList(int, int, reger.core)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer referrerTrafficList(int, reger.core)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer imageTrafficList(int, int, reger.core)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.String getTimeAgo(int, reger.core)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer browserTrafficList(int, reger.core)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer rawclicksTrafficList(int, int, java.lang.String, reger.core, javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.trafficHtmlOut" name="java.lang.StringBuffer searchesTrafficList(int, reger.core)"/>
+  <class name="reger.PlEventtypeOrder"/>
+  <method class="reger.PlEventtypeOrder" name="void moveEventtypeidUp(int, int)"/>
+  <method class="reger.PlEventtypeOrder" name="void swapFieldOrder(int, int)"/>
+  <method class="reger.PlEventtypeOrder" name="int getPriorityForNewField(int)"/>
+  <method class="reger.PlEventtypeOrder" name="void moveEventtypeidDown(int, int)"/>
+  <method class="reger.PlEventtypeOrder" name="void cleanFieldorderForEventtype(int)"/>
+  <class name="reger.HomePageOrder"/>
+  <method class="reger.HomePageOrder" name="void swapOrder(int, int)"/>
+  <method class="reger.HomePageOrder" name="void moveHomepageconfigidDown(int, int)"/>
+  <method class="reger.HomePageOrder" name="void moveHomepageconfigidUp(int, int)"/>
+  <method class="reger.HomePageOrder" name="void cleanOrderForEventid(int, int)"/>
+  <method class="reger.HomePageOrder" name="int getOrderForNewHpObject(int, int)"/>
+  <class name="reger.Profile"/>
+  <method class="reger.Profile" name="java.lang.StringBuffer getAccountuserfieldsHtml(reger.Accountuser, reger.core, boolean)"/>
+  <method class="reger.Profile" name="java.lang.StringBuffer getActions(reger.Accountuser, reger.core, java.lang.String)"/>
+  <method class="reger.Profile" name="java.lang.StringBuffer getHtmlProfile(reger.Accountuser, reger.core, boolean, java.lang.String)"/>
+  <method class="reger.Profile" name="java.lang.StringBuffer getMySummary(reger.Accountuser, reger.core, boolean)"/>
+  <method class="reger.Profile" name="java.lang.StringBuffer getMySite(reger.Accountuser, reger.core)"/>
+  <method class="reger.Profile" name="java.lang.StringBuffer getMyStats(reger.Accountuser, reger.core)"/>
+  <class name="reger.FindInterfaceImplementations"/>
+  <method class="reger.FindInterfaceImplementations" name="java.lang.String[] find(java.lang.String, java.lang.Class)"/>
+  <method class="reger.FindInterfaceImplementations" name="java.lang.String[] find(java.lang.String, java.lang.String)"/>
+  <method class="reger.FindInterfaceImplementations" name="java.lang.String find(java.lang.String)"/>
+  <class name="reger.tRexPlAdminPageEngine"/>
+  <method class="reger.tRexPlAdminPageEngine" name="java.lang.StringBuffer pageout(java.lang.StringBuffer, java.lang.StringBuffer, reger.core, reger.pageProps)"/>
+  <class name="reger.MessagesAdmin"/>
+  <method class="reger.MessagesAdmin" name="java.lang.StringBuffer htmlOut(reger.core, int, javax.servlet.http.HttpServletRequest, boolean, java.lang.String, java.lang.String)"/>
+  <class name="reger.CalendarHtml"/>
+  <method class="reger.CalendarHtml" name="java.lang.StringBuffer smallcalendar(int, java.lang.String, int, java.lang.String, reger.core)"/>
+  <class name="reger.AdminTools"/>
+  <method class="reger.AdminTools" name="java.lang.StringBuffer getHtml(reger.core, int, int)"/>
+  <class name="reger.htmlListEvents"/>
+  <method class="reger.htmlListEvents" name="java.lang.StringBuffer getList(reger.core, int, int, java.lang.String, java.lang.String, java.lang.String, int, boolean, javax.servlet.http.HttpServletRequest)"/>
+  <method class="reger.htmlListEvents" name="void recordSearchInDb(java.lang.String, int)"/>
+</expose>
+<map>
+  <field class="reger.licensing.LicenseManager" name="passPhrase" map="A"/>
+  <method class="reger.licensing.LicenseManager" name="java.lang.String getLicensePropertyV01(java.lang.String, java.lang.String)" map="A"/>
+  <method class="reger.licensing.LicenseManager" name="java.lang.String getLicenseProperty(java.lang.String)" map="A"/>
+  <field class="reger.licensing.DesEncrypter" name="iterationCount" map="A"/>
+  <field class="reger.licensing.DesEncrypter" name="ecipher" map="B"/>
+  <field class="reger.licensing.DesEncrypter" name="salt" map="C"/>
+  <field class="reger.licensing.DesEncrypter" name="dcipher" map="D"/>
+  <method class="reger.marketingSite.TourSideNav" name="java.lang.String bgcolor(java.lang.String, java.lang.String)" map="A"/>
+  <method class="reger.marketingSite.TourSideNav" name="java.lang.String fontcolor(java.lang.String, java.lang.String)" map="B"/>
+  <class name="reger.scheduler.SmtpListener" map="A"/>
+  <field class="reger.scheduler.SmtpListener" name="thread" map="A"/>
+  <field class="reger.scheduler.SmtpListener" name="slisten" map="B"/>
+  <field class="reger.scheduler.SmtpListener" name="isPortSuccessfullyBound" map="C"/>
+  <field class="reger.scheduler.SmtpListener" name="execTime" map="D"/>
+  <method class="reger.scheduler.SmtpListener" name="void main(java.lang.String[])" map="A"/>
+  <method class="reger.scheduler.SmtpListener" name="void gotMailMessage(java.lang.String)" map="A"/>
+  <method class="reger.scheduler.SmtpListener" name="java.lang.String statusCheck()" map="A"/>
+  <method class="reger.scheduler.SmtpListener" name="void run()" map="run"/>
+  <method class="reger.scheduler.StorageSpaceUpdate" name="int updateImages()" map="A"/>
+  <method class="reger.scheduler.StorageSpaceUpdate" name="int updateMessages()" map="B"/>
+  <method class="reger.scheduler.StorageSpaceUpdate" name="int updateEntries()" map="C"/>
+  <class name="reger.scheduler.SmtpListenerConnHandler" map="B"/>
+  <field class="reger.scheduler.SmtpListenerConnHandler" name="in" map="A"/>
+  <field class="reger.scheduler.SmtpListenerConnHandler" name="thread" map="B"/>
+  <field class="reger.scheduler.SmtpListenerConnHandler" name="out" map="C"/>
+  <field class="reger.scheduler.SmtpListenerConnHandler" name="parent" map="D"/>
+  <field class="reger.scheduler.SmtpListenerConnHandler" name="sclient" map="E"/>
+  <field class="reger.scheduler.SmtpListenerConnHandler" name="serverName" map="F"/>
+  <method class="reger.scheduler.SmtpListenerConnHandler" name="void readMailMessage(java.lang.String)" map="A"/>
+  <method class="reger.scheduler.SmtpListenerConnHandler" name="java.lang.String readln()" map="A"/>
+  <method class="reger.scheduler.SmtpListenerConnHandler" name="void ack()" map="B"/>
+  <method class="reger.scheduler.SmtpListenerConnHandler" name="void writeln(java.lang.String)" map="B"/>
+  <method class="reger.scheduler.SmtpListenerConnHandler" name="void addToRawMessage(java.lang.StringBuffer, java.lang.String)" map="A"/>
+  <method class="reger.scheduler.SmtpListenerConnHandler" name="void run()" map="run"/>
+  <method class="reger.scheduler.SmtpListenerConnHandler" name="java.lang.String findEmailAddr(java.lang.String)" map="C"/>
+  <method class="reger.scheduler.SmtpListenerConnHandler" name="void nak()" map="C"/>
+  <method class="reger.scheduler.MasterThread" name="boolean wasTaskRunInLastXminutes(java.lang.String, int)" map="A"/>
+  <field class="reger.spell.RegerSpellCheck" name="dictFile" map="A"/>
+  <field class="reger.spell.RegerSpellCheck" name="spellCheckEvents" map="B"/>
+  <field class="reger.spell.RegerSpellCheck" name="textToSpellCheck" map="C"/>
+  <field class="reger.spell.RegerSpellCheck" name="phonetFile" map="D"/>
+  <field class="reger.spell.RegerSpellCheck" name="spellCheck" map="E"/>
+  <field class="reger.spell.RegerSpellCheck" name="dictionary" map="F"/>
+  <method class="reger.spell.RegerSpellCheck" name="java.lang.String makeSelectAdvanced(java.lang.String, java.util.List, int)" map="A"/>
+  <method class="reger.spell.RegerSpellCheck" name="void doCheck(java.lang.String)" map="A"/>
+  <method class="reger.spell.RegerSpellCheck" name="java.lang.String makeSelect(java.lang.String, java.util.List, int)" map="B"/>
+  <field class="reger.mega.FieldTypeDropdown" name="value" map="Z"/>
+  <field class="reger.mega.FieldTypeDropdown" name="possibleValues" map="_"/>
+  <method class="reger.mega.FieldTypeDropdown" name="java.lang.StringBuffer singleOptionHtml(java.lang.String)" map="C"/>
+  <field class="reger.mega.FieldTypeVerticalradios" name="value" map="A"/>
+  <field class="reger.mega.FieldTypeVerticalradios" name="possibleValues" map="B"/>
+  <method class="reger.mega.FieldTypeVerticalradios" name="java.lang.StringBuffer singleOptionHtml(java.lang.String)" map="A"/>
+  <field class="reger.mega.ChartFieldEntryMonthsAgo" name="timezoneid" map="C"/>
+  <field class="reger.mega.ChartFieldEntryMonthsAgo" name="value" map="D"/>
+  <field class="reger.mega.ChartFieldEntryDayofweek" name="timezoneid" map="E"/>
+  <field class="reger.mega.ChartFieldEntryDayofweek" name="value" map="F"/>
+  <field class="reger.mega.ChartFieldEntrycount" name="timezoneid" map="G"/>
+  <field class="reger.mega.ChartFieldEntrycount" name="value" map="H"/>
+  <field class="reger.mega.ChartFieldEntrydatetime" name="timezoneid" map="I"/>
+  <field class="reger.mega.ChartFieldEntrydatetime" name="value" map="J"/>
+  <field class="reger.mega.FieldTypeTextbox" name="value" map="K"/>
+  <field class="reger.mega.FieldAllParams" name="megafieldid" map="A"/>
+  <field class="reger.mega.FieldAllParams" name="params" map="B"/>
+  <method class="reger.mega.FieldParam" name="boolean isAcceptableDataType(int)" map="A"/>
+  <method class="reger.mega.FieldParam" name="boolean isAcceptableFieldType(int)" map="B"/>
+  <field class="reger.mega.FieldTypeHorizontalradios" name="value" map="L"/>
+  <field class="reger.mega.FieldTypeHorizontalradios" name="possibleValues" map="M"/>
+  <method class="reger.mega.FieldTypeHorizontalradios" name="java.lang.StringBuffer singleOptionHtml(java.lang.String)" map="B"/>
+  <field class="reger.mega.FieldDAOSimple" name="value" map="A"/>
+  <field class="reger.mega.ChartFieldEntryHourofday" name="timezoneid" map="N"/>
+  <field class="reger.mega.ChartFieldEntryHourofday" name="value" map="O"/>
+  <field class="reger.mega.ChartFieldEntryDayofmonth" name="timezoneid" map="P"/>
+  <field class="reger.mega.ChartFieldEntryDayofmonth" name="value" map="Q"/>
+  <field class="reger.mega.ChartFieldEntryDaysAgo" name="timezoneid" map="R"/>
+  <field class="reger.mega.ChartFieldEntryDaysAgo" name="megadatatypeid" map="megadatatypeid"/>
+  <field class="reger.mega.ChartFieldEntryDaysAgo" name="value" map="S"/>
+  <field class="reger.mega.ChartFieldEntryorder" name="timezoneid" map="T"/>
+  <field class="reger.mega.ChartFieldEntryorder" name="value" map="U"/>
+  <field class="reger.mega.ChartFieldEntryWeeksAgo" name="timezoneid" map="V"/>
+  <field class="reger.mega.ChartFieldEntryWeeksAgo" name="value" map="W"/>
+  <field class="reger.mega.FieldTypeNumericrange" name="value" map="X"/>
+  <field class="reger.mega.FieldDAOListOfOptions" name="value" map="B"/>
+  <field class="reger.mega.FieldDAOListOfOptions" name="possibleValues" map="C"/>
+  <method class="reger.mega.FieldDAOListOfOptions" name="void getPossibleValues(int, int)" map="A"/>
+  <field class="reger.mega.FieldTypeTimeperiod" name="value" map="Y"/>
+  <method class="reger.mega.MegaChartPreview" name="java.lang.String[] previewDataAlpha(int)" map="A"/>
+  <method class="reger.mega.MegaChartPreview" name="java.lang.String[] previewDataGet(int, int, int, boolean)" map="A"/>
+  <method class="reger.mega.MegaChartPreview" name="java.lang.String[] previewDataTimeExt(int, int)" map="A"/>
+  <method class="reger.mega.MegaChartPreview" name="java.lang.String[] previewDataNumeric(int)" map="B"/>
+  <method class="reger.mega.MegaChartPreview" name="java.lang.String[] previewDataTime(int)" map="C"/>
+  <method class="reger.mega.MegaChartPreview" name="java.lang.String[] previewDataCount(int)" map="D"/>
+  <method class="reger.api.Rss" name="java.lang.StringBuffer outputMegaDataTag(java.lang.String, java.lang.String, int)" map="A"/>
+  <method class="reger.api.TrackbackPing" name="void cleanDeadTrackbacks()" map="A"/>
+  <method class="reger.api.TrackbackPing" name="void parseUrls()" map="B"/>
+  <method class="reger.api.TrackbackPing" name="void saveUrlToDb(java.lang.String)" map="A"/>
+  <method class="reger.api.TrackbackPing" name="boolean pingUrl(java.lang.String, java.lang.String, java.lang.String, java.lang.String)" map="A"/>
+  <field class="reger.api.EmailApi" name="plid" map="A"/>
+  <field class="reger.api.EmailApi" name="to" map="B"/>
+  <field class="reger.api.EmailApi" name="overridecamphonesubject" map="C"/>
+  <field class="reger.api.EmailApi" name="username" map="D"/>
+  <field class="reger.api.EmailApi" name="overridecamphonesubjecttext" map="E"/>
+  <field class="reger.api.EmailApi" name="subject" map="F"/>
+  <field class="reger.api.EmailApi" name="accounturl" map="G"/>
+  <field class="reger.api.EmailApi" name="mailtype" map="H"/>
+  <field class="reger.api.EmailApi" name="savecamphonepostsasdraft" map="I"/>
+  <field class="reger.api.EmailApi" name="body" map="J"/>
+  <field class="reger.api.EmailApi" name="CAMPHONEPOST" map="K"/>
+  <field class="reger.api.EmailApi" name="accountuserid" map="L"/>
+  <field class="reger.api.EmailApi" name="consolidatecamphonetoonedailyentry" map="M"/>
+  <field class="reger.api.EmailApi" name="EMAILPOST" map="N"/>
+  <field class="reger.api.EmailApi" name="friendlyname" map="O"/>
+  <field class="reger.api.EmailApi" name="timezoneid" map="P"/>
+  <field class="reger.api.EmailApi" name="logid" map="Q"/>
+  <field class="reger.api.EmailApi" name="mimeMessage" map="R"/>
+  <field class="reger.api.EmailApi" name="saveemailpostsasdraft" map="S"/>
+  <field class="reger.api.EmailApi" name="multiPart" map="T"/>
+  <field class="reger.api.EmailApi" name="emailsecret" map="U"/>
+  <field class="reger.api.EmailApi" name="ignorecamphonebody" map="V"/>
+  <field class="reger.api.EmailApi" name="camphoneimagecategoryid" map="W"/>
+  <field class="reger.api.EmailApi" name="isMultipart" map="X"/>
+  <method class="reger.api.EmailApi" name="boolean checkForAccount()" map="A"/>
+  <method class="reger.api.EmailApi" name="void startWorking(java.lang.String)" map="A"/>
+  <method class="reger.api.EmailApi" name="boolean parseToAddress()" map="B"/>
+  <method class="reger.api.EmailApi" name="void forwardIfNecessary(javax.mail.internet.MimeMessage)" map="A"/>
+  <method class="reger.api.EmailApi" name="void newPost()" map="C"/>
+  <method class="reger.api.EmailApi" name="boolean parseIncomingMessage()" map="D"/>
+  <method class="reger.dbupgrade.version.Version20ToVersion21" name="void insertOneWordToDb(java.lang.String)" map="A"/>
+  <method class="reger.dbupgrade.version.Version20ToVersion21" name="java.util.Vector getWords()" map="A"/>
+  <method class="reger.dbupgrade.version.Version20ToVersion21" name="void addAllWordsToDb()" map="B"/>
+  <method class="reger.dbupgrade.DatabaseToString" name="void dumpTable(java.sql.Connection, java.io.FileWriter, java.lang.String)" map="A"/>
+  <method class="reger.Media.PolarHRM" name="boolean isBlankLine(java.lang.String)" map="A"/>
+  <method class="reger.Media.PolarHRM" name="java.lang.String findSMode(java.lang.String)" map="B"/>
+  <method class="reger.Media.PolarHRM" name="int newPolarhrmEntry(int)" map="A"/>
+  <method class="reger.Media.PolarHRM" name="boolean isHrdataStartLine(java.lang.String)" map="C"/>
+  <method class="reger.Media.PolarHRM" name="int findIntervalInSeconds(java.lang.String)" map="D"/>
+  <method class="reger.Media.PolarHRM" name="void processSingleHrDataLine(java.lang.String, int, int, int, java.lang.String)" map="A"/>
+  <method class="reger.Media.PolarHRM" name="int findVersion(java.lang.String)" map="E"/>
+  <field class="reger.search.SearchResult" name="associatedAccountid" map="A"/>
+  <field class="reger.search.SearchResult" name="url" map="B"/>
+  <field class="reger.search.SearchResult" name="score" map="C"/>
+  <field class="reger.search.SearchResult" name="idOfObjectReturned" map="D"/>
+  <field class="reger.search.SearchResult" name="excerpt" map="E"/>
+  <field class="reger.search.SearchResult" name="typeOfObjectReturned" map="F"/>
+  <field class="reger.search.SearchResult" name="siteName" map="G"/>
+  <field class="reger.search.SearchResult" name="title" map="H"/>
+  <field class="reger.search.SearchResult" name="associatedEventid" map="I"/>
+  <field class="reger.search.SearchEntries" name="limitMin" map="A"/>
+  <field class="reger.search.SearchEntries" name="fieldSql" map="B"/>
+  <field class="reger.search.SearchEntries" name="limitMax" map="C"/>
+  <field class="reger.search.SearchEntries" name="accountSql" map="D"/>
+  <field class="reger.search.SearchEntries" name="logsToSearch" map="E"/>
+  <field class="reger.search.SearchEntries" name="accountidsToSearch" map="F"/>
+  <field class="reger.search.SearchEntries" name="permissionSql" map="G"/>
+  <field class="reger.search.SearchEntries" name="numberOfResultsToReturn" map="H"/>
+  <field class="reger.search.SearchEntries" name="currentpage" map="I"/>
+  <field class="reger.search.SearchEntries" name="coreOfSearcher" map="J"/>
+  <field class="reger.search.SearchEntries" name="logidSql" map="K"/>
+  <field class="reger.search.SearchEntries" name="locationidSql" map="L"/>
+  <field class="reger.search.SearchEntries" name="searchTerms" map="M"/>
+  <field class="reger.search.SearchEntries" name="locationidsToSearch" map="N"/>
+  <method class="reger.search.SearchEntries" name="void setupSqlStrings()" map="A"/>
+  <method class="reger.search.SearchEntries" name="int runSqlGetNumberofResults(java.lang.String)" map="A"/>
+  <method class="reger.search.SearchEntries" name="reger.search.SearchResult[] runSqlToGetResults(java.lang.String)" map="B"/>
+  <field class="reger.TimePeriod" name="endMin" map="A"/>
+  <field class="reger.TimePeriod" name="startDateGMT" map="B"/>
+  <field class="reger.TimePeriod" name="isPrivate" map="C"/>
+  <field class="reger.TimePeriod" name="endDay" map="D"/>
+  <field class="reger.TimePeriod" name="endHour" map="E"/>
+  <field class="reger.TimePeriod" name="endYear" map="F"/>
+  <field class="reger.TimePeriod" name="startMin" map="G"/>
+  <field class="reger.TimePeriod" name="endAmpm" map="H"/>
+  <field class="reger.TimePeriod" name="endDateGMT" map="I"/>
+  <field class="reger.TimePeriod" name="startDay" map="J"/>
+  <field class="reger.TimePeriod" name="startHour" map="K"/>
+  <field class="reger.TimePeriod" name="isOpenEnded" map="L"/>
+  <field class="reger.TimePeriod" name="accountid" map="M"/>
+  <field class="reger.TimePeriod" name="description" map="N"/>
+  <field class="reger.TimePeriod" name="startYear" map="O"/>
+  <field class="reger.TimePeriod" name="endMonth" map="P"/>
+  <field class="reger.TimePeriod" name="core" map="Q"/>
+  <field class="reger.TimePeriod" name="startAmpm" map="R"/>
+  <field class="reger.TimePeriod" name="startMonth" map="S"/>
+  <field class="reger.TimePeriod" name="timeperiodid" map="T"/>
+  <field class="reger.TimePeriod" name="title" map="U"/>
+  <method class="reger.TimePeriod" name="void populateFromRequest(javax.servlet.http.HttpServletRequest)" map="A"/>
+  <field class="reger.OffensiveContentList" name="offensivesystem" map="A"/>
+  <field class="reger.OffensiveContentList" name="treemapOfOffensivePlVectors" map="B"/>
+  <method class="reger.OffensiveContentList" name="void forceReloadPlid(int)" map="A"/>
+  <method class="reger.OffensiveContentList" name="void forceReloadDefaults()" map="A"/>
+  <field class="reger.Accountuser" name="password" map="A"/>
+  <field class="reger.Accountuser" name="passphraseanswer" map="B"/>
+  <field class="reger.Accountuser" name="accountusertypeid" map="C"/>
+  <field class="reger.Accountuser" name="lastlogindate" map="D"/>
+  <field class="reger.Accountuser" name="username" map="E"/>
+  <field class="reger.Accountuser" name="verifypassword" map="F"/>
+  <field class="reger.Accountuser" name="logaccess" map="G"/>
+  <field class="reger.Accountuser" name="usertimezoneid" map="H"/>
+  <field class="reger.Accountuser" name="aclperms" map="I"/>
+  <field class="reger.Accountuser" name="quickpass" map="J"/>
+  <field class="reger.Accountuser" name="email" map="K"/>
+  <field class="reger.Accountuser" name="accountuserfields" map="L"/>
+  <field class="reger.Accountuser" name="entrymode" map="M"/>
+  <field class="reger.Accountuser" name="friendlyname" map="N"/>
+  <field class="reger.Accountuser" name="alllogsforaccountid" map="O"/>
+  <field class="reger.Accountuser" name="adminlogaccess" map="P"/>
+  <field class="reger.Accountuser" name="siteRootUrl" map="Q"/>
+  <field class="reger.Accountuser" name="passphrasequestion" map="R"/>
+  <field class="reger.Accountuser" name="createdate" map="S"/>
+  <field class="reger.Accountuser" name="onelinesummary" map="T"/>
+  <method class="reger.Accountuser" name="void saveLastLoginDate()" map="A"/>
+  <method class="reger.Accountuser" name="void deleteAcl(int)" map="A"/>
+  <method class="reger.Accountuser" name="void deleteInvalidAcl()" map="B"/>
+  <method class="reger.Accountuser" name="void deleteInvalidLogAccess()" map="C"/>
+  <method class="reger.Accountuser" name="void populatePermissionsFromDb()" map="D"/>
+  <method class="reger.Accountuser" name="void deleteLogAccess(int)" map="B"/>
+  <field class="reger.core" name="showadsmarketing" map="A"/>
+  <field class="reger.core" name="plhost" map="B"/>
+  <field class="reger.core" name="iscreditcarduserupgradeon" map="C"/>
+  <field class="reger.core" name="sectiontour" map="D"/>
+  <field class="reger.core" name="doesflaggedcontentneedtobeapproved" map="E"/>
+  <field class="reger.core" name="virtualdir" map="F"/>
+  <field class="reger.core" name="sectionhome" map="G"/>
+  <field class="reger.core" name="maxtraffichits" map="H"/>
+  <field class="reger.core" name="plbasedomain" map="I"/>
+  <field class="reger.core" name="titlebar" map="J"/>
+  <field class="reger.core" name="homepagetitle" map="K"/>
+  <field class="reger.core" name="sectionsignup" map="L"/>
+  <field class="reger.core" name="doallpostsneedtobeapproved" map="M"/>
+  <field class="reger.core" name="displaynumberofentries" map="N"/>
+  <field class="reger.core" name="templateid" map="O"/>
+  <field class="reger.core" name="incomingServername" map="P"/>
+  <field class="reger.core" name="templateentry" map="Q"/>
+  <field class="reger.core" name="accounttypeid" map="R"/>
+  <field class="reger.core" name="templatemainbody" map="S"/>
+  <field class="reger.core" name="plmarketingtemplate" map="T"/>
+  <field class="reger.core" name="pingweblogscom" map="U"/>
+  <field class="reger.core" name="homepagehtml" map="V"/>
+  <field class="reger.core" name="traffichitsused" map="W"/>
+  <field class="reger.core" name="siteRootUrl" map="X"/>
+  <field class="reger.core" name="plusertemplate" map="Y"/>
+  <field class="reger.core" name="islive" map="Z"/>
+  <field class="reger.core" name="onthisday" map="_"/>
+  <field class="reger.core" name="favesitetitle" map="a"/>
+  <field class="reger.core" name="imagespaceused" map="b"/>
+  <field class="reger.core" name="userelatedlinks" map="c"/>
+  <field class="reger.core" name="usedynamicdns" map="d"/>
+  <field class="reger.core" name="defaultmaxmonthlyhits" map="e"/>
+  <field class="reger.core" name="isActiveAccount" map="f"/>
+  <field class="reger.core" name="sectionhelp" map="g"/>
+  <field class="reger.core" name="defaultmaxspaceinbytes" map="h"/>
+  <field class="reger.core" name="istimeperiodon" map="i"/>
+  <field class="reger.core" name="templatestatus" map="j"/>
+  <field class="reger.core" name="customservername" map="k"/>
+  <field class="reger.core" name="displaycharsinsummary" map="l"/>
+  <field class="reger.core" name="textspaceused" map="m"/>
+  <field class="reger.core" name="timezoneid" map="n"/>
+  <field class="reger.core" name="jspopup" map="o"/>
+  <field class="reger.core" name="hometabtext" map="p"/>
+  <field class="reger.core" name="issearchmysiteon" map="q"/>
+  <field class="reger.core" name="plname" map="r"/>
+  <field class="reger.core" name="spaceused" map="s"/>
+  <field class="reger.core" name="iscontentflaggingon" map="t"/>
+  <field class="reger.core" name="favesiteon" map="u"/>
+  <field class="reger.core" name="homelink" map="v"/>
+  <field class="reger.core" name="maxspace" map="w"/>
+  <field class="reger.core" name="admintools" map="x"/>
+  <field class="reger.core" name="emailnewsletter" map="y"/>
+  <field class="reger.core" name="showlogintab" map="z"/>
+  <field class="reger.core" name="createdate" map="&#x00a2;"/>
+  <field class="reger.core" name="homepagecalendar" map="&#x00a3;"/>
+  <field class="reger.core" name="emailsendhour" map="&#x00a4;"/>
+  <field class="reger.core" name="accounturl" map="&#x00a5;"/>
+  <field class="reger.core" name="isNewPendingAdminApproval" map="&#x00aa;"/>
+  <field class="reger.core" name="defaultaccounttypeidatsignup" map="&#x00b5;"/>
+  <field class="reger.core" name="showhometab" map="&#x00ba;"/>
+  <field class="reger.core" name="messagesstatus" map="&#x00c0;"/>
+  <field class="reger.core" name="plid" map="&#x00c1;"/>
+  <field class="reger.core" name="messagesapproval" map="&#x00c2;"/>
+  <field class="reger.core" name="gps" map="&#x00c3;"/>
+  <method class="reger.Entry" name="void deleteOnlyMegaData()" map="A"/>
+  <method class="reger.Entry" name="int getEventtypeidFromLogid()" map="B"/>
+  <method class="reger.Entry" name="int getLogPermission(int)" map="A"/>
+  <method class="reger.OffensiveContentFlagger" name="boolean checkAgainstList(java.lang.String, java.util.Vector)" map="A"/>
+  <method class="reger.OffensiveContentFlagger" name="java.lang.String entryToString(reger.Entry)" map="A"/>
+  <method class="reger.MegaGetSingleEventData" name="void addData(java.lang.String, java.lang.String, int, int, int)" map="A"/>
+  <field class="reger.executionTime" name="debugExecuteTime" map="A"/>
+  <field class="reger.Upload" name="items" map="A"/>
+  <method class="reger.uriVars" name="java.lang.String getJspBase(java.lang.String)" map="A"/>
+  <method class="reger.uriVars" name="java.lang.String getJspName(java.lang.String)" map="B"/>
+  <field class="reger.db" name="jndiDB" map="A"/>
+  <field class="reger.HoursMinutesSeconds" name="hours" map="A"/>
+  <field class="reger.HoursMinutesSeconds" name="SECONDSINMINUTE" map="B"/>
+  <field class="reger.HoursMinutesSeconds" name="minutes" map="C"/>
+  <field class="reger.HoursMinutesSeconds" name="SECONDSINHOUR" map="D"/>
+  <field class="reger.HoursMinutesSeconds" name="calculationIsDone" map="E"/>
+  <field class="reger.HoursMinutesSeconds" name="baseSeconds" map="F"/>
+  <field class="reger.HoursMinutesSeconds" name="seconds" map="G"/>
+  <method class="reger.HoursMinutesSeconds" name="int getHours(int)" map="A"/>
+  <method class="reger.HoursMinutesSeconds" name="int getMinutes(int)" map="B"/>
+  <method class="reger.entryOption" name="java.lang.StringBuffer singleOptionHtml(int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, int, java.lang.String)" map="A"/>
+  <method class="reger.ResizeImage" name="java.awt.image.BufferedImage toBufferedImage(java.awt.Image)" map="A"/>
+  <method class="reger.ResizeImage" name="java.awt.image.BufferedImage scaleImage(java.awt.Image, int, int)" map="A"/>
+  <method class="reger.tRexMasterAdminPageEngine" name="java.lang.StringBuffer adminTab(java.lang.String, java.lang.String, java.lang.String, java.lang.String)" map="A"/>
+  <field class="reger.FindInterfaceImplementationsLauncher" name="class$reger$FindInterfaceImplementationsLauncher" map="class$reger$FindInterfaceImplementationsLauncher"/>
+  <method class="reger.FindInterfaceImplementationsLauncher" name="java.lang.Class class$(java.lang.String)" map="class$"/>
+  <method class="reger.HomePage" name="java.lang.StringBuffer addHereButton(int)" map="A"/>
+  <field class="reger.Tabs" name="offfontcolor" map="A"/>
+  <field class="reger.Tabs" name="tabs" map="B"/>
+  <field class="reger.Tabs" name="offcolor" map="C"/>
+  <field class="reger.Tabs" name="onfontcolor" map="D"/>
+  <field class="reger.Tabs" name="oncolor" map="E"/>
+  <method class="reger.Tabs" name="void setThisPageName(javax.servlet.http.HttpServletRequest)" map="A"/>
+  <method class="reger.Tabs" name="void setBaseVars(java.lang.String, java.lang.String, java.lang.String, java.lang.String)" map="A"/>
+  <field class="reger.dbNoErrorsave" name="jndiDB" map="A"/>
+  <method class="reger.tRexEntryEngine" name="java.lang.String AuthorStringFromAccountuserid(int)" map="A"/>
+  <method class="reger.tRexEntryEngine" name="java.lang.String defEntryTemplate()" map="A"/>
+  <field class="reger.TimeLine" name="timeperiodids" map="A"/>
+  <field class="reger.TimeLine" name="core" map="B"/>
+  <field class="reger.TimeLine" name="highestDateGMT" map="C"/>
+  <field class="reger.TimeLine" name="boundaryDateGMT" map="D"/>
+  <field class="reger.TimeLine" name="accountid" map="E"/>
+  <field class="reger.TimeLine" name="lowestDateGMT" map="F"/>
+  <field class="reger.UrlSplitter" name="port" map="A"/>
+  <field class="reger.UrlSplitter" name="servername" map="B"/>
+  <field class="reger.UrlSplitter" name="virtualdir" map="C"/>
+  <field class="reger.UrlSplitter" name="accounturl" map="D"/>
+  <field class="reger.UrlSplitter" name="plhost" map="E"/>
+  <field class="reger.UrlSplitter" name="plbasedomain" map="F"/>
+  <method class="reger.Friend" name="void addFriendToHashMap(int, int)" map="A"/>
+  <method class="reger.Friend" name="int countFriends()" map="A"/>
+  <method class="reger.Friend" name="int maxFriendid()" map="B"/>
+  <field class="reger.RelatedLinks" name="searchterms" map="A"/>
+  <field class="reger.RelatedLinks" name="eventid" map="B"/>
+  <field class="reger.RelatedLinks" name="LogsUserCanViewQueryend" map="C"/>
+  <field class="reger.RelatedLinks" name="accountid" map="D"/>
+  <method class="reger.RelatedLinks" name="java.lang.String getSearchTermsFromEventid(int)" map="A"/>
+  <method class="reger.RelatedLinks" name="void findRelatedLinks()" map="A"/>
+  <method class="reger.tRexPageEngine" name="java.lang.String defBodyTemplate()" map="A"/>
+  <method class="reger.tRexAdminPageEngine" name="java.lang.StringBuffer adminTab(java.lang.String, java.lang.String, java.lang.String, java.lang.String)" map="A"/>
+  <method class="reger.navbarMarketing" name="java.lang.String headerText(java.lang.String)" map="A"/>
+  <method class="reger.navbarMarketing" name="java.lang.String textColor(java.lang.String, java.lang.String)" map="A"/>
+  <method class="reger.navbarMarketing" name="java.lang.String buttonToUse(java.lang.String, java.lang.String)" map="B"/>
+  <method class="reger.navbarMarketing" name="java.lang.String tabColor(java.lang.String, java.lang.String)" map="C"/>
+  <method class="reger.tRexMarketingPageEngine" name="java.lang.String defBodyTemplate()" map="A"/>
+  <method class="reger.FriendFind" name="void addToSuccessFullPaths(int[])" map="A"/>
+  <method class="reger.FriendFind" name="boolean isPathAlreadySaved(int[])" map="B"/>
+  <method class="reger.FriendFind" name="void addToSuccessFullPaths(int[][])" map="A"/>
+  <field class="reger.FindInterfaceImplementations" name="class$reger$FindInterfaceImplementations" map="class$reger$FindInterfaceImplementations"/>
+  <method class="reger.FindInterfaceImplementations" name="java.lang.Class class$(java.lang.String)" map="class$"/>
+  <method class="reger.tRexPlAdminPageEngine" name="java.lang.StringBuffer adminTab(java.lang.String, java.lang.String, java.lang.String, java.lang.String)" map="A"/>
+</map>
+</yguard>

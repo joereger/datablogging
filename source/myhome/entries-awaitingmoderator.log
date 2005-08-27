@@ -1,0 +1,111 @@
+<%@ page import="reger.core.Util,
+                 reger.core.db.Db,
+                 reger.Help"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Entries Awaiting Moderator Approval";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Moderator Approval entries start
+if (userSession.getPl().getDoallpostsneedtobeapproved() || userSession.getPl().getDoesflaggedcontentneedtobeapproved()){
+    mb.append("<br>");
+
+    mb.append("<!-- Start Moderator Approval List -->");
+    String helpApprove = Help.tip("Moderator Approval Required", "These entries require approval by a moderator.  As soon as they are approved they will be published.", false, pageProps.pathToAppRoot);
+    mb.append(reger.ui.BubbleBox.start("Moderator Approval Required " + helpApprove, pageProps.pathToAppRoot));
+    mb.append("<table width=100% cellpadding=0 cellspacing=1 border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top colspan=2 align=left>");
+    mb.append("<font face=arial size=-2 color=#666666>Title</font></a></td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+    mb.append("<font face=arial size=-2 color=#666666>");
+    mb.append("Date");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+    mb.append("<font face=arial size=-2 color=#666666>");
+    mb.append("Log");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+    mb.append("<font face=arial size=-2 color=#666666>");
+    mb.append("Author");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstApprovals= Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.username, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.istemporary='0' AND event.isdraft='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstApprovals!=null && rstApprovals.length>0){
+        for(int i=0; i<rstApprovals.length; i++){
+            mb.append("<tr>");
+            mb.append("<td bgcolor=#ffffff valign=top align=right width=10><a href='log-" + rstApprovals[i][1] + ".log?eventid=" + rstApprovals[i][0] + "&action=edit'><img src='../images/bullet-arrow.gif' width='9' height='9' alt='' border='0'></a>");
+            mb.append("</td>");
+            mb.append("<td bgcolor=#ffffff valign=top align=left>");
+            mb.append("<a href='entry.log?eventid=" + rstApprovals[i][0] + "&action=edit'><font face=arial size=-2>" + reger.core.Util.cleanForHtml(rstApprovals[i][2]) + "</font></a></td>");
+            mb.append("<td bgcolor=#ffffff valign=top align=left>");
+            mb.append("<font face=arial size=-2>");
+            mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstApprovals[i][3])));
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td bgcolor=#ffffff valign=top align=left>");
+            mb.append("<font face=arial size=-2>");
+            mb.append(" " + rstApprovals[i][4]);
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td bgcolor=#ffffff valign=top align=left>");
+            mb.append("<font face=arial size=-2>");
+            if (!rstApprovals[i][6].equals("")){
+                mb.append(" " + rstApprovals[i][6]);
+            } else {
+                mb.append(" " + rstApprovals[i][5]);
+            }
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+    } else {
+        mb.append("<tr><td bgcolor=#ffffff valign=top colspan=5>");
+        mb.append("<font face=arial size=-2>No entries currently require your Moderator Approval.");
+        mb.append("</td></tr>");
+    }
+    mb.append("</table>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    mb.append("<!-- End Moderator Approval List -->");
+}
+//Moderator Approvals entries end
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

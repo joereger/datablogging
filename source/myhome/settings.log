@@ -1,0 +1,145 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Customize Your Site";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settings";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.ui.BubbleBox.start("User Settings", pageProps.pathToAppRoot));
+
+mb.append("<table cellpadding=10 cellspacing=1 border=0 bgcolor=#ffffff>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=settings-accountuse.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>User Account Settings</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Control your username, password, one line summary, timezone and other information about yourself.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+
+
+
+
+
+mb.append(reger.ui.BubbleBox.start("Site Settings", pageProps.pathToAppRoot));
+
+mb.append("<table cellpadding=10 cellspacing=1 border=0 bgcolor=#ffffff>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=settings-siteprops.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Super-Important Site Properties</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>This super-important set of properties controls many of the overall ways that your site operates. ");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=settings-skin.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Site Templates/Skins</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Change the way your public site looks. Change the layout, colors and accent colors. Go nuts, have fun, be original. Includes pre-built one-click templates for beginners.  Includes a template language for advanced users.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=logs-log-list.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Customize/Delete Logs</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>There are many ways to customize each log on your site.  Change the name of a log.  Make a log private.  Delete a log.  And a lot more. ");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=settings-favesites.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Favorite Sites</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Give credit where credit is due with a list of your favorite sites.  This list will appear on your homepage.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+
+
+
+
+
+mb.append(reger.ui.BubbleBox.start("Advanced", pageProps.pathToAppRoot));
+
+mb.append("<table cellpadding=10 cellspacing=1 border=0 bgcolor=#ffffff>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=settings-homepage.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Home Page Layout</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Customize the most important page on your site.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=settings-skin-custom.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Custom Site Skin</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>If you know HTML and CSS you can edit your site template directly.  If you break your site simply revert to one of the one click templates and then start customizing again.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+
+
+
+mb.append("</table>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

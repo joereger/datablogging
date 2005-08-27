@@ -1,0 +1,196 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Knowledge Management";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+mb.append("Our products are built with business in mind.  Our goal is to give you as much flexibility in your business as possible.");
+
+mb.append("<br>");
+mb.append("<h1>Blogs are an Excellent Knowledge Management System</h1>");
+mb.append("Blogs deployed within an organization act as a powerful knowledge management tool.");
+
+
+mb.append("<br>");
+mb.append("<h1>First, think about the value of the Wall Street Journal to business leaders. </h1>");
+mb.append("The value it provides is context — the Journal allows readers to see themselves in the context of the financial world each day, which enables more informed decision making.");
+
+
+
+mb.append("<br>");
+mb.append("<h1>With this in mind, think about your company/organization as a microcosm of the financial world.</h1>");
+mb.append("<ul>");
+mb.append("<li>Can your employees see themselves in the context of the whole company/organization? ");
+mb.append("<li>Is knowledge from all parts of your organization easily available to people when they need it… via simple means?");
+mb.append("<li>Would more informed decisions be made if employees and leaders had access to internal news sources?");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Blogs serve this need inside of an organization.</h1>");
+mb.append("<ul>");
+mb.append("<li>By making internal websites simple to update, weblogs allow individuals and teams to maintain online journals that chronicle projects inside the company. ");
+mb.append("<li>These professional journals make it easy to produce and access internal news, providing context to the company — context that can profoundly affect decision making.");
+mb.append("<li>In this way, weblogs allow employees and leaders to make more informed decisions through increasing their awareness of internal news and events.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Types of Knowledge Management Blogs</h1>");
+mb.append("<ul>");
+mb.append("<li>Project Logs");
+    mb.append("<ul>");
+    mb.append("<li>Authored by multiple project team participants.");
+    mb.append("<li>Great way to track and share a project's progress");
+    mb.append("<li>Allows people that are infrequently attached to a project to keep tabs on progress. (Managers, executives)");
+    mb.append("<li>Bring a new team member up to speed quickly.");
+    mb.append("<li>Superb archive to project documents/files (with context as to why they are important and commentary).");
+    mb.append("<li>Excellent asynchronous forum for idea exchange");
+    mb.append("</ul>");
+mb.append("<li>Training Logs");
+    mb.append("<ul>");
+    mb.append("<li>Student logs progress and questions");
+    mb.append("<li>Teacher uses RSS aggregator to review progress of all students quickly and easily");
+    mb.append("<li>Students interact with each other to grow understanding");
+    mb.append("<li>Teacher has log to make assignments /observations");
+    mb.append("</ul>");
+mb.append("<li>Announcement Logs");
+    mb.append("<ul>");
+    mb.append("<li>Mimic a traditional top-to-bottom communication structure");
+    mb.append("<li>Lowers internal communication costs");
+    mb.append("<li>Non-threatening use of blogs to conservative organizational hierarchy");
+    mb.append("<li>Examples:");
+        mb.append("<ul>");
+        mb.append("<li>Messages from the CEO/Commander/Leader (Daily/Weekly/Monthly)");
+        mb.append("<li>Human resources announcements site");
+        mb.append("<li>Security policy site");
+        mb.append("<li>Public relations announcements site");
+        mb.append("</ul>");
+    mb.append("</ul>");
+mb.append("<li>Job Logs");
+    mb.append("<ul>");
+    mb.append("<li>An easy way to start web logging in an organization.");
+    mb.append("<li>Logs of what an employee/member has accomplished during the day.");
+        mb.append("<ul>");
+        mb.append("<li>Meeting summaries");
+        mb.append("<li>Assignment status updates");
+        mb.append("<li>Observations/ideas");
+        mb.append("</ul>");
+    mb.append("<li>It can be used to keep track of consultants, geographically dispersed employees, work at home employees, etc. ");
+    mb.append("<li>Archives/collects corporate knowledge");
+    mb.append("</ul>");
+mb.append("<li>News Logs");
+    mb.append("<ul>");
+    mb.append("<li>Parts of the company post items that they deem relevant to the business");
+    mb.append("<li>For example:");
+        mb.append("<ul>");
+        mb.append("<li>Internal initiatives (HR, Sales, etc.)");
+        mb.append("<li>Industry information");
+        mb.append("<li>Competitive information");
+        mb.append("<li>Product updates");
+        mb.append("<li>Common support issues");
+        mb.append("<li>New policies");
+        mb.append("</ul>");
+    mb.append("</ul>");
+
+mb.append("</ul>");
+
+
+mb.append("<br>");
+mb.append("<h1>Time Spent Locating Information = Lost Productivity</h1>");
+mb.append("<ul>");
+mb.append("<li>“Knowledge workers spend 35% of their productive time searching for information, while 40% of the corporate users report that they cannot find the information they need to do their jobs on their Intranets (source:  Working Council of CIOs).");
+mb.append("<li>The Delphi group estimates that this costs the average 20,000 person organization $720 million a year ($120,000 all in cost per employee equates to $36,000 per employee spent searching).");
+mb.append("</ul>");
+
+
+
+mb.append("<br>");
+mb.append("<h1>There are three likely reasons for this:</h1>");
+mb.append("<ol>");
+mb.append("<li>The information they are looking for is scattered across multiple systems or stored in information silos.  It is therefore not accessible. ");
+mb.append("<li>The information is available but the search tool/KM system they are using is either not easy enough for the average user to use -- or -- is not able to provide high quality results due to a lack of contextual information. ");
+mb.append("<li>The information is not digital and therefore is not available.  Lot of information and knowledge falls below the \"document\" threshold and is therefore not available in published form. ");
+mb.append("</ol>");
+
+mb.append("<br>");
+mb.append("<h1>Knowledge Management Blogs provide a cost-effective solution to this problem by breaking down information silos in two ways:</h1>");
+mb.append("<ol>");
+mb.append("<li>First, by allowing individuals to post information locked in desktop information silos.  For example:  e-mail systems (e-mail to weblog), desktop document stores (post document to weblog), desktop multimedia (post file to weblog), bookmark lists (post link to weblog), and pictures (post picture to weblog).");
+mb.append("<li>Second, knowledge management blogs can also absorb and post data drawn from external resources such as Web applications and RSS newsfeeds (both traditional and from applications). ");
+mb.append("</ol>");
+
+mb.append("<br>");
+mb.append("<h1>Knowledge Management Blogs simplify finding information.</h1>");
+mb.append("<ul>");
+mb.append("<li>All information posted to blogs is made to the Intranet where they can be easily searched by standard search engines.  Additional data such as Google's Pagerank and other filtering mechanisms that leverage the combined wisdom of employees publishing to their blogs, make it easy to find relevant information. ");
+mb.append("<li>Finally, the presence of employee blogs increases the chance that experts will emerge.  These experts, via their blog, provide a ready reference of information and insight related to their area of focus (and if all else fails, a person that can be quickly contacted for an answer -- blogs are your internal business card). ");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Blogs radically increase the possibility that meaningful information and knowledge will be captured and archived on the Intranet. </h1>");
+mb.append("<ul>");
+mb.append("<li>There isn't another system that even comes close.  Blogs provide employees with a system that is easy to use (virtually zero training), immediate benefits, and enhanced personal prestige/value. ");
+mb.append("<li>Blogs can be used continuously on an ad hoc or project by project basis, as a result they are very flexible and horizontal in their utilization (increases the potential that they will be used). ");
+mb.append("<li>Posts to a blog are of indeterminate length and composition.  They can be as long as a research paper or as short as a single line of text with a link (this makes it possible to capture knowledge and information below the document threshold).");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>More information:</h1>");
+mb.append("<ul>");
+mb.append("<li><a href='knowledge-management-roi.log'>An ROI Analysis</a> of Knowledge Management Blogs");
+mb.append("<li><a href='knowledge-management-launching.log'>High-level Implementation plan</a> for Launching Knowledge Management Blogs into an Organization");
+mb.append("</ul>");
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("** The content on this page is not completely our own.  It has been collected in emails and blog entries throughout the years.  Unfortunately, the sources of much of the information have been lost.  If you were the primary author of any of the content here, please do not hesitate to contact us... we'd be glad to give you credit for it and we apologize in advance for not doing so already.  It's our fault for not collecting references over the years.");
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

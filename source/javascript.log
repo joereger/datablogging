@@ -1,0 +1,43 @@
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+if (userSession.getAccount().isPro()){
+    mb.append(reger.htmlListEvents.getList(userSession, pageProps.logProps.logid, reger.core.Util.getCurrentPage(request.getParameter("currentpage")),request.getParameter("viewdate"), request.getParameter("viewmonth"), "index.log", -1, false, request));
+    out.println("document.write(\"" + mb.toString().replaceAll(reger.Vars.LINEBREAKCHAR,"").replaceAll("\\n","").replaceAll("\\r","").replaceAll("\"","") + "\")");
+} else {
+    out.println("document.write(\"This site is not configured for Javascript embedding.<br>Please visit <a href='"+ reger.Vars.getHttpUrlPrefix() +userSession.getSiteRootUrl()+"/'>" + reger.Vars.getHttpUrlPrefix() +userSession.getSiteRootUrl()+"/</a>\")");
+}
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+<%//@ include file="globalfooter.jsp" %>
+

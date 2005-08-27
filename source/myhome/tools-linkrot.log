@@ -1,0 +1,191 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Linkrot Fixer";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "toolslinkrot";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//reger.http.Http myHttp = new reger.http.Http();
+//myHttp.getUrl("http://www.scripting.com", 15000);
+//mb.append("get www.scripting.com<br>");
+//mb.append(reger.linkrot.GenerateKeywords.getKeywords(myHttp.responsebody));
+
+
+if (request.getParameter("msg")!=null && request.getParameter("msg").equals("fixed")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "The link has been fixed.  It will be added to the list and spidered again soon."));
+}
+
+
+
+mb.append("<font face=arial size=-1 color=#000000>");
+mb.append("Below is a list of outbound links from your site.  Every night the system looks for links in your web log entries and spiders them to see if they're still valid links.  When broken links are found the system flags them as such and gives you an opportunity to fix them quickly and easily.  A cached version of keywords from the page you linked to is sent to Google which responds with a set of recommendations.  If other users have fixed the same link you'll be able to see (in a depersonalized manner) what they fixed it with.  This saves you time and increases the quality of your site.");
+mb.append("</font>");
+mb.append("<br><br>");
+
+mb.append(reger.ui.BubbleBox.start("Outbound Links", pageProps.pathToAppRoot));
+
+mb.append("<table width=100% cellpadding=10 cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#e6e6e6 colspan=2>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("Status");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("Action");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("URL");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("From Entry");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("Last Checked");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+if (userSession.getAccount().isPro()) {
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstBroken= Db.RunSQL("SELECT event.eventid, linkrot.linkrotid, linkrot.url, linkrot.lastcheckeddate, linkrot.isbroken, event.title, event.comments, httpstatuscode FROM event, linkroteventlookup, linkrot, megalog WHERE event.accountid='"+userSession.getAccount().getAccountid()+"' AND event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" AND event.eventid=linkroteventlookup.eventid AND linkroteventlookup.linkrotid=linkrot.linkrotid ORDER BY isbroken DESC, url ASC");
+    //-----------------------------------
+    //-----------------------------------
+    String rowcolor = "#ffffff";
+    if (rstBroken!=null && rstBroken.length>0){
+        for(int i=0; i<rstBroken.length; i++){
+
+            if (rstBroken[i][4].equals("1")){
+                rowcolor = "#ffffff";
+            } else {
+                rowcolor = "#ffffff";
+            }
+
+            mb.append("<tr>");
+            mb.append("<td valign=top bgcolor="+rowcolor+">");
+            if (rstBroken[i][4].equals("1")){
+                mb.append("<img src='"+pageProps.pathToAppRoot+"images/yellow-alert.gif'>");
+            } else {
+                mb.append(" ");
+            }
+            mb.append("</td>");
+            mb.append("<td valign=top bgcolor="+rowcolor+">");
+            mb.append("<font face=arial size=-1>");
+            if (rstBroken[i][4].equals("1")){
+                mb.append("Broken");
+                mb.append("<br>");
+                //Display status
+                mb.append("</font>");
+                mb.append("<font face=arial size=-2>");
+                if (rstBroken[i][7].equals("301")){
+                    mb.append("301: Redirected to another URL.");
+                } else if (rstBroken[i][7].equals("404")){
+                    mb.append("404: Page not found.");
+                } else if (rstBroken[i][7].equals("500")){
+                    mb.append("500: Server error.");
+                } else {
+                    mb.append("Unknown cause.");
+                }
+            } else {
+                mb.append("OK");
+            }
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top bgcolor="+rowcolor+" nowrap>");
+            mb.append("<font face=arial size=-1>");
+            if (rstBroken[i][4].equals("1")){
+                mb.append("<a href='tools-linkrot-fix.log?linkrotid="+rstBroken[i][1]+"&eventid="+rstBroken[i][0]+"'>");
+                mb.append("Fix It");
+                mb.append("</a>");
+            } else {
+                //mb.append("<a href='tools-linkrot-fix.log?linkrotid="+rstBroken[i][1]+"'>");
+                //mb.append("Edit");
+                //mb.append("</a>");
+            }
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top bgcolor="+rowcolor+">");
+            mb.append("<font face=arial size=-2>");
+            mb.append("<a href='"+rstBroken[i][2]+"' target=linkrotid"+rstBroken[i][1]+">");
+            mb.append(rstBroken[i][2]);
+            mb.append("</a>");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top bgcolor="+rowcolor+">");
+            mb.append("<font face=arial size=-2>");
+            mb.append("<a href='entry.log?eventid="+rstBroken[i][0]+"&action=edit'>");
+            mb.append(rstBroken[i][5]);
+            mb.append("</a>");
+            mb.append("<br>");
+            String inContext = reger.core.Util.returnSubstringAroundMatch(rstBroken[i][6], rstBroken[i][2], 200);
+            mb.append("..."+reger.core.Util.xmlclean(inContext)+"...");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top bgcolor="+rowcolor+">");
+            mb.append("<font face=arial size=-2>");
+            java.util.Calendar cal = reger.core.TimeUtils.dbstringtocalendar(rstBroken[i][3]);
+            mb.append(reger.core.TimeUtils.agoText(cal));
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+    } else {
+        mb.append("<td valign=top bgcolor=#ffffff colspan=6>");
+        mb.append("<font face=arial size=-2 color=#000000>");
+        mb.append("No broken links found.");
+        mb.append("</font>");
+        mb.append("</td>");
+    }
+} else {
+    mb.append("<td valign=top bgcolor=#ffffff colspan=6>");
+    mb.append("<font face=arial size=-2 color=#000000>");
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+    mb.append("</font>");
+    mb.append("</td>");
+}
+
+mb.append("</table>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

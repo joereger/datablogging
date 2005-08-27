@@ -1,0 +1,273 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.core.db.Db,
+                 reger.core.db.Db,
+                 reger.core.Util" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.title = "Account Detail";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "placcounts";
+pageProps.aclObjectName = "PLADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Start PLID-choosing SQL
+String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
+if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
+    plidSql = " (pl.plid>'-1') ";
+}
+//End PLID-choosing SQL
+
+
+
+//Start make sure this user can view this accountuserid
+int accountidOfAu=-1;
+//-----------------------------------
+//-----------------------------------
+String[][] rstCheck= Db.RunSQL("SELECT account.accountid FROM accountuser, account, pl WHERE accountuser.accountid=account.accountid AND account.plid=pl.plid AND " + plidSql + " AND accountuser.accountuserid='"+reger.core.Util.cleanForSQL(request.getParameter("accountuserid"))+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstCheck!=null && rstCheck.length>0){
+    //Do nothing
+    accountidOfAu=Integer.parseInt(rstCheck[0][0]);
+} else {
+    out.print("Sorry.  You don't have permission to view this account user.");
+    return;
+}
+//End make sure this user can view this accountuserid
+
+
+//Now, create the accountuser as an object
+reger.Accountuser au = new reger.Accountuser(Integer.parseInt(request.getParameter("accountuserid")), true);
+
+//Set up errortext
+String errortext = "";
+
+//Grant pladmin permission
+if (pageProps.action.equals("grantpladmin")) {
+    //au.grantAcl("PLADMIN", au.getAccountid());
+    au.addUserToAclGroup("PLAdmin", au.getAccountid());
+}
+
+//Revoke pladmin permission
+if (pageProps.action.equals("revokepladmin")) {
+    au.revokeAcl("PLADMIN", au.getAccountid());
+    au.removeUserFromAclGroup("PLAdmin", au.getAccountid());
+}
+
+//Grant pladmin permission
+if (pageProps.action.equals("grantloeadmin")) {
+    //au.grantAcl("MASTERADMIN", au.getAccountid());
+    au.addUserToAclGroup("LOEAdmin", au.getAccountid());
+}
+
+//Revoke pladmin permission
+if (pageProps.action.equals("revokeloeadmin")) {
+    au.revokeAcl("MASTERADMIN", au.getAccountid());
+    au.removeUserFromAclGroup("LOEAdmin", au.getAccountid());
+}
+
+//Start edit
+if (pageProps.action.equals("editaccountuser")) {
+    au.populateFromRequest(request);
+    errortext = au.saveSettings(userSession.getPl());
+}
+
+
+
+
+mb.append("<style type=text/css>");
+mb.append("<--");
+mb.append(".acct:link {color:#0000ff; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:active {color:#0000ff; text-decoration:underline; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:visited {color:#0000ff; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct {color:#000000; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acctbig:link {color:#0000ff; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:active {color:#0000ff; text-decoration:underline; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:visited {color:#0000ff; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig {color:#000000; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:link {color:#0000ff; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:active {color:#0000ff; text-decoration:underline; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:visited {color:#0000ff; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:hover {color: #000000; text-decoration:underline; background-color: #e6e6e6; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall {color:#000000; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append("-->");
+mb.append("<style></style>");
+
+
+
+//Display the errortext
+mb.append("<br><br>");
+if (!errortext.equals("")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+    mb.append("<br>");
+}
+
+
+
+//One click buttons
+mb.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#999999 class=acctbig colspan=2>Quick-admin Links</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+
+mb.append("<td valign=top bgcolor=#ffffff class=acct>");
+if (!au.userCanDoAcl("PLADMIN", au.getAccountid())){
+    mb.append("<a href='accountuserdetail.log?action=grantpladmin&accountuserid="+au.accountuserid+"'>");
+    mb.append("Grant PLAdmin Permission");
+    mb.append("</a>");
+    mb.append("<br>");
+    mb.append("Grants this user permission to manage the private label that they are associated to.");
+} else {
+    mb.append("<a href='accountuserdetail.log?action=revokepladmin&accountuserid="+au.accountuserid+"'>");
+    mb.append("Revoke PLAdmin Permission");
+    mb.append("</a>");
+    mb.append("<br>");
+    mb.append("Revokes permission to manage the private label.");
+}
+mb.append("</td>");
+
+mb.append("<td valign=top bgcolor=#ffffff class=acct>");
+if (!au.userCanDoAcl("MASTERADMIN", au.getAccountid())){
+    mb.append("<a href='accountuserdetail.log?action=grantloeadmin&accountuserid="+au.accountuserid+"'>");
+    mb.append("Grant LOEAdmin Permission");
+    mb.append("</a>");
+    mb.append("<br>");
+    mb.append("Grants this user overall admin permission.  Caution: this is the highest amount of power available in the system.");
+} else {
+    mb.append("<a href='accountuserdetail.log?action=revokeloeadmin&accountuserid="+au.accountuserid+"'>");
+    mb.append("Revoke LOEAdmin Permission");
+    mb.append("</a>");
+    mb.append("<br>");
+    mb.append("Revokes LOEAdmin permission.");
+}
+mb.append("</td>");
+
+
+mb.append("</tr>");
+
+mb.append("</table>");
+
+
+
+
+
+mb.append("<form action=accountuserdetail.log method=post>");
+mb.append("<input type=hidden name=action value=editaccountuser>");
+mb.append("<input type=hidden name=accountuserid value=\""+au.accountuserid+"\">");
+mb.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#999999 class=acctbig colspan=2>"+au.getFriendlyname()+"</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Friendly Name</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=friendlyname value=\""+Util.cleanForHtml(au.getFriendlyname())+"\"></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Username</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=acctuserusername value=\""+Util.cleanForHtml(au.getUsername())+"\"></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Password</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=password name=acctuserpassword value=''></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Verify Password</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=password name=acctuserverifypassword value=''></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Passphrase Question</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=passphrasequestion value=\""+Util.cleanForHtml(au.getPassphrasequestion())+"\"></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Passphrase Answer</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=passphraseanswer value=\""+Util.cleanForHtml(au.getPassphraseanswer())+"\"></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Email Address</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=email value=\""+Util.cleanForHtml(au.getEmail())+"\"></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Create Date (GMT)</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct>"+reger.core.TimeUtils.dateformatcompactwithtime(au.getCreatedate())+"</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Last Login Date (GMT)</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct>"+reger.core.TimeUtils.dateformatcompactwithtime(au.getLastlogindate())+"</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#cccccc class=acct>Is Account Active?</td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct>");
+mb.append("<input type='radio' name='isactive' value='1' ");
+if (au.isactive) {
+    mb.append(" checked");
+}
+mb.append(">Yes");
+mb.append("<br>");
+mb.append("<input type='radio' name='isactive' value='0' ");
+if (!au.isactive) {
+    mb.append(" checked");
+}
+mb.append(">No");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct></td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=submit value='Save'></td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+mb.append("</form>");
+
+
+
+
+
+
+
+
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>

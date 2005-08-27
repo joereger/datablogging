@@ -1,0 +1,200 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.core.db.Db,
+                 reger.core.Util" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.title = "Bandwidth Usage";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "plbandwidth";
+pageProps.aclObjectName = "PLADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Start PLID-choosing SQL
+String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
+if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
+    plidSql = " (pl.plid>'-1') ";
+}
+//End PLID-choosing SQL
+
+
+
+
+
+//Start getting total bandwidth for the month
+
+int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+int year = Calendar.getInstance().get(Calendar.YEAR);
+
+if (request.getParameter("month")!=null && reger.core.Util.isinteger(request.getParameter("month"))){
+    month = Integer.parseInt(request.getParameter("month"));
+}
+
+if (request.getParameter("year")!=null && reger.core.Util.isinteger(request.getParameter("year"))){
+    year = Integer.parseInt(request.getParameter("year"));
+}
+
+mb.append("<form action=bandwidth.log method=get>");
+mb.append("<select name=month>");
+for(int i=1; i<=12; i++){
+    mb.append("<option value='"+i+"' ");
+    if (month==i){
+        mb.append(" SELECTED");
+    }
+    mb.append(">"+i+"</option>");
+}
+mb.append("</select>");
+mb.append(" / ");
+mb.append("<select name=year>");
+for(int i=2004; i<=2010; i++){
+    mb.append("<option value='"+i+"' ");
+    if (year==i){
+        mb.append(" SELECTED");
+    }
+    mb.append(">"+i+"</option>");
+}
+mb.append("</select>");
+mb.append(" <input type=submit value='Go'>");
+mb.append("</form>");
+
+
+long totalBandwidth = 0;
+//-----------------------------------
+//-----------------------------------
+String[][] rstTotBand= Db.RunSQL("SELECT SUM(bytes) FROM bandwidth WHERE month='"+month+"' AND year='"+year+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstTotBand!=null && rstTotBand.length>0){
+    if (reger.core.Util.isnumeric(rstTotBand[0][0])){
+        totalBandwidth = Long.parseLong(rstTotBand[0][0]);
+    }
+}
+
+mb.append("<font face=arial size=+2>");
+mb.append("Total Bandwidth for "+month+"/"+year+": " + ((double)totalBandwidth/(double)1000000) + " Mb");
+mb.append("</font>");
+mb.append("<br><br>");
+
+//End getting total bandwidth for the month
+
+
+
+
+
+mb.append("<style type=text/css>");
+mb.append("<--");
+mb.append(".acct:link {color:#0000ff; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:active {color:#0000ff; text-decoration:underline; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:visited {color:#0000ff; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct {color:#000000; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acctbig:link {color:#0000ff; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:active {color:#0000ff; text-decoration:underline; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:visited {color:#0000ff; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig {color:#000000; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:link {color:#0000ff; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:active {color:#0000ff; text-decoration:underline; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:visited {color:#0000ff; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:hover {color: #000000; text-decoration:underline; background-color: #e6e6e6; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall {color:#000000; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append("-->");
+mb.append("<style></style>");
+
+
+
+String selectSql = "SELECT account.accountid, account.accounturl, createdate, account.plid, pl.plname, (SELECT 1), (SELECT 1), bandwidth.bytes ";
+String countSelectSql = "SELECT count(*) ";
+String fromSql = " FROM account, pl, bandwidth ";
+String orderbySql = " ORDER BY bandwidth.bytes DESC ";
+String whereSql = " WHERE account.plid=pl.plid AND " + plidSql + " AND account.accountid=bandwidth.accountid AND bandwidth.month='"+month+"' AND bandwidth.year='"+year+"' ";
+String sql = selectSql + fromSql + whereSql + orderbySql;
+String countSql = countSelectSql + fromSql + whereSql + orderbySql;
+
+
+
+
+//reger.core.Util.logtodb("bandwidth.log: " + countSql);
+//Get a count of records
+int totalrecords = 0;
+//-----------------------------------
+//-----------------------------------
+String[][] rstCount= Db.RunSQL(countSql);
+//-----------------------------------
+//-----------------------------------
+if (rstCount!=null && rstCount.length>0){
+
+    if (reger.core.Util.isinteger(rstCount[0][0])){
+	    totalrecords=Integer.parseInt(rstCount[0][0]);
+    }
+
+}
+
+//Do the paging
+int currentpage=1;
+if (request.getParameter("currentpage")!=null && Util.isinteger(request.getParameter("currentpage"))){
+    currentpage=Integer.parseInt(request.getParameter("currentpage"));
+}
+int perpage = 100;
+mb.append(reger.pagingLinkPrint.getHtml(totalrecords, currentpage, perpage, request));
+//Limit vars
+int limitMin = (currentpage * perpage) - perpage;
+int limitMax = perpage;
+sql = sql + " LIMIT "+ limitMin +","+ limitMax;
+
+//Start the page display
+mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Bandwidth For Account in "+month+"/"+year+"</td>");
+mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>URL</td>");
+mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Private Label</td>");
+mb.append("</tr>");
+
+//reger.core.Util.logtodb("accounts.log: " + sql);
+//-----------------------------------
+//-----------------------------------
+String[][] rstAccounts= Db.RunSQL(sql);
+//-----------------------------------
+//-----------------------------------
+if (rstAccounts!=null && rstAccounts.length>0){
+	for(int i=0; i<rstAccounts.length; i++){
+
+	    mb.append("<tr>");
+	    mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig>"+(Double.parseDouble(rstAccounts[i][7])/(double)1000000)+" Mb</td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><a href='accountdetail.log?accountid="+rstAccounts[i][0]+"'>"+rstAccounts[i][1]+"</a></td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctsmall>"+rstAccounts[i][4]+"</td>");
+        mb.append("</tr>");
+
+	}
+}
+
+mb.append("</table>");
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>

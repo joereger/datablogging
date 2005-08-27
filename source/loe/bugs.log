@@ -1,0 +1,286 @@
+
+<%@ page import="java.util.*, reger.core.db.Db" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loebugs";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Update
+if (pageProps.action.equals("update")){
+
+    for (Enumeration e = request.getParameterNames(); e.hasMoreElements(); ) {
+        String key = (String) e.nextElement();
+        String value = request.getParameter(key);
+
+        if (key.length()>12){
+            //reger.core.Util.logtodb("key: " + key + " - substring(0,7): " + key.substring(0,7));
+        }
+
+        if (key.length()>12 && key.substring(0,12).equals("bugid-isopen")){
+            int bugid = Integer.parseInt(key.substring(13,key.length()));
+            //reger.core.Util.logtodb("key: " + key + " - value: " + value + " - errorid: " + errorid);
+            //Update
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE bug SET isopen='"+value+"' WHERE bugid='"+bugid+"'");
+            //-----------------------------------
+            //-----------------------------------
+        }
+    }
+
+
+    for (Enumeration e = request.getParameterNames(); e.hasMoreElements(); ) {
+        String key = (String) e.nextElement();
+        String value = request.getParameter(key);
+
+        if (key.length()>14){
+            //reger.core.Util.logtodb("key: " + key + " - substring(0,14): " + key.substring(0,14));
+        }
+
+        if (key.length()>14 && key.substring(0,14).equals("bugid-severity")){
+            int bugid = Integer.parseInt(key.substring(15,key.length()));
+            //reger.core.Util.logtodb("key: " + key + " - value: " + value + " - errorid: " + errorid);
+            //Update
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE bug SET severity='"+value+"' WHERE bugid='"+bugid+"'");
+            //-----------------------------------
+            //-----------------------------------
+        }
+    }
+
+    response.sendRedirect("bugs.log?currentpage=" + request.getParameter("currentpage"));
+    return;
+
+}
+
+mb.append("");
+
+int bugcount = 0;
+//-----------------------------------
+//-----------------------------------
+String[][] rstCountBugs= Db.RunSQL("SELECT count(*) FROM bug");
+//-----------------------------------
+//-----------------------------------
+if (rstCountBugs!=null && rstCountBugs.length>0){
+	bugcount = Integer.parseInt(rstCountBugs[0][0]);
+}
+int currentpage=1;
+if (request.getParameter("currentpage")!=null && reger.core.Util.isinteger(request.getParameter("currentpage"))){
+    currentpage=Integer.parseInt(request.getParameter("currentpage"));
+}
+int perpage = 250;
+mb.append(reger.pagingLinkPrint.getHtml(bugcount, currentpage, perpage, request));
+//Limit vars
+int limitMin = (currentpage * perpage) - perpage;
+int limitMax = perpage;
+
+
+//Start the page display
+
+mb.append("<style type=text/css>");
+mb.append("<--");
+mb.append(".bug:link {color:#0000ff; text-decoration:none; font-size: 9px;}");
+mb.append(".bug:active {color:#0000ff; text-decoration:underline; font-size: 9px;}");
+mb.append(".bug:visited {color:#0000ff; text-decoration:none; font-size: 9px;}");
+mb.append(".bug:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 9px;}");
+mb.append(".bug {color:#000000; text-decoration:none; font-size: 9px;}");
+mb.append(".bugbig:link {color:#0000ff; text-decoration:none; font-size: 12px;}");
+mb.append(".bugbig:active {color:#0000ff; text-decoration:underline; font-size: 12px;}");
+mb.append(".bugbig:visited {color:#0000ff; text-decoration:none; font-size: 12px;}");
+mb.append(".bugbig:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 12px;}");
+mb.append(".bugbig {color:#000000; text-decoration:none; font-size: 12px;}");
+mb.append(".bugsmall:link {color:#0000ff; text-decoration:none; font-size: 6px;}");
+mb.append(".bugsmall:active {color:#0000ff; text-decoration:underline; font-size: 6px;}");
+mb.append(".bugsmall:visited {color:#0000ff; text-decoration:none; font-size: 6px;}");
+mb.append(".bugsmall:hover {color: #000000; text-decoration:underline; background-color: #e6e6e6; font-size: 6px;}");
+mb.append(".bugsmall {color:#000000; text-decoration:none; font-size: 6px;}");
+mb.append("-->");
+mb.append("<style></style>");
+
+mb.append("<a href='bugs.log'><img src=images/bugs.jpg border=0></a><br>");
+
+
+mb.append("<form action=bugnew.log method=post>");
+mb.append("<input type=submit value='New Bug'>");
+mb.append("</form>");
+
+mb.append("<form action=bugs.log method=post>");
+mb.append("<input type=submit value='Save'>");
+mb.append("<input type=hidden name=action value=update>");
+mb.append("<input type=hidden name=currentpage value='"+currentpage+"'>");
+mb.append("<table cellpadding=5 cellspacing=0 width=100% border=1>");
+
+//-----------------------------------
+//-----------------------------------
+    String[][] rs = Db.RunSQL("SELECT bugid, createdate, isopen, severity, bug.bugcategoryid, bugcategory.bugcategory, bug.title FROM bug, bugcategory WHERE bug.bugcategoryid=bugcategory.bugcategoryid ORDER BY isopen DESC, severity ASC, bug.bugcategoryid DESC, bugid DESC LIMIT "+ limitMin +","+ limitMax);
+//-----------------------------------
+//-----------------------------------
+    for(int i=0; i<rs.length; i++){
+        mb.append("<tr>");
+
+
+        //Date
+        mb.append("<td valign=top align=left nowrap>");
+        mb.append("<font face=arial size=-2 class=bug>");
+        mb.append(rs[i][1]);
+        mb.append("<br>");
+        mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rs[i][1])));
+        mb.append("</font>");
+        mb.append("</td>");
+
+        //Bug Title Color
+        String titlebgcolor = "";
+        String sev = rs[i][3];
+        if (sev.equals("1")){
+            titlebgcolor = "#ffcc00";
+        } else if (sev.equals("2")) {
+            titlebgcolor = "#ffffcc";
+        } else if (sev.equals("3")) {
+            titlebgcolor = "#ffffff";
+        }
+
+        //Bug title
+        mb.append("<td valign=top align=left bgcolor="+titlebgcolor+">");
+        mb.append("<font face=arial size=-1 class=bugbig>");
+        mb.append("<a href='bugdetail.log?bugid="+rs[i][0]+"&currentpage="+currentpage+"' class=bugbig>");
+        mb.append("<b>");
+        mb.append(rs[i][6]);
+        mb.append("</b>");
+        mb.append("</a>");
+        mb.append("</font>");
+        mb.append("</td>");
+
+
+        //Status
+        String bgcolor = "";
+        String isopen = rs[i][2];
+        if (isopen.equals("0")){
+            bgcolor = "#ffffff";
+        } else if (isopen.equals("1")) {
+            bgcolor = "#ff0000";
+        }
+        String isChecked="";
+
+        //Status
+        mb.append("<td valign=top bgcolor="+bgcolor+" align=left>");
+        mb.append("<font face=arial size=-1 class=bug>");
+        mb.append("<select name=bugid-isopen-"+rs[i][0]+" style=\"font-size: 10px;\">");
+        if (isopen.equals("1")){
+            isChecked="selected";
+        } else {
+            isChecked="";
+        }
+        mb.append("<option value='1' "+isChecked+">Open</option>");
+        if (isopen.equals("0")){
+            isChecked="selected";
+        } else {
+            isChecked="";
+        }
+        mb.append("<option value='0' "+isChecked+">Closed</option>");
+        mb.append("</select>");
+
+
+
+        mb.append("</td>");
+
+        //Severity
+        bgcolor = "";
+        String severity = rs[i][3];
+        if (severity.equals("1")){
+            bgcolor = "#ffcc00";
+        } else if (severity.equals("2")) {
+            bgcolor = "#ffffcc";
+        } else if (severity.equals("3")) {
+            bgcolor = "#ffffff";
+        }
+        isChecked="";
+
+        //Severity
+        mb.append("<td valign=top bgcolor="+bgcolor+" align=left>");
+        mb.append("<font face=arial size=-1 class=bug>");
+        mb.append("<select name=bugid-severity-"+rs[i][0]+" style=\"font-size: 10px;\">");
+        for(int j=1; j<=3; j++){
+            if (rs[i][3].equals(String.valueOf(j))){
+                isChecked="selected";
+            } else {
+                isChecked="";
+            }
+            String sevText="";
+            if (j==1){
+                sevText="High";
+            } else if (j==2){
+                sevText="Med";
+            } else if (j==3){
+                sevText="Low";
+            }
+            mb.append("<option value='"+j+"' "+isChecked+">"+j+ " - " +sevText+"</option>");
+        }
+        mb.append("</select>");
+        mb.append("</font>");
+        mb.append("</td>");
+
+
+
+
+
+        //Bug category
+        mb.append("<td valign=top align=left nowrap>");
+        mb.append("<font face=arial size=-1 class=bug>");
+        mb.append(rs[i][5]);
+        mb.append("</font>");
+        mb.append("</td>");
+
+        mb.append("</tr>");
+    }
+
+
+
+
+mb.append("</form>");
+mb.append("</table>");
+
+
+
+
+%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

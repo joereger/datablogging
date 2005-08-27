@@ -1,0 +1,108 @@
+<%@ page import="java.util.Calendar,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Time Periods";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "timeperiodsmain";
+pageProps.aclObjectName = "CREATETIMEPERIODS";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="Time Periods are an important way to give your weblog entries context.  A Time Period is just that... a period of time.  You define a start and end time.  Then, all entries that are/were logged between those times are automatically made part of this time period.  Read more about Time Periods below on this page.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//If off
+if (!userSession.getAccount().getIstimeperiodon()){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "The Time Periods feature is currently turned off.  You can turn it on in the <a href='settings-siteprops.log'>Settings tab</a>.  You can create and edit time periods, but they won't appear on your public site until this feature is turned on."));
+}
+
+//Save/edit time periods
+if (pageProps.action.equals("submit")){
+    reger.TimePeriod addTp = new reger.TimePeriod(userSession.getAccount().getAccountid(), request, userSession);
+    addTp.save();
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Done.  Changes are reflected below."));
+}
+
+//Delete time periods
+if (pageProps.action.equals("delete")){
+    reger.TimePeriod delTp = new reger.TimePeriod(userSession.getAccount().getAccountid(), request, userSession);
+    delTp.delete();
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Done.  Changes are reflected below."));
+}
+
+//Edit box
+if (pageProps.action.equals("edit")){
+    mb.append(reger.ui.BubbleBox.start("Edit Time Period", pageProps.pathToAppRoot));
+    int timeperiodid=-1;
+    if (request.getParameter("timeperiodid")!=null && reger.core.Util.isinteger(request.getParameter("timeperiodid"))) {
+        timeperiodid=Integer.parseInt(request.getParameter("timeperiodid"));
+    }
+    reger.TimePeriod tpEd = new reger.TimePeriod(timeperiodid, userSession);
+    mb.append(tpEd.getHtml(true, "submit"));
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+}
+
+
+//Display a timeline
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+reger.TimeLine tl = new reger.TimeLine(null, null, null, userSession.getAccount().getAccountid(), userSession);
+mb.append(tl.getTimelineHtml(pageProps.pathToAppRoot, 600));
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("<br>");
+//sc.append("<br>");
+//
+//sc.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+//
+//sc.append("<font face=arial size=+1>");
+//sc.append("What are Time Periods?");
+//sc.append("</font>");
+//sc.append("<br>");
+//sc.append("<font face=arial size=-1>");
+//sc.append("Time Periods mark sections of time.  They have a start and a finish.  Web log entries that fall between these dates are automatically considered part of the time period.");
+//sc.append("</font>");
+//sc.append("<br>");
+//sc.append("<br>");
+//sc.append("<font face=arial size=+1>");
+//sc.append("Why use Time Periods?");
+//sc.append("</font>");
+//sc.append("<br>");
+//sc.append("<font face=arial size=-1>");
+//sc.append("Imagine having all of the critical time periods of your life defined.  For example: 'In High School', 'In College', 'Dating SoAndSo', 'Living in Atlanta'.  Many of these periods will overlap.  Now, when you view log entries, you'll automatically be able to see which time periods they were part of.  This creates a context for each entry.");
+//sc.append("</font>");
+//sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

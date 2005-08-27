@@ -1,0 +1,79 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Contact Us";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+mb.append("Please contact us to discuss these or any other business opportunities.  We're flexible, creative and aggressive about helping our business partners leverage our investment in weblogging technologies.");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>General Information</h1>");
+mb.append("Joe Reger, Jr.");
+mb.append("<br>");
+mb.append("Founder, CEO");
+mb.append("<br>");
+mb.append("ph: 404.394.6102");
+mb.append("<br>");
+mb.append("email: <a href='mailto:joe@reger.com'>joe@reger.com</a>");
+mb.append("<br>");
+mb.append("icq: 29269081");
+mb.append("<br>");
+mb.append("reger.com-enabled blog: <a href='http://www.joereger.com'>http://www.joereger.com</a>");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>Sales</h1>");
+mb.append("Mark Lowman");
+mb.append("<br>");
+mb.append("Director of Sales");
+mb.append("<br>");
+mb.append("ph: 404.784.2186");
+mb.append("<br>");
+mb.append("email: <a href='mailto:mark.lowman@reger.com'>mark.lowman@reger.com</a>");
+mb.append("<br>");
+mb.append("reger.com-enabled blog: <a href='http://particleman.reger.com'>http://particleman.qlogger.com</a>");
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

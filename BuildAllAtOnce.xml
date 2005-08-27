@@ -1,0 +1,44 @@
+
+<project name="BuildAllAtOnce" default="BuildDistributableWar" basedir=".">
+  <description>
+        Builds WAR files for all instances.
+  </description>
+
+
+
+  <!-- Create a buildnumber -->
+  <target name="buildnumber" description="Create a build number.">
+     <echo message="Generating build number."/>
+     <buildnumber/>
+  </target>
+
+  <!-- Create a timestamp -->
+  <target name="timestamp" description="Create the dirs" depends="buildnumber">
+  	 <echo message="Generating timestamp."/>
+     <tstamp>
+        <format property="build.time" pattern="yyyy-MM-dd-(hh-mm-ssaa)"/>
+     </tstamp>
+  </target>
+
+   <!-- Import build number file -->
+   <property file="build.number"/>
+
+   <target name="cleanupWarDir" description="Cleans up the War Dir" depends="timestamp">
+    <delete dir="builds/WARs"/>
+   </target>
+  
+   <target name="BuildDistributableWar" description="Build WAR files for distributable version." depends="cleanupWarDir">
+       <ant antfile="RegercomDistributable.xml" target="buildWar" inheritAll="false">
+          <property name="build.number" value="${build.number}"/>
+       </ant>
+   </target>
+
+   <target name="BuildRegerCoreJar" description="Build the reger.core JAR file." depends="cleanupWarDir">
+       <ant antfile="RegercomDistributable.xml" target="buildRegerCoreJar" inheritAll="false">
+          <property name="build.number" value="${build.number}"/>
+       </ant>
+   </target>
+
+
+
+</project>

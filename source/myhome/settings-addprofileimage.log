@@ -1,0 +1,99 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Add Profile Image";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingsaddprofileimage";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
+pageProps.pathToAppRoot="../";
+pageProps.isUploadPage=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%@ page import="org.apache.commons.fileupload.*,
+                 reger.core.db.Db" %>
+<%@ page import="java.io.*" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Parse the upload
+//reger.Upload ul = new reger.Upload(request);
+
+
+//int localEventid=0;
+////if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//    //localEventid = Integer.parseInt(request.getParameter("eventid"));
+////}
+//if (ul.requestParams.get("eventid")!=null && reger.core.Util.isinteger(ul.requestParams.get("eventid").toString())){
+//    localEventid = Integer.parseInt(ul.requestParams.get("eventid").toString());
+//}
+
+//Save the upload
+if (ul.isMultipart) {
+    ul.save(0, userSession.getAccountuser().getAccountuserid(), userSession);
+}
+
+//Redirect if upload was successful
+if (ul.hasenoughfreespace && ul.isMultipart) {
+    response.sendRedirect("settings-profile.log");
+    return;
+}
+
+//Start the page
+
+
+if (!ul.hasenoughfreespace){
+    //@todo Be a better salesman... the user just hit an account limit.  Love them.  Feel their pain.  Offer a fix... for a small fee.
+    reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Your account does not have enough free space for this upload.  We have saved as much of the upload as was possible.  You can upgrade your account for more space.");
+}
+
+
+
+
+mb.append("<br><br>");
+
+mb.append("<font face=arial size=+1>");
+mb.append("Add an Image to Your Profile");
+mb.append("</font>");
+
+mb.append("<br>");
+
+mb.append("<font face=arial size=-2>");
+mb.append("Click the Browse button to find an image on your hard drive and then click Upload to finish.");
+mb.append("</font>");
+
+mb.append("<form name='myform' action='settings-addprofileimage.log' method='post' enctype='multipart/form-data'>");
+for(int i=0; i<1; i++){
+    mb.append("<input type='file' name='file"+i+"'>");
+    mb.append("<br>");
+}
+mb.append("<input type='submit' name='Submit' value='Upload'/>");
+mb.append("</form>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

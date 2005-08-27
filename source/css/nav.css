@@ -1,0 +1,181 @@
+
+
+/*This is the property that prevents the IE bug where tables at 100% inside DIVs expand beyond the end of the screen*/
+#main-pageXXX tableXXX {
+	width: 95%;
+}
+
+
+/*  ---------------------------------------- */
+/*  Nav Level Zero                        */
+
+
+TD.navlevel0topbar {
+
+}
+
+TD.navlevel0bottom {
+	border-top: 1px solid #000;
+}
+
+TD.navtablevel0spacer {
+	border-bottom: 1px solid #000;
+	bgcolor: #ffcc00;
+}
+
+TD.navtablevel0tabon {
+	border-bottom: 1px solid #fff;
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	background: #ffffff;
+}
+
+TD.navtablevel0tabon a {
+	font-family: arial, verdana, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #666;
+	text-decoration: none;
+	}
+
+TD.navtablevel0tabon a:hover {
+	text-decoration: underline;
+}
+
+TD.navtablevel0taboff {
+	border-bottom: 1px solid #000;
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	background: #EEE8AA;
+}
+
+TD.navtablevel0taboff a {
+	font-family: arial, verdana, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #666;
+	text-decoration: none;
+	}
+
+TD.navtablevel0taboff a:hover {
+	text-decoration: underline;
+}
+
+
+/*  ---------------------------------------- */
+/*  Nav Level One                        */
+
+
+	
+TD.navlevel1body {
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+
+
+
+TD.navtablevel1spacer {
+	border-bottom: 1px solid #000;
+	bgcolor: #ffcc00;
+}
+
+TD.navtablevel1tabon {
+	border-bottom: 1px solid #fff;
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	background: #ffffff;
+}
+
+TD.navtablevel1tabon a {
+	font-family: arial, verdana, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #666;
+	text-decoration: none;
+	}
+
+TD.navtablevel1tabon a:hover {
+	text-decoration: underline;
+}
+
+TD.navtablevel1taboff {
+	border-bottom: 1px solid #000;
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	background: #e6e6e6;
+}
+
+TD.navtablevel1taboff a {
+	font-family: arial, verdana, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #666;
+	text-decoration: none;
+	}
+
+TD.navtablevel1taboff a:hover {
+	text-decoration: underline;
+}
+	
+/*  ---------------------------------------- */
+/*  Nav Level Two                         */
+
+
+	
+TD.navlevel2body {
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+
+
+
+TD.navtablevel2spacer {
+	border-bottom: 1px solid #000;
+	bgcolor: #ffcc00;
+}
+
+TD.navtablevel2tabon {
+	border-bottom: 1px solid #fff;
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	background: #ffffff;
+}
+
+TD.navtablevel2tabon a {
+	font-family: arial, verdana, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #666;
+	text-decoration: none;
+	}
+
+TD.navtablevel2tabon a:hover {
+	text-decoration: underline;
+}
+
+TD.navtablevel2taboff {
+	border-bottom: 1px solid #000;
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	background: #eeeeee;
+}
+
+TD.navtablevel2taboff a {
+	font-family: arial, verdana, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #666;
+	text-decoration: none;
+	}
+
+TD.navtablevel2taboff a:hover {
+	text-decoration: underline;
+}

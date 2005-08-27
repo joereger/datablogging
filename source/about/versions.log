@@ -1,0 +1,58 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<br><br>");
+mb.append("<blockquote>");
+mb.append("<font face=arial size=-1>");
+if (request.getParameter("versionid")==null || !reger.core.Util.isinteger(request.getParameter("versionid")) || reger.versioninfo.VersionInfo.getVersion(Integer.parseInt(request.getParameter("versionid")))==null){
+    mb.append(reger.versioninfo.VersionInfoRenderer.getVersionList("versions.log"));
+} else {
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<a href='versions.log'>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("List All Versions");
+    mb.append("</font>");
+    mb.append("</a>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append(reger.versioninfo.VersionInfoRenderer.getVersionAsHtml(Integer.parseInt(request.getParameter("versionid"))));
+
+}
+mb.append("</font>");
+mb.append("</blockquote>");
+mb.append("<br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

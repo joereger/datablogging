@@ -1,0 +1,88 @@
+<%@ page import="reger.core.db.Db,
+                 reger.BugUtil"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String email = userSession.getAccountuser().getEmail();
+String message="";
+boolean mailSent=false;
+
+if (pageProps.action.equals("sendemail")) {
+    //Get email address
+    if (request.getParameter("email")!=null && !request.getParameter("email").equals("")){
+        email=request.getParameter("email");
+    }
+    //Get message
+    if (request.getParameter("message")!=null && !request.getParameter("message").equals("")){
+        message=request.getParameter("message");
+    }
+    //Send the email
+    reger.core.EmailSend.sendMail(email, userSession.getPl().getEmailtonotifyofnewaccounts(), "Weblogging Server Help Page Question/Comment ("+userSession.getPl().getPlBaseUrl()+")", message);
+
+    //Slap that email into the database as a bug... we love customers and absolutely must track all customer issues
+    //-----------------------------------
+    //-----------------------------------
+    int bugid = Db.RunSQLInsert("INSERT INTO bug(createdate, isopen, severity, bugcategoryid, title) VALUES('"+reger.core.TimeUtils.nowInGmtString()+"', '1', '1', '"+BugUtil.bugcategoryidForUserComments()+"', 'User Comment: "+reger.core.Util.cleanForSQL(reger.core.Util.truncateString(message, 25))+"')");
+    //-----------------------------------
+    //-----------------------------------
+    //Also slap the entire message as a comment
+    //-----------------------------------
+    //-----------------------------------
+    int identity = Db.RunSQLInsert("INSERT INTO bugcomment(bugid, date, comment) VALUES('"+bugid+"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+reger.core.Util.cleanForSQL("From: " + email + " -- " + message)+"')");
+    //-----------------------------------
+    //-----------------------------------
+
+    //Set a sent flag
+    mailSent=true;
+}
+mb.append("<center>");
+mb.append("<br><br>");
+mb.append("<form action=feedback.log method=post>");
+mb.append("<input type=hidden name=action value=sendemail>");
+
+if (mailSent){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Thanks!  Your message is now zipping through cyberspace to us.  We appreciate your input.  Happy logging!  You can close this window to return to what you were doing."));
+    mb.append("<br>");
+}
+
+mb.append("<font face=arial size=-1>");
+
+mb.append("<b>Email Address:</b><br>(if you want a response):<br><input type=text name=email value=\""+reger.core.Util.cleanForHtml(email)+"\">");
+
+mb.append("<br><br><b>Question, comment, recommendation or observation:</b><br>");
+mb.append("<textarea name=message cols='35' rows='6' style=\"width: 100%;\"></textarea>");
+mb.append("<br><br><input type=submit value='Send Your Message'>");
+
+mb.append("</font>");
+
+mb.append("</form>");
+mb.append("</center>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

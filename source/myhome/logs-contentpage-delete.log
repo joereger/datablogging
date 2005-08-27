@@ -1,0 +1,78 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 reger.nestednav.NestedNavItem,
+                 reger.nestednav.NestedNavCollection,
+                 reger.ContentPage,
+                 reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "<img src='../images/icon-static-page-med-notext.gif' align=top> Delete Static Content Page?";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logsnewstatic";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+//pageProps.isLogidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+if (request.getParameter("contentpageid")!=null && Util.isinteger(request.getParameter("contentpageid"))){
+    ContentPage contentPage = new ContentPage(Integer.parseInt(request.getParameter("contentpageid")));
+    if (contentPage!=null){
+        if (contentPage.getAccountid()==userSession.getAccount().getAccountid()){
+
+            if (pageProps.action.equals("deletestart")){
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Are you sure you want to delete the content page called \""+contentPage.getName()+"\"?<br><a href='logs-contentpage-delete.log?action=deletefinish&contentpageid="+contentPage.getContentpageid()+"'>Yes, Delete It</a> &nbsp;&nbsp;&nbsp;<a href='logs-log-list.log'>No.</a>"));
+            } else if (pageProps.action.equals("deletefinish")){
+                contentPage.delete();
+                userSession.getAccount().refresh();
+                response.sendRedirect("logs-log-list.log");
+                return;
+            } else {
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, improper action found."));
+            }
+
+        }
+    }
+
+} else {
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, that content page wasn't found."));
+}
+
+
+
+
+mb.append("<br><br><br><br><br>");
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

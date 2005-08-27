@@ -1,0 +1,191 @@
+<%@ page import="reger.core.db.Db,
+                 org.apache.xmlrpc.XmlRpcClient,
+                 java.util.Vector,
+                 java.util.Hashtable,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Find Groups";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "groups";
+pageProps.aclObjectName = "MANAGEGROUPS";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.ui.BubbleBox.start("Search Groups", pageProps.pathToAppRoot));
+if (request.getParameter("searchterms")==null || request.getParameter("searchterms").equals("")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Please provide search terms to search groups."));
+}
+mb.append("<br>");
+mb.append("<form action='groups-find.log' method=post>");
+mb.append("<input type=hidden name=action value='searchgroups'>");
+mb.append("<input type=textbox name=searchterms value='' size=35 maxlength=255>");
+mb.append("<input type=submit value='Search for Groups'>");
+mb.append("</form>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms")!=null && !request.getParameter("searchterms").equals("")){
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstServers= Db.RunSQL("SELECT groupserversubscriptionid, serverurl FROM groupserversubscription WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY serverurl ASC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstServers!=null && rstServers.length>0){
+    	for(int i=0; i<rstServers.length; i++){
+
+    	    mb.append(reger.ui.BubbleBox.start("Search Results on Server: " + rstServers[i][1], pageProps.pathToAppRoot));
+
+            try{
+                XmlRpcClient xmlrpc = new XmlRpcClient (rstServers[i][1]);
+                Vector params = new Vector();
+                params.addElement (request.getParameter("searchterms"));
+                Vector result = (Vector) xmlrpc.execute ("weblogGroup.searchGroups", params);
+
+                mb.append("<table cellpadding=5 cellspacing=2 border=0>");
+                if (result!=null){
+                    for (int j = 0; j < result.size(); j++) {
+                        Hashtable o = (Hashtable) result.elementAt(j);
+
+
+                        mb.append("<tr>");
+
+
+
+//                        mb.append("<td valign=top>");
+//                        mb.append("<font face=arial size=-2>");
+//                        mb.append("<a href='"+o.get("webUrlOfGroup")+"'>");
+//                        mb.append("Web");
+//                        mb.append("</a>");
+//                        mb.append("</font>");
+//                        mb.append("</td>");
+
+
+                        mb.append("<td valign=top align=center>");
+                        mb.append("<font face=arial size=-2>");
+                        if (((Boolean)o.get("viewingEntriesRequiresGroupKey")).booleanValue()){
+                            mb.append("<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'><br>Private Reading");
+                        } else {
+                            mb.append("<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'><br>Public Reading");
+                        }
+                        mb.append("</font>");
+                        mb.append("</td>");
+
+                        mb.append("<td valign=top align=center>");
+                        mb.append("<font face=arial size=-2>");
+                        if (((Boolean)o.get("addingEntriesRequiresGroupKey")).booleanValue()){
+                            mb.append("<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'><br>Private Posting");
+                        } else {
+                            mb.append("<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'><br>Public Posting");
+                        }
+                        mb.append("</font>");
+                        mb.append("</td>");
+
+
+
+                        mb.append("<td valign=top align=center>");
+                        mb.append("<font face=arial size=-2>");
+                        mb.append("<a href='groups-edit.log?action=join&groupid="+o.get("groupid")+"&groupserversubscriptionid="+rstServers[i][0]+"'>");
+                        mb.append("<img src='../images/plus-icon.gif' border=0>");
+                        mb.append("<br>");
+                        mb.append("Join Group");
+                        mb.append("</a>");
+                        mb.append("</font>");
+                        mb.append("</td>");
+
+
+                        int totalEntries = 0;
+                        if (o.get("totalEntries")!=null){
+                            totalEntries = ((Integer)o.get("totalEntries")).intValue();
+                        }
+
+
+                        mb.append("<td valign=top>");
+                        mb.append("<a href='"+o.get("webUrlOfGroup")+"'>");
+                        mb.append("<font face=arial size=-1>");
+                        mb.append("<strong>");
+                        mb.append(o.get("groupName"));
+                        mb.append("</strong>");
+                        mb.append("</font>");
+                        mb.append("</a>");
+                        mb.append(" <font face=arial size=-2>( ");
+                        mb.append(totalEntries);
+                        if (totalEntries==1){
+                            mb.append(" Entry");
+                        } else {
+                            mb.append(" Entries");
+                        }
+                        mb.append(" )</font>");
+                        mb.append("<br>");
+                        mb.append("<font face=arial size=-2>");
+                        mb.append(o.get("groupDescription"));
+                        mb.append("</font>");
+                        mb.append("</td>");
+
+
+
+
+
+                        mb.append("<td valign=top>");
+                        mb.append("<font face=arial size=-2>");
+                        mb.append("<a href='"+o.get("feedUrlOfGroup")+"'>");
+                        mb.append("<img src='../images/xml-newsfeed.png' alt='' border='0'>");
+                        mb.append("</a>");
+                        mb.append("</font>");
+                        mb.append("</td>");
+
+                        mb.append("</tr>");
+
+                    }
+                }
+                mb.append("</table>");
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+                mb.append("<font face=arial size=-2>");
+                mb.append("Error contacting this server: " + e.getMessage());
+                mb.append("<font face=arial size=-2>");
+            }
+            mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    	}
+    }
+
+
+
+
+
+
+
+
+
+}
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

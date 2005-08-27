@@ -1,0 +1,51 @@
+
+
+<Server port="8005" shutdown="SHUTDOWN" debug="0">
+  
+	<!-- Start Tomcat 5.0.x Manager Setup -->
+	<GlobalNamingResources>
+    		<Resource name="UserDatabase" auth="Container" type="org.apache.catalina.UserDatabase" description="User database that can be updated and saved">
+    		</Resource>
+    		<ResourceParams name="UserDatabase">
+      		<parameter>
+        		<name>factory</name>
+        		<value>org.apache.catalina.users.MemoryUserDatabaseFactory</value>
+      		</parameter>
+      		<parameter>
+        		<name>pathname</name>
+        		<value>conf/tomcat-users.xml</value>
+      		</parameter>
+    		</ResourceParams>
+ 	</GlobalNamingResources>
+	<!-- End Tomcat 5.0.x Manager Setup -->
+
+	<!-- Start Tomcat 5.5.x Manager Setup -->
+	<!--
+	<GlobalNamingResources>
+    		<Resource name="UserDatabase" auth="Container" type="org.apache.catalina.UserDatabase" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" pathname="conf/tomcat-users.xml" />
+  	</GlobalNamingResources>
+	-->
+	<!-- End Tomcat 5.5.x Manager Setup -->
+ 
+
+  	<!-- Base reger.com Service -->
+  	<Service name="Catalina">
+    		<Connector port="80" address="127.0.0.1" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="8443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true"/>
+		<!--
+		<Connector port="443" address="127.0.0.1" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true" scheme="https" secure="true" clientAuth="false" sslProtocol="TLS" keystoreFile="C:\SuperFly\certificates\regerdotcomnew.keystore" keystorePass="changeit" keystoreType="JKS"/>
+      		-->
+		<Engine name="Catalina" defaultHost="localhost" debug="0">
+      		<Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase" />
+			<Host name="localhost" debug="0" appBase="webapps" unpackWAR="true" autoDeploy="true" xmlValidation="false" xmlNamespaceAware="false" antiJARLocking="true" antiResourceLocking="true">
+      			<Context path="/manager" docBase="../server/webapps/manager" debug="0" privileged="true">
+  					<ResourceLink name="users" global="UserDatabase" type="org.apache.catalina.realm.UserDatabaseRealm"/>
+				</Context>
+			</Host>
+    		</Engine>
+  	</Service>
+  
+
+</Server>
+
+
+

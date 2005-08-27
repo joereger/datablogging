@@ -1,0 +1,87 @@
+
+<%@ page import="java.util.*" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "MasterCookie";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loemastercookie";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+if (pageProps.action.equals("setmastercookie")) {
+	Cookie userCookie = new Cookie("mastercookie", "mastercookieon");
+    userCookie.setMaxAge(60*60*24*365);
+    userCookie.setDomain(userSession.getUrlSplitter().getRawIncomingServername());
+    userCookie.setPath("/");
+    response.addCookie(userCookie);
+	response.sendRedirect("mastercookie.log");
+	return;
+} else if (pageProps.action.equals("clearmastercookie")){
+	Cookie userCookie = new Cookie("mastercookie", "");
+    userCookie.setMaxAge(0);
+    userCookie.setDomain(userSession.getUrlSplitter().getRawIncomingServername());
+    userCookie.setPath("/");
+    response.addCookie(userCookie);
+	response.sendRedirect("mastercookie.log");
+	return;
+}
+
+
+mb.append("<br><br>");
+
+
+mb.append("<table cellpadding=15 cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td width=40% valign=top>");
+
+//Check for the supercookie
+if (reger.core.Util.isMastercookieOn(request)){
+	mb.append("<font face=arial size=+1>");
+	mb.append("<a href='mastercookie.log?action=clearmastercookie'>Clear the Mastercookie!</a><br>");
+	mb.append("</font>");
+	mb.append("<font face=arial size=-1>");
+	mb.append("The Mastercookie is currently <strong>on</strong> for this browser on this computer.");
+	mb.append("</font>");
+} else {
+    mb.append("<font face=arial size=+1>");
+    mb.append("<a href='mastercookie.log?action=setmastercookie'>Set the Mastercookie!</a><br>");
+    mb.append("</font>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("The Mastercookie is currently <strong>off</strong> for this browser on this computer.");
+    mb.append("</font>");
+}
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

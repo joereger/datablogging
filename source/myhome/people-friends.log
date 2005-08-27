@@ -1,0 +1,254 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "People";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "peoplefriends";
+pageProps.aclObjectName = "PEOPLE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+//============================================
+
+//reger.Friend friend = new reger.Friend();
+
+//Log to Db
+//friend.debugWriteFriendsToDb();
+
+//Do a data load
+//friend.dataload(1000);
+
+//reger.core.Util.logtodb("Done loading Friends HashMap.");
+
+//Get the relationship between two
+//int[][] allPaths = friend.getAllRelationships(24, 578);
+//reger.core.Util.logDoubleIntArrayToDb("AllFriends::::::", allPaths);
+
+
+//for(int i=0; i<=1; i++){
+//    int a = reger.core.Util.randomInt(1000);
+//    int b = reger.core.Util.randomInt(1000);
+//
+//    int[][] allPaths = friend.getAllRelationships(a, b);
+//    reger.core.Util.logDoubleIntArrayToDb("AllFriends::::::"+a+"-"+b, allPaths);
+//}
+
+//int a = 149;
+//int b = 296;
+//int[][] allPaths = friend.getAllRelationships(a, b);
+//reger.core.Util.logDoubleIntArrayToDb("AllFriends::::::"+a+"-"+b, allPaths);
+
+//Get the relationship between two
+//int[] path = friend.getRelationship(12, 584);
+
+//Log path to Db
+//reger.core.Util.logIntArrayToDb("Relationship between: 12 & 584:", path);
+
+
+
+
+//============================================
+
+
+
+//Cancel invitations
+if (pageProps.action.equals("cancelinvitation")){
+    if (request.getParameter("friendinvitationid")!=null && reger.core.Util.isinteger(request.getParameter("friendinvitationid"))){
+        int friendinvitationid = Integer.parseInt(request.getParameter("friendinvitationid"));
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate("DELETE FROM friendinvitation WHERE accountuseridsource='"+userSession.getAccountuser().getAccountuserid()+"' AND friendinvitationid='"+friendinvitationid+"'");
+        //-----------------------------------
+        //-----------------------------------
+    }
+}
+
+//Resend invitations
+if (pageProps.action.equals("resendinvitation")){
+    if (request.getParameter("friendinvitationid")!=null && reger.core.Util.isinteger(request.getParameter("friendinvitationid"))){
+        int friendinvitationid = Integer.parseInt(request.getParameter("friendinvitationid"));
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstInvite= Db.RunSQL("SELECT email, subject, message FROM friendinvitation WHERE accountuseridsource='"+userSession.getAccountuser().getAccountuserid()+"' AND friendinvitationid='"+friendinvitationid+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstInvite!=null && rstInvite.length>0){
+            String fromaddress = reger.Vars.EMAILDEFAULTFROM;
+            //Get from address
+            if (!userSession.getAccountuser().getEmail().equals("")){
+                fromaddress = userSession.getAccountuser().getEmail();
+            }
+            //Generate the messagebody
+            StringBuffer emailBody = reger.emailtext.BasicEmails.invitationEmail(userSession.getAccountuser(), userSession.getPl(), friendinvitationid);
+
+            //Send the email
+            reger.core.Util.debug(5, "people-friends.log - resend - about to send the email to:" + rstInvite[0][0]);
+            reger.core.EmailSend.sendMail(fromaddress, rstInvite[0][0], rstInvite[0][1], emailBody.toString());
+            reger.core.Util.debug(5, "people-friends.log - resend - email body to:" + rstInvite[0][0] + "<br><br>" + emailBody.toString());
+            reger.core.Util.debug(5, "people-friends.log - resend - finished sending email to:" + rstInvite[0][0]);
+
+            //Update the sucker
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE friendinvitation SET emaillastsentdate='"+reger.core.TimeUtils.nowInGmtString()+"' WHERE accountuseridsource='"+userSession.getAccountuser().getAccountuserid()+"' AND friendinvitationid='"+friendinvitationid+"'");
+            //-----------------------------------
+            //-----------------------------------
+        }
+    }
+}
+
+//Delete Friendship
+if (pageProps.action.equals("cancelfriendship")){
+    if (request.getParameter("friendaccountuseridtodelete")!=null && reger.core.Util.isinteger(request.getParameter("friendaccountuseridtodelete"))){
+        int friendaccountuseridtodelete = Integer.parseInt(request.getParameter("friendaccountuseridtodelete"));
+        userSession.getAccountuser().deleteFriend(friendaccountuseridtodelete);
+    }
+}
+
+
+mb.append("<br><br>");
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+mb.append(reger.FriendList.getList(userSession, pageProps.pathToAppRoot, 0));
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+mb.append("<table cellpadding=5 cellspacing=2 width=100% border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left colspan=4 bgcolor=#cccccc>");
+mb.append("<font face=arial size=-1>");
+mb.append("Invitations");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2>");
+mb.append("Date");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2>");
+mb.append("Email Address");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2>");
+mb.append("Status");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2>");
+mb.append("Actions");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstInvitation= Db.RunSQL("SELECT friendinvitationid, email, createdate, status, accountuseridtarget FROM friendinvitation WHERE accountuseridsource='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY createdate DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstInvitation!=null && rstInvitation.length>0){
+	for(int i=0; i<rstInvitation.length; i++){
+
+	    mb.append("<tr>");
+        mb.append("<td valign=top align=left bgcolor=#ffffff>");
+        mb.append("<font face=arial size=-2>");
+        String cal = reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.gmttousertime(reger.core.TimeUtils.dbstringtocalendar(rstInvitation[i][2]), userSession.getAccount().getTimezoneid()));
+        mb.append(cal);
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top align=left bgcolor=#ffffff>");
+        mb.append("<font face=arial size=-1>");
+        mb.append(rstInvitation[i][1]);
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top align=left bgcolor=#ffffff>");
+        mb.append("<font face=arial size=-1>");
+        if (Integer.parseInt(rstInvitation[i][3])==reger.Vars.INVITATIONSTATUSVIEWED){
+            mb.append("Viewed");
+        } else if (Integer.parseInt(rstInvitation[i][3])==reger.Vars.INVITATIONSTATUSACCEPTED){
+            mb.append("Accepted");
+        } else if (Integer.parseInt(rstInvitation[i][3])==reger.Vars.INVITATIONSTATUSDECLINED){
+            mb.append("Declined");
+        }  else{
+            mb.append("Open");
+        }
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td valign=top align=left bgcolor=#ffffff>");
+        mb.append("<font face=arial size=-2>");
+        mb.append("<a href='people-friends.log?action=cancelinvitation&friendinvitationid="+rstInvitation[i][0]+"'>");
+        mb.append("(Cancel)");
+        mb.append("</a>");
+        mb.append("<br>");
+        mb.append("<a href='people-friends.log?action=resendinvitation&friendinvitationid="+rstInvitation[i][0]+"'>");
+        mb.append("(Resend)");
+        mb.append("</a>");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+
+	}
+
+
+	mb.append("<tr>");
+    mb.append("<td valign=top align=left colspan=4 bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<a href='people-friends-invite.log?action=newstart'>");
+    mb.append("Invite Friends");
+    mb.append("</a>");
+    mb.append("</font>");
+    mb.append("</td>");
+
+} else {
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left colspan=4 bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("No invitations are active.  <a href='people-friends-invite.log'>Invite friends now.</a>");
+    mb.append("</font>");
+    mb.append("</td>");
+}
+
+
+
+
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

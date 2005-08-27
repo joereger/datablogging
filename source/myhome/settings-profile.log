@@ -1,0 +1,110 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Profile";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingsprofilemain";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//Delete the image if it's called for... don't worry... it'll only be deleted if the account owner themselves is asking for it to be deleted.
+if (pageProps.action.equals("deleteimage")){
+    if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))){
+        userSession.getAccountuser().deleteImage(Integer.parseInt(request.getParameter("imageid")), userSession.getAccountuser());
+    }
+}
+
+//Delete the image if it's called for...
+if (pageProps.action.equals("deleteaccountuserfield")){
+    if (request.getParameter("accountuserfieldid")!=null && reger.core.Util.isinteger(request.getParameter("accountuserfieldid"))){
+        reger.Accountuserfield af = new reger.Accountuserfield(Integer.parseInt(request.getParameter("accountuserfieldid")));
+        af.deleteThisField(userSession);
+        userSession.getAccountuser().populate();
+    }
+}
+
+//Do edits
+if (pageProps.action.equals("edit")){
+
+    //Edit the friendlyname
+    if (request.getParameter("friendlyname")!=null && !request.getParameter("friendlyname").equals("")){
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate("UPDATE accountuser SET friendlyname='"+reger.core.Util.cleanForSQL(request.getParameter("friendlyname"))+"' WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"'");
+        //-----------------------------------
+        //-----------------------------------
+    }
+
+    //Edit the profile summary
+    if (request.getParameter("onelinesummary")!=null && !request.getParameter("onelinesummary").equals("")){
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate("UPDATE accountuser SET onelinesummary='"+reger.core.Util.cleanForSQL(request.getParameter("onelinesummary"))+"' WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"'");
+        //-----------------------------------
+        //-----------------------------------
+    }
+
+    //Edit the accountuserfields
+    userSession.getAccountuser().updateAccountuserfieldsFromRequest(request);
+    userSession.getAccountuser().saveAccountuserfields(userSession.getAccountuser());
+    userSession.getAccountuser().populate();
+
+}
+
+
+
+
+
+
+
+//Determine editability of page display
+boolean iseditable = false;
+if (request.getParameter("iseditable")!=null && !request.getParameter("iseditable").equals("")){
+    if (request.getParameter("iseditable").equals("1")){
+        iseditable = true;
+    }
+}
+
+//Figure out which user to display
+reger.Accountuser accountuser = userSession.getAccountuser();
+if (request.getParameter("accountuserid")!=null && reger.core.Util.isinteger(request.getParameter("accountuserid"))){
+    int tmpaccountuserid = Integer.parseInt(request.getParameter("accountuserid"));
+    if (userSession.getAccountuser().getAccountuserid()!=tmpaccountuserid){
+        accountuser = new reger.Accountuser(tmpaccountuserid, true);
+        iseditable = false;
+    }
+}
+
+mb.append("<br><br>");
+mb.append(reger.Profile.getHtmlProfile(accountuser, userSession, iseditable, pageProps.pathToAppRoot));
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

@@ -1,0 +1,362 @@
+<%@ page import="reger.core.db.Db,
+                 org.apache.xmlrpc.XmlRpcClient,
+                 java.util.Vector,
+                 java.util.Hashtable,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Group";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "groups";
+pageProps.aclObjectName = "MANAGEGROUPS";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Get group details
+int groupid = -1;
+int groupsubscriptionid = -1;
+String groupName = "";
+String groupDescription = "";
+String webUrlOfGroup = "";
+String feedUrlOfGroup = "";
+boolean viewingEntriesRequiresGroupKey = false;
+boolean addingEntriesRequiresGroupKey = false;
+String groupKey = "";
+String groupAdminKey = "";
+String serverUrl = "";
+
+//Check for an incoming groupsubscriptionid
+if (request.getParameter("groupsubscriptionid")!=null && reger.core.Util.isinteger(request.getParameter("groupsubscriptionid"))){
+    groupsubscriptionid = Integer.parseInt(request.getParameter("groupsubscriptionid"));
+}
+
+//Go get the data for this groupsubscriptionid
+//-----------------------------------
+//-----------------------------------
+String[][] rstGroups= Db.RunSQL("SELECT groupid, groupname, groupdescription, viewingentriesrequiresgroupkey, addingentriesrequiresgroupkey, feedurlofgroup, weburlofgroup, groupkey, groupadminkey, serverurl FROM groupsubscription, groupserversubscription WHERE groupsubscription.groupserversubscriptionid=groupserversubscription.groupserversubscriptionid AND groupsubscriptionid='"+request.getParameter("groupsubscriptionid")+"' AND groupsubscription.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstGroups!=null && rstGroups.length>0){
+    for(int i=0; i<rstGroups.length; i++){
+        //The group already exists.
+        viewingEntriesRequiresGroupKey = false;
+        if (rstGroups[i][3].equals("1")){
+            viewingEntriesRequiresGroupKey = true;
+        }
+        addingEntriesRequiresGroupKey = false;
+        if (rstGroups[i][4].equals("1")){
+            addingEntriesRequiresGroupKey = true;
+        }
+        groupid =  Integer.parseInt(rstGroups[i][0]);
+        groupName = rstGroups[i][1];
+        groupDescription = rstGroups[i][2];
+        feedUrlOfGroup = rstGroups[i][5];
+        webUrlOfGroup = rstGroups[i][6];
+        groupKey = rstGroups[i][7];
+        groupAdminKey = rstGroups[i][8];
+        serverUrl = rstGroups[i][9];
+    }
+}
+
+
+
+
+
+//Do any editing to server information
+if (pageProps.action.equals("editserver")){
+    //Override with incoming data from URL or form
+    if (request.getParameter("groupkey")!=null && !request.getParameter("groupkey").equals("")){
+        groupKey = request.getParameter("groupkey");
+    }
+    String origGroupAdminKey = groupAdminKey;
+    if (request.getParameter("groupadminkey")!=null && !request.getParameter("groupadminkey").equals("")){
+        groupAdminKey = request.getParameter("groupadminkey");
+    }
+    if (request.getParameter("groupname")!=null && !request.getParameter("groupname").equals("")){
+        groupName = request.getParameter("groupname");
+    }
+    if (request.getParameter("groupdescription")!=null && !request.getParameter("groupdescription").equals("")){
+        groupDescription = request.getParameter("groupdescription");
+    }
+    String tmpAddBoolean = "0";
+    if (request.getParameter("addingentriesrequiresgroupkey")!=null){
+        if (request.getParameter("addingentriesrequiresgroupkey").equals("1")){
+            addingEntriesRequiresGroupKey = true;
+            tmpAddBoolean = "1";
+        } else {
+            addingEntriesRequiresGroupKey = false;
+            tmpAddBoolean = "0";
+        }
+    }
+    String tmpViewBoolean = "0";
+    if (request.getParameter("viewingentriesrequiresgroupkey")!=null){
+        if (request.getParameter("viewingentriesrequiresgroupkey").equals("1")){
+            viewingEntriesRequiresGroupKey = true;
+            tmpViewBoolean = "1";
+        } else {
+            viewingEntriesRequiresGroupKey = false;
+            tmpViewBoolean = "0";
+        }
+    }
+
+
+    //Now set on the server
+    Hashtable result = reger.GroupsClient.editGroup(serverUrl, origGroupAdminKey, groupid, groupName, groupDescription, viewingEntriesRequiresGroupKey, addingEntriesRequiresGroupKey, groupKey, groupAdminKey);
+
+    if (result!=null && result.get("error")==null){
+        tmpViewBoolean  = "0";
+        if (((Boolean)result.get("viewingEntriesRequiresGroupKey")).booleanValue()){
+            viewingEntriesRequiresGroupKey = true;
+            tmpViewBoolean  = "1";
+        }
+        tmpAddBoolean = "0";
+        if (((Boolean)result.get("addingEntriesRequiresGroupKey")).booleanValue()){
+            addingEntriesRequiresGroupKey = true;
+            tmpAddBoolean = "1";
+        }
+        //Update the record with what came back from the server
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate("UPDATE groupsubscription SET groupname='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("groupName"), 255))+"', groupdescription='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("groupDescription"), 255))+"', feedurlofgroup='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("feedUrlOfGroup"), 255))+"', weburlofgroup='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("webUrlOfGroup"), 255))+"', viewingentriesrequiresgroupkey='"+tmpViewBoolean+"', addingentriesrequiresgroupkey='"+tmpAddBoolean+"', groupkey='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("groupKey"), 255))+"', groupadminkey='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("groupAdminKey"), 255))+"' WHERE groupsubscriptionid='"+groupsubscriptionid+"'");
+        //-----------------------------------
+        //-----------------------------------
+
+        response.sendRedirect("groups.log");
+
+    } else {
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, (String)result.get("error")));
+    }
+
+}
+
+//Now go back after editing to get the record
+//Go get the data for this groupsubscriptionid
+//-----------------------------------
+//-----------------------------------
+String[][] rstGroups2= Db.RunSQL("SELECT groupid, groupname, groupdescription, viewingentriesrequiresgroupkey, addingentriesrequiresgroupkey, feedurlofgroup, weburlofgroup, groupkey, groupadminkey, serverurl FROM groupsubscription, groupserversubscription WHERE groupsubscription.groupserversubscriptionid=groupserversubscription.groupserversubscriptionid AND groupsubscriptionid='"+request.getParameter("groupsubscriptionid")+"' AND groupsubscription.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstGroups2!=null && rstGroups2.length>0){
+    for(int i=0; i<rstGroups2.length; i++){
+        //The group already exists.
+        viewingEntriesRequiresGroupKey = false;
+        if (rstGroups2[i][3].equals("1")){
+            viewingEntriesRequiresGroupKey = true;
+        }
+        addingEntriesRequiresGroupKey = false;
+        if (rstGroups2[i][4].equals("1")){
+            addingEntriesRequiresGroupKey = true;
+        }
+        groupid =  Integer.parseInt(rstGroups[i][0]);
+        groupName = rstGroups2[i][1];
+        groupDescription = rstGroups2[i][2];
+        feedUrlOfGroup = rstGroups2[i][5];
+        webUrlOfGroup = rstGroups2[i][6];
+        groupKey = rstGroups2[i][7];
+        groupAdminKey = rstGroups2[i][8];
+        serverUrl = rstGroups2[i][9];
+    }
+}
+
+//Test validity of the groupKey
+boolean groupKeyIsValid = reger.GroupsClient.testGroupKey(groupid, groupKey, serverUrl);
+boolean groupAdminKeyIsValid = reger.GroupsClient.testGroupAdminKey(groupid, groupAdminKey, serverUrl);
+
+
+
+
+if (groupAdminKeyIsValid){
+
+    mb.append(reger.ui.BubbleBox.start("Server Information", pageProps.pathToAppRoot));
+
+
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Editing the Server Information will affect all users of the group. You are able to edit this information because you hold a valid groupAdminKey.  Note that changing the groupKey or groupAdminKey on the server will immediately lock all users out from the group.  Be careful with these settings."));
+
+    mb.append("<table cellpadding=5 cellspacing=2 width=100% border=0>");
+
+    mb.append("<form action=groups-administer.log method=post>");
+    mb.append("<input type=hidden name=groupsubscriptionid value='"+groupsubscriptionid+"'>");
+    mb.append("<input type=hidden name=action value='editserver'>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<b>");
+    mb.append("Group Name");
+    mb.append("</b>");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<input type=text name=groupname size=15 maxlength=255 value=\""+reger.core.Util.cleanForHtml(groupName)+"\">");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<b>");
+    mb.append("Group Description");
+    mb.append("</b>");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<input type=text name=groupdescription size=15 maxlength=255 value=\""+reger.core.Util.cleanForHtml(groupDescription)+"\">");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<b>");
+    mb.append("groupKey");
+    mb.append("</b>");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<input type=text name=groupkey value=\""+reger.core.Util.cleanForHtml(groupKey)+"\" size=10 maxlength=255>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<b>");
+    mb.append("groupAdminKey");
+    mb.append("</b>");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<input type=text name=groupadminkey value=\""+reger.core.Util.cleanForHtml(groupAdminKey)+"\" size=10 maxlength=255>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<b>Viewing Entries</b>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<input type=radio name=viewingentriesrequiresgroupkey value='0' ");
+    if (!viewingEntriesRequiresGroupKey){
+        mb.append(" checked ");
+    }
+    mb.append(">");
+    mb.append(" Public, anybody on the web.");
+    mb.append("<br>");
+    mb.append("<input type=radio name=viewingentriesrequiresgroupkey value='1' ");
+    if (viewingEntriesRequiresGroupKey){
+        mb.append(" checked ");
+    }
+    mb.append(">");
+    mb.append(" Private, only with groupKey.");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<b>Adding Entries</b>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<input type=radio name=addingentriesrequiresgroupkey value='0' ");
+    if (!addingEntriesRequiresGroupKey){
+        mb.append(" checked ");
+    }
+    mb.append(">");
+    mb.append(" Public, anybody on the web.");
+    mb.append("<br>");
+    mb.append("<input type=radio name=addingentriesrequiresgroupkey value='1' ");
+    if (addingEntriesRequiresGroupKey){
+        mb.append(" checked ");
+    }
+    mb.append(">");
+    mb.append(" Private, only with groupKey.");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<b>");
+    mb.append("");
+    mb.append("</b>");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<input type=submit value='Save to Server'>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("</form>");
+
+    mb.append("</table>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+}
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

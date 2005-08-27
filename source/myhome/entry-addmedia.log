@@ -1,0 +1,194 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Add Images/Media";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDMEDIA";
+pageProps.onunloadJavascriptMethod = "returnToEntryPage()";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
+pageProps.pathToAppRoot="../";
+pageProps.isUploadPage = true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%@ page import="org.apache.commons.fileupload.*,
+                 reger.core.db.Db,
+                 reger.Help" %>
+<%@ page import="java.io.*" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Note that the ul Upload object is available as long as pageProps.isUploadPage=true
+
+
+
+//Return to entry javascript
+mb.append(reger.core.Util.popupCloseReturnToEntryJavascript());
+
+//debug
+reger.core.Util.debug(5, reger.core.ErrorDissect.ServletUtilsdissect(request));
+
+
+//Parse the upload
+//reger.Upload ul = new reger.Upload(request);
+
+
+int localEventid=0;
+//if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+    //localEventid = Integer.parseInt(request.getParameter("eventid"));
+//}
+if (ul.requestParams.get("eventid")!=null && reger.core.Util.isinteger(ul.requestParams.get("eventid").toString())){
+    localEventid = Integer.parseInt(ul.requestParams.get("eventid").toString());
+}
+
+String imagetags = "";
+if (ul.requestParams.get("imagetags")!=null){
+    imagetags = ul.requestParams.get("imagetags").toString();
+}
+
+//Save the upload
+if (ul.isMultipart) {
+    //Note the false indicating that this is not a profile upload.
+    //Note that accountuserid param is 0 because this is not a profile upload.
+    reger.core.Util.debug(5, "entry-addmedia.log - Before ul.save()");
+    ul.save(localEventid, imagetags, 0, userSession);
+    reger.core.Util.debug(5, "entry-addmedia.log - After ul.save()");
+}
+
+//Redirect if upload was successful
+if (ul.hasenoughfreespace) {
+    if (ul.isMultipart){
+        //response.sendRedirect("entry.log?eventid="+localEventid+"&action=edit");
+        //return;
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Files uploaded successfully.  Please <a href=\"javascript:returnToEntryPage()\">click here to return to the entry</a> or upload more files below."));
+    }
+} else {
+    //@todo Be a better salesman... the user just hit an account limit.  Love them.  Feel their pain.  Offer a fix... for a small fee.
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Your account does not have enough free space for this upload.  We have saved as much of the upload as was possible.  You can upgrade your account for more space.  Please <a href=\"javascript:returnToEntryPage()\">click here to return to the entry</a>."));
+}
+
+//Start the page
+//End the page
+mb.append(reger.ui.BubbleBox.start("Basic Upload", pageProps.pathToAppRoot));
+mb.append("<center>");
+mb.append("<font face=arial size=-1>");
+mb.append("<a href=\"javascript:returnToEntryPage()\">");
+mb.append("Back to the entry.");
+mb.append("</a>");
+mb.append("</font>");
+mb.append("</center>");
+mb.append("<br>");
+
+
+mb.append("<form name='myform' action='entry-addmedia.log' method='post' enctype='multipart/form-data'>");
+mb.append("<input type=hidden name=eventid value="+localEventid+">");
+mb.append("<table cellpadding=10 cellspacing=0 border=0 align=center>");
+mb.append("<tr>");
+mb.append("<td valign=top>");
+String helpImagetags = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.", false, pageProps.pathToAppRoot);
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Optional Keyword Tags "+helpImagetags+":</font><br><input type='text' name='imagetags' value=\"\" size='35' maxlength='254' style=\"font-size: 10px;\">");
+mb.append("<br>");
+for(int i=0; i<5; i++){
+    mb.append("<input type='file' name='file"+i+"'>");
+    mb.append("<br>");
+}
+mb.append("</td>");
+//mb.append("<td valign=top>");
+//for(int i=5; i<10; i++){
+//    mb.append("<input type='file' name='file"+i+"'>");
+//    mb.append("<br>");
+//}
+//mb.append("</td>");
+mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td valign=top align=center>");
+mb.append("<input type='submit' name='Submit' value='Upload Files'/>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("</form>");
+//End the page
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("<br><br>");
+//End the page
+
+if (!reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+    mb.append(reger.ui.BubbleBox.start("Advanced Upload", pageProps.pathToAppRoot));
+
+    mb.append("<center>");
+    mb.append("<br><font face=arial size=-1>");
+    mb.append("Or, you can use the Advanced Upload Tool.");
+    mb.append("</font>");
+
+    mb.append("<form action=entry-addmedia-advanced.log method=get>");
+    mb.append("<input type=hidden name=eventid value="+localEventid+">");
+
+    mb.append("<font face=arial size=-2>");
+    mb.append("Choose a category to upload to:");
+    mb.append("</font>");
+    mb.append("<br>");
+    //Select image categories
+//    mb.append("<!-- Begin imagecategory -->");
+//    mb.append("<select name='imagecategoryid'  style=\"font-size: 10px;\">");
+//    //-----------------------------------
+//    //-----------------------------------
+//    String[][] rstImageCategory= reger.core.Db.Db.RunSQL("SELECT imagecategoryid, imagecategory FROM imagecategory WHERE accountid='"+ userSession.getAccount().getAccountid() +"' ORDER BY imagecategory");
+//    //-----------------------------------
+//    //-----------------------------------
+//    if (rstImageCategory!=null){
+//        for(int j=0; j<rstImageCategory.length; j++){
+//            mb.append("<option value='"+ rstImageCategory[j][0] +"'");
+//            mb.append(">"+reger.core.Util.cleanForHtml(rstImageCategory[j][1]) +"</option>");
+//        }
+//    }
+//    mb.append("<option value=''>>>No Image Category For Now</option>");
+//    mb.append("</select>");
+//    mb.append("<!-- End imagecategory -->");
+
+
+
+    String helpImagetags2 = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.", false, pageProps.pathToAppRoot);
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>Optional Keyword Tags "+helpImagetags2+":</font><br><input type='text' name='imagetags' value=\"\" size='35' maxlength='254' style=\"font-size: 10px;\">");
+    mb.append("<br>");
+    mb.append("<input type='submit' name='Submit' value='Start Advanced Upload'/>");
+    mb.append("</form>");
+
+    mb.append("</center>");
+
+    //End the page
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+}
+
+
+//Output the page
+out.println(mb.toString());
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%//@ include file="../globalfooter.jsp" %>

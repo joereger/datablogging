@@ -1,0 +1,86 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "What is datablogging?";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.core.Util.popup());
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("saleslogentryscreen.gif", "right", "datablogging Fields", "In datablogging there are additional input fields on the log entry screen."));
+
+mb.append("DataBlogging is the notion that traditional blog entries have extended data fields appended to them to track various things.");
+mb.append("<br>");
+mb.append("<h1>An Example: Traditional Blogging vs. datablogging</h1>");
+mb.append("Let's take the example of a sales force working at a Fortune 100 company.  This sales force works on long-cycle consultative sales that generally take 60-90 days to complete.");
+mb.append("<ul>");
+mb.append("<li>Traditional Blogging:");
+    mb.append("<ul>");
+    mb.append("<li>Members of the sales force make blog entries each time they talk to or visit a potential client.  This practice is valuable because it creates a repository of sales tactics and results.");
+    mb.append("</ul>");
+mb.append("<li>datablogging:");
+    mb.append("<ul>");
+    mb.append("<li>Just like in traditional blogging, members of the sales force make entries each time they visit a potential client.  However, and this is the key, because their blog entries have additional data fields on them they track quantifiable information like Chance of Close, Effectiveness of Pitch, Hours Invested, etc.");
+    mb.append("<li>Graphs are generated from the extended data attached to each blog.  For example, an Effectiveness of Pitch vs. Hours Invested graph will determine whether spending more time selling is worthwhile.");
+    mb.append("<li>The Advanced Data Search feature is used to find entries based on quantifiable data searches... in much the same way that somebody might query a database.  However, it is done simply through a web interface by anybody.");
+    mb.append("<li>The extended data for each sales call is published in RSS feeds, meaning that other enterprise systems can consume it... a simple integration between the datablogging system and more complex and possibly more difficult-to-use legacy systems.");
+    mb.append("</ul>");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>More on datablogging:</h1>");
+mb.append("<ul>");
+mb.append("<li>See how easy it is to <a href='what-is-datablogging-newfield.log'>Add Custom Fields to a Log</a>");
+mb.append("<li><a href='what-is-datablogging-graphs.log'>Graph your custom data</a>");
+mb.append("<li><a href='what-is-datablogging-search.log'>Build advanced search queries</a> using your custom data fields.");
+mb.append("<li>Learn how to <a href='what-is-datablogging-rss.log'>publish your custom custom data using RSS</a>");
+mb.append("<li>See how <a href='what-is-datablogging-rss-in-html.log'>data is published by embedding RSS in Html</a>");
+mb.append("<li>Read about <a href='what-is-datablogging-preliminary-structured-blogging-support.log'>structured blogging support</a>");
+mb.append("<li>See log types <a href='what-is-datablogging-xml-schema.log'>represented as XML Schema</a>");
+mb.append("<li>See how <a href='what-is-datablogging-graphandsearch.log'>advanced data searching and graphing work together</a> to allow powerful data mining.");
+
+mb.append("</ul>");
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

@@ -1,0 +1,253 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "<img src='../images/icon-log-med-notext.gif' align=top> Customize Log Properties";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logsyourlogs";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.isLogidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//If the user can't do this
+if (!userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid) || !userSession.getAccountuser().userCanDoAcl("DELETELOG", userSession.getAccount().getAccountid())){
+    try {
+        response.sendRedirect("index.log");
+        return;
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+        return;
+    }
+}
+
+//Create the log object
+reger.Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+
+//Capture any movetologid
+int movetologid = -1;
+if (request.getParameter("movetologid")!=null && !request.getParameter("movetologid").equals("") && reger.core.Util.isinteger(request.getParameter("movetologid"))){
+    movetologid = Integer.parseInt(request.getParameter("movetologid"));
+}
+
+if (pageProps.action.equals("delete")){
+
+     //Do the actual delete
+     log.delete(movetologid);
+
+     //Refresh account
+     userSession.getAccount().refresh();
+
+     //Redirect user back to the admin homepage
+     try {
+        response.sendRedirect("index.log");
+        return;
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+        return;
+    }
+
+} else {
+    //Get count of entries that exist for this log
+    int numberofentries = log.getNumberOfLiveEntriesInLog();
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstEntrycount= Db.RunSQL("SELECT count(*) FROM event WHERE logid='"+pageProps.logProps.logid+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstEntrycount!=null && rstEntrycount.length>0){
+    	numberofentries = Integer.parseInt(rstEntrycount[0][0]);
+    }
+
+
+    //Get eventtypeid
+    int eventtypeid = log.getEventtypeid();
+
+    //Get log name
+    String logname = log.getName();
+
+//    //Get count of other logs that exist for this log type and this account
+//    int numberofliketypedlogs = 0;
+//    //-----------------------------------
+//    //-----------------------------------
+//    String[][] rstLogCount= Db.RunSQL("SELECT count(*) FROM megalog WHERE eventtypeid='"+eventtypeid+"' AND accountid='"+userSession.getAccount().getAccountid()+"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" AND logid<>'"+pageProps.logProps.logid+"'");
+//    //-----------------------------------
+//    //-----------------------------------
+//    if (rstLogCount!=null && rstLogCount.length>0){
+//        numberofliketypedlogs = Integer.parseInt(rstLogCount[0][0]);
+//    }
+
+    //Start displaying the page
+
+    //Log Header start
+    String currentNavButtonName = "logs-log-delete";
+    %>
+    <%@ include file="logs-header.jsp" %>
+    <%
+    //Log Header end
+    mb.append("<center>");
+    mb.append("<font face=arial size=+2 color=#ff0000>");
+    mb.append("Are you sure you want to delete \""+logname+"\"?<br>Deletion is permanent.");
+    mb.append("</font>");
+
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=+1>");
+    if (numberofentries==1) {
+        mb.append("There is " + numberofentries + " log entry in \""+logname+"\".");
+    } else {
+        mb.append("There are " + numberofentries + " log entries in \""+logname+"\".");
+    }
+    mb.append("</font>");
+
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("</center>");
+    mb.append("<form action=logs-log-delete.log method=post>");
+    mb.append("<input type=hidden name=action value=delete>");
+    mb.append("<input type=hidden name=logid value="+pageProps.logProps.logid+">");
+
+
+    //mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+    mb.append("<center>");
+    mb.append("<font face=arial size=+2 color=#ff0000>");
+    mb.append("What would you like to do with the log entries from the log you are deleting?<br>");
+    mb.append("</font>");
+
+    mb.append("<font face=arial size=+1 color=#000000>");
+    mb.append("There are two ways to deal with them.  First, you can move them to a log of the same type which will keep all extended activity-specific data (for example, in the Running Log extended data is distance, time, running shoes, etc).  Second, you can move them to a different log type.  Doing so will delete extended data but will keep the main entry.<br>");
+    mb.append("In both cases, all messages, images, trackbacks and traffic data is retained.<br>");
+    mb.append("</font>");
+    mb.append("</center>");
+
+
+    mb.append("<center>");
+    mb.append("<br>");
+    mb.append("<input type=submit value='Delete this Log and Handle Entries Per Below'>");
+    mb.append("<br>");
+    mb.append("<input type=radio name=movetologid value='-1' checked>");
+    mb.append("<font face=arial size=-1>");
+    mb.append(" Delete Entries At Same Time As Log");
+    mb.append("</font>");
+    mb.append("</center>");
+
+
+    mb.append("<table cellpadding=10 cellspacing=5 border=0 width=100% >");
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    //Begin left
+    mb.append(reger.ui.BubbleBox.start("Move to a log of the same type to keep all extended data:", pageProps.pathToAppRoot));
+    mb.append("<table cellpadding=5 cellspacing=0 border=0>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstSameType= Db.RunSQL("SELECT logid, name FROM megalog WHERE megalog.logid<>'"+pageProps.entry.logid+"' AND megalog.eventtypeid='"+log.getEventtypeid()+"' AND " + userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid()));
+    //-----------------------------------
+    //-----------------------------------
+    if (rstSameType!=null && rstSameType.length>0){
+        for(int i=0; i<rstSameType.length; i++){
+            mb.append("<tr>");
+            mb.append("<td valign=top>");
+            mb.append("<input type=radio name=movetologid value='"+rstSameType[i][0]+"' checked>");
+            mb.append("</td>");
+            mb.append("<td valign=top>");
+            mb.append("<font face=arial size=-1>");
+            mb.append(rstSameType[i][1]);
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+    } else {
+        mb.append("<tr>");
+        mb.append("<td valign=top colspan=2>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("No logs of the same type found.");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+    mb.append("</table>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    //End left
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    //Begin right
+    mb.append(reger.ui.BubbleBox.start("Move to any log, but lose extended activity-specific data:", pageProps.pathToAppRoot));
+    mb.append("<table cellpadding=5 cellspacing=0 border=0>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstDiffType= Db.RunSQL("SELECT logid, name FROM megalog WHERE megalog.logid<>'"+pageProps.entry.logid+"' AND megalog.eventtypeid<>'"+log.getEventtypeid()+"' AND " + userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid()));
+    //-----------------------------------
+    //-----------------------------------
+    if (rstDiffType!=null && rstDiffType.length>0){
+        for(int i=0; i<rstDiffType.length; i++){
+            mb.append("<tr>");
+            mb.append("<td valign=top>");
+            mb.append("<input type=radio name=movetologid value='"+rstDiffType[i][0]+"'>");
+            mb.append("</td>");
+            mb.append("<td valign=top>");
+            mb.append("<font face=arial size=-1>");
+            mb.append(rstDiffType[i][1]);
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+    } else {
+        mb.append("<tr>");
+        mb.append("<td valign=top colspan=2>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("No logs of different types found.");
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+    mb.append("</table>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    //End right
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+
+
+    //mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+    mb.append("</form>");
+
+    mb.append("<a href='logs-log-properties.log?logid="+pageProps.logProps.logid+"><font face=arial size=-1>Nevermind, Don't Delete</font></a>");
+
+    //Log Footer start
+    %>
+    <%@ include file="logs-footer.jsp" %>
+    <%
+    //Log Footer end
+
+}
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

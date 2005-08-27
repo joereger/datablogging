@@ -1,0 +1,205 @@
+<html>
+<head>
+
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title><$Site.Name$> <$Entry.Title$></title>
+	
+	
+	<style type="text/css">
+<!--
+/* ++++++++++++++++++++ This is the stylesheet that controls elements that are output by the system.  The names are pre-defined.  They may make little sense to you at first.  Play with them.  Change one to a funky color and then visit your site to see how it looks.  If you get in trouble, simply go to the Template Gallery and start over with one of the stylish pre-built templates. Have fun and be creative! You're in control. */
+
+
+/* The color of links on your site. */
+a       {color: #000000;  font-weight: bold;}
+
+/* A big font used throughout the site in various places. */
+.bigfont{font-family: verdana, arial, helvetica, sans-serif;
+	     color:#000000;
+	     font-size:15px;}
+
+/* A medium font used throughout the site in various places. */
+.mediumfont{font-family: verdana, arial, helvetica, sans-serif;
+	     color:#000000;
+	     font-size:10px;}
+
+/* A small font used throughout the site in various places. */
+.smallfont{font-family: verdana, arial, helvetica, sans-serif;
+	     color:#000000;
+	     font-size:10px;}
+
+/* The table that houses your main log navigation. */
+.navigation{width: 100%}
+
+/* The style of a navigation button that is currently clicked off. This will determine the general color and style of your navigation bar. */
+.navcelloff{padding: 2px;}
+	  
+/* The style of a navigation button that is currently clicked on. */
+.navcellon{padding: 2px;}
+
+/* The font used when a navigation bar button is turned off. */
+.navfontoff{FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 14px; color: #000000; 
+          font-weight: bold;}
+
+/* The font used when a navigation bar button is turned on. */
+.navfonton{FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
+          font-size: 14px; color: #ffffff; 
+          font-weight: bold;}
+
+/* Content in your side column is arranged into units. */
+.sidecolunit {width: 100%}
+		  
+/* The background and font for unit headers in your side column. */
+.sidecolheader {background-color: #cc6633;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
+          font-size: 15px; color: #ffffff; 
+          font-weight: bold;
+	      width: 100%}
+		  
+/* The background and font for content in your side column. */
+.sidecolcontent {FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
+          font-size: 10px; color: #000000; 
+          font-weight: bold;
+	      width: 100%}
+
+/* Sun Mon Tue Wed Thu Fri Sat.  This changes the font and background color. */
+.calendardayname{background-color: #cccccc;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 8px; color: #000000; 
+          font-weight: bold;}
+
+/* 1 2 3...  the little numbers in your calendar.  This changes the font and background color. */
+.calendardaybox{background-color: #e6e6e6;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 10px; color: #000000; 
+          font-weight: bold;}
+		  
+/* The current day in your calendar.  This changes the font and background color so that you can highlight it. */
+.calendardayboxtoday{background-color: #cccccc;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 10px; color: #000000; 
+          font-weight: bold;}
+
+/* Important for setting the style of your log entry detail page. This controls the display of field names.*/		 
+.logentryheader{background-color: #cccccc;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 12px; color: #000000; 
+          font-weight: bold;}
+
+/* Important for setting the style of your log entry detail page. This controls the display of your data. */	
+.logentrycontent{background-color: #ffffff;
+	      FONT-FAMILY: verdana, arial, helvetica, sans-serif; 
+          font-size: 10px; color: #000000;}
+
+/* Control the little numbers that appear when you list more log entries than will appear on the page. */	
+.pagingnumbers{ 
+          padding: 0px;
+	      width: 100%}
+
+/* ++++++++++++++++++++ Below this point are css classes that appear in the template itself.  You can add/remove classes by editing your template directly. */
+
+--> 
+</style>
+	
+	
+	<style type="text/css" media="all">
+	body {
+	font : 11px/2em "lucida grande", lucida, verdana, sans-serif;
+	color : #333333;
+	margin : 0;
+	padding : 0;
+	background : #ffffff url(./images/template/templatename/lily/lelie_onder.jpg) no-repeat 8px 211px;
+	}
+	#titel {
+	height : 211px;
+	margin : 0;
+	padding : 0;
+	background : #cc6633 url(./images/template/templatename/lily/lelie_boven.jpg) no-repeat 0px 0px;
+	border-bottom : 1px solid #663300;
+	}
+	#navbar {
+	background-color : #cc6633;
+	color : white;
+	margin : 0;
+	padding : 5px 5px 5px 45px;
+	border : 1px solid #cc6633;
+	}
+	h1 {
+	color : #663300;
+	padding : 50px 30px 5px 0px;
+	margin : 0;
+	text-align : right;
+	font-size : 2.5em;
+	}
+	h3 {
+	color : #663300;
+	font-size : 1.2em;
+	padding : 0;
+	margin : 10px 0px 10px 45px;
+	}
+	a:link {
+	text-decoration : none;
+	font-weight : bold;
+	color : #cc6633;
+	}
+	a:visited {
+	text-decoration : none;
+	font-weight : bold;
+	color : #666600;
+	}
+	a:active {
+	text-decoration : underline;
+	font-weight : bold;
+	color : #cc6633;
+	}
+	a:hover {
+	text-decoration : underline;
+	font-weight : bold;
+	color : #cc6633;
+	}
+	#navbar a {
+	text-decoration : none;
+	font-weight : bold;
+	color : white;
+	}
+	#navbar a:hover {
+	text-decoration : underline;
+	font-weight : bold;
+	color : white;
+	}
+	.postbody {
+	margin : 15px 0px 35px 45px;
+	width : 500px;
+	}
+	.postinfo {
+	color : #666666;
+	}
+	</style>
+	
+
+</head>
+<body>
+<div id="titel"><h1><$Log.Name$></h1></div>
+
+<table cellpadding=10 cellspacing=1 width=100% border=0>
+<tr>
+<td valign=top>
+<$Navbar.Vertical$>
+<br>
+<$Side.Column$>
+</td>
+<td valign=top>
+<$Main.Body$>
+</td>
+</tr>
+</table>
+
+
+<div id="navbar">
+ 
+</div>
+
+</body>
+</html>

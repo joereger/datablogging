@@ -1,0 +1,64 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Traffic: Raw Clicks";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "trafficclicks";
+pageProps.aclObjectName = "TRAFFIC";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String trafficSection = "RawClicks";
+
+
+
+mb.append("<table cellpadding=3 cellspacing=0 width=100% border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#666666 align=left>");
+mb.append("<font face=arial size=-1 color=#ffffff><strong>&nbsp;</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+if (!userSession.getAccount().isPro()){
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='Click Here For Info' border='0'></a> <font face=arial size=-1>Pro accounts can see today's traffic.</font>");
+}
+int currentpage=1;
+if (request.getParameter("currentpage")!=null && reger.core.Util.isinteger(request.getParameter("currentpage"))){
+    currentpage=Integer.parseInt(request.getParameter("currentpage"));
+}
+mb.append(reger.trafficHtmlOut.rawclicksTrafficList(currentpage, "traffic-rawclicks.log", userSession, request));
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

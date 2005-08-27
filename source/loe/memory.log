@@ -1,0 +1,105 @@
+
+<%@ page import="java.util.*" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "JVM Memory Usage";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loememory";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append("<font face=arial size=-1>");
+
+mb.append("<br><br>");
+
+Runtime rt = Runtime.getRuntime();
+mb.append("Maximum memory available: " + rt.maxMemory() + "<br>");
+mb.append("Total memory allocated: " + rt.totalMemory() + "<br>");
+mb.append("Free memory unused: " + rt.freeMemory() + "<br>");
+
+double used = 0;
+double free = 0;
+double available = 0;
+
+used = rt.totalMemory()-rt.freeMemory();
+free = rt.freeMemory();
+available =  rt.maxMemory()-rt.totalMemory();
+
+double usedpercent = (used/rt.maxMemory()) * 100;
+double freepercent = (free/rt.maxMemory()) * 100;
+double availablepercent = (available/rt.maxMemory()) * 100;
+
+mb.append("<br><br>");
+
+mb.append("<table cellpadding=0 cellspacing=1 border=4 width=100% >");
+mb.append("<tr>");
+mb.append("<td bgcolor=#ff0000 width="+(int)usedpercent+"% align=center>");
+mb.append("<font face=arial size=-2 color=#ffffff>");
+mb.append("U");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td bgcolor=#00ff00 width="+(int)freepercent+"% align=center>");
+mb.append("<font face=arial size=-2 color=#ffffff>");
+mb.append("F");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td bgcolor=#cccccc width="+(int)availablepercent+"% align=center>");
+mb.append("<font face=arial size=-2 color=#ffffff>");
+mb.append("A");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("<br><br>");
+
+mb.append((int)used + " <b>U</b>sed - "+(int)usedpercent+"%<br>");
+mb.append((int)free + " <b>F</b>ree - "+(int)freepercent+"%<br>");
+mb.append((int)available + " <b>A</b>vailable - "+(int)availablepercent+"%<br>");
+
+//mb.append("<br>");
+//mb.append("<br>");
+
+//mb.append("<b>Database Pooled Connections:</b><br>");
+//mb.append(reger.core.Db.Db.printDriverStats());
+
+mb.append("<br>");
+mb.append("<br>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

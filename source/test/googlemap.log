@@ -1,0 +1,191 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+try {
+
+mb.append("<script src=\"http://google.com/maps?file=js&hl=en\" type=\"text/javascript\">" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("</script>" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+mb.append("<script type=\"text/javascript\">" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+mb.append("window.onload = function() {" + reger.Vars.LINEBREAKCHARFORHTML);
+    mb.append("initMap()"+ reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+mb.append("_mSiteName = 'Your Site Name Here!';" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("_mUsePrintLink=\"\";" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("function initMap() {" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  //" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  // frb" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  //" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("  myMapApp = new _MapsApplication(document.getElementById(\"container_frb\")," + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("				  document.getElementById(\"panel\")," + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("				  document.getElementById(\"metapanel\")," + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("				  document.getElementById(\"permalink\")," + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("				  document.getElementById(\"toggle\")," + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("				  document.getElementById(\"printheader\"));" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("  myMapApp.loadMap();" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("  /* Note: All XML & XSL files must be on same domain." + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  */" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  _loadXmlFileFromURL(\"googlemap-locationid343.xml\", myMapApp);" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("t.dump = function(a) {alert(a);} //debugging" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("function _loadXmlFileFromURL(url, mapApp) {" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    //" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    // Loads the specified external XML file into the map view." + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    //" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    //  frb" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    //" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    // NOTE: URL must be on same domain as page." + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("    var  _getter = _XMLHttp.create();" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("    _getter.open(\"GET\", url);" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("    _getter.onreadystatechange=function() {" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("      if (_getter.readyState==4) {" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("           mapApp.loadXML(_getter.responseText);" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("      }" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    }" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("    _getter.send(null); // Whoops, IE *needs* this to be last, Moz is lenient." + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+mb.append("</script>" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("<style type=\"text/css\">" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("#panel table {" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  border:solid 1px grey;" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  width:50%;" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  margin-bottom: 5px;" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append("#panel table td:first-child  {" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  width: 24px;" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+mb.append(".label {" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  font-size:smaller;" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  font-family:sans-serif;" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("};" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("</style>" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+mb.append("<table cellpadding=0 cellspacing=10 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+
+mb.append("<div style=\"\">" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  <div id=\"container_frb\" style=\"float:right;width:75%;\" ></div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  <div style=\"float:left;position:relative;left:10px;width:25%\">" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    <div style=\"\">" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+
+
+mb.append("    Here's stuff.fsdkhfsd lkjsdhf lksdjf" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+
+
+
+mb.append("    </div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    <div style=\"\">" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("      <div id=\"toggle\" style=\"font-family:sans-serif;font-size:smaller;\">&nbsp;</div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("      <div style=\"\">" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("         <div id=\"panel\" style=\"\"> </div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("         <div id=\"metapanel\"></div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("         <div id=\"permalink\"></div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("         <div id=\"printheader\"></div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("      </div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("    </div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("  </div>" + reger.Vars.LINEBREAKCHARFORHTML);
+mb.append("</div>" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+for(int i=0; i<350; i++){
+    mb.append("&nbsp; ");
+}
+for(int i=0; i<35; i++){
+    mb.append("<br>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+
+} catch (Throwable e) {
+    reger.core.Util.errorsave(e);
+}
+
+//
+//mb.append("<br><br><br><br><br>");
+//
+//for(int i=0; i<350; i++){
+//    mb.append("&nbsp;");
+//}
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

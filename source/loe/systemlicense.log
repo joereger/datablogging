@@ -1,0 +1,86 @@
+
+<%@ page import="java.util.*,
+                 reger.core.SystemProperty,
+                 reger.systemproperties.AllSystemProperties,
+                 reger.core.db.DbConfig,
+                 reger.core.licensing.License" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "System License";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loesystemlicense";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%
+//Add the license
+if (request.getParameter("action")!=null && request.getParameter("action").equals("addlicense")){
+    reger.licensing.ServerLicense.setLicense(request.getParameter("encryptedlicense"));
+}
+
+//Get the current license
+License lic = reger.licensing.ServerLicense.getLicense();
+
+mb.append("<form action='systemlicense.log' method=post>");
+mb.append("<input type=hidden name=action value=addlicense>");
+
+mb.append("<DIV class=yellowbox>");
+String tmpEncryptedlicense = "";
+if (lic!=null){
+    tmpEncryptedlicense = lic.getEncryptedLicense();
+}
+mb.append("<textarea rows='5' name=encryptedlicense cols='50' wrap='virtual'>"+reger.core.Util.cleanForHtml(tmpEncryptedlicense)+"</textarea>");
+if (lic!=null && lic.getProps()!=null && lic.getProps().size()>0){
+    Enumeration keys = lic.getProps().keys();
+    while ( keys.hasMoreElements() ){
+        String key = (String)keys.nextElement();
+        String value = (String)lic.getProps().get(key);
+        mb.append("<br>");
+        mb.append(key);
+        mb.append(" = ");
+        mb.append(value);
+    }
+}
+mb.append("</DIV>");
+
+mb.append("<input type=submit value='Save License'>");
+mb.append("</form>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

@@ -1,0 +1,179 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.core.db.Db,
+                 reger.core.db.Db" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loepladmin";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Get the pl
+reger.PrivateLabel thisPl = null;
+if (request.getParameter("plid")!=null && reger.core.Util.isinteger(request.getParameter("plid"))){
+    thisPl = reger.AllPrivateLabelsInSystem.getPrivateLabel(Integer.parseInt(request.getParameter("plid")));
+}
+
+
+
+if (pageProps.action.equals("add")){
+    //Go get a priority
+    int newpriority = reger.PlEventtypeOrder.getPriorityForNewField(Integer.parseInt(request.getParameter("plid")));
+    //Insert the record
+    //-----------------------------------
+    //-----------------------------------
+    int identity = Db.RunSQLInsert("INSERT INTO pleventtypeid(eventtypeid, plid, priority) VALUES('"+request.getParameter("eventtypeid")+"', '"+request.getParameter("plid")+"', '"+newpriority+"')");
+    //-----------------------------------
+    //-----------------------------------
+}
+
+if (pageProps.action.equals("setdefault")){
+    if (thisPl!=null){
+        if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+            thisPl.setDefaulteventtypeid(Integer.parseInt(request.getParameter("eventtypeid")));
+            thisPl.save();
+        }
+    }
+}
+
+if (pageProps.action.equals("up")){
+    //Move it up
+    reger.PlEventtypeOrder.moveEventtypeidUp(Integer.parseInt(request.getParameter("plid")), Integer.parseInt(request.getParameter("pleventtypeid")));
+}
+
+if (pageProps.action.equals("down")){
+    //Move it up
+    reger.PlEventtypeOrder.moveEventtypeidDown(Integer.parseInt(request.getParameter("plid")), Integer.parseInt(request.getParameter("pleventtypeid")));
+}
+
+if (pageProps.action.equals("delete")){
+    //Delete the sucker
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("DELETE FROM pleventtypeid WHERE pleventtypeid='"+request.getParameter("pleventtypeid")+"'");
+    //-----------------------------------
+    //-----------------------------------
+}
+
+
+
+//Put the name up
+String plname="";
+//-----------------------------------
+//-----------------------------------
+String[][] rstPlname= Db.RunSQL("SELECT plname FROM pl WHERE plid='"+request.getParameter("plid")+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstPlname!=null && rstPlname.length>0){
+	plname=rstPlname[0][0];
+}
+pageProps.title = "Private Label: " + plname;
+
+
+
+mb.append("<br><br>");
+
+mb.append("<table cellpadding=5 cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#e6e6e6>");
+//List all event types not currently in this plid
+mb.append("<font face=arial size=+1>");
+mb.append("Event Types Not In This PL");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstNotIn= Db.RunSQL("SELECT megalogtype.eventtypeid, megalogtype.megalogname FROM megalogtype LEFT JOIN pleventtypeid ON pleventtypeid.eventtypeid=megalogtype.eventtypeid AND pleventtypeid.plid='"+request.getParameter("plid")+"' WHERE pleventtypeid.eventtypeid IS NULL AND megalogtype.issystemlogtype='1' ORDER BY megalogtype.megalogname ASC");
+//-----------------------------------
+//-----------------------------------
+if (rstNotIn!=null && rstNotIn.length>0){
+	for(int i=0; i<rstNotIn.length; i++){
+        mb.append("<br>");
+        mb.append(rstNotIn[i][1]);
+        mb.append(" <a href='pleventtype.log?action=add&eventtypeid="+rstNotIn[i][0]+"&plid="+request.getParameter("plid")+"'>");
+	    mb.append("Add >>");
+	    mb.append("</a>");
+	}
+}
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+//List event types in order for this plid
+mb.append("<font face=arial size=+1>");
+mb.append("This PL's Event Types");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-1>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstCurrent= Db.RunSQL("SELECT pleventtypeid, megalogtype.eventtypeid, megalogname, priority FROM pleventtypeid, megalogtype WHERE pleventtypeid.plid='"+request.getParameter("plid")+"' AND pleventtypeid.eventtypeid=megalogtype.eventtypeid ORDER BY priority ASC");
+//-----------------------------------
+//-----------------------------------
+if (rstCurrent!=null && rstCurrent.length>0){
+	for(int i=0; i<rstCurrent.length; i++){
+        mb.append("<br>");
+        mb.append("<a href='pleventtype.log?action=delete&pleventtypeid="+rstCurrent[i][0]+"&plid="+request.getParameter("plid")+"'>");
+	    mb.append("<< Remove");
+	    mb.append("</a> ");
+        mb.append("<a href='pleventtype.log?action=up&pleventtypeid="+rstCurrent[i][0]+"&plid="+request.getParameter("plid")+"'>");
+	    mb.append("Up");
+	    mb.append("</a>");
+	    mb.append("&nbsp;");
+	    mb.append("<a href='pleventtype.log?action=down&pleventtypeid="+rstCurrent[i][0]+"&plid="+request.getParameter("plid")+"'>");
+	    mb.append("Down");
+	    mb.append("</a> ");
+        mb.append(rstCurrent[i][2]);
+        if (thisPl!=null && thisPl.getDefaulteventtypeid()==Integer.parseInt(rstCurrent[i][1])){
+            mb.append("&nbsp;");
+            //mb.append("<a href='pleventtype.log?action=makedefault&pleventtypeid="+rstCurrent[i][0]+"&plid="+request.getParameter("plid")+"'>");
+            mb.append("(Default)");
+            //mb.append("</a> ");
+        } else {
+            mb.append("&nbsp;");
+            mb.append("<a href='pleventtype.log?action=setdefault&eventtypeid="+rstCurrent[i][1]+"&plid="+request.getParameter("plid")+"'>");
+            mb.append("Set as Default");
+            mb.append("</a> ");
+        }
+
+	}
+}
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+
+
+
+
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="plmanage-rightside.jsp" %>
+
+
+<%@ include file="../globalfooter.jsp" %>

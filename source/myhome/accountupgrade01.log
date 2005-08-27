@@ -1,0 +1,362 @@
+<%@ page import="reger.core.db.Db,
+                 java.util.Hashtable,
+                 java.text.NumberFormat,
+                 java.util.Locale,
+                 reger.core.licensing.License"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Account Upgrade";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingsacctstatus";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+    if (reger.core.Util.isinteger(userSession.getAccount().getLicense().getProperty(License.PROPSTRINGLICENSEID))){
+        if (Integer.parseInt(userSession.getAccount().getLicense().getProperty(License.PROPSTRINGLICENSEID))>0){
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Use this screen to make changes to your license.  Your current license will be updated accordingly."));
+        }
+    }
+
+    String errortext = "";
+
+    //Start the page display
+    mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left>");
+
+
+    //Account upgrade form
+    mb.append("<a name='upgradeform'>");
+    mb.append("<form action=accountupgrade02.log method=post>");
+    mb.append("<input type=hidden name=action value=upgrade>");
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left colspan=2 bgcolor=#999999><font face=arial size=-1>");
+    mb.append("<strong>Upgrade Your Account Online Instantly</strong>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left colspan=2 bgcolor=#cccccc><font face=arial size=-1>");
+    mb.append("<strong>Name Your Price By Choosing Your Service Level</strong>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right width=50% bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Pro Features Base Price</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-1>");
+
+    NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
+    mb.append(formatter.format(userSession.getPl().getBaseaccountprice()));
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    NumberFormat formatter2 = NumberFormat.getCurrencyInstance(Locale.US);
+    mb.append("<tr>");
+    mb.append("<td valign=top align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Storage Space</strong>");
+    mb.append("</font><font face=arial size=-2><br>");
+    mb.append("Storage space allows you to keep log entries, images and reader messages online.");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<select name=storagespace>");
+    for(int i=100; i<=5000; i=i+100){
+        String sel = "";
+        if (Long.parseLong(i+"000000")==userSession.getAccount().getMaxspaceinbytes()){
+            sel = " selected";
+        }
+        double cost = userSession.getPl().getPriceper100mbstorage() * ((double)i/(double)100);
+        String price = formatter2.format(cost);
+        mb.append("<option value='"+i+"000000' "+sel+">"+i+" Mb - "+price+"/Month</option>");
+    }
+    mb.append("</select>");
+    mb.append("<br>");
+    mb.append(formatter2.format(userSession.getPl().getPriceper100mbstorage()));
+    mb.append(" Per 100 Mb/Month");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    NumberFormat formatter3 = NumberFormat.getCurrencyInstance(Locale.US);
+    mb.append("<tr>");
+    mb.append("<td valign=top align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Bandwidth</strong>");
+    mb.append("</font><font face=arial size=-2><br>");
+    mb.append("Each time you or one of your site visitors uses your weblog they consume some bandwidth.  As your site grows you'll need more bandwidth.");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<select name=maxbandwidth>");
+    for(int i=2; i<=100; i=i+1){
+        String sel = "";
+        if (Long.parseLong(i+"000000000")==userSession.getAccount().getMaxbandwidth()){
+            sel = " selected";
+        }
+        double cost = userSession.getPl().getPricepergbbandwidth() * (double)i;
+        String price = formatter3.format(cost);
+        mb.append("<option value='"+i+"000000000' "+sel+">"+i+" Gb - "+price+"/Month</option>");
+    }
+    mb.append("</select>");
+    mb.append("<br>");
+    mb.append(formatter3.format(userSession.getPl().getPricepergbbandwidth()));
+    mb.append(" Per Gb of Bandwidth/Month");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left colspan=2 bgcolor=#cccccc><font face=arial size=-1>");
+    mb.append("<strong>Contact Information</strong>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Email Address:</strong>");
+    mb.append("</font><br><font face=arial size=-2>");
+    mb.append("<strong>(must be valid)</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='text' name='email' size='35' maxlength='255'><br><font face=arial size=-2>");
+    mb.append("<strong>bob@bob.com</strong>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Phone Number:</strong>");
+    mb.append("</font><br><font face=arial size=-2>");
+    mb.append("<strong>(for billing questions)</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='text' name='phone' size='35' maxlength='255'><br><font face=arial size=-2>");
+    mb.append("<strong>404-555-1212</strong>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+
+
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left colspan=2 bgcolor=#cccccc><font face=arial size=-1>");
+    mb.append("<strong>Credit Card Billing Address</strong>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Name:</strong>");
+    mb.append("</font><br><font face=arial size=-2>");
+    mb.append("<strong>(as it appears on<br>credit card)</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='text' name='name' size='35' maxlength='49'><br><font face=arial size=-2>");
+    mb.append("<strong>i.e. Joe Smith</strong>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Address1:</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='text' name='address1' size='35' maxlength='49'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("Address2:");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='text' name='address2' size='35' maxlength='49'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>City:</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='text' name='city' size='35' maxlength='49'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>State:</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='text' name='State' size='2' maxlength='2'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Zip:</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='text' name='zip' size='5' maxlength='49'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left colspan=2 bgcolor=#cccccc><font face=arial size=-1>");
+    mb.append("<strong>Credit Card Information</strong>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Card Type:</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='radio' name='cardtype' value='visa' checked><img src=images/visa.gif> <font face=arial size=-1>");
+    mb.append("<strong>Visa</strong></font><br>");
+    mb.append("<input type='radio' name='cardtype' value='mastercard'><img src=images/mastercard.gif> <font face=arial size=-1>");
+    mb.append("<strong>MasterCard</strong></font><br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Card Number:</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type='text' name='ccnum' size='16' maxlength='16'><br><font face=arial size=-2>");
+    mb.append("<strong>i.e. 1234123412341234</strong>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial size=-1>");
+    mb.append("<strong>Expiration:</strong>");
+    mb.append("</font></td>");
+    mb.append("<td valign=top nowrap>");
+    mb.append("<select name='expirationmonth' size='1'>");
+    mb.append("<option value='01' SELECTED>01-Jan</option>");
+    mb.append("<option value='02'>02-Feb</option>");
+    mb.append("<option value='03'>03-Mar</option>");
+    mb.append("<option value='04'>04-Apr</option>");
+    mb.append("<option value='05'>05-May</option>");
+    mb.append("<option value='06'>06-Jun</option>");
+    mb.append("<option value='07'>07-Jul</option>");
+    mb.append("<option value='08'>08-Aug</option>");
+    mb.append("<option value='09'>09-Sep</option>");
+    mb.append("<option value='10'>10-Oct</option>");
+    mb.append("<option value='11'>11-Nov</option>");
+    mb.append("<option value='12'>12-Dec</option>");
+    mb.append("</select>");
+    mb.append(" / ");
+    mb.append("<select name='expirationyear' size='1'>");
+    mb.append("<option value='03'>2003</option>");
+    mb.append("<option value='04'>2004</option>");
+    mb.append("<option value='05' SELECTED>2005</option>");
+    mb.append("<option value='06'>2006</option>");
+    mb.append("<option value='07'>2007</option>");
+    mb.append("<option value='08'>2008</option>");
+    mb.append("<option value='09'>2009</option>");
+    mb.append("<option value='10'>2010</option>");
+    mb.append("<option value='11'>2011</option>");
+    mb.append("<option value='12'>2012</option>");
+    mb.append("<option value='13'>2013</option>");
+    mb.append("<option value='14'>2014</option>");
+    mb.append("</select>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=center bgcolor=#ffffff>");
+    mb.append("</td>");
+    mb.append("<td valign=top align=left bgcolor=#ffffff>");
+    mb.append("<input type='submit' value='Upgrade!'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=center bgcolor=#ffffff>");
+    mb.append("</td>");
+    mb.append("<td valign=top align=left bgcolor=#ffffff align=center><font face=arial size=-1>");
+    mb.append("<ul>");
+    if (!userSession.getAccount().isPro()){
+        mb.append("<li>Your account will be upgraded immediately and you will have access to the upgraded features.</li>");
+    } else {
+        mb.append("<li>The amount above will be your new monthly charge for service effective immediately.</li>");
+    }
+    mb.append("<li>Your credit card will be charged monthly.</li>");
+    mb.append("<li>You may cancel your account at any time, free of charge.</li>");
+    mb.append("<li>Your account will have access to the amount of storage and bandwidth that you have chosen.</li>");
+    mb.append("<li>By upgrading, you agree to the terms of service of this site.</li>");
+    mb.append("<ul>");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+
+
+    mb.append("</table>");
+    mb.append("</form>");
+
+
+
+
+
+    mb.append("<!-- Body Table End -->");
+
+
+    mb.append("<br><br>");
+
+
+
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

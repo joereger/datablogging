@@ -1,0 +1,119 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 reger.nestednav.NestedNavItem,
+                 reger.nestednav.NestedNavCollection"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "<img src='../images/icon-log-med-notext.gif' align=top> Customize Log Properties";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logsyourlogs";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+//pageProps.isLogidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Create the log object
+//reger.Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+NestedNavItem navItem = reger.nestednav.NestedNavItemFactory.getItem(Integer.parseInt(request.getParameter("nestednavtype")), Integer.parseInt(request.getParameter("nestednavid")));
+
+//Do the work
+if (pageProps.action.equals("movefinish")){
+    if (navItem.userCanAdministerNavItem(userSession.getAccountuser())){
+        NestedNavCollection navCollection = userSession.getAccount().getNestedNavCollection();
+        navCollection.moveItem(Integer.parseInt(request.getParameter("nestednavtype")), Integer.parseInt(request.getParameter("nestednavid")), Integer.parseInt(request.getParameter("parenttype")), Integer.parseInt(request.getParameter("parentid")), Integer.parseInt(request.getParameter("order")));
+        userSession.getAccount().refresh();
+        response.sendRedirect("logs-log-list.log");
+        return;
+    } else {
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry.  Your account doesn't have permission to move that item."));
+    }
+
+}
+
+if (pageProps.action.equals("resetlayout")){
+    if (userSession.getAccountuser().userCanDoAcl("CUSTOMIZELOG", userSession.getAccount().getAccountid())){
+        NestedNavCollection navCollection = userSession.getAccount().getNestedNavCollection();
+        navCollection.resetEntireLayout();
+        userSession.getAccount().refresh();
+    } else {
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry.  Your account doesn't have permission to move that item."));
+    }
+}
+
+
+//Log Header start
+String currentNavButtonName = "logs-log-move";
+%>
+<%@ include file="logs-header.jsp" %>
+<%
+//Log Header end
+
+if (navItem==null){
+
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry.  Item not found."));
+
+} else {
+
+    mb.append("<div class=greybox>");
+    mb.append("<font face=arial size=+1>");
+    mb.append("Where would you like to move \""+navItem.getNestedNavLinkText()+"\"?");
+    mb.append("</font>");
+    mb.append("</div>");
+    mb.append("<br>");
+
+
+    reger.nestednav.NestedNavDisplayLayoutManagerMoveTo navMgrDisplay = new reger.nestednav.NestedNavDisplayLayoutManagerMoveTo();
+    mb.append(navMgrDisplay.outputNavBarHtml(userSession, request));
+
+
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<a href='logs-log-move.log?action=resetlayout'>");
+    mb.append("Flatten/Fix/Reset Layout (Caution, Permanent)");
+    mb.append("</a>");
+    mb.append("</font>");
+
+}
+
+//Log Footer start
+%>
+<%@ include file="logs-footer.jsp" %>
+<%
+//Log Footer end
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

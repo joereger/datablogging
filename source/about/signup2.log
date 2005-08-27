@@ -1,0 +1,575 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 reger.template.Template,
+                 reger.MegaLogType,
+                 reger.core.db.Db,
+                 reger.Account,
+                 java.util.Calendar,
+                 reger.core.licensing.License,
+                 java.util.Hashtable"%>
+<%@ page import="reger.jcaptcha.CaptchaServiceSingleton"%>
+<%@ page import="com.octo.captcha.service.CaptchaServiceException"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//reger.UserSession userSession = userSession;
+
+//Make sure there's at least one log type in the box
+//Get any current logs from the session
+//NewLogHolder[] logsInSession = (NewLogHolder[])userSession.getAttribute(NewLogHolder.NEWLOGSESSIONATTRIBUTENAME);
+//if (logsInSession==null || logsInSession.length<1){
+//    logsInSession = new NewLogHolder[0];
+//    //Create the NewLogHolder object
+//    NewLogHolder nLog = new NewLogHolder(reger.Vars.DEFAULTLOGNAME, reger.Vars.DEFAULTLOGEVENTTYPEID);
+//    //Add the new log to the array
+//    logsInSession = reger.core.Util.addToNewLogHolderArray(logsInSession, nLog);
+//    //Put the array into the session
+//    userSession.setAttribute(NewLogHolder.NEWLOGSESSIONATTRIBUTENAME, logsInSession);
+//}
+
+//Get the name and eventtypeid
+int eventtypeid = reger.Vars.DEFAULTLOGEVENTTYPEID;
+String logname = reger.Vars.DEFAULTLOGNAME;
+MegaLogType logTypeToAdd = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid);
+if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+    eventtypeid = Integer.parseInt(request.getParameter("eventtypeid"));
+    logTypeToAdd = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid);
+    if (logTypeToAdd!=null){
+        logname = logTypeToAdd.getMegalogname();
+    }
+}
+if (request.getParameter("logname")!=null && !request.getParameter("logname").equals("")){
+    logname = request.getParameter("logname");
+}
+
+//Inherit the show on homepage setting from the event type
+String showonhomepage = "1";
+if (!reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getShowonhomepage()){
+    showonhomepage = "0";
+}
+
+
+
+//Page Vars
+String errortext="";
+String siteurl=reger.core.Util.getParameterClean(request.getParameter("siteurl"));
+String homepagetitle=reger.core.Util.getParameterClean(request.getParameter("homepagetitle"));
+
+//Create accountuser object
+reger.Accountuser au = new reger.Accountuser(-1);
+
+
+
+//Create an account ------------------------------------------------------------
+//------------------------------------------------------------------------------
+if (pageProps.action.equals("createaccount")) {
+
+
+    //Populate au from request
+    au.populateFromRequest(request);
+
+    //Make sure we have a password
+    if (request.getParameter("acctuserpassword")==null || request.getParameter("acctuserpassword").equals("")){
+        errortext = errortext + "You must provide a password.<br>";
+    }
+    //Make sure jcaptcha passes
+    Boolean isResponseCorrect =Boolean.FALSE;
+    String captchaId = request.getSession().getId();
+    String resp = request.getParameter("j_captcha_response");
+    try {
+        isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
+    } catch (CaptchaServiceException e) {
+         isResponseCorrect = new Boolean(false);
+         reger.core.Util.errorsave(e);
+    }
+    if (!isResponseCorrect.booleanValue()){
+        errortext = errortext + "You failed to enter the letters in the box correctly.  Don't despair.  Sometimes they're tough to read.  Please try again.<br>";
+    }
+    //Servername validation
+    errortext = errortext + Account.validateServername(siteurl, userSession.getPl().getPlid());
+    //Accountuser validation
+    errortext = errortext + au.validateAccountuser(userSession.getPl());
+    //Homepagetitle is required
+    if (request.getParameter("homepagetitle")==null || request.getParameter("homepagetitle").equals("")){
+        errortext=errortext + "You must provide a site name.<br>";    
+    }
+
+	//If there is any sort of error
+	if (!errortext.equals("")){
+        //@todo Record the signup error somewhere?
+    }else { //create the user and logs, then redirect to signup2
+
+
+        //isnewpendingadminapproval - Need to see if the pl requires approval of accounts by an admin
+        int isactiveaccount = 1;
+        int isnewpendingadminapproval = 0;
+        if (userSession.getPl().getNewaccountsrequireadminapproval()){
+            isactiveaccount = 0;
+            isnewpendingadminapproval = 1;
+        }
+        //License
+        String encryptedLicense = "";
+        if(String.valueOf(userSession.getPl().getLicense().getProperty(License.PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS)).equals("1")){
+            //Expiration date
+            Calendar xDaysFromNow = reger.core.TimeUtils.xDaysAgoEnd(reger.core.TimeUtils.nowInGmtCalendar(), (-1*reger.Vars.TRIALACCOUNTDAYS));
+            //License props
+            Hashtable licenseProps = new Hashtable();
+            licenseProps.put(License.PROPSTRINGLICENSETYPE, String.valueOf(License.LICENSETYPEACCOUNTSUBSCRIPTION));
+            licenseProps.put(License.PROPSTRINGEXPDATEGMT, String.valueOf(reger.core.TimeUtils.dateformatfordb(xDaysFromNow)));
+            //Create the license
+            License accountLicense = new License(null, licenseProps);
+            encryptedLicense = accountLicense.getEncryptedLicense();
+        }
+        //Create this this account
+        //-----------------------------------
+        //-----------------------------------
+        int newaccountid = Db.RunSQLInsert("INSERT INTO account(accounturl                              , createdate                                           ,plid                                  , timezoneid                                              , messagesstatus, messagesapproval, homepagetitle                                 , homepagecalendar, jspopup, admintools, pingweblogscom, showhometab, hometabtext, showlogintab, displaycharsinsummary, displaynumberofentries, userelatedlinks, favesiteon, onthisday, emailnewsletter, emailsendhour, isactiveaccount      , isnewpendingadminapproval      , hptemplateid                               , entlisttemplateid                             , sitetemplateid                                     , encryptedlicense) " +
+                                                        "VALUES('"+ reger.core.Util.cleanForSQL(siteurl) + "', '"+reger.core.TimeUtils.nowInGmtString()+"'     , '"+ userSession.getPl().getPlid() +"','"+reger.core.Util.cleanForSQL(au.getUsertimezoneid())+"','1'            , '1'             , '"+ reger.core.Util.cleanForSQL(homepagetitle) +"' , '1'             ,'1'     , '0'       , '1'           , '1'        , ''         , '1'         , '0'                  , '15'                  , '1'            , '0'       , '1'      , '1'            , '3'     , '"+isactiveaccount+"', '"+isnewpendingadminapproval+"', '"+userSession.getPl().getHptemplateid()+"', '"+userSession.getPl().getEntlisttemplateid()+"', '"+userSession.getPl().getPublicsitetemplateid()+"', '"+encryptedLicense+"')");
+        //-----------------------------------
+        //-----------------------------------
+
+        //Account
+        Account acct = new Account(newaccountid);
+        acct.doBilling();
+
+
+        //Set the new accountid
+        au.setAccountid(newaccountid);
+        //Save the accountuser
+        au.newAccountuser(userSession.getPl());
+        //Grant the accountuser ownership of the account
+        au.addUserToAclGroup("SiteOwner", newaccountid);
+
+
+
+        //Add friend from a manual click on friendassociate.log
+        if (session.getAttribute("accountuseridtarget")!=null && reger.core.Util.isinteger(String.valueOf(session.getAttribute("accountuseridtarget")))){
+            //Set the friendinvitationid
+            int accountuseridtarget = Integer.parseInt(String.valueOf(session.getAttribute("accountuseridtarget")));
+
+            //Create the friend relationship from the new user to the inviter
+            au.addFriend(accountuseridtarget);
+        }
+
+
+
+
+
+
+        //Insert the new log
+        //-----------------------------------
+        //-----------------------------------
+        int newlogid = Db.RunSQLInsert("INSERT INTO megalog(accountid, name, eventtypeid, logaccess, showonhomepage, nestednavorder) VALUES('"+ newaccountid +"', '"+reger.core.Util.cleanForSQL(logname)+"', '"+ eventtypeid +"', '"+reger.Vars.LOGACCESSPUBLIC+"', '"+showonhomepage+"', '1')");
+        //-----------------------------------
+        //-----------------------------------
+
+        //Important to refresh the AllLogsInSystem object after megalog changes
+        reger.AllLogsInSystem.refresh(newlogid);
+
+
+
+        //If there was no log created, create an all-purpose one
+//        if (!havenewlog) {
+//
+//            //-----------------------------------
+//            //-----------------------------------
+//            int newlogid = Db.RunSQLInsert("INSERT INTO megalog(accountid, name, eventtypeid, logaccess, showonhomepage) VALUES('"+ newaccountid +"', '"+reger.core.Util.cleanForSQL(reger.Vars.DEFAULTLOGNAME)+"', '"+ reger.Vars.DEFAULTLOGEVENTTYPEID +"', '"+reger.Vars.LOGACCESSPUBLIC+"', '1')");
+//            //-----------------------------------
+//            //-----------------------------------
+//
+//            //Important to refresh the AllLogsInSystem object after megalog changes
+//            reger.AllLogsInSystem.refresh(newlogid);
+//
+//        }
+
+        //Make sure all logs nav items are in order.  This alphabetizes the logs.
+//        try{
+//            reger.Account acct = new reger.Account(newaccountid);
+//            acct.getNestedNavCollection().resetEntireLayout();
+//        } catch (Exception e){
+//            reger.core.Util.errorsave(e);
+//        }
+
+        //Calculate the base url of this account
+        String baseUrlOfAccount = siteurl.toLowerCase() + "." + userSession.getPl().getPlbasedomain();
+        if (!userSession.getPl().getUsedynamicdns()){
+            baseUrlOfAccount =  userSession.getPl().getPlbasedomain() + "/~" + siteurl.toLowerCase();
+        }
+
+        //Send the welcome email
+        if (au.getEmail()!=null && !au.getEmail().equals("")) {
+            reger.emailtext.BasicEmails.newAccountWelcome(au, newaccountid, userSession.getPl(), request.getParameter("password"));
+        }
+
+
+        //Do friendinvitationid work
+        if (session.getAttribute("friendinvitationid")!=null && reger.core.Util.isinteger((String)session.getAttribute("friendinvitationid"))){
+            if (session.getAttribute("friendinvitationkey")!=null){
+                reger.InvitationProcessor.process(au, Integer.parseInt((String)session.getAttribute("friendinvitationid")), (String)session.getAttribute("friendinvitationkey"));
+                au.populate();
+            }
+        }
+
+        //If this pl requires approval of accounts, send an email to the admin
+        if (userSession.getPl().getNewaccountsrequireadminapproval()){
+            reger.emailtext.BasicEmails.newAccountRequiringAdminApproval(userSession.getPl(), newaccountid);
+            //Redirect to awaiting approval screen
+            response.sendRedirect("awaitingapproval.log?accountid="+au.getAccountid());
+            return;
+        }
+
+
+        //Redirect to log the user in
+        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + baseUrlOfAccount +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=signupcomplete");
+        return;
+
+    }
+
+} else if (pageProps.action.equals("login")){
+//Log In -----------------------------------------------------------------------
+//------------------------------------------------------------------------------
+    au.userAuthenticate(request.getParameter("acctusername"), request.getParameter("acctuserpassword"));
+    if (au.getIsLoggedIn()){
+        //Set the session accountuser
+        userSession.setAccountuser(au);
+
+        //Set ordering info by finding all on first level and getting highest
+        reger.Account acct = new reger.Account(au.getAccountid());
+        reger.nestednav.NestedNavCollection collection = acct.getNestedNavCollection();
+        reger.nestednav.NestedNavItem[] topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
+        int currentMaxOrder = reger.nestednav.NestedNavCollection.getMaxOrder(topLevelNavItems);
+
+        //Insert the new log
+        //-----------------------------------
+        //-----------------------------------
+        int newlogid = Db.RunSQLInsert("INSERT INTO megalog(accountid, name, eventtypeid, logaccess, showonhomepage, nestednavorder) VALUES('"+ au.getAccountid() +"', '"+reger.core.Util.cleanForSQL(logname)+"', '"+ eventtypeid +"', '"+reger.Vars.LOGACCESSPUBLIC+"', '"+showonhomepage+"', '"+(currentMaxOrder+1)+"')");
+        //-----------------------------------
+        //-----------------------------------
+
+        //Important to refresh the AllLogsInSystem object after megalog changes
+        reger.AllLogsInSystem.refresh(newlogid);
+
+
+
+        //Do friendinvitationid work
+        if (session.getAttribute("friendinvitationid")!=null && reger.core.Util.isinteger((String)session.getAttribute("friendinvitationid"))){
+            if (session.getAttribute("friendinvitationkey")!=null){
+                reger.InvitationProcessor.process(au, Integer.parseInt((String)session.getAttribute("friendinvitationid")), (String)session.getAttribute("friendinvitationkey"));
+                au.populate();
+            }
+        }
+
+        //Redirect to log the user in
+        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + au.getSiteRootUrl() +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=logadded");
+        return;
+    } else {
+        errortext = "Sorry, that username/password combination was not found.";
+    }
+} else {
+//If user is logged-in, add the log --------------------------------------------
+//------------------------------------------------------------------------------
+    au = userSession.getAccountuser();
+    if (au.getIsLoggedIn()){
+
+        //Set ordering info by finding all on first level and getting highest
+        reger.Account acct = new reger.Account(au.getAccountid());
+        reger.nestednav.NestedNavCollection collection = acct.getNestedNavCollection();
+        reger.nestednav.NestedNavItem[] topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
+        int currentMaxOrder = reger.nestednav.NestedNavCollection.getMaxOrder(topLevelNavItems);
+
+
+        //Insert the new log
+        //-----------------------------------
+        //-----------------------------------
+        int newlogid = Db.RunSQLInsert("INSERT INTO megalog(accountid, name, eventtypeid, logaccess, showonhomepage, nestednavorder) VALUES('"+ au.getAccountid() +"', '"+reger.core.Util.cleanForSQL(logname)+"', '"+ eventtypeid +"', '"+reger.Vars.LOGACCESSPUBLIC+"', '"+showonhomepage+"', '"+(currentMaxOrder+1)+"')");
+        //-----------------------------------
+        //-----------------------------------
+
+        //Important to refresh the AllLogsInSystem object after megalog changes
+        reger.AllLogsInSystem.refresh(newlogid);
+
+        //Do friendinvitationid work
+        if (session.getAttribute("friendinvitationid")!=null && reger.core.Util.isinteger((String)session.getAttribute("friendinvitationid"))){
+            if (session.getAttribute("friendinvitationkey")!=null){
+                reger.InvitationProcessor.process(au, Integer.parseInt((String)session.getAttribute("friendinvitationid")), (String)session.getAttribute("friendinvitationkey"));
+                au.populate();
+            }
+        }
+
+        //Refresh acct
+        if (userSession.getAccount()!=null){
+            userSession.getAccount().refresh();
+        }
+
+        //Redirect to log the user in
+        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + au.getSiteRootUrl() +"/myhome/index.log?msg=logadded");
+        return;
+        //mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Would have redirected user to admin home."));
+    }
+}
+
+//Display any errors
+if (!errortext.equals("")) {
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+
+
+
+mb.append("<br>");
+mb.append(reger.marketingSite.SignupProgressBar.getBar(2));
+mb.append("<br>");
+
+
+
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+mb.append("<center><font face=arial size=+2 color=#666666><b>");
+if (logTypeToAdd!=null){
+    mb.append("You have chosen to create a log of type: " + logTypeToAdd.getMegalogname() );
+    if (!logname.equals(logTypeToAdd.getMegalogname())){
+        //mb.append(" which you will call \""+logname+"\"");
+    }
+    mb.append(". ");
+    mb.append("</b></font>");
+    mb.append("<br>");
+}
+mb.append("<font face=arial size=-1 color=#666666><b>");
+mb.append("To continue, either log in or create a new account. ");
+mb.append("</font>");
+//mb.append("<br>");
+mb.append("<font face=arial size=-1 color=#666666><b>");
+mb.append("Once you do so you will be able to add more logs, customize the ones you have and add log entries to them.");
+mb.append("</font>");
+mb.append("</center><br>");
+
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+
+//Wrapper table
+mb.append("<table cellpadding=5 align=center width=100% cellspacing=1 border=0>");
+mb.append("<tr>");
+mb.append("<td width=25% valign=top>");
+
+
+    //Login
+    mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+    mb.append("<center><font face=arial size=+2 color=#666666><b>Existing Users</b></font></center><br>");
+    mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
+    mb.append("<form action=signup2.log method=post>");
+    mb.append("<input type=hidden name=action value=login>");
+    mb.append("<input type=hidden name=eventtypeid value="+request.getParameter("eventtypeid")+">");
+    mb.append("<input type=hidden name=logname value=\""+reger.core.Util.cleanForHtml(request.getParameter("logname"))+"\">");
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=left bgcolor=#cccccc colspan=2>");
+    mb.append("<font face=arial size=-1 color=#000000><b>Log In</b></font><br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff valign=center align=right>");
+    mb.append("<font face=arial size=-1 color=#000000><b>Username</b></font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=center nowrap align=left>");
+    mb.append("<input type='text' name='acctusername' value='' size='20' maxlength='49'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff valign=center align=right>");
+    mb.append("<font face=arial size=-1 color=#000000><b>Password</b></font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=center nowrap align=left>");
+    mb.append("<input type='password' name='acctuserpassword' value='' size='20' maxlength='49'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff valign=center align=right>");
+    mb.append("<font face=arial size=-1 color=#000000><b>&nbsp;</b></font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#ffffff valign=center nowrap align=left>");
+    mb.append("<input type=submit value='Log In'>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2 color=#000000><b>New users: create an account to the right.</b></font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    mb.append("</form>");
+    mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+//Wrapper table
+mb.append("</td>");
+mb.append("<td valign=top>");
+
+    //Sign Up
+    mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+    mb.append("<center><font face=arial size=+2 color=#666666><b>New Users Create an Account</b></font></center><br>");
+    mb.append("<!-- begin  permissions table -->");
+    mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
+
+
+    mb.append("<form action=signup2.log method=post>");
+    mb.append("<input type=hidden name=action value=createaccount>");
+    mb.append("<input type=hidden name=eventtypeid value="+request.getParameter("eventtypeid")+">");
+    mb.append("<input type=hidden name=logname value=\""+reger.core.Util.cleanForHtml(request.getParameter("logname"))+"\">");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=left bgcolor=#cccccc colspan=2>");
+    mb.append("<font face=arial size=-1 color=#000000><b>Site Properties</b></font><br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("</tr>");
+    mb.append("<td bgcolor=#ffffff valign=top width=50% align=right><font face=arial size=-1>");
+    mb.append("<b>Choose Your Own Web Address!</b>");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2 color=#000000>");
+    mb.append("This is the URL (web location) where your logs are published.  Once your account is created you can decide to keep these logs private, share them with specific people, or share them with the world!");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top nowrap align=left><font face=arial size=-1>");
+    if (userSession.getPl().getUsedynamicdns()){
+        mb.append("<b>"+request.getScheme() + ":// <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> ." + userSession.getPl().getPlbasedomain() + "/ </b>");
+    } else {
+        mb.append("<b>"+reger.Vars.getHttpUrlPrefix() +userSession.getPl().getPlbasedomain()+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
+    }
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2 color=#000000><b>");
+    mb.append("Valid characters: letters, numbers and dash -.<br>Can't start with a dash.");
+    mb.append("</b></font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff valign=center align=right>");
+    mb.append("<font face=arial size=-1 color=#000000><b>Site Name</b></font><br>");
+    mb.append("<font face=arial size=-2 color=#000000>");
+    mb.append("Give your site a name.  You can easily change it later.  Example: Joe's Cool Site.");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top nowrap align=left>");
+    mb.append("<input type='text' name='homepagetitle' value='" + reger.core.Util.cleanForHtml(homepagetitle) + "' size='20' maxlength='49'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+
+
+
+
+    //User props
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=left bgcolor=#cccccc colspan=2>");
+    mb.append("<font face=arial size=-1 color=#000000><b>User Properties</b></font><br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=left bgcolor=#ffffff colspan=2>");
+    //Output the accountuser fields
+    mb.append(au.accountSettingsHtmlForm(userSession.getPl()));
+    mb.append("</td>");
+
+    mb.append("</tr>");
+
+    //Captcha
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=left bgcolor=#cccccc colspan=2>");
+    mb.append("<font face=arial size=-1 color=#000000><b>Prove that You're Human</b></font><br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff valign=top align=right>");
+    mb.append("<font face=arial size=-1 color=#000000><b>Type the Letters:</b></font><br>");
+    mb.append("<font face=arial size=-2 color=#000000>");
+    mb.append("Type the letters you see to the right in the box below them.  This is done to prove that you're human, not an automated spam bot.");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top nowrap align=left>");
+    mb.append("<img src=\"/jcaptcha\">");
+    mb.append("<br>");
+    mb.append("<input type='text' name='j_captcha_response' value=''>");
+    mb.append("</td>");
+
+
+
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    //Terms of use
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=left bgcolor=#cccccc colspan=2>");
+    mb.append("<font face=arial size=-1 color=#000000><b>"+userSession.getPl().getTermsofuselinktext()+"</b></font><br>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td valign=top nowrap align=center bgcolor=#ffffff colspan=2>");
+    String termsofservice = "";
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstTos= Db.RunSQL("SELECT termsofservice FROM pl WHERE plid='"+userSession.getPl().getPlid()+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstTos!=null && rstTos.length>0){
+        termsofservice = rstTos[0][0];
+    }
+    mb.append("<textarea cols='35' rows='6' name='termsofservice' style=\"font-size: 12px;font-face: arial; width:100%; background: #ffffff; color: #000000;\" disabled=\"true\">"+Util.cleanForHtml(termsofservice)+"</textarea>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+
+    //Submit
+    mb.append("<tr>");
+    mb.append("<td bgcolor='#ffffff' align=center valign=top colspan=2>");
+    mb.append("<input type='submit' value='I Agree to the Terms of Service'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</form>");
+    mb.append("</table>");
+    mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+    mb.append("<br><br>");
+
+//Wrapper table
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("<br><br><br><br><br>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

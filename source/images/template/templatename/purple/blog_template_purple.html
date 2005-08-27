@@ -1,0 +1,204 @@
+<html>
+<head>
+
+
+
+	<title><$Site.Name$> <$Entry.Title$></title>
+
+
+	
+	<style type="text/css">
+<!--
+/* ++++++++++++++++++++ This is the stylesheet that controls elements that are output by the system.  The names are pre-defined.  They may make little sense to you at first.  Play with them.  Change one to a funky color and then visit your site to see how it looks.  If you get in trouble, simply go to the Template Gallery and start over with one of the stylish pre-built templates. Have fun and be creative! You're in control. */
+
+
+/* The color of links on your site. */
+a       {color: #000000;  font-weight: bold;}
+
+/* A big font used throughout the site in various places. */
+.bigfont{font-family: verdana, arial, helvetica, sans-serif;
+	     color:#000000;
+	     font-size:15px;}
+
+/* A medium font used throughout the site in various places. */
+.mediumfont{font-family: verdana, arial, helvetica, sans-serif;
+	     color:#000000;
+	     font-size:10px;}
+
+/* A small font used throughout the site in various places. */
+.smallfont{font-family: verdana, arial, helvetica, sans-serif;
+	     color:#000000;
+	     font-size:10px;}
+
+/* The table that houses your main log navigation. */
+.navigation{width: 100%}
+
+/* The style of a navigation button that is currently clicked off. This will determine the general color and style of your navigation bar. */
+.navcelloff{padding: 2px;}
+	  
+/* The style of a navigation button that is currently clicked on. */
+.navcellon{padding: 2px;}
+
+/* The font used when a navigation bar button is turned off. */
+.navfontoff{FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 14px; color: #000000; 
+          font-weight: bold;}
+
+/* The font used when a navigation bar button is turned on. */
+.navfonton{FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
+          font-size: 14px; color: #ffffff; 
+          font-weight: bold;}
+
+/* Content in your side column is arranged into units. */
+.sidecolunit {width: 100%}
+		  
+/* The background and font for unit headers in your side column. */
+.sidecolheader {background-color: #cc99cc;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
+          font-size: 15px; color: #ffffff; 
+          font-weight: bold;
+	      width: 100%}
+		  
+/* The background and font for content in your side column. */
+.sidecolcontent {FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
+          font-size: 10px; color: #000000; 
+          font-weight: bold;
+	      width: 100%}
+
+/* Sun Mon Tue Wed Thu Fri Sat.  This changes the font and background color. */
+.calendardayname{background-color: #cccccc;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 8px; color: #000000; 
+          font-weight: bold;}
+
+/* 1 2 3...  the little numbers in your calendar.  This changes the font and background color. */
+.calendardaybox{background-color: #e6e6e6;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 10px; color: #000000; 
+          font-weight: bold;}
+		  
+/* The current day in your calendar.  This changes the font and background color so that you can highlight it. */
+.calendardayboxtoday{background-color: #cccccc;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 10px; color: #000000; 
+          font-weight: bold;}
+
+/* Important for setting the style of your log entry detail page. This controls the display of field names.*/		 
+.logentryheader{background-color: #cccccc;
+	      FONT-FAMILY:  verdana, arial, helvetica, sans-serif; 
+          font-size: 12px; color: #000000; 
+          font-weight: bold;}
+
+/* Important for setting the style of your log entry detail page. This controls the display of your data. */	
+.logentrycontent{background-color: #ffffff;
+	      FONT-FAMILY: verdana, arial, helvetica, sans-serif; 
+          font-size: 10px; color: #000000;}
+
+/* Control the little numbers that appear when you list more log entries than will appear on the page. */	
+.pagingnumbers{ 
+          padding: 0px;
+	      width: 100%}
+
+/* ++++++++++++++++++++ Below this point are css classes that appear in the template itself.  You can add/remove classes by editing your template directly. */
+
+--> 
+</style>
+	
+	
+	
+	<style type="text/css">
+	body { 
+		background-color: #cc99cc;
+	}
+	.header { 
+		background-color: #ff9900;
+		border-bottom: 2px solid white;
+	}
+	h1 {
+		font-family: "Trebuchet MS", Helvetica, sans-serif;
+		font-size: 25px;
+		color: white;
+		padding-left: 57px;
+		padding-top: 15px;
+		padding-bottom: 10px;
+	}
+	.leftedge {
+		background-color: #996699;
+	}
+	h3 {
+		font-family: "Tahoma", sans-serif;
+		font-size: 15px;
+		color: white;
+		padding-top: 20px;
+	}
+	.date {
+		padding-left: 20px;
+		padding-bottom: 2px;
+		border-bottom: 2px solid #996699;
+	}
+	blockquote, p {
+		font-family: "Tahoma", sans-serif;
+		font-size: 12px;
+		color: white;
+	
+	}
+	.postinfo {
+		font-size: 10px;
+		font-style: italic;
+		padding-bottom: 7px;
+		padding-left: 15px;
+	}
+	.rightbar {
+		background-color: #996699;
+		border-left: 2px solid white;
+		border-bottom: 2px solid white;
+		padding-left: 15px;
+		padding-right: 5px;
+		padding-bottom: 30px;
+		padding-top: 20px;
+	}
+	.blogarchive {
+		color: #ff9900;
+	}
+	a:link { 
+		color: white;
+	}
+	a:visited {
+		color: #ffcc99;
+	}
+	a:hover {
+		color: #ff9900;
+	}
+	</style>
+</head>
+
+<body bottommargin="0" topmargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td colspan="3" class="header">
+	
+	<!-- the title of your blog comes here -->
+	<h1><$Site.Name$></h1>
+	
+	</td></tr>
+<tr><td class="leftedge">     </td>
+	<td valign="top">
+
+	<$Main.Body$>
+
+	</td>
+	<td valign="top" width="200px"><div class="rightbar">
+
+	<br>
+	<$Site.Description$>
+	
+	<br>
+	<$Navbar.Vertical$>
+		
+	<br>
+	<$Side.Column$>
+	
+	</div></td></tr>
+</table>
+
+</body>
+</html>

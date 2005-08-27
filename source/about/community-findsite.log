@@ -1,0 +1,211 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//HtmlCache
+String cachekey = "CommunityFindSitePage" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+int refreshintervalinseconds = 600;
+%><%@ include file="../htmlcachestart.jsp" %><%
+
+
+    String currentNavButtonName = "community-findsite";
+    %><%@ include file="community-header.jsp" %><%
+
+    mb.append("<br>");
+    mb.append("<br>");
+
+    //Find a site
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Find a Site");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<form action=community-findsite.log method=post>");
+    mb.append("Type a site's URL or title:<br>");
+    mb.append("<input type=text name=searchsites maxlength=50 size=15>");
+    mb.append("<input type=submit value='Go'>");
+    if (request.getParameter("searchsites")!=null && !request.getParameter("searchsites").equals("")){
+        mb.append("<br>");
+        mb.append("Sites matching \""+request.getParameter("searchsites")+"\"");
+        mb.append("<br>");
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstSearch= Db.RunSQL("SELECT accountid, homepagetitle FROM account, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND (account.islistedindirectory='1') AND account.isactiveaccount='1' AND ((accounturl LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%') OR (customservername LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%') OR (homepagetitle LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%')) LIMIT 0,25");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstSearch!=null && rstSearch.length>0){
+            for(int i=0; i<rstSearch.length; i++){
+                mb.append((i+1)+") ");
+                String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSearch[i][0]));
+                mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+                String sitename = rstSearch[i][1];
+                if (sitename.equals("")){
+                    sitename=rstSearch[i][0];
+                }
+                mb.append(sitename);
+                mb.append("</a>");
+                mb.append("<br>");
+            }
+        } else {
+            mb.append("None.");
+        }
+    }
+    mb.append("</font>");
+    mb.append("</form>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //Find a site
+
+
+    //Find a site by alpha
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Find a Site Alphabetically");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Click on the first letter/number of the site's url:");
+
+    java.util.Vector alphas = new java.util.Vector();
+    alphas.add("a");
+    alphas.add("b");
+    alphas.add("c");
+    alphas.add("d");
+    alphas.add("e");
+    alphas.add("f");
+    alphas.add("g");
+    alphas.add("h");
+    alphas.add("i");
+    alphas.add("j");
+    alphas.add("k");
+    alphas.add("l");
+    alphas.add("m");
+    alphas.add("n");
+    alphas.add("o");
+    alphas.add("p");
+    alphas.add("q");
+    alphas.add("r");
+    alphas.add("s");
+    alphas.add("t");
+    alphas.add("u");
+    alphas.add("v");
+    alphas.add("w");
+    alphas.add("x");
+    alphas.add("y");
+    alphas.add("z");
+    alphas.add("0");
+    alphas.add("1");
+    alphas.add("2");
+    alphas.add("3");
+    alphas.add("4");
+    alphas.add("5");
+    alphas.add("6");
+    alphas.add("7");
+    alphas.add("8");
+    alphas.add("9");
+
+    mb.append("<table align=center cellpadding=5 cellspacing=2 bgcolor=#e6e6e6>");
+    mb.append("<tr>");
+        for (int i = 0; i < alphas.size(); i++) {
+            String s = (String) alphas.elementAt(i);
+            String bgcolor="#ffffff";
+            if (s.equals(request.getParameter("alpha"))){
+                bgcolor="#cccccc";
+            }
+            mb.append("<td valign=top align=left bgcolor="+bgcolor+">");
+            mb.append("<a href='community-findsite.log?alpha="+s+"'>");
+            mb.append("<font face=arial size=-2>");
+            mb.append(s);
+            mb.append("</font>");
+            mb.append("</a>");
+            mb.append("</td>");
+        }
+    mb.append("</tr>");
+    mb.append("</table>");
+
+    if (request.getParameter("alpha")!=null && !request.getParameter("alpha").equals("")){
+        mb.append("<br>");
+        mb.append("Sites starting with: \""+request.getParameter("alpha")+"\"");
+        mb.append("<br>");
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstSearch= Db.RunSQL("SELECT accountid, homepagetitle FROM account, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND (account.islistedindirectory='1') AND account.isactiveaccount='1' AND SUBSTRING(account.accounturl, 1, 1)='"+reger.core.Util.cleanForSQL(request.getParameter("alpha"))+"' ORDER BY accounturl ASC");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstSearch!=null && rstSearch.length>0){
+            for(int i=0; i<rstSearch.length; i++){
+                mb.append((i+1)+") ");
+                String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSearch[i][0]));
+                mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+                mb.append(""+ reger.Vars.getHttpUrlPrefix() + baseSiteUrl + "/");
+                mb.append("</a>");
+                if (!rstSearch[i][1].equals("")){
+                    mb.append(" &nbsp;&nbsp;" + rstSearch[i][1] + "");
+                }
+                mb.append("<br>");
+            }
+        } else {
+            mb.append("None.");
+        }
+    }
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //Find a site by alpha
+
+
+
+
+    mb.append("<br><br>");
+
+
+    %><%@ include file="community-footer.jsp" %><%
+
+//HtmlCache
+%><%@ include file="../htmlcacheend.jsp" %><%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

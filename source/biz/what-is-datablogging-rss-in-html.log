@@ -1,0 +1,108 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "RSS Data Embedded in Html";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append(reger.core.Util.popup());
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+mb.append("<style>blockquote.quote {\n" +
+"    padding: 10px;\n" +
+"    border: 1px dotted #999;\n" +
+"    background: #e6e6e6;\n" +
+"}</style>");
+
+String lineBreak = "\n";
+
+mb.append("<br clear=all>");
+mb.append("<h1>An RSS Feed Inside of Your HTML Page</h1>");
+mb.append("By putting the contents of an RSS 2.0 feed into an html web entry we allow data consumers to get to data using a technology that they're familiar with.");
+
+mb.append("<br clear=all>");
+mb.append("<h1>Credit for Hiding Concept</h1>");
+mb.append("Thanks to Bob Wyman and his <a href='http://www.structuredblogging.org'>Structured Blogging</a> approach to hiding XML within Html using a SCRIPT tag.  This makes sense to us and we've adopted it here.");
+
+
+mb.append("<br clear=all>");
+mb.append("<h1>Why Embed RSS in Html?</h1>");
+mb.append("We already embed this data in RSS feeds.  Why in Html too?  Mostly for search engines and aggregators who operate on the link level instead of the RSS level.  As the web evolves they'll be able to find more and more richly structured content behind pretty web pages.");
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Here's how it looks:");
+
+mb.append("<br>");
+mb.append("<br>");
+
+mb.append("<blockquote class=quote>");
+mb.append("&lt;script type=\"text/xml\">");
+mb.append("<br>");
+mb.append("&lt;!-- This is the entry represented as an RSS 2.0 feed.  It is encapsulated inside of a script tag. -->");
+mb.append("<br>");
+mb.append("&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+mb.append("<br>");
+mb.append("&lt;rss xmlns:entrydata=\"http://www.reger.com/about/specs/entrydata.rddl\" version=\"2.0\">");
+mb.append("<br>");
+mb.append("  &lt;channel>");
+mb.append("<br>");
+mb.append("    &lt;title>joereger.com</title>");
+mb.append("<br>");
+mb.append("... rest of feed...");
+mb.append("<br>");
+mb.append("&lt;/script>");
+mb.append("</blockquote>");
+
+
+
+mb.append("<br clear=all>");
+mb.append("<h1>See It in Action</h1>");
+mb.append("To see it in action, visit <a href='http://joereger.com/entry-logid2-eventid4001-775-Mile-Run.log'>this page</a> and view the source.  In fact, any entry on this site has an embedded RSS feed.");
+
+
+
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

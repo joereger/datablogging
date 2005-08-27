@@ -1,0 +1,172 @@
+<%@ page import="reger.core.db.Db,
+                 reger.MegaLogType,
+                 java.util.Vector"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logsmain";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<style>");
+mb.append("TD.logmainbox {");
+mb.append("border-left: 1px dotted #999;");
+mb.append("border-top: 5px solid #999;");
+mb.append("border-bottom: 1px dotted #999;");
+mb.append("border-right: 1px dotted #999;");
+mb.append("padding: 6px;");
+mb.append("margin: 6px;");
+mb.append("background: #e6e6e6;");
+mb.append("}");
+mb.append("</style>");
+
+mb.append("<br><br>");
+
+mb.append("<table width=75% align=center cellpadding=10 cellspacing=20 border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=bottom align=center>");
+mb.append("<img src='../images/icon-log-lg.gif'>");
+mb.append("</td>");
+mb.append("<td valign=center align=center>");
+mb.append("<font face=arial color=#cccccc size=+3 style=\"font-size: 50px;\">");
+mb.append("<b>vs.</b>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=bottom align=center>");
+mb.append("<img src='../images/icon-log-type-lg.gif'>");
+mb.append("</td>");
+
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top width=45% class=logmainbox align=center>");
+//mb.append("<font face=arial size=+3 style=\"font-size: 50px;\">");
+//mb.append("<b>Logs</b>");
+//mb.append("</font>");
+//mb.append("<br>");
+mb.append("<font face=arial size=+1 style=\"font-size: 14px;\">");
+mb.append("<b>Logs are what make up your site.</b>  They hold your entries.  You can have as many logs as you like.  You can organize them in a nested heirarchical arrangement.  You can give each a special name.  You can customize the main log page for each.</b>");
+mb.append("<br><br>");
+mb.append("<b>Each log you make entries on is of a particular type.</b>  For example, you may have a log called \"My Cool Tri Workouts\" which is built from the log type \"Triathlon Log Type.\"</b>");
+mb.append("<br><br>");
+mb.append("<b>Logs are what you see listed on the main admin page, after you log in.</b> You add entries by clicking the name of the log.");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-1 style=\"font-size: 10px;\">");
+mb.append("<br><a href='logs-log-list.log'><img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> Your Logs</a>");
+mb.append("<br><a href='logs-newlog.log'><img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> Create a New Log</a>");
+mb.append("</font>");
+mb.append("<br><br>");
+mb.append("</td>");
+
+
+mb.append("<td valign=top width=10% align=center>");
+//mb.append("<font face=arial size=+3 style=\"font-size: 50px;\">");
+//mb.append("<b>vs.</b>");
+//mb.append("</font>");
+mb.append("</td>");
+
+
+mb.append("<td valign=top width=45% class=logmainbox align=center>");
+//mb.append("<font face=arial size=+3 style=\"font-size: 50px;\">");
+//mb.append("<b>Log Types</b>");
+//mb.append("</font>");
+//mb.append("<br>");
+mb.append("<font face=arial size=+1 style=\"font-size: 14px;\">");
+mb.append("<b>Log types are different from logs.</b>  A log type defines a certain sort of data to be collected in a log.  Think of them as placeholders for logs.  Stencils.  Cookie cutters that are used to create actual logs.");
+mb.append("<br><br>");
+mb.append("<b>For example, the Triathlon Log Type defines data fields for distance and time.  Using this type you can create your own log called \"My Cool Tri Log.\"  \"My Cool Tri Log\" is what holds the entries and appears on your site, but the Triathlon Log Type defines how that log operates.");
+mb.append("<br><br>");
+mb.append("<b>You can also create your own custom log type.</b>  When you do this you define extra data fields that you can enter with each weblog entry.</b>");
+mb.append("<br><br>");
+mb.append("<b>Your custom log types are published</b> (if you choose not to make them private) in the online community site where other users can create logs based on them.  You'll get to see who is using your log type.  It's a great way to start a community of people interested in the same thing.");
+mb.append("<br><br>");
+mb.append("<b>There's also a Basic Log Type</b> that you can use to do so-called traditional weblogging.");
+mb.append("<br><br>");
+mb.append("<b>There's a lot of power in this concept of log types.</b>  It's the basis of datablogging.  Give it a shot... create a custom log type!</b>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-1 style=\"font-size: 10px;\">");
+mb.append("<br><a href='logs-type-list.log'><img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> Your Custom Log Types</a>");
+mb.append("<br><a href='logs-type-properties.log?action=startadd'><img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> Create a New Custom Log Type</a>");
+mb.append("</font>");
+mb.append("<br><br>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+
+mb.append("<br><br>");
+
+mb.append("<style>");
+mb.append("TD.logmainstatic {");
+mb.append("border-left: 1px dotted #999;");
+mb.append("border-top: 5px solid #999;");
+mb.append("border-bottom: 1px dotted #999;");
+mb.append("border-right: 1px dotted #999;");
+mb.append("padding: 6px;");
+mb.append("margin: 6px;");
+mb.append("background: #e6e6e6;");
+mb.append("}");
+mb.append("</style>");
+
+mb.append("<table width=30% align=center cellpadding=10 cellspacing=20 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top align=center>");
+mb.append("<img src='../images/icon-static-page-lg.gif'>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td valign=top class=logmainstatic align=center>");
+mb.append("<font face=arial size=+2 style=\"font-size: 35px;\">");
+mb.append("<b>And Let's Not Forget: Static Pages</b>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=+1 style=\"font-size: 12px;\">");
+mb.append("<b>Static content pages are not log entries, they're not log types and they're not logs!</b> They're more like standard web pages. They don't play a role in RSS, calendars, searching or anythign else that's considered 'bloggy.'");
+mb.append("<br><br>");
+mb.append("<b>Why use a static content page?</b> As you build your weblog, you'll invariably want to link to some content that doesn't change much and that has a button somewhere in the main navigation scheme. A good example is a contact information page. Using the static content pages you could, if you wanted to, build an entire site with a very complex nested architecture... but you'll be missing out on a lot of the power of blogging.");
+mb.append("<br><br>");
+mb.append("<b>What else are they good for?</b> One of their primary uses has to do with grouping of logs. You must group logs under either another log or a static content page. Sometimes the grouping is best done under a static content page. To do this, create a new static content page and then move logs or other static content pages underneath it. A good example is physical fitness logs... have one static content page that describes all of the logs and then put all of them underneath that static content page. Play with it... it's flexible.");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-1 style=\"font-size: 10px;\">");
+mb.append("<br><a href='logs-contentpage-edit.log'><img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> Create a Static Content Page</a>");
+mb.append("</font>");
+mb.append("<br><br>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

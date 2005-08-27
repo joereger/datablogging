@@ -1,0 +1,66 @@
+<%@ page import="reger.core.Util,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "What are Episodes?";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "episodeswhatare";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="Episodes are collections of entries.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<br><br>");
+mb.append("<font face=arial size=-1>");
+mb.append("<blockquote>");
+mb.append("Episodes tie many entries together.");
+mb.append("<br><br>");
+mb.append("Imagine going on a vacation.  You create an entry for the flight.  An entry for dinner the first night.  An entry for the sightseeing.  Etc. Etc.");
+mb.append("<br><br>");
+mb.append("At the end of the vacation you have a bunch of entries, but they're not connected. Some entries are in your Food Log.  Others are in your Plane Flights Log.  Maybe you went for a run and that entry is in your Running Log.");
+mb.append("<br><br>");
+mb.append("Episodes allow you to tie all of those entries together.  You'll get a chronological chart of those entries that make up the episode, which unites them into a related context.");
+mb.append("<br><br>");
+mb.append("<img src='../images/episode-screenshot.gif' border=0>");
+mb.append("<br><br>");
+mb.append("Above is an example of a fictional episode that captures many entries from a trip.  Note the start and end dates at the sides of the timeline.  Note that the time periods, in this case Days, is chosen automatically for you.  Entries stack up inside the time period.  You can click on the entry titles to go to the full entries.");
+mb.append("<br><br>");
+mb.append("A single entry can be part of many episodes.  This gives you a rich capability to organize entries together into relevant episodes.");
+mb.append("<br><br>");
+mb.append("Learn <a href='episodes-new.log'>how to add episodes here</a>.");
+mb.append("<br><br>");
+mb.append("Enjoy!");
+mb.append("</blockquote>");
+mb.append("</font>");
+mb.append("<br><br>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

@@ -1,0 +1,123 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+//Set the content type.
+response.setContentType("text/xml");
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.GROUPSSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEGROUPSRSS;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+//Feed type
+String type = "rss_2.0";
+if (request.getParameter("type")!=null){
+    type = request.getParameter("type");    
+}
+
+//Get groupid
+int groupid = -1;
+if (request.getParameter("groupid")!=null && reger.core.Util.isinteger(request.getParameter("groupid"))){
+    groupid = Integer.parseInt(request.getParameter("groupid"));
+}
+
+//Get incoming groupkey and groupadminkey
+String incomingGroupKey = "";
+if (request.getParameter("groupkey")!=null){
+    incomingGroupKey = request.getParameter("groupkey");
+}
+String incomingGroupAdminKey = "";
+if (request.getParameter("groupadminkey")!=null){
+    incomingGroupAdminKey = request.getParameter("groupadminkey");
+}
+
+String groupName = "";
+String groupDesc = "";
+String groupKey = "";
+String groupAdminKey = "";
+boolean viewingEntriesRequiresGroupKey = false;
+boolean userCanView = false;
+boolean userIsAdminOfGroup = false;
+
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstGpDetails= Db.RunSQL("SELECT groupid, groupname, groupdescription, groupkey, groupadminkey, viewingentriesrequiresgroupkey FROM groups WHERE groupid='"+groupid+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstGpDetails!=null && rstGpDetails.length>0){
+	for(int i=0; i<rstGpDetails.length; i++){
+	    groupName = rstGpDetails[i][1];
+	    groupDesc = rstGpDetails[i][2];
+	    groupKey = rstGpDetails[i][3];
+	    groupAdminKey = rstGpDetails[i][4];
+	    if (rstGpDetails[i][5].equals("1")){
+            viewingEntriesRequiresGroupKey = true;
+        } else {
+            viewingEntriesRequiresGroupKey = false;
+        }
+
+	}
+}
+
+//Now check to see if this user can be here.
+if (viewingEntriesRequiresGroupKey){
+    if (incomingGroupKey.equals(groupKey)){
+        userCanView = true;
+    }
+    if (incomingGroupAdminKey.equals(groupAdminKey)){
+        userCanView = true;
+        userIsAdminOfGroup = true;
+    }
+} else {
+    userCanView = true;
+}
+
+
+
+
+//Only display if the user can view
+if (userCanView){
+    //XML Page doesn't use template engines or page footer
+    out.print(reger.api.RssRomeGroups.getFeed(userSession, 100, type, groupid));
+} else {
+    out.print("This group requires a groupKey or groupAdminKey.");
+}
+
+
+
+
+
+
+%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%//@ include file="globalfooter.jsp" %>
+

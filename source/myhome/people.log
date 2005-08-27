@@ -1,0 +1,159 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "People";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "peoplemain";
+pageProps.aclObjectName = "PEOPLE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="On this page you'll find all of the features dealing with people.  Social networking.  Your friends list.  Invite friends.  Send friends a message.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+
+mb.append(reger.ui.BubbleBox.start("People With Special Access", pageProps.pathToAppRoot));
+
+//mb.append("<img align=right src='images/people.jpg' width=300 height=452>");
+
+mb.append("<table cellpadding=10 cellspacing=1 border=0 bgcolor=#ffffff>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=people-authors.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>People with Special Access</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>These are the people who have some sort of special access to this site.  They may be authors on the site.  They may have been granted read access to a private log.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+
+if (userSession.getAccountuser().userCanDoAcl("ADDAUTHOR", userSession.getAccount().getAccountid())){
+    mb.append("<tr>");
+    mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+    mb.append("<a href=people-accountuser.log?action=newstart><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Add a New Author</b></font></a>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>Add new users who can author entries on your site.  Use this to add team members, friends or family but realize that they'll be adding to this site.  If you want them to have their own site they'll need to signup on their own.");
+    mb.append("</font></td>");
+    mb.append("</tr>");
+}
+
+mb.append("</table>");
+
+mb.append(reger.ui.BubbleBox.end( pageProps.pathToAppRoot));
+
+
+mb.append(reger.ui.BubbleBox.start("Social Networking", pageProps.pathToAppRoot));
+
+
+mb.append("<table cellpadding=10 cellspacing=1 border=0 bgcolor=#ffffff>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=people-friends.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Your Friends</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>A list of the people that you've defined as your friends.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=people-friends-invite.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Invite Friends</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Invite friends to join you online.  The more friends you have the more you'll get out of the site.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=people-find.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Find People</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Use the directory to find people. Once found you can visit their sites or give them special permission to your site.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=people-inbox.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Your Inbox</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>This is where you get messages from your friends.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=people-newmessage.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Send Your Friends a Message</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Send a message to all or just some of your friends.  Tell them something new.  Put something up for sale.  Send them your resume.   They'll be able to forward your message to their friends with a single click.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+mb.append(reger.ui.BubbleBox.start("Your Profile", pageProps.pathToAppRoot));
+
+mb.append("<table cellpadding=10 cellspacing=1 border=0 bgcolor=#ffffff>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=settings-profile.log?iseditable=1><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Edit Your Profile</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Edit the information that people see about you.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=settings-accountuser.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Your Personal Account Settings</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Control your username, password, one line summary, timezone and other information about yourself.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=settings-addprofileimage.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Add Image to Your Profile</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Use this page to add an image to your profile.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

@@ -1,0 +1,110 @@
+<%@ page import="reger.core.Util,
+                 reger.core.db.Db,
+                 reger.Help"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Entries Declined by Moderator";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Moderator Declined entries start
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstDeclines= Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.username, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='0' AND event.istemporary='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstDeclines!=null && rstDeclines.length>0){
+
+    mb.append("<br>");
+
+    mb.append("<!-- Start Moderator Declined List -->");
+    String helpApprove = Help.tip("Moderator Declined", "These entries were declined by moderators.", false, pageProps.pathToAppRoot);
+    mb.append(reger.ui.BubbleBox.start("Moderator Declined " + helpApprove, pageProps.pathToAppRoot));
+    mb.append("<table width=100% cellpadding=0 cellspacing=1 border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top colspan=2 align=left>");
+    mb.append("<font face=arial size=-2 color=#666666>Title</font></a></td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+    mb.append("<font face=arial size=-2 color=#666666>");
+    mb.append("Date");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+    mb.append("<font face=arial size=-2 color=#666666>");
+    mb.append("Log");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
+    mb.append("<font face=arial size=-2 color=#666666>");
+    mb.append("Author");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    for(int i=0; i<rstDeclines.length; i++){
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#ffffff valign=top align=right width=10><a href='log-" + rstDeclines[i][1] + ".log?eventid=" + rstDeclines[i][0] + "&action=edit'><img src='../images/bullet-arrow.gif' width='9' height='9' alt='' border='0'></a>");
+        mb.append("</td>");
+        mb.append("<td bgcolor=#ffffff valign=top align=left>");
+        mb.append("<a href='entry.log?eventid=" + rstDeclines[i][0] + "&action=edit'><font face=arial size=-2>" + reger.core.Util.cleanForHtml(rstDeclines[i][2]) + "</font></a></td>");
+        mb.append("<td bgcolor=#ffffff valign=top align=left>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstDeclines[i][3])));
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td bgcolor=#ffffff valign=top align=left>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(" " + rstDeclines[i][4]);
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("<td bgcolor=#ffffff valign=top align=left>");
+        mb.append("<font face=arial size=-2>");
+        if (!rstDeclines[i][6].equals("")){
+            mb.append(" " + rstDeclines[i][6]);
+        } else {
+            mb.append(" " + rstDeclines[i][5]);
+        }
+        mb.append("</font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+
+    mb.append("</table>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    mb.append("<!-- End Moderator Declined List -->");
+
+}
+//Moderator Declined entries end
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

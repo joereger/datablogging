@@ -1,0 +1,25 @@
+
+Hibernate was once used as part of the app.  The jar files were removed
+to save space in the build, but the hard work of configuring
+it was kept.  Here's how to re-enable Hibernate.
+
+1) Obtain all of the Hibernate jars:
+    - cglib-2.1.jar
+    - dom4j-1.5.2.jar
+    - commons-logging.jar
+    - commons-logging-api.jar
+    - hibernate3.jar
+    - ehcache-1.1.jar
+    - asm.jar
+    - asm-attrs.jar
+    - asm-util.jar
+    - cgilib-nodep-2.1.jar
+
+2)Add the following to web.xml
+<servlet>
+  <servlet-name>HibernateUtil</servlet-name>
+  <servlet-class>reger.entities.HibernateUtil</servlet-class>
+  <load-on-startup>100</load-on-startup>
+</servlet>
+
+3) Uncomment the reger.entities.HibernateUtil class.

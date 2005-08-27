@@ -1,0 +1,59 @@
+<%@ page import="reger.SideColumn,
+                 reger.core.db.Db,
+                 java.util.Vector,
+                 reger.mega.Field,
+                 reger.mega.FieldType,
+                 reger.search.SearchUI,
+                 reger.search.SearchUIFlowAdvSearch"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICLOGSECTION;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%                                                                  
+
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append("<p align=right><font face=arial size=-2 class=smallfont><a href='search-simplesearch.log'>To Simple Search</a></font></p>");
+
+
+//Create a SearchUI object
+reger.search.SearchUI searchUI = new reger.search.SearchUI(request, userSession, new SearchUIFlowAdvSearch());
+
+//In the case of this search.log jsp only the current account is searched
+//int[] accountidsToSearch = new int[1];
+//accountidsToSearch[0]=userSession.getAccount().getAccountid();
+//searchUI.getSearchEntries().setAccountsToSearch(accountidsToSearch);
+
+//Call the html
+mb.append(searchUI.wrapperHtml());
+
+
+mb.append("<br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+%>
+
+<%@ include file="globalfooter.jsp" %>
+

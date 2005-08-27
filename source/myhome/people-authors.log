@@ -1,0 +1,158 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "People with Special Permissions to this Site";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "peoplespecialaccess";
+pageProps.aclObjectName = "PEOPLE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+mb.append("<br><br>");
+mb.append("<a href='people-accountuser.log?action=newstart'>");
+mb.append("<font face=arial size=-2>");
+mb.append("Add a New Author");
+mb.append("</font>");
+mb.append("</a>");
+
+mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
+
+mb.append("<a href='people-find.log'>");
+mb.append("<font face=arial size=-2>");
+mb.append("Find People to Grant Permission To");
+mb.append("</font>");
+mb.append("</a>");
+
+mb.append("<br>");
+
+mb.append("<table cellpadding=5 cellspacing=2 width=100% border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2>");
+mb.append("Person");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2>");
+mb.append("Site");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2>");
+mb.append("Last Login");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-2>");
+mb.append("&nbsp;");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+String sql = "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser WHERE accountuser.accountid='"+userSession.getAccount().getAccountid()+"' " +
+             " UNION DISTINCT " +
+             "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuseracl WHERE accountuser.accountuserid=accountuseracl.accountuserid AND accountuseracl.accountid='"+userSession.getAccount().getAccountid()+"'"+
+             " UNION DISTINCT " +
+             "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuseraclgroup WHERE accountuser.accountuserid=accountuseraclgroup.accountuserid AND accountuseraclgroup.accountid='"+userSession.getAccount().getAccountid()+"'"+
+             " UNION DISTINCT " +
+             "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuserlogaccess, account, megalog WHERE accountuser.accountuserid=accountuserlogaccess.accountuserid AND accountuserlogaccess.logid=megalog.logid AND megalog.accountid=account.accountid AND account.accountid='"+userSession.getAccount().getAccountid()+"'";
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstAuthors= Db.RunSQL(sql);
+//-----------------------------------
+//-----------------------------------
+if (rstAuthors!=null && rstAuthors.length>0){
+    for(int i=0; i<rstAuthors.length; i++){
+
+        reger.Accountuser ac = new reger.Accountuser(userSession.getAccount().getAccountid(), Integer.parseInt(rstAuthors[i][0]));
+
+
+        if (userSession.getAccountuser().userCanDoAcl("MANAGEACCOUNTS", userSession.getAccount().getAccountid()) || (ac.getAccountuserid()==userSession.getAccountuser().getAccountuserid())){
+
+
+            mb.append("<tr>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append("<a href='people-accountuser.log?accountuserid="+rstAuthors[i][0]+"'>");
+            mb.append("<img src='"+ac.primaryImage(pageProps.pathToAppRoot, true)+"' width=35 border=0 align=top>");
+            String name = rstAuthors[i][1];
+            if (!rstAuthors[i][2].equals("")){
+                name = rstAuthors[i][2];
+            }
+            mb.append(name);
+            mb.append("</a>");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+ac.getSiteRootUrl()+"/'>");
+            mb.append(""+reger.Vars.getHttpUrlPrefix()+ac.getSiteRootUrl()+"/");
+            mb.append("</a>");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-2>");
+            String cal = reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.gmttousertime(reger.core.TimeUtils.dbstringtocalendar(rstAuthors[i][4]), userSession.getAccount().getTimezoneid()));
+            mb.append(cal);
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("<a href='people-accountuser.log?accountuserid="+ac.getAccountuserid()+"'>");
+            mb.append("Edit Permissions");
+            mb.append("</a>");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("</tr>");
+
+        }
+
+    }
+}
+
+//mb.append("<tr>");
+//mb.append("<td valign=top align=left colspan=4 bgcolor=#e6e6e6>");
+//mb.append("<font face=arial size=-1>");
+//mb.append("<a href='people-settings.log?action=newstart'>");
+//mb.append("Add A New Author");
+//mb.append("</a>");
+//mb.append("</font>");
+//mb.append("</td>");
+//mb.append("</tr>");
+
+mb.append("</table>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

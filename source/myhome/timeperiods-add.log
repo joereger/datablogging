@@ -1,0 +1,50 @@
+<%@ page import="java.util.Calendar,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Add Time Period";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "timeperiodsadd";
+pageProps.aclObjectName = "CREATETIMEPERIODS";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="Time Periods are an important way to give your weblog entries context.  A Time Period is just that... a period of time.  You define a start and end time.  Then, all entries that are/were logged between those times are automatically made part of this time period.  Read more about Time Periods below on this page.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+
+//Add time period box
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+reger.TimePeriod tp = new reger.TimePeriod(userSession.getAccount().getAccountid(), reger.core.TimeUtils.nowInUserTimezone("GMT"), reger.core.TimeUtils.nowInUserTimezone("GMT"), "", 0, "", 0, userSession);
+mb.append(tp.getHtml(true, "submit"));
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

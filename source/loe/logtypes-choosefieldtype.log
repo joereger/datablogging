@@ -1,0 +1,174 @@
+
+<%@ page import="java.util.*,
+                 reger.core.db.Db,
+                 reger.core.Util,
+                 reger.mega.FieldLayout,
+                 reger.mega.FieldType,
+                 reger.mega.FieldTypeFactory" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+//pageProps.title = "MasterAdmin Control Center Home Page";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loelogtypes";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("<br><br>");
+mb.append("<table cellpadding=0 cellspacing=0 border=0>");
+mb.append("<tr>");
+
+mb.append("<td valign=top>");
+
+
+
+mb.append("<form action='logtypes-field.log' method=post>");
+mb.append("<input type=hidden name=action value='addfield'>");
+mb.append("<input type=hidden name=eventtypeid value="+request.getParameter("eventtypeid")+">");
+mb.append("<input type=hidden name=logid value="+pageProps.logProps.logid+">");
+
+
+mb.append("<table cellpadding=5 cellspacing=1 border=0 width=100% align=center>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc align=left colspan=4>");
+mb.append("<font face=arial size=+1><strong>Choose the type of field to add:</strong></font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc align=center valign=middle><font face=arial size=-1><strong>Choose Here</strong></font></td>");
+mb.append("<td valign=middle align=left bgcolor=#c6c6c6><font face=arial size=-1>Field Type</font></td>");
+mb.append("<td valign=middle align=left bgcolor=#c6c6c6><font face=arial size=-1>Description</font></td>");
+mb.append("<td valign=middle align=left bgcolor=#c6c6c6>");
+mb.append("<font face=arial size=-1>Sample (Do not fill in)</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+//Var
+FieldType fld;
+
+//Text Box
+fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPETEXTBOX);
+mb.append("<tr>");
+mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPETEXTBOX+"' checked></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+mb.append(fld.getHtmlAdminSample());
+mb.append("</td>");
+mb.append("</tr>");
+
+//Dropdown
+fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPEDROPDOWN);
+mb.append("<tr>");
+mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPEDROPDOWN+"'></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+mb.append(fld.getHtmlAdminSample());
+mb.append("</td>");
+mb.append("</tr>");
+
+//Radios Vertical
+fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPEVERTICALRADIOS);
+mb.append("<tr>");
+mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPEVERTICALRADIOS+"'></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+mb.append(fld.getHtmlAdminSample());
+mb.append("</td>");
+mb.append("</tr>");
+
+//Radios Horizontal
+fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPEHORIZONTALRADIOS);
+mb.append("<tr>");
+mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPEHORIZONTALRADIOS+"'></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+mb.append(fld.getHtmlAdminSample());
+mb.append("</td>");
+mb.append("</tr>");
+
+//Numeric Range
+fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPENUMERICRANGE);
+mb.append("<tr>");
+mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPENUMERICRANGE+"'></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+mb.append(fld.getHtmlAdminSample());
+mb.append("</td>");
+mb.append("</tr>");
+
+//Time
+fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPETIME);
+mb.append("<tr>");
+mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPETIME+"'></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+mb.append(fld.getHtmlAdminSample());
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc colspan=4 align=center>");
+mb.append("<input type='submit' value='Continue'>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr><td bgcolor=#ffffff></td><td bgcolor=#ffffff></td><td bgcolor=#ffffff></td><td bgcolor=#ffffff></td></tr>");
+
+mb.append("</table>");
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("</form>");
+mb.append("<br><br>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

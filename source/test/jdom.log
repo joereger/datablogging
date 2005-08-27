@@ -1,0 +1,48 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*,
+                 reger.MegaLogType"%><%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%><%@ include file="../globalheader.jsp" %><%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+try {
+
+    response.setContentType("text/xml");
+    out.print(reger.MegaLogTypeXmlSchemaRenderer.getSchema(reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(1)));
+
+
+} catch (Throwable e) {
+    reger.core.Util.errorsave(e);
+}
+
+
+mb.append("<br><br><br><br><br>");
+
+%><%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%><%//@ include file="../globalfooter.jsp" %>
+

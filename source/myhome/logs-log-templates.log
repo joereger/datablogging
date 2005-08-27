@@ -1,0 +1,197 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 java.util.TreeMap,
+                 reger.mega.FieldType,
+                 reger.mega.FieldLayout,
+                 reger.Log,
+                 reger.template.Template,
+                 reger.AllLogsInSystem"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "<img src='../images/icon-log-med-notext.gif' align=top> Customize Log Look and Feel Templates";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logsyourlogs";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+//pageProps.isLogidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append(reger.core.Util.popup());
+
+
+//Load the log
+Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+
+//Get templateid
+int templateid = -1;
+if (request.getParameter("templateid")!=null && reger.core.Util.isinteger(request.getParameter("templateid"))){
+    templateid = Integer.parseInt(request.getParameter("templateid"));
+}
+
+//Get type
+int type = -1;
+if (request.getParameter("type")!=null && reger.core.Util.isinteger(request.getParameter("type"))){
+    type = Integer.parseInt(request.getParameter("type"));
+}
+
+//Load the template
+Template template = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(templateid, type);
+
+//Use this one sets the
+//reger.UserSession userSession;
+if (pageProps.action.equals("usethisone")){
+    if (template!=null){
+        if (template.getType()==Template.TEMPLATETYPEENTRYLIST){
+            if (pageProps.logProps.logid>0){
+                //-----------------------------------
+                //-----------------------------------
+                int count = Db.RunSQLUpdate("UPDATE megalog SET entlisttemplateid='"+templateid+"' WHERE logid='"+pageProps.logProps.logid+"'");
+                //-----------------------------------
+                //-----------------------------------
+                //Refresh the log
+                AllLogsInSystem.refresh(pageProps.logProps.logid);
+                log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+            }
+        } else if (template.getType()==Template.TEMPLATETYPEHOMEPAGE){
+            if (pageProps.logProps.logid>0){
+                //-----------------------------------
+                //-----------------------------------
+                int count = Db.RunSQLUpdate("UPDATE megalog SET maintemplateid='"+templateid+"' WHERE logid='"+pageProps.logProps.logid+"'");
+                //-----------------------------------
+                //-----------------------------------
+                //Refresh the log
+                AllLogsInSystem.refresh(pageProps.logProps.logid);
+                log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+            }
+        }
+    }
+}
+
+
+
+//Edit is simply a redirect to the edit screen
+if (pageProps.action.equals("edit")){
+    response.sendRedirect("settings-template-edit.log?templateid=" + templateid+ "&type=" + request.getParameter("type")+"&returnurl=" + request.getParameter("returnurl")+"&logid=" + request.getParameter("logid"));
+    return;
+}
+
+//Delete is simply a redirect to the edit screen
+if (pageProps.action.equals("delete")){
+    response.sendRedirect("settings-template-delete.log?templateid=" + templateid +"&returnurl=" + request.getParameter("returnurl")+"&logid=" + request.getParameter("logid"));
+    return;
+}
+
+
+
+
+
+
+
+
+
+//Log Header start
+String currentNavButtonName = "logs-log-templates";
+%>
+<%@ include file="logs-header.jsp" %>
+<%
+//Log Header end
+
+
+
+
+
+
+
+
+
+mb.append("<table cellpadding=5 cellspacing=1 border=0 width=100% align=center>");
+
+
+
+//Start templates
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor='#ffffff' colspan=2>");
+
+
+Template[] logHpUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(Template.TEMPLATETYPEHOMEPAGE, userSession.getAccount().getAccountid());
+Template[] logHpSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEHOMEPAGE);
+Template[] logElUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(Template.TEMPLATETYPEENTRYLIST, userSession.getAccount().getAccountid());
+Template[] logElSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEENTRYLIST);
+
+
+//Log hp
+Template activeLogHpTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(  log.getMaintemplateid(), Template.TEMPLATETYPEHOMEPAGE  );
+mb.append(reger.template.TemplateHtml.getBox(activeLogHpTemplate, logHpUserTemplates, logHpSystemTemplates, log.getName() + " Homepage Template", "This template controls how the homepage of "+log.getName()+" operates.", log.getLogid(), Template.TEMPLATETYPEHOMEPAGE, "logs-log-templates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+
+//Spacer
+mb.append("<br>");
+mb.append("<img src=images/clear.gif width=1 height=1>");
+mb.append("<br>");
+
+//Log entry
+Template activeLogElTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(  log.getEntlisttemplateid(), Template.TEMPLATETYPEENTRYLIST  );
+mb.append(reger.template.TemplateHtml.getBox(activeLogElTemplate, logElUserTemplates, logElSystemTemplates, log.getName() + " Entry List Template", "This template controls how entry lists on "+log.getName()+" look.", log.getLogid(), Template.TEMPLATETYPEENTRYLIST, "logs-log-templates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+
+//Spacer
+mb.append("<br>");
+mb.append("<img src=images/clear.gif width=1 height=1>");
+mb.append("<br>");
+
+
+
+mb.append("</td>");
+mb.append("</tr>");
+
+
+//End templates
+
+
+
+
+mb.append("<!-- End column table -->");
+
+
+
+mb.append("</table>");
+
+
+
+
+mb.append("<br><br>");
+
+
+//Log Footer start
+%>
+<%@ include file="logs-footer.jsp" %>
+<%
+//Log Footer end
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

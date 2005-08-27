@@ -1,0 +1,73 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Technology";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+<%@ include file="biz-header.jsp" %>
+<%
+
+
+mb.append("<br>");
+mb.append("<h1>Enterprise Quality Components</h1>");
+mb.append("Our technology is built on proven enterprise quality platforms:");
+mb.append("<ul>");
+mb.append("<li>Apache Tomcat 5.0.x");
+mb.append("<li>Java 1.4.2");
+mb.append("<li>MySQL Database v4.1");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Extendable</h1>");
+mb.append("There are a number of ways that you can extend the system yourself via custom coding.");
+
+
+mb.append("<br>");
+mb.append("<h1>Scalable</h1>");
+mb.append("The technology can be deployed in large multi-tier enterprise configurations.  Load balancing and clustering are scaling options.");
+
+mb.append("<br>");
+mb.append("<h1>Version History</h1>");
+mb.append(reger.versioninfo.VersionInfoRenderer.getVersionList("../about/versions.log"));
+
+
+%>
+<%@ include file="biz-footer.jsp" %>
+<%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

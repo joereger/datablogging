@@ -1,0 +1,268 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 java.util.TreeMap,
+                 reger.mega.FieldType,
+                 reger.mega.FieldLayout,
+                 reger.AllLogsInSystem"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "<img src='../images/icon-log-med-notext.gif' align=top> Customize Log Properties";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "logsyourlogs";
+pageProps.aclObjectName = "CUSTOMIZELOG";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+//pageProps.isLogidRequired=true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Load the log
+reger.Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+
+
+//If the user wants to revoke a permission
+if (pageProps.action.equals("revoke")) {
+    //Make sure we have an accountuserid to revoke
+    if (request.getParameter("accountuserid")!=null && reger.core.Util.isinteger(request.getParameter("accountuserid"))){
+        //Make sure the logged-in user for can manage accounts for this account
+        if (userSession.getAccountuser().userCanDoAcl("MANAGEACCOUNTS", userSession.getAccount().getAccountid())){
+            //Make sure this log belongs to this account
+            if(log.getAccountid()==userSession.getAccount().getAccountid()){
+                //Create an accountuser object with the accountuserid from the query
+                reger.Accountuser ac = new reger.Accountuser(Integer.parseInt(request.getParameter("accountuserid")), true);
+                if (ac!=null){
+                    ac.revokeLogAccess(pageProps.logProps.logid);
+                }
+            }
+        }
+    }
+}
+
+//Save all permissions, start by finding those who have access
+if (pageProps.action.equals("savepermissions")) {
+    String sql = "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser WHERE accountuser.accountid='"+userSession.getAccount().getAccountid()+"' " +
+     " UNION DISTINCT " +
+     "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuseracl WHERE accountuser.accountuserid=accountuseracl.accountuserid AND accountuseracl.accountid='"+userSession.getAccount().getAccountid()+"'"+
+     " UNION DISTINCT " +
+     "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuseraclgroup WHERE accountuser.accountuserid=accountuseraclgroup.accountuserid AND accountuseraclgroup.accountid='"+userSession.getAccount().getAccountid()+"'"+
+     " UNION DISTINCT " +
+     "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuserlogaccess, account, megalog WHERE accountuser.accountuserid=accountuserlogaccess.accountuserid AND accountuserlogaccess.logid=megalog.logid AND megalog.accountid=account.accountid AND account.accountid='"+userSession.getAccount().getAccountid()+"'";
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstAuthorsWithPerms= Db.RunSQL(sql);
+    //-----------------------------------
+    //-----------------------------------
+    if (rstAuthorsWithPerms!=null && rstAuthorsWithPerms.length>0){
+        for(int i=0; i<rstAuthorsWithPerms.length; i++){
+
+            reger.Accountuser au = new reger.Accountuser(Integer.parseInt(rstAuthorsWithPerms[i][0]), true);
+
+            if (userSession.getAccountuser().userCanDoAcl("MANAGEACCOUNTS", userSession.getAccount().getAccountid()) || (Integer.parseInt(rstAuthorsWithPerms[i][0])==userSession.getAccountuser().getAccountuserid())){
+                //View Permission
+                if (request.getParameter("canview-"+au.getAccountuserid())!=null && request.getParameter("canview-"+au.getAccountuserid()).equals("1")){
+                    au.grantLogAccess(log.getLogid());
+                } else {
+                    au.revokeLogAccess(log.getLogid());
+                }
+                //Author Permission
+                if (request.getParameter("canauthor-"+au.getAccountuserid())!=null && request.getParameter("canauthor-"+au.getAccountuserid()).equals("1")){
+                    au.grantLogAuthoring(log.getLogid());
+                } else {
+                    au.revokeLogAuthoring(log.getLogid());
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+//Log Header start
+String currentNavButtonName = "logs-log-permissions";
+%>
+<%@ include file="logs-header.jsp" %>
+<%
+//Log Header end
+
+
+
+
+
+
+mb.append("<table cellpadding=5 cellspacing=1 border=0 width=70% align=center>");
+
+
+
+
+//Permissions Start
+if (userSession.getAccountuser().userCanDoAcl("MANAGEACCOUNTS", userSession.getAccount().getAccountid())){
+
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#cccccc align=left colspan=3>");
+    mb.append("<font face=arial size=+1><strong>Permissions</strong></font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<a href='people-find.log'>");
+    mb.append("<img src='../images/icon-private.gif' border=0>");
+    mb.append("Find People to Grant Permission To");
+    mb.append("</a>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor='#e6e6e6' valign=top align=right>");
+    mb.append("<font face=arial size=-2>&nbsp;</strong></td>");
+    mb.append("<td bgcolor='#e6e6e6' valign=top align=center>");
+    mb.append("<font face=arial size=-1><b>");
+    mb.append("Read Permission");
+    mb.append("</b></font>");
+    mb.append("</td>");
+    mb.append("<td bgcolor='#e6e6e6' valign=top align=center>");
+    mb.append("<font face=arial size=-1><b>");
+    mb.append("Author Permission");
+    mb.append("</b></font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+
+
+
+    String sql = "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser WHERE accountuser.accountid='"+userSession.getAccount().getAccountid()+"' " +
+     " UNION DISTINCT " +
+     "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuseracl WHERE accountuser.accountuserid=accountuseracl.accountuserid AND accountuseracl.accountid='"+userSession.getAccount().getAccountid()+"'"+
+     " UNION DISTINCT " +
+     "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuseraclgroup WHERE accountuser.accountuserid=accountuseraclgroup.accountuserid AND accountuseraclgroup.accountid='"+userSession.getAccount().getAccountid()+"'"+
+     " UNION DISTINCT " +
+     "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuserlogaccess, account, megalog WHERE accountuser.accountuserid=accountuserlogaccess.accountuserid AND accountuserlogaccess.logid=megalog.logid AND megalog.accountid=account.accountid AND account.accountid='"+userSession.getAccount().getAccountid()+"'";
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstAuthors= Db.RunSQL(sql);
+    //-----------------------------------
+    //-----------------------------------
+    if (rstAuthors!=null && rstAuthors.length>0){
+
+        mb.append("<form action=logs-log-permissions.log method=post>");
+        mb.append("<input type=hidden name=logid value='"+log.getLogid()+"'>");
+        mb.append("<input type=hidden name=action value='savepermissions'>");
+
+        for(int j=0; j<rstAuthors.length; j++){
+
+            reger.Accountuser au = new reger.Accountuser(Integer.parseInt(rstAuthors[j][0]), true);
+
+            if (userSession.getAccountuser().userCanDoAcl("MANAGEACCOUNTS", userSession.getAccount().getAccountid()) || (Integer.parseInt(rstAuthors[j][0])==userSession.getAccountuser().getAccountuserid())){
+                mb.append("<tr>");
+                mb.append("<td bgcolor='#eeeeee' valign=top align=right>");
+                mb.append("<a href='people-accountuser.log?accountuserid="+au.getAccountuserid()+"'>");
+                mb.append("<font face=arial size=-1><strong>"+rstAuthors[j][2]+"</strong></font> ");
+                mb.append("<img src='../images/icon-private.gif' border=0>");
+                mb.append("</a>");
+                mb.append("</td>");
+                mb.append("<td bgcolor='#ffffff' valign=top align=center>");
+                if (!au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid())){
+                    if (log.getLogaccess()==reger.Vars.LOGACCESSPUBLIC){
+                        mb.append("<font face=arial size=-2>");
+                        mb.append("Yes.  This is a public log.");
+                        mb.append("</font>");
+                    } else {
+                        if (au.userCanViewLog(pageProps.logProps.logid)){
+                            mb.append("<input type=checkbox name='canview-"+au.getAccountuserid()+"' value='1' checked>");
+                        } else {
+                            mb.append("<input type=checkbox name='canview-"+au.getAccountuserid()+"' value='1'>");
+                        }
+                    }
+                } else {
+                    mb.append("<font face=arial size=-2>");
+                    mb.append("Yes.  This is the site owner.");
+                    mb.append("</font>");
+                }
+                mb.append("</td>");
+                mb.append("<td bgcolor='#ffffff' valign=top align=center>");
+                if (!au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid())){
+                    if (au.userCanAuthorLog(pageProps.logProps.logid)){
+                        mb.append("<input type=checkbox name='canauthor-"+au.getAccountuserid()+"' value='1' checked>");
+                    } else {
+                        mb.append("<input type=checkbox name='canauthor-"+au.getAccountuserid()+"' value='1'>");
+                    }
+                } else {
+                    mb.append("<font face=arial size=-2>");
+                    mb.append("Yes.  This is the site owner.");
+                    mb.append("</font>");
+                }
+                mb.append("</td>");
+                mb.append("</tr>");
+
+            }
+
+        }
+
+        mb.append("<tr>");
+        mb.append("<td bgcolor='#ffffff' colspan=3 valign=top align=left>");
+        mb.append("<input type=submit value='Save Permissions'>");
+        mb.append("</form>");
+        mb.append("</td>");
+        mb.append("</tr>");
+
+    } else {
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#ffffff align=left colspan=3>");
+        mb.append("<font face=arial size=+1 color=#cccccc><strong>No users have explicit permission on this log.</strong></font>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+}
+//Permissions End
+
+
+
+
+
+
+
+mb.append("<!-- End column table -->");
+
+
+
+mb.append("</table>");
+
+
+
+
+mb.append("<br><br>");
+
+
+//Log Footer start
+%>
+<%@ include file="logs-footer.jsp" %>
+<%
+//Log Footer end
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+//sc.append("This is a ");
+//sc.append("side column section.");
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

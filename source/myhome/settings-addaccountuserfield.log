@@ -1,0 +1,218 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Profile";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingsprofile";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%@ page import="org.apache.commons.fileupload.*,
+                 reger.core.db.Db" %>
+<%@ page import="java.io.*" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+java.util.Vector pre = new java.util.Vector(50);
+//List of prebuilt questions
+pre.add("Age");
+pre.add("Sex");
+pre.add("Height");
+pre.add("Weight");
+pre.add("City Born In");
+pre.add("City Raised In");
+pre.add("Profession");
+pre.add("School");
+pre.add("Grade");
+pre.add("Hobbies");
+pre.add("Favorite CD's");
+pre.add("Favorite Musical Groups");
+pre.add("Favorite Color");
+pre.add("Favorite Movies");
+pre.add("Favorite type of ice cream");
+pre.add("Relationship Status");
+pre.add("Favorite fashion designer");
+pre.add("Before I die I'd like to...");
+pre.add("My goals");
+pre.add("Before the end of this year I will...");
+pre.add("Interested in...");
+//End list of prebuilt questions
+
+
+
+if (pageProps.action.equals("add")){
+    //Get the custom field
+    String newtitle = "";
+    if (request.getParameter("newtitle")!=null && !request.getParameter("newtitle").equals("")){
+        newtitle = request.getParameter("newtitle");
+    }
+    String newdata = "";
+    if (request.getParameter("newdata")!=null && !request.getParameter("newdata").equals("")){
+        newdata = request.getParameter("newdata");
+    }
+    if (!newtitle.equals("")){
+        //Create a field
+        reger.Accountuserfield field = new reger.Accountuserfield(-1, newtitle, newdata, 1);
+        //Save the field
+        field.saveFieldToDatabase(userSession.getAccountuser().getAccountuserid());
+    }
+
+
+    //Get the prebuilt questions
+    for (int i = 0; i < pre.size(); i++) {
+        newtitle="";
+        if (request.getParameter("newtitle-"+i)!=null && !request.getParameter("newtitle-"+i).equals("")){
+            newtitle = request.getParameter("newtitle-"+i);
+        }
+        newdata="";
+        if (request.getParameter("newdata-"+i)!=null && !request.getParameter("newdata-"+i).equals("")){
+            newdata = request.getParameter("newdata-"+i);
+        }
+        if (!newtitle.equals("") && !newdata.equals("")){
+            //Create a field
+            reger.Accountuserfield field2 = new reger.Accountuserfield(-1, newtitle, newdata, 1);
+            //Save the field
+            field2.saveFieldToDatabase(userSession.getAccountuser().getAccountuserid());
+        }
+    }
+
+
+
+
+    //Reload the object
+    userSession.getAccountuser().populate();
+
+
+
+    //Redirect
+    try {
+        response.sendRedirect("settings-profile.log");
+        return;
+    } catch (Exception e){
+        reger.core.Util.errorsave(e);
+    }
+}
+
+
+
+
+
+
+mb.append("<br><br>");
+
+mb.append("<font face=arial size=+1>");
+mb.append("Add Information to Your Profile");
+mb.append("</font>");
+
+mb.append("<br>");
+
+mb.append("<font face=arial size=-2>");
+mb.append("This screen allows you to add information to your profile.  Create your own field with the top box or use one of the recommendations below.  Only those fields that have data in the big text box will be added to your profile.  You can add a few fields, check your profile and then add a few more.");
+mb.append("</font>");
+
+mb.append("<form name='myform' action='settings-addaccountuserfield.log' method='post'>");
+mb.append("<input type=hidden name=action value=add>");
+
+mb.append("<table cellpadding=15 cellspacing=2 border=0>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#cccccc>");
+mb.append("<font face=arial size=-1>");
+mb.append("Create Your Own Field: (Optional)");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Leave blank if you don't want to add your own field.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<input type=text name=newtitle size=45 maxlength=255>");
+mb.append("<br>");
+mb.append("<textarea name=newdata rows=3 cols=45>");
+mb.append("</textarea>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<input type='submit' name='Submit' value='Add Information'/>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#cccccc>");
+mb.append("<font face=arial size=-1>");
+mb.append("Or Use Some of These Recommendations: (All Optional)");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Only those fields with information typed into the big text box will be added to your profile.  You can edit the field titles as well.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+
+//Display the list
+for (int i = 0; i < pre.size(); i++) {
+    String s = (String) pre.elementAt(i);
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+    mb.append("<input type=text name=newtitle-"+i+" size=45 maxlength=255 value=\""+reger.core.Util.cleanForHtml(s)+"\">");
+    mb.append("<br>");
+    mb.append("<textarea name=newdata-"+i+" rows=3 cols=45>");
+    mb.append("</textarea>");
+    mb.append("</td>");
+    mb.append("</tr>");
+}
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<input type='submit' name='Submit' value='Add Information'/>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("</table>");
+
+
+
+mb.append("</form>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

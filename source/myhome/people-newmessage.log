@@ -1,0 +1,171 @@
+<%@ page import="reger.core.db.Db,
+                 java.util.Calendar"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "New Message to Friends";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "peoplemessage";
+pageProps.aclObjectName = "PEOPLE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String errortext = "";
+
+
+//Do the work
+if (pageProps.action.equals("add")){
+    //Create an array of users to send to
+    int[] recipientaccountuserids= new int[0];
+    //Go get this user's friends
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstAuthors= Db.RunSQL("SELECT accountuseridtarget FROM friend WHERE friend.accountuseridsource='"+userSession.getAccountuser().getAccountuserid()+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstAuthors!=null && rstAuthors.length>0){
+        for(int i=0; i<rstAuthors.length; i++){
+            if ((request.getParameter("sendtoallorspecific")!=null && request.getParameter("sendtoallorspecific").equals("all")) || (request.getParameter("accountuseridtosendto-"+rstAuthors[i][0])!=null && request.getParameter("accountuseridtosendto-"+rstAuthors[i][0]).equals("1"))){
+                recipientaccountuserids = reger.core.Util.addToIntArray(recipientaccountuserids, Integer.parseInt(rstAuthors[i][0]));
+            }
+        }
+    }
+
+    //Add the message
+    reger.FriendMessage thisMessage = new reger.FriendMessage();
+    errortext = thisMessage.newMessage(userSession.getAccountuser().getAccountuserid(), recipientaccountuserids, request.getParameter("subject"), request.getParameter("message"));
+
+    //Redirect on success
+    if (errortext.equals("")){
+        try {
+            response.sendRedirect(pageProps.pathToAppRoot + "myhome/people.log");
+            return;
+        } catch (Exception e){
+            reger.core.Util.errorsave(e);
+        }
+        out.println("<br>" + errortext);
+        return;
+    }
+}
+
+
+//Display the page
+mb.append("<form action=people-newmessage.log method=post>");
+mb.append("<input type=hidden name=action value=add>");
+
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
+mb.append(reger.ui.BubbleBox.start("To:", pageProps.pathToAppRoot));
+mb.append("<table width=100% cellpadding=5 cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top>");
+mb.append("<input type=radio name=sendtoallorspecific value=all checked> <font face=arial size=-1>All of My Friends</font>");
+mb.append("<br>");
+mb.append("<input type=radio name=sendtoallorspecific value=specific> <font face=arial size=-1>Only Checked Friends:</font>");
+mb.append("<table cellpadding=5 width=80% align=center cellspacing=0 border=0>");
+//Go get this user's friends
+//-----------------------------------
+//-----------------------------------
+String[][] rstAuthors= Db.RunSQL("SELECT accountuserid, friendlyname, lastlogindate, onelinesummary, account.accountid FROM friend, accountuser, account WHERE friend.accountuseridsource='"+userSession.getAccountuser().getAccountuserid()+"' AND friend.accountuseridtarget=accountuser.accountuserid AND accountuser.accountid=account.accountid ORDER BY friendlyname ASC");
+//-----------------------------------
+//-----------------------------------
+if (rstAuthors!=null && rstAuthors.length>0){
+    int count = 0;
+    int numberofrows = 4;
+    for(int i=0; i<rstAuthors.length; i++){
+
+        reger.Accountuser ac = new reger.Accountuser(userSession.getAccount().getAccountid(), Integer.parseInt(rstAuthors[i][0]));
+
+        count=count+1;
+
+        if (count==1){
+            mb.append("<tr>");
+        }
+
+        String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAuthors[i][4]));
+
+        //@todo Hide the list of users until the user selects the radio that says "Only Checked Friends"
+
+        //@todo When one of these checkboxes is checked use javascript to automatically check the only checked friends radio button
+
+        mb.append("<td valign=top align=left>");
+        mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
+        mb.append("<img src='"+ac.primaryImage(pageProps.pathToAppRoot, true)+"' width=35 border=0 align=left>");
+        mb.append("</a>");
+        mb.append("<input type=checkbox name=accountuseridtosendto-"+rstAuthors[i][0]+" value=1>");
+        mb.append("<font face=arial size=-2>");
+        mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
+        mb.append(rstAuthors[i][1]);
+        mb.append("</a>");
+        mb.append("</font>");
+        mb.append("</td>");
+
+        if (count==numberofrows){
+            mb.append("</tr>");
+            count=0;
+        }
+
+
+    }
+    boolean hadtoaddextras = false;
+    while (count<numberofrows){
+        hadtoaddextras = true;
+        mb.append("<td valign=top align=left>");
+        mb.append("</td>");
+        count=count+1;
+    }
+    if (hadtoaddextras){
+        mb.append("</tr>");
+    }
+}
+
+mb.append("</table>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+mb.append(reger.ui.BubbleBox.start("Subject:", pageProps.pathToAppRoot));
+mb.append("<br>");
+mb.append("<input type=text name=subject size=35 maxlength=255>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+mb.append(reger.ui.BubbleBox.start("Message:", pageProps.pathToAppRoot));
+mb.append("<textarea cols='45' rows='10' name='message' wrap='virtual' style='width: 100%;font: 10pt monospace'></textarea>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+mb.append("<br><br>");
+
+mb.append("<input type=submit value='Send Message'>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+mb.append("</form>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

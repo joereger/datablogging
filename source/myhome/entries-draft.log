@@ -1,0 +1,82 @@
+<%@ page import="reger.core.Util,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Draft Entries";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entriesdraft";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+pageProps.helpText="This page helps you find old entries so that you can edit, delete or move them.<br><br>Enter a search term and click Search or browse your most recent entries.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+
+
+mb.append("<!-- Start last edited -->");
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+mb.append("<table width=100% cellpadding=5 cellspacing=0 border=0>");
+//@todo Add paging to /myhome/entries.log list
+//-----------------------------------
+//-----------------------------------
+String[][] rstLastentries= Db.RunSQL("SELECT event.eventid, event.title, event.date FROM event, megalog WHERE event.logid=megalog.logid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" AND event.istemporary='0' AND event.isdraft='1' ORDER BY event.date DESC LIMIT 0,100");
+//-----------------------------------
+//-----------------------------------
+if (rstLastentries!=null && rstLastentries.length>0){
+	for(int i=0; i<rstLastentries.length; i++){
+		mb.append("<tr>");
+        //@todo Check /myhome/entries.log for timezone
+        //@todo Add /myhome/entries.log Agotext
+        mb.append("<td bgcolor=#ffffff valign=top><a href='entry.log?eventid="+rstLastentries[i][0]+"&action=edit'><img src='../images/bullet-arrow.gif' width='9' height='9' alt='' border='0'></a>");
+        mb.append("</td>");
+        mb.append("<td bgcolor=#ffffff valign=top>");
+        mb.append("<font face=arial size=-2>"+rstLastentries[i][2]+"</font>");
+        mb.append("</td>");
+        mb.append("<td bgcolor=#ffffff valign=top><font face=arial size=-1>"+Util.truncateString(Util.cleanForHtml(rstLastentries[i][1]), 100)+"</font></td>");
+        mb.append("<td bgcolor=#ffffff valign=top><a href='../entry.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-1>View</font></a></td>");
+        mb.append("<td bgcolor=#ffffff valign=top><a href='entry.log?eventid="+rstLastentries[i][0]+"&action=edit'><font face=arial size=-1>Edit</font></a></td>");
+        mb.append("<td bgcolor=#ffffff valign=top><a href='entry-move.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-1>Move</font></a></td>");
+        //mb.append("<td bgcolor=#ffffff valign=top><a href='entry-addmedia.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-1>Add File</font></a></td>");
+        mb.append("<td bgcolor=#ffffff valign=top><a href='entry-delete.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-1>Delete</font></a></td>");
+        mb.append("</tr>");
+	}
+}
+
+
+mb.append("</table>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("<!-- End last edited -->");
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

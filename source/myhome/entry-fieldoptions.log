@@ -1,0 +1,269 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Add/Edit Log Entry";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.isLogidRequired=true;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.onunloadJavascriptMethod = "returnToEntryPage()";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Return to entry javascript
+mb.append(reger.core.Util.popupCloseReturnToEntryJavascript());
+
+int megafieldid=-1;
+if (request.getParameter("megafieldid")!=null && reger.core.Util.isinteger(request.getParameter("megafieldid"))) {
+    megafieldid=Integer.parseInt(request.getParameter("megafieldid"));
+} else {
+    reger.core.Util.logtodb("entry-fieldoptions.log was accessed without an megafieldid.  it's mass hysteria.");
+    response.sendRedirect("index.log");
+    return;
+}
+
+if (request.getParameter("newoptiontext")!=null && !request.getParameter("newoptiontext").equals("")) {
+    //-----------------------------------
+    //-----------------------------------
+    int myidentity = Db.RunSQLInsert("INSERT INTO megaoption(logid, megafieldid, optiontext, isdefault, isactive) VALUES('"+ pageProps.logProps.logid +"', '"+ megafieldid +"', '"+ reger.core.Util.cleanForSQL(request.getParameter("newoptiontext")) +"', '0', '1')");
+    //-----------------------------------
+    //-----------------------------------
+
+    reger.core.Util.logtodb("INSERT INTO megaoption(logid, megafieldid, optiontext, isdefault, isactive) VALUES('"+ pageProps.logProps.logid +"', '"+ megafieldid +"', '"+ reger.core.Util.cleanForSQL(request.getParameter("newoptiontext")) +"', '0', '1')");
+}
+
+if (pageProps.action.equals("editoptions")) {
+
+	//Make sure this userid can control this logid
+    if (!userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid)){
+        response.sendRedirect("index.log");
+        return;
+    }
+
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstEditFields= Db.RunSQL("SELECT megaoptionid FROM megaoption WHERE logid='"+ pageProps.logProps.logid +"' AND megafieldid='"+ megafieldid +"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstEditFields!=null && rstEditFields.length>0){
+    	for(int i=0; i<rstEditFields.length; i++){
+
+            //Update the optiontext
+            String tmpOptionTxt="";
+            if (request.getParameter("megaoptionid-"+ rstEditFields[i][0] +"-optiontext")!=null) {
+                tmpOptionTxt = request.getParameter("megaoptionid-"+ rstEditFields[i][0] +"-optiontext");
+            }
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE megaoption set optiontext='"+ reger.core.Util.cleanForSQL(tmpOptionTxt) +"' WHERE megaoptionid='"+ rstEditFields[i][0] +"' AND logid<>'0'");
+            //-----------------------------------
+            //-----------------------------------
+
+            if (request.getParameter("megaoptionid-"+ rstEditFields[i][0])!=null && request.getParameter("megaoptionid-"+ rstEditFields[i][0]).equals("delete")) {
+                //See if it's in use.  If it is then we can't delete, but we can mark disabled.
+                //-----------------------------------
+                //-----------------------------------
+                //String[][] rstOptUse= Db.RunSQL("SELECT count(*) FROM megavalue, megafield, megalogtype WHERE megavalue.megavalue='"+ rstEditFields[i][0] +"' AND megavalue.megafieldid=megafield.megafieldid AND megafield.eventtypeid=megalogtype.eventtypeid AND megalogtype.accountid='"+ userSession.getAccount().getAccountid() +"'");
+                //-----------------------------------
+                //-----------------------------------
+                //if (rstOptUse!=null && rstOptUse[0][0].equals("0")){
+                    //-----------------------------------
+                    //-----------------------------------
+                    int count3 = Db.RunSQLUpdate("DELETE FROM megaoption WHERE megaoptionid='"+ rstEditFields[i][0] +"'");
+                    //-----------------------------------
+                    //-----------------------------------
+                //} else {
+                    //-----------------------------------
+                    //-----------------------------------
+                    //int count2 = Db.RunSQLUpdate("UPDATE megaoption set isactive='0' WHERE megaoptionid='"+ rstEditFields[i][0] +"'");
+                    //-----------------------------------
+                    //-----------------------------------
+                //}
+            }
+
+            if (request.getParameter("megaoptionid-"+rstEditFields[i][0])!=null && request.getParameter("megaoptionid-"+rstEditFields[i][0]).equals("enable")) {
+                //-----------------------------------
+                //-----------------------------------
+                int count1 = Db.RunSQLUpdate("UPDATE megaoption set isactive='1' WHERE megaoptionid='"+ rstEditFields[i][0] +"'");
+                //-----------------------------------
+                //-----------------------------------
+            }
+        }
+    }
+
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Changes saved."));
+
+}
+
+String megalogname="";
+//-----------------------------------
+//-----------------------------------
+String[][] rstLogInfo= Db.RunSQL("SELECT icon, name FROM megalog, megalogtype WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logid='"+pageProps.logProps.logid+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstLogInfo!=null && rstLogInfo.length>0){
+    //Find the log name
+    if (!rstLogInfo[0][1].equals("")) {
+        megalogname=rstLogInfo[0][1];
+    }
+}
+
+mb.append(reger.ui.BubbleBox.start("Field Options for:<br>"+reger.core.Util.cleanForHtml(megalogname), pageProps.pathToAppRoot));
+
+mb.append("<table cellpadding=10 cellspacing=1 border=0 width=100% align=center>");
+//mb.append("<tr>");
+//mb.append("<td bgcolor=#ffcc00><font face=arial size=+1>Field Options for:<br>"+reger.core.Util.cleanForHtml(megalogname)+"</font></td>");
+//mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffcc00><font face=arial size=-1><a href='javascript:returnToEntryPage()'>Click here when done.</a><br>Be sure to Save changes first with the Save button at the bottom of the page.</font></td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+
+
+
+
+
+mb.append("<br>");
+mb.append("<table cellpadding=10 cellspacing=1 border=0 align=center>");
+
+mb.append("<form action='entry-fieldoptions.log' method=post>");
+mb.append("<input type=hidden name=action value=editoptions>");
+mb.append("<input type=hidden name=logid value="+pageProps.logProps.logid+">");
+mb.append("<input type=hidden name=megafieldid value="+megafieldid+">");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc colspan=2><font face=arial size=-1>Field Options</font><br><font face=arial size=-2>System Options are defaults in the system and can't be edited or deleted.  Your Options can be edited.   Note that editing an option will change any existing log entries that use this value.</font></td>");
+mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc><font face=arial size=-2>Field Option</font></td>");
+mb.append("<td bgcolor=#cccccc><font face=arial size=-2>Action</font></td>");
+mb.append("</tr>");
+
+//List system fields... the fields that can't be edited... now baby, now.
+//-----------------------------------
+//-----------------------------------
+String[][] rstSystemFields= Db.RunSQL("SELECT optiontext FROM megaoption WHERE logid='0' AND megafieldid='"+ megafieldid +"'");
+//-----------------------------------
+//-----------------------------------
+if (rstSystemFields!=null && rstSystemFields.length>0){
+	for(int i=0; i<rstSystemFields.length; i++){
+		mb.append("<tr>");
+        mb.append("<td><font face=arial size=-1>"+rstSystemFields[i][0]+"</font></td>");
+        mb.append("<td><font face=arial size=-1>");
+        mb.append("Uneditable System Option");
+        mb.append("</font></td>");
+        mb.append("</tr>");
+	}
+}
+
+
+//List system fields... the fields that can't be edited... now
+//-----------------------------------
+//-----------------------------------
+String[][] rstUserFields= Db.RunSQL("SELECT megaoptionid, optiontext, isactive FROM megaoption WHERE logid<>'0' AND logid='"+ pageProps.logProps.logid +"' AND megafieldid='"+ megafieldid +"'");
+//-----------------------------------
+//-----------------------------------
+if (rstUserFields!=null && rstUserFields.length>0){
+	for(int i=0; i<rstUserFields.length; i++){
+        mb.append("<tr>");
+        mb.append("<td><input type='text' name='megaoptionid-"+rstUserFields[i][0]+"-optiontext' value=\""+reger.core.Util.cleanForHtml(rstUserFields[i][1])+"\" size=20 maxlength=49></td>");
+        mb.append("<td><font face=arial size=-1>");
+
+        if (rstUserFields[i][2].equals("1")) {
+
+            mb.append("<input type='checkbox' name='megaoptionid-"+rstUserFields[i][0]+"' value='delete'>");
+
+            //Figure out if it's used
+            //-----------------------------------
+            //-----------------------------------
+            //String[][] rstOptionUse= Db.RunSQL("SELECT count(*) FROM megavalue, megafield, megalogtype WHERE megavalue.megavalue='"+ reger.core.Util.cleanForSQL(rstUserFields[i][1]) +"' AND megavalue.megafieldid=megafield.megafieldid AND megafield.eventtypeid=megalogtype.eventtypeid AND megalogtype.accountid='"+ userSession.getAccount().getAccountid() +"'");
+            //-----------------------------------
+            //-----------------------------------
+            //if (rstOptionUse!=null && rstOptionUse.length>0) {
+                //if (Integer.parseInt(rstOptionUse[0][0])>0) {
+                    //It can't be deleted
+                     //mb.append("Disable");
+                //} else {
+                    //It can be deleted
+                    mb.append("Delete");
+                //}
+            //} else {
+                //It can be deleted
+                //mb.append("Delete");
+            //}
+
+        } else { //It's already disabled
+            mb.append("<input type='checkbox' name='megaoptionid-"+rstUserFields[i][0]+"' value='enable'> Enable");
+        }
+
+        mb.append("</font></td>");
+        mb.append("</tr>");
+	}
+}
+
+
+
+//@todo Why in bloody hell can't this script add an option?  The database gets the correct string but it doesn't add it.  There must be something with the JDBC driver and the text newoptiontext.
+//mb.append("<tr>");
+//mb.append("<td colspan=2 bgcolor=#cccccc align=left><font face=arial size=-1>Add New Option</font></td>");
+//mb.append("</tr>");
+//
+//mb.append("<tr>");
+//mb.append("<td colspan=2 align=left><input type='text' name='newoptiontext' value=''></td>");
+//mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#cccccc colspan=2 align=center><input type='submit' value='Save Options'></td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+mb.append("</form>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+//Output the page
+out.print(mb.toString());
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%//@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+

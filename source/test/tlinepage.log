@@ -1,0 +1,60 @@
+<%@ page import="reger.SideColumn"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("<table cellpadding=0 cellspacing=0 border=0>");
+mb.append("<tr>");
+
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstDat= db.RunSQL("SELECT title FROM event WHERE accountid='"+userSession.getAccount().getAccountid()+"' ORDER BY date DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstDat!=null && rstDat.length>0){
+	for(int i=0; i<rstDat.length; i++){
+	    mb.append("<td valign=bottom>");
+	    mb.append("<img src=\"tlineimage.log?textToWrite="+reger.core.Util.truncateString(rstDat[i][0], 45)+"\" border=0>");
+	    mb.append("</td>");
+	}
+}
+
+mb.append("</tr>");
+
+mb.append("</table>");
+
+mb.append("<br><br><br><br><br><br>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

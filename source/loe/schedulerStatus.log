@@ -1,0 +1,268 @@
+
+<%@ page import="java.util.*, reger.core.db.Db,
+                 reger.core.scheduler.ScheduledTask" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "Scheduler Thread";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loescheduler";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Shutdown a thread
+if (pageProps.action.equals("startthread")) {
+    reger.scheduledtasks.Loader.startAMasterThread();
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "The thread has been restarted.  Go now and rest.  Your work here is done."));
+}
+
+
+//Make sure a thread is running
+if (reger.scheduledtasks.Loader.tThr==null){
+    reger.scheduledtasks.Loader.startAMasterThread();
+}
+
+//Clear the status table
+if (pageProps.action.equals("cleartable")) {
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("DELETE FROM scheduler");
+    //-----------------------------------
+    //-----------------------------------
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Table has been cleared."));
+}
+
+
+//Info
+mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "The Scheduler Thread runs in the background.  It performs tasks like database upgrades, database cleaning, expiring old user sessions and SMTP monitoring.  In general it does not require any attention."));
+
+
+
+mb.append("<br>");
+mb.append("<a href='schedulerStatus.log'>");
+mb.append("<font face=arial size=-1>");
+mb.append("Refresh this Screen");
+mb.append("</font>");
+mb.append("</a>");
+
+
+if (pageProps.action.equals("startthread")) {
+    mb.append("<br>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<br><b>Active Thread ID:</b> Restarting Now");
+    mb.append("</font>");
+} else {
+    mb.append("<br>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<br><b>Active Thread ID:</b> " + reger.scheduledtasks.Loader.tThr.masterthreadid);
+    mb.append("<br><b>Active Thread Running Since:</b> " + reger.scheduledtasks.Loader.tThr.threadstartedat);
+    mb.append("<br><b>Number of Times Active Thread Run:</b> " + reger.scheduledtasks.Loader.tThr.numberoftimesrun);
+    mb.append("<br><b>Current status:</b> " + reger.scheduledtasks.Loader.tThr.currentStatus);
+    mb.append("</font>");
+
+    //Don't give the user the ability to restart immediately after a restart
+    mb.append("<br><br>");
+    mb.append("<a href='schedulerStatus.log?action=startthread'>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Restart the Scheduler Thread");
+    mb.append("</font>");
+    mb.append("</a>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Sometimes this is useful when the SMTP listener is not able to grab port 25.");
+    mb.append("</font>");
+}
+
+
+
+
+
+
+
+mb.append("<br><br>");
+mb.append("<a href='schedulerStatus.log?action=cleartable'>");
+mb.append("<font face=arial size=-1>");
+mb.append("Clear Scheduler Thread Status Table");
+mb.append("</font>");
+mb.append("</a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Be careful, clearing will force the thread to run all tasks the next time it is executed which could consume many resources.");
+mb.append("</font>");
+
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<table cellpadding=5 cellspacing=2 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-1>");
+mb.append("Thread ID");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-1>");
+mb.append("Task");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-1>");
+mb.append("Last Run At");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-1>");
+mb.append("Next Run At");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-1>");
+mb.append("Runs Every X Minutes");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=-1>");
+mb.append("Comment");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+if (reger.scheduledtasks.Loader.tThr!=null){
+    //Get the tasks
+    ScheduledTask[] scheduledTasks = reger.scheduledtasks.Loader.tThr.getScheduledTask();
+
+    for (int i = 0; i < scheduledTasks.length; i++) {
+
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstThreadStatus= Db.RunSQL("SELECT masterthreadid, lastrun, timesrun, task, comment FROM scheduler WHERE task='"+reger.core.Util.cleanForSQL(scheduledTasks[i].getTaskName())+"' ORDER BY schedulerid DESC LIMIT 0,1");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstThreadStatus!=null && rstThreadStatus.length>0){
+            for(int j=0; j<rstThreadStatus.length; j++){
+                mb.append("<tr>");
+                mb.append("<td valign=top align=left>");
+                mb.append("<font face=arial size=-1>");
+                mb.append(rstThreadStatus[j][0]);
+                mb.append("</font>");
+                mb.append("</td>");
+                mb.append("<td valign=top align=left>");
+                mb.append("<font face=arial size=-1>");
+                mb.append(rstThreadStatus[j][3]);
+                mb.append("</font>");
+                mb.append("</td>");
+                mb.append("<td valign=top align=left>");
+                mb.append("<font face=arial size=-1>");
+                mb.append(rstThreadStatus[j][1]);
+                mb.append("</font>");
+                mb.append("<br>");
+                mb.append("<font face=arial size=-2>");
+                mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstThreadStatus[j][1])));
+                mb.append("</font>");
+                mb.append("</td>");
+                mb.append("<td valign=top align=left>");
+                mb.append("<font face=arial size=-1>");
+                Calendar lastRun = reger.core.TimeUtils.dbstringtocalendar(rstThreadStatus[j][1]);
+                Calendar nextRun = reger.core.TimeUtils.xMinutesAgoStart(lastRun, (-1)*scheduledTasks[i].getRunEveryXMinutes());
+                mb.append(reger.core.TimeUtils.dateformatfordb(nextRun));
+                mb.append("</font>");
+                mb.append("<br>");
+                mb.append("<font face=arial size=-2>");
+                mb.append(reger.core.TimeUtils.agoText(nextRun));
+                mb.append("</font>");
+                mb.append("</td>");
+                mb.append("<td valign=top align=left>");
+                mb.append("<font face=arial size=-1>");
+                mb.append(scheduledTasks[i].getRunEveryXMinutes());
+                mb.append("</font>");
+                mb.append("</td>");
+                mb.append("<td valign=top align=left>");
+                mb.append("<font face=arial size=-1>");
+                mb.append(rstThreadStatus[j][4]);
+                mb.append("</font>");
+                mb.append("</td>");
+                mb.append("</tr>");
+            }
+        } else {
+            mb.append("<tr>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append("");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append(scheduledTasks[i].getTaskName());
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append("Never");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append("");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append(scheduledTasks[i].getRunEveryXMinutes());
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append("");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+
+    }
+}
+
+
+
+
+
+
+
+mb.append("</table>");
+
+%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

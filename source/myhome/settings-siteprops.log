@@ -1,0 +1,902 @@
+<%@ page import="reger.core.Util, java.util.TreeMap, java.util.*,
+                 reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Super-Important Site Properties";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingssiteprops";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//reger.UserSession userSession;
+if (pageProps.action.equals("submit")) {
+
+
+    if (request.getParameter("homepagetitle")!=null){
+        userSession.getAccount().setHomepagetitle(request.getParameter("homepagetitle"));
+    } else {
+        userSession.getAccount().setHomepagetitle("");
+    }
+
+    if (request.getParameter("homepagehtml")!=null){
+        userSession.getAccount().setHomepagehtml(request.getParameter("homepagehtml"));
+    } else {
+        userSession.getAccount().setHomepagehtml("");
+    }
+
+    if (request.getParameter("islistedindirectory")!=null && reger.core.Util.isinteger(request.getParameter("islistedindirectory"))){
+        boolean tmpBool = true;
+        if (request.getParameter("islistedindirectory").equals("0")){
+            tmpBool = false;
+        }
+        userSession.getAccount().setIslistedindirectory(tmpBool);
+    } else {
+        userSession.getAccount().setIslistedindirectory(true);
+    }
+
+    if (request.getParameter("timezoneid")!=null){
+        userSession.getAccount().setTimezoneid(request.getParameter("timezoneid"));
+    } else {
+        userSession.getAccount().setHomepagehtml("");
+    }
+
+    if (request.getParameter("homepagecalendar")!=null && reger.core.Util.isinteger(request.getParameter("homepagecalendar"))){
+        userSession.getAccount().setHomepagecalendar(Integer.parseInt(request.getParameter("homepagecalendar")));
+    } else {
+        userSession.getAccount().setHomepagecalendar(1);
+    }
+
+    if (request.getParameter("issearchmysiteon")!=null && reger.core.Util.isinteger(request.getParameter("issearchmysiteon"))){
+        userSession.getAccount().setIssearchmysiteon(Integer.parseInt(request.getParameter("issearchmysiteon")));
+    } else {
+        userSession.getAccount().setIssearchmysiteon(1);
+    }
+
+    if (request.getParameter("istrackbackon")!=null && reger.core.Util.isinteger(request.getParameter("istrackbackon"))){
+        boolean tmpBool = true;
+        if (request.getParameter("istrackbackon").equals("0")){
+            tmpBool = false;
+        }
+        userSession.getAccount().setIstrackbackon(tmpBool);
+    } else {
+        userSession.getAccount().setIstrackbackon(true);
+    }
+
+    if (request.getParameter("trackbackrequiresapproval")!=null && reger.core.Util.isinteger(request.getParameter("trackbackrequiresapproval"))){
+        boolean tmpBool = true;
+        if (request.getParameter("trackbackrequiresapproval").equals("0")){
+            tmpBool = false;
+        }
+        userSession.getAccount().setTrackbackrequiresapproval(tmpBool);
+    } else {
+        userSession.getAccount().setTrackbackrequiresapproval(true);
+    }
+
+    if (request.getParameter("messagesstatus")!=null && reger.core.Util.isinteger(request.getParameter("messagesstatus"))){
+        userSession.getAccount().setMessagesstatus(Integer.parseInt(request.getParameter("messagesstatus")));
+    } else {
+        userSession.getAccount().setMessagesstatus(1);
+    }
+
+    if (request.getParameter("messagesapproval")!=null && reger.core.Util.isinteger(request.getParameter("messagesapproval"))){
+        userSession.getAccount().setMessagesapproval(Integer.parseInt(request.getParameter("messagesapproval")));
+    } else {
+        userSession.getAccount().setMessagesapproval(1);
+    }
+
+    if (request.getParameter("istimeperiodon")!=null && reger.core.Util.isinteger(request.getParameter("istimeperiodon"))){
+        boolean tmpBool = true;
+        if (request.getParameter("istimeperiodon").equals("0")){
+            tmpBool = false;
+        }
+        userSession.getAccount().setIstimeperiodon(tmpBool);
+    } else {
+        userSession.getAccount().setIstimeperiodon(true);
+    }
+
+    if (request.getParameter("pingweblogscom")!=null && reger.core.Util.isinteger(request.getParameter("pingweblogscom"))){
+        userSession.getAccount().setPingweblogscom(Integer.parseInt(request.getParameter("pingweblogscom")));
+    } else {
+        userSession.getAccount().setPingweblogscom(1);
+    }
+
+
+    if (request.getParameter("emailnewsletter")!=null && reger.core.Util.isinteger(request.getParameter("emailnewsletter"))){
+        userSession.getAccount().setEmailnewsletter(Integer.parseInt(request.getParameter("emailnewsletter")));
+    } else {
+        userSession.getAccount().setEmailnewsletter(1);
+    }
+
+    if (request.getParameter("emailsendhour")!=null && reger.core.Util.isinteger(request.getParameter("emailsendhour"))){
+        userSession.getAccount().setEmailsendhour(Integer.parseInt(request.getParameter("emailsendhour")));
+    } else {
+        userSession.getAccount().setEmailsendhour(3);
+    }
+
+    if (request.getParameter("admintools")!=null && reger.core.Util.isinteger(request.getParameter("admintools"))){
+        userSession.getAccount().setAdmintools(Integer.parseInt(request.getParameter("admintools")));
+    } else {
+        userSession.getAccount().setAdmintools(0);
+    }
+
+
+
+    if (request.getParameter("showhometab")!=null && reger.core.Util.isinteger(request.getParameter("showhometab"))){
+        boolean tmpBool = true;
+        if (request.getParameter("showhometab").equals("0")){
+            tmpBool = false;
+        }
+        userSession.getAccount().setShowhometab(tmpBool);
+    } else {
+        userSession.getAccount().setShowhometab(true);
+    }
+
+    if (request.getParameter("hometabtext")!=null && !request.getParameter("hometabtext").equals("Home") && !request.getParameter("hometabtext").equals("")) {
+		userSession.getAccount().setHometabtext(request.getParameter("hometabtext"));
+    } else {
+        userSession.getAccount().setHometabtext("");
+    }
+
+    if (request.getParameter("showlogintab")!=null && reger.core.Util.isinteger(request.getParameter("showlogintab"))){
+        boolean tmpBool = true;
+        if (request.getParameter("showlogintab").equals("0")){
+            tmpBool = false;
+        }
+        userSession.getAccount().setShowlogintab(tmpBool);
+    } else {
+        userSession.getAccount().setShowlogintab(true);
+    }
+
+    if (request.getParameter("jspopup")!=null && reger.core.Util.isinteger(request.getParameter("jspopup"))){
+        userSession.getAccount().setJspopup(Integer.parseInt(request.getParameter("jspopup")));
+    } else {
+        userSession.getAccount().setJspopup(0);
+    }
+
+    if (request.getParameter("displaycharsinsummary")!=null && reger.core.Util.isinteger(request.getParameter("displaycharsinsummary"))){
+        userSession.getAccount().setDisplaycharsinsummary(Integer.parseInt(request.getParameter("displaycharsinsummary")));
+    } else {
+        userSession.getAccount().setDisplaycharsinsummary(0);
+    }
+
+    if (request.getParameter("displaynumberofentries")!=null && reger.core.Util.isinteger(request.getParameter("displaynumberofentries"))){
+        userSession.getAccount().setDisplaynumberofentries(Integer.parseInt(request.getParameter("displaynumberofentries")));
+    } else {
+        userSession.getAccount().setDisplaynumberofentries(15);
+    }
+
+    if (request.getParameter("userelatedlinks")!=null && reger.core.Util.isinteger(request.getParameter("userelatedlinks"))){
+        userSession.getAccount().setUserelatedlinks(Integer.parseInt(request.getParameter("userelatedlinks")));
+    } else {
+        userSession.getAccount().setUserelatedlinks(1);
+    }
+
+    if (request.getParameter("favesiteon")!=null && reger.core.Util.isinteger(request.getParameter("favesiteon"))){
+        userSession.getAccount().setFavesiteon(Integer.parseInt(request.getParameter("favesiteon")));
+    } else {
+        userSession.getAccount().setFavesiteon(1);
+    }
+
+
+    if (request.getParameter("onthisday")!=null && reger.core.Util.isinteger(request.getParameter("onthisday"))){
+        userSession.getAccount().setOnthisday(Integer.parseInt(request.getParameter("onthisday")));
+    } else {
+        userSession.getAccount().setOnthisday(1);
+    }
+
+    if (request.getParameter("customservername")!=null){
+        userSession.getAccount().setCustomservername(request.getParameter("customservername"));
+    } else {
+        userSession.getAccount().setCustomservername("");
+    }
+
+    if (request.getParameter("customservername2")!=null){
+        userSession.getAccount().setCustomservername2(request.getParameter("customservername2"));
+    } else {
+        userSession.getAccount().setCustomservername2("");
+    }
+
+    if (request.getParameter("customservername3")!=null){
+        userSession.getAccount().setCustomservername3(request.getParameter("customservername3"));
+    } else {
+        userSession.getAccount().setCustomservername3("");
+    }
+
+
+    if (request.getParameter("accountemail")!=null){
+        userSession.getAccount().setAccountemail(request.getParameter("accountemail"));
+    } else {
+        userSession.getAccount().setAccountemail("");
+    }
+
+    if (request.getParameter("newslettersubject")!=null){
+        userSession.getAccount().setNewslettersubject(request.getParameter("newslettersubject"));
+    } else {
+        userSession.getAccount().setNewslettersubject("");
+    }
+
+    if (request.getParameter("googlemapsapikey")!=null){
+        userSession.getAccount().setGooglemapsapikey(request.getParameter("googlemapsapikey"));
+    } else {
+        userSession.getAccount().setGooglemapsapikey("");
+    }
+
+
+    try{
+        //Write the preferences to the database
+        userSession.getAccount().save();
+        //Repopulate the object
+        userSession.getAccount().refresh();
+        //Return to AdminTools
+        if (request.getParameter("returntoadmintools")!=null && request.getParameter("returntoadmintools").equals("1")){
+            response.sendRedirect(pageProps.pathToAppRoot + "index.log");
+            return;
+        }
+        //Success
+        reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Saved.");
+    } catch (reger.core.ValidationException v){
+        reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, v.getErrorsAsSingleString());
+    }
+
+
+
+}
+
+
+
+
+mb.append("<center>");
+mb.append("<br><br>");
+mb.append("<!-- Body Table Start -->");
+mb.append("<table cellpadding=0 cellspacing=0 border=0 bgcolor=#ffffff><tr><td>");
+mb.append("<table cellpadding=10 cellspacing=1 border=0 bgcolor=#ffffff>");
+
+
+mb.append("<form action=settings-siteprops.log method=post>");
+mb.append("<input type=hidden name=action value='submit'>");
+//Return to AdminTools
+if (request.getParameter("returntoadmintools")!=null && !request.getParameter("returntoadmintools").equals("")){
+    mb.append("<input type=hidden name=returntoadmintools value="+request.getParameter("returntoadmintools")+">");
+}
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' width=25% valign=top>");
+mb.append("<font face=arial size=-1><b>Site Title</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Give your site a title.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<input type='text' name='homepagetitle' size='20' maxlength='49' value=\""+Util.cleanForHtml(userSession.getAccount().getHomepagetitle())+"\">");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' width=33% valign=top>");
+mb.append("<font face=arial size=-1><b>Site Description</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Give your site a custom description.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<textarea cols='25' rows='4' name='homepagehtml'>"+userSession.getAccount().getHomepagehtml()+"</textarea>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Listed in Directory?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Do you want this site listed in the public <a href='people-find.log'>directory</a>?");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+TreeMap radiosIslistedindirectory=new TreeMap();
+radiosIslistedindirectory.put("1","Yes, List This Site");
+radiosIslistedindirectory.put("0","No, Don't List This Site");
+String stringIslsitedindirectory = "1";
+if (!userSession.getAccount().getIslistedindirectory()){
+    stringIslsitedindirectory = "0";
+}
+mb.append(reger.formControl.radioList(radiosIslistedindirectory, stringIslsitedindirectory, "islistedindirectory", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Timezone</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Set your timezone so that your entries are date-stamped correctly.  Note: You can set user timezones individually.  This allows you to have contributors in multiple timezones with accurate time stamps.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<select name=timezoneid>");
+String[] timezone = TimeZone.getAvailableIDs();
+TreeSet timezoneids = new TreeSet();
+//Add the timezoneid's to a treeset
+for (int i = 0; i < timezone.length; i++) {
+    timezoneids.add(timezone[i]);
+}
+//Output to the screen
+for (Iterator iterator = timezoneids.iterator(); iterator.hasNext();) {
+    String tzid = (String) iterator.next();
+    mb.append("<option value=\""+reger.core.Util.cleanForHtml(tzid)+"\" ");
+    if (userSession.getAccount().getTimezoneid().equalsIgnoreCase(tzid)) {
+        mb.append("selected");
+    }
+    mb.append(">");
+    mb.append(tzid);
+    mb.append("</option>");
+}
+mb.append("</select>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Home Page Calendar</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Decide whether to put a calendar on your homepage.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+TreeMap radiosHomepagecalendar=new TreeMap();
+radiosHomepagecalendar.put("0","Off");
+radiosHomepagecalendar.put("1","On");
+mb.append(reger.formControl.radioList(radiosHomepagecalendar, String.valueOf(userSession.getAccount().getHomepagecalendar()), "homepagecalendar", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Search My Site Box</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Decide whether to have a search box on your homepage that allows visitors to search your entries.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+if (userSession.getAccount().isPro()) {
+    //Radio Control
+    TreeMap radiosIssearchmysiteon=new TreeMap();
+    radiosIssearchmysiteon.put("1","On");
+    radiosIssearchmysiteon.put("0","Off");
+    mb.append(reger.formControl.radioList(radiosIssearchmysiteon, String.valueOf(userSession.getAccount().getIssearchmysiteon()), "issearchmysiteon", "vertical"));
+    //End Radio Control
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Trackback</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Trackback allows other sites to tell your site when they are talking about you.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+java.util.TreeMap radiosIstrackbackon=new TreeMap();
+radiosIstrackbackon.put("1","On");
+radiosIstrackbackon.put("0","Off");
+String stringTrackback = "1";
+if (!userSession.getAccount().getIstrackbackon()){
+    stringTrackback = "0";
+}
+mb.append(reger.formControl.radioList(radiosIstrackbackon, stringTrackback, "istrackbackon", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Trackbacks Require Approval?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Decide whether Trackbacks need to be approved before they appear on your site.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+java.util.TreeMap radiosIstrackbackApproval=new java.util.TreeMap();
+radiosIstrackbackApproval.put("1","Approval Required");
+radiosIstrackbackApproval.put("0","No Approval Required");
+String stringTrackbackApp = "1";
+if (!userSession.getAccount().getTrackbackrequiresapproval()){
+    stringTrackbackApp = "0";
+}
+mb.append(reger.formControl.radioList(radiosIstrackbackApproval, stringTrackbackApp, "trackbackrequiresapproval", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Allow Readers to Post Messages?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Give readers the ability to post messages to your log entries.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+TreeMap radiosMessagesstatus=new TreeMap();
+radiosMessagesstatus.put("0","Off");
+radiosMessagesstatus.put("1","On");
+mb.append(reger.formControl.radioList(radiosMessagesstatus, String.valueOf(userSession.getAccount().getMessagesstatus()), "messagesstatus", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Reader Messages Require Approval?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Decide whether your readers' messages need to be approved before they appear on your site.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+TreeMap radiosMessagesapproval=new TreeMap();
+radiosMessagesapproval.put("1","Approval Required");
+radiosMessagesapproval.put("0","No Approval Required");
+mb.append(reger.formControl.radioList(radiosMessagesapproval, String.valueOf(userSession.getAccount().getMessagesapproval()), "messagesapproval", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Time Periods On?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Time Periods are used to mark periods in your web log.  Try them out... we think you'll like them.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+java.util.TreeMap radiosIsTimeperiodon=new java.util.TreeMap();
+radiosIsTimeperiodon.put("1","On");
+radiosIsTimeperiodon.put("0","Off");
+String stringIstimeperiodon = "1";
+if (!userSession.getAccount().getIstimeperiodon()){
+    stringIstimeperiodon = "0";
+}
+mb.append(reger.formControl.radioList(radiosIsTimeperiodon, stringIstimeperiodon, "istimeperiodon", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+
+
+if (userSession.getPl().getIsweblogscompingon()){
+    mb.append("<tr>");
+    mb.append("<td bgcolor='#ffffff' valign=top>");
+    mb.append("<font face=arial size=-1><b>Ping Weblogs.com</b></font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>Take part in the global web logging movement!  When you make a public web log entry we can automatically ping weblogs.com to publicize your site.");
+    mb.append("</font></td>");
+    mb.append("<td bgcolor='#ffffff' valign=top>");
+    if (userSession.getAccount().isPro()) {
+        //Radio Control
+        TreeMap radiosPingweblogscom=new TreeMap();
+        radiosPingweblogscom.put("1","On");
+        radiosPingweblogscom.put("0","Off");
+        mb.append(reger.formControl.radioList(radiosPingweblogscom, String.valueOf(userSession.getAccount().getPingweblogscom()), "pingweblogscom", "vertical"));
+        //End Radio Control
+    } else {
+        mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+    }
+    mb.append("</td>");
+    mb.append("</tr>");
+} else {
+    mb.append("<input type=hidden name=pingweblogscom value=1>");
+}
+
+
+
+
+
+
+//reger.core.Util.debug(5, "settings-siteprops.log: userSession.getAccount().getEmailnewsletter()=" + userSession.getAccount().getEmailnewsletter());
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Enable Email Subscriptions?</b></font>");
+mb.append("<br>");
+//@todo Allow users to manage their list of email subscriptions... cancel users, etc.
+mb.append("<font face=arial size=-2>Allow your readers to subscribe to your site via email subscriptions.  You determine the time of day that email is sent.  Your readers determine how often they want to be updated and in what format (HTML or plain text).  A great way to grow your readership.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+if (userSession.getAccount().isPro()) {
+    //Radio Control
+    TreeMap radiosEmailnewsletter=new TreeMap();
+    radiosEmailnewsletter.put("1","On");
+    radiosEmailnewsletter.put("0","Off");
+    mb.append(reger.formControl.radioList(radiosEmailnewsletter, String.valueOf(userSession.getAccount().getEmailnewsletter()), "emailnewsletter", "vertical"));
+    //End Radio Control
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' width=33% valign=top>");
+mb.append("<font face=arial size=-1><b>Email Subscription Subject</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>This is the subject that will be used when sending outbound email newsletters to people who subscribe (if you have that feature enabled).  You can leave this blank and we'll make up a subject on the fly.  Don't worry, it'll be gramatically correct... but it won't be as concise, catchy and powerful as the one you'll create here.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<input type='text' name='newslettersubject' size='20' maxlength='255' value=\""+Util.cleanForHtml(userSession.getAccount().getNewslettersubject())+"\">");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Send Email Subscriptions at this Hour (if enabled):</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Determine at what hour (approximately) email subscriptions should be sent to your readers.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+
+if (userSession.getAccount().isPro()) {
+
+    String emlampm="";
+    int hrsdisplay=8;
+
+    mb.append("<select name=emailsendhour>");
+    for(int i=0; i<=23; i++){
+        if (i==0) {
+            emlampm="AM";
+            hrsdisplay=12;
+        } else if (i>0 && i<12){
+            emlampm="AM";
+            hrsdisplay=i;
+        } else if (i==12) {
+            emlampm="PM";
+            hrsdisplay=12;
+        } else if (i>12) {
+            emlampm="PM";
+            hrsdisplay=i-12;
+        }
+
+        mb.append("<option value=\""+i+"\" ");
+        if (userSession.getAccount().getEmailsendhour()==i) {
+            mb.append("selected");
+        }
+        mb.append(">");
+        mb.append(hrsdisplay + ":00 " + emlampm);
+        mb.append("</option>");
+
+    }
+    mb.append("</select>");
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' width=25% valign=top>");
+mb.append("<font face=arial size=-1><b>Site Outbound Email</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>This email is used as the from address for any outbound emails sent from your site for things like the email newsletter or comment notification.  It can be different than your personal email address so that you don't give that away via the site.  This can also be set to blank, meaning that the default email address of " +reger.Vars.EMAILDEFAULTFROM+ " will be used as the from address when sending email.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<input type='text' name='accountemail' size='20' maxlength='100' value=\""+Util.cleanForHtml(userSession.getAccount().getAccountemail())+"\">");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Admin Tools</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Admin Tools allow you to surf your own site with a toolbar of important functions following you the whole time.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+if (userSession.getAccount().isPro()){
+    //Radio Control
+    TreeMap radiosAdmintools=new TreeMap();
+    radiosAdmintools.put("1","On");
+    radiosAdmintools.put("0","Off");
+    mb.append(reger.formControl.radioList(radiosAdmintools, String.valueOf(userSession.getAccount().getAdmintools()), "admintools", "vertical"));
+    //End Radio Control
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Show Home Tab?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Decide whether the Home tab will appear in the navigation bar.  Some users include a Home tab in their template and don't need it in their navigation bar.  Personal preference.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+String stringShowhometab = "1";
+if (!userSession.getAccount().getShowhometab()){
+    stringShowhometab = "0";
+}
+//Radio Control
+TreeMap radiosshowHometab=new TreeMap();
+radiosshowHometab.put("1","Show Home Tab");
+radiosshowHometab.put("0","Hide Home Tab");
+mb.append(reger.formControl.radioList(radiosshowHometab, stringShowhometab, "showhometab", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Home Tab Text</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>What the home tab will say.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+String hometabtext=userSession.getAccount().getHometabtext();
+if (hometabtext.equals("")) {
+	hometabtext="Home";
+}
+mb.append("<input type=text name=hometabtext value=\""+reger.core.Util.cleanForHtml(hometabtext)+"\" size=10 maxlength=49>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Show Login Tab?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Decide whether the Login tab will appear in the navigation bar.  Some users want to hide the login tab because they don't have any private or password-protected logs.  Be careful though... you'll need to remember how to get to the /myhome site so that you can make your log entries.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+String stringShowlogintab = "1";
+if (!userSession.getAccount().getShowlogintab()){
+    stringShowlogintab = "0";
+}
+//Radio Control
+TreeMap radiosshowLogintab=new TreeMap();
+radiosshowLogintab.put("1","Show Login Tab");
+radiosshowLogintab.put("0","Hide Login Tab");
+mb.append(reger.formControl.radioList(radiosshowLogintab, stringShowlogintab, "showlogintab", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Open Images in New Window</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Requires Javascript.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+TreeMap radiosJspopup=new TreeMap();
+radiosJspopup.put("1","Yes, Open in New Window");
+radiosJspopup.put("0","No, Open in Same Window");
+mb.append(reger.formControl.radioList(radiosJspopup, String.valueOf(userSession.getAccount().getJspopup()), "jspopup", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Display This Many Characters in Log Entry Summaries</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>When a log entry summary is displayed (on the homepage, for example) you can show the entire entry or you can only show a certain number of characters.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+TreeMap radiosdisplayCharsinSummary=new TreeMap();
+radiosdisplayCharsinSummary.put("0","All Chars");
+radiosdisplayCharsinSummary.put("100","First 100 Chars");
+radiosdisplayCharsinSummary.put("250","First 250 Chars");
+radiosdisplayCharsinSummary.put("500","First 500 Chars");
+mb.append(reger.formControl.radioList(radiosdisplayCharsinSummary, String.valueOf(userSession.getAccount().getDisplaycharsinsummary()), "displaycharsinsummary", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Display This Many Log Entries in a List</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>On the site homepage or on log homepages, how many log entry summaries do you want on each page?");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+//Radio Control
+TreeMap radiosdisplayNumberofentries=new TreeMap();
+radiosdisplayNumberofentries.put("10","10 Entries");
+radiosdisplayNumberofentries.put("15","15 Entries");
+radiosdisplayNumberofentries.put("20","20 Entries");
+radiosdisplayNumberofentries.put("25","25 Entries");
+mb.append(reger.formControl.radioList(radiosdisplayNumberofentries, String.valueOf(userSession.getAccount().getDisplaynumberofentries()), "displaynumberofentries", "vertical"));
+//End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Display Related Entries?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>When reading one of your log entries, Related Entries is a feature that automatically shows your readers other log entries that may be related.  It uses keywords in your entry and finds other entries with similar keywords.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+if (userSession.getAccount().isPro()) {
+    //Radio Control
+    TreeMap radiosUserelatedlinks=new TreeMap();
+    radiosUserelatedlinks.put("1","On");
+    radiosUserelatedlinks.put("0","Off");
+    mb.append(reger.formControl.radioList(radiosUserelatedlinks, String.valueOf(userSession.getAccount().getUserelatedlinks()), "userelatedlinks", "vertical"));
+    //End Radio Control
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Display Favorite Sites box on Homepage?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Decide whether or not to have a box with links to your favorite sites on your homepage.  Sharing is good.  Add to your list of your favorite sites <a href='customizefavesites.log'>here</a>.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+if (userSession.getAccount().isPro()) {
+    //Radio Control
+    TreeMap radiosFavesiteon=new TreeMap();
+    radiosFavesiteon.put("1","On");
+    radiosFavesiteon.put("0","Off");
+    mb.append(reger.formControl.radioList(radiosFavesiteon, String.valueOf(userSession.getAccount().getFavesiteon()), "favesiteon", "vertical"));
+    //End Radio Control
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<font face=arial size=-1><b>Display On This Day box on Homepage?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>The On This Day box shows your readers what you were doing on the current date last year... and the year before that... and the year before that.  Any entry on the same date as today is listed.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+if (userSession.getAccount().isPro()) {
+    //Radio Control
+    TreeMap radiosOnthisday=new TreeMap();
+    radiosOnthisday.put("1","On");
+    radiosOnthisday.put("0","Off");
+    mb.append(reger.formControl.radioList(radiosOnthisday, String.valueOf(userSession.getAccount().getOnthisday()), "onthisday", "vertical"));
+    //End Radio Control
+} else {
+    mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' width=25% valign=top>");
+mb.append("<font face=arial size=-1><b>Custom Domain Name</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>If you have a domain name, point it to 63.173.68.37 and enter the domain name here.  You'll be able to access your web log through your own domain name!  Samples: www.server.com, weblog.server.com.  Don't type the http:// or the ending /.  Leave blank if you don't know what this means.  You can setup your site to respond to up to three custom domain names.  The first is the highest priority domain.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<input type='text' name='customservername' size='20' maxlength='49' value=\""+reger.core.Util.cleanForHtml(userSession.getAccount().getCustomservername())+"\">");
+mb.append("<br>");
+mb.append("<input type='text' name='customservername2' size='20' maxlength='49' value=\""+reger.core.Util.cleanForHtml(userSession.getAccount().getCustomservername2())+"\">");
+mb.append("<br>");
+mb.append("<input type='text' name='customservername3' size='20' maxlength='49' value=\""+reger.core.Util.cleanForHtml(userSession.getAccount().getCustomservername3())+"\">");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' width=25% valign=top>");
+mb.append("<font face=arial size=-1><b>Google Maps API Key</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>If you enter your own Google Maps API Key into the system you will be able to see maps of your blog entries that have GPS coordinates on them.  Click <a href='http://www.google.com/apis/maps/signup.html'>here</a> to get a key and use \"http://"+userSession.getAccount().getSiteRootUrl()+"\" as \"My Web Site Url:\" ");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<input type='text' name='googlemapsapikey' size='20' maxlength='255' value=\""+reger.core.Util.cleanForHtml(userSession.getAccount().getGooglemapsapikey())+"\">");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<input type='submit'' value='Save Settings'>");
+mb.append("</td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("&nbsp;");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</form>");
+
+mb.append("</table>");
+mb.append("</td></tr></table>");
+mb.append("<!-- Body Table End -->");
+mb.append("</center>");
+
+mb.append("<br><br>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

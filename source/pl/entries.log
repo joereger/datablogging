@@ -1,0 +1,168 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.core.db.Db,
+                 reger.core.Util" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.title = "Entries";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "plentries";
+pageProps.aclObjectName = "PLADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Start PLID-choosing SQL
+String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
+if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
+    plidSql = " (pl.plid>'-1') ";
+}
+//End PLID-choosing SQL
+
+mb.append("<style type=text/css>");
+mb.append("<--");
+mb.append(".acct:link {color:#0000ff; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:active {color:#0000ff; text-decoration:underline; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:visited {color:#0000ff; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acct {color:#000000; text-decoration:none; font-size: 11px; font-family: \"Arial\", Arial, sans-serif;}");
+mb.append(".acctbig:link {color:#0000ff; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:active {color:#0000ff; text-decoration:underline; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:visited {color:#0000ff; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig:hover {color: #ff0000; text-decoration:underline; background-color: #cccccc; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctbig {color:#000000; text-decoration:none; font-size: 12px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:link {color:#0000ff; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:active {color:#0000ff; text-decoration:underline; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:visited {color:#0000ff; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall:hover {color: #000000; text-decoration:underline; background-color: #e6e6e6; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append(".acctsmall {color:#000000; text-decoration:none; font-size: 8px; font-family: \"Arial\", Arial, sans-serif}");
+mb.append("-->");
+mb.append("<style></style>");
+
+
+
+
+
+
+//Dropdown
+mb.append("<form action=entries.log method=get>");
+mb.append("<select name=eventtypeid>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstEventtypes= Db.RunSQL("SELECT DISTINCT megalogtype.eventtypeid, megalogtype.megalogname FROM megalogtype, pleventtypeid, pl WHERE pl.plid=pleventtypeid.plid AND megalogtype.eventtypeid=pleventtypeid.eventtypeid AND " + plidSql);
+//-----------------------------------
+//-----------------------------------
+if (rstEventtypes!=null && rstEventtypes.length>0){
+	for(int i=0; i<rstEventtypes.length; i++){
+	    String tmp = "";
+	    if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid")) && request.getParameter("eventtypeid").equals(rstEventtypes[i][0])){
+            tmp = " selected";
+        }
+        mb.append("<option value='"+rstEventtypes[i][0]+"' "+tmp+">"+rstEventtypes[i][1]+"</option>");
+	}
+}
+mb.append("</select>");
+mb.append("<input type=submit value=go>");
+mb.append("</form>");
+
+
+
+
+//String selectSql = "SELECT accountid, a.servername, createdate, a.plid, pl.plname, (SELECT count(*) FROM event WHERE event.accountid=a.accountid), (SELECT count(*) FROM megalog WHERE megalog.accountid=a.accountid) ";
+String selectSql = "SELECT eventid, event.eventtypeid, event.createdate, event.date, title, comments, account.accountid, event.logid, megalog.name, account.accounturl";
+String countSelectSql = "SELECT count(*) ";
+String fromSql = " FROM event, account, megalog ";
+String orderbySql = " ORDER BY event.createdate DESC ";
+String whereSql = " WHERE event.accountid=account.accountid AND event.logid=megalog.logid";
+if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+    whereSql = whereSql + " AND megalog.eventtypeid='"+request.getParameter("eventtypeid")+"'";
+}
+String sql = selectSql + fromSql + whereSql + orderbySql;
+String countSql = countSelectSql + fromSql + whereSql + orderbySql;
+
+
+
+
+//reger.core.Util.logtodb("accounts.log: " + countSql);
+//Get a count of records
+int totalrecords = 0;
+//-----------------------------------
+//-----------------------------------
+String[][] rstCount= Db.RunSQL(countSql);
+//-----------------------------------
+//-----------------------------------
+if (rstCount!=null && rstCount.length>0 && Util.isinteger(rstCount[0][0])){
+	totalrecords=Integer.parseInt(rstCount[0][0]);
+}
+
+//Do the paging
+int currentpage=1;
+if (request.getParameter("currentpage")!=null && Util.isinteger(request.getParameter("currentpage"))){
+    currentpage=Integer.parseInt(request.getParameter("currentpage"));
+}
+int perpage = 100;
+mb.append(reger.pagingLinkPrint.getHtml(totalrecords, currentpage, perpage, request));
+//Limit vars
+int limitMin = (currentpage * perpage) - perpage;
+int limitMax = perpage;
+sql = sql + " LIMIT "+ limitMin +","+ limitMax;
+
+//Start the page display
+mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Create Date</td>");
+mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Log Name</td>");
+mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Title</td>");
+mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Comments</td>");
+mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Site</td>");
+mb.append("</tr>");
+
+//reger.core.Util.logtodb("accounts.log: " + sql);
+//-----------------------------------
+//-----------------------------------
+String[][] rstAccounts= Db.RunSQL(sql);
+//-----------------------------------
+//-----------------------------------
+if (rstAccounts!=null && rstAccounts.length>0){
+	for(int i=0; i<rstAccounts.length; i++){
+
+	    mb.append("<tr>");
+	    Calendar tmpCal = reger.core.TimeUtils.dbstringtocalendar(rstAccounts[i][2]);
+	    //Calendar tmpCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(tmp1Cal, tmp1Cal.getTimeZone().getID(), "GMT");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct nowrap>"+reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.convertFromOneTimeZoneToAnother(reger.core.TimeUtils.dbstringtocalendar(rstAccounts[i][2]), "GMT", "EST"))+"<br>"+reger.core.TimeUtils.agoText(tmpCal)+"</td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][8]+"</td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><b>"+rstAccounts[i][4]+"</b></td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][5]+"</td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct><a href='accountdetail.log?accountid="+rstAccounts[i][6]+"'>"+rstAccounts[i][9]+"</a></td>");
+        mb.append("</tr>");
+
+	}
+}
+
+mb.append("</table>");
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>
