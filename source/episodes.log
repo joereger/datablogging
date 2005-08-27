@@ -1,0 +1,66 @@
+<%@ page import="reger.SideColumn,
+                 reger.core.db.Db,
+                 java.util.Vector,
+                 reger.mega.Field,
+                 reger.mega.FieldType,
+                 reger.search.SearchUI,
+                 reger.search.SearchUIFlowAdvSearch,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICLOGSECTION;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<font face=arial size=+1 class=largefont>");
+mb.append("Episodes:");
+mb.append("</font>");
+mb.append("<br><br>");
+mb.append("<font face=arial size=-1 class=mediumfont>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstEpisode= Db.RunSQL("SELECT DISTINCT(episode.episodeid) FROM episode, event, megalog, eventtoepisode WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.eventid=eventtoepisode.eventid AND eventtoepisode.episodeid=episode.episodeid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND event.logid=megalog.logid AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + " ORDER BY episode.episodeid DESC");
+//-----------------------------------
+//-----------------------------------
+if (rstEpisode!=null && rstEpisode.length>0){
+    for(int i=0; i<rstEpisode.length; i++){
+        reger.episodes.Episode episode = new reger.episodes.Episode(Integer.parseInt(rstEpisode[i][0]), userSession.getAccountuser());
+        mb.append(reger.episodes.EpisodeRender.getHtml(episode, userSession.getAccount(), false, ""));
+        mb.append("<br><br>");
+    }
+}
+
+
+
+mb.append("<br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+%>
+
+<%@ include file="globalfooter.jsp" %>
+

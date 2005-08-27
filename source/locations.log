@@ -1,0 +1,272 @@
+<%@ page import="reger.LocationRenderHtml,
+                 reger.Location"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired=false;
+pageProps.isEventidRequired=false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICMISC;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//@todo Locations.log not working
+
+//Parse the incoming locationid
+int locationid=0;
+Location locSpecified = null;
+if (request.getParameter("locationid")!=null && !request.getParameter("locationid").equals("") && reger.core.Util.isinteger(request.getParameter("locationid"))){
+    locationid=Integer.parseInt(request.getParameter("locationid"));
+    //@todo Make sure user can view this location
+    locSpecified = new Location(locationid);
+}
+
+
+
+mb.append("<font face=arial size=+1 class=largefont>");
+if (locationid>0){
+    mb.append(locSpecified.getLocationname());
+} else {
+    mb.append("All Locations");
+}
+mb.append("</font>");
+if (locationid>0){
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<a href='locations-detail.log?locationid="+locationid+"'>");
+    mb.append("List Entries for This Location");
+    mb.append("</a>");
+}
+mb.append("</font>");
+
+
+
+
+//Start New Google Map API
+boolean displayMap = false;
+Location[] locs = Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());
+for (int i = 0; i < locs.length; i++) {
+    if (locs[i].hasGpsCoordinates()){
+        displayMap = true;
+    }
+}
+StringBuffer script = new StringBuffer();
+if (displayMap && !userSession.getAccount().getGooglemapsapikey().equals("")){
+
+
+    //Some vars
+    double maxLat = 0;
+    double minLat = 0;
+    double maxLon = 0;
+    double minLon = 0;
+
+
+
+     StringBuffer markers = new StringBuffer();
+     if (userSession!=null){
+        Location[] locations = Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());
+        for (int i = 0; i < locations.length; i++) {
+            Location loc = locations[i];
+            reger.core.Util.debug(3, "locations.log<br>location=" + loc.getLocationname() + "<br>lat=" + loc.getLatitude() + "<br>lon=" + loc.getLongitude());
+            if (locationid==0 || locationid==loc.getLocationid()){
+                if (loc.getLatitude()>0 || loc.getLongitude()>0){
+
+                    //Max/mins
+                    if (loc.getLatitude()>maxLat || maxLat==0){
+                        maxLat = loc.getLatitude();
+                    }
+                    if (loc.getLatitude()<minLat || minLat==0){
+                        minLat = loc.getLatitude();
+                    }
+                    if (loc.getLongitude()>maxLon || maxLon==0){
+                        maxLon = loc.getLongitude();
+                    }
+                    if (loc.getLongitude()<minLon || minLon==0){
+                        minLon = loc.getLongitude();
+                    }
+                    reger.core.Util.debug(3, "locations.log<br>loc.getLocationname()=" + loc.getLocationname());
+                    reger.core.Util.debug(3, "locations.log<br>loc.getLatitude()=" + loc.getLatitude() + "<br>loc.getLongitude()=" + loc.getLongitude());
+                    reger.core.Util.debug(3, "locations.log<br>maxLat=" + maxLat + "<br>minLat=" + minLat + "<br>maxLon=" + maxLon + "<br>minLon=" + minLon);
+
+                    //Link to locations-detail.log?locationid="+loc.getLocationid())
+
+                    markers.append("    map.addOverlay(createMarker("+loc.getLongitude()+", "+loc.getLatitude()+", '"+reger.core.Util.cleanForjavascript(loc.getLocationname())+"', \""+loc.getLocationid()+"\"));" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+
+                }
+            }
+        }
+    }
+
+
+    //Max/mins
+    boolean useDefault = false;
+    if (maxLat==0 && minLat==0 && maxLon==0 && minLon==0){
+        maxLat = 39.201;
+        minLat = 39.201;
+        maxLon = -95.068;
+        minLon = -95.068;
+        useDefault = true;
+    }
+
+
+
+    //Center
+    double centerLat = (maxLat + minLat)/2;
+    double centerLon = (maxLon + minLon)/2;
+    reger.core.Util.debug(3, "locations.log<br>centerLat=" + centerLat + "<br>centerLon=" + centerLon);
+
+
+
+    //Span
+    double spanLat = (maxLat - minLat) + ((.1)*(maxLat-minLat));
+    double spanLon = (maxLon - minLon) + ((.1)*(maxLon-minLon));
+    if (useDefault){
+        spanLat = 30;
+        spanLon = 30;
+    }
+    if (spanLat==0 && spanLon==0){
+        if (maxLat!=0 && maxLon!=0){
+            spanLat = 2;
+            spanLon = 2;
+        }
+    }
+    reger.core.Util.debug(3, "locations.log<br>spanLat=" + spanLat + "<br>spanLon=" + spanLon);
+
+    mb.append(reger.Vars.LINEBREAKCHARFORHTML);
+    mb.append("<div id=\"map\" style=\"width: 800; height: 600px\"></div>" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+    //Standard stuff
+    script.append(reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("<script src=\"http://maps.google.com/maps?file=api&v=1&key="+userSession.getAccount().getGooglemapsapikey()+"\" type=\"text/javascript\"></script>" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("<script type=\"text/javascript\">" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    //<![CDATA[" + reger.Vars.LINEBREAKCHARFORHTML);
+
+    //Marker creation
+    script.append("function createMarker(lon, lat, locName, locId){" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    var marker = new GMarker(new GPoint(lon, lat));" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    var html = \"<b>\"+locName+\"</b><br><a href='locations-detail.log?locationid=\"+locId+\"'>View Entries from this Location</a>\";" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    GEvent.addListener(marker, \"click\", function() {marker.openInfoWindowHtml(html);});" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    return marker;" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+    //Standard stuff
+    script.append("    var map = new GMap(document.getElementById(\"map\"));" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    map.addControl(new GLargeMapControl());" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    map.addControl(new GMapTypeControl());" + reger.Vars.LINEBREAKCHARFORHTML);
+
+    //Zoom Level
+    script.append("    var span = new GSize("+spanLon+", "+spanLat+");" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    var center = new GPoint("+centerLon+", "+centerLat+");" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    var newZoom = map.spec.getLowestZoomLevel(center, span, map.viewSize);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    if (map.getZoomLevel() != newZoom) {" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("        map.centerAndZoom(center, newZoom);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    } else {" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("        map.recenterOrPanToLatLng(center);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    }" + reger.Vars.LINEBREAKCHARFORHTML);
+    //Add points
+    script.append(markers);
+
+    //Closing
+    script.append("    //]]>" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    </script>" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+}
+//End New Google Map API
+
+
+
+
+
+
+
+mb.append("<table cellpadding=0 cellspacing=10 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top align=left>");
+if (locationid>0 && 1==2){
+    mb.append("<font face=arial size=-2>");
+    mb.append(LocationRenderHtml.getSingleLocationAsHtml(locSpecified, false, ""));
+    mb.append("</font>");
+}
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+
+
+
+
+
+
+
+
+
+
+//List all locations
+mb.append("<a name=list>");
+mb.append("<font face=arial size=+2 color=#cccccc>");
+mb.append("<b>All Locations:</b>");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("<ul>");
+Location[] allLocs = Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());
+for (int i = 0; i < allLocs.length; i++) {
+    mb.append("<li>");
+    mb.append(allLocs[i].getLocationname());
+    mb.append(" (");
+    mb.append("<a href='locations-detail.log?locationid="+allLocs[i].getLocationid()+"'>");
+    mb.append("View Entries");
+    mb.append("</a>");
+    mb.append(")");
+    if (allLocs[i].hasGpsCoordinates()){
+        mb.append(" (");
+        mb.append("<a href='locations.log?locationid="+allLocs[i].getLocationid()+"'>");
+        mb.append("Map");
+        mb.append("</a>");
+        mb.append(")");
+    }
+    mb.append("</li>");
+}
+mb.append("</ul>");
+mb.append("</li>");
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append(reger.SideColumn.favorites(pageProps.logProps.logid, pageProps.logProps.megalogname));
+
+%>
+
+<%@ include file="globalfooter.jsp" %>
+
+<%
+out.print(reger.Vars.LINEBREAKCHARFORHTML);
+out.print(script.toString());
+%>
+

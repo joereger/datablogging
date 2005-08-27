@@ -1,0 +1,46 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired=false;
+pageProps.isEventidRequired=false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICMISC;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+if (userSession.getAccount().getIstimeperiodon()){
+    //Display a timeline
+    mb.append(reger.ui.BubbleBox.start("Time Periods", pageProps.pathToAppRoot));
+    reger.TimeLine tl = new reger.TimeLine(null, null, null, userSession.getAccount().getAccountid(), userSession);
+    mb.append(tl.getTimelineHtml(pageProps.pathToAppRoot, 600));
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+} else {
+    mb.append("The Time Periods feature is currently turned off for this web log.");
+}
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append(reger.SideColumn.favorites(pageProps.logProps.logid, pageProps.logProps.megalogname));
+
+%>
+
+<%@ include file="globalfooter.jsp" %>
+

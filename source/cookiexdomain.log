@@ -1,0 +1,109 @@
+<%@ page import="reger.SideColumn,
+                 java.util.ArrayList,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 java.util.ListIterator,
+                 java.util.Iterator,
+                 reger.core.db.Db"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Quick populate
+userSession.getAccount().refresh();
+
+if (pageProps.action.equals("setsupercookie")) {
+	Cookie userCookie = new Cookie("testcookie", "supercookieon");
+    userCookie.setMaxAge(60*60*24*365);
+    userCookie.setDomain("." + userSession.getPl().getServernameMinusOneHost());
+    reger.core.Util.logtodb("userSession.getPl().getServernameMinusOneHost()=" + userSession.getPl().getServernameMinusOneHost());
+    if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+        userCookie.setSecure(true);
+    }
+    userCookie.setPath("/");
+    response.addCookie(userCookie);
+	response.sendRedirect("cookiexdomain.log");
+	return;
+} else if (pageProps.action.equals("clearsupercookie")){
+	Cookie userCookie = new Cookie("testcookie", "");
+    userCookie.setMaxAge(0);
+    userCookie.setDomain("." + userSession.getPl().getServernameMinusOneHost());
+    if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+        userCookie.setSecure(true);
+    }
+    userCookie.setPath("/");
+    response.addCookie(userCookie);
+	response.sendRedirect("cookiexdomain.log");
+	return;
+}
+
+
+mb.append("<br><br>");
+
+
+mb.append("<table cellpadding=15 cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td width=40% valign=top>");
+
+//Check for the supercookie
+boolean isOn = false;
+if (reger.core.Util.getCookieValue(request.getCookies(), "testcookie", "off").equals("supercookieon")){
+    isOn = true;
+}
+
+if (isOn){
+
+	mb.append("<font face=arial size=+1>");
+	mb.append("<a href='cookiexdomain.log?action=clearsupercookie'>Clear the Testcookie!</a><br>");
+	mb.append("</font>");
+	mb.append("<font face=arial size=-1>");
+	mb.append("Cookie is currently <strong>on</strong>.");
+	mb.append("</font>");
+
+} else {
+
+    mb.append("<font face=arial size=+1>");
+    mb.append("<a href='cookiexdomain.log?action=setsupercookie'>Set the Testcookie!</a><br>");
+    mb.append("</font>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Cookie is currently <strong>off</strong>.");
+    mb.append("</font>");
+
+}
+
+mb.append("<br><br>");
+
+//Append a dissection of the request
+mb.append(reger.core.ErrorDissect.ServletUtilsdissect(request));
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

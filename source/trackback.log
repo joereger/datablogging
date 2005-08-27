@@ -1,0 +1,144 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.Util,
+                 reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired=false;
+pageProps.isEventidRequired=false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICMISC;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String errortext = "";
+
+//Eventid
+int eventid = -1;
+if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+    eventid = Integer.parseInt(request.getParameter("eventid"));
+} else {
+    errortext = errortext + "Eventid is blank. ";
+}
+
+//Url
+String url = "";
+if (request.getParameter("url")!=null && !request.getParameter("url").equals("")){
+    url = reger.core.Util.truncateString(request.getParameter("url"), 255).trim();
+} else {
+    errortext = errortext + "Url is blank. ";
+}
+
+//Title
+String title = "";
+if (request.getParameter("title")!=null && !request.getParameter("title").equals("")){
+    title = reger.core.Util.truncateString(request.getParameter("title"), 255);
+}
+
+//Excerpt
+String excerpt = "";
+if (request.getParameter("excerpt")!=null && !request.getParameter("excerpt").equals("")){
+    excerpt = reger.core.Util.truncateString(request.getParameter("excerpt"), 255);
+}
+
+//Blogname
+String blogname = "";
+if (request.getParameter("blog_name")!=null && !request.getParameter("blog_name").equals("")){
+    blogname = reger.core.Util.truncateString(request.getParameter("blog_name"), 255);
+}
+
+//Set title to url if the title is blank
+if (title.equals("")){
+    title = url;
+}
+
+//Make sure trackback is turned on for this account
+if (!userSession.getAccount().getIstrackbackon()){
+    errortext = errortext + "Trackback is not turned on for this account. ";
+}
+
+//Isapproved?
+String isapproved = "1";
+if (userSession.getAccount().getTrackbackrequiresapproval()){
+    isapproved = "0";
+}
+
+//Make sure we have what we need
+if (errortext.equals("")){
+
+    //Make sure eventid goes with this account
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstEvent= Db.RunSQL("SELECT accountid FROM event WHERE eventid='"+eventid+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstEvent!=null && rstEvent.length>0){
+    	if (Integer.parseInt(rstEvent[0][0])!=userSession.getAccount().getAccountid()){
+            errortext = errortext + "The eventid referenced does not match this account. ";
+        }
+    } else {
+        errortext = errortext + "The eventid referenced does not match this account. ";
+    }
+
+    //Make sure this URL isn't already listed for this eventid
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstExisting= Db.RunSQL("SELECT trackbackid FROM trackback WHERE eventid='"+eventid+"' AND isoutbound='0' AND url='"+reger.core.Util.cleanForSQL(url)+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstExisting!=null && rstExisting.length>0){
+    	errortext = errortext + "This entry has already been pinged with the URL you just sent. ";
+    }
+
+    if (errortext.equals("")){
+        //Add the actual trackback entry
+        //-----------------------------------
+        //-----------------------------------
+        int identity = Db.RunSQLInsert("INSERT INTO trackback(eventid, isoutbound, url, blogname, posttitle, excerpt, datetime, isapproved) VALUES('"+eventid+"', '0', '"+Util.cleanForSQL(url)+"', '"+Util.cleanForSQL(blogname)+"', '"+Util.cleanForSQL(title)+"', '"+Util.cleanForSQL(excerpt)+"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+isapproved+"')");
+        //-----------------------------------
+        //-----------------------------------
+    }
+}
+
+
+if (errortext.equals("")){
+    //Successful ping
+    mb.append("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");
+    mb.append("<response>");
+    mb.append("<error>0</error>");
+    mb.append("</response>");
+} else {
+    //Unsuccessful ping
+    mb.append("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");
+    mb.append("<response>");
+    mb.append("<error>1</error>");
+    mb.append("<message>"+errortext+"</message>");
+    mb.append("</response>");
+}
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append(reger.SideColumn.favorites(pageProps.logProps.logid, pageProps.logProps.megalogname));
+
+%>
+
+<%//@ include file="globalfooter.jsp" %>
+

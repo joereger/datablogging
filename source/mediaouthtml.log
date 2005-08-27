@@ -1,0 +1,166 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+<%@ page import="java.io.*,
+                 reger.core.db.Db,
+                 reger.Media.MediaType,
+                 reger.Media.MediaTypeFactory,
+                 reger.Help" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//While I'm not passing the stringbuffer to the template engine, I can use it anyways and just print it at the end
+//The challenge here is to output the correct html for the media type.
+//For example, images need <img> tags, Quicktime files need <embed> tags, etc.
+//My approach is going to be to first get the file extension and then use an if/then to determine which html to output.
+
+int imageid=-1;
+String imagename="";
+String description="";
+//Set to false to be safe
+boolean showimage=false;
+
+if (request.getParameter("isProfileImage")==null || !request.getParameter("isProfileImage").equals("true")){
+    //Make sure the image exists in the database and make sure the user has access to it
+    if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))) {
+        //Set the imageid
+        imageid=Integer.parseInt(request.getParameter("imageid"));
+
+        //Get the logid and name of the image
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstImageData= Db.RunSQL("SELECT image, logid, image.description, event.eventid FROM image, event WHERE image.imageid='"+request.getParameter("imageid")+"' AND image.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstImageData!=null && rstImageData.length>0){
+            //Set the logid
+            pageProps.logProps.logid=Integer.parseInt(rstImageData[0][1]);
+            //Get the image name
+            imagename=rstImageData[0][0];
+            //Get the description
+            description=rstImageData[0][2];
+            //Check to see if the user can view this logid
+            showimage=userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid);
+            //Now, check for the entrykey
+            if (!showimage){
+                if (request.getParameter("entrykey")!=null){
+                    if (reger.Entry.checkEntryKey(request.getParameter("entrykey"), Integer.parseInt(rstImageData[0][3]))){
+                        showimage = true;
+                    }
+                }
+            }
+        }
+    }
+} else {
+    //It's a profile image
+    if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))) {
+        //Set the imageid
+        imageid=Integer.parseInt(request.getParameter("imageid"));
+
+        //Must make sure however... otherwise anybody can get to all images just by typing isprofileimage=true into querystring
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstProf= Db.RunSQL("SELECT imageid, eventid, accountuserid, image, description FROM image WHERE imageid='"+request.getParameter("imageid")+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstProf!=null && rstProf.length>0){
+            if (rstProf[0][1].equals("0") && !rstProf[0][2].equals("0")){
+                //Get the filename
+                imagename = rstProf[0][3];
+                //Get the description
+                description=rstProf[0][4];
+                //I now know that this is an image without an associated eventid (a profile image) and it has an accountuserid
+                showimage = true;
+            }
+        }
+    }
+}
+
+//Do a page header, etc
+mb.append("<html>");
+mb.append("<head>");
+mb.append("<title>Viewer</title>");
+mb.append("</head>");
+mb.append("<body bgcolor=#000000 link='#0000ff' vlink='#000000' text='#000000' LEFTMARGIN='0' TOPMARGIN='0' MARGINWIDTH='0' MARGINHEIGHT='0'><center>");
+mb.append("<table width=100% height=100% border=0><tr height=100% ><td valign=center align=center>");
+
+
+
+
+//Output the html that calls the image.
+if (showimage) {
+    //Get the image file extension
+    String extension = reger.core.Util.getFilenameExtension(imagename);
+    MediaType mt = MediaTypeFactory.getHandlerByFileExtension(extension);
+    mb.append(mt.getMediaOutHtml(request, userSession));
+    if (mt instanceof reger.Media.UnknownFileType){
+        //The file is of an unknown type so we're just going to redirect to the file directly so that the user can decide what to do with it.
+        response.sendRedirect("mediaout.log?imageid="+request.getParameter("imageid")+"&isProfileImage="+request.getParameter("isProfileImage"));
+    }
+    //Add Keywords
+    if (userSession.getAccountuser().isInAclgroup("SiteOwner", userSession.getAccount().getAccountid())){
+        //Start dHtml Help Scripts
+        mb.append("<!-- Begin dHTML Help Scripts -->");
+        mb.append("<DIV id=\"TipLayer\" style=\"visibility:hidden;position:absolute;z-index:1000;top:-100\"></DIV>");
+        mb.append("<SCRIPT language=\"JavaScript1.2\" src=\""+pageProps.pathToAppRoot+"js/dhtmlhelp/main.js\"type=\"text/javascript\"></SCRIPT>");
+        mb.append("<SCRIPT language=\"JavaScript1.2\" src=\""+pageProps.pathToAppRoot+"js/dhtmlhelp/style.js\" type=\"text/javascript\"></SCRIPT>");
+        mb.append("<!-- End dHTML Help Scripts -->");
+        //End dHtml Help Scripts
+        if (pageProps.action.equals("updatekeywords")){
+            reger.ImageTag.addMultipleTagsToImage(request.getParameter("imagetags"), imageid);
+        }
+        mb.append("");
+        mb.append("<form action=mediaouthtml.log method=post>");
+        mb.append("<input type=hidden name=action value=updatekeywords>");
+        mb.append("<input type=hidden name=imageid value='"+imageid+"'>");
+        String keywords = reger.ImageTag.getStringOfAllTagsForImage(imageid);
+        String helpImagetags = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.  Create multi-word tags with quotes (example: car \"blue interior\" oldsmobile.)", false, pageProps.pathToAppRoot);
+        mb.append("<font face=arial size=-2 color=#cccccc>Update Keyword Tags "+helpImagetags+":</font><br>");
+        mb.append("<input type=text name=imagetags size=35 maxlength=254 value=\""+reger.core.Util.cleanForHtml(keywords)+"\" style=\"font-size: 10px;\">");
+        mb.append("<br>");
+        mb.append("<input type=submit value='Update Keyword Tags'>");
+        mb.append("</form>");
+    }
+
+} else {
+    //We're not showing the image... do something cool
+    mb.append("<font face=arial size=-1 color=#ffffff>Sorry, that file can not be displayed at this time.</font>");
+}
+
+//Basic footer
+mb.append("</td></tr></table>");
+
+
+mb.append("</center>");
+mb.append("</body>");
+mb.append("</html>");
+
+//Output the page
+out.print(mb);
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+

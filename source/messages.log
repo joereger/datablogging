@@ -1,0 +1,89 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired=false;
+pageProps.isEventidRequired=false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICMISC;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("<form action=messages.log method=get>");
+
+mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top align=center>");
+
+
+mb.append("<select name='logid'>");
+//Do the default
+mb.append("<option value=''>>All Logs<</option>");
+
+//Go get the logs that this user can view
+//-----------------------------------
+//-----------------------------------
+String[][] rstLogs= Db.RunSQL("SELECT DISTINCT megalog.logid, megalog.name FROM megalog WHERE megalog.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+" ORDER BY megalog.name ASC");
+//-----------------------------------
+//-----------------------------------
+if (rstLogs!=null && rstLogs.length>0){
+    for(int i=0; i<rstLogs.length; i++){
+        mb.append("<option value='"+ rstLogs[i][0] +"' ");
+        if (pageProps.logProps.logid==Integer.parseInt(rstLogs[i][0])) {
+            //Turn this on in the dropdown
+            mb.append("selected");
+        }
+        mb.append(">");
+        mb.append("Messages from " + reger.core.Util.cleanForHtml(rstLogs[i][1]));
+        mb.append("</option>");
+    }
+}
+mb.append("</select>");
+
+mb.append("<input type=submit value=Go>");
+
+mb.append("</form>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+//Currentpage
+int currentpage=1;
+if (request.getParameter("currentpage")!=null && reger.core.Util.isinteger(request.getParameter("currentpage"))){
+    currentpage=Integer.parseInt(request.getParameter("currentpage"));
+}
+
+
+//Display messages
+mb.append(reger.MessageListHtml.tableStart());
+mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), -1, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()), "messages.log", pageProps.action, pageProps.logProps.logid, currentpage, request, false, response));
+mb.append(reger.MessageListHtml.tableEnd());
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append(reger.SideColumn.favorites(pageProps.logProps.logid, pageProps.logProps.megalogname));
+
+%>
+
+<%@ include file="globalfooter.jsp" %>
+

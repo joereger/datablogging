@@ -1,0 +1,447 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEDONTRECORD;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%
+//Done for previews
+if (request.getParameter("ispreview")!=null && request.getParameter("ispreview").equals("1")){
+    pageProps.siteSection=pageProps.MARKETINGSITE;
+}
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%@ page import="java.io.IOException,
+                 reger.core.db.Db,
+                 java.awt.*,
+                 java.text.DecimalFormat,
+                 reger.mega.FieldType,
+                 java.awt.image.BufferedImage" %>
+<%@ page import="java.io.OutputStream" %>
+<%@ page import="javax.servlet.ServletException" %>
+<%@ page import="javax.servlet.http.HttpServlet" %>
+<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="javax.servlet.http.HttpServletResponse" %>
+<%@ page import="org.jfree.chart.*" %>
+<%@ page import="org.jfree.chart.plot.*" %>
+<%@ page import="org.jfree.chart.axis.*" %>
+<%@ page import="org.jfree.data.*" %>
+<%@ page import="org.jfree.data.category.*" %>
+<%@ page import="org.jfree.data.general.*" %>
+<%@ page import="org.jfree.data.xy.*" %>
+<%@ page import="org.jfree.data.time.*" %>
+<%@ page import="org.jfree.data.Range.*" %>
+<%@ page import="org.jfree.chart.renderer.*" %>
+<%@ page import="org.jfree.chart.renderer.xy.*" %>
+<%@ page import="org.jfree.chart.labels.*" %>
+
+
+
+<%
+//@todo Verify that there is ample password protection on charts for private logs, draft entries, etc.
+
+
+
+
+//Create our output stream to the browser
+OutputStream outStream = response.getOutputStream();
+
+try {
+    //Set up the megafieldid's and other url values
+    String xMegafieldChoice = "";
+    int xMegafieldid=FieldType.XAXISDATETIME;
+    int xLogid = 0;
+    int xEventtypeid = 0;
+    if (request.getParameter("xMegafieldChoice")!=null){
+        xMegafieldChoice=request.getParameter("xMegafieldChoice");
+    }
+    if(!xMegafieldChoice.equals("")){
+        //Break apart the xMegafieldChoice which is of the format <fieldid>_<logid>_<eventtypeid>
+        if (reger.core.Util.isinteger(xMegafieldChoice.split("_")[0])){
+            xMegafieldid = Integer.parseInt(xMegafieldChoice.split("_")[0]);
+        }
+        if (reger.core.Util.isinteger(xMegafieldChoice.split("_")[1])){
+            xLogid = Integer.parseInt(xMegafieldChoice.split("_")[1]);
+        }
+        if (reger.core.Util.isinteger(xMegafieldChoice.split("_")[2])){
+            xEventtypeid = Integer.parseInt(xMegafieldChoice.split("_")[2]);
+        }
+    }
+
+
+    String [] yMegafieldChoice = new String[0];
+    int[] yMegafieldid = new int[0];
+    int[] yLogid = new int[0];
+    int[] yEventtypeid = new int[0];
+    if (request.getParameter("yMegafieldChoice")!=null){
+        yMegafieldChoice=request.getParameterValues("yMegafieldChoice");
+    }
+    if (yMegafieldChoice.length>0){
+        //Break apart the yMegafieldChoice which is of the format <fieldid>_<logid>_<eventtypeid>
+        for (int i = 0; i < yMegafieldChoice.length; i++) {
+            if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[0])){
+                yMegafieldid = reger.core.Util.addToIntArray(yMegafieldid, Integer.parseInt(yMegafieldChoice[i].split("_")[0]));
+            }
+            if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[1])){
+                yLogid = reger.core.Util.addToIntArray(yLogid, Integer.parseInt(yMegafieldChoice[i].split("_")[1]));
+            }
+            if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[2])){
+                yEventtypeid = reger.core.Util.addToIntArray(yEventtypeid, Integer.parseInt(yMegafieldChoice[i].split("_")[0]));
+            }
+        }
+    } else {
+        yMegafieldid = new int[1];
+        yMegafieldid[0] = reger.mega.FieldType.YAXISCOUNT;
+        yLogid = new int[1];
+        yLogid[0] = 0;
+        yEventtypeid = new int[1];
+        yEventtypeid[0] = 0;
+    }
+
+    int yaxiswhattodo=-1;
+    if (request.getParameter("yaxiswhattodo")!=null && reger.core.Util.isinteger(request.getParameter("yaxiswhattodo"))){
+        yaxiswhattodo=Integer.parseInt(request.getParameter("yaxiswhattodo"));
+    }
+    int chartsize=-1;
+    if (request.getParameter("chartsize")!=null && reger.core.Util.isinteger(request.getParameter("chartsize"))){
+        chartsize=Integer.parseInt(request.getParameter("chartsize"));
+    }
+    int daterange=-1;
+    if (request.getParameter("daterange")!=null && reger.core.Util.isinteger(request.getParameter("daterange"))){
+        daterange=Integer.parseInt(request.getParameter("daterange"));
+    }
+    int lastxdays=1;
+    if (request.getParameter("lastxdays")!=null && reger.core.Util.isinteger(request.getParameter("lastxdays"))){
+        lastxdays=Integer.parseInt(request.getParameter("lastxdays"));
+    }
+    int lastxweeks=1;
+    if (request.getParameter("lastxweeks")!=null && reger.core.Util.isinteger(request.getParameter("lastxweeks"))){
+        lastxweeks=Integer.parseInt(request.getParameter("lastxweeks"));
+    }
+    int lastxmonths=1;
+    if (request.getParameter("lastxmonths")!=null && reger.core.Util.isinteger(request.getParameter("lastxmonths"))){
+        lastxmonths=Integer.parseInt(request.getParameter("lastxmonths"));
+    }
+    int lastxyears=1;
+    if (request.getParameter("lastxyears")!=null && reger.core.Util.isinteger(request.getParameter("lastxyears"))){
+        lastxyears=Integer.parseInt(request.getParameter("lastxyears"));
+    }
+    int daterangefromyyyy=1;
+    if (request.getParameter("daterangefromyyyy")!=null && reger.core.Util.isinteger(request.getParameter("daterangefromyyyy"))){
+        daterangefromyyyy=Integer.parseInt(request.getParameter("daterangefromyyyy"));
+    }
+    int daterangefrommm=1;
+    if (request.getParameter("daterangefrommm")!=null && reger.core.Util.isinteger(request.getParameter("daterangefrommm"))){
+        daterangefrommm=Integer.parseInt(request.getParameter("daterangefrommm"));
+    }
+    int daterangefromdd=1;
+    if (request.getParameter("daterangefromdd")!=null && reger.core.Util.isinteger(request.getParameter("daterangefromdd"))){
+        daterangefromdd=Integer.parseInt(request.getParameter("daterangefromdd"));
+    }
+    int daterangetoyyyy=1;
+    if (request.getParameter("daterangetoyyyy")!=null && reger.core.Util.isinteger(request.getParameter("daterangetoyyyy"))){
+        daterangetoyyyy=Integer.parseInt(request.getParameter("daterangetoyyyy"));
+    }
+    int daterangetomm=1;
+    if (request.getParameter("daterangetomm")!=null && reger.core.Util.isinteger(request.getParameter("daterangetomm"))){
+        daterangetomm=Integer.parseInt(request.getParameter("daterangetomm"));
+    }
+    int daterangetodd=1;
+    if (request.getParameter("daterangetodd")!=null && reger.core.Util.isinteger(request.getParameter("daterangetodd"))){
+        daterangetodd=Integer.parseInt(request.getParameter("daterangetodd"));
+    }
+    int charttype=1;
+    if (request.getParameter("charttype")!=null && reger.core.Util.isinteger(request.getParameter("charttype"))){
+        charttype=Integer.parseInt(request.getParameter("charttype"));
+    }
+    int daterangesavedsearchid=0;
+    if (request.getParameter("daterangesavedsearchid")!=null && reger.core.Util.isinteger(request.getParameter("daterangesavedsearchid"))){
+        daterangesavedsearchid=Integer.parseInt(request.getParameter("daterangesavedsearchid"));
+    }
+
+
+    //Determine whether or not this is a preview of a chart.
+    boolean ispreview = false;
+    if (request.getParameter("ispreview")!=null && request.getParameter("ispreview").equals("1")){
+        ispreview=true;
+    }
+
+    //Setup a megachart var before the loop
+    reger.mega.MegaChartSeries megaChartSeries=new reger.mega.MegaChartSeries();
+    //Setup some data series vars before the loop
+    String seriesname = "";
+    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    XYSeries xydataset = new XYSeries("");
+    TimeSeries timedata = new TimeSeries("", Millisecond.class);
+    DefaultPieDataset piedata = new DefaultPieDataset();
+    DefaultTableXYDataset stackedareadata = new DefaultTableXYDataset();
+    //Setup some series collection vars before the loop
+    XYSeriesCollection xyseries = new XYSeriesCollection();
+    TimeSeriesCollection timedataseries = new TimeSeriesCollection();
+    //Setup the title vars
+    String xAxisTitle="";
+    String yAxisTitle="";
+
+    //Go get the entries that relate to this graph
+    reger.mega.MegaChartEntryChooser entryChooser = new reger.mega.MegaChartEntryChooser(userSession, xLogid, yLogid, daterange, daterangesavedsearchid, lastxdays, lastxweeks, lastxmonths, lastxyears, daterangetoyyyy, daterangetomm, daterangetodd, daterangefromyyyy, daterangefrommm, daterangefromdd);
+    entryChooser.populate();
+
+    //Loop on the incoming yMegafieldid's
+    for(int j=0; j<yMegafieldid.length; j++){
+        //Create a reger chart object and get some data
+        if (!ispreview){
+            megaChartSeries=new reger.mega.MegaChartSeries(userSession, xMegafieldid, xLogid, entryChooser, yMegafieldid[j], yLogid[j], yaxiswhattodo, chartsize, daterange, lastxdays, lastxweeks, lastxmonths, lastxyears, daterangefromyyyy, daterangefrommm, daterangefromdd, daterangetoyyyy, daterangetomm, daterangetodd, daterangesavedsearchid);
+        } else {
+            megaChartSeries=new reger.mega.MegaChartPreviewSeries(xMegafieldid, yMegafieldid[j], userSession);
+        }
+        //Set the titles
+        xAxisTitle=megaChartSeries.xAxisTitle;
+        seriesname = megaChartSeries.yAxisTitle;
+
+        //Put the data into a jFreeChart series---------------------------
+        //Create the dataset
+        //Multiple are created but only one is used
+        xydataset = new XYSeries(megaChartSeries.yAxisTitle, false, false);
+        timedata = new TimeSeries(megaChartSeries.yAxisTitle, Millisecond.class);
+        piedata = new DefaultPieDataset();
+
+        if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
+            for(int i=0; i<megaChartSeries.cleanData.length; i++){
+
+                //Y data must always be numeric
+                if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
+                    try{
+                        //Base dataset.  Will accept any x axis value
+                        dataset.addValue(Double.parseDouble(megaChartSeries.cleanData[i][2]), seriesname, megaChartSeries.cleanData[i][1]);
+
+                        //Pie data. Will accept any x axis value
+                        piedata.setValue(megaChartSeries.cleanData[i][1], Double.parseDouble(megaChartSeries.cleanData[i][2]));
+
+                        //Date data.  Will only accept date data and year must be between 1900 and 9999
+                        if (megaChartSeries.xMegafieldid==FieldType.XAXISDATETIME) {
+                            try{
+                                java.util.Date tmpDate = new java.util.Date(Long.parseLong(megaChartSeries.cleanData[i][1]));
+                                timedata.add(new Millisecond(tmpDate), Double.parseDouble(megaChartSeries.cleanData[i][2]));
+                            } catch (Exception e){
+                                //Here's a situation where the try/catch thing works.  Otherwise
+                                //I'd have to do a date comparison for every single data point.
+                                //Which is a lot of overhead in Java's slow date classes.  Instead,
+                                //I'm relying on the Millisecond's built-in check to see if the date is
+                                //between 1900 and 9999.  Not as elegant as I'd like, but it works.
+                                reger.core.Util.debug(5, e);
+                            }
+                        }
+
+                        //XY Data.  Both x,y must be numeric
+                        if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][1])){
+                            xydataset.add(Double.parseDouble(megaChartSeries.cleanData[i][1]), Double.parseDouble(megaChartSeries.cleanData[i][2]));
+                        }
+
+                    } catch (Exception e) {
+                        //Do not rely on this catch to fix bugs... the reason it's here
+                        //is to help the graphs be more robust.  Instead of crashing the whole
+                        //graph, only this data point won't be added.  Solve errors caught here
+                        //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
+                        reger.core.Util.errorsave(e, "graph.log - Error Adding Data to jFreeChart Data Set.");
+                    }
+
+                }
+
+            }
+        }
+
+        //Add to chart series------------------------
+        xyseries.addSeries(xydataset);
+        stackedareadata.addSeries(xydataset);
+        if (megaChartSeries.xMegafieldid==FieldType.XAXISDATETIME) {
+            timedataseries.addSeries(timedata);
+        }
+
+    }//End looping on yMegafieldid's
+
+    //Create the title, etc
+    //@todo Properly set the chart title.
+    String chartTitle="";
+
+    //Create chart instance and hand the series data to it-------------------
+    //The order of the next few statements is important.  For example, an XAXISDATETIME needs to override a user's choice of CHARTTYPEPIE.
+    //reger.core.Util.logtodb("xMegafieldid:" + megaChart.xMegafieldid + " - reger.Vars.XAXISDATETIME:" + reger.Vars.XAXISDATETIME );
+    //reger.core.Util.logtodb("xMegadatatype:" + megaChart.xMegadatatype + " - reger.mega.DataTypeString.DATATYPEID:" + reger.mega.DataTypeString.DATATYPEID );
+    JFreeChart chart = ChartFactory.createXYLineChart(chartTitle, xAxisTitle, yAxisTitle, xyseries, PlotOrientation.VERTICAL, true, true, false);
+
+
+    if (megaChartSeries.xMegadatatype==reger.mega.DataTypeString.DATATYPEID || charttype==reger.Vars.CHARTTYPE3DBAR || charttype==reger.Vars.CHARTTYPEHORIZONTALBAR || charttype==reger.Vars.CHARTTYPEHORIZONTAL3DBAR || charttype==reger.Vars.CHARTTYPEBAR  || charttype==reger.Vars.CHARTTYPESTACKEDBARCHART  || charttype==reger.Vars.CHARTTYPESTACKEDBARCHART3D || charttype==reger.Vars.CHARTTYPESTACKEDBARCHARTHORIZONTAL || charttype==reger.Vars.CHARTTYPESTACKEDBARCHART3DHORIZONTAL) {
+        if (charttype==reger.Vars.CHARTTYPE3DBAR) {
+            chart = ChartFactory.createBarChart3D(chartTitle, xAxisTitle, yAxisTitle, dataset, PlotOrientation.VERTICAL, true, true, false);
+        } else if (charttype==reger.Vars.CHARTTYPEHORIZONTALBAR) {
+            chart = ChartFactory.createBarChart(chartTitle, xAxisTitle, yAxisTitle, dataset, PlotOrientation.HORIZONTAL, true, true, false);
+        } else if (charttype==reger.Vars.CHARTTYPEHORIZONTAL3DBAR) {
+            chart = ChartFactory.createBarChart3D(chartTitle, xAxisTitle, yAxisTitle, dataset, PlotOrientation.HORIZONTAL, true, true, false);
+        } else if (charttype==reger.Vars.CHARTTYPESTACKEDBARCHART) {
+            chart = ChartFactory.createStackedBarChart(chartTitle, xAxisTitle, yAxisTitle, dataset, PlotOrientation.VERTICAL, true, true, false);
+        } else if (charttype==reger.Vars.CHARTTYPESTACKEDBARCHART3D) {
+            chart = ChartFactory.createStackedBarChart3D(chartTitle, xAxisTitle, yAxisTitle, dataset, PlotOrientation.VERTICAL, true, true, false);
+        } else if (charttype==reger.Vars.CHARTTYPESTACKEDBARCHARTHORIZONTAL) {
+            chart = ChartFactory.createStackedBarChart(chartTitle, xAxisTitle, yAxisTitle, dataset, PlotOrientation.HORIZONTAL, true, true, false);
+        } else if (charttype==reger.Vars.CHARTTYPESTACKEDBARCHART3DHORIZONTAL) {
+            chart = ChartFactory.createStackedBarChart3D(chartTitle, xAxisTitle, yAxisTitle, dataset, PlotOrientation.HORIZONTAL, true, true, false);
+        } else {
+            chart = ChartFactory.createBarChart(chartTitle, xAxisTitle, yAxisTitle, dataset, PlotOrientation.VERTICAL, true, true, false);
+        }
+        //Turn on labels
+        //CategoryPlot plot = chart.getCategoryPlot();
+        //CategoryItemRenderer renderer = plot.getRenderer();
+        //CategoryLabelGenerator generator = new StandardCategoryLabelGenerator("{2}", new DecimalFormat("0.00"));
+        //sicsrenderer.setLabelGenerator(generator);
+    }
+    if (charttype==reger.Vars.CHARTTYPEPIE){
+       chart = ChartFactory.createPieChart(chartTitle, piedata, true, true, false);
+    }
+    if (charttype==reger.Vars.CHARTTYPE3DPIE){
+       chart = ChartFactory.createPieChart3D(chartTitle, piedata, true, true, false);
+    }
+    if (charttype==reger.Vars.CHARTTYPESCATTERPLOT && megaChartSeries.xMegadatatype!=reger.mega.DataTypeString.DATATYPEID){
+       chart = ChartFactory.createScatterPlot(chartTitle, xAxisTitle, yAxisTitle, xyseries,PlotOrientation.VERTICAL, true, true, false);
+    }
+    if (charttype==reger.Vars.CHARTTYPESTEPCHART && megaChartSeries.xMegadatatype!=reger.mega.DataTypeString.DATATYPEID){
+       chart = ChartFactory.createXYStepChart(chartTitle, xAxisTitle, yAxisTitle, xyseries,PlotOrientation.VERTICAL, true, true, false);
+    }
+    if (charttype==reger.Vars.CHARTTYPEAREACHART && megaChartSeries.xMegadatatype!=reger.mega.DataTypeString.DATATYPEID){
+       chart = ChartFactory.createXYAreaChart(chartTitle, xAxisTitle, yAxisTitle, xyseries,PlotOrientation.VERTICAL, true, true, false);
+    }
+    if (charttype==reger.Vars.CHARTTYPESTACKEDAREA && megaChartSeries.xMegadatatype!=reger.mega.DataTypeString.DATATYPEID){
+       chart = ChartFactory.createStackedXYAreaChart(chartTitle, xAxisTitle, yAxisTitle, stackedareadata,PlotOrientation.VERTICAL, true, true, false);
+    }
+    if (megaChartSeries.xMegafieldid==FieldType.XAXISDATETIME) {
+        chart = ChartFactory.createTimeSeriesChart(chartTitle, xAxisTitle, yAxisTitle, timedataseries, true, true, false);
+    }
+
+    //Start time axis formatting ----------
+    if (megaChartSeries.yFieldtype==FieldType.FIELDTYPETIME){
+
+        //First, create the rangeAxis
+
+        DateAxis rangeAxis = new DateAxis(yAxisTitle);
+        java.text.DateFormat formatter = (java.text.DateFormat)new java.text.SimpleDateFormat("HH:mm:ss");
+        formatter.setTimeZone(java.util.TimeZone.getTimeZone("GMT"));
+        rangeAxis.setDateFormatOverride(formatter);
+
+        //Next, apply that rangeAxis to as many types of plots as possible
+
+        //XYPlot
+        if (chart.getPlot() instanceof XYPlot){
+            XYPlot plot = chart.getXYPlot();
+            plot.setRangeAxis(rangeAxis);
+        }
+        //CategoryPlot
+        if (chart.getPlot() instanceof CategoryPlot){
+            CategoryPlot plot = chart.getCategoryPlot();
+            plot.setRangeAxis(rangeAxis);
+        }
+        //Contour Plot
+        if (chart.getPlot() instanceof ContourPlot){
+            ContourPlot plot = (ContourPlot)chart.getPlot();
+            plot.setRangeAxis(rangeAxis);
+        }
+    }
+    //End time axis formatting ----------
+
+    //Chart bg color
+    Color col1 = new Color(255, 255, 255);
+    chart.setBackgroundPaint(col1);
+    //Plot bg color
+    Plot plot = chart.getPlot();
+    Color col2 = new Color(250, 250, 250, 255);
+    plot.setBackgroundPaint(col2);
+
+    //Tick marks
+    //XYPlot linePlot=chart.getXYPlot();
+    //XYItemRenderer renderer = linePlot.getRenderer();
+    //renderer.setSeriesStroke(0, new BasicStroke(3.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL));
+    try {
+        XYPlot myplot = chart.getXYPlot();
+        StandardXYItemRenderer renderer = (StandardXYItemRenderer) myplot.getRenderer();
+        renderer.setPlotShapes(true);
+        renderer.setDefaultShapesFilled(new Boolean(true));
+    } catch (Exception e) {
+        //Do nothing
+        //reger.core.Util.errorsave(e);
+    }
+
+    //If calendarweeks, calendarmonths or dayofthemonth then force integer tick marks
+    if (xMegafieldid==FieldType.XAXISCALENDARWEEKS || xMegafieldid==FieldType.XAXISCALENDARMONTHS || xMegafieldid==FieldType.XAXISDAYOFMONTH){
+        try {
+            XYPlot myplot2 = chart.getXYPlot();
+            NumberAxis domainAxis = (NumberAxis) myplot2.getDomainAxis();
+            TickUnitSource units = NumberAxis.createIntegerTickUnits();
+            domainAxis.setStandardTickUnits(units);
+        } catch (Exception e) {
+            //Do nothing
+            //reger.core.Util.errorsave(e);
+        }
+    }
+
+
+
+    //Output to browser
+    response.setContentType("image/png");
+    //response.setContentType("image/jpeg");
+    //Chart size
+    int chartwidth=600;
+    int chartheight=300;
+    if (chartsize==reger.Vars.CHARTSIZEMINISCULE) {
+        chartwidth=200;
+        chartheight=125;
+    } else if (chartsize==reger.Vars.CHARTSIZESMALL) {
+        chartwidth=400;
+        chartheight=250;
+    } else if (chartsize==reger.Vars.CHARTSIZEMEDIUM) {
+        chartwidth=600;
+        chartheight=300;
+    } else if (chartsize==reger.Vars.CHARTSIZELARGE) {
+        chartwidth=900;
+        chartheight=600;
+    } else if (chartsize==reger.Vars.CHARTSIZEMASSIVE) {
+        chartwidth=1200;
+        chartheight=1000;
+    }
+
+    //Write the chart as a PNG
+    //@todo Consider making it configurable so that user can output as jpg too.
+    //ChartUtilities.writeChartAsPNG(outStream, chart, chartwidth, chartheight);
+
+
+    //Create a bufferedimage from the chart
+    BufferedImage bufImg = chart.createBufferedImage(chartwidth, chartheight);
+    //Encode as a PNG
+    byte[] imgBytes = ChartUtilities.encodeAsPNG(bufImg);
+    //Write to the browser
+    outStream.write(imgBytes);
+
+    //Record the bytesOutput to the database
+    int bytesOutput = imgBytes.length;
+    reger.Bandwidth.addActivity(userSession, bytesOutput);
+    reger.core.Util.debug(5, "graph.log<br>bytesOutput=" + bytesOutput);
+
+
+
+    //ChartUtilities.writeBufferedImageAsPNG(outStream, bufImg);
+
+
+
+    //Chart End
+} catch (Exception e) {
+    reger.core.Util.errorsave(e);
+}
+
+//Close the output stream
+outStream.close();
+
+%>
