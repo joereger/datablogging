@@ -20,6 +20,7 @@ pageProps.pathToAppRoot="";
 %>
 <%
 
+//This is a comment
 
 mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "These are the sites and logs that you have been granted permission to access."));
 
