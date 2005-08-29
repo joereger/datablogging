@@ -1,8 +1,11 @@
 
-<project name="MainBuild" default="buildWar" basedir=".">
+<project name="RegerCom" default="QuickBuild" basedir=".">
   <description>
         The Best Darn Build Process This Side of Sanity
   </description>
+
+  <!-- Import properties file -->
+  <property file="Regercom.properties"/>
 
 
   <!-- Create a buildnumber -->
@@ -23,11 +26,12 @@
   <property file="build.number"/>
 
   <!-- Set internal script properties -->
-  <property name="lastbuild" location="builds/lastbuild/${tomcat.app.name}"/>
-  <property name="wardir" location="builds/WARs/${tomcat.app.name}"/>
-  <property name="javasrc" location="builds/lastbuild/${tomcat.app.name}/WEB-INF/classes"/>
-  <property name="builddir" location="builds"/>
-  <property name="sourcedir" location="source"/>
+  <property name="tomcat.app.name" location="RegerCom"/>
+  <property name="builddir" location="${builds.directory}"/>
+  <property name="lastbuild" location="${builddir}/lastbuild/${tomcat.app.name}"/>
+  <property name="wardir" location="${builddir}/WARs/${tomcat.app.name}"/>
+  <property name="javasrc" location="${builddir}/lastbuild/${tomcat.app.name}/WEB-INF/classes"/>
+  <property name="sourcedir" location="${source.root.directory}"/>
 
 
   <!-- If the build process fails saying that a context doesn't exist, just go into the web-based tomcat manager and create an app named ${tomcat.app.name}... for the script to be able to remove an app it needs to be there in the first place.  Probably a better workaround in Ant, but I haven't researched it yet. Yes, this solution sucks.  Joe -->
@@ -145,14 +149,28 @@
             </packageset>
 
             <doctitle><![CDATA[<h1>Reger.com</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Copyright &#169; 2004 Reger.com. Confidential and proprietary. All Rights Reserved.</i>]]></bottom>
+            <bottom><![CDATA[<i>Copyright &#169; 2005 Reger.com. Confidential and proprietary. All Rights Reserved.</i>]]></bottom>
 
         </javadoc>
 
     </target>
 	
     
+    <target name="QuickBuild" description="Compile the java source and put in Tomcat working directory">
+  	 	<echo message="Compiling Java code."/>
+     	<copy todir="${lastbuild}" >
+            <fileset dir="${sourcedir}" excludes="**/Thumbs.db"/>
+        </copy>
 
+     	<javac srcdir="${javasrc}" destdir="${quickbuild.compiled.destination.directory}" excludes="**.x" debug="on" />
+		<copy todir="${quickbuild.tomcat.root.directory}">
+			<fileset dir="${lastbuild}">
+			</fileset>
+		</copy>
+		<!--
+		<ant antfile="TomcatDeploy.xml" target="reloadApp" inheritAll="true"/>
+		-->
+	</target>
     
 
     

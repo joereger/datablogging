@@ -1,5 +1,5 @@
 
-<project name="TomcatDeploy" default="deploy" basedir=".">
+<project name="TomcatDeploy" default="deployApp" basedir=".">
   <description>
         Deployment to Tomcat Tasks
   </description>
