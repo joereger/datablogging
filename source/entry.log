@@ -1,3 +1,4 @@
+<%@ page import="reger.logProps"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -19,11 +20,18 @@ pageProps.pathToAppRoot="";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+//Instantiate the entry object
+//pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
 
+int tmpEventid = 0;
+if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))) {
+    tmpEventid=Integer.parseInt(request.getParameter("eventid"));
+}
+pageProps.entry = reger.cache.EntryCache.get(tmpEventid);
 
 //Any log entry viewed from this public entry.log should use userSession.getAccount().getTimezoneid()
 pageProps.entry.entryTimezoneid=userSession.getAccount().getTimezoneid();
-pageProps.entry.getEntryAll();
+//pageProps.entry.getEntryAll();
 
 //Hide draft and unapproved entries
 if (pageProps.entry.isDraft==1 || pageProps.entry.isApproved==0){

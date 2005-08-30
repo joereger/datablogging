@@ -32,7 +32,7 @@ pageProps.pathToAppRoot="../";
 
 
 //Load the log
-reger.Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+reger.Log log = LogCache.get(pageProps.logProps.logid);
 
 
 

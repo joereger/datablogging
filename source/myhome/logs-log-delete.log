@@ -1,5 +1,6 @@
 <%@ page import="reger.core.db.Db,
                  reger.core.Util"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -23,6 +24,9 @@ pageProps.isLogidRequired=true;
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+//Instantiate the entry object
+pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
+
 
 //If the user can't do this
 if (!userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid) || !userSession.getAccountuser().userCanDoAcl("DELETELOG", userSession.getAccount().getAccountid())){
@@ -36,7 +40,7 @@ if (!userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid) || !u
 }
 
 //Create the log object
-reger.Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+reger.Log log = LogCache.get(pageProps.logProps.logid);
 
 //Capture any movetologid
 int movetologid = -1;

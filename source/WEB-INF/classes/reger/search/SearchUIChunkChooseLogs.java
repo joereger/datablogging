@@ -1,9 +1,8 @@
 package reger.search;
 
-import reger.core.db.Db;
-import reger.AllLogsInSystem;
 import reger.Log;
 import reger.MegaLogType;
+import reger.cache.LogCache;
 
 import java.util.Vector;
 
@@ -97,7 +96,7 @@ public class SearchUIChunkChooseLogs implements SearchUIChunk{
             if (se!=null && se.getSearchParameters()!=null && se.getSearchParameters().accountidsToSearch!=null){
                 mb.append("<table cellpadding=5 cellspacing=1 border=0>");
                 for (int i = 0; i < se.getSearchParameters().accountidsToSearch.length; i++) {
-                    Vector logsForAcct = AllLogsInSystem.allLogsForAccount(se.getSearchParameters().accountidsToSearch[i]);
+                    Vector logsForAcct = LogCache.allLogsForAccount(se.getSearchParameters().accountidsToSearch[i]);
                     reger.Account acct = new reger.Account(se.getSearchParameters().accountidsToSearch[i]);
                     mb.append("<tr>");
                     mb.append("<td bgcolor=#e6e6e6>");

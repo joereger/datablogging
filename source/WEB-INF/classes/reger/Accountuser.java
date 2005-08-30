@@ -7,10 +7,9 @@ import reger.core.db.Db;
 import reger.core.Util;
 import reger.core.PasswordHash;
 import reger.core.PasswordVerifier;
-import reger.core.licensing.License;
+import reger.cache.LogCache;
 
 import java.util.*;
-import java.io.Serializable;
 
 /**
  * Represents an account user.  This could be an owner or an author, for example.
@@ -20,41 +19,41 @@ public class Accountuser {
 
 
     //Permission vars
-	//These hold the aclnames and logids that user can view.
-	//Note that outside code should use userCanViewLog()
-	//and userCanDoAcl() as much as possible.
-	private Vector accountUserAcls=null; //The ACL Perms that this user explicitly has
+    //These hold the aclnames and logids that user can view.
+    //Note that outside code should use userCanViewLog()
+    //and userCanDoAcl() as much as possible.
+    private Vector accountUserAcls=null; //The ACL Perms that this user explicitly has
     private Vector accountUserAclGroups=null;
-	private int[] logsUserHasExlicitPermissionToAccess=null;
+    private int[] logsUserHasExlicitPermissionToAccess=null;
     private int[] logsUserHasExlicitPermissionToAuthor=null;
 
     private Hashtable accountsUserHasAccessTo = null;
 
-	//Logged-in flag
+    //Logged-in flag
     public boolean isLoggedIn=false;
 
     //User properties
     public int accountid = -1;
     private String username = "";
-	private String password = "";
-	private String verifypassword = "";
-	private String friendlyname = "";
-	private String onelinesummary = "";
-	private String passphrasequestion = "";
-	private String passphraseanswer = "";
-	private String email = "";
-	private java.util.Calendar lastlogindate = Calendar.getInstance();
-	private int entrymode = reger.Vars.ENTRYMODESIMPLE;
-	private String usertimezoneid = reger.Vars.TIMEZONEIDDEFAULT;
-	public int accountuserid=-1;
-	public boolean isactive = true;
-	private java.util.Calendar createdate = Calendar.getInstance();
+    private String password = "";
+    private String verifypassword = "";
+    private String friendlyname = "";
+    private String onelinesummary = "";
+    private String passphrasequestion = "";
+    private String passphraseanswer = "";
+    private String email = "";
+    private java.util.Calendar lastlogindate = Calendar.getInstance();
+    private int entrymode = reger.Vars.ENTRYMODESIMPLE;
+    private String usertimezoneid = reger.Vars.TIMEZONEIDDEFAULT;
+    public int accountuserid=-1;
+    public boolean isactive = true;
+    private java.util.Calendar createdate = Calendar.getInstance();
     private boolean isHelpOn = true;
-	private String siteRootUrl = "";
+    private String siteRootUrl = "";
 
 
 
-	//Accountuserfields
+    //Accountuserfields
     private Vector accountuserfields = new Vector(10);
 
     //Quick pass
@@ -95,8 +94,8 @@ public class Accountuser {
         //-----------------------------------
         //-----------------------------------
         if (rstUser!=null && rstUser.length>0){
-        	this.accountuserid = Integer.parseInt(rstUser[0][0]);
-        	populate();
+            this.accountuserid = Integer.parseInt(rstUser[0][0]);
+            populate();
             userAuthenticate(username, password);
         }
     }
@@ -112,7 +111,7 @@ public class Accountuser {
         //-----------------------------------
         //-----------------------------------
         if (rstAccountid!=null && rstAccountid.length>0){
-        	this.accountid = Integer.parseInt(rstAccountid[0][0]);
+            this.accountid = Integer.parseInt(rstAccountid[0][0]);
         }
         //Populate the object
         populate();
@@ -137,7 +136,7 @@ public class Accountuser {
         userAuthenticate(username, password);
     }
 
-	public void populate(){
+    public void populate(){
         //-----------------------------------
         //-----------------------------------
         String[][] rstAccountuser= Db.RunSQL("SELECT username, password, friendlyname, passphrasequestion, passphraseanswer, email, lastlogindate, entrymode, usertimezoneid, accountuser.isactive, accountuser.accountid, accountuser.createdate, onelinesummary, ishelpon FROM accountuser WHERE accountuser.accountuserid='"+accountuserid+"' LIMIT 0,1");
@@ -186,9 +185,9 @@ public class Accountuser {
             //-----------------------------------
             //-----------------------------------
             if (rstAcUf!=null && rstAcUf.length>0){
-            	for(int i=0; i<rstAcUf.length; i++){
-            	    accountuserfields.add(new Accountuserfield(Integer.parseInt(rstAcUf[i][0]), rstAcUf[i][1], rstAcUf[i][2], Integer.parseInt(rstAcUf[i][3])));
-            	}
+                for(int i=0; i<rstAcUf.length; i++){
+                    accountuserfields.add(new Accountuserfield(Integer.parseInt(rstAcUf[i][0]), rstAcUf[i][1], rstAcUf[i][2], Integer.parseInt(rstAcUf[i][3])));
+                }
             }
         }
 
@@ -222,7 +221,6 @@ public class Accountuser {
      * Checks to see if this user is entering a valid username/password combo
      * @param username
      * @param password
-     * @return
      */
     public boolean userAuthenticate(String username, String password){
 
@@ -249,7 +247,7 @@ public class Accountuser {
                 //Populate the data
                 populate();
                 //Save the last login date to the database
-			    saveLastLoginDate();
+                saveLastLoginDate();
                 //Return
                 return true;
 
@@ -281,7 +279,6 @@ public class Accountuser {
      * Checks to see if this user is entering a valid username/password combo
      * @param username
      * @param password
-     * @return
      */
     public boolean userAuthenticateEmailsecret(String username, String password){
         //-----------------------------------
@@ -299,8 +296,8 @@ public class Accountuser {
                 //Populate the data
                 populate();
                 //Save the last login date to the database
-			    saveLastLoginDate();
-			    //reger.core.Util.logtodb("Accountuser.userAuthenticateEmailsecret().  ");
+                saveLastLoginDate();
+                //reger.core.Util.logtodb("Accountuser.userAuthenticateEmailsecret().  ");
                 //Return
                 return true;
             }
@@ -367,8 +364,8 @@ public class Accountuser {
         //-----------------------------------
         //-----------------------------------
         if (rstGroups!=null && rstGroups.length>0){
-        	for(int i=0; i<rstGroups.length; i++){
-        	    if (accountUserAclGroups==null){
+            for(int i=0; i<rstGroups.length; i++){
+                if (accountUserAclGroups==null){
                     accountUserAclGroups = new Vector();
                 }
                 //Create a new aclgroup object
@@ -401,7 +398,7 @@ public class Accountuser {
                         }
                     }
                 }
-        	}
+            }
         }
 
 
@@ -505,7 +502,7 @@ public class Accountuser {
         }
 
 
-        
+
     }
 
     /**
@@ -528,8 +525,8 @@ public class Accountuser {
         //-----------------------------------
         //-----------------------------------
         if (rstAccounts!=null && rstAccounts.length>0){
-        	for(int i=0; i<rstAccounts.length; i++){
-        	    //String rootUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAccounts[i][0]));
+            for(int i=0; i<rstAccounts.length; i++){
+                //String rootUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAccounts[i][0]));
                 if (accountsUserHasAccessTo==null){
                     accountsUserHasAccessTo = new Hashtable();
                 }
@@ -538,7 +535,7 @@ public class Accountuser {
                     sitetitle = rstAccounts[i][2];
                 }
                 accountsUserHasAccessTo.put(new Integer(Integer.parseInt(rstAccounts[i][0])), sitetitle);
-        	}
+            }
         }
     }
 
@@ -618,7 +615,7 @@ public class Accountuser {
 
         //It's not explicitly defined.  If this is the SiteOwner of the logid in question then they have access to it.
         //Get the log
-        Log log = AllLogsInSystem.getLogByLogid(logid);
+        Log log = LogCache.get(logid);
         if (log!=null){
             //If this accountuser is the SiteOwner of this log's account then they get access
             if (isInAclgroup("SiteOwner", log.getAccountid())){
@@ -652,7 +649,7 @@ public class Accountuser {
 
         //It's not explicitly defined.  If this is the SiteOwner of the logid in question then they have access to it.
         //Get the log
-        Log log = AllLogsInSystem.getLogByLogid(logid);
+        Log log = LogCache.get(logid);
         if (log!=null){
             //If this accountuser is the SiteOwner of this log's account then they get access
             if (isInAclgroup("SiteOwner", log.getAccountid())){
@@ -773,10 +770,88 @@ public class Accountuser {
     }
 
     /**
+    * Get SQL query piece list of what user can view
+    * Example: logid='3' OR logid='6'
+    */
+    public String LogsUserCanViewQueryendNoMegalog(int accountid){
+        return LogsUserCanViewQueryendNoMegalog(accountid, true);
+    }
+
+    public String LogsUserCanViewQueryendNoMegalog(int accountid, boolean includelogshiddenfromhomepage){
+        StringBuffer queryend=new StringBuffer();
+        int numberoflogsusercanview = 0;
+        Account acct = reger.cache.AccountCache.get(accountid);
+        if (acct!=null){
+            int[] alllogidsforaccount = acct.getAllLogids();
+            for (int i = 0; i < alllogidsforaccount.length; i++) {
+                if(userCanViewLog(alllogidsforaccount[i])){
+                    Log log = reger.cache.LogCache.get(alllogidsforaccount[i]);
+                    if (includelogshiddenfromhomepage || (!includelogshiddenfromhomepage && log.getShowonhomepage())){
+                        numberoflogsusercanview = numberoflogsusercanview + 1;
+                        if (numberoflogsusercanview==1){
+                            queryend.append(" ( ");
+                        } else {
+                            queryend.append(" OR ");
+                        }
+                        queryend.append(" logid='"+alllogidsforaccount[i]+"' ");
+                    }
+                }
+            }
+            if (numberoflogsusercanview>0){
+                queryend.append(" ) ");
+            }
+        }
+        //Return
+        if (queryend.length()>0){
+            return queryend.toString();
+        } else {
+            return " (logid<'-1') ";
+        }
+    }
+
+    /**
+     * Logs this user can administer/author
+     */
+    public String LogsUserCanAdministerQueryendNoMegalog(int accountid){
+        return LogsUserCanAdministerQueryendNoMegalog(accountid, true);
+    }
+
+    public String LogsUserCanAdministerQueryendNoMegalog(int accountid, boolean includelogshiddenfromhomepage){
+        StringBuffer queryend=new StringBuffer();
+        int numberoflogsusercanview = 0;
+        Account acct = reger.cache.AccountCache.get(accountid);
+        if (acct!=null){
+            int[] alllogidsforaccount = acct.getAllLogids();
+            for (int i = 0; i < alllogidsforaccount.length; i++) {
+                if(userCanAuthorLog(alllogidsforaccount[i])){
+                    Log log = reger.cache.LogCache.get(alllogidsforaccount[i]);
+                    if (includelogshiddenfromhomepage || (!includelogshiddenfromhomepage && log.getShowonhomepage())){
+                        numberoflogsusercanview = numberoflogsusercanview + 1;
+                        if (numberoflogsusercanview==1){
+                            queryend.append(" ( ");
+                        } else {
+                            queryend.append(" OR ");
+                        }
+                        queryend.append(" logid='"+alllogidsforaccount[i]+"' ");
+                    }
+                }
+            }
+            if (numberoflogsusercanview>0){
+                queryend.append(" ) ");
+            }
+        }
+        //Return
+        if (queryend.length()>0){
+            return queryend.toString();
+        } else {
+            return " (logid<'-1') ";
+        }
+    }
+
+    /**
      * Checks for mobile logon.  Each time the mobile device makes a request it sends xUpSubNo.
      * We can't rely on cookies so this must be called for each request.
      * @param xUpSubNo
-     * @return
      */
     public boolean mobileCheckLogin(String xUpSubNo) {
         //-----------------------------------
@@ -785,7 +860,7 @@ public class Accountuser {
         //-----------------------------------
         //-----------------------------------
         if (rstMobileLogon!=null && rstMobileLogon.length>0){
-        	return true;
+            return true;
         } else {
             return false;
         }
@@ -828,7 +903,6 @@ public class Accountuser {
     /**
      * Changes the password
      * @param newpassword
-     * @return
      */
     public String changePassword(String newpassword){
         String errortext = "";
@@ -1357,7 +1431,7 @@ public class Accountuser {
             if (!isthumbnail){
                 isthumbnailtext = "no";
             }
-        	return pathToAppRoot + "mediaout.log?imageid=" + rstImg[0][0] + "&isProfileImage=true&isthumbnail=" + isthumbnailtext;
+            return pathToAppRoot + "mediaout.log?imageid=" + rstImg[0][0] + "&isProfileImage=true&isthumbnail=" + isthumbnailtext;
         } else {
             return pathToAppRoot + reger.Vars.PROFILEGENERICIMAGE;
         }
@@ -1680,14 +1754,14 @@ public class Accountuser {
             //-----------------------------------
             //-----------------------------------
 
-            
+
 
         }
     }
 
     public void revokeAllPermissionsForAnAccount(int accountid){
         //Logs
-        Log[] logs = reger.AllLogsInSystem.allLogsForAccountAlphabetized(accountid);
+        Log[] logs = LogCache.allLogsForAccountAlphabetized(accountid);
         for (int i = 0; i < logs.length; i++) {
             Log log = logs[i];
             revokeLogAccess(log.getLogid());
@@ -1699,7 +1773,7 @@ public class Accountuser {
         for (int i = 0; i < acls.length; i++) {
             AclObject acl = acls[i];
             revokeAcl(acl.aclobjectid, accountid);
-        }      
+        }
     }
 
     public int getAccountOwnerForThisAccountUser(){
@@ -1723,7 +1797,7 @@ public class Accountuser {
         //-----------------------------------
         //-----------------------------------
         if (rstFriend!=null && rstFriend.length>0){
-        	return true;
+            return true;
         }
         return false;
     }
@@ -1831,7 +1905,7 @@ public class Accountuser {
                 mb.append("<tr>");
 
                 //Iterate through the relationship
-            	for (int i = 0; i < relationship.length; i++) {
+                for (int i = 0; i < relationship.length; i++) {
                     //Go get the info that's held in the Db
                     for(int j=0; j<rstAcc.length; j++){
                         //If we're working with the Db record that has the correct accountuserid
@@ -1860,7 +1934,7 @@ public class Accountuser {
                             }
 
                         }
-            	    }
+                    }
                 }
 
                 //End the table
@@ -1937,7 +2011,8 @@ public class Accountuser {
                 mb.append("<td valign=top bgcolor=#ffffff nowrap>");
 
                 //mb.append("Logs You Have Access To On This Site:");
-                Vector allLogs = reger.Account.loadAllLogsForAccountid(accountid.intValue());
+
+                Vector allLogs = LogCache.allLogsForAccount(accountid.intValue());
                 for (int i = 0; i < allLogs.size(); i++) {
                     Log log = (Log) allLogs.elementAt(i);
                     //reger.core.Util.logtodb("Logid=" + log.getLogid() + "<br>userCanViewLog(log.getLogid())=" + userCanViewLog(log.getLogid()));
@@ -2049,7 +2124,7 @@ public class Accountuser {
                     mb.append("None.");
                     mb.append("</b>");
                 }
-    
+
             mb.append("</font>");
             mb.append("</td>");
             mb.append("</tr>");

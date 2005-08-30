@@ -1,7 +1,6 @@
 package reger.search;
 
 import reger.core.db.Db;
-import reger.AllLogsInSystem;
 import reger.Log;
 
 import java.util.Vector;

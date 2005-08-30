@@ -9,6 +9,7 @@ import reger.core.DateDiff;
 import reger.core.ValidationException;
 import reger.core.licensing.License;
 import reger.core.licensing.RegerLicensingApiClient;
+import reger.cache.LogCache;
 
 import java.util.*;
 
@@ -83,6 +84,8 @@ public class Account {
     //The NestedNavItems for this account. Note that this is ALL of them.
     private NestedNavCollection nestedNavCollection;
 
+    //Holds integer identifiers of all logs for this account
+    int[] alllogsforaccountid;
 
 
     public Account(int accountid){
@@ -238,6 +241,9 @@ public class Account {
             //Update space used
             updateSpaceused();
 
+            //Load the logs for this account
+            loadAllLogsForAccountid();
+
             //Load the NestedNavItems
             loadNestedNavItems();
 
@@ -262,12 +268,21 @@ public class Account {
     private void loadNestedNavItems(){
         NestedNavItem[] allNestedNavItems = new NestedNavItem[0];
 
-        //Logs added to allNestedNavItems
-        Vector logs = AllLogsInSystem.allLogsForAccount(accountid);
-        for (int i = 0; i < logs.size(); i++) {
-            Log log = (Log) logs.elementAt(i);
+//        //Logs added to allNestedNavItems
+//        Vector logs = LogCache.allLogsForAccount(accountid);
+//        for (int i = 0; i < logs.size(); i++) {
+//            Log log = (Log) logs.elementAt(i);
+//            reger.core.Util.debug(5, "Account.java - log added:" + log.getName());
+//            allNestedNavItems = AddToArray.addToNestedNavItemArray(allNestedNavItems, (NestedNavItem)log);
+//        }
+//        reger.core.Util.debug(5, "Account.java - allNestedNavItems.length:" + allNestedNavItems.length);
+
+        //Add all logs
+        for (int i = 0; i < alllogsforaccountid.length; i++) {
+            Log log = LogCache.get(alllogsforaccountid[i]);
             reger.core.Util.debug(5, "Account.java - log added:" + log.getName());
             allNestedNavItems = AddToArray.addToNestedNavItemArray(allNestedNavItems, (NestedNavItem)log);
+
         }
         reger.core.Util.debug(5, "Account.java - allNestedNavItems.length:" + allNestedNavItems.length);
 
@@ -356,25 +371,22 @@ public class Account {
         return siteRootUrl;
     }
 
-  public static Vector loadAllLogsForAccountid(int accountid){
-
-//      int[] alllogsforaccountid=null;
-//      //Populate array of all logs
-//      //-----------------------------------
-//      //-----------------------------------
-//      String[][] rsAllLgs=reger.core.Db.Db.RunSQL("SELECT logid FROM megalog WHERE accountid='"+ accountid +"'");
-//      //-----------------------------------
-//      //-----------------------------------
-//      //Create an array of the size of the result set
-//      alllogsforaccountid = new int[rsAllLgs.length];
-//      for(int i=0; i<rsAllLgs.length; i++){
-//          alllogsforaccountid[i]=Integer.parseInt(rsAllLgs[i][0]);
-//      }
-
-      //Simple wrapper function for the AllLogsInSystem memory object
-      return reger.AllLogsInSystem.allLogsForAccount(accountid);
+  private void loadAllLogsForAccountid(){
+      //-----------------------------------
+      //-----------------------------------
+      String[][] rsAllLgs=Db.RunSQL("SELECT logid FROM megalog WHERE accountid='"+ accountid +"'");
+      //-----------------------------------
+      //-----------------------------------
+      //Create an array of the size of the result set
+      alllogsforaccountid = new int[rsAllLgs.length];
+      for(int i=0; i<rsAllLgs.length; i++){
+          alllogsforaccountid[i]=Integer.parseInt(rsAllLgs[i][0]);
+      }
   }
 
+  public int[] getAllLogids(){
+    return alllogsforaccountid;
+  }
 
   /**
   * Number of days until this account's free trial ends

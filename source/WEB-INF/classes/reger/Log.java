@@ -5,11 +5,9 @@ import reger.mega.FieldOrderCollection;
 import reger.nestednav.NestedNavItem;
 import reger.core.db.Db;
 import reger.core.Util;
+import reger.cache.LogCache;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Represents a Log
@@ -47,7 +45,7 @@ public class Log implements NestedNavItem {
         //-----------------------------------
         //-----------------------------------
         if (rstLog!=null && rstLog.length>0){
-        	for(int i=0; i<rstLog.length; i++){
+            for(int i=0; i<rstLog.length; i++){
                 this.logid=Integer.parseInt(rstLog[i][0]);
                 accountid=Integer.parseInt(rstLog[i][1]);
                 eventtypeid=Integer.parseInt(rstLog[i][2]);
@@ -102,7 +100,7 @@ public class Log implements NestedNavItem {
                 }
                 reger.core.Util.debug(5, "Log.java - logid="+this.logid+" - fields After Assignment<br>" + tmp2.toString());
 
-        	}
+            }
         }
     }
 
@@ -235,7 +233,7 @@ public class Log implements NestedNavItem {
         //-----------------------------------
         //-----------------------------------
 
-        reger.AllLogsInSystem.refresh(logid);
+        LogCache.flushByLogid(logid);
     }
 
     public void delete(int movetologid){
@@ -277,12 +275,12 @@ public class Log implements NestedNavItem {
         //-----------------------------------
         reger.core.Util.debug(5, "Log.java delete() done deleting log from Db<br>logid=" + logid + " movetologid=" + movetologid);
 
-        //Important to refresh the AllLogsInSystem object after megalog changes
-        reger.AllLogsInSystem.refresh(logid);
+        //Important to refresh the LogCache object after megalog changes
+        LogCache.flushByLogid(logid);
         if (movetologid>0){
-            reger.AllLogsInSystem.refresh(movetologid);
+            LogCache.flushByLogid(movetologid);
         }
-        reger.core.Util.debug(5, "Log.java delete() done refreshing AllLogsInSystem.<br>logid=" + logid + " movetologid=" + movetologid);
+        reger.core.Util.debug(5, "Log.java delete() done refreshing LogCache.<br>logid=" + logid + " movetologid=" + movetologid);
     }
 
 
@@ -477,17 +475,7 @@ public class Log implements NestedNavItem {
         return false;
     }
 
-    /**
-     * Whether or not this nav item should be considered on/active or not
-     */
-    public boolean isActive(javax.servlet.http.HttpServletRequest request){
-        if (request.getParameter("logid")!=null && reger.core.Util.isinteger(request.getParameter("logid"))){
-            if (Integer.parseInt(request.getParameter("logid"))==logid){
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     /**
      * Whether the accountuser provided can view this item
@@ -496,6 +484,18 @@ public class Log implements NestedNavItem {
 
         if (accountUser!=null){
             if (accountUser.userCanViewLog(logid) && accountUser.userCanDoAcl("CUSTOMIZELOG", accountid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Whether or not this nav item should be considered on/active or not
+     */
+    public boolean isActive(javax.servlet.http.HttpServletRequest request){
+        if (request.getParameter("logid")!=null && reger.core.Util.isinteger(request.getParameter("logid"))){
+            if (Integer.parseInt(request.getParameter("logid"))==logid){
                 return true;
             }
         }

@@ -5,6 +5,7 @@
                  java.util.Calendar,
                  java.util.Hashtable,
                  reger.core.licensing.License"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 //Only do this page if we have an invalid database connection.
 //Otherwise, anybody's going to be able to reset the database
@@ -118,8 +119,8 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
         //-----------------------------------
         //-----------------------------------
 
-        //Important to refresh the AllLogsInSystem object after megalog changes
-        reger.AllLogsInSystem.refresh(newlogid);
+        //Important to refresh the LogCache object after megalog changes
+        LogCache.flushByLogid(newlogid);
 
         //Calculate the base url of this account
         String baseUrlOfAccount = siteurl.toLowerCase() + "." + pl.getPlbasedomain();

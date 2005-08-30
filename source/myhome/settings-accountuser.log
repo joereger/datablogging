@@ -159,7 +159,7 @@ if (userSession.getAccountuser().getAccountuserid()==au.getAccountuserid()){
 //if (rsAllLgs!=null && rsAllLgs.length>0){
 //    for(int i=0; i<rsAllLgs.length; i++){
 //
-//        reger.Log log = reger.AllLogsInSystem.getLogByLogid(Integer.parseInt(rsAllLgs[i][0]));
+//        reger.Log log = reger.cache.LogCache.get(Integer.parseInt(rsAllLgs[i][0]));
 //
 //        //If the logged-in user can view this log
 //        if (log!=null && userSession.getAccountuser().userCanViewLog(log.getLogid())){

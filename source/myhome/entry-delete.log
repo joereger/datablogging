@@ -22,6 +22,10 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+//Instantiate the entry object
+pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
+
+
 //If the user can't do this
 if (!userSession.getAccountuser().userCanDoAcl("ADDEDITENTRIES", userSession.getAccount().getAccountid()) || !userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid)){
     try {

@@ -109,7 +109,7 @@ public class PageProps{
         //Get the event object setup
         //if (userSession.getAccount()!=null && tmpeventid!=-1){
         if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0){
-            entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), logProps.logid, request);
+            //entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), logProps.logid, request);
         }
 
 

@@ -93,7 +93,7 @@ mb.append("<br>");
 
 
 //mb.append("<center>");
-//mb.append("<font face=arial size=-1><a href='entry.log?action=edit&eventid="+pageProps.entry.eventid+"'>Click here when done to go back to entry.</a></font><br>");
+//mb.append("<font face=arial size=-1><a href='entry.log?action=edit&eventid="+eventid+"'>Click here when done to go back to entry.</a></font><br>");
 //<a href="javascript:returnToEntryPage()">
 
 //mb.append("</center>");

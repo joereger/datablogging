@@ -29,6 +29,10 @@ pageProps.isEventidRequired=true;
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+//Instantiate the entry object
+pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
+
+
 //Start PLID-choosing SQL
 String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
 if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){

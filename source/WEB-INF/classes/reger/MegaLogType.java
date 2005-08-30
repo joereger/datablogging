@@ -1,13 +1,10 @@
 package reger;
 
-import reger.mega.Field;
 import reger.mega.FieldType;
-import reger.mega.FieldTypeFactory;
 import reger.mega.FieldOrderCollection;
 import reger.core.db.Db;
 import reger.core.Util;
-
-import java.util.*;
+import reger.cache.LogCache;
 
 /**
  * Represents a Log
@@ -79,7 +76,7 @@ public class MegaLogType {
         //-----------------------------------
         //-----------------------------------
         if (rstLog!=null && rstLog.length>0){
-        	for(int i=0; i<rstLog.length; i++){
+            for(int i=0; i<rstLog.length; i++){
                 this.eventtypeid=Integer.parseInt(rstLog[i][0]);
                 accountuserid=Integer.parseInt(rstLog[i][1]);
                 megalogname=rstLog[i][2];
@@ -121,7 +118,7 @@ public class MegaLogType {
 
                 //Load the fields
                 loadFields();
-        	}
+            }
         }
     }
 
@@ -221,7 +218,7 @@ public class MegaLogType {
     }
 
     public void delete(){
-        if (AllLogsInSystem.doLogsOfThisTypeExist(eventtypeid)){
+        if (LogCache.doLogsOfThisTypeExist(eventtypeid)){
             //There are logs of this type in the system
             accountuserid = 0;
             issystemlogtype = 0;

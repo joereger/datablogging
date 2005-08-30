@@ -1,14 +1,4 @@
-<%@ page import="reger.search.SearchUIFlowAdvSearch,
-                 reger.search.SearchUIFlowGraph,
-                 reger.mega.FieldType,
-                 reger.core.db.Db,
-                 java.util.Vector,
-                 reger.AllLogsInSystem,
-                 reger.Log,
-                 reger.search.SearchParameters,
-                 reger.mega.MegaChart,
-                 reger.UserSession,
-                 reger.mega.MegaChartHtmlRenderer"%>
+<%@ page import="reger.mega.MegaChartHtmlRenderer"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */

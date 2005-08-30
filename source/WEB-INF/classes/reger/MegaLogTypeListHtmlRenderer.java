@@ -2,6 +2,7 @@ package reger;
 
 import reger.core.db.Db;
 import reger.pageFramework.PageProps;
+import reger.cache.LogCache;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -395,7 +396,7 @@ public class MegaLogTypeListHtmlRenderer {
             for (int i = sortedArray.length - 1; i >= 0; i--) {
                 MegaLogType mlt = sortedArray[i];
                 //Get number of logs of this type
-                int numOfLogs = reger.AllLogsInSystem.howManyOfThisTypeExist(mlt.getEventtypeid());
+                int numOfLogs = LogCache.howManyOfThisTypeExist(mlt.getEventtypeid());
                 //Append the html
                 mb.append(compactLogTypeHtml(mlt.getEventtypeid(), mlt.getMegalogname(), numOfLogs, mlt.getDescription(), urlforAddLogForm, urlForMoreInfo));
 

@@ -1,6 +1,7 @@
 package reger.mega;
 
 import reger.*;
+import reger.cache.LogCache;
 import reger.core.db.Db;
 
 import java.util.Vector;
@@ -36,7 +37,7 @@ public class MegaChartHtmlRenderer {
         //that the system graph needs. This is kind of ugly.
         int tmpxLogid = megaChart.getxLogid();
         if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0){
-            Vector tmpLogs = AllLogsInSystem.allLogsForAccount(userSession.getAccount().getAccountid());
+            Vector tmpLogs = LogCache.allLogsForAccount(userSession.getAccount().getAccountid());
             if(tmpxLogid<=0 && megaChart.getXeventtypeid()>0){
                 if (!isLOEPage){
                     for (int j = 0; j < tmpLogs.size(); j++) {
@@ -59,7 +60,7 @@ public class MegaChartHtmlRenderer {
             //that the system graph needs. This is kind of ugly.
             int tmpyLogid = megaChart.getyLogid()[i];
             if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0){
-                Vector tmpLogs = AllLogsInSystem.allLogsForAccount(userSession.getAccount().getAccountid());
+                Vector tmpLogs = LogCache.allLogsForAccount(userSession.getAccount().getAccountid());
                 if(tmpyLogid<=0 && megaChart.getyEventtypeid()[i]>0){
                     if (!isLOEPage){
                         for (int j = 0; j < tmpLogs.size(); j++) {
@@ -288,7 +289,7 @@ public class MegaChartHtmlRenderer {
                 //Output xAxis fields
                 if (!isLOEPage){
                     //It's not an LOE page so I should show the user the logs for this account
-                    Vector logsForAcct = AllLogsInSystem.allLogsForAccount(userSession.getAccount().getAccountid());
+                    Vector logsForAcct = LogCache.allLogsForAccount(userSession.getAccount().getAccountid());
                     for (int j = 0; j < logsForAcct.size(); j++) {
                         Log log = (Log) logsForAcct.elementAt(j);
 
@@ -383,7 +384,7 @@ public class MegaChartHtmlRenderer {
                 //Output y axis fields... only numerics
                 if (!isLOEPage){
                     //It's not an LOE page so I should show the user the logs for this account
-                    Vector logsForAcct = AllLogsInSystem.allLogsForAccount(userSession.getAccount().getAccountid());
+                    Vector logsForAcct = LogCache.allLogsForAccount(userSession.getAccount().getAccountid());
                     for (int j = 0; j < logsForAcct.size(); j++) {
                         Log log = (Log) logsForAcct.elementAt(j);
 

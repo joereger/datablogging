@@ -3,6 +3,7 @@ package reger.mega;
 import reger.UserSession;
 import reger.MegaLogType;
 import reger.Log;
+import reger.cache.LogCache;
 import reger.pageFramework.PageProps;
 
 
@@ -32,8 +33,8 @@ public class FieldLayout {
             fieldOrderCollection = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getFieldOrderCollection();
         }
         if (logid>0){
-            fields = reger.AllLogsInSystem.getLogByLogid(logid).getFields();
-            fieldOrderCollection = reger.AllLogsInSystem.getLogByLogid(logid).getFieldOrderCollection();
+            fields = LogCache.get(logid).getFields();
+            fieldOrderCollection = LogCache.get(logid).getFieldOrderCollection();
         }
         reger.core.Util.debug(5, "FieldLayout.java getHtml(eventtypeid="+eventtypeid+", logid="+logid+", LAYOUTMODE="+LAYOUTMODE+")");
 
@@ -235,7 +236,7 @@ public class FieldLayout {
                     reger.core.Util.debug(5, "FieldLayout.java - fieldorderholder=" + fieldorderholder);
                     //Save to appropriate object
                     if (logid>0){
-                        Log log = reger.AllLogsInSystem.getLogByLogid(logid);
+                        Log log = LogCache.get(logid);
                         log.setFieldorder(fieldorderholder);
                         log.save();
                     } else if (eventtypeid>0){
@@ -254,7 +255,7 @@ public class FieldLayout {
                     fields = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getMegaFields();
                 }
                 if (logid>0){
-                    fields = reger.AllLogsInSystem.getLogByLogid(logid).getFields();
+                    fields = LogCache.get(logid).getFields();
                 }
                 FieldType fld = null;
                 //Iterate and find field with the correct megafieldid
@@ -277,7 +278,7 @@ public class FieldLayout {
                             reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).removeField(fld.getMegafieldid());
                         }
                         if (logid>0){
-                            reger.AllLogsInSystem.getLogByLogid(logid).removeField(fld.getMegafieldid());
+                            LogCache.get(logid).removeField(fld.getMegafieldid());
                         }
                     }
                     //Unhide
@@ -286,7 +287,7 @@ public class FieldLayout {
                             reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).unhideField(fld.getMegafieldid());
                         }
                         if (logid>0){
-                            reger.AllLogsInSystem.getLogByLogid(logid).unhideField(fld.getMegafieldid());
+                            LogCache.get(logid).unhideField(fld.getMegafieldid());
                         }
                     }
                 }
@@ -342,7 +343,7 @@ public class FieldLayout {
             hiddenfields = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getMegaFieldsHidden();
         }
         if (logid>0){
-            hiddenfields = reger.AllLogsInSystem.getLogByLogid(logid).getFieldshidden();
+            hiddenfields = LogCache.get(logid).getFieldshidden();
         }
         if (hiddenfields!=null && hiddenfields.length>0){
             mb.append("<td bgcolor=#e6e6e6 align=center>");

@@ -2,13 +2,14 @@
                  reger.nav.NavButton,
                  reger.Log,
                  reger.AddToArray"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 NavPanel navPanel=null;
 
 //Logid
 if (pageProps.logProps.logid>0){
 
-    reger.Log logForHeader = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+    Log logForHeader = LogCache.get(pageProps.logProps.logid);
 
     if (logForHeader!=null){
         pageProps.title = "Log: " + logForHeader.getName();

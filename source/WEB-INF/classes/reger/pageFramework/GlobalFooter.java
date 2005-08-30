@@ -95,17 +95,17 @@ public class GlobalFooter {
             if (pageProps.siteSection!=pageProps.MOBILEPUBLIC && pageProps.siteSection!=pageProps.MOBILEPRIVATE && reger.core.Util.isMastercookieOn(request)){
 
 
-                //Display core
-                out.println(reger.debugInfo.examineClass(userSession).toString());
-
-                //Display core
-                out.println(reger.debugInfo.examineClass(userSession.getAccountuser()).toString());
-
-                //Display pageProps
-                out.println(reger.debugInfo.pagePropsOut(pageProps).toString());
-
-                //Display request vars
-                out.println(reger.debugInfo.requestVars(request).toString());
+//                //Display core
+//                out.println(reger.debugInfo.examineClass(userSession).toString());
+//
+//                //Display core
+//                out.println(reger.debugInfo.examineClass(userSession.getAccountuser()).toString());
+//
+//                //Display pageProps
+//                out.println(reger.debugInfo.pagePropsOut(pageProps).toString());
+//
+//                //Display request vars
+//                out.println(reger.debugInfo.requestVars(request).toString());
 
             }
         } catch (Exception ex){

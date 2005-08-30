@@ -91,8 +91,8 @@ if (pageProps.action.equals("createaccount")) {
         //-----------------------------------
         //-----------------------------------
 
-        //Important to refresh the AllLogsInSystem object after megalog changes
-        //reger.AllLogsInSystem.refresh(newlogid);
+        //Important to refresh the LogCache object after megalog changes
+        //reger.cache.flushByLogid.refresh(newlogid);
 
 
 

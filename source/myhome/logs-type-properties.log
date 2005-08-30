@@ -120,8 +120,8 @@ if (pageProps.action.equals("endadd") || pageProps.action.equals("go")){
     //-----------------------------------
     //-----------------------------------
 
-    //Important to refresh the AllLogsInSystem object after megalog changes
-    reger.AllLogsInSystem.refresh(newlogid);
+    //Important to refresh the LogCache object after megalog changes
+    LogCache.flushByLogid(newlogid);
 
     //Make sure the user who added the log can view it.
     userSession.getAccountuser().grantLogAccess(newlogid);

@@ -1,7 +1,6 @@
 <%@ page import="reger.core.db.Db,
                  reger.template.Template,
                  reger.Log,
-                 reger.AllLogsInSystem,
                  reger.core.db.Db"%>
 <%
 /*----------------------------------------------------*/
@@ -137,7 +136,7 @@ mb.append("<br>");
 
 ////Get all logs for this account
 ////mb.append("Pre logs[]: "+reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
-//Log[] logs = reger.AllLogsInSystem.allLogsForAccountAlphabetized(userSession.getAccount().getAccountid());
+//Log[] logs = reger.cache.LogCache.allLogsForAccountAlphabetized(userSession.getAccount().getAccountid());
 ////mb.append("Post logs[]: "+reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
 //Template[] logHpUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(Template.TEMPLATETYPEHOMEPAGE, userSession.getAccount().getAccountid());
 //Template[] logHpSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEHOMEPAGE);

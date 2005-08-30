@@ -2,7 +2,6 @@ package reger.template;
 
 import reger.core.db.Db;
 import reger.PrivateLabel;
-import reger.AllLogsInSystem;
 import reger.core.db.Db;
 
 /**

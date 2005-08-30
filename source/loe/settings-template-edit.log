@@ -1,9 +1,6 @@
 
 <%@ page import="java.util.*,
                  reger.template.Template,
-                 reger.core.db.Db,
-                 reger.AllLogsInSystem,
-                 reger.Log,
                  reger.template.TemplateProcessor,
                  reger.template.TemplateProcessorFactory,
                  reger.template.TemplateTag" %>

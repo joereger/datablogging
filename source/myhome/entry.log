@@ -23,9 +23,9 @@ pageProps.helpText="This page allows you to add or edit weblog entries.  Once yo
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+//Instantiate the entry object
+pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
 
-//mb.append("fieldorderholder="+request.getParameter("fieldorderholder"));
-//reger.UserSession userSession = null;
 
 
 //Make sure this user can admin this log
@@ -116,7 +116,8 @@ if (pageProps.action!=null && !pageProps.action.equals("")) {
 
 	} else if (pageProps.action.equals("edit")) {
 	    //Go get the entry.
-		pageProps.entry.getEntryAll(pageProps.entry.eventid);
+		//pageProps.entry.getEntryAll(pageProps.entry.eventid);
+		pageProps.entry=reger.cache.EntryCache.get(pageProps.entry.eventid);
 	} else if (pageProps.action.equals("default")) {
 		pageProps.entry.getBlankEntryAll();
 	} else {

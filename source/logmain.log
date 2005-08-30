@@ -2,8 +2,8 @@
                  reger.template.Template,
                  reger.template.AllTemplatesInSystem,
                  reger.template.HpTemplateProcessor,
-                 reger.Log,
-                 reger.AllLogsInSystem"%>
+                 reger.Log"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -29,7 +29,7 @@ pageProps.pathToAppRoot="";
 //Get a list of entries
 //mb.append(reger.htmlListEvents.getList(userSession, pageProps.logProps.logid, reger.core.Util.getCurrentPage(request.getParameter("currentpage")), request.getParameter("viewdate"), request.getParameter("viewmonth"), "logmain.log", -1, true, request));
 
-Log log = AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+Log log = LogCache.get(pageProps.logProps.logid);
 if(log!=null){
     Template template = AllTemplatesInSystem.getTemplateByTemplateid(log.getMaintemplateid(), Template.TEMPLATETYPEHOMEPAGE);
     String tmp = "";

@@ -1,9 +1,9 @@
 package reger;
 
-import reger.mega.FieldType;
 import reger.core.db.Db;
 import reger.core.ValidationException;
 import reger.linkrot.AnchorFinder;
+import reger.cache.LogCache;
 
 import java.util.Calendar;
 import java.util.ArrayList;
@@ -76,6 +76,8 @@ public class Entry {
 
     public String author="";
 
+    public Calendar dateGmt;
+
     public int mm=1;
     public int dd=1;
     public int yyyy=2004;
@@ -116,6 +118,10 @@ public class Entry {
     String newepisodename;
     String newepisodedescription;
 
+    //Counts
+    int messagecount = 0;
+    int filecount = 0;
+
     /**
      * Constructor:
      */
@@ -154,6 +160,7 @@ public class Entry {
     public Entry(reger.Accountuser accountuserOfAuthor, reger.Account accountOfEntry, reger.PrivateLabel plOfEntry, int logid){
         populate(accountuserOfAuthor, accountOfEntry, plOfEntry, logid, null);
     }
+    
 
     public void populate(reger.Accountuser accountuserOfPersonAccessing, reger.Account accountOfEntry, reger.PrivateLabel plOfEntry, int logid, javax.servlet.http.HttpServletRequest request){
         //reger.core.Util.logtodb("Entry.populate().");
@@ -306,7 +313,7 @@ public class Entry {
 
             //Get a list of fields from the log
             if (logid>0){
-                Log log = AllLogsInSystem.getLogByLogid(logid);
+                Log log = LogCache.get(logid);
                     if (log!=null){
                         fields=log.getFields();
                 }
@@ -467,6 +474,8 @@ public class Entry {
         //---------------------=======---------------------
         //-------------------------------------------------
 
+        //Flush the entry cache
+        reger.cache.EntryCache.flush(eventid);
 
         //Groups
         reger.GroupsClient.addEntryToGroups(eventid, groupsubscriptionids, accountuserid);
@@ -495,12 +504,16 @@ public class Entry {
             reger.core.Util.errorsave(e);
         }
 
+
+
         //Update the AccountCounts cache
         reger.cache.AccountCountCache.flushByAccountid(accountid);
 
         //Refresh log for counts
-        AllLogsInSystem.getLogByLogid(logid).refreshMostRecentEntryDateGMTFromDB();
-        AllLogsInSystem.getLogByLogid(logid).refreshNumberOfLiveEntriesInLogFromDB();
+        LogCache.get(logid).refreshMostRecentEntryDateGMTFromDB();
+        LogCache.get(logid).refreshNumberOfLiveEntriesInLogFromDB();
+
+
 
         reger.core.Util.debug(5, "Entry edited: eventid=" + eventid);
 
@@ -524,9 +537,17 @@ public class Entry {
 
             this.eventid = eventid;
 
+            //Get date
+            try{
+                dateGmt = reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][0]);
+            } catch (Exception e){
+                dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
+                reger.core.Util.errorsave(e);
+            }
+
             //Convert server time to user time
             //Calendar usertime=reger.core.TimeUtils.gmttousertime( reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][0]), getTimezoneIdFromAccountid(accountid));
-            Calendar usertime=reger.core.TimeUtils.gmttousertime( reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][0]), entryTimezoneid);
+            Calendar usertime=reger.core.TimeUtils.gmttousertime( dateGmt, entryTimezoneid);
 
             //Populate this object's time vars
             populateThisEventTimeVarsFromCal(usertime);
@@ -546,6 +567,9 @@ public class Entry {
             if (reger.core.Util.isinteger(rstEventdetails[0][9])){
                 this.accountuserid = Integer.parseInt(rstEventdetails[0][9]);
                 this.author = setAuthorFromAccountuserid(Integer.parseInt(rstEventdetails[0][9]));
+            } else {
+                this.accountuserid=0;
+                this.author="";
             }
             isflaggedformoderator = Integer.parseInt(rstEventdetails[0][10]);
             ismoderatorapproved = Integer.parseInt(rstEventdetails[0][11]);
@@ -554,6 +578,25 @@ public class Entry {
             entryKey = rstEventdetails[0][14];
         }
 
+        //Message count
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstMessCount= Db.RunSQL("SELECT count(*) FROM message WHERE eventid='"+eventid+"' and isapproved='1'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstMessCount!=null && rstMessCount.length>0){
+            messagecount = Integer.parseInt(rstMessCount[0][0]);
+        }
+
+        //File count
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstFileCount= Db.RunSQL("SELECT count(*) FROM image WHERE eventid='"+eventid+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstFileCount!=null && rstFileCount.length>0){
+            filecount = Integer.parseInt(rstFileCount[0][0]);
+        }
 
 
         //Groups
@@ -585,8 +628,8 @@ public class Entry {
         //Go get the fields
         if (fields==null){
             try{
-                reger.core.Util.debug(5, "---------<br>Entry.java - about to call AllLogsInSystem for logid=" + logid);
-                Log logByLogid = AllLogsInSystem.getLogByLogid(logid);
+                reger.core.Util.debug(5, "---------<br>Entry.java - about to call LogCache for logid=" + logid);
+                Log logByLogid = LogCache.get(logid);
                 if (logByLogid!=null){
                     reger.core.Util.debug(5, "Entry.java - logByLogid.getName()=" + logByLogid.getName() + "<br>--------");
                     fields = AllFieldsInSystem.copyFieldTypeArray(logByLogid.getFields());
@@ -1035,12 +1078,20 @@ public class Entry {
         //-----------------------------------
         if (rstEvent!=null && rstEvent.length>0){
         	entryFileName = reger.Entry.entryFileNameStatic(eventid, rstEvent[0][0]);
-        	baseUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstEvent[0][3]));
+
+        	Account acct = reger.cache.AccountCache.get(Integer.parseInt(rstEvent[0][3]));
+        	if (acct!=null){
+                baseUrl = acct.getSiteRootUrl();
+            } else {
+                baseUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstEvent[0][3]));
+            }
+
             if (appendEntryKeyIfAvailable){
                 if (!rstEvent[0][4].equals("")){
                     entryKeyString = "?entrykey=" + rstEvent[0][4];
                 }
             }
+
             return reger.Vars.getHttpUrlPrefix() + baseUrl + "/" + entryFileName + entryKeyString;
         }
         return "";

@@ -9,6 +9,7 @@
                  java.util.Hashtable"%>
 <%@ page import="reger.jcaptcha.CaptchaServiceSingleton"%>
 <%@ page import="com.octo.captcha.service.CaptchaServiceException"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -182,8 +183,8 @@ if (pageProps.action.equals("createaccount")) {
         //-----------------------------------
         //-----------------------------------
 
-        //Important to refresh the AllLogsInSystem object after megalog changes
-        reger.AllLogsInSystem.refresh(newlogid);
+        //Important to refresh the LogCache object after megalog changes
+        LogCache.flushByLogid(newlogid);
 
 
 
@@ -196,8 +197,8 @@ if (pageProps.action.equals("createaccount")) {
 //            //-----------------------------------
 //            //-----------------------------------
 //
-//            //Important to refresh the AllLogsInSystem object after megalog changes
-//            reger.AllLogsInSystem.refresh(newlogid);
+//            //Important to refresh the LogCache object after megalog changes
+//            reger.cache.LogCache.flushByLogid(newlogid);
 //
 //        }
 
@@ -265,8 +266,8 @@ if (pageProps.action.equals("createaccount")) {
         //-----------------------------------
         //-----------------------------------
 
-        //Important to refresh the AllLogsInSystem object after megalog changes
-        reger.AllLogsInSystem.refresh(newlogid);
+        //Important to refresh the LogCache object after megalog changes
+        LogCache.flushByLogid(newlogid);
 
 
 
@@ -304,8 +305,8 @@ if (pageProps.action.equals("createaccount")) {
         //-----------------------------------
         //-----------------------------------
 
-        //Important to refresh the AllLogsInSystem object after megalog changes
-        reger.AllLogsInSystem.refresh(newlogid);
+        //Important to refresh the LogCache object after megalog changes
+        LogCache.flushByLogid(newlogid);
 
         //Do friendinvitationid work
         if (session.getAttribute("friendinvitationid")!=null && reger.core.Util.isinteger((String)session.getAttribute("friendinvitationid"))){

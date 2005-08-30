@@ -3,6 +3,7 @@ package reger.search;
 import reger.mega.FieldQueryElement;
 import reger.mega.FieldType;
 import reger.*;
+import reger.cache.LogCache;
 import reger.core.db.Db;
 import reger.core.XmlSerializer;
 
@@ -259,7 +260,7 @@ public class SearchEntries {
                     //reger.Entry entry = new reger.Entry(Integer.parseInt(rsEvent[i][3]));
 
                     //Get the fields that relate to this entry's log
-                    Log logByLogid = AllLogsInSystem.getLogByLogid(Integer.parseInt(rsEvent[i][4]));
+                    Log logByLogid = LogCache.get(Integer.parseInt(rsEvent[i][4]));
                     reger.mega.FieldType[] fieldsInEntryLog = AllFieldsInSystem.copyFieldTypeArray(logByLogid.getFields());
 
 
@@ -444,7 +445,7 @@ public class SearchEntries {
                     if (searchParameters.logsToSearch!=null){
                         mb.append("<ul>");
                         //Get all logs for this account
-                        Vector logsForThisAcct = reger.AllLogsInSystem.allLogsForAccount(searchParameters.accountidsToSearch[i]);
+                        Vector logsForThisAcct = LogCache.allLogsForAccount(searchParameters.accountidsToSearch[i]);
                         for (int xx = 0; xx < logsForThisAcct.size(); xx++) {
                             Log log = (Log) logsForThisAcct.elementAt(xx);
                             //If this is being searched or ALL is being searched

@@ -1,6 +1,7 @@
 <%@ page import="reger.core.db.Db,
                  reger.MegaLogType,
                  java.util.Vector"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -66,8 +67,8 @@ if (userSession.getAccountuser().userCanDoAcl("NEWLOG", userSession.getAccount()
         //-----------------------------------
         //-----------------------------------
 
-        //Important to refresh the AllLogsInSystem object after megalog changes
-        reger.AllLogsInSystem.refresh(newlogid);
+        //Important to refresh the LogCache object after megalog changes
+        LogCache.flushByLogid(newlogid);
 
         //Make sure the user who added the log can view it.
         userSession.getAccountuser().grantLogAccess(newlogid);

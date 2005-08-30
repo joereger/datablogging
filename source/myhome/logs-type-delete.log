@@ -5,6 +5,7 @@
                  reger.mega.FieldLayout,
                  reger.MegaLogType,
                  reger.core.Util"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -72,7 +73,7 @@ mb.append("<br>");
 
 mb.append("<font face=arial size=-1>");
 
-int numberOfLogsOfType = reger.AllLogsInSystem.howManyOfThisTypeExist(eventtypeid);
+int numberOfLogsOfType = LogCache.howManyOfThisTypeExist(eventtypeid);
 
 mb.append("There are " + numberOfLogsOfType + " logs of this type." );
 

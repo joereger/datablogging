@@ -1,8 +1,8 @@
 package reger.nestednav;
 
 import reger.UserSession;
-import reger.AllLogsInSystem;
 import reger.Help;
+import reger.cache.LogCache;
 
 /**
  * Creates the screen to manage nav item layout
@@ -75,7 +75,7 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
             if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPEMEGALOG){
 
                 //Get the log
-                reger.Log log = AllLogsInSystem.getLogByLogid(navItem.getThisNestedNavId());
+                reger.Log log = LogCache.get(navItem.getThisNestedNavId());
 
                 if (log!=null){
 

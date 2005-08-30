@@ -4,8 +4,8 @@
                  reger.mega.FieldType,
                  reger.mega.FieldLayout,
                  reger.Log,
-                 reger.template.Template,
-                 reger.AllLogsInSystem"%>
+                 reger.template.Template"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -33,7 +33,7 @@ mb.append(reger.core.Util.popup());
 
 
 //Load the log
-Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+Log log = LogCache.get(pageProps.logProps.logid);
 
 //Get templateid
 int templateid = -1;
@@ -62,8 +62,8 @@ if (pageProps.action.equals("usethisone")){
                 //-----------------------------------
                 //-----------------------------------
                 //Refresh the log
-                AllLogsInSystem.refresh(pageProps.logProps.logid);
-                log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+                LogCache.flushByLogid(pageProps.logProps.logid);
+                log = LogCache.get(pageProps.logProps.logid);
             }
         } else if (template.getType()==Template.TEMPLATETYPEHOMEPAGE){
             if (pageProps.logProps.logid>0){
@@ -73,8 +73,8 @@ if (pageProps.action.equals("usethisone")){
                 //-----------------------------------
                 //-----------------------------------
                 //Refresh the log
-                AllLogsInSystem.refresh(pageProps.logProps.logid);
-                log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+                LogCache.flushByLogid(pageProps.logProps.logid);
+                log = LogCache.get(pageProps.logProps.logid);
             }
         }
     }

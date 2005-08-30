@@ -194,7 +194,7 @@ public class RssRome {
                 //Instantiate the module
                 reger.core.Util.debug(5, "RssRome.java - Outputting entry... about to get entrydata for eventid="+rstEvent[i][1]);
                 MegaDataRSSModule tm = new MegaDataRSSModuleImpl();
-                reger.Entry e = new reger.Entry(Integer.parseInt(rstEvent[i][1]));
+                reger.Entry e = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][1]));
                 tm.setFields(e.fields);
                 item.getModules().add(tm);
                 reger.core.Util.debug(5, "RssRome.java - item.getModules() has been called<br>item.getModules().size()=" + item.getModules().size());
@@ -360,7 +360,7 @@ public class RssRome {
 
                 //Instantiate the module
                 MegaDataRSSModule tm = new MegaDataRSSModuleImpl();
-                reger.Entry e = new reger.Entry(Integer.parseInt(rstEvent[i][1]));
+                reger.Entry e = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][1]));
                 tm.setFields(e.fields);
                 item.getModules().add(tm);
 

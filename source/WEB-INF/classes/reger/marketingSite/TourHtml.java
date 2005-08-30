@@ -3,7 +3,6 @@ package reger.marketingSite;
 import reger.core.db.Db;
 import reger.UserSession;
 import reger.Log;
-import reger.AllLogsInSystem;
 import reger.mega.FieldLayout;
 import reger.mega.Field;
 import reger.mega.MegaChart;

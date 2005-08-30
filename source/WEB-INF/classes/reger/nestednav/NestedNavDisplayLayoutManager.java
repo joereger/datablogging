@@ -1,7 +1,6 @@
 package reger.nestednav;
 
 import reger.UserSession;
-import reger.AllLogsInSystem;
 
 /**
  * Creates the screen to manage nav item layout
@@ -79,7 +78,7 @@ public class NestedNavDisplayLayoutManager implements NestedNavDisplay{
             //Each log type output
             mb.append("<!-- Begin NavItem -->");
             if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPEMEGALOG){
-                //reger.Log log = AllLogsInSystem.getLogByLogid(navItem.getThisNestedNavId());
+                //reger.Log log = LogCache.get(navItem.getThisNestedNavId());
                 mb.append("<tr>");
                 mb.append("<td valign=top align=left bgcolor="+ cellbgcolor +" nowrap>"+nestingNbsp+"<img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b> " + navItem.getNestedNavLinkText() +"</b></td>");
                 mb.append("<td valign=top align=left bgcolor="+ cellbgcolor +" nowrap>");

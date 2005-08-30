@@ -1,5 +1,7 @@
 package reger;
 
+import reger.cache.LogCache;
+
 import java.util.Comparator;
 
 /**
@@ -11,8 +13,8 @@ public class LogTypeNumberOfLogsComparator implements Comparator{
         MegaLogType log1in = ( MegaLogType ) log1;
         MegaLogType log2in = ( MegaLogType ) log2;
 
-        int log1NumOfLogs = reger.AllLogsInSystem.howManyOfThisTypeExist(log1in.getEventtypeid());
-        int log2NumOfLogs = reger.AllLogsInSystem.howManyOfThisTypeExist(log2in.getEventtypeid());
+        int log1NumOfLogs = LogCache.howManyOfThisTypeExist(log1in.getEventtypeid());
+        int log2NumOfLogs = LogCache.howManyOfThisTypeExist(log2in.getEventtypeid());
 
         if (log1NumOfLogs<log2NumOfLogs){
             return -1;

@@ -2,6 +2,7 @@ package reger;
 
 import reger.template.Template;
 import reger.core.TimeUtils;
+import reger.cache.LogCache;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -20,7 +21,7 @@ public class htmlListEvents {
 		//Logid SQL clause
 		String logidSql="";
 		if (logid>0) {
-			logidSql = " AND megalog.logid='" + logid + "' ";
+			logidSql = " AND event.logid='" + logid + "' ";
 		}
 
 		//Locationid SQL clause
@@ -30,13 +31,11 @@ public class htmlListEvents {
 		}
 
 		//Show on homepage sql
-		String showonhomepageSql = "";
-		//if (locationid<0){
-            //showonhomepageSql = " AND megalog.showonhomepage=1 ";
-        //}
+        boolean includelogshiddenfromhomepage = true;
         if (logid<=0){
-            showonhomepageSql = " AND megalog.showonhomepage='1' ";
+            includelogshiddenfromhomepage = false;
         }
+
 
 		//@!todo Setting a viewdate in the url line doesn't work.  It returns no results.  Possibly a timezone issue.
 		//Viewdate SQL - 2003-12-23
@@ -76,7 +75,10 @@ public class htmlListEvents {
 		}
 
 		//Field list.  Do this to keep the resulting array the same for all queries
-		String fieldSql = "title, comments, name, date, eventid, event.logid, (SELECT count(*) FROM message m WHERE m.eventid=event.eventid and m.isapproved='1'), (SELECT count(*) FROM image i WHERE i.eventid=event.eventid), event.accountuserid";
+		String fieldSql = "";
+		//fieldSql = "title, comments, date, eventid, event.logid, (SELECT count(*) FROM message m WHERE m.eventid=event.eventid and m.isapproved='1'), (SELECT count(*) FROM image i WHERE i.eventid=event.eventid), event.accountuserid";
+        fieldSql = "eventid";
+
 
 		//This section builds one of two sets of SQL queries.
 		//In each set is a main that returns a limited number of records.
@@ -85,14 +87,18 @@ public class htmlListEvents {
 		String sqlCount="";
 
         //It's the homepage or a log homepage
-        sql = "SELECT "+ fieldSql +" FROM event event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + "" + logidSql + viewdatesql + locationidSql + showonhomepageSql +"ORDER BY event.date DESC" + " LIMIT "+ limitMin +","+ limitMax;
-        sqlCount = "SELECT count(*) FROM event event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + "" + logidSql + viewdatesql + locationidSql + showonhomepageSql;
+        //sql = "SELECT "+ fieldSql +" FROM event event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + "" + logidSql + viewdatesql + locationidSql + showonhomepageSql +"ORDER BY event.date DESC" + " LIMIT "+ limitMin +","+ limitMax;
+        //sqlCount = "SELECT count(*) FROM event event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + "" + logidSql + viewdatesql + locationidSql + showonhomepageSql;
+
+
+        sql = "SELECT "+ fieldSql +" FROM event event WHERE "+reger.Entry.sqlOfLiveEntry+" AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + locationidSql +"ORDER BY event.date DESC" + " LIMIT "+ limitMin +","+ limitMax;
+        sqlCount = "SELECT count(*) FROM event event WHERE "+reger.Entry.sqlOfLiveEntry+" AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + locationidSql;
 
 
 		//For debugging, output the sql to the screen
 		//list.append("<br>" + sql);
 
-		reger.core.Util.debug(5, "htmlListEvents.java - <br>sql:<br>"+sql+"<br><br>sqlCount:<br>"+sqlCount);
+		reger.core.Util.debug(3, "htmlListEvents.java - <br>sql:<br>"+sql+"<br><br>sqlCount:<br>"+sqlCount);
 		//Count total records
 		//-----------------------------------
 		//-----------------------------------
@@ -135,11 +141,16 @@ public class htmlListEvents {
 
 		if (rsEvent!=null &&  rsEvent.length>0) {
 			for(int i=0; i<rsEvent.length; i++){
+
+			    //Go get the entry from the cache
+			    Entry entry = reger.cache.EntryCache.get(Integer.parseInt(rsEvent[i][0]));
+
+
 				//The link
 				//String entryurl="entry.log?logid=" + rsEvent[i][5] + "&eventid=" + rsEvent[i][4];
 				//String entryurl="entry-logid" + rsEvent[i][5] + "-eventid" + rsEvent[i][4] + ".log";
-				String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rsEvent[i][5]), Integer.parseInt(rsEvent[i][4]), rsEvent[i][0]);
-                String entryurladmin="entry.log?logid="+rsEvent[i][5]+"&eventid="+rsEvent[i][4]+"&action=edit";
+				String entryurl=reger.Entry.entryFileNameStatic(entry.logid, entry.eventid, entry.title);
+                String entryurladmin="entry.log?logid="+entry.logid+"&eventid="+entry.eventid+"&action=edit";
                 //Add the servername and port
                 if (request.getLocalPort()==80 || request.getLocalPort()==443){
                     entryurl = "" + reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + "/" + entryurl;
@@ -152,31 +163,22 @@ public class htmlListEvents {
 
 				//How many chars to display?
 				int displaycharsinsummary=userSession.getAccount().getDisplaycharsinsummary();
-				if ((displaycharsinsummary<=0) || (displaycharsinsummary>=rsEvent[i][1].length())) {
-					displaycharsinsummary=rsEvent[i][1].length();
+				if ((displaycharsinsummary<=0) || (displaycharsinsummary>=entry.comments.length())) {
+					displaycharsinsummary=entry.comments.length();
 				}
 				//The Entry body
 				String entrybody="";
-				entrybody=rsEvent[i][1].substring(0,displaycharsinsummary);
+				entrybody=entry.comments.substring(0,displaycharsinsummary);
 				//Put line breaks in there
 				//entrybody=replace(entrybody, VbCrlf  & VbCrlf, "<br><br>")
 				entrybody=entrybody.replaceAll( reger.Vars.LINEBREAKCHAR, "<br><br>");
 				//Add the More Link if needed
-				if (rsEvent[i][1].length()>displaycharsinsummary){
+				if (entry.comments.length()>displaycharsinsummary){
 					entrybody=entrybody + " ...<a href="+ entryurl +">More</a>";
 				}
 
-				//Get the message and image counts
-				//This creates two extra Db calls per entry... very slow
-				//Not happy about this code.
-				int imagecount=0;
-				int messagecount=0;
-				if (!rsEvent[i][7].equals("")){
-					imagecount=Integer.parseInt(rsEvent[i][7]);
-				}
-				if (!rsEvent[i][6].equals("")){
-					messagecount=Integer.parseInt(rsEvent[i][6]);
-				}
+
+
 
 				//Author
 //				author = rsEvent[i][8];
@@ -190,18 +192,25 @@ public class htmlListEvents {
 
 				//Try to override with specific template for log
 				if(logid>0){
-                    Log log = AllLogsInSystem.getLogByLogid(logid);
+                    Log log = LogCache.get(logid);
                     if (log.getEntlisttemplateid()>0){
                         templateText = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(log.getEntlisttemplateid(), Template.TEMPLATETYPEENTRYLIST).getTemplate();
                     }
+                }
+
+                //Get log name
+                String logname="";
+                Log log = reger.cache.LogCache.get(entry.logid);
+                if (log!=null){
+                    logname = log.getName();
                 }
 			
 
                 //If we're on edit.log and the logged-in user can't administer this logid then don't display the result.
                 if (!thispagename.equals("entries.log")){
-				    list.append( reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(rsEvent[i][3], userSession.getAccount().getTimezoneid()), rsEvent[i][0], entryurl, reger.core.Util.truncateString(rsEvent[i][1], userSession.getAccount().getDisplaycharsinsummary()), rsEvent[i][2], imagecount, messagecount, Integer.parseInt(rsEvent[i][8])));
-                } else if ((thispagename.equals("entries.log") && userSession.getAccountuser().userCanViewLog(Integer.parseInt(rsEvent[i][5])))){
-                    list.append( reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(rsEvent[i][3], userSession.getAccount().getTimezoneid()), rsEvent[i][0], entryurladmin, reger.core.Util.truncateString(rsEvent[i][1], userSession.getAccount().getDisplaycharsinsummary()), rsEvent[i][2], imagecount, messagecount, Integer.parseInt(rsEvent[i][8])));
+				    list.append( reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, reger.core.Util.truncateString(entry.comments, userSession.getAccount().getDisplaycharsinsummary()), logname, entry.filecount, entry.messagecount, entry.accountuserid));
+                } else if ((thispagename.equals("entries.log") && userSession.getAccountuser().userCanViewLog(entry.logid))){
+                    list.append( reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurladmin, reger.core.Util.truncateString(entry.comments, userSession.getAccount().getDisplaycharsinsummary()), logname, entry.filecount, entry.messagecount, entry.accountuserid));
                 }
             }
 		} else {

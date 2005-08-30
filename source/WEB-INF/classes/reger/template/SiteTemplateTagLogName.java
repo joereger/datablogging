@@ -3,6 +3,7 @@ package reger.template;
 import reger.pageFramework.PageProps;
 import reger.UserSession;
 import reger.Log;
+import reger.cache.LogCache;
 
 /**
  *
@@ -44,12 +45,12 @@ public class SiteTemplateTagLogName implements SiteTemplateTag{
      * @return
      */
     public String getValue(StringBuffer mb, StringBuffer sc, PageProps pageProps, UserSession userSession, javax.servlet.http.HttpServletRequest request) {
-        Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+        Log log = LogCache.get(pageProps.logProps.logid);
         if (log!=null){
             return log.getName();
         }
         return "";
-  
+
     }
 
     /**

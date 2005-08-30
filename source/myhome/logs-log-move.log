@@ -28,7 +28,6 @@ pageProps.pathToAppRoot="../";
 
 
 //Create the log object
-//reger.Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
 NestedNavItem navItem = reger.nestednav.NestedNavItemFactory.getItem(Integer.parseInt(request.getParameter("nestednavtype")), Integer.parseInt(request.getParameter("nestednavid")));
 
 //Do the work

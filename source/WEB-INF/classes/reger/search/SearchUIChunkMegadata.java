@@ -1,9 +1,8 @@
 package reger.search;
 
-import reger.core.db.Db;
-import reger.AllLogsInSystem;
 import reger.Log;
 import reger.MegaLogType;
+import reger.cache.LogCache;
 import reger.mega.FieldType;
 
 import java.util.Vector;
@@ -106,7 +105,7 @@ public class SearchUIChunkMegadata implements SearchUIChunk{
             if (se.getSearchParameters().accountidsToSearch!=null){
                 mb.append("<table cellpadding=5 cellspacing=1 border=0>");
                 for (int i = 0; i < se.getSearchParameters().accountidsToSearch.length; i++) {
-                    Vector logsForAcct = AllLogsInSystem.allLogsForAccount(se.getSearchParameters().accountidsToSearch[i]);
+                    Vector logsForAcct = LogCache.allLogsForAccount(se.getSearchParameters().accountidsToSearch[i]);
                     reger.Account acct = new reger.Account(se.getSearchParameters().accountidsToSearch[i]);
                     mb.append("<tr>");
                     mb.append("<td colspan=2 bgcolor=#999999>");

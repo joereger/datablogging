@@ -200,6 +200,23 @@ public class AddToArray {
         }
 	}
 
+	public static String[] addToStringArray(String[] src, String str){
+		//If the source isn't null
+		if (src!=null){
+            String[] outArr = new String[src.length+1];
+            for(int i=0; i < src.length; i++) {
+                outArr[i]=src[i];
+            }
+            outArr[src.length]=str;
+            return outArr;
+        //If the source is null, create an array, append str and return
+        } else {
+            String[] outArr = new String[1];
+            outArr[0]=str;
+            return outArr;
+        }
+	}
+
     /*
 	 * Adds a row to the String array src with the value of String str
 	 */

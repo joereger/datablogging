@@ -3,6 +3,7 @@
                  java.util.TreeMap,
                  reger.mega.FieldType,
                  reger.mega.FieldLayout"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -41,7 +42,7 @@ String currentNavButtonName = "logs-fieldlayout";
 
 
 //See if it's your own type
-reger.Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+reger.Log log = LogCache.get(pageProps.logProps.logid);
 reger.MegaLogType mlt = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(log.getEventtypeid());
 if (mlt.getAccountuserid()==userSession.getAccountuser().getAccountuserid()){
     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Note: This log is of a custom log type that you own.  Any changes to the layout here will NOT be reflected in the layout of the custom log type."));

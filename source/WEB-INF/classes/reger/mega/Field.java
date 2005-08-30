@@ -1,6 +1,7 @@
 package reger.mega;
 
 import reger.*;
+import reger.cache.LogCache;
 import reger.core.db.Db;
 import org.jdom.Element;
 
@@ -252,9 +253,9 @@ public class Field implements Cloneable, FieldInterface {
         //The order of the refresh is important too
         AllFieldsInSystem.refresh(megafieldid);
         AllMegaLogTypesInSystem.refresh(eventtypeid);
-        AllLogsInSystem.refreshLogsThatUseGivenMegafieldid(megafieldid);
-        AllLogsInSystem.refreshLogsThatUseGivenEventtypeid(eventtypeid);
-        AllLogsInSystem.refresh(logid);
+        LogCache.flushByMegafieldid(megafieldid);
+        LogCache.flushByEventtypeid(eventtypeid);
+        LogCache.flushByLogid(logid);
 
         debug.append("this.megafieldid=" + this.megafieldid);
 
@@ -286,7 +287,7 @@ public class Field implements Cloneable, FieldInterface {
             }
         } else if (logid>0){
             //This field is part of a log so I look to the account that the log belongs to
-            Log logByLogid = AllLogsInSystem.getLogByLogid(logid);
+            Log logByLogid = LogCache.get(logid);
             if (logByLogid!=null){
                 if (au.getAccountid()==logByLogid.getAccountid()){
                     if (au.userCanDoAcl("CUSTOMIZELOG", au.getAccountid())){
@@ -321,8 +322,8 @@ public class Field implements Cloneable, FieldInterface {
         //The order of the refresh is important too
         AllFieldsInSystem.refresh(megafieldid);
         AllMegaLogTypesInSystem.refresh(eventtypeid);
-        AllLogsInSystem.refreshLogsThatUseGivenMegafieldid(megafieldid);
-        AllLogsInSystem.refresh(logid);
+        LogCache.flushByMegafieldid(megafieldid);
+        LogCache.flushByLogid(logid);
     }
 
 
@@ -436,7 +437,7 @@ public class Field implements Cloneable, FieldInterface {
 //            fldsOut = reger.AllFieldsInSystem.allMegaFieldsForEventtypeid(eventtypeid, false, false, new int[0], new int[0]);
 //        }
 //        if (logid>0){
-//            fldsOut = reger.AllLogsInSystem.getLogByLogid(logid).getFields();
+//            fldsOut = reger.cache.LogCache.get(logid).getFields();
 //        }
 //        return fldsOut;
 //

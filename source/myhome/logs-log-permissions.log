@@ -1,9 +1,5 @@
-<%@ page import="reger.core.db.Db,
-                 reger.core.Util,
-                 java.util.TreeMap,
-                 reger.mega.FieldType,
-                 reger.mega.FieldLayout,
-                 reger.AllLogsInSystem"%>
+<%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -30,7 +26,7 @@ pageProps.pathToAppRoot="../";
 
 
 //Load the log
-reger.Log log = reger.AllLogsInSystem.getLogByLogid(pageProps.logProps.logid);
+reger.Log log = LogCache.get(pageProps.logProps.logid);
 
 
 //If the user wants to revoke a permission
