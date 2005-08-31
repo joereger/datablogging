@@ -57,25 +57,41 @@ public class LogCache {
 
     public static void flushAll(){
         if (admin!=null){
-            admin.flushAll();
+            try{
+                admin.flushAll();
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+            }
         }
     }
 
     public static void flushByLogid(int logid){
         if (admin!=null){
-            admin.flushEntry(String.valueOf(logid));
+            try{
+                admin.flushEntry(String.valueOf(logid));
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+            }
         }
     }
 
     public static void flushByMegafieldid(int megafieldid){
         if (admin!=null){
-            admin.flushGroup("megafieldid"+megafieldid);
+            try{
+                admin.flushGroup("megafieldid"+megafieldid);
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+            }
         }
     }
 
     public static void flushByEventtypeid(int eventtypeid){
         if (admin!=null){
-            admin.flushGroup("eventtypeid"+eventtypeid);
+            try{
+                admin.flushGroup("eventtypeid"+eventtypeid);
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+            }
         }
     }
 

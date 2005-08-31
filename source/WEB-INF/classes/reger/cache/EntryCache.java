@@ -37,14 +37,22 @@ public class EntryCache {
 
     public static void flush(int eventid){
         if (admin!=null){
-            admin.flushEntry(String.valueOf(eventid));
+            try{
+                admin.flushEntry(String.valueOf(eventid));
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+            }
         }
     }
 
 
     public static void flush(){
         if (admin!=null){
-            admin.flushAll();    
+            try{
+                admin.flushAll();
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+            }
         }
     }
 

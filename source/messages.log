@@ -70,7 +70,7 @@ if (request.getParameter("currentpage")!=null && reger.core.Util.isinteger(reque
 
 //Display messages
 mb.append(reger.MessageListHtml.tableStart());
-mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), -1, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()), "messages.log", pageProps.action, pageProps.logProps.logid, currentpage, request, false, response));
+mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), -1, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()), "messages.log", pageProps.action, pageProps.logProps.logid, currentpage, request, false, response));
 mb.append(reger.MessageListHtml.tableEnd());
 
 %>

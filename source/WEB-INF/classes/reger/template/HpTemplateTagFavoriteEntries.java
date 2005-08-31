@@ -64,7 +64,7 @@ public class HpTemplateTagFavoriteEntries implements HpTemplateTag{
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstLastentries= Db.RunSQL("SELECT eventid, title, megalog.logid FROM event, megalog WHERE event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND event.favorite='1' AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY date DESC");
+        String[][] rstLastentries= Db.RunSQL("SELECT eventid, title, event.logid FROM event WHERE event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+reger.Entry.sqlOfLiveEntry+" AND event.favorite='1' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY date DESC");
         //-----------------------------------
         //-----------------------------------
         if (rstLastentries!=null && rstLastentries.length>0){

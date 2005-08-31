@@ -56,7 +56,7 @@ public class HpTemplateTagOnThisDay implements HpTemplateTag{
 
             //Get the list
 
-            mb.append(reger.OnThisDay.getHtml(userSession.getAccount().getAccountid(), userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()), false, userSession.getAccount().getTimezoneid(), pageProps.logProps.logid));
+            mb.append(reger.OnThisDay.getHtml(userSession.getAccount().getAccountid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()), false, userSession.getAccount().getTimezoneid(), pageProps.logProps.logid));
 
         }
 

@@ -45,7 +45,7 @@ public class OnThisDay {
 
 		//-----------------------------------
 		//-----------------------------------
-		String[][] rstOnthisDay= Db.RunSQL("SELECT eventid, event.logid, title, date FROM event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + accountid + "' AND " + queryend + " AND DAYOFMONTH(date)='"+ now.get(Calendar.DATE) +"' AND MONTH(date)='"+ (now.get(Calendar.MONTH)+1) +"' AND date<'"+ reger.core.TimeUtils.dateformatfordb(onagodate) +"' "+logidSql+" ORDER BY date DESC");
+		String[][] rstOnthisDay= Db.RunSQL("SELECT eventid, event.logid, title, date FROM event WHERE "+reger.Entry.sqlOfLiveEntry+" AND " + queryend + " AND DAYOFMONTH(date)='"+ now.get(Calendar.DATE) +"' AND MONTH(date)='"+ (now.get(Calendar.MONTH)+1) +"' AND date<'"+ reger.core.TimeUtils.dateformatfordb(onagodate) +"' "+logidSql+" ORDER BY date DESC");
 		//-----------------------------------
 		//-----------------------------------
 		if (rstOnthisDay!=null && rstOnthisDay.length>0){

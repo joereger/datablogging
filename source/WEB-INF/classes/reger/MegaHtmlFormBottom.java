@@ -732,7 +732,7 @@ public class MegaHtmlFormBottom {
                     mb.append(reger.MessageListHtml.saveMessage(message, messagefrom, userSession.getAccount().getAccountid(), pageProps.entry.eventid, email, ipaddress, url, emailnotify, userSession, request));
                 }
                 //Display messages
-                mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()), "entry.log", pageProps.action, pageProps.logProps.logid, -1, request, true, response));
+                mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()), "entry.log", pageProps.action, pageProps.logProps.logid, -1, request, true, response));
             }
             mb.append("<!-- End Messages -->");
 

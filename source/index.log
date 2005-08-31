@@ -206,7 +206,7 @@ if (userSession.getAccount().isPro() && userSession.getAccount().getEmailnewslet
 
 //On This Day
 if (userSession.getAccount().isPro()) {
-    sc.append(reger.OnThisDay.getHtml(userSession.getAccount().getAccountid(), userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()), true, userSession.getAccount().getTimezoneid(), -1));
+    sc.append(reger.OnThisDay.getHtml(userSession.getAccount().getAccountid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), false), true, userSession.getAccount().getTimezoneid(), -1));
 }
 
 //Friendly sites

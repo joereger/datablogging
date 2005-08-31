@@ -35,7 +35,7 @@ mb.append("<br><br>");
 mb.append("<font face=arial size=-1 class=mediumfont>");
 //-----------------------------------
 //-----------------------------------
-String[][] rstEpisode= Db.RunSQL("SELECT DISTINCT(episode.episodeid) FROM episode, event, megalog, eventtoepisode WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.eventid=eventtoepisode.eventid AND eventtoepisode.episodeid=episode.episodeid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND event.logid=megalog.logid AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + " ORDER BY episode.episodeid DESC");
+String[][] rstEpisode= Db.RunSQL("SELECT DISTINCT(episode.episodeid) FROM episode, event, eventtoepisode WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.eventid=eventtoepisode.eventid AND eventtoepisode.episodeid=episode.episodeid AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()) + " ORDER BY episode.episodeid DESC");
 //-----------------------------------
 //-----------------------------------
 if (rstEpisode!=null && rstEpisode.length>0){

@@ -60,7 +60,7 @@ public class HpTemplateTagMostRecentList implements HpTemplateTag{
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstLastentries= reger.core.db.Db.RunSQL("SELECT eventid, title, megalog.logid FROM event, megalog WHERE event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.showonhomepage='1' AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY date DESC LIMIT 0,15");
+        String[][] rstLastentries= reger.core.db.Db.RunSQL("SELECT eventid, title, event.logid FROM event WHERE event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+reger.Entry.sqlOfLiveEntry+" AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY date DESC LIMIT 0,15");
         //-----------------------------------
         //-----------------------------------
         if (rstLastentries!=null && rstLastentries.length>0){

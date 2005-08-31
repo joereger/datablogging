@@ -49,7 +49,11 @@ public class AccountCache {
 
     public static void flush(){
         if (admin!=null){
-            admin.flushAll();    
+            try{
+                admin.flushAll();
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+            }
         }
     }
 

@@ -49,13 +49,21 @@ public class RelatedLinksCache {
 
     public static void flush(){
         if (admin!=null){
-            admin.flushAll();
+            try{
+                admin.flushAll();
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+            }
         }
     }
 
     public static void flush(int eventid){
         if (admin!=null){
-            admin.flushGroup(String.valueOf("eventid"+eventid));
+            try{
+                admin.flushGroup(String.valueOf("eventid"+eventid));
+            } catch (Exception e){
+                reger.core.Util.errorsave(e);
+            }
         }
     }
 

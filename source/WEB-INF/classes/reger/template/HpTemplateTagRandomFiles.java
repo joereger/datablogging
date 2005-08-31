@@ -40,7 +40,6 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
      * The workhorse of the tag which services live requests.
      * It takes in these elements and then spits out what the
      * tag should be replaced with on the screen.
-     * @return
      */
     public String getHtml(UserSession userSession, javax.servlet.http.HttpServletRequest request, PageProps pageProps){
 
@@ -62,7 +61,7 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
         }
 
         //Get the list
-        String sql="SELECT image.imageid, image.image, event.eventid, megalog.logid, event.title FROM image, megalog, event WHERE image.eventid=event.eventid AND event.logid=megalog.logid  AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY RAND() DESC LIMIT 0,"+maxinlist;
+        String sql="SELECT image.imageid, image.image, event.eventid, event.logid, event.title FROM image, event WHERE image.eventid=event.eventid AND  event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY RAND() DESC LIMIT 0,"+maxinlist;
 
         mb.append("<table cellpadding=0 cellspacing=1 border=0>" );
 

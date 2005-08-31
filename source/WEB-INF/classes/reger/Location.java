@@ -133,7 +133,7 @@ public class Location {
     public static Location[] getLocationsUserCanView(Accountuser accountUser, Account accountLookingForLocationsIn){
         Location[] out = new Location[0];
 
-        String sql = "SELECT DISTINCT location.locationid, locationname, location.accountid, latitude, longitude, city, state, country FROM location, event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.locationid=location.locationid AND event.logid=megalog.logid AND "+accountUser.LogsUserCanViewQueryend(accountLookingForLocationsIn.getAccountid())+" AND event.accountid='"+ accountLookingForLocationsIn.getAccountid() +"' ORDER BY locationname ASC";
+        String sql = "SELECT DISTINCT location.locationid, locationname, location.accountid, latitude, longitude, city, state, country FROM location, event WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.locationid=location.locationid AND "+accountUser.LogsUserCanViewQueryendNoMegalog(accountLookingForLocationsIn.getAccountid())+" AND event.accountid='"+ accountLookingForLocationsIn.getAccountid() +"' ORDER BY locationname ASC";
 
         reger.core.Util.debug(5, "Location.java - getLocationsUserCanView()<br>" + sql);
         //-----------------------------------

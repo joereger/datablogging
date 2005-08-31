@@ -41,7 +41,7 @@ public class MessageListHtml {
         String fieldlistSqlCount = "";
 
         if (logid>0){
-            logidSql = " AND megalog.logid='"+logid+"'";
+            logidSql = " AND event.logid='"+logid+"'";
         }
 
         if (eventid>0){
@@ -58,8 +58,8 @@ public class MessageListHtml {
         }
 
         //Build the final sql strings
-        sql      = "SELECT "+fieldlistSql     +" FROM event, message, megalog WHERE event.logid=megalog.logid AND "+LogsUserCanViewQueryend+" AND "+reger.Entry.sqlOfLiveEntry+" AND event.accountid='" + accountid + "' AND event.eventid=message.eventid AND message.isapproved='1' "+logidSql+" "+eventidSql+" ORDER BY message.messagedate " + orderBy;
-        sqlCount = "SELECT "+fieldlistSqlCount+" FROM event, message, megalog WHERE event.logid=megalog.logid AND "+LogsUserCanViewQueryend+" AND "+reger.Entry.sqlOfLiveEntry+" AND event.accountid='" + accountid + "' AND event.eventid=message.eventid AND message.isapproved='1' "+logidSql+" "+eventidSql+" ORDER BY message.messagedate " + orderBy;
+        sql      = "SELECT "+fieldlistSql     +" FROM event, message WHERE  "+LogsUserCanViewQueryend+" AND "+reger.Entry.sqlOfLiveEntry+" AND event.accountid='" + accountid + "' AND event.eventid=message.eventid AND message.isapproved='1' "+logidSql+" "+eventidSql+" ORDER BY message.messagedate " + orderBy;
+        sqlCount = "SELECT "+fieldlistSqlCount+" FROM event, message WHERE  "+LogsUserCanViewQueryend+" AND "+reger.Entry.sqlOfLiveEntry+" AND event.accountid='" + accountid + "' AND event.eventid=message.eventid AND message.isapproved='1' "+logidSql+" "+eventidSql+" ORDER BY message.messagedate " + orderBy;
 
 
         //Get a count of messages
