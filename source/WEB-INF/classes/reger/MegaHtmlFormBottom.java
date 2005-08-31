@@ -275,7 +275,7 @@ public class MegaHtmlFormBottom {
             //Related Links
             if (!displayasadmin && userSession.getAccount().getUserelatedlinks()==1){
                 String searchterms = pageProps.entry.title + " " + pageProps.entry.comments;
-                reger.RelatedLinks relatedLinks = new reger.RelatedLinks(pageProps.entry.eventid, searchterms, userSession);
+                reger.RelatedLinks relatedLinks = reger.cache.RelatedLinksCache.get(pageProps.entry.eventid, searchterms, userSession);
                 if (relatedLinks.relatedEventid.length>0){
                     mb.append("<tr>");
                     mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");

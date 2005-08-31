@@ -35,13 +35,12 @@ public class ImageCaptchaServlet extends HttpServlet {
            // the output stream to render the captcha image as jpeg into
             ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
             try {
-            // get the session id that will identify the generated captcha.
-            //the same id must be used to validate the response, the session id is a good candidate!
-            String captchaId = httpServletRequest.getSession().getId();
-            // call the ImageCaptchaService getChallenge method
-                BufferedImage challenge =
-                        CaptchaServiceSingleton.getInstance().getImageChallengeForID(captchaId,
-                                httpServletRequest.getLocale());
+                // get the session id that will identify the generated captcha.
+                //the same id must be used to validate the response, the session id is a good candidate!
+                String captchaId = httpServletRequest.getSession().getId();
+
+                // call the ImageCaptchaService getChallenge method
+                BufferedImage challenge = CaptchaServiceSingleton.getInstance().getImageChallengeForID(captchaId, httpServletRequest.getLocale());
 
                 // a jpeg encoder
                 JPEGImageEncoder jpegEncoder =

@@ -160,7 +160,7 @@ public class Entry {
     public Entry(reger.Accountuser accountuserOfAuthor, reger.Account accountOfEntry, reger.PrivateLabel plOfEntry, int logid){
         populate(accountuserOfAuthor, accountOfEntry, plOfEntry, logid, null);
     }
-    
+
 
     public void populate(reger.Accountuser accountuserOfPersonAccessing, reger.Account accountOfEntry, reger.PrivateLabel plOfEntry, int logid, javax.servlet.http.HttpServletRequest request){
         //reger.core.Util.logtodb("Entry.populate().");
@@ -476,6 +476,9 @@ public class Entry {
 
         //Flush the entry cache
         reger.cache.EntryCache.flush(eventid);
+
+        //Flush the related entries cache
+        reger.cache.RelatedLinksCache.flush(eventid);
 
         //Groups
         reger.GroupsClient.addEntryToGroups(eventid, groupsubscriptionids, accountuserid);

@@ -7,7 +7,7 @@ import reger.core.db.Db;
  */
 public class RelatedLinks {
 
-    //These are the two outputs of the object
+    //These are the outputs of the object
     //These are guaranteed to be of the same index... in other words,
     //relatedEventid[1] goes with relatedTitles[1]
     public int[] relatedEventid = new int[0];
@@ -33,6 +33,7 @@ public class RelatedLinks {
         this.searchterms=getSearchTermsFromEventid(eventid);
         //Actually find the links
         findRelatedLinks();
+
     }
 
     /**
@@ -83,6 +84,8 @@ public class RelatedLinks {
                 relatedRank[i] = rstRelatedLinks[i][2];
         	}
         }
+        //Clear the memory required for searchterms
+        searchterms="";
     }
 
     private String getSearchTermsFromEventid(int eventid){

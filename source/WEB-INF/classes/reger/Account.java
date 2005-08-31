@@ -78,6 +78,9 @@ public class Account {
     private long bandwidthused=0;
     private long spaceused=0;
 
+    //Calculated once at object refresh
+    private boolean isPro = false;
+
     //This is the calculated site root URL
     private String siteRootUrl="";
 
@@ -246,6 +249,9 @@ public class Account {
 
             //Load the NestedNavItems
             loadNestedNavItems();
+
+            //Calculate isPro
+            calculateIsPro();
 
         } else {
             //Fail to find an account
@@ -535,7 +541,7 @@ public class Account {
      */
     public static String getSiteRootUrlViaAccountid(int accountid){
         String siteRootUrl = "";
-
+        //@todo Use pl cache instead of database call... low priority
         //-----------------------------------
         //-----------------------------------
         String[][] rstData= Db.RunSQL("SELECT pl.usedynamicdns, pl.plbasedomain, account.accounturl, account.customservername, account.customservername2, account.customservername3 FROM account, pl WHERE account.plid=pl.plid AND account.accountid='"+accountid+"' LIMIT 0,1");
@@ -1062,6 +1068,10 @@ public class Account {
     }
 
     public boolean isPro(){
+        return isPro;
+    }
+
+    public void calculateIsPro(){
         //@todo As is, this will be run on every page... should I populate an ispro var once on Account object creation?
         reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+". Function has been called.");
         if (accountLicense!=null){
@@ -1071,7 +1081,8 @@ public class Account {
                     reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" PROPSTRINGISRECURRINGBILLING is blank.");
                     if (reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid)){
                         reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning true.  Individual users do pay to upgrade, isrecurringbilling=true and isBillingok came back true.");
-                        return true;
+                        isPro=true;
+                        return;
                     }
                     reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid) came back false.");
                 } else {
@@ -1082,26 +1093,31 @@ public class Account {
                             if (expDate.after(reger.core.TimeUtils.nowInGmtCalendar())){
                                 if (reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid)){
                                     reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning true.  Expiration date is after today.  Individual users do pay to upgrade and isBillingok came back true.");
-                                    return true;
+                                    isPro=true;
+                                    return;
                                 }
                             }
                         } catch (Exception e){
                             reger.core.Util.debug(5, e);
                             reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning false.  There was an exception: " + e.getMessage());
-                            return false;
+                            isPro=false;
+                            return;
                         }
                     }
                 }
             } else {
                 reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning true.  Individual users to not pay to upgrade.");
-                return true;
+                isPro=true;
+                return;
             }
         } else {
             reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning false because the license is null.");
-            return false;
+            isPro=false;
+            return;
         }
         reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning false because no true result was found... false is the default.");
-        return false;
+        isPro=false;
+        return;
     }
 
     public License getLicense() {
