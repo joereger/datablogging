@@ -7,6 +7,7 @@ import reger.api.rome.MegaDataRSSModule;
 import reger.api.rome.MegaDataRSSModuleImpl;
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
+import reger.Log;
 
 import java.util.Calendar;
 import java.util.Enumeration;
@@ -97,14 +98,27 @@ public class RssRome {
         //Create Items
         java.util.Vector itemList = new java.util.Vector();
 
+
+        //date, eventid, event.logid, title, comments, megalog.name, accountuser.friendlyname, megalog.logaccess, megalog.password
+
         //Go to database
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEvent= Db.RunSQL("SELECT date, eventid, event.logid, title, comments, megalog.name, accountuser.friendlyname, megalog.logaccess, megalog.password FROM event, megalog, accountuser WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+""+logidSql+" "+eventSql+" AND event.accountuserid=accountuser.accountuserid AND megalog.showonhomepage='1' ORDER BY event.date DESC LIMIT 0, "+limititems+"");
+        String[][] rstEvent= Db.RunSQL("SELECT eventid FROM event WHERE "+reger.Entry.sqlOfLiveEntry+" AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), false)+""+logidSql+" "+eventSql+" ORDER BY event.date DESC LIMIT 0, "+limititems+"");
         //-----------------------------------
         //-----------------------------------
         if (rstEvent!=null && rstEvent.length>0){
         	for(int i=0; i<rstEvent.length; i++){
+
+                //Go get the entry from the cache
+                reger.Entry entry = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][0]));
+
+        	    //Get log name
+                String logname="";
+                Log log = reger.cache.LogCache.get(entry.logid);
+                if (log!=null){
+                    logname = log.getName();
+                }
 
         	    //Create a Rome RSS Item
                 Item item = new Item();
@@ -112,16 +126,19 @@ public class RssRome {
                 //Item Pubdate
                 //Correct format is:
                 //Sat, 07 Sep 2002 0:00:01 GMT
-                Calendar gmttime = reger.core.TimeUtils.gmttousertime(rstEvent[i][0], userSession.getAccount().getTimezoneid());
-                gmttime = reger.core.TimeUtils.usertogmttime(gmttime, userSession.getAccount().getTimezoneid());
+
+                //reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid())
+
+                //Calendar gmttime = reger.core.TimeUtils.gmttousertime(rstEvent[i][0], userSession.getAccount().getTimezoneid());
+                Calendar gmttime = reger.core.TimeUtils.usertogmttime(entry.dateGmt, userSession.getAccount().getTimezoneid());
                 item.setPubDate(gmttime.getTime());
 
                 //Item Link
-                String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rstEvent[i][2]), Integer.parseInt(rstEvent[i][1]), rstEvent[i][3]);
+                String entryurl=reger.Entry.entryFileNameStatic(entry.logid, entry.eventid, entry.title);
                 String itemLink="" + reger.Vars.getHttpUrlPrefix() +userSession.getAccount().getSiteRootUrl() +"/" + entryurl;
-                if (Integer.parseInt(rstEvent[i][7])==reger.Vars.LOGACCESSPRIVATE){
-                    if (!rstEvent[i][8].equals("")){
-                        itemLink = itemLink + "?qpass=" + rstEvent[i][8];
+                if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
+                    if (!log.getPassword().equals("")){
+                        itemLink = itemLink + "?qpass=" + log.getPassword();
                     }
                 }
                 item.setLink(itemLink);
@@ -133,7 +150,7 @@ public class RssRome {
                 item.setGuid(guid);
 
                 //Item title
-                String itemTitle = rstEvent[i][3];
+                String itemTitle = entry.title;
                 item.setTitle(itemTitle);
 
                 //Item Comments Link
@@ -149,14 +166,14 @@ public class RssRome {
                 //String itemDescription = rstEvent[i][4].replace(apost, "'");
                 //String itemDescription = rstEvent[i][4].replaceAll("\\\u2019", "'");
                 //String itemDescription = reger.core.Util.cleanForHtmlAdvanced(rstEvent[i][4]);
-                String itemDescription = rstEvent[i][4];
+                String itemDescription = entry.comments;
                 //reger.core.Util.logtodb("After: " + itemDescription);
                 Description desc = new Description();
                 desc.setValue(itemDescription);
                 item.setDescription(desc);
 
                 //Item Category
-                String itemCategory = rstEvent[i][5];
+                String itemCategory = logname;
                 Category cat = new Category();
                 cat.setValue(itemCategory);
                 java.util.Vector categoryList = new java.util.Vector();
@@ -164,14 +181,14 @@ public class RssRome {
                 item.setCategories((java.util.List)categoryList);
 
                 //Item Author
-                String itemAuthor = rstEvent[i][6];
+                String itemAuthor = entry.author;
                 item.setAuthor(itemAuthor);
 
                 //Item Enclosures
                 java.util.Vector encList = new java.util.Vector();
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstEnc= Db.RunSQL("SELECT imageid, image, description, sizeinbytes FROM image WHERE eventid='"+rstEvent[i][1]+"' ORDER BY image.order ASC, image.imageid ASC");
+                String[][] rstEnc= Db.RunSQL("SELECT imageid, image, description, sizeinbytes FROM image WHERE eventid='"+entry.eventid+"' ORDER BY image.order ASC, image.imageid ASC");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstEnc!=null && rstEnc.length>0){
@@ -192,10 +209,9 @@ public class RssRome {
 
 
                 //Instantiate the module
-                reger.core.Util.debug(5, "RssRome.java - Outputting entry... about to get entrydata for eventid="+rstEvent[i][1]);
+                reger.core.Util.debug(5, "RssRome.java - Outputting entry... about to get entrydata for eventid="+entry.eventid);
                 MegaDataRSSModule tm = new MegaDataRSSModuleImpl();
-                reger.Entry e = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][1]));
-                tm.setFields(e.fields);
+                tm.setFields(entry.fields);
                 item.getModules().add(tm);
                 reger.core.Util.debug(5, "RssRome.java - item.getModules() has been called<br>item.getModules().size()=" + item.getModules().size());
 
@@ -299,11 +315,22 @@ public class RssRome {
         //Go to database
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEvent= Db.RunSQL("SELECT date, eventid, event.logid, title, comments, megalog.name FROM event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+""+logidSql+" "+eventSql+" ORDER BY event.date DESC LIMIT 0, "+limititems+"");
+        String[][] rstEvent= Db.RunSQL("SELECT eventid FROM event WHERE "+reger.Entry.sqlOfLiveEntry+" AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), false)+""+logidSql+" "+eventSql+" ORDER BY event.date DESC LIMIT 0, "+limititems+"");
         //-----------------------------------
         //-----------------------------------
         if (rstEvent!=null && rstEvent.length>0){
         	for(int i=0; i<rstEvent.length; i++){
+
+        	    //Go get the entry from the cache
+                reger.Entry entry = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][0]));
+
+        	    //Get log name
+                String logname="";
+                Log log = reger.cache.LogCache.get(entry.logid);
+                if (log!=null){
+                    logname = log.getName();
+                }
+
 
         	    //Create a Rome RSS Item
                 Entry item = new Entry();
@@ -311,8 +338,8 @@ public class RssRome {
                 //Item Pubdate
                 //Correct format is:
                 //Sat, 07 Sep 2002 0:00:01 GMT
-                Calendar gmttime = reger.core.TimeUtils.gmttousertime(rstEvent[i][0], userSession.getAccount().getTimezoneid());
-                gmttime = reger.core.TimeUtils.usertogmttime(gmttime, userSession.getAccount().getTimezoneid());
+                //Calendar gmttime = reger.core.TimeUtils.gmttousertime(rstEvent[i][0], userSession.getAccount().getTimezoneid());
+                Calendar gmttime = reger.core.TimeUtils.usertogmttime(entry.dateGmt, userSession.getAccount().getTimezoneid());
                 item.setCreated(gmttime.getTime());
 
                 //Item Link
@@ -320,7 +347,7 @@ public class RssRome {
                 //item.setLink(itemLink);
 
                 //Item title
-                String itemTitle = rstEvent[i][3];
+                String itemTitle = entry.title;
                 item.setTitle(itemTitle);
 
                 //Item Comments Link
@@ -331,7 +358,7 @@ public class RssRome {
                 //}
 
                 //Item Description
-                String itemDescription = rstEvent[i][4];
+                String itemDescription = entry.comments;
                 Description desc = new Description();
                 desc.setValue(itemDescription);
                 Content descr = new Content();
@@ -360,8 +387,7 @@ public class RssRome {
 
                 //Instantiate the module
                 MegaDataRSSModule tm = new MegaDataRSSModuleImpl();
-                reger.Entry e = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][1]));
-                tm.setFields(e.fields);
+                tm.setFields(entry.fields);
                 item.getModules().add(tm);
 
                 //Add the item to the list of items
@@ -456,11 +482,21 @@ public class RssRome {
         //Go to database
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEvent= Db.RunSQL("SELECT date, eventid, event.logid, title, comments, megalog.name, accountuser.friendlyname, megalog.logaccess, megalog.password FROM event, megalog, accountuser WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+""+logidSql+" AND event.accountuserid=accountuser.accountuserid ORDER BY event.date DESC LIMIT 0, "+limititems+"");
+        String[][] rstEvent= Db.RunSQL("SELECT eventid FROM event WHERE "+reger.Entry.sqlOfLiveEntry+" AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), false)+""+logidSql+" ORDER BY event.date DESC LIMIT 0, "+limititems+"");
         //-----------------------------------
         //-----------------------------------
         if (rstEvent!=null && rstEvent.length>0){
         	for(int i=0; i<rstEvent.length; i++){
+
+        	    //Go get the entry from the cache
+                reger.Entry entry = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][0]));
+
+        	    //Get log name
+                String logname="";
+                Log log = reger.cache.LogCache.get(entry.logid);
+                if (log!=null){
+                    logname = log.getName();
+                }
 
         	    //Create a Rome RSS Item
                 //Item item = new Item();
@@ -469,16 +505,16 @@ public class RssRome {
                 //Item Pubdate
                 //Correct format is:
                 //Sat, 07 Sep 2002 0:00:01 GMT
-                Calendar gmttime = reger.core.TimeUtils.gmttousertime(rstEvent[i][0], userSession.getAccount().getTimezoneid());
-                gmttime = reger.core.TimeUtils.usertogmttime(gmttime, userSession.getAccount().getTimezoneid());
+                //Calendar gmttime = reger.core.TimeUtils.gmttousertime(rstEvent[i][0], userSession.getAccount().getTimezoneid());
+                Calendar gmttime = reger.core.TimeUtils.usertogmttime(entry.dateGmt, userSession.getAccount().getTimezoneid());
                 item.setPublishedDate(gmttime.getTime());
 
                 //Item Link
-                String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rstEvent[i][2]), Integer.parseInt(rstEvent[i][1]), rstEvent[i][3]);
+                String entryurl=reger.Entry.entryFileNameStatic(entry.logid, entry.eventid, entry.title);
                 String itemLink="" + reger.Vars.getHttpUrlPrefix() +userSession.getAccount().getSiteRootUrl() +"/" + entryurl;
-                if (Integer.parseInt(rstEvent[i][7])==reger.Vars.LOGACCESSPRIVATE){
-                    if (!rstEvent[i][8].equals("")){
-                        itemLink = itemLink + "?qpass=" + rstEvent[i][8];
+                if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
+                    if (!log.getPassword().equals("")){
+                        itemLink = itemLink + "?qpass=" + log.getPassword();
                     }
                 }
                 item.setLink(itemLink);
@@ -490,7 +526,7 @@ public class RssRome {
                 //item.setGuid(guid);
 
                 //Item title
-                String itemTitle = rstEvent[i][3];
+                String itemTitle = entry.title;
                 item.setTitle(itemTitle);
 
                 //Item Comments Link
@@ -506,7 +542,7 @@ public class RssRome {
                 //String itemDescription = rstEvent[i][4].replace(apost, "'");
                 //String itemDescription = rstEvent[i][4].replaceAll("\\\u2019", "'");
                 //String itemDescription = reger.core.Util.cleanForHtmlAdvanced(rstEvent[i][4]);
-                String itemDescription = rstEvent[i][4];
+                String itemDescription = entry.comments;
                 //reger.core.Util.logtodb("After: " + itemDescription);
                 SyndContentImpl description = new SyndContentImpl();
                 description.setType("text/plain");
@@ -514,7 +550,7 @@ public class RssRome {
                 item.setDescription(description);
 
                 //Item Category
-                String itemCategory = rstEvent[i][5];
+                String itemCategory = log.getName();
                 SyndCategoryImpl cat = new SyndCategoryImpl();
                 cat.setName(itemCategory);
                 List categoryList = new ArrayList();
@@ -522,14 +558,14 @@ public class RssRome {
                 item.setCategories(categoryList);
 
                 //Item Author
-                String itemAuthor = rstEvent[i][6];
+                String itemAuthor = entry.author;
                 item.setAuthor(itemAuthor);
 
                 //Item Enclosures
                 java.util.Vector encList = new java.util.Vector();
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstEnc= Db.RunSQL("SELECT imageid, image, description, sizeinbytes FROM image WHERE eventid='"+rstEvent[i][1]+"' ORDER BY image.order ASC, image.imageid ASC");
+                String[][] rstEnc= Db.RunSQL("SELECT imageid, image, description, sizeinbytes FROM image WHERE eventid='"+entry.eventid+"' ORDER BY image.order ASC, image.imageid ASC");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstEnc!=null && rstEnc.length>0){

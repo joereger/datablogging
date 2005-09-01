@@ -90,6 +90,9 @@ public class Account {
     //Holds integer identifiers of all logs for this account
     int[] alllogsforaccountid;
 
+    //Whether the account space var has been called
+    private boolean hasUpdateSpaceBeenCalled=false;
+
 
     public Account(int accountid){
         this.accountid = accountid;
@@ -242,7 +245,7 @@ public class Account {
             updateBandwidthused();
 
             //Update space used
-            updateSpaceused();
+            //updateSpaceused();
 
             //Load the logs for this account
             loadAllLogsForAccountid();
@@ -414,19 +417,24 @@ public class Account {
    * Updates total and individual space usage
    */
   public void updateSpaceused(){
+    reger.core.Util.debug(3, "Account.java- updateSpaceUsed() called.");
     updateImagespaceused();
     updateTextspaceused();
     this.spaceused = this.imagespaceused + this.textspaceused;
+    this.hasUpdateSpaceBeenCalled = true;
   }
 
   public long getFreespace(){
+      if (!hasUpdateSpaceBeenCalled){
+        updateSpaceused();
+      }
       return maxspaceinbytes - spaceused;
   }
 
   /**
    * Returns the number of bytes that the account has in media/images
    */
-   public void updateImagespaceused(){
+   private void updateImagespaceused(){
         //Get used image space
         //-----------------------------------
         //-----------------------------------
@@ -443,7 +451,7 @@ public class Account {
   /**
    * Returns the number of bytes that the account has in text
    */
-   public void updateTextspaceused(){
+   private void updateTextspaceused(){
         //Get used event space
         //-----------------------------------
         //-----------------------------------
@@ -759,10 +767,16 @@ public class Account {
     }
 
     public long getImagespaceused() {
+        if (!hasUpdateSpaceBeenCalled){
+          updateSpaceused();
+        }
         return imagespaceused;
     }
 
     public long getTextspaceused() {
+        if (!hasUpdateSpaceBeenCalled){
+          updateSpaceused();
+        }
         return textspaceused;
     }
 
@@ -771,6 +785,9 @@ public class Account {
     }
 
     public long getSpaceused() {
+        if (!hasUpdateSpaceBeenCalled){
+          updateSpaceused();
+        }
         return spaceused;
     }
 

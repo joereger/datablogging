@@ -42,7 +42,7 @@ mb.append(reger.ui.BubbleBox.start("Entries in this Time Period", pageProps.path
 
 //-----------------------------------
 //-----------------------------------
-String[][] rstEnt= Db.RunSQL("SELECT eventid, title, date, comments, event.logid FROM event, megalog WHERE event.accountid='"+userSession.getAccount().getAccountid()+"' AND date>='"+reger.core.TimeUtils.dateformatfordb(tpEd.getStartDateGMT())+"' AND date<='"+reger.core.TimeUtils.dateformatfordb(tpEd.getEndDateGMT())+"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" AND "+reger.Entry.sqlOfLiveEntry+" ORDER BY date DESC");
+String[][] rstEnt= Db.RunSQL("SELECT eventid, title, date, comments, event.logid FROM event WHERE event.accountid='"+userSession.getAccount().getAccountid()+"' AND date>='"+reger.core.TimeUtils.dateformatfordb(tpEd.getStartDateGMT())+"' AND date<='"+reger.core.TimeUtils.dateformatfordb(tpEd.getEndDateGMT())+"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" AND "+reger.Entry.sqlOfLiveEntry+" ORDER BY date DESC");
 //-----------------------------------
 //-----------------------------------
 if (rstEnt!=null && rstEnt.length>0){

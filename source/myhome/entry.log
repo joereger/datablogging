@@ -58,8 +58,7 @@ if (pageProps.action!=null && !pageProps.action.equals("")) {
             //Update images
             boolean imagesuccess = reger.MegaHtmlFormImageEdits.saveEdits(userSession, pageProps, request);
             //Update the usage data
-            userSession.getAccount().updateImagespaceused();
-            userSession.getAccount().updateTextspaceused();
+            userSession.getAccount().updateSpaceused();
             //Go to the page
             if (request.getParameter("gotopage")!=null && !request.getParameter("gotopage").equals("")){
                 //mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Woulda redirected you to:<br>" + request.getParameter("gotopage")));
@@ -83,8 +82,7 @@ if (pageProps.action!=null && !pageProps.action.equals("")) {
             //Update images
             boolean imagesuccess = reger.MegaHtmlFormImageEdits.saveEdits(userSession, pageProps, request);
             //Update the usage data
-            userSession.getAccount().updateImagespaceused();
-            userSession.getAccount().updateTextspaceused();
+            userSession.getAccount().updateSpaceused();
             //Return to AdminTools
             if (request.getParameter("returntoadmintools")!=null && request.getParameter("returntoadmintools").equals("1")){
                 response.sendRedirect(pageProps.pathToAppRoot + "entry-logid"+ pageProps.logProps.logid +"-eventid"+ pageProps.entry.eventid+".log");

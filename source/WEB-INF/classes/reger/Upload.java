@@ -163,7 +163,7 @@ public class Upload {
                                 long mediafilesize = item.getSize();
 
                                 //Update the object's free image space measurement
-                                userSession.getAccount().updateImagespaceused();
+                                userSession.getAccount().updateSpaceused();
 
                                 //Now check to see if there's enough space to add this one
                                 if (((long)mediafilesize + userSession.getAccount().getSpaceused()) > userSession.getAccount().getMaxspaceinbytes()){
@@ -216,7 +216,7 @@ public class Upload {
 
             }
             //One last update of image space
-           userSession.getAccount().updateImagespaceused();
+           userSession.getAccount().updateSpaceused();
 
 
         } catch (Exception e){

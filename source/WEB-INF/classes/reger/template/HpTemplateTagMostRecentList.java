@@ -55,7 +55,7 @@ public class HpTemplateTagMostRecentList implements HpTemplateTag{
         //Limit to logid, if required
         String logidSql = "";
         if (pageProps.logProps.logid>0){
-            logidSql = " AND megalog.logid='"+pageProps.logProps.logid+"'";
+            logidSql = " AND event.logid='"+pageProps.logProps.logid+"'";
         }
 
         //-----------------------------------

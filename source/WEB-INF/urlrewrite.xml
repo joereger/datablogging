@@ -249,6 +249,13 @@
         <to>/mediaout.log?imageid=$1&amp;isProfileImage=$2&amp;entrykey=$3&amp;$6</to>
     </rule>
 
+    <rule>
+        <name>Robotstxt</name>
+        <note>Redirect robots.txt to robots.log.</note>
+        <from>/robots.txt</from>
+        <to>/robots.log</to>
+    </rule>
+
     <!--
 
      EXAMPLES

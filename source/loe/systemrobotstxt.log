@@ -1,0 +1,175 @@
+
+<%@ page import="java.util.*,
+                 reger.core.SystemProperty,
+                 reger.systemproperties.AllSystemProperties,
+                 reger.core.db.DbConfig" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "Robots.txt";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loerobotstxt";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%
+//Save the properties, test them
+String errortext = "";
+if (request.getParameter("action")!=null && request.getParameter("action").equals("save")){
+    reger.systemproperties.RobotsTxt.save(request.getParameter("robotstxt"));
+}
+
+
+mb.append("<br><br>");
+
+
+if (!errortext.equals("")){
+
+    mb.append("<font face=arial size=+2 color=#ff0000>"+errortext+"</font>");
+    mb.append("<br><br>");
+    mb.append("<font face=arial size=+1 color=#cccccc>Use your browser's back button to adjust.</font>");
+
+} else {
+
+
+    mb.append("<center>");
+    mb.append("<form action=systemrobotstxt.log method=post>");
+    mb.append("<input type=hidden name=action value=save>");
+
+    mb.append("<table cellpadding=5 cellspacing=0 width=75% border=0>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left>");
+    mb.append("<font face=arial size=+2 color=#cccccc>");
+    mb.append("Contents of Robots.txt");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<textarea name=robotstxt wrap=off style=\"width: 100%\" rows=25 cols=65>");
+    mb.append(reger.systemproperties.RobotsTxt.getRobotstxt());
+    mb.append("</textarea>");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Robots.txt controls how your datablogging server allows search engines and other bots to access the site. Here's <a href='http://www.searchengineworld.com/robots/robots_tutorial.htm'>a tutorial on robots.txt</a>.  Note that using robots.txt does not guarantee that bots will not visit pages... the bots themselves must agree to adhere to the robots.txt standard.  Most of the major search engines do and most of the major spammers don't.  See below for some sample robots.txt files customized for the datablogging server.");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<!-- End Prop -->");
+
+
+
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left colspan=2>");
+    mb.append("<font face=arial size=+2 color=#cccccc>");
+    mb.append("<input type=submit value='Save Robots.txt'>");
+    mb.append("</font>");
+    mb.append("</form>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("</table>");
+
+
+    mb.append("</form>");
+    mb.append("</center>");
+
+    mb.append("<br><br><b>A conservative example of robots.txt for the datablogging server:</b><br>");
+    mb.append("<br>User-agent: *");
+    mb.append("<br>Disallow:   /test");
+    mb.append("<br>Disallow:   /myhome");
+    mb.append("<br>Disallow:   /loe");
+    mb.append("<br>Disallow:   /pl");
+    mb.append("<br>Disallow:   /conf");
+    mb.append("<br>Disallow:   /mobile");
+    mb.append("<br>Disallow:   /error");
+    mb.append("<br>Disallow:   /about/community");
+    mb.append("<br>Disallow:   /about/signup");
+    mb.append("<br>Disallow:   /graphs");
+    mb.append("<br>Disallow:   /savedsearches");
+    mb.append("<br>Disallow:   /episodes");
+    mb.append("<br>Disallow:   /locations");
+    mb.append("<br>Disallow:   /files");
+    mb.append("<br>Disallow:   /mediaout");
+    mb.append("<br>Disallow:   /calendar");
+
+    mb.append("<br><br><b>Less conservative example:</b><br>");
+    mb.append("<br>User-agent: *");
+    mb.append("<br>Disallow:   /test");
+    mb.append("<br>Disallow:   /myhome");
+    mb.append("<br>Disallow:   /loe");
+    mb.append("<br>Disallow:   /pl");
+    mb.append("<br>Disallow:   /conf");
+    mb.append("<br>Disallow:   /mobile");
+    mb.append("<br>Disallow:   /error");
+    mb.append("<br>Disallow:   /graphs");
+    mb.append("<br>Disallow:   /savedsearches");
+    mb.append("<br>Disallow:   /episodes");
+    mb.append("<br>Disallow:   /locations");
+    mb.append("<br>Disallow:   /files");
+    mb.append("<br>Disallow:   /mediaout");
+    mb.append("<br>Disallow:   /calendar");
+
+    mb.append("<br><br><b>Even less conservative example:</b><br>");
+    mb.append("<br>User-agent: *");
+    mb.append("<br>Disallow:   /test");
+    mb.append("<br>Disallow:   /myhome");
+    mb.append("<br>Disallow:   /loe");
+    mb.append("<br>Disallow:   /pl");
+    mb.append("<br>Disallow:   /conf");
+    mb.append("<br>Disallow:   /mobile");
+    mb.append("<br>Disallow:   /error");
+    mb.append("<br>Disallow:   /mediaout");
+
+
+}
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

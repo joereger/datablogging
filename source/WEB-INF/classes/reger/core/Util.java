@@ -1426,8 +1426,10 @@ public class Util {
      * This method must be called on any appendreplacement string.
      */
      public static String cleanForAppendreplacement(String in){
-
-        String out=in.replaceAll("\\\\","\\\\\\\\").replaceAll("\\$", "\\\\\\$");
+        String out = "";
+        if(in!=null){
+            out=in.replaceAll("\\\\","\\\\\\\\").replaceAll("\\$", "\\\\\\$");
+        }
 
         return out;
     }
