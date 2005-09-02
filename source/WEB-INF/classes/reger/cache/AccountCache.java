@@ -18,21 +18,29 @@ public class AccountCache {
             admin = new GeneralCacheAdministrator();
         }
 
-        try {
-            reger.core.Util.debug(4, "AccountCache.get("+accountid+") trying to return from cache.");
-            return (Account) admin.getFromCache(String.valueOf(accountid));
-        } catch (NeedsRefreshException nre) {
+        if (accountid>0){
             try {
-                reger.core.Util.debug(4, "AccountCache.get("+accountid+") refreshing object from database.");
-                Account acct = new Account(accountid);
-                admin.putInCache(String.valueOf(accountid), acct);
-                return acct;
-            } catch (Exception ex) {
-                admin.cancelUpdate(String.valueOf(accountid));
-                reger.core.Util.errorsave(ex);
-                return new Account(0);
+                reger.core.Util.debug(4, "AccountCache.get("+accountid+") trying to return from cache.");
+                return (Account) admin.getFromCache(String.valueOf(accountid));
+            } catch (NeedsRefreshException nre) {
+                try {
+                    reger.core.Util.debug(4, "AccountCache.get("+accountid+") refreshing object from database.");
+                    Account acct = new Account(accountid);
+                    //if (accountid>0 && acct!=null){
+                        admin.putInCache(String.valueOf(accountid), acct);
+                        return acct;
+    //                } else {
+    //                    admin.cancelUpdate(String.valueOf(accountid));
+    //                    return new Account(0);
+    //                }
+                } catch (Exception ex) {
+                    admin.cancelUpdate(String.valueOf(accountid));
+                    reger.core.Util.errorsave(ex);
+                    return new Account(0);
+                }
             }
         }
+        return new Account(0);
     }
 
     public static void put(String key, Account acct){
