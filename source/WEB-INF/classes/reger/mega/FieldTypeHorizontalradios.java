@@ -726,9 +726,9 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         Element child = dataType.getChild("restriction", reger.MegaLogTypeXmlSchemaRenderer.xsNs);
         if (child!=null){
             for (int j = 0; j < possibleValues.length; j++) {
-                Element enum = new Element("enumeration", reger.MegaLogTypeXmlSchemaRenderer.xsNs);
-                enum.setAttribute("name", possibleValues[j]);
-                child.addContent(enum);
+                Element enum1 = new Element("enumeration", reger.MegaLogTypeXmlSchemaRenderer.xsNs);
+                enum1.setAttribute("name", possibleValues[j]);
+                child.addContent(enum1);
             }
         }
         //Call back to the generic field to provide most of the field definition

@@ -510,9 +510,9 @@ public class Field implements Cloneable, FieldInterface {
                 Element rest = new Element("restriction", reger.MegaLogTypeXmlSchemaRenderer.xsNs);
                 rest.setAttribute("base","xs:string");
                 st.addContent(rest);
-                    Element enum = new Element("enumeration", reger.MegaLogTypeXmlSchemaRenderer.xsNs);
-                    enum.setAttribute("name", "dropdown");
-                    rest.addContent(enum);
+                    Element enum1 = new Element("enumeration", reger.MegaLogTypeXmlSchemaRenderer.xsNs);
+                    enum1.setAttribute("name", "dropdown");
+                    rest.addContent(enum1);
                     Element enum2 = new Element("enumeration", reger.MegaLogTypeXmlSchemaRenderer.xsNs);
                     enum2.setAttribute("name", "textbox");
                     rest.addContent(enum2);

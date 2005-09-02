@@ -56,9 +56,9 @@ pageProps.pathToAppRoot="";
 //
 //
 //    mb.append("<br><br>ATTRIBUTE NAMES:");
-//    Enumeration enum = request.getSession().getServletContext().getAttributeNames();
-//    while (enum.hasMoreElements()) {
-//        String name = (java.lang.String) enum.nextElement();
+//    Enumeration enum1 = request.getSession().getServletContext().getAttributeNames();
+//    while (enum1.hasMoreElements()) {
+//        String name = (java.lang.String) enum1.nextElement();
 //        mb.append("<br>" + name + " = " + request.getSession().getServletContext().getAttribute(name));
 //    }
 //
