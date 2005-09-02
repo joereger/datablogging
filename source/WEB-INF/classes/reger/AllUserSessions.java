@@ -15,6 +15,10 @@ public class AllUserSessions {
 
     }
 
+    public static void flushSessions(){
+        userSessions=null;    
+    }
+
     private void addSession(String userSessionId, reger.UserSession userSession){
         if (userSessions==null){
             userSessions = Collections.synchronizedMap(new HashMap());

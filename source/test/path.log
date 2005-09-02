@@ -1,0 +1,101 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//try{
+//   mb.append("realPath="+request.getSession().getServletContext().getRealPath("/"));
+//
+//   String pathSeparator = System.getProperty("file.separator");
+//   mb.append("<br>pathSeparator=" + pathSeparator);
+//   if (pathSeparator.equals("\\")){
+//        pathSeparator = "\\\\";
+//   }
+//   String realPath = request.getSession().getServletContext().getRealPath(pathSeparator);
+//   String[] realPathParts = realPath.split(pathSeparator);
+//    for (int i = 0; i < realPathParts.length; i++) {
+//        java.lang.String realPathPart = realPathParts[i];
+//        mb.append("<br>part - " + i + " = " + realPathPart);
+//    }
+//
+//    String uniqueEngineName = realPathParts[realPathParts.length-1];
+//    if (realPathParts[realPathParts.length-2]!=null){
+//        uniqueEngineName = realPathParts[realPathParts.length-2] + uniqueEngineName;
+//    }
+//    mb.append("<br>uniqueEngineName=" + uniqueEngineName);
+//
+//
+//
+//   reger.core.Util.logStringArrayToDb("realPathParts=", realPathParts);
+//
+//
+//    mb.append("<br><br>ATTRIBUTE NAMES:");
+//    Enumeration enum = request.getSession().getServletContext().getAttributeNames();
+//    while (enum.hasMoreElements()) {
+//        String name = (java.lang.String) enum.nextElement();
+//        mb.append("<br>" + name + " = " + request.getSession().getServletContext().getAttribute(name));
+//    }
+//
+//    mb.append("<br><br>INIT PARAM NAMES:");
+//    Enumeration enum2 = request.getSession().getServletContext().getInitParameterNames();
+//    while (enum2.hasMoreElements()) {
+//        String name = (java.lang.String) enum2.nextElement();
+//        mb.append("<br>" + name + " = " + request.getSession().getServletContext().getInitParameter(name));
+//    }
+//
+//} catch (Exception e){
+//    mb.append(e.getMessage());
+//    reger.core.Util.errorsave(e);
+//}
+
+
+Properties properties = new Properties();
+properties.setProperty("date", reger.core.TimeUtils.nowInGmtString());
+File fil = new File("", "datablogging-"+reger.core.WebAppRootDir.getUniqueContextId()+"-dbconfig.txt");
+FileOutputStream fos = new FileOutputStream(fil);
+properties.store(fos, "DbConfig for " + reger.core.WebAppRootDir.getUniqueContextId());
+fos.close();
+fil = null;
+fos = null;
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

@@ -24,6 +24,11 @@ String[][] rstUser= Db.RunSQL("SELECT accountuser.accountuserid FROM accountuser
 //-----------------------------------
 //-----------------------------------
 if (rstUser!=null && rstUser.length>0){
+    //Dump the userSession cache and account cache.
+    reger.AllUserSessions.flushSessions();
+    reger.cache.AccountCache.flush();
+    reger.AllPrivateLabelsInSystem.refresh();
+
     //There is already a user with LOEAdmin permissions in the database.
     response.sendRedirect("setup-04.log");
     return;
@@ -132,6 +137,11 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
         if (au.getEmail()!=null && !au.getEmail().equals("")) {
             reger.emailtext.BasicEmails.newAccountWelcome(au, newaccountid, pl, request.getParameter("password"));
         }
+
+        //Dump the userSession cache and account cache.
+        reger.AllUserSessions.flushSessions();
+        reger.cache.AccountCache.flush();
+        reger.AllPrivateLabelsInSystem.refresh();
 
         //Redirect to log the user in
         //response.sendRedirect(reger.Vars.getHttpUrlPrefix() + baseUrlOfAccount +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=signupcomplete");

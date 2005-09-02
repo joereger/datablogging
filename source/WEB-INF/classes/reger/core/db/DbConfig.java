@@ -27,15 +27,47 @@ public class DbConfig {
     private static boolean haveNewConfigToTest = false;
     private static boolean haveAttemptedToLoadDefaultPropsFile = false;
     private static String dbPropsInternalFilename = reger.core.WebAppRootDir.getWebAppRootPath() + "conf/db.props";
+    private static String dbPropsExternalFilename = "datablogging-"+reger.core.WebAppRootDir.getUniqueContextId()+"-dbconfig.txt";
 
     public static void load(){
         if (!haveValidConfig && !haveAttemptedToLoadDefaultPropsFile){
             try {
-                Properties properties = new Properties();
-                properties.load(new FileInputStream(new File(dbPropsInternalFilename)));
-                loadPropsFile(properties);
-            } catch (IOException e) {
-                //e.printStackTrace();
+
+                boolean gotFile = false;
+
+                //Look in the /conf directory
+                try{
+                    File internalFile = new File(dbPropsInternalFilename);
+                    if (internalFile!=null && internalFile.exists() && internalFile.canRead() && internalFile.isFile()){
+                        Properties properties = new Properties();
+                        properties.load(new FileInputStream(internalFile));
+                        loadPropsFile(properties);
+                        gotFile = true;
+                    }
+                } catch (IOException e) {
+                    //e.printStackTrace();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                //If we don't have one in the conf directory, look to the system default dir
+                if (!gotFile){
+                    try{
+                        File externalFile = new File("", dbPropsExternalFilename);
+                        if (externalFile!=null && externalFile.exists() && externalFile.canRead() && externalFile.isFile()){
+                            Properties properties = new Properties();
+                            properties.load(new FileInputStream(externalFile));
+                            loadPropsFile(properties);
+                            gotFile = true;
+                        }
+                    } catch (IOException e) {
+                        //e.printStackTrace();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -92,13 +124,21 @@ public class DbConfig {
                 if (dbMaxWait!=null){
                     properties.setProperty("dbMaxWait", dbMaxWait);
                 }
-                //Save to the file system
+                //Save to the file system in the conf directory
                 File fil = new File(dbPropsInternalFilename);
                 FileOutputStream fos = new FileOutputStream(fil);
                 properties.store(fos, "DbConfig");
                 fos.close();
                 fil = null;
                 fos = null;
+
+                //Store to default system location
+                File fil2 = new File("", dbPropsExternalFilename);
+                FileOutputStream fos2 = new FileOutputStream(fil2);
+                properties.store(fos2, "DbConfig for " + reger.core.WebAppRootDir.getUniqueContextId());
+                fos2.close();
+                fil2 = null;
+                fos2 = null;
 
             } catch (IOException e) {
                 e.printStackTrace();

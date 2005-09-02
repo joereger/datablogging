@@ -33,7 +33,6 @@ if (rstUser!=null && rstUser.length>0){
 
 
 
-
 <font face=arial size=+3 color=#cccccc>Setup Finished!</font>
 <br><br>
 <font face=arial size=-1 color=#cccccc><a href='../index.log'>Click here to go to the homepage where you can log in.</a></font>
