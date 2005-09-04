@@ -1,13 +1,11 @@
 package reger.scheduledtasks;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
 import reger.core.scheduler.ScheduledTask;
+import reger.core.Debug;
 import reger.linkrot.Util;
 import reger.threadpool.ThreadPool;
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import java.util.Calendar;
 
 /**
@@ -75,7 +73,7 @@ public class LinkrotSpider implements ScheduledTask{
             //Set the starting record to get
             startrecord = i*numbertoget;
 
-            reger.core.Util.debug(5, "Starting new batch of linkrot searches: i=" + i + "<br>count=" + count + "<br>numbertoget=" + numbertoget);
+            Debug.debug(5, "", "Starting new batch of linkrot searches: i=" + i + "<br>count=" + count + "<br>numbertoget=" + numbertoget);
 
             //Now increment the counting int
             i=i+1;
@@ -89,10 +87,10 @@ public class LinkrotSpider implements ScheduledTask{
             if (rstEvent!=null && rstEvent.length>0){
                 for(int j=0; j<rstEvent.length; j++){
 
-                    reger.core.Util.debug(5, "++++++++++++++++<br>++++++++++++++++<br>++++++++++++++++<br>Start url:" + rstEvent[j][0]);
+                    Debug.debug(5, "", "++++++++++++++++<br>++++++++++++++++<br>++++++++++++++++<br>Start url:" + rstEvent[j][0]);
                     pool.assign(new reger.linkrot.LinkrotProcessRequests(rstEvent[j][0]));
                     urlsProcessed = urlsProcessed + 1;
-                    reger.core.Util.debug(5, "End url:" + rstEvent[j][0] + "<br>++++++++++++++++<br>++++++++++++++++<br>++++++++++++++++<br>");
+                    Debug.debug(5, "", "End url:" + rstEvent[j][0] + "<br>++++++++++++++++<br>++++++++++++++++<br>++++++++++++++++<br>");
                 }
             }
         }

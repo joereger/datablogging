@@ -1,7 +1,7 @@
 package reger.mega;
 
-import reger.Entry;
 import reger.AddToArray;
+import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
@@ -282,7 +282,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
             } catch (reger.core.ValidationException ex){
                 errortext = errortext +  ">> " + this.fieldname + ": " + ex.getErrorsAsSingleString() + "<br>";
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
 
@@ -417,7 +417,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
     public boolean fulfillsQuery(FieldQueryElement[] fieldQueryElements, int logidOrEtid) {
 
 
-        reger.core.Util.debug(5, "FieldTypeTimeperiod.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData[0].getValue());
+        Debug.debug(5, "", "FieldTypeTimeperiod.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData[0].getValue());
 
 
         //Get the values
@@ -465,19 +465,19 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
         try{
             equalto = new Float((equaltohours.floatValue()*3600)+(equaltominutes.floatValue()*60)+(equaltoseconds.floatValue()));
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
         Float greaterthan = null;
         try{
             greaterthan = new Float((greaterthanhours.floatValue()*3600)+(greaterthanminutes.floatValue()*60)+(greaterthanseconds.floatValue()));
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
         Float lessthan = null;
         try{
             lessthan = new Float((lessthanhours.floatValue()*3600)+(lessthanminutes.floatValue()*60)+(lessthanseconds.floatValue()));
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
 
 

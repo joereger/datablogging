@@ -1,5 +1,7 @@
 package reger.template;
 
+import reger.core.Debug;
+
 
 /**
  * Factory used to get a template processor
@@ -24,7 +26,7 @@ public class TemplateProcessorFactory {
                 return tmp[i];
             }
         }
-        reger.core.Util.debug(5, "No handler found: TemplateProcessorFactory.getProcessorByType - incoming type=" + type);
+        Debug.debug(5, "", "No handler found: TemplateProcessorFactory.getProcessorByType - incoming type=" + type);
         return null;
     }
 

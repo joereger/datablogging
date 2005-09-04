@@ -48,7 +48,7 @@ try{
     reger.TrafficHit trafficHit = new reger.TrafficHit(request, pageProps.logProps.logid, tmpAccountid, pageProps.trafficType, userSession.getPl().getPlid(), userSession.getSiteRootUrl(), bandwidth, isSuperCookieOn);
     reger.cache.TrafficHitCache.addTrafficHit(trafficHit);
 } catch (Exception e){
-    reger.core.Util.errorsave(e, "globalfooter.jsp");
+    Debug.errorsave(e, "", "globalfooter.jsp");
 }
 //End record traffic
 //----------------------------------------------------------------

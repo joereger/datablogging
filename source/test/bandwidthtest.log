@@ -8,6 +8,7 @@
                  javax.crypto.*,
                  java.io.*,
                  java.util.*"%>
+<%@ page import="reger.core.Debug"%>
 
 
 <%
@@ -60,7 +61,7 @@ try{
     mb.append("millisElapsed = " + millisElapsed + "<br>");
     mb.append("kbps = " + kbps + "<br>");
 } catch (Exception e){
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
     mb.append(reger.core.ErrorDissect.dissect(e, request, ""));
 }
 

@@ -4,7 +4,7 @@ import org.apache.commons.dbcp.*;
 import javax.sql.*;
 import java.sql.*;
 import java.util.Vector;
-import reger.core.Util;
+import reger.core.Debug;
 import reger.core.db.DbConfig;
 
 public class Db {
@@ -126,13 +126,13 @@ public class Db {
 					results[i] = (String[]) rows.elementAt(i);
 				}
 	        } else {
-                Util.errorsave(null, "Db.java: conn==null.<br>sql=" + sql);
+                Debug.errorsave(null, "", "Db.java: conn==null.<br>sql=" + sql);
             }
 
 
     }catch(Exception e) {
       	e.printStackTrace();
-      	Util.errorsave(e, sql);
+      	Debug.errorsave(e, "", sql);
     } finally {
 		try {
 			//Close the connections
@@ -172,13 +172,13 @@ public class Db {
 	            stmt = conn.createStatement();
 	            count = stmt.executeUpdate(sql);
 	        } else {
-                Util.errorsave(null, "Db.java: conn==null.<br>sql=" + sql);
+                Debug.errorsave(null, "", "Db.java: conn==null.<br>sql=" + sql);
             }
 
 
     }catch(Exception e) {
       e.printStackTrace();
-      Util.errorsave(e, sql);
+      Debug.errorsave(e, "", sql);
 	  return 0;
     } finally {
 		try {
@@ -218,13 +218,13 @@ public class Db {
 				}
 				if(tmpRst!=null) tmpRst.close();
 	        } else {
-                Util.errorsave(null, "Db.java: conn==null.<br>sql=" + sql);
+                Debug.errorsave(null, "", "Db.java: conn==null.<br>sql=" + sql);
             }
 
 
     }catch(Exception e) {
 	  e.printStackTrace();
-	  Util.errorsave(e, sql);
+	  Debug.errorsave(e, "", sql);
 	  return 0;
     } finally {
 		try {

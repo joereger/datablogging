@@ -1,6 +1,7 @@
 <%@ page import="reger.core.db.Db,
                  reger.mega.MegaChart,
                  reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -80,7 +81,7 @@ userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccoun
 " AND "+
 " (megachart.accountid='"+userSession.getAccount().getAccountid()+"' OR megachart.accountid='0')"+
 " ORDER BY megachart.accountid DESC, megalog.logid ASC, megachart.megachartid DESC";
-reger.core.Util.debug(5, sql);
+Debug.debug(5, "", sql);
 
 //-----------------------------------
 //-----------------------------------

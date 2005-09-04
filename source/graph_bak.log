@@ -41,6 +41,7 @@ if (request.getParameter("ispreview")!=null && request.getParameter("ispreview")
 <%@ page import="org.jfree.chart.renderer.*" %>
 <%@ page import="org.jfree.chart.renderer.xy.*" %>
 <%@ page import="org.jfree.chart.labels.*" %>
+<%@ page import="reger.core.Debug"%>
 
 
 
@@ -235,7 +236,7 @@ try {
                                 //Which is a lot of overhead in Java's slow date classes.  Instead,
                                 //I'm relying on the Millisecond's built-in check to see if the date is
                                 //between 1900 and 9999.  Not as elegant as I'd like, but it works.
-                                reger.core.Util.debug(5, e);
+                                Debug.debug(5, "", e);
                             }
                         }
 
@@ -249,7 +250,7 @@ try {
                         //is to help the graphs be more robust.  Instead of crashing the whole
                         //graph, only this data point won't be added.  Solve errors caught here
                         //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
-                        reger.core.Util.errorsave(e, "graph.log - Error Adding Data to jFreeChart Data Set.");
+                        Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                     }
 
                 }
@@ -428,7 +429,7 @@ try {
     //Record the bytesOutput to the database
     int bytesOutput = imgBytes.length;
     reger.Bandwidth.addActivity(userSession, bytesOutput);
-    reger.core.Util.debug(5, "graph.log<br>bytesOutput=" + bytesOutput);
+    Debug.debug(5, "", "graph.log<br>bytesOutput=" + bytesOutput);
 
 
 
@@ -438,7 +439,7 @@ try {
 
     //Chart End
 } catch (Exception e) {
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
 }
 
 //Close the output stream

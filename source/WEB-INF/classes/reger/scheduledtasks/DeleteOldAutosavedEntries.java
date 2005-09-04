@@ -2,6 +2,7 @@ package reger.scheduledtasks;
 
 import reger.core.db.Db;
 import reger.core.scheduler.ScheduledTask;
+import reger.core.Debug;
 
 /**
  * Gets the filesize and entry size and updates them.
@@ -39,7 +40,7 @@ public class DeleteOldAutosavedEntries implements ScheduledTask{
             recordsupdated = count;
 
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             result = "Error.  Check event log.";
         }
         result = recordsupdated + " records updated.";

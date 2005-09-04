@@ -131,7 +131,7 @@ public class SystemProperty {
             //-----------------------------------
         } catch (Exception e){
             e.printStackTrace();
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 

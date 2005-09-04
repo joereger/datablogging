@@ -1,10 +1,9 @@
 package reger;
 
-import reger.mega.Field;
 import reger.mega.FieldType;
 import reger.mega.FieldTypeFactory;
 import reger.core.db.Db;
-import reger.core.Util;
+import reger.core.Debug;
 
 
 import java.util.*;
@@ -45,7 +44,7 @@ public class AllFieldsInSystem {
      * Empties and then refreshes all logs in the system.
      */
     public static void refresh(){
-        Util.debug(5, "allFields.refresh().");
+        Debug.debug(5, "", "allFields.refresh().");
 
         allFieldsInSystem = Collections.synchronizedMap(new HashMap());
         eventtypeidToMegafieldid = Collections.synchronizedMap(new HashMap());
@@ -111,7 +110,7 @@ public class AllFieldsInSystem {
                         debug.append("allFields - megafieldid=."+rstFields[i][0]+" updated.<br>");
                     }
                 }
-                Util.debug(5, "AllFieldsInSystem.java<br>");
+                Debug.debug(5, "", "AllFieldsInSystem.java<br>");
             }
         }
         }
@@ -125,7 +124,7 @@ public class AllFieldsInSystem {
      * Refreshes a single megafieldid.
      */
     public static void refresh(int megafieldid){
-        Util.debug(5, "allFields.refresh(megafieldid="+megafieldid+").");
+        Debug.debug(5, "", "allFields.refresh(megafieldid="+megafieldid+").");
         if (allFieldsInSystem==null){
             refresh();
         }
@@ -170,7 +169,7 @@ public class AllFieldsInSystem {
                         }
                     }
                     //Debug statement
-                    Util.debug(5, "allFields - megafieldid=."+rstFields[i][0]+" updated.");
+                    Debug.debug(5, "", "allFields - megafieldid=."+rstFields[i][0]+" updated.");
                 }
         	}
         } else {
@@ -245,7 +244,7 @@ public class AllFieldsInSystem {
 
 
     public static FieldType[] allMegaFieldsForEventtypeid(int eventtypeid, boolean getCopyOfFieldInsteadOfReference){
-        reger.core.Util.debug(5, "AllFieldsInSystem.allMegaFieldsForEventtypeid() - eventtypeid=" + eventtypeid);
+        Debug.debug(5, "", "AllFieldsInSystem.allMegaFieldsForEventtypeid() - eventtypeid=" + eventtypeid);
         FieldType[] out = new FieldType[0];
         if (allFieldsInSystem==null){
             refresh();
@@ -351,7 +350,7 @@ public class AllFieldsInSystem {
     }
 
     public static FieldType[] getFieldsExplicitylAssignedToLogid(int logid, boolean getCopyOfFieldInsteadOfReference){
-        reger.core.Util.debug(5, "AllFieldsInSystem.getFieldsExplicitylAssignedToLogid() - logid=" + logid);
+        Debug.debug(5, "", "AllFieldsInSystem.getFieldsExplicitylAssignedToLogid() - logid=" + logid);
         FieldType[] out = new FieldType[0];
         if (allFieldsInSystem==null){
             refresh();
@@ -473,7 +472,7 @@ public class AllFieldsInSystem {
         int debugMegafieldidToWatch = 130;
 
         //Get the system fields for this megalogtype
-        reger.core.Util.debug(5, "AllFieldsInSystem.allMegaFieldsForLog() - logid="+logid+" eventtypeid=" + eventtypeid);
+        Debug.debug(5, "", "AllFieldsInSystem.allMegaFieldsForLog() - logid="+logid+" eventtypeid=" + eventtypeid);
         FieldType[] systemFields = allMegaFieldsForEventtypeid(eventtypeid, true);
 
         //Get the log fields for this logid
@@ -490,7 +489,7 @@ public class AllFieldsInSystem {
                     if (logFields[k].getMegafieldid()==interimFields[l].getMegafieldid()){
                         //Replace systemField with the userField
                         if (logFields[k].getMegafieldid()==debugMegafieldidToWatch){
-                            reger.core.Util.debug(5, "AllFieldsInSystem.java - Replacing megafieldid=" + logFields[k].getMegafieldid());
+                            Debug.debug(5, "", "AllFieldsInSystem.java - Replacing megafieldid=" + logFields[k].getMegafieldid());
                         }
                         interimFields[l] = logFields[k];
                         logFieldOverridesSystemField=true;
@@ -499,7 +498,7 @@ public class AllFieldsInSystem {
                 //If, after looking for a field this logField, there isn't one, add it
                 if (!logFieldOverridesSystemField){
                     if (logFields[k].getMegafieldid()==debugMegafieldidToWatch){
-                        reger.core.Util.debug(5, "AllFieldsInSystem.java - logid="+logid+" - Adding userField.megafieldid=" + logFields[k].getMegafieldid());
+                        Debug.debug(5, "", "AllFieldsInSystem.java - logid="+logid+" - Adding userField.megafieldid=" + logFields[k].getMegafieldid());
                     }
                     interimFields = AddToArray.addToFieldTypeArray(interimFields, logFields[k]);
                 }
@@ -513,7 +512,7 @@ public class AllFieldsInSystem {
                 tmp0.append(interimFields[cc].getMegafieldid() + "<br>fieldname=" + interimFields[cc].getFieldname() + "<br>");
             }
         }
-        reger.core.Util.debug(5, "AllFieldsInSystem.java - logid="+logid+" interimFields Before Assignment<br>" + tmp0.toString());
+        Debug.debug(5, "", "AllFieldsInSystem.java - logid="+logid+" interimFields Before Assignment<br>" + tmp0.toString());
 
 
 

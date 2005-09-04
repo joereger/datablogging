@@ -1,8 +1,7 @@
 package reger.linkrot;
 
 import reger.core.db.Db;
-
-import java.util.Calendar;
+import reger.core.Debug;
 
 /**
  * Utility functions for the linkrot system
@@ -13,7 +12,7 @@ public class Util {
     //Add/update linkrot
     public static int updateLinkrot(String url, String keywords, boolean isbroken, String recommendation, int httpstatuscode){
         //Debug
-        reger.core.Util.debug(5, "url:"+url+"<br>LinkrotProcessRequests.updateLinkrot() - start");
+        Debug.debug(5, "", "url:"+url+"<br>LinkrotProcessRequests.updateLinkrot() - start");
         //Convert boolean to int
         int isbrokenint = 0;
         if (isbroken){
@@ -30,8 +29,8 @@ public class Util {
         //-----------------------------------
         //-----------------------------------
         if (rstUrl!=null && rstUrl.length>0){
-        	for(int i=0; i<rstUrl.length; i++){
-        	    if (!keywords.equals("") && httpstatuscode==200){
+            for(int i=0; i<rstUrl.length; i++){
+                if (!keywords.equals("") && httpstatuscode==200){
                     //Update the table and the keywords
                     //-----------------------------------
                     //-----------------------------------
@@ -49,7 +48,7 @@ public class Util {
 
                 //Set the linkrotid
                 linkrotid = Integer.parseInt(rstUrl[i][0]);
-        	}
+            }
         } else {
             //Add to the linkrot table
             //-----------------------------------
@@ -72,7 +71,7 @@ public class Util {
         }
 
         //Debug
-        reger.core.Util.debug(5, "url:"+url+"<br>LinkrotProcessRequests.updateLinkrot() - end");
+        Debug.debug(5, "", "url:"+url+"<br>LinkrotProcessRequests.updateLinkrot() - end");
 
         return linkrotid;
     }
@@ -88,7 +87,7 @@ public class Util {
     //Add/update linkrot->eventid relationship
     public static void updateLinkrotEventidRelationship(String url, int eventid){
         //Debug
-        reger.core.Util.debug(5, "reger.linkrot.Util.updateLinkrotEventidRelationship() - start");
+        Debug.debug(5, "", "reger.linkrot.Util.updateLinkrotEventidRelationship() - start");
 
         //See if the url exists in the linkrot table
         int linkrotid = 0;
@@ -120,9 +119,9 @@ public class Util {
         //-----------------------------------
         //-----------------------------------
         if (rstRel!=null && rstRel.length>0){
-        	for(int i=0; i<rstRel.length; i++){
-        	    //Do nothing, the relationship exists
-        	}
+            for(int i=0; i<rstRel.length; i++){
+                //Do nothing, the relationship exists
+            }
         } else {
             //Add the relationship
             //-----------------------------------
@@ -132,7 +131,7 @@ public class Util {
             //-----------------------------------
         }
         //Debug
-        reger.core.Util.debug(5, "reger.linkrot.Util.updateLinkrotEventidRelationship() - end");
+        Debug.debug(5, "", "reger.linkrot.Util.updateLinkrotEventidRelationship() - end");
     }
 
     /**
@@ -145,7 +144,7 @@ public class Util {
      */
     public static void completeFixForEventid(int linkrotid, int eventid, String chosenUrlReplacement){
         //Debug
-        reger.core.Util.debug(5, "chosenUrlReplacement:"+chosenUrlReplacement+"<br>LinkrotProcessRequests.completefixforeventid() - start");
+        Debug.debug(5, "", "chosenUrlReplacement:"+chosenUrlReplacement+"<br>LinkrotProcessRequests.completefixforeventid() - start");
         //Now see how many others have the url that was just replaced
         //-----------------------------------
         //-----------------------------------
@@ -160,7 +159,7 @@ public class Util {
             //-----------------------------------
             //-----------------------------------
 
-        	if (Integer.parseInt(rstCount[0][0])==1){
+            if (Integer.parseInt(rstCount[0][0])==1){
                 //Only this user has this url so we need to delete it from the linkrot tables
                 //-----------------------------------
                 //-----------------------------------
@@ -174,12 +173,12 @@ public class Util {
             }
         }
         //Debug
-        reger.core.Util.debug(5, "chosenurlreplacement:"+chosenUrlReplacement+"<br>LinkrotProcessRequests.completeFixForEventid() - end");
+        Debug.debug(5, "", "chosenurlreplacement:"+chosenUrlReplacement+"<br>LinkrotProcessRequests.completeFixForEventid() - end");
     }
 
     public static void addUpdateRecommendation(int linkrotid, String url, String source){
         //Debug
-        reger.core.Util.debug(5, "url:"+url+"<br>LinkrotProcessRequests.addUpdateRecommendation() - start");
+        Debug.debug(5, "", "url:"+url+"<br>LinkrotProcessRequests.addUpdateRecommendation() - start");
         //See if the recommendation exists now
         //-----------------------------------
         //-----------------------------------
@@ -187,9 +186,9 @@ public class Util {
         //-----------------------------------
         //-----------------------------------
         if (rstRel!=null && rstRel.length>0){
-        	for(int i=0; i<rstRel.length; i++){
-        	    //Do nothing, the relationship exists
-        	}
+            for(int i=0; i<rstRel.length; i++){
+                //Do nothing, the relationship exists
+            }
         } else {
             //Add the relationship
             //-----------------------------------
@@ -199,7 +198,7 @@ public class Util {
             //-----------------------------------
         }
         //Debug
-        reger.core.Util.debug(5, "url:"+url+"<br>LinkrotProcessRequests.addUpdateRecommendation() - end");
+        Debug.debug(5, "", "url:"+url+"<br>LinkrotProcessRequests.addUpdateRecommendation() - end");
     }
 
     public static void deleteOrphanLinkrotids(){
@@ -209,8 +208,8 @@ public class Util {
         //-----------------------------------
         //-----------------------------------
         if (rstCnt!=null && rstCnt.length>0){
-        	for(int i=0; i<rstCnt.length; i++){
-        	    //If there are no events using it
+            for(int i=0; i<rstCnt.length; i++){
+                //If there are no events using it
                 if (Integer.parseInt(rstCnt[i][0])==0){
                     //Delete the linkrotid because it has no events using it
                     //-----------------------------------
@@ -226,7 +225,7 @@ public class Util {
                     //-----------------------------------
                     //-----------------------------------
                 }
-        	}
+            }
         }
     }
 

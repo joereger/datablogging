@@ -1,7 +1,6 @@
 package reger.search;
 
-import reger.core.db.Db;
-import reger.mega.FieldType;
+import reger.core.Debug;
 
 import java.util.Calendar;
 
@@ -250,13 +249,13 @@ public class SearchUIChunkDaterange implements SearchUIChunk{
         if (userSession.getAccount()!=null){
             dateFrom = reger.core.TimeUtils.usertogmttime(dateFrom, userSession.getAccount().getTimezoneid());
         }
-        reger.core.Util.debug(5, "SearchUIChunkDateRange.java - processing inbound date - dateFromGmt=<br>" + reger.core.TimeUtils.dateformatfordb(dateFrom));
+        Debug.debug(5, "", "SearchUIChunkDateRange.java - processing inbound date - dateFromGmt=<br>" + reger.core.TimeUtils.dateformatfordb(dateFrom));
         se.getSearchParameters().dateFromGmt = dateFrom;
         Calendar dateTo = reger.core.TimeUtils.formtocalendar(daterangetoyyyy, daterangetomm, daterangetodd, 23, 59, 59, "pm");
         if (userSession.getAccount()!=null){
             dateTo = reger.core.TimeUtils.usertogmttime(dateTo, userSession.getAccount().getTimezoneid());
         }
-        reger.core.Util.debug(5, "SearchUIChunkDateRange.java - processing inbound date - dateToGmt=<br>" + reger.core.TimeUtils.dateformatfordb(dateTo));
+        Debug.debug(5, "", "SearchUIChunkDateRange.java - processing inbound date - dateToGmt=<br>" + reger.core.TimeUtils.dateformatfordb(dateTo));
         se.getSearchParameters().dateToGmt = dateTo;
         //Date fields end
         return se;

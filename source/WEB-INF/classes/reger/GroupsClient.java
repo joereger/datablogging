@@ -7,6 +7,7 @@ import java.util.Vector;
 import java.util.Hashtable;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * The client side of the Groups API.
@@ -27,7 +28,7 @@ public class GroupsClient {
             params.addElement (newGroupAdminKey);
             return (Hashtable) xmlrpc.execute ("weblogGroup.editGroupDetails", params);
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
         return new Hashtable();
     }
@@ -44,7 +45,7 @@ public class GroupsClient {
                 params.addElement (new Integer(groupid));
                 groupKeyIsValid = ((Boolean) xmlrpc.execute ("weblogGroup.testGroupKey", params)).booleanValue();
             } catch (Exception e){
-                reger.core.Util.debug(5, e);
+                Debug.debug(5, "", e);
             }
         }
         return groupKeyIsValid;
@@ -61,7 +62,7 @@ public class GroupsClient {
                 params.addElement (new Integer(groupid));
                 groupAdminKeyIsValid = ((Boolean) xmlrpc.execute ("weblogGroup.testGroupAdminKey", params)).booleanValue();
             } catch (Exception e){
-                reger.core.Util.debug(5, e);
+                Debug.debug(5, "", e);
             }
         }
         return groupAdminKeyIsValid;
@@ -154,9 +155,9 @@ public class GroupsClient {
         //-----------------------------------
         //-----------------------------------
         if (rstCheck!=null && rstCheck.length>0){
-        	for(int i=0; i<rstCheck.length; i++){
-        	    //Already exists, do nothing
-        	}
+            for(int i=0; i<rstCheck.length; i++){
+                //Already exists, do nothing
+            }
         } else {
             //-----------------------------------
             //-----------------------------------
@@ -189,10 +190,10 @@ public class GroupsClient {
                 accountid = Integer.parseInt(rstEvent[0][4]);
             }
             //Create the entryKey if needed
-            reger.core.Util.debug(5, "rstEvent[0][5]=" + rstEvent[0][5]);
+            Debug.debug(5, "", "rstEvent[0][5]=" + rstEvent[0][5]);
             if (Integer.parseInt(rstEvent[0][5])==reger.Vars.LOGACCESSPRIVATE){
                   String tmpEntryKey = reger.Entry.getEntryKeyCreateOneIfNecessary(eventid);
-                  reger.core.Util.debug(5, "entrykey=" + tmpEntryKey);
+                  Debug.debug(5, "", "entrykey=" + tmpEntryKey);
             }
         }
 
@@ -202,7 +203,7 @@ public class GroupsClient {
         if (accountuserid>0){
             reger.Accountuser au = new reger.Accountuser(accountid, accountuserid);
             author = au.getFriendlyname();
-            authorurl = "http://"+au.getSiteRootUrl()+"/author.log?accountuserid=" + accountuserid;  
+            authorurl = "http://"+au.getSiteRootUrl()+"/author.log?accountuserid=" + accountuserid;
         }
 
         //Get the server info
@@ -215,11 +216,11 @@ public class GroupsClient {
         //-----------------------------------
         //-----------------------------------
         if (rstServer!=null && rstServer.length>0){
-        	for(int i=0; i<rstServer.length; i++){
-        	    groupkey = rstServer[i][2];
+            for(int i=0; i<rstServer.length; i++){
+                groupkey = rstServer[i][2];
                 serverurl = rstServer[i][0];
                 groupid = Integer.parseInt(rstServer[i][1]);
-        	}
+            }
         }
 
         //Build the xml call
@@ -236,7 +237,7 @@ public class GroupsClient {
             params.addElement (new Integer(groupid));
             xmlrpc.executeAsync("weblogGroup.addEntryToGroup", params, new reger.GroupsClientCallback());
         } catch (Exception e) {
-            reger.core.Util.errorsave(e, "Failed XML Groups Client call.");
+            Debug.errorsave(e, "", "Failed XML Groups Client call.");
         }
     }
 
@@ -253,11 +254,11 @@ public class GroupsClient {
         //-----------------------------------
         //-----------------------------------
         if (rstServer!=null && rstServer.length>0){
-        	for(int i=0; i<rstServer.length; i++){
-        	    groupadminkey = rstServer[i][2];
+            for(int i=0; i<rstServer.length; i++){
+                groupadminkey = rstServer[i][2];
                 serverurl = rstServer[i][0];
                 groupid = Integer.parseInt(rstServer[i][1]);
-        	}
+            }
         }
 
         //Get the controlkey
@@ -267,9 +268,9 @@ public class GroupsClient {
         //-----------------------------------
         //-----------------------------------
         if (rstContKey!=null && rstContKey.length>0){
-        	for(int i=0; i<rstContKey.length; i++){
-        	    controlkey = rstContKey[i][0];
-        	}
+            for(int i=0; i<rstContKey.length; i++){
+                controlkey = rstContKey[i][0];
+            }
         }
 
         //Build the xml call
@@ -283,7 +284,7 @@ public class GroupsClient {
             params.addElement (new Integer(groupid));
             xmlrpc.executeAsync("weblogGroup.removeEntryFromGroup", params, null);
         } catch (Exception e) {
-            reger.core.Util.errorsave(e, "Failed XML Groups Client call.");
+            Debug.errorsave(e, "", "Failed XML Groups Client call.");
         }
     }
 

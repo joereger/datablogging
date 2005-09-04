@@ -1,6 +1,7 @@
 package reger.cache;
 
 import reger.Entry;
+import reger.core.Debug;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
@@ -13,23 +14,23 @@ public class EntryCache {
 
 
     public static Entry get(int eventid){
-        reger.core.Util.debug(4, "EntryCache.get("+eventid+") called.");
+        Debug.debug(4, "", "EntryCache.get("+eventid+") called.");
         if (admin==null){
             admin = new GeneralCacheAdministrator();
         }
 
         try {
-            reger.core.Util.debug(4, "EntryCache.get("+eventid+") trying to return from cache.");
+            Debug.debug(4, "", "EntryCache.get("+eventid+") trying to return from cache.");
             return (Entry) admin.getFromCache(String.valueOf(eventid));
         } catch (NeedsRefreshException nre) {
             try {
-                reger.core.Util.debug(4, "EntryCache.get("+eventid+") refreshing object from database.");
+                Debug.debug(4, "", "EntryCache.get("+eventid+") refreshing object from database.");
                 Entry ent = new Entry(eventid);
                 admin.putInCache(String.valueOf(eventid), ent);
                 return ent;
             } catch (Exception ex) {
                 admin.cancelUpdate(String.valueOf(eventid));
-                reger.core.Util.errorsave(ex);
+                Debug.errorsave(ex, "");
                 return new Entry(0);
             }
         }
@@ -40,7 +41,7 @@ public class EntryCache {
             try{
                 admin.flushEntry(String.valueOf(eventid));
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
     }
@@ -51,7 +52,7 @@ public class EntryCache {
             try{
                 admin.flushAll();
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
     }

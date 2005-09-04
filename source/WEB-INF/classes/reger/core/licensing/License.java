@@ -1,5 +1,7 @@
 package reger.core.licensing;
 
+import reger.core.Debug;
+
 import java.util.*;
 
 /**
@@ -197,10 +199,10 @@ public class License {
     }
 
     public static Hashtable putLicensePropsIntoHashmap(String namevaluepairsaslongstring){
-        reger.core.Util.debug(5, "License.java - putLicensePropsIntoHashmap()");
+        Debug.debug(5, "", "License.java - putLicensePropsIntoHashmap()");
         Hashtable out = null;
         if (namevaluepairsaslongstring!=null && !namevaluepairsaslongstring.equals("")){
-            reger.core.Util.debug(5, "License.java - decryptedLicense!=null");
+            Debug.debug(5, "", "License.java - decryptedLicense!=null");
             out = new Hashtable();
             //Now we have a string like: maxusers=50&maxlogs=45&maxsites=78&owner=Bob
             //Split on &
@@ -209,10 +211,10 @@ public class License {
                 try{
                     String key = keyValuePairs[i].split("=")[0];
                     String value = keyValuePairs[i].split("=")[1];
-                    reger.core.Util.debug(5, "License.java - adding key=" + key + ", value=" + value);
+                    Debug.debug(5, "", "License.java - adding key=" + key + ", value=" + value);
                     out.put(key, value);
                 } catch (Exception e){
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
             }
         }
@@ -226,7 +228,7 @@ public class License {
                 return (String)props.get(PROPSTRING);
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return "";    
     }
@@ -246,7 +248,7 @@ public class License {
                 return licenseProp.defaultValue;
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return "";
     }
@@ -332,7 +334,7 @@ public class License {
             }
         }
 
-        reger.core.Util.debug(3, "License.java licensesAreEqual()<br>" + debug + "<br><br>Returning: " +theyMatch);
+        Debug.debug(3, "", "License.java licensesAreEqual()<br>" + debug + "<br><br>Returning: " +theyMatch);
 
         return theyMatch;
     }

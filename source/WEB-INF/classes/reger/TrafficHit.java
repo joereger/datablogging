@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * Holds a single traffic hit event.  These are cached and then
@@ -173,7 +174,7 @@ public class TrafficHit {
                 urlBase = url;
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             urlBase = in;
         }
         return urlBase;

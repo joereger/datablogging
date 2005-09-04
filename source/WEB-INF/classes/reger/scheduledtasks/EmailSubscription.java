@@ -1,8 +1,8 @@
 package reger.scheduledtasks;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
 import reger.core.scheduler.ScheduledTask;
+import reger.core.Debug;
 
 import java.util.Calendar;
 
@@ -212,7 +212,7 @@ public class EmailSubscription implements ScheduledTask{
                                             reger.core.EmailSend.sendMail(fromaddress, toaddress, newslettersubject, messagebody, htmlemail);
                                         }
                                     } catch (Exception e) {
-                                        reger.core.Util.errorsave(e);
+                                        Debug.errorsave(e, "");
                                     }
 
                                     //Increment the message counter
@@ -222,13 +222,13 @@ public class EmailSubscription implements ScheduledTask{
                             }
                         }
                     } catch (Exception e){
-                        reger.core.Util.errorsave(e);
+                        Debug.errorsave(e, "");
                     }
                 }
             }
 
         } catch (Exception e) {
-			reger.core.Util.errorsave(e);
+			Debug.errorsave(e, "");
 			result = "Error.  See event log for details.";
         }
 

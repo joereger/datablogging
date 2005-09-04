@@ -2,6 +2,7 @@ package reger.nestednav;
 
 import reger.UserSession;
 import reger.Help;
+import reger.core.Debug;
 import reger.cache.LogCache;
 
 /**
@@ -14,7 +15,7 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
     public String outputNavBarHtml(UserSession userSession, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
-        reger.core.Util.debug(5, "NestedNavDisplayAdminHome.java - Navbar start.");
+        Debug.debug(5, "", "NestedNavDisplayAdminHome.java - Navbar start.");
         mb.append(reger.ui.BubbleBox.start("My Logs", "../"));
         mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffffff>");
         mb.append("<tr>");
@@ -43,7 +44,7 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
         mb.append("</table><!-- End navigation -->");
         mb.append(reger.ui.BubbleBox.end("../"));
 
-        reger.core.Util.debug(5, "NestedNavDisplayAdminHome.java - Navbar end.");
+        Debug.debug(5, "", "NestedNavDisplayAdminHome.java - Navbar end.");
 
         return mb.toString();
     }
@@ -54,7 +55,7 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
 
         String thisPageName = reger.core.Util.getJspName(request.getRequestURI());
 
-        reger.core.Util.debug(5, "NestedNavDisplayAdminHome.java - Item output called.");
+        Debug.debug(5, "", "NestedNavDisplayAdminHome.java - Item output called.");
 
         String isOnText = "off";
         if (navItem.isActive(request)){

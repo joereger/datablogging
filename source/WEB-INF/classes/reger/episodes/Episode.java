@@ -3,7 +3,7 @@ package reger.episodes;
 import reger.core.db.Db;
 import reger.Entry;
 import reger.AddToArray;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 import java.util.*;
 
@@ -77,8 +77,8 @@ public class Episode {
             this.timezoneid = rstEpisode[0][5];
 
             if (accountUser!=null){
-                reger.core.Util.debug(5, "Episode.java: accountUser!=null.");
-                reger.core.Util.debug(5, "Episode.java: " + "SELECT event.eventid, event.title, event.comments, event.date FROM eventtoepisode, event, megalog WHERE eventtoepisode.eventid=event.eventid AND event.logid=megalog.logid AND episodeid='"+this.episodeid+"' AND " + accountUser.LogsUserCanViewQueryend(accountid));
+                Debug.debug(5, "", "Episode.java: accountUser!=null.");
+                Debug.debug(5, "", "Episode.java: " + "SELECT event.eventid, event.title, event.comments, event.date FROM eventtoepisode, event, megalog WHERE eventtoepisode.eventid=event.eventid AND event.logid=megalog.logid AND episodeid='"+this.episodeid+"' AND " + accountUser.LogsUserCanViewQueryend(accountid));
 
                 //Populate entries that belong to this episode
                 //-----------------------------------
@@ -88,17 +88,17 @@ public class Episode {
                 //-----------------------------------
                 entriesInEpisode = new reger.Entry[0];
                 if (rstEntries!=null && rstEntries.length>0){
-                    reger.core.Util.debug(5, "Episode.java: rstEntries.length="+rstEntries.length);
+                    Debug.debug(5, "", "Episode.java: rstEntries.length="+rstEntries.length);
                     for(int i=0; i<rstEntries.length; i++){
                         //Create an entry object and manually populate it
                         reger.Entry entry = new reger.Entry(Integer.parseInt(rstEntries[i][0]), rstEntries[i][1], reger.core.Util.truncateString(rstEntries[i][2], 150), reger.core.TimeUtils.dbstringtocalendar(rstEntries[i][3]));
                         //Add it to the array of entries
                         entriesInEpisode = AddToArray.addToEntryArray(entriesInEpisode, entry);
                     }
-                    reger.core.Util.debug(5, "Episode.java: entriesInEpisode.length="+entriesInEpisode.length);
+                    Debug.debug(5, "", "Episode.java: entriesInEpisode.length="+entriesInEpisode.length);
                 }
             } else {
-                reger.core.Util.debug(5, "Episode.java: accountUser==null.");
+                Debug.debug(5, "", "Episode.java: accountUser==null.");
             }
 
             //Populate start and end dates of episode
@@ -135,7 +135,7 @@ public class Episode {
 
         debug.append("<br><br>startDateGMT=" + reger.core.TimeUtils.dateformatfordb(startDateGMT));
         debug.append("<br><br>endDateGMT=" + reger.core.TimeUtils.dateformatfordb(endDateGMT));
-        reger.core.Util.debug(5, debug.toString());
+        Debug.debug(5, "", debug.toString());
     }
 
     public void chooseDefaultScaleToDisplay(){
@@ -163,20 +163,20 @@ public class Episode {
 
             int proposedNumberOfBuckets = ((Integer)e.getValue()).intValue() + 2;
 
-            reger.core.Util.debug(5, "Episode.java: Iterating numOfPeriodsInEpisode.<br>e.getKey()=" + e.getKey() + "<br>e.getValue()=" + e.getValue() + "<br>proposedNumberOfBuckets=" + proposedNumberOfBuckets);
+            Debug.debug(5, "", "Episode.java: Iterating numOfPeriodsInEpisode.<br>e.getKey()=" + e.getKey() + "<br>e.getValue()=" + e.getValue() + "<br>proposedNumberOfBuckets=" + proposedNumberOfBuckets);
 
             int distanceFromTarget =  Math.abs(targetNumberOfBuckets - proposedNumberOfBuckets);
 
-            reger.core.Util.debug(5, "Episode.java: distanceFromTarget=" + distanceFromTarget);
+            Debug.debug(5, "", "Episode.java: distanceFromTarget=" + distanceFromTarget);
 
             if (distanceFromTarget==0){
-                reger.core.Util.debug(5, "Episode.java: It's right on the target number of buckets.");
+                Debug.debug(5, "", "Episode.java: It's right on the target number of buckets.");
                 defaultScaleOfDisplay = ((Integer)e.getKey()).intValue();
                 numberOfDefaultScalePeriodsInEpisode = proposedNumberOfBuckets;
                 break;
             }
             if (distanceFromTarget<closestAbsoluteDistanceFromTarget || closestAbsoluteDistanceFromTarget==-1){
-                reger.core.Util.debug(5, "Episode.java: Not on target, but closer than the current value.");
+                Debug.debug(5, "", "Episode.java: Not on target, but closer than the current value.");
                 closestAbsoluteDistanceFromTarget = distanceFromTarget;
                 defaultScaleOfDisplay = ((Integer)e.getKey()).intValue();
                 numberOfDefaultScalePeriodsInEpisode = proposedNumberOfBuckets;
@@ -271,7 +271,7 @@ public class Episode {
             }
         }
 
-        reger.core.Util.debug(5, debug.toString());
+        Debug.debug(5, "", debug.toString());
 
     }
 

@@ -2,7 +2,7 @@ package reger.search;
 
 import reger.mega.FieldQueryElement;
 import reger.core.db.Db;
-import reger.core.db.Db;
+import reger.core.Debug;
 import reger.AddToArray;
 
 import java.io.Serializable;
@@ -194,12 +194,12 @@ public class SearchParameters implements Serializable{
         try{
             dateFromGmtString = reger.core.TimeUtils.dateformatfordb(dateFromGmt);
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
         try{
             dateToGmtString = reger.core.TimeUtils.dateformatfordb(dateToGmt);
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
 
         //The accountidToSaveTo is a tag for the saved search but does not affect which accounts are searched.
@@ -207,7 +207,7 @@ public class SearchParameters implements Serializable{
         //Save the core
         if (savedSearchId>0){
             //Edit a saved search
-            reger.core.Util.debug(5, "SearchParameters.java - Editing saved savedSearchId=" + savedSearchId);
+            Debug.debug(5, "", "SearchParameters.java - Editing saved savedSearchId=" + savedSearchId);
             //-----------------------------------
             //-----------------------------------
             int count = Db.RunSQLUpdate("UPDATE savedsearch SET searchterms='"+reger.core.Util.cleanForSQL(searchTerms)+"', accountid='"+accountidToSaveTo+"', name='"+reger.core.Util.cleanForSQL(name)+"', lastx='"+lastx+"', lastxunits='"+lastxunits+"', daterange='"+daterange+"', datefromgmt='"+dateFromGmtString+"', datetogmt='"+dateToGmtString+"' WHERE savedsearchid='"+savedSearchId+"'");
@@ -215,13 +215,13 @@ public class SearchParameters implements Serializable{
             //-----------------------------------
         } else {
             //Create a new one
-            reger.core.Util.debug(5, "SearchParameters.java - Creating new savedSearchId.");
+            Debug.debug(5, "", "SearchParameters.java - Creating new savedSearchId.");
             //-----------------------------------
             //-----------------------------------
             savedSearchId = Db.RunSQLInsert("INSERT INTO savedsearch(searchterms, accountid, name, lastx, lastxunits, daterange, datefromgmt, datetogmt) VALUES('"+reger.core.Util.cleanForSQL(searchTerms)+"', '"+accountidToSaveTo+"', '"+reger.core.Util.cleanForSQL(name)+"', '"+lastx+"', '"+lastxunits+"', '"+daterange+"', '"+dateFromGmtString+"', '"+dateToGmtString+"')");
             //-----------------------------------
             //-----------------------------------
-            reger.core.Util.debug(5, "SearchParameters.java - Done creating new savedSearchId=" + savedSearchId);
+            Debug.debug(5, "", "SearchParameters.java - Done creating new savedSearchId=" + savedSearchId);
         }
 
         //Delete all log relationships
@@ -329,14 +329,14 @@ public class SearchParameters implements Serializable{
         }
 
         //Now save each FieldQueryElement
-        reger.core.Util.debug(5, "SearchParameters.java: Saving search.");
+        Debug.debug(5, "", "SearchParameters.java: Saving search.");
         if (fieldQueryElements!=null){
-            reger.core.Util.debug(5, "SearchParameters.java: fieldQueryElements!=null.");
+            Debug.debug(5, "", "SearchParameters.java: fieldQueryElements!=null.");
             for (int i = 0; i < fieldQueryElements.length; i++) {
                 fieldQueryElements[i].saveToDB(savedSearchId);
             }
         } else {
-            reger.core.Util.debug(5, "SearchParameters.java: fieldQueryElements==null.");
+            Debug.debug(5, "", "SearchParameters.java: fieldQueryElements==null.");
         }
 
         //Update the AccountCounts cache

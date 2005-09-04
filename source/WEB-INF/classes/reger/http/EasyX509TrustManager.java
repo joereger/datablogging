@@ -9,6 +9,7 @@ import java.security.cert.X509Certificate;
 import com.sun.net.ssl.TrustManagerFactory;
 import com.sun.net.ssl.TrustManager;
 import com.sun.net.ssl.X509TrustManager;
+import reger.core.Debug;
 
 
 /**
@@ -67,9 +68,9 @@ public class EasyX509TrustManager implements X509TrustManager
      */
     public boolean isServerTrusted(X509Certificate[] certificates) {
         if ((certificates != null)) {
-            reger.core.Util.debug(5, "EasyX509TrustManager.java - Server certificate chain:");
+            Debug.debug(5, "", "EasyX509TrustManager.java - Server certificate chain:");
             for (int i = 0; i < certificates.length; i++) {
-                reger.core.Util.debug(5, "EasyX509TrustManager.java - X509Certificate[" + i + "]=" + certificates[i]);
+                Debug.debug(5, "", "EasyX509TrustManager.java - X509Certificate[" + i + "]=" + certificates[i]);
             }
         }
         if ((certificates != null) && (certificates.length == 1)) {
@@ -78,7 +79,7 @@ public class EasyX509TrustManager implements X509TrustManager
                 certificate.checkValidity();
             }
             catch (CertificateException e) {
-                reger.core.Util.debug(5, e);
+                Debug.debug(5, "", e);
                 return false;
             }
             return true;

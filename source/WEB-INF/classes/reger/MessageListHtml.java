@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 import reger.jcaptcha.CaptchaServiceSingleton;
 
 import javax.servlet.http.HttpServletRequest;
@@ -415,7 +416,7 @@ public class MessageListHtml {
             isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
         } catch (CaptchaServiceException e) {
              isResponseCorrect = new Boolean(false);
-             reger.core.Util.errorsave(e);
+             Debug.errorsave(e, "");
         }
         if (!isResponseCorrect.booleanValue()){
             haveValidMessage = false;
@@ -506,9 +507,9 @@ public class MessageListHtml {
                     }
                     String emailBody = reger.emailtext.BasicEmails.messagesEmailNotify(userSession.getAccount().getSiteRootUrl(), eventid, rstEmailnotify[i][1]).toString();
                     reger.core.EmailSend.sendMail(fromaddress, rstEmailnotify[i][0], "New Message Posted to: " + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/", emailBody, false);
-                    reger.core.Util.debug(5, "Sending email notification of new message to:" + rstEmailnotify[i][0]);
+                    Debug.debug(5, "", "Sending email notification of new message to:" + rstEmailnotify[i][0]);
                 } catch (Exception e){
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
             }
         }

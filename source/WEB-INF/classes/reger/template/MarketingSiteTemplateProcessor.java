@@ -2,7 +2,7 @@ package reger.template;
 
 import reger.pageFramework.PageProps;
 import reger.UserSession;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -135,7 +135,7 @@ public class MarketingSiteTemplateProcessor implements TemplateProcessor {
                 return tag;
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
         //Find a tag that fulfills the incoming syntax

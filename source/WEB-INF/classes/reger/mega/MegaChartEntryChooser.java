@@ -3,10 +3,9 @@ package reger.mega;
 import reger.search.SearchResult;
 import reger.core.db.Db;
 import reger.UserSession;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 import java.util.Calendar;
-import java.util.TreeMap;
 
 /**
  * So that I don't have to call the database for each series, this object
@@ -47,7 +46,7 @@ public class MegaChartEntryChooser {
         if (megaChart.getDaterange()==reger.Vars.DATERANGESAVEDSEARCH){
             //Start to run a saved search
             if (megaChart.getDaterangesavedsearchid()>0){
-                reger.core.Util.debug(5, "MegaChartSeries.java - Searching daterangesavedsearchid=" + megaChart.getDaterangesavedsearchid());
+                Debug.debug(5, "", "MegaChartSeries.java - Searching daterangesavedsearchid=" + megaChart.getDaterangesavedsearchid());
                 reger.search.SearchParameters sp = new reger.search.SearchParameters(megaChart.getDaterangesavedsearchid());
                 sp.numberOfResultsToReturn = 5000;
                 reger.search.SearchEntries se = new reger.search.SearchEntries(sp);
@@ -57,7 +56,7 @@ public class MegaChartEntryChooser {
                 if (se.entrySearchResults!=null){
                     for (int i = 0; i < se.entrySearchResults.length; i++) {
                         SearchResult entrySearchResult = se.entrySearchResults[i];
-                        reger.core.Util.debug(5, "MegaChartSeries.java - Found a result:<br>daterangesavedsearchid=" + megaChart.getDaterangesavedsearchid() + "<br>se.entrySearchResults[i].typeOfObjectReturned=" + se.entrySearchResults[i].typeOfObjectReturned + "<br>SearchResult.SEARCHRESULTOBJECTTYPEENTRY="+SearchResult.SEARCHRESULTOBJECTTYPEENTRY);
+                        Debug.debug(5, "", "MegaChartSeries.java - Found a result:<br>daterangesavedsearchid=" + megaChart.getDaterangesavedsearchid() + "<br>se.entrySearchResults[i].typeOfObjectReturned=" + se.entrySearchResults[i].typeOfObjectReturned + "<br>SearchResult.SEARCHRESULTOBJECTTYPEENTRY="+SearchResult.SEARCHRESULTOBJECTTYPEENTRY);
                         if (entrySearchResult.typeOfObjectReturned==SearchResult.SEARCHRESULTOBJECTTYPEENTRY){
                             intListOfEventids = reger.core.Util.addToIntArray(intListOfEventids, entrySearchResult.idOfObjectReturned);
                         }
@@ -105,7 +104,7 @@ public class MegaChartEntryChooser {
             //This query generates a list of eventids that are relevant to this chart.  That's it.
             //@todo Wrap in multiple calls to DB to batch
             String sql = "SELECT event.eventid FROM event WHERE "+logidSql+ " " + dateSql + " AND " + reger.Entry.sqlOfLiveEntry;
-            reger.core.Util.debug(3, sql);
+            Debug.debug(3, "", sql);
             //-----------------------------------
             //-----------------------------------
             String [][] rawListOfEventids = Db.RunSQL(sql, 500000);

@@ -110,11 +110,11 @@ try {
     //Record the bytesOutput to the database
     int bytesOutput = imgBytes.length;
     reger.Bandwidth.addActivity(userSession, bytesOutput);
-    reger.core.Util.debug(5, "graph.log<br>bytesOutput=" + bytesOutput);
+    Debug.debug(5, "", "graph.log<br>bytesOutput=" + bytesOutput);
 
     //Chart End
 } catch (Exception e) {
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
 }
 
 //Close the output stream

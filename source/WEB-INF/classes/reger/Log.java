@@ -5,6 +5,7 @@ import reger.mega.FieldOrderCollection;
 import reger.nestednav.NestedNavItem;
 import reger.core.db.Db;
 import reger.core.Util;
+import reger.core.Debug;
 import reger.cache.LogCache;
 
 import java.util.Calendar;
@@ -76,7 +77,7 @@ public class Log implements NestedNavItem {
                             }
                         }
                     } catch (Exception e){
-                        reger.core.Util.errorsave(e);
+                        Debug.errorsave(e, "");
                     }
                 }
 
@@ -98,7 +99,7 @@ public class Log implements NestedNavItem {
                         tmp2.append(fields[cc].getMegafieldid() + "<br>fieldname=" + fields[cc].getFieldname() + "<br>");
                     }
                 }
-                reger.core.Util.debug(5, "Log.java - logid="+this.logid+" - fields After Assignment<br>" + tmp2.toString());
+                Debug.debug(5, "", "Log.java - logid="+this.logid+" - fields After Assignment<br>" + tmp2.toString());
 
             }
         }
@@ -113,7 +114,7 @@ public class Log implements NestedNavItem {
         int debugMegafieldidToWatch = 130;
 
         //Get the system fields for this megalogtype
-        reger.core.Util.debug(5, "Log.allMegaFieldsForLog() - logid="+logid+" eventtypeid=" + eventtypeid);
+        Debug.debug(5, "", "Log.allMegaFieldsForLog() - logid="+logid+" eventtypeid=" + eventtypeid);
         FieldType[] systemFields = AllFieldsInSystem.allMegaFieldsForEventtypeid(eventtypeid, true);
 
         //Get the log fields for this logid
@@ -132,7 +133,7 @@ public class Log implements NestedNavItem {
                     if (logFields[k].getMegafieldid()==fields[l].getMegafieldid()){
                         //Replace systemField with the userField
                         if (logFields[k].getMegafieldid()==debugMegafieldidToWatch){
-                            reger.core.Util.debug(5, "Log.java - Replacing megafieldid=" + logFields[k].getMegafieldid());
+                            Debug.debug(5, "", "Log.java - Replacing megafieldid=" + logFields[k].getMegafieldid());
                         }
                         fields[l] = logFields[k];
                         logFieldOverridesSystemField=true;
@@ -141,7 +142,7 @@ public class Log implements NestedNavItem {
                 //If, after looking for a field this logField, there isn't one, add it
                 if (!logFieldOverridesSystemField){
                     if (logFields[k].getMegafieldid()==debugMegafieldidToWatch){
-                        reger.core.Util.debug(5, "Log.java - logid="+logid+" - Adding userField.megafieldid=" + logFields[k].getMegafieldid());
+                        Debug.debug(5, "", "Log.java - logid="+logid+" - Adding userField.megafieldid=" + logFields[k].getMegafieldid());
                     }
                     fields = AddToArray.addToFieldTypeArray(fields, logFields[k]);
                 }
@@ -156,7 +157,7 @@ public class Log implements NestedNavItem {
                 tmp0.append(fields[cc].getMegafieldid() + "<br>fieldname=" + fields[cc].getFieldname() + "<br>");
             }
         }
-        reger.core.Util.debug(5, "Log.java - logid="+logid+" fields Before Assignment<br>" + tmp0.toString());
+        Debug.debug(5, "", "Log.java - logid="+logid+" fields Before Assignment<br>" + tmp0.toString());
 
         //Order the fields
         orderFieldsAndSeparateHidden(fields);
@@ -237,7 +238,7 @@ public class Log implements NestedNavItem {
     }
 
     public void delete(int movetologid){
-        reger.core.Util.debug(5, "Log.java delete() called<br>logid=" + logid + " movetologid=" + movetologid);
+        Debug.debug(5, "", "Log.java delete() called<br>logid=" + logid + " movetologid=" + movetologid);
 
         //If the user wants to move the entries to a new log
         //Make sure the user can administer the movetologid as well
@@ -259,13 +260,13 @@ public class Log implements NestedNavItem {
                 }
             }
         }
-        reger.core.Util.debug(5, "Log.java delete() done moving entries, if necessary.<br>logid=" + logid + " movetologid=" + movetologid);
+        Debug.debug(5, "", "Log.java delete() done moving entries, if necessary.<br>logid=" + logid + " movetologid=" + movetologid);
 
 
         //Shift log orders appropriately
         Account acct = new reger.Account(accountid);
         acct.getNestedNavCollection().adjustAfterRemovalOfItem(NESTEDNAVTYPEMEGALOG, logid);
-        reger.core.Util.debug(5, "Log.java delete() done reordering other nav items.<br>logid=" + logid + " movetologid=" + movetologid);
+        Debug.debug(5, "", "Log.java delete() done reordering other nav items.<br>logid=" + logid + " movetologid=" + movetologid);
 
         //Now delete the log itself
         //-----------------------------------
@@ -273,14 +274,14 @@ public class Log implements NestedNavItem {
         int logsdeleted = Db.RunSQLUpdate("DELETE FROM megalog WHERE logid='"+logid+"'");
         //-----------------------------------
         //-----------------------------------
-        reger.core.Util.debug(5, "Log.java delete() done deleting log from Db<br>logid=" + logid + " movetologid=" + movetologid);
+        Debug.debug(5, "", "Log.java delete() done deleting log from Db<br>logid=" + logid + " movetologid=" + movetologid);
 
         //Important to refresh the LogCache object after megalog changes
         LogCache.flushByLogid(logid);
         if (movetologid>0){
             LogCache.flushByLogid(movetologid);
         }
-        reger.core.Util.debug(5, "Log.java delete() done refreshing LogCache.<br>logid=" + logid + " movetologid=" + movetologid);
+        Debug.debug(5, "", "Log.java delete() done refreshing LogCache.<br>logid=" + logid + " movetologid=" + movetologid);
     }
 
 
@@ -452,7 +453,7 @@ public class Log implements NestedNavItem {
      * Move to a specified spot on the nav scheme
      */
     public void moveNestedNavTo(int parentType, int parentId, int order) {
-        reger.core.Util.debug(5, "Log.java - moveNestedNavTo()<br>nestednavlinktext="+getNestedNavLinkText()+"<br>parentType=" + parentType + "<br>parentId=" + parentId + "<br>order="+order);
+        Debug.debug(5, "", "Log.java - moveNestedNavTo()<br>nestednavlinktext="+getNestedNavLinkText()+"<br>parentType=" + parentType + "<br>parentId=" + parentId + "<br>order="+order);
         nestednavparenttype = parentType;
         nestednavparentid = parentId;
         nestednavorder = order;
@@ -524,7 +525,7 @@ public class Log implements NestedNavItem {
 
     public void unhideField(int megafieldid){
         //Remove from hiddenfields
-        reger.core.Util.debug(5, "Field.java - Unhide called on megafieldid=" + megafieldid);
+        Debug.debug(5, "", "Field.java - Unhide called on megafieldid=" + megafieldid);
         int[] out = new int[0];
         for (int i = 0; i < hiddenfields.length; i++) {
             if(hiddenfields[i]!=megafieldid){

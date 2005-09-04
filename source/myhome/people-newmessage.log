@@ -1,5 +1,6 @@
 <%@ page import="reger.core.db.Db,
                  java.util.Calendar"%>
+<%@ page import="reger.core.Debug"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -54,7 +55,7 @@ if (pageProps.action.equals("add")){
             response.sendRedirect(pageProps.pathToAppRoot + "myhome/people.log");
             return;
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         out.println("<br>" + errortext);
         return;

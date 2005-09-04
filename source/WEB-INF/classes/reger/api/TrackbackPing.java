@@ -2,8 +2,7 @@ package reger.api;
 
 import reger.core.db.Db;
 import reger.core.Util;
-import reger.core.Util;
-import reger.core.db.Db;
+import reger.core.Debug;
 import reger.http.EasySSLProtocolSocketFactory;
 
 
@@ -114,7 +113,7 @@ public class TrackbackPing extends Thread {
 
     private boolean pingUrl(String urlToPing, String title, String excerpt, String blogname){
 
-        reger.core.Util.debug(5, "Trackbackping.java - pingUrl called. urlToPing=" + urlToPing);
+        Debug.debug(5, "", "Trackbackping.java - pingUrl called. urlToPing=" + urlToPing);
 
         //Build this url
         String localUrl = "" + reger.Vars.getHttpUrlPrefix() + accountOfEntry.getSiteRootUrl() + "/entry-eventid"+eventid+".log";
@@ -145,10 +144,10 @@ public class TrackbackPing extends Thread {
                 statusCode = client.executeMethod(method);
             } catch (IOException e) {
                 //Do nothing... network error
-                reger.core.Util.debug(5, e);
+                Debug.debug(5, "", e);
             } catch (Exception e) {
                 //Oops... something went wrong
-                reger.core.Util.errorsave(e, "Trying to ping: " + urlToPing);
+                Debug.errorsave(e, "", "Trying to ping: " + urlToPing);
             }
         }
 

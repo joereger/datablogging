@@ -1,10 +1,8 @@
 package reger.mega;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Calendar;
 import java.util.TreeMap;
 
@@ -150,7 +148,7 @@ public class ChartFieldEntryWeeksAgo extends Field implements ChartField{
         } catch (java.util.NoSuchElementException e){
             //Do nothing
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         //Return the data
         return data;

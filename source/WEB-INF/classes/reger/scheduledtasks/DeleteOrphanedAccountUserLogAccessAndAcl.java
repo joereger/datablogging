@@ -1,8 +1,8 @@
 package reger.scheduledtasks;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
 import reger.core.scheduler.ScheduledTask;
+import reger.core.Debug;
 
 /**
  * Delete all invalid logaccess.  This can happen when crappy code is written
@@ -75,22 +75,22 @@ public class DeleteOrphanedAccountUserLogAccessAndAcl implements ScheduledTask{
             //-----------------------------------
             //-----------------------------------
             if (rstAcl!=null && rstAcl.length>0){
-            	for(int i=0; i<rstAcl.length; i++){
-            	    if (reger.acl.AllAclObjects.getAclObjectById(Integer.parseInt(rstAcl[i][0]))==null){
+                for(int i=0; i<rstAcl.length; i++){
+                    if (reger.acl.AllAclObjects.getAclObjectById(Integer.parseInt(rstAcl[i][0]))==null){
                         //-----------------------------------
                         //-----------------------------------
                         count = count + reger.core.db.Db.RunSQLUpdate("DELETE FROM accountuseracl WHERE aclobjectid='"+ rstAcl[i][0] +"'");
                         //-----------------------------------
                         //-----------------------------------
                     }
-            	}
+                }
             }
 
 
             recordsupdated = count;
 
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             result = "Error.  Check event log.";
         }
         result = recordsupdated + " records updated.";

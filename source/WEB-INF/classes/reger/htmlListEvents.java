@@ -2,6 +2,7 @@ package reger;
 
 import reger.template.Template;
 import reger.core.TimeUtils;
+import reger.core.Debug;
 import reger.cache.LogCache;
 
 import javax.servlet.http.HttpServletRequest;
@@ -98,7 +99,7 @@ public class htmlListEvents {
 		//For debugging, output the sql to the screen
 		//list.append("<br>" + sql);
 
-		reger.core.Util.debug(3, "htmlListEvents.java - <br>sql:<br>"+sql+"<br><br>sqlCount:<br>"+sqlCount);
+		Debug.debug(3, "", "htmlListEvents.java - <br>sql:<br>"+sql+"<br><br>sqlCount:<br>"+sqlCount);
 		//Count total records
 		//-----------------------------------
 		//-----------------------------------

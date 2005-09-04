@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
+import reger.core.Debug;
+
 /**
  *
  */
@@ -73,7 +75,7 @@ public class Http {
                     int k;
                     int aBuffSize = bytesToGet;
                     if (aBuffSize<=0){
-                        aBuffSize = 50000;   
+                        aBuffSize = 50000;
                     }
                     byte buff[] = new byte[aBuffSize];
                     OutputStream xOutputStream = new ByteArrayOutputStream(aBuffSize);
@@ -102,16 +104,16 @@ public class Http {
 
                 } catch (HttpRecoverableException e) {
                     //Do nothing... retry
-                    reger.core.Util.debug(5, e);
+                    Debug.debug(5, "", e);
                 } catch (IOException e) {
                     //Do nothing... network error
-                    reger.core.Util.debug(5, e);
+                    Debug.debug(5, "", e);
                 } catch (java.lang.IllegalArgumentException iae){
                     //Do nothing... the host param was null
-                    reger.core.Util.debug(5, iae);
+                    Debug.debug(5, "", iae);
                 } catch (Exception e) {
                     //Oops... something went wrong
-                    reger.core.Util.errorsave(e, "Trying to get via http in Http.getUrl: " + urlToGet);
+                    Debug.errorsave(e, "", "Trying to get via http in Http.getUrl: " + urlToGet);
                 }
             }
 

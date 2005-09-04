@@ -29,7 +29,7 @@ pageProps.pathToAppRoot="../";
             StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-reger.core.Util.debug(5, "episode.log");
+Debug.debug(5, "", "episode.log");
 
 mb.append(reger.episodes.EpisodeRender.getHtml(new reger.episodes.Episode(1, userSession.getAccountuser()), userSession.getAccount(), false, ""));
 

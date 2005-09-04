@@ -3,7 +3,7 @@ package reger.cache;
 import reger.Log;
 import reger.LogNameComparator;
 import reger.Account;
-import reger.core.Util;
+import reger.core.Debug;
 import reger.core.db.Db;
 import reger.mega.FieldType;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
@@ -23,17 +23,17 @@ public class LogCache {
 
 
     public static Log get(int logid){
-        reger.core.Util.debug(4, "LogCache.get("+logid+") called.");
+        Debug.debug(4, "", "LogCache.get("+logid+") called.");
         if (admin==null){
             admin = new GeneralCacheAdministrator();
         }
 
         try {
-            reger.core.Util.debug(4, "LogCache.get("+logid+") trying to return from cache.");
+            Debug.debug(4, "", "LogCache.get("+logid+") trying to return from cache.");
             return (Log) admin.getFromCache(String.valueOf(logid));
         } catch (NeedsRefreshException nre) {
             try {
-                reger.core.Util.debug(4, "LogCache.get("+logid+") refreshing object from database.");
+                Debug.debug(4, "", "LogCache.get("+logid+") refreshing object from database.");
                 Log log = new Log(logid);
                 //Create groups for megafieldid and eventtypeid usage
                 String[] groups = new String[0];
@@ -49,7 +49,7 @@ public class LogCache {
                 return log;
             } catch (Exception ex) {
                 admin.cancelUpdate(String.valueOf(logid));
-                reger.core.Util.errorsave(ex);
+                Debug.errorsave(ex, "");
                 return new Log(0);
             }
         }
@@ -60,7 +60,7 @@ public class LogCache {
             try{
                 admin.flushAll();
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
     }
@@ -70,7 +70,7 @@ public class LogCache {
             try{
                 admin.flushEntry(String.valueOf(logid));
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
     }
@@ -80,7 +80,7 @@ public class LogCache {
             try{
                 admin.flushGroup("megafieldid"+megafieldid);
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
     }
@@ -90,7 +90,7 @@ public class LogCache {
             try{
                 admin.flushGroup("eventtypeid"+eventtypeid);
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
     }

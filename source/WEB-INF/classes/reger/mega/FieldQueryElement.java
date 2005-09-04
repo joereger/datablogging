@@ -1,12 +1,9 @@
 package reger.mega;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
+import reger.core.Debug;
 import reger.AddToArray;
 
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.Iterator;
 import java.util.Enumeration;
 import java.io.Serializable;
 
@@ -49,7 +46,7 @@ public class FieldQueryElement implements Serializable {
      * Static utility function to find the value of a named fieldqueryelement from an array of them
      */
     public static String[] getValues(FieldQueryElement[] fieldQueryElements, String name){
-        reger.core.Util.debug(5, "FieldQueryElement.java getValue()<br>name=" + name);
+        Debug.debug(5, "", "FieldQueryElement.java getValue()<br>name=" + name);
         String[] out = new String[0];
         if (fieldQueryElements!=null){
             for (int i = 0; i < fieldQueryElements.length; i++) {
@@ -99,9 +96,9 @@ public class FieldQueryElement implements Serializable {
                     //Add to the array of FieldQueryElements
                     try{
                         out = AddToArray.addFieldQueryElementArray(out, fqe);
-                        reger.core.Util.debug(5, "FieldQueryElement.java adding<br>fqe.name=" + fqe.name + "<br>fqe.value=" + fqe.value);
+                        Debug.debug(5, "", "FieldQueryElement.java adding<br>fqe.name=" + fqe.name + "<br>fqe.value=" + fqe.value);
                     } catch (Exception ex){
-                        reger.core.Util.errorsave(ex);
+                        Debug.errorsave(ex, "");
                     }
                 }
             }
@@ -117,7 +114,7 @@ public class FieldQueryElement implements Serializable {
     }
 
     public void saveToDB(int savedSearchId){
-        reger.core.Util.debug(5, "FieldQueryElement.java: <br>savedSearchId=" + savedSearchId + "<br>megafieldid=" + megafieldid + "<br>name=" + name + "<br>value=" + value);
+        Debug.debug(5, "", "FieldQueryElement.java: <br>savedSearchId=" + savedSearchId + "<br>megafieldid=" + megafieldid + "<br>name=" + name + "<br>value=" + value);
         //Delete any saved now
         //-----------------------------------
         //-----------------------------------
@@ -126,7 +123,7 @@ public class FieldQueryElement implements Serializable {
         //-----------------------------------
         //And add them back as long as we have a megafieldid, name and value
         if (megafieldid>0 && !name.equals("") && !value.equals("")) {
-            reger.core.Util.debug(5, "FieldQueryElement.java: <br>savedSearchId=" + savedSearchId + "<br>megafieldid=" + megafieldid + "<br>name=" + name + "<br>value=" + value + "<br>INSERTING");
+            Debug.debug(5, "", "FieldQueryElement.java: <br>savedSearchId=" + savedSearchId + "<br>megafieldid=" + megafieldid + "<br>name=" + name + "<br>value=" + value + "<br>INSERTING");
             //-----------------------------------
             //-----------------------------------
             int identity = Db.RunSQLInsert("INSERT INTO savedsearchfqe(savedsearchid, megafieldid, paramname, paramvalue) VALUES('"+savedSearchId+"', '"+megafieldid+"', '"+reger.core.Util.cleanForSQL(name)+"', '"+reger.core.Util.cleanForSQL(value)+"')");

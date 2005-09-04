@@ -1,5 +1,7 @@
 package reger.Media;
 
+import reger.core.Debug;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -22,7 +24,7 @@ public class JpegImage implements MediaType {
             //Just a general thumbnail
             reger.ResizeImage.resize(pathToFile, pathToThumbnail, 100);
         } catch (Throwable e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 

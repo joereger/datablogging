@@ -1,9 +1,8 @@
 package reger.template;
 
-import reger.core.db.Db;
+import reger.core.Debug;
 import reger.pageFramework.PageProps;
 
-import java.util.Calendar;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -88,7 +87,7 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
                 return tag;
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
 

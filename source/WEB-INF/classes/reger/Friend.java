@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,7 +32,7 @@ public class Friend {
     public Friend(){
 
         //Log that the freind object has been called
-        reger.core.Util.debug(5, "An instance of reger.Friend() has been constructed.");
+        Debug.debug(5, "", "An instance of reger.Friend() has been constructed.");
 
         //Only refresh friends from Db if we haven't done so already.
         Calendar fiveMinutesAgo = Calendar.getInstance();
@@ -61,7 +62,7 @@ public class Friend {
             friends.clear();
 
             //Debug
-            reger.core.Util.debug(5, "Populating reger.Friend object from the database.");
+            Debug.debug(5, "", "Populating reger.Friend object from the database.");
 
             //Populate from the database
             //-----------------------------------
@@ -87,7 +88,7 @@ public class Friend {
             countFriendsAtLastUpdate = countFriends();
 
         } catch (Exception e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         } finally {
             //Unlock the object
             isLocked=false;
@@ -183,7 +184,7 @@ public class Friend {
             }
             tst.append("<br><b>HashMap("+e.getKey()+"):</b> " + tstTmp);
         }
-        reger.core.Util.logtodb("<br><b>Contents of the Friends HashMap:</b>" + tst);
+        Debug.logtodb("<br><b>Contents of the Friends HashMap:</b>" + tst, "");
 
     }
 

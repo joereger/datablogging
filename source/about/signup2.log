@@ -100,7 +100,7 @@ if (pageProps.action.equals("createaccount")) {
         isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
     } catch (CaptchaServiceException e) {
          isResponseCorrect = new Boolean(false);
-         reger.core.Util.errorsave(e);
+         Debug.errorsave(e, "");
     }
     if (!isResponseCorrect.booleanValue()){
         errortext = errortext + "You failed to enter the letters in the box correctly.  Don't despair.  Sometimes they're tough to read.  Please try again.<br>";

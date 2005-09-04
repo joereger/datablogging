@@ -21,7 +21,7 @@ try {
     response.setContentType("text/xml");
     out.print(reger.MegaLogTypeXmlSchemaRenderer.getSchema(reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid)).replaceAll("XXXxmlns", "xmlns"));
 } catch (Throwable e) {
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
 }
 
 

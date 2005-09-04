@@ -1,6 +1,6 @@
 package reger.template;
 
-import reger.Account;
+import reger.core.Debug;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
@@ -49,7 +49,7 @@ public class EntryListTemplateCacheTags {
                 return null;
             } catch (Exception ex) {
                 admin.cancelUpdate(syntax);
-                reger.core.Util.errorsave(ex);
+                Debug.errorsave(ex, "");
                 return null;
             }
         }

@@ -1,6 +1,7 @@
 <%@ page isErrorPage="true" %>
 <%@ page import="reger.core.Util,
                  reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 
 <%
 try {
@@ -18,7 +19,7 @@ try {
                 url = split[0];
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             url = request.getRequestURL().toString();
         }
 
@@ -43,7 +44,7 @@ try {
 
     } catch (Throwable e){
         //Save the error to the database, note that this isn't the 404... it's a problem saving the 404
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 
 

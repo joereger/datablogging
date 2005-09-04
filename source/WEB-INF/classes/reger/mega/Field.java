@@ -3,6 +3,7 @@ package reger.mega;
 import reger.*;
 import reger.cache.LogCache;
 import reger.core.db.Db;
+import reger.core.Debug;
 import org.jdom.Element;
 
 /**
@@ -55,7 +56,7 @@ public class Field implements Cloneable, FieldInterface {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return null;
     }
@@ -73,7 +74,7 @@ public class Field implements Cloneable, FieldInterface {
 
 
     public void populateFromMegafieldid(int megafieldid){
-        reger.core.Util.debug(5, "Field.java - megafieldid=" + megafieldid);
+        Debug.debug(5, "", "Field.java - megafieldid=" + megafieldid);
         //-----------------------------------
         //-----------------------------------
         String[][] rstField= Db.RunSQL("SELECT megafieldid, fieldtype, eventtypeid, fieldname, fielddescription, megadatatypeid, isrequired, logid FROM megafield WHERE megafieldid='"+megafieldid+"'");
@@ -106,7 +107,7 @@ public class Field implements Cloneable, FieldInterface {
 
                 
 
-                reger.core.Util.debug(5, "Field.java - found and populated field.<br>this.megafieldid=" + this.megafieldid + "<br>fieldname=" + fieldname);
+                Debug.debug(5, "", "Field.java - found and populated field.<br>this.megafieldid=" + this.megafieldid + "<br>fieldname=" + fieldname);
         	}
         }
     }
@@ -211,7 +212,7 @@ public class Field implements Cloneable, FieldInterface {
 
 
         //Record debug
-        reger.core.Util.debug(5, debug.toString());
+        Debug.debug(5, "", debug.toString());
 
 
     }
@@ -259,7 +260,7 @@ public class Field implements Cloneable, FieldInterface {
 
         debug.append("this.megafieldid=" + this.megafieldid);
 
-        reger.core.Util.debug(5, debug.toString());
+        Debug.debug(5, "", debug.toString());
     }
 
 

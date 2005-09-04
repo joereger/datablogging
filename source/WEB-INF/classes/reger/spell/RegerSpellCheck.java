@@ -7,16 +7,13 @@ import com.swabunga.spell.event.SpellChecker;
 import com.swabunga.spell.event.StringWordTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import reger.core.Debug;
 
 
 /**
@@ -63,7 +60,7 @@ public class RegerSpellCheck implements SpellCheckListener {
                 spellCheck.checkSpelling(new StringWordTokenizer(textToSpellCheck));
 
         } catch (Exception e) {
-                reger.core.Util.errorsave(e, "RegerSpellCheck error.");
+                Debug.errorsave(e, "", "RegerSpellCheck error.");
         }
     }
 
@@ -76,7 +73,7 @@ public class RegerSpellCheck implements SpellCheckListener {
         StringBuffer tst = new StringBuffer();
         for(int i=0; i<spellCheckEvents.size(); i++) {
             SpellCheckEvent event = (SpellCheckEvent)spellCheckEvents.get(i);
-        	List suggestions = event.getSuggestions();
+            List suggestions = event.getSuggestions();
             if (suggestions.size() > 0) {
                   tst.append("<br><br>MISSPELT WORD: " + event.getInvalidWord());
                   for (Iterator suggestedWord = suggestions.iterator(); suggestedWord.hasNext();) {

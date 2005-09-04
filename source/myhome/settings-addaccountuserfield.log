@@ -102,7 +102,7 @@ if (pageProps.action.equals("add")){
         response.sendRedirect("settings-profile.log");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 }
 

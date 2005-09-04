@@ -4,6 +4,8 @@ import org.apache.xmlrpc.XmlRpcClientLite;
 
 import java.util.Vector;
 
+import reger.core.Debug;
+
 /**
  * Pings weblogs.com
  */
@@ -51,7 +53,7 @@ public class WebLogsComPing {
 
                     //reger.core.Util.logtodb("weblogs.com ping result: " + resultStr);
                 } catch (Exception e) {
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
             }
         }

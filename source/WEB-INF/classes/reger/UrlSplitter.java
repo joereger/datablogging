@@ -1,5 +1,7 @@
 package reger;
 
+import reger.core.Debug;
+
 /**
  * Splits incoming urls into an accounturl, plbasedomain and virtualdir.
  */
@@ -25,7 +27,7 @@ public class UrlSplitter {
     public UrlSplitter(javax.servlet.http.HttpServletRequest request){
         //Get the host
         rawIncomingServername = request.getServerName();
-        reger.core.Util.debug(5, " rawIncomingServername=" + rawIncomingServername);
+        Debug.debug(5, "", " rawIncomingServername=" + rawIncomingServername);
 
         //Start Here
         servername = rawIncomingServername;
@@ -38,7 +40,7 @@ public class UrlSplitter {
                 }
             }
         }
-        reger.core.Util.debug(5, " servername www removed=" + servername);
+        Debug.debug(5, "", " servername www removed=" + servername);
 
         //Get the virtualdir
         if (request.getParameter("virtualdir")!=null && !request.getParameter("virtualdir").equals("")){

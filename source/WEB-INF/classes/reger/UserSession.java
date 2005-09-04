@@ -1,5 +1,7 @@
 package reger;
 
+import reger.core.Debug;
+
 import javax.servlet.http.Cookie;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -73,10 +75,10 @@ public class UserSession {
 
         //If we're seeing a new url scheme, refresh the objects in the session
         if (this.urlSplitter==null || (!urlSplitter.getServername().equals(this.urlSplitter.getServername()) || !urlSplitter.getVirtualdir().equals(this.urlSplitter.getVirtualdir()))) {
-            reger.core.Util.debug(5, "Refresh of UserSession object triggered.");
-            reger.core.Util.debug(5, "UserSession.processNewRequest() - after urlSplitter. <br>urlSplitter.getRawIncomingServername()=" + urlSplitter.getRawIncomingServername() + "<br>urlSplitter.getServername()=" + urlSplitter.getServername() + "<br>urlSplitter.getVirtualdir()=" + urlSplitter.getVirtualdir() + "<br>urlSplitter.getSiterooturl()=" + urlSplitter.getSiterooturl());
+            Debug.debug(5, "", "Refresh of UserSession object triggered.");
+            Debug.debug(5, "", "UserSession.processNewRequest() - after urlSplitter. <br>urlSplitter.getRawIncomingServername()=" + urlSplitter.getRawIncomingServername() + "<br>urlSplitter.getServername()=" + urlSplitter.getServername() + "<br>urlSplitter.getVirtualdir()=" + urlSplitter.getVirtualdir() + "<br>urlSplitter.getSiterooturl()=" + urlSplitter.getSiterooturl());
             if (reger.core.DegubLevel.getDebugLevel()>=5){
-                reger.core.Util.logStringArrayToDb("UserSession.java - urlSplitter.getServernameAllPossibleDomains()", urlSplitter.getServernameAllPossibleDomains());
+                Debug.logStringArrayToDb("UserSession.java - urlSplitter.getServernameAllPossibleDomains()", urlSplitter.getServernameAllPossibleDomains());
             }
             //Set the new urlSplitter to be the one for the session
             this.urlSplitter = urlSplitter;

@@ -1,6 +1,7 @@
 package reger.nestednav;
 
 import reger.UserSession;
+import reger.core.Debug;
 
 /**
  * Creates the screen to manage nav item layout
@@ -12,7 +13,7 @@ public class NestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay{
     public String outputNavBarHtml(UserSession userSession, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
-        reger.core.Util.debug(5, "NestedNavLayoutManager.java - Navbar start.");
+        Debug.debug(5, "", "NestedNavLayoutManager.java - Navbar start.");
         //mb.append("<!-- Start navigation--><table class=navigation cellpadding=0 cellspacing=0 width=100% border=0>");
 
         mb.append("<!-- Start navigation --><table cellpadding=3 cellspacing=1 border=0 bgcolor=#ffffff>");
@@ -27,7 +28,7 @@ public class NestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay{
         mb.append(outputItemHtml(new NestedNavItemBase(), userSession.getAccount().getNestedNavCollection(), 0, userSession, request));
 
         mb.append("</table><!-- End navigation -->");
-        reger.core.Util.debug(5, "NestedNavLayoutManager.java - Navbar end.");
+        Debug.debug(5, "", "NestedNavLayoutManager.java - Navbar end.");
 
         return mb.toString();
     }
@@ -37,7 +38,7 @@ public class NestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay{
 
         String thisPageName = reger.core.Util.getJspName(request.getRequestURI());
 
-        reger.core.Util.debug(5, "NestedNavLayoutManager.java - Item output called.");
+        Debug.debug(5, "", "NestedNavLayoutManager.java - Item output called.");
 
         String isOnText = "off";
         if (navItem.isActive(request)){

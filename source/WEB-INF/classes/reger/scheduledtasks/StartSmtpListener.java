@@ -1,6 +1,7 @@
 package reger.scheduledtasks;
 
 import reger.core.scheduler.ScheduledTask;
+import reger.core.Debug;
 
 /**
  *
@@ -25,7 +26,7 @@ public class StartSmtpListener implements ScheduledTask{
     public String getResult() {
         return result;
     }
-    
+
     public void doTask(){
         if (mySmtpListener==null || !mySmtpListener.isRunningAsItShouldBe()){
             startListener();
@@ -41,7 +42,7 @@ public class StartSmtpListener implements ScheduledTask{
             }
             mySmtpListener = new reger.core.scheduler.SmtpListener();
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             result = "Unable to start SMTPListener.  Check event log for details.";
         }
     }

@@ -1,7 +1,7 @@
 package reger.mega;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.TreeMap;
@@ -115,7 +115,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         if (rstVal!=null && rstVal.length>0){
         	for(int i=0; i<rstVal.length; i++){
-        	    reger.core.Util.debug(5, "Value is set for<br>megafieldid=" + megafieldid +"<br>value=" + rstVal[i][1]);
+        	    Debug.debug(5, "", "Value is set for<br>megafieldid=" + megafieldid +"<br>value=" + rstVal[i][1]);
                 value = rstVal[i][1];
         	}
         }
@@ -139,7 +139,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
     }
 
     public void loadPossibleValues(int megafieldid, int logid){
-        reger.core.Util.debug(5, "FieldDAOListOfOptions.loadPossibleValues() - megafieldid=" + megafieldid);
+        Debug.debug(5, "", "FieldDAOListOfOptions.loadPossibleValues() - megafieldid=" + megafieldid);
         //Get possible values, only those that are active
         //-----------------------------------
         //-----------------------------------
@@ -148,7 +148,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         if (rstOpts!=null && rstOpts.length>0){
         	for(int i=0; i<rstOpts.length; i++){
-        	    reger.core.Util.debug(5, "FieldDAOListOfOptions.loadPossibleValues() - adding possiblevalue=" + rstOpts[i][0]);
+        	    Debug.debug(5, "", "FieldDAOListOfOptions.loadPossibleValues() - adding possiblevalue=" + rstOpts[i][0]);
                 possibleValues = reger.core.Util.addToStringArray(possibleValues, rstOpts[i][0]);
         	}
         }
@@ -373,7 +373,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
                         //-----------------------------------
                         if (rstCount!=null && rstCount.length>0){
                         	//Just mark inactive because some peeps are using it
-                        	reger.core.Util.debug(5, "marking inactive.  megaoptionid=" + rstOptsProcess[i][0]);
+                        	Debug.debug(5, "", "marking inactive.  megaoptionid=" + rstOptsProcess[i][0]);
                         	//-----------------------------------
                         	//-----------------------------------
                         	int count = Db.RunSQLUpdate("UPDATE megaoption SET isactive='0' WHERE megaoptionid='"+rstOptsProcess[i][0]+"'");
@@ -381,7 +381,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
                         	//-----------------------------------
                         } else {
                             //Do a delete because nobody's using this option
-                            reger.core.Util.debug(5, "deleting.  megaoptionid=" + rstOptsProcess[i][0]);
+                            Debug.debug(5, "", "deleting.  megaoptionid=" + rstOptsProcess[i][0]);
                             //-----------------------------------
                             //-----------------------------------
                             int count = Db.RunSQLUpdate("DELETE FROM megaoption WHERE megaoptionid='"+rstOptsProcess[i][0]+"'");

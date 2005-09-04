@@ -1,5 +1,7 @@
 package reger.linkrot;
 
+import reger.core.Debug;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -15,25 +17,25 @@ public class GenerateKeywords {
 
     public static String getKeywords(String webPage){
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.getKeywords - start");
+        Debug.debug(5, "", "GenerateKeywords.getKeywords - start");
         String keywords = "";
 
         String titleKeywords = "";
         titleKeywords = getTitleKeywords(webPage);
 
         keywords = webPage;
-        reger.core.Util.debug(5, "Before removing tags/scripts/head:"+reger.core.Util.xmlclean(keywords));
+        Debug.debug(5, "", "Before removing tags/scripts/head:"+reger.core.Util.xmlclean(keywords));
         keywords = removeHeadSection(keywords);
         keywords = removeScripts(keywords);
         keywords = removeStyles(keywords);
         keywords = removeHtmlTags(keywords);
         keywords = removePunctuation(keywords);
         keywords = removeMisc(keywords);
-        reger.core.Util.debug(5, "After removing tags/scripts/head:"+reger.core.Util.xmlclean(keywords));
+        Debug.debug(5, "", "After removing tags/scripts/head:"+reger.core.Util.xmlclean(keywords));
         keywords = getKeywordsFromHashmap(getUsedWords(keywords), 50);
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.getKeywords - end");
+        Debug.debug(5, "", "GenerateKeywords.getKeywords - end");
 
         return titleKeywords + " " + keywords;
 
@@ -41,10 +43,10 @@ public class GenerateKeywords {
 
     public static String getTitleKeywords(String webPage){
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.getTitleKeywords - start");
+        Debug.debug(5, "", "GenerateKeywords.getTitleKeywords - start");
         String titleKeywords = "";
 
-        reger.core.Util.debug(5, "Before trying to find title:"+reger.core.Util.xmlclean(webPage));
+        Debug.debug(5, "", "Before trying to find title:"+reger.core.Util.xmlclean(webPage));
 
         // Create a pattern to match cat
         //Pattern p = Pattern.compile("(?i)\\<title(.|\\n)*?\\>(.|\\n)*?\\</title\\>");
@@ -64,7 +66,7 @@ public class GenerateKeywords {
 
         titleKeywords = truncateToXWords(titleKeywords, 3);
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.getTitleKeywords - end");
+        Debug.debug(5, "", "GenerateKeywords.getTitleKeywords - end");
         return titleKeywords;
     }
 
@@ -87,14 +89,14 @@ public class GenerateKeywords {
 
     public static String removeScripts(String webPage){
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeScripts() - start");
+        Debug.debug(5, "", "GenerateKeywords.removeScripts() - start");
 
         int start = -1;
         int end = -1;
         int length = -1;
         String tmp = "";
 
-        reger.core.Util.debug(5, "Before remove scripts:"+reger.core.Util.xmlclean(webPage));
+        Debug.debug(5, "", "Before remove scripts:"+reger.core.Util.xmlclean(webPage));
         int infiniteLoopSafetyCounter = 0;
         while (webPage.indexOf("<script")>0 && infiniteLoopSafetyCounter<200){
             infiniteLoopSafetyCounter = infiniteLoopSafetyCounter + 1;
@@ -107,17 +109,17 @@ public class GenerateKeywords {
                 webPage = tmp;
             }
         }
-        reger.core.Util.debug(5, "After remove scripts:"+reger.core.Util.xmlclean(webPage));
+        Debug.debug(5, "", "After remove scripts:"+reger.core.Util.xmlclean(webPage));
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeScripts() - end");
+        Debug.debug(5, "", "GenerateKeywords.removeScripts() - end");
 
         return webPage;
     }
 
     public static String removeStyles(String webPage){
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeStyles() - start");
+        Debug.debug(5, "", "GenerateKeywords.removeStyles() - start");
         int start = -1;
         int end = -1;
         int length = -1;
@@ -139,20 +141,20 @@ public class GenerateKeywords {
         //reger.core.Util.logtodb("After remove style:"+reger.core.Util.xmlclean(webPage));
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeStyles() - end");
+        Debug.debug(5, "", "GenerateKeywords.removeStyles() - end");
 
         return webPage;
     }
 
     public static String removeHeadSection(String webPage){
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeHeadSection() - start");
+        Debug.debug(5, "", "GenerateKeywords.removeHeadSection() - start");
         int start = -1;
         int end = -1;
         int length = -1;
         String tmp = "";
 
-        reger.core.Util.debug(5, "Before remove style:"+reger.core.Util.xmlclean(webPage));
+        Debug.debug(5, "", "Before remove style:"+reger.core.Util.xmlclean(webPage));
         int infiniteLoopSafetyCounter = 0;
         while (webPage.indexOf("<head")>0 && infiniteLoopSafetyCounter<200){
             infiniteLoopSafetyCounter = infiniteLoopSafetyCounter + 1;
@@ -165,10 +167,10 @@ public class GenerateKeywords {
                 webPage = tmp;
             }
         }
-        reger.core.Util.debug(5, "After remove style:"+reger.core.Util.xmlclean(webPage));
+        Debug.debug(5, "", "After remove style:"+reger.core.Util.xmlclean(webPage));
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeHeadSection - end");
+        Debug.debug(5, "", "GenerateKeywords.removeHeadSection - end");
 
         return webPage;
     }
@@ -176,20 +178,20 @@ public class GenerateKeywords {
     public static String removeHtmlTags(String webPage){
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeHtmlTags - start");
+        Debug.debug(5, "", "GenerateKeywords.removeHtmlTags - start");
 
-        reger.core.Util.debug(5, "Before remove html:"+reger.core.Util.xmlclean(webPage));
+        Debug.debug(5, "", "Before remove html:"+reger.core.Util.xmlclean(webPage));
         try {
             //webPage = webPage.replaceAll("\\<(.|\\n)*?\\>", " ");
             webPage = webPage.replaceAll("\\<[^\\>]*\\>", " ");
         } catch (Throwable e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
 
         }
-        reger.core.Util.debug(5, "After remove html:"+reger.core.Util.xmlclean(webPage));
+        Debug.debug(5, "", "After remove html:"+reger.core.Util.xmlclean(webPage));
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeHtmlTags - end");
+        Debug.debug(5, "", "GenerateKeywords.removeHtmlTags - end");
 
         return webPage;
     }
@@ -197,20 +199,20 @@ public class GenerateKeywords {
 
     public static String removePunctuation(String webPage){
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removePunctuation - start");
+        Debug.debug(5, "", "GenerateKeywords.removePunctuation - start");
 
         StringBuffer sbTemp = new StringBuffer ( webPage ) ;
-        reger.core.Util.debug(5, "Before remove Punctuation:"+reger.core.Util.xmlclean(webPage));
+        Debug.debug(5, "", "Before remove Punctuation:"+reger.core.Util.xmlclean(webPage));
         for ( int i = sbTemp.length () - 1 ; i >= 0 ; i -- ){
             if (!Character.isLetterOrDigit(sbTemp.charAt(i)) && !Character.isWhitespace(sbTemp.charAt(i))){
                 sbTemp.deleteCharAt(i) ;
             }
         }
-        reger.core.Util.debug(5, "After remove Punctuation:"+webPage);
+        Debug.debug(5, "", "After remove Punctuation:"+webPage);
 
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removePunctuation - end");
+        Debug.debug(5, "", "GenerateKeywords.removePunctuation - end");
 
         return sbTemp.toString () ;
     }
@@ -219,15 +221,15 @@ public class GenerateKeywords {
     public static String removeMisc(String webPage){
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeMisc - start");
+        Debug.debug(5, "", "GenerateKeywords.removeMisc - start");
 
         //Remove &nbsp; and the like.
-        reger.core.Util.debug(5, "Before remove Misc:"+reger.core.Util.xmlclean(webPage));
+        Debug.debug(5, "", "Before remove Misc:"+reger.core.Util.xmlclean(webPage));
         webPage = webPage.replaceAll("nbsp", " ");
-        reger.core.Util.debug(5, "After remove Misc:"+webPage);
+        Debug.debug(5, "", "After remove Misc:"+webPage);
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.removeMisc - end");
+        Debug.debug(5, "", "GenerateKeywords.removeMisc - end");
 
         return webPage;
     }
@@ -257,7 +259,7 @@ public class GenerateKeywords {
      */
     public static HashMap getUsedWords(String webPage){
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.getUsedwords - start");
+        Debug.debug(5, "", "GenerateKeywords.getUsedwords - start");
 
         HashMap map = new HashMap();
 
@@ -276,7 +278,7 @@ public class GenerateKeywords {
         //reger.core.Util.logHashMapToDb("Used Words:", map);
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.getUsedwords - end");
+        Debug.debug(5, "", "GenerateKeywords.getUsedwords - end");
 
         return map;
     }
@@ -294,7 +296,7 @@ public class GenerateKeywords {
                 count = Integer.parseInt(map.get(word).toString());
                 count = count + 1;
             } catch (Exception e) {
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
         map.put(word, new Integer(count));
@@ -309,7 +311,7 @@ public class GenerateKeywords {
      */
     public static String getKeywordsFromHashmap(HashMap map, int numbertoget){
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.getKeyWordsFromHashMap - start");
+        Debug.debug(5, "", "GenerateKeywords.getKeyWordsFromHashMap - start");
 
         String keywords = "";
 
@@ -329,7 +331,7 @@ public class GenerateKeywords {
         keywords = tst.toString();
 
         //Debug
-        reger.core.Util.debug(5, "GenerateKeywords.getKeywordsFromHashmap - end");
+        Debug.debug(5, "", "GenerateKeywords.getKeywordsFromHashmap - end");
 
         return keywords;
     }

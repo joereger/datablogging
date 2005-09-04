@@ -3,6 +3,7 @@ package reger.cache;
 import reger.AccountCounts;
 import reger.Account;
 import reger.Accountuser;
+import reger.core.Debug;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
@@ -20,24 +21,24 @@ public class AccountCountCache {
         String[] group = new String[2];
         group[0] = String.valueOf(account.getAccountid());
         group[1] = String.valueOf(accountuser.getAccountuserid());
-        reger.core.Util.debug(4, "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") called.");
+        Debug.debug(4, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") called.");
 
         if (admin==null){
             admin = new GeneralCacheAdministrator();
         }
 
         try {
-            reger.core.Util.debug(4, "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") trying to return from cache.");
+            Debug.debug(4, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") trying to return from cache.");
             return (AccountCounts) admin.getFromCache(key);
         } catch (NeedsRefreshException nre) {
             try {
-                reger.core.Util.debug(3, "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") refreshing object from database.");
+                Debug.debug(3, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") refreshing object from database.");
                 AccountCounts acctCounts = new AccountCounts(account, accountuser);
                 admin.putInCache(key, acctCounts, group);
                 return acctCounts;
             } catch (Exception ex) {
                 admin.cancelUpdate(key);
-                reger.core.Util.errorsave(ex);
+                Debug.errorsave(ex, "");
                 return new AccountCounts();
             }
         }
@@ -50,7 +51,7 @@ public class AccountCountCache {
         try{
             admin.flushGroup(String.valueOf(accountid));
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 
@@ -61,7 +62,7 @@ public class AccountCountCache {
         try{
             admin.flushGroup(String.valueOf(accountuserid));
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 
@@ -73,7 +74,7 @@ public class AccountCountCache {
         try{
             admin.putInCache(key, acctCounts, group);
         } catch (Exception ex){
-            reger.core.Util.errorsave(ex);
+            Debug.errorsave(ex, "");
         }
     }
 

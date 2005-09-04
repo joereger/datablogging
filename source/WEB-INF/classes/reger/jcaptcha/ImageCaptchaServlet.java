@@ -15,6 +15,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import reger.core.Debug;
+
 
 /**
  * Serves a captcha image
@@ -66,7 +68,7 @@ public class ImageCaptchaServlet extends HttpServlet {
             responseOutputStream.flush();
             responseOutputStream.close();
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 }

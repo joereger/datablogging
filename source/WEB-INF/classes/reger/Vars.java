@@ -1,5 +1,7 @@
 package reger;
 
+import reger.core.Debug;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
@@ -181,7 +183,7 @@ public class Vars {
         } catch (Exception e){
             //System.out.println("Reger.com: Failed getting environment variable '"+varName+"' from context.");
             e.printStackTrace();
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
 
         return new String();

@@ -2,6 +2,7 @@
                  reger.mega.FieldType,
                  reger.mega.MegaChartHtmlRenderer,
                  reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -43,7 +44,7 @@ userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().ge
 " AND "+
 " (megachart.accountid='"+userSession.getAccount().getAccountid()+"' OR megachart.accountid='0')"+
 " ORDER BY megachart.accountid DESC, megalog.logid ASC, megachart.megachartid DESC";
-reger.core.Util.debug(5, sql);
+Debug.debug(5, "", sql);
 //-----------------------------------
 //-----------------------------------
 String[][] rstGraph= Db.RunSQL(sql);

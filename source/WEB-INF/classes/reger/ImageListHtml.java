@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -87,7 +88,7 @@ public class ImageListHtml {
             out = sqlSelect+sqlFrom+sqlWhere+sqlEventid+sqlAccountid+sqlImagetagid+sqlLiveEntry+sqlOrderBy;
         }
 
-        reger.core.Util.debug(5, "ImageListHtml.sqlBuilder<br>" + out);
+        Debug.debug(5, "", "ImageListHtml.sqlBuilder<br>" + out);
 
         return out;
     }

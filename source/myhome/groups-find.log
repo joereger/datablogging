@@ -3,6 +3,7 @@
                  java.util.Vector,
                  java.util.Hashtable,
                  reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -155,7 +156,7 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
                 }
                 mb.append("</table>");
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
                 mb.append("<font face=arial size=-2>");
                 mb.append("Error contacting this server: " + e.getMessage());
                 mb.append("<font face=arial size=-2>");

@@ -1,6 +1,7 @@
 <%@ page import="reger.core.db.Db,
                  reger.core.Util"%>
 <%@ page import="reger.cache.LogCache"%>
+<%@ page import="reger.core.Debug"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -34,7 +35,7 @@ if (!userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid) || !u
         response.sendRedirect("index.log");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
         return;
     }
 }
@@ -61,7 +62,7 @@ if (pageProps.action.equals("delete")){
         response.sendRedirect("index.log");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
         return;
     }
 

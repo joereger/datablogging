@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import reger.UserSession;
 import reger.MegaLogType;
+import reger.core.Debug;
 
 /**
  * Saves field layout changes
@@ -21,7 +22,7 @@ public class FieldLayoutSave {
     }
 
     public String processLayoutChange(int logid, int eventtypeid, int megafieldid, String action, String fieldorderholder){
-        reger.core.Util.debug(5, "FieldLayoutSave.processLayoutChange() called. action=" + action);
+        Debug.debug(5, "", "FieldLayoutSave.processLayoutChange() called. action=" + action);
         //Security check
         boolean doUpdate = false;
 

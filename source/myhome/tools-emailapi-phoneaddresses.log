@@ -38,7 +38,7 @@ if (rstCheck!=null && rstCheck.length>0){
         response.sendRedirect("tools-emailapi-settings.log?action=newsettings");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 }
 

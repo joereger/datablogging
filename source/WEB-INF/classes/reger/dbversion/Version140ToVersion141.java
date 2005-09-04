@@ -3,7 +3,7 @@ package reger.dbversion;
 import reger.core.db.Db;
 import reger.core.dbupgrade.UpgradeDatabaseOneVersion;
 import reger.core.licensing.License;
-import reger.PrivateLabel;
+import reger.core.Debug;
 
 import java.util.Calendar;
 import java.util.Hashtable;
@@ -52,7 +52,7 @@ public class Version140ToVersion141 implements UpgradeDatabaseOneVersion{
                         if (result.get("encryptedlicense")!=null && !((String)result.get("encryptedlicense")).equals("")){
                             encryptedlicense = (String)result.get("encryptedlicense");
                         } else {
-                            reger.core.Util.logtodb("Upgrading Error for VIP Accountid=" + rstAcct[i][0] + "<br>This license may not be properly configured.  Please check.<br>Errormessage=" + result.get("errormessage"));
+                            Debug.logtodb("Upgrading Error for VIP Accountid=" + rstAcct[i][0] + "<br>This license may not be properly configured.  Please check.<br>Errormessage=" + result.get("errormessage"), "");
                         }
                     } else if (reger.core.Util.isinteger(rstAcct[i][2]) &&  Integer.parseInt(rstAcct[i][2])==reger.Vars.ACCTYPETRIAL){
                         //Expiration date - Restart the trial period
@@ -89,7 +89,7 @@ public class Version140ToVersion141 implements UpgradeDatabaseOneVersion{
                     //-----------------------------------
                     //-----------------------------------
                 } catch (Exception e){
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
             }
         }

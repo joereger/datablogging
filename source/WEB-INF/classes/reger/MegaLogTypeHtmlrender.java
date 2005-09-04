@@ -4,13 +4,11 @@ import reger.mega.MegaChart;
 import reger.mega.MegaChartHtmlRenderer;
 import reger.template.Template;
 import reger.core.db.Db;
+import reger.core.Debug;
 import reger.pageFramework.PageProps;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-
-import org.w3c.tidy.Tidy;
 
 /**
  * Renders a MegaLogType to html summary form
@@ -165,16 +163,16 @@ public class MegaLogTypeHtmlrender {
 
     private static int numberOfUserLogsBasedOnEventtypeid(int eventtypeid, UserSession userSession){
         //Count total records
-		//-----------------------------------
-		//-----------------------------------
-		String[][] rstLogCount= reger.core.db.Db.RunSQL("SELECT count(*) FROM megalog, account, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND megalog.accountid=account.accountid AND account.islistedindirectory='1' AND eventtypeid='"+eventtypeid+"' AND logaccess='"+reger.Vars.LOGACCESSPUBLIC+"'");
-		//-----------------------------------
-		//-----------------------------------
-		int counttotal=0;
-		if (rstLogCount!=null){
-			counttotal = Integer.parseInt(rstLogCount[0][0]);
-		}
-		return counttotal;
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstLogCount= reger.core.db.Db.RunSQL("SELECT count(*) FROM megalog, account, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND megalog.accountid=account.accountid AND account.islistedindirectory='1' AND eventtypeid='"+eventtypeid+"' AND logaccess='"+reger.Vars.LOGACCESSPUBLIC+"'");
+        //-----------------------------------
+        //-----------------------------------
+        int counttotal=0;
+        if (rstLogCount!=null){
+            counttotal = Integer.parseInt(rstLogCount[0][0]);
+        }
+        return counttotal;
     }
 
 
@@ -185,54 +183,54 @@ public class MegaLogTypeHtmlrender {
 
 
         //Deal with paging
-		int limitMin = (currentpage * 25) - 25;
-		int limitMax = 25;
+        int limitMin = (currentpage * 25) - 25;
+        int limitMax = 25;
 
-		//This section builds one of two sets of SQL queries.
-		//In each set is a main that returns a limited number of records.
-		//And a count that only returns the count of all records fulfilling criteria.
-		String sql="";
+        //This section builds one of two sets of SQL queries.
+        //In each set is a main that returns a limited number of records.
+        //And a count that only returns the count of all records fulfilling criteria.
+        String sql="";
 
         //It's the homepage or a log homepage
         sql = "SELECT logid, name, account.accountid FROM megalog, account, pl WHERE  "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND megalog.accountid=account.accountid AND account.islistedindirectory='1' AND  eventtypeid='"+eventtypeid+"' AND logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' ORDER BY logid DESC" + " LIMIT "+ limitMin +","+ limitMax;
 
 
 
-		//For debugging, output the sql to the screen
-		//list.append("<br>" + sql);
+        //For debugging, output the sql to the screen
+        //list.append("<br>" + sql);
 
-		reger.core.Util.debug(5, "TourHtml.java - <br>sql:<br>"+sql);
-
-
-		int counttotal=numberOfUserLogsBasedOnEventtypeid(eventtypeid, userSession);
+        Debug.debug(5, "", "TourHtml.java - <br>sql:<br>"+sql);
 
 
-
-		//reger.core.Util.logtodb("sql htmlListEvents.java: "+sql);
-		//Return the actual records needed
-		//-----------------------------------
-		//-----------------------------------
-		String[][] rstLog= reger.core.db.Db.RunSQL(sql);
-		//-----------------------------------
-		//-----------------------------------
+        int counttotal=numberOfUserLogsBasedOnEventtypeid(eventtypeid, userSession);
 
 
-		//Create the paging links
-		StringBuffer pagingLinks = new StringBuffer();
-		pagingLinks.append(reger.pagingLinkPrint.getHtml(counttotal, currentpage, 25, request));
+
+        //reger.core.Util.logtodb("sql htmlListEvents.java: "+sql);
+        //Return the actual records needed
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstLog= reger.core.db.Db.RunSQL(sql);
+        //-----------------------------------
+        //-----------------------------------
 
 
-		//Append the paginglinks to the top of the page
-		mb.append(pagingLinks);
+        //Create the paging links
+        StringBuffer pagingLinks = new StringBuffer();
+        pagingLinks.append(reger.pagingLinkPrint.getHtml(counttotal, currentpage, 25, request));
 
 
-		if (rstLog!=null &&  rstLog.length>0) {
-			for(int i=0; i<rstLog.length; i++){
-				//The link
-				String logurl="logmain"+rstLog[i][0]+".log";
+        //Append the paginglinks to the top of the page
+        mb.append(pagingLinks);
 
-				//The baseurl
-				reger.Account acct = new reger.Account(Integer.parseInt(rstLog[i][2]));
+
+        if (rstLog!=null &&  rstLog.length>0) {
+            for(int i=0; i<rstLog.length; i++){
+                //The link
+                String logurl="logmain"+rstLog[i][0]+".log";
+
+                //The baseurl
+                reger.Account acct = new reger.Account(Integer.parseInt(rstLog[i][2]));
 
                 //Add the servername and port
                 String siteUrl = "";
@@ -251,12 +249,12 @@ public class MegaLogTypeHtmlrender {
                 mb.append("<br>");
 
             }
-		} else {
-			mb.append("<font class=smallfont face=arial size=-2>No user logs based on this log type are made public.</font><br>");
-		}
+        } else {
+            mb.append("<font class=smallfont face=arial size=-2>No user logs based on this log type are made public.</font><br>");
+        }
 
-		//Append the paginglinks to the bottom of the page
-		mb.append(pagingLinks);
+        //Append the paginglinks to the bottom of the page
+        mb.append(pagingLinks);
 
 
         return mb;
@@ -306,7 +304,7 @@ public class MegaLogTypeHtmlrender {
             mb.append("<tr>");
             mb.append("<td valign=top bgcolor=#ffffff>");
 
-        	for(int i=0; i<rstChart.length; i++){
+            for(int i=0; i<rstChart.length; i++){
                 mb.append("<br><br>");
                 mb.append("<font face=arial size=-1>");
                 mb.append("<center>");
@@ -318,11 +316,11 @@ public class MegaLogTypeHtmlrender {
                 mb.append(MegaChartHtmlRenderer.getHtml(mc, userSession, true, "../", false, true));
 
                 mb.append("</center>");
-        	    mb.append("</font>");
+                mb.append("</font>");
 
-        	}
+            }
 
-        	mb.append("</td>");
+            mb.append("</td>");
             mb.append("</tr>");
             mb.append("</table>");
         } else {
@@ -342,73 +340,73 @@ public class MegaLogTypeHtmlrender {
 
     private static int numberOfRecentEntriesBasedOnEventtypeid(int eventtypeid, UserSession userSession){
         //Count total records
-		//-----------------------------------
-		//-----------------------------------
-		String[][] rstEntryCount= reger.core.db.Db.RunSQL("SELECT count(*) FROM event event, megalog, account, pl WHERE  "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND megalog.accountid=account.accountid AND account.islistedindirectory='1' AND megalog.eventtypeid='"+eventtypeid+"' AND "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"'");
-		//-----------------------------------
-		//-----------------------------------
-		int counttotal=0;
-		if (rstEntryCount!=null){
-			counttotal = Integer.parseInt(rstEntryCount[0][0]);
-		}
-		return counttotal;
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstEntryCount= reger.core.db.Db.RunSQL("SELECT count(*) FROM event event, megalog, account, pl WHERE  "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND megalog.accountid=account.accountid AND account.islistedindirectory='1' AND megalog.eventtypeid='"+eventtypeid+"' AND "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"'");
+        //-----------------------------------
+        //-----------------------------------
+        int counttotal=0;
+        if (rstEntryCount!=null){
+            counttotal = Integer.parseInt(rstEntryCount[0][0]);
+        }
+        return counttotal;
     }
 
     private static StringBuffer recentEntriesBasedOnEventtypeid(int eventtypeid, int currentpage, HttpServletRequest request, UserSession userSession){
         StringBuffer mb = new StringBuffer();
 
         //Deal with paging
-		int limitMin = (currentpage * 25) - 25;
-		int limitMax = 25;
+        int limitMin = (currentpage * 25) - 25;
+        int limitMax = 25;
 
         //Field list.  Do this to keep the resulting array the same for all queries
-		String fieldSql = "title, event.comments, megalog.name, event.date, eventid, event.logid, 0, 0, event.accountuserid, event.accountid";
+        String fieldSql = "title, event.comments, megalog.name, event.date, eventid, event.logid, 0, 0, event.accountuserid, event.accountid";
 
-		//This section builds one of two sets of SQL queries.
-		//In each set is a main that returns a limited number of records.
-		//And a count that only returns the count of all records fulfilling criteria.
-		String sql="";
+        //This section builds one of two sets of SQL queries.
+        //In each set is a main that returns a limited number of records.
+        //And a count that only returns the count of all records fulfilling criteria.
+        String sql="";
 
         //It's the homepage or a log homepage
         sql = "SELECT "+ fieldSql +" FROM event event, megalog, account, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND megalog.accountid=account.accountid AND account.islistedindirectory='1' AND megalog.eventtypeid='"+eventtypeid+"' AND "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' ORDER BY event.date DESC" + " LIMIT "+ limitMin +","+ limitMax;
 
-		reger.core.Util.debug(5, "TourHtml.java - <br>sql:<br>"+sql);
+        Debug.debug(5, "", "TourHtml.java - <br>sql:<br>"+sql);
 
-		int counttotal=numberOfRecentEntriesBasedOnEventtypeid(eventtypeid, userSession);
-
-
-
-		//reger.core.Util.logtodb("sql htmlListEvents.java: "+sql);
-		//Return the actual records needed
-		//-----------------------------------
-		//-----------------------------------
-		String[][] rsEvent= reger.core.db.Db.RunSQL(sql);
-		//-----------------------------------
-		//-----------------------------------
+        int counttotal=numberOfRecentEntriesBasedOnEventtypeid(eventtypeid, userSession);
 
 
 
-		//Create the paging links
-		StringBuffer pagingLinks = new StringBuffer();
-		pagingLinks.append(reger.pagingLinkPrint.getHtml(counttotal, currentpage, 25, request));
+        //reger.core.Util.logtodb("sql htmlListEvents.java: "+sql);
+        //Return the actual records needed
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rsEvent= reger.core.db.Db.RunSQL(sql);
+        //-----------------------------------
+        //-----------------------------------
 
 
-		//Append the paginglinks to the top of the page
-		mb.append(pagingLinks);
+
+        //Create the paging links
+        StringBuffer pagingLinks = new StringBuffer();
+        pagingLinks.append(reger.pagingLinkPrint.getHtml(counttotal, currentpage, 25, request));
+
+
+        //Append the paginglinks to the top of the page
+        mb.append(pagingLinks);
 
 
 
-		String author="";
+        String author="";
 
-		if (rsEvent!=null &&  rsEvent.length>0) {
-			for(int i=0; i<rsEvent.length; i++){
-				//The link
-				//String entryurl="entry.log?logid=" + rsEvent[i][5] + "&eventid=" + rsEvent[i][4];
-				//String entryurl="entry-logid" + rsEvent[i][5] + "-eventid" + rsEvent[i][4] + ".log";
-				String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rsEvent[i][5]), Integer.parseInt(rsEvent[i][4]), rsEvent[i][0]);
+        if (rsEvent!=null &&  rsEvent.length>0) {
+            for(int i=0; i<rsEvent.length; i++){
+                //The link
+                //String entryurl="entry.log?logid=" + rsEvent[i][5] + "&eventid=" + rsEvent[i][4];
+                //String entryurl="entry-logid" + rsEvent[i][5] + "-eventid" + rsEvent[i][4] + ".log";
+                String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rsEvent[i][5]), Integer.parseInt(rsEvent[i][4]), rsEvent[i][0]);
 
-				//The baseurl
-				reger.Account acct = new reger.Account(Integer.parseInt(rsEvent[i][9]));
+                //The baseurl
+                reger.Account acct = new reger.Account(Integer.parseInt(rsEvent[i][9]));
 
                 //Add the servername and port
                 if (request.getLocalPort()==80 || request.getLocalPort()==443){
@@ -418,24 +416,24 @@ public class MegaLogTypeHtmlrender {
                 }
 
 
-				//How many chars to display?
-				int displaycharsinsummary=500;
-				//The Entry body
-				//String entrybody="";
-				//entrybody=rsEvent[i][1].substring(0,displaycharsinsummary);
-				//Put line breaks in there
-				//entrybody=replace(entrybody, VbCrlf  & VbCrlf, "<br><br>")
-				//entrybody=entrybody.replaceAll( reger.Vars.LINEBREAKCHAR, "<br><br>");
-				//Add the More Link if needed
+                //How many chars to display?
+                int displaycharsinsummary=500;
+                //The Entry body
+                //String entrybody="";
+                //entrybody=rsEvent[i][1].substring(0,displaycharsinsummary);
+                //Put line breaks in there
+                //entrybody=replace(entrybody, VbCrlf  & VbCrlf, "<br><br>")
+                //entrybody=entrybody.replaceAll( reger.Vars.LINEBREAKCHAR, "<br><br>");
+                //Add the More Link if needed
 //				if (rsEvent[i][1].length()>displaycharsinsummary){
 //					entrybody=entrybody + " ...<a href="+ entryurl +">More</a>";
 //				}
 
-				//Get the message and image counts
-				//This creates two extra Db calls per entry... very slow
-				//Not happy about this code.
-				int imagecount=0;
-				int messagecount=0;
+                //Get the message and image counts
+                //This creates two extra Db calls per entry... very slow
+                //Not happy about this code.
+                int imagecount=0;
+                int messagecount=0;
 //				if (!rsEvent[i][7].equals("")){
 //					imagecount=Integer.parseInt(rsEvent[i][7]);
 //				}
@@ -443,29 +441,29 @@ public class MegaLogTypeHtmlrender {
 //					messagecount=Integer.parseInt(rsEvent[i][6]);
 //				}
 
-				//Author
+                //Author
 //				author = rsEvent[i][8];
 //				if (!rsEvent[i][9].equals("")){
 //                    author = rsEvent[i][9];
 //                }
 
 
-				//Call the tRexEntry Engine
-				String templateText = reger.template.AllTemplatesInSystem.getSystemDefaultByType(Template.TEMPLATETYPEENTRYLIST).getTemplate();
+                //Call the tRexEntry Engine
+                String templateText = reger.template.AllTemplatesInSystem.getSystemDefaultByType(Template.TEMPLATETYPEENTRYLIST).getTemplate();
 
 
 
 
                 //If we're on edit.log and the logged-in user can't administer this logid then don't display the result
-				mb.append( reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.dbstringtocalendar(rsEvent[i][3]), rsEvent[i][0], entryurl, reger.core.Util.truncateString(rsEvent[i][1], displaycharsinsummary), rsEvent[i][2], 0, 0, Integer.parseInt(rsEvent[i][8])));
+                mb.append( reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.dbstringtocalendar(rsEvent[i][3]), rsEvent[i][0], entryurl, reger.core.Util.truncateString(rsEvent[i][1], displaycharsinsummary), rsEvent[i][2], 0, 0, Integer.parseInt(rsEvent[i][8])));
 
             }
-		} else {
-			mb.append("<font class=smallfont face=arial size=-2>No recent entries found.</font><br>");
-		}
+        } else {
+            mb.append("<font class=smallfont face=arial size=-2>No recent entries found.</font><br>");
+        }
 
-		//Append the paginglinks to the bottom of the page
-		mb.append(pagingLinks);
+        //Append the paginglinks to the bottom of the page
+        mb.append(pagingLinks);
 
         return mb;
     }

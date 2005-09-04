@@ -1,8 +1,8 @@
 package reger.scheduledtasks;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
 import reger.core.scheduler.ScheduledTask;
+import reger.core.Debug;
 
 
 /**
@@ -130,7 +130,7 @@ public class TrafficCleanse implements ScheduledTask{
             }
 
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             result = "Error.  See event log for details.";
         }
 

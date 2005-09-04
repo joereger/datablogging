@@ -4,6 +4,7 @@ import reger.mega.FieldType;
 import reger.mega.FieldOrderCollection;
 import reger.core.db.Db;
 import reger.core.Util;
+import reger.core.Debug;
 import reger.cache.LogCache;
 
 /**
@@ -109,7 +110,7 @@ public class MegaLogType {
                             }
                         }
                     } catch (Exception e){
-                        reger.core.Util.errorsave(e);
+                        Debug.errorsave(e, "");
                     }
                 }
 
@@ -123,7 +124,7 @@ public class MegaLogType {
     }
 
     private void loadFields(){
-        reger.core.Util.debug(5, "MegaLogType.loadFields() - calling AllFieldsInSystem.allMegaFieldsForEventtypeid for eventtypeid=" + this.eventtypeid);
+        Debug.debug(5, "", "MegaLogType.loadFields() - calling AllFieldsInSystem.allMegaFieldsForEventtypeid for eventtypeid=" + this.eventtypeid);
         megaFields = reger.AllFieldsInSystem.allMegaFieldsForEventtypeid(this.eventtypeid, false);
 
         //Hide fields, order fields
@@ -250,7 +251,7 @@ public class MegaLogType {
 
     public void unhideField(int megafieldid){
         //Remove from hiddenfields
-        reger.core.Util.debug(5, "Field.java - Unhide called on megafieldid=" + megafieldid);
+        Debug.debug(5, "", "Field.java - Unhide called on megafieldid=" + megafieldid);
         int[] out = new int[0];
         for (int i = 0; i < hiddenfields.length; i++) {
             if(hiddenfields[i]!=megafieldid){

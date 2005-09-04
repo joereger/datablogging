@@ -1,5 +1,7 @@
 package reger;
 
+import reger.core.Debug;
+
 import java.util.Vector;
 
 /**
@@ -43,18 +45,18 @@ public class OffensiveContentFlagger {
 
     private static boolean checkAgainstList(String in, Vector words){
         boolean isoffensive = false;
-        reger.core.Util.debug(5, "OffensiveContentFlagger.java - in=" + in);
+        Debug.debug(5, "", "OffensiveContentFlagger.java - in=" + in);
         for (int i = 0; i < words.size(); i++) {
             String wordToLookFor = (String) words.elementAt(i);
-            reger.core.Util.debug(5, "OffensiveContentFlagger.java - wordToLookFor=" + wordToLookFor + "<br>in=" + in);
+            Debug.debug(5, "", "OffensiveContentFlagger.java - wordToLookFor=" + wordToLookFor + "<br>in=" + in);
             if (in.indexOf(wordToLookFor)>0){
-                reger.core.Util.debug(5, "OffensiveContentFlagger.java - found=" + wordToLookFor + " <br>in=" + in);
+                Debug.debug(5, "", "OffensiveContentFlagger.java - found=" + wordToLookFor + " <br>in=" + in);
                 isoffensive=true;
                 //Leave the loop, we've found an offensive word already
                 break;
             }
         }
-        reger.core.Util.debug(5, "OffensiveContentFlagger.java - isoffensive=" + isoffensive);
+        Debug.debug(5, "", "OffensiveContentFlagger.java - isoffensive=" + isoffensive);
         return isoffensive;
     }
 

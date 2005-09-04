@@ -1,5 +1,7 @@
 package reger;
 
+import reger.core.Debug;
+
 import javax.servlet.http.Cookie;
 import java.util.*;
 
@@ -145,9 +147,9 @@ public class AllUserSessions {
         userCookie.setMaxAge(-1);
         if (!domainNameToSetOn.equals("")){
             userCookie.setDomain("."+domainNameToSetOn);
-            reger.core.Util.debug(5, "AllUserSessions.java - Creating cookie.<br>userSessionId=" + userSessionId + "<br>domainNameToSetOn=" + domainNameToSetOn);
+            Debug.debug(5, "", "AllUserSessions.java - Creating cookie.<br>userSessionId=" + userSessionId + "<br>domainNameToSetOn=" + domainNameToSetOn);
         } else {
-            reger.core.Util.debug(5, "AllUserSessions.java - Creating cookie.<br>userSessionId=" + userSessionId + "<br>No Domain Set.");
+            Debug.debug(5, "", "AllUserSessions.java - Creating cookie.<br>userSessionId=" + userSessionId + "<br>No Domain Set.");
         }
         userCookie.setPath("/");
         if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
@@ -178,7 +180,7 @@ public class AllUserSessions {
                 }
             }
         }
-        reger.core.Util.logtodb(mb.toString());
+        Debug.logtodb(mb.toString(), "");
     }
 
     public static Map getUserSessions() {

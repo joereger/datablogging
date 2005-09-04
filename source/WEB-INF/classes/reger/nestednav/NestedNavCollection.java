@@ -1,9 +1,9 @@
 package reger.nestednav;
 
 import reger.Accountuser;
-import reger.Account;
 import reger.UserSession;
 import reger.AddToArray;
+import reger.core.Debug;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public class NestedNavCollection {
 
     public NestedNavCollection(NestedNavItem[] allNestedNavItems){
         this.allNestedNavItems = orderNavItems(allNestedNavItems);
-        reger.core.Util.debug(5, "NestedNavCollection.getChildrenUserCanView() - this.allNestedNavItems.length=" + this.allNestedNavItems.length);
+        Debug.debug(5, "", "NestedNavCollection.getChildrenUserCanView() - this.allNestedNavItems.length=" + this.allNestedNavItems.length);
     }
 
 
@@ -99,7 +99,7 @@ public class NestedNavCollection {
                 }
             }
             //Alphabetize using the NavItemComparator
-            reger.core.Util.debug(5, "NestedNavCollection.java - About to sort itemList.");
+            Debug.debug(5, "", "NestedNavCollection.java - About to sort itemList.");
             Collections.sort(itemList, new NavItemComparator());
             //And add the alphabetized items to the orderedNavItems array
             for (Iterator iterator = itemList.iterator(); iterator.hasNext();) {
@@ -220,7 +220,7 @@ public class NestedNavCollection {
     }
 
     public static boolean isAnyChildActive(NestedNavItem parent, NestedNavCollection collection, UserSession userSession, javax.servlet.http.HttpServletRequest request){
-        reger.core.Util.debug(5, "NestedNavCollection.java isAnyChildActive() called<br>parent=" + parent.getNestedNavLinkText());
+        Debug.debug(5, "", "NestedNavCollection.java isAnyChildActive() called<br>parent=" + parent.getNestedNavLinkText());
         if (collection!=null){
             NestedNavItem[] inItems = collection.getAllNestedNavItems();
             if (inItems!=null){
@@ -230,19 +230,19 @@ public class NestedNavCollection {
                     if (navItem.userCanViewNavItem(userSession.getAccountuser())){
                         //If this one's active.
                         if (navItem.isActive(request)){
-                            reger.core.Util.debug(5, "NestedNavCollection.java isAnyChildActive() returning true.<br>parent="+parent.getNestedNavLinkText());
+                            Debug.debug(5, "", "NestedNavCollection.java isAnyChildActive() returning true.<br>parent="+parent.getNestedNavLinkText());
                             return true;
                         }
                         //If a child is active.  Recurse.
                         if (isAnyChildActive(navItem, collection, userSession, request)){
-                            reger.core.Util.debug(5, "NestedNavCollection.java isAnyChildActive() returning true.<br>parent="+parent.getNestedNavLinkText());
+                            Debug.debug(5, "", "NestedNavCollection.java isAnyChildActive() returning true.<br>parent="+parent.getNestedNavLinkText());
                             return true;
                         }
                     }
                 }
             }
         }
-        reger.core.Util.debug(5, "NestedNavCollection.java isAnyChildActive() returning false.<br>parent="+parent.getNestedNavLinkText());
+        Debug.debug(5, "", "NestedNavCollection.java isAnyChildActive() returning false.<br>parent="+parent.getNestedNavLinkText());
         return false;
     }
 

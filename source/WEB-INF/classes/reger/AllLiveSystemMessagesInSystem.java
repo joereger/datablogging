@@ -1,7 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
-import reger.core.Util;
+import reger.core.Debug;
 
 import java.util.*;
 
@@ -22,7 +22,7 @@ public class AllLiveSystemMessagesInSystem {
      * Empties and then refreshes all logs in the system.
      */
     public static void refresh(){
-        Util.debug(5, "AllLiveSystemMessagesInSystem.refresh().");
+        Debug.debug(5, "", "AllLiveSystemMessagesInSystem.refresh().");
         allLiveSystemMessagesInSystem=Collections.synchronizedMap(new HashMap());
         synchronized(allLiveSystemMessagesInSystem){
             //-----------------------------------

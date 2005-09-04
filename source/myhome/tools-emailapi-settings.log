@@ -156,7 +156,7 @@ if (pageProps.action.equals("go")){
             response.sendRedirect("tools-emailapi-emailaddresses.log");
             return;
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 

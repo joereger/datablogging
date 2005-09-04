@@ -90,7 +90,7 @@ if (request.getParameter("returntopage")==null || request.getParameter("returnto
         pageToRedirectToAfterEdit = "logs-log-list.log";
     }
 }
-reger.core.Util.debug(5, "logs-field.log - pageToRedirectToAfterEdit = " + pageToRedirectToAfterEdit);
+Debug.debug(5, "", "logs-field.log - pageToRedirectToAfterEdit = " + pageToRedirectToAfterEdit);
 
 //If the field isn't null
 if (field!=null){
@@ -128,7 +128,7 @@ if (field!=null){
     return;
 }
 
-reger.core.Util.debug(5, "logs-field.log - pageProps.action="+pageProps.action+"");
+Debug.debug(5, "", "logs-field.log - pageProps.action="+pageProps.action+"");
 
 //Edit field
 String errortext="";

@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 import reger.pageFramework.PageProps;
 import reger.cache.LogCache;
 
@@ -34,7 +35,7 @@ public class MegaLogTypeListHtmlRenderer {
             mb.append("<br><br>");
             mb.append("</td>");
             mb.append("</tr>");
-            reger.core.Util.debug(5, "MegaLogTypeListHtmlRenderer.java - userSession.getPl().getDefaulteventtypeid():" + userSession.getPl().getDefaulteventtypeid());
+            Debug.debug(5, "", "MegaLogTypeListHtmlRenderer.java - userSession.getPl().getDefaulteventtypeid():" + userSession.getPl().getDefaulteventtypeid());
             MegaLogType basicLogType = AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(userSession.getPl().getDefaulteventtypeid());
             if (basicLogType==null){
                 basicLogType = AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(reger.Vars.DEFAULTLOGEVENTTYPEID);
@@ -162,7 +163,7 @@ public class MegaLogTypeListHtmlRenderer {
                     mb.append("</table>");
                     mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
                 } catch (Exception e){
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
 
 
@@ -196,7 +197,7 @@ public class MegaLogTypeListHtmlRenderer {
                     mb.append("</table>");
                     mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
                 } catch (Exception e){
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
 
                 //Friends Using
@@ -222,7 +223,7 @@ public class MegaLogTypeListHtmlRenderer {
                     mb.append("</table>");
                     mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
                 } catch (Exception e){
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
 
             }

@@ -30,7 +30,7 @@ if (!userSession.getAccountuser().userCanDoAcl("ADDEDITENTRIES", userSession.get
         response.sendRedirect("entry.log?eventid="+pageProps.entry.eventid+"&action=edit");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
         return;
     }
 }
@@ -49,7 +49,7 @@ if (newLogid>0){
             response.sendRedirect("entry.log?eventid="+pageProps.entry.eventid+"&action=edit");
             return;
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return;
         }
     }
@@ -69,7 +69,7 @@ if (rstEntry!=null && rstEntry.length>0){
         response.sendRedirect("entry.log?eventid="+pageProps.entry.eventid+"&action=edit");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
         return;
     }
 }
@@ -108,7 +108,7 @@ if (pageProps.action.equals("move")){
         response.sendRedirect("entry.log?eventid="+pageProps.entry.eventid+"&action=edit");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
         return;
     }
 

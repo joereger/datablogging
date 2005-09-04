@@ -1,6 +1,7 @@
 package reger.cache;
 
 import reger.TrafficHit;
+import reger.core.Debug;
 
 import java.util.HashSet;
 import java.util.Collections;
@@ -28,7 +29,7 @@ public class TrafficHitCache {
                     trafficHits.add(hit);
                 }
             } else {
-                reger.core.Util.debug(4, "TrafficHitCache.java - NULL TrafficHit handed to TrafficHitCache.addTrafficHit().");
+                Debug.debug(4, "", "TrafficHitCache.java - NULL TrafficHit handed to TrafficHitCache.addTrafficHit().");
             }
         }
     }

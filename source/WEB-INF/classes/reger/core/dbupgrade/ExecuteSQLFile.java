@@ -3,7 +3,7 @@ package reger.core.dbupgrade;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import reger.core.db.Db;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * This class will execute a file of SQL commands
@@ -44,7 +44,7 @@ public class ExecuteSQLFile {
             }
         } catch (Exception e){
             System.out.println("Reger.com DbUpgrade: Problem running sql file for db version 0:" + e.getMessage());
-            reger.core.Util.errorsave(e, "Problem running sql file:" + filename);
+            Debug.errorsave(e, "", "Problem running sql file:" + filename);
             return false;
         }
         return true;

@@ -2,12 +2,11 @@ package reger;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.Namespace;
 import org.jdom.output.XMLOutputter;
 import org.jdom.output.Format;
 import reger.mega.FieldType;
 import reger.core.TimeUtils;
-import reger.core.Util;
+import reger.core.Debug;
 
 /**
  * Renders an entry to XML per XML Schema doc
@@ -92,7 +91,7 @@ public class EntryStructuredBlogginglRenderer {
             return outp.outputString(doc);
 
         } catch (Exception e){
-            Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return "Fail.";
     }

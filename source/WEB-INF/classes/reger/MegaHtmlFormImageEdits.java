@@ -2,6 +2,7 @@ package reger;
 
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
+import reger.core.Debug;
 
 
 public class MegaHtmlFormImageEdits {
@@ -75,7 +76,7 @@ public class MegaHtmlFormImageEdits {
                             //Delete the thumbnail
                             reger.core.Util.deleteFile(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"thumbnails/"+rstImagelistUpdate[i][2]);
                         } catch (Exception e) {
-                            reger.core.Util.logtodb("entry.bottom.jsp -- Failure to delete the imageid="+ rstImagelistUpdate[i][0] +" in the database.  Somebody was trying to delete it.  This may be a case of attempted hackery.  Accountid=" + userSession.getAccount().getAccountid());
+                            Debug.logtodb("entry.bottom.jsp -- Failure to delete the imageid="+ rstImagelistUpdate[i][0] +" in the database.  Somebody was trying to delete it.  This may be a case of attempted hackery.  Accountid=" + userSession.getAccount().getAccountid(), "");
                         }
 
                         //-----------------------------------

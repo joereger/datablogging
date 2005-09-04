@@ -1,13 +1,11 @@
 package reger.Media;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * This class processes PolarHRM data files, stores them into the database.
@@ -90,7 +88,7 @@ public class PolarHRM implements MediaType{
 
             }
         } catch (Throwable e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
     }
@@ -104,7 +102,7 @@ public class PolarHRM implements MediaType{
             //reger.core.Util.logtodb("Copying file in polarhrm.");
             reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images\\mediatypeicons\\icon-polarhrm.gif", pathToThumbnail);
         } catch (Throwable e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
     }
@@ -174,10 +172,10 @@ public class PolarHRM implements MediaType{
         //-----------------------------------
         //-----------------------------------
         if (rstEv!=null && rstEv.length>0){
-        	for(int i=0; i<rstEv.length; i++){
-        	    mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0 bgcolor=#ffffff>");
-        	    mb.append("<tr>");
-        	    //Date
+            for(int i=0; i<rstEv.length; i++){
+                mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0 bgcolor=#ffffff>");
+                mb.append("<tr>");
+                //Date
                 mb.append("<td valign=top bgcolor=#cccccc>");
                 mb.append("<font face=arial size=-2>");
                 java.util.Calendar calFromDB = reger.core.TimeUtils.dbstringtocalendar(rstEv[i][3]);
@@ -200,7 +198,7 @@ public class PolarHRM implements MediaType{
 
                 mb.append("</tr>");
                 mb.append("</table>");
-        	}
+            }
         }
         mb.append("</td>");
         mb.append("</tr>");
@@ -489,7 +487,7 @@ public class PolarHRM implements MediaType{
         //-----------------------------------
         //-----------------------------------
         if (rstImg!=null && rstImg.length>0){
-        	for(int i=0; i<rstImg.length; i++){
+            for(int i=0; i<rstImg.length; i++){
                 mb.append("<tr>");
                 //Radio Button
                 mb.append("<td valign=top bgcolor=#ffffff align=center>");
@@ -522,7 +520,7 @@ public class PolarHRM implements MediaType{
 
 
                 mb.append("</tr>");
-        	}
+            }
         }
 
 
@@ -726,7 +724,7 @@ public class PolarHRM implements MediaType{
             pedalingindex = (Integer.parseInt(powerbalance))/(leftpowerbalance + 256);
         }
 
-        
+
 
         //Save to DB
         //-----------------------------------
@@ -761,19 +759,19 @@ public class PolarHRM implements MediaType{
         //-----------------------------------
         //-----------------------------------
         if (rstImg!=null && rstImg.length>0){
-        	for(int i=0; i<rstImg.length; i++){
-        	    //-----------------------------------
-        	    //-----------------------------------
-        	    int count = Db.RunSQLUpdate("DELETE FROM polarhrmdata WHERE polarhrmid='"+rstImg[i][0]+"'");
-        	    //-----------------------------------
-        	    //-----------------------------------
+            for(int i=0; i<rstImg.length; i++){
+                //-----------------------------------
+                //-----------------------------------
+                int count = Db.RunSQLUpdate("DELETE FROM polarhrmdata WHERE polarhrmid='"+rstImg[i][0]+"'");
+                //-----------------------------------
+                //-----------------------------------
 
-        	    //-----------------------------------
-        	    //-----------------------------------
-        	    int count2 = Db.RunSQLUpdate("DELETE FROM polarhrm WHERE polarhrmid='"+rstImg[i][0]+"'");
-        	    //-----------------------------------
-        	    //-----------------------------------
-        	}
+                //-----------------------------------
+                //-----------------------------------
+                int count2 = Db.RunSQLUpdate("DELETE FROM polarhrm WHERE polarhrmid='"+rstImg[i][0]+"'");
+                //-----------------------------------
+                //-----------------------------------
+            }
         }
 
 

@@ -1,9 +1,6 @@
 package reger.search;
 
-import reger.core.db.Db;
-import reger.mega.FieldType;
-
-import java.util.Calendar;
+import reger.core.Debug;
 
 /**
  * User interface wizard for advanced searches and other things that leverage this infrastructure.
@@ -150,7 +147,7 @@ public class SearchUI {
             if (request.getParameter("action")!=null){
                 if (request.getParameter("action").equals("savesearch")){
                     if (!se.getSearchParameters().name.equals("")){
-                        reger.core.Util.debug(5, "SearchUI.java - Trying to save searchname=" + se.getSearchParameters().name);
+                        Debug.debug(5, "", "SearchUI.java - Trying to save searchname=" + se.getSearchParameters().name);
                         se.getSearchParameters().saveToDB(userSession.getAccount().getAccountid());
                     }
                 }

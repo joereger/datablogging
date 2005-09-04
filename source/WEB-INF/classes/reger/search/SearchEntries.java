@@ -6,6 +6,7 @@ import reger.*;
 import reger.cache.LogCache;
 import reger.core.db.Db;
 import reger.core.XmlSerializer;
+import reger.core.Debug;
 
 import java.util.Calendar;
 import java.util.Vector;
@@ -64,7 +65,7 @@ public class SearchEntries {
             currentpage = currentpage + 1;
         }
 
-        reger.core.Util.debug(5, "SearchEntries.java - searchParameters serialized:<br>"+reger.core.Util.serializeToString(searchParameters));
+        Debug.debug(5, "", "SearchEntries.java - searchParameters serialized:<br>"+reger.core.Util.serializeToString(searchParameters));
 
     }
 
@@ -75,7 +76,7 @@ public class SearchEntries {
             try{
                 searchParameters = (SearchParameters)XmlSerializer.deSerializeFromXML(java.net.URLDecoder.decode(request.getParameter("serializedsearch"), "UTF-8"));
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
     }
@@ -93,7 +94,7 @@ public class SearchEntries {
         try{
             tag = "<input type=hidden name='serializedsearch' value=\""+java.net.URLEncoder.encode(str, "UTF-8")+"\">";
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return tag;
     }
@@ -167,7 +168,7 @@ public class SearchEntries {
         } else if (searchParameters.daterange==reger.Vars.DATERANGESPECIFIED) {
             dateSql = " AND event.date>='"+reger.core.TimeUtils.dateformatfordb(searchParameters.dateFromGmt)+"' AND event.date<='"+reger.core.TimeUtils.dateformatfordb(searchParameters.dateToGmt)+"'";
         }
-        reger.core.Util.debug(5, "SearchEntries.java - dateSql=<br>" + dateSql);
+        Debug.debug(5, "", "SearchEntries.java - dateSql=<br>" + dateSql);
 
     }
 
@@ -230,7 +231,7 @@ public class SearchEntries {
 
 
 
-        reger.core.Util.debug(5, "SearchEntries.java sql for search: <br>"+sql);
+        Debug.debug(5, "", "SearchEntries.java sql for search: <br>"+sql);
         //Return the actual records needed
         //-----------------------------------
         //-----------------------------------
@@ -240,7 +241,7 @@ public class SearchEntries {
         if (rsEvent!=null && rsEvent.length>0){
 
             //If the number of results from the database was less than the
-            reger.core.Util.debug(5, "SearchEntries.java - We have "+rsEvent.length+" search results.");
+            Debug.debug(5, "", "SearchEntries.java - We have "+rsEvent.length+" search results.");
             if (rsEvent.length<=searchParameters.numberOfResultsToReturn){
                 exhaustedDatabase = true;
             }
@@ -254,7 +255,7 @@ public class SearchEntries {
                 //So, now we have a list of entries
                 //Need to do the mega search fields
                 if (searchParameters.fieldQueryElements!=null){
-                    reger.core.Util.debug(5, "SearchEntries.java: we have fieldQueryElements. eventid=" + rsEvent[i][3]);
+                    Debug.debug(5, "", "SearchEntries.java: we have fieldQueryElements. eventid=" + rsEvent[i][3]);
 
                     //Create an Entry object, loading
                     //reger.Entry entry = new reger.Entry(Integer.parseInt(rsEvent[i][3]));
@@ -267,7 +268,7 @@ public class SearchEntries {
 
                     //See if it fulfills megadata search
                     if (fieldsInEntryLog!=null){
-                        reger.core.Util.debug(5, "SearchEntries.java: we have megafields. eventid=" + rsEvent[i][3]);
+                        Debug.debug(5, "", "SearchEntries.java: we have megafields. eventid=" + rsEvent[i][3]);
                         for (int j = 0; j < fieldsInEntryLog.length; j++) {
 
                             //The flag determining whether this fulfills.
@@ -286,7 +287,7 @@ public class SearchEntries {
 
                             //Load and search
                             if (loadAndSearchThisField){
-                                reger.core.Util.debug(5, "SearchEntries.java: Starting field search.<br>title=" + rsEvent[i][3] + "<br>field=" + fieldsInEntryLog[j].getFieldname());
+                                Debug.debug(5, "", "SearchEntries.java: Starting field search.<br>title=" + rsEvent[i][3] + "<br>field=" + fieldsInEntryLog[j].getFieldname());
                                 //Load the data
                                 fieldsInEntryLog[j].loadDataForEventid(Integer.parseInt(rsEvent[i][3]), Integer.parseInt(rsEvent[i][4]));
                                 //See whether to search the log or the eventtype
@@ -297,7 +298,7 @@ public class SearchEntries {
                                     //Run fulfillsquery by logid
                                     fulfillsSearch = fieldsInEntryLog[j].fulfillsQuery(searchParameters.fieldQueryElements, Integer.parseInt(rsEvent[i][4]));
                                 }
-                                reger.core.Util.debug(5, "SearchEntries.java: Finished field search.<br>eventid=" + rsEvent[i][3] + "<br>field=" + fieldsInEntryLog[j].getFieldname() + "<br>fulfillsSearch=" + fulfillsSearch);
+                                Debug.debug(5, "", "SearchEntries.java: Finished field search.<br>eventid=" + rsEvent[i][3] + "<br>field=" + fieldsInEntryLog[j].getFieldname() + "<br>fulfillsSearch=" + fulfillsSearch);
 
                             } else {
                                 //There were no specific query items for this field so I need to return true
@@ -344,7 +345,7 @@ public class SearchEntries {
         } else {
             //No results from the DB to work with so make sure the object knows not to continue going to it.
             exhaustedDatabase = true;
-            reger.core.Util.debug(5, "SearchEntries.java - We have 0 search results.");
+            Debug.debug(5, "", "SearchEntries.java - We have 0 search results.");
         }
 
 

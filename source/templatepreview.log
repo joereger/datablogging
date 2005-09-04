@@ -18,7 +18,7 @@ pageProps.pathToAppRoot="";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-reger.core.Util.debug(5, "templatepreview.log - templateid=" + request.getParameter("templateid"));
+Debug.debug(5, "", "templatepreview.log - templateid=" + request.getParameter("templateid"));
 
 //Get type
 int type = -1;

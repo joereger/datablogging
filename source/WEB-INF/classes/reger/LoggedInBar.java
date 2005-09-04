@@ -1,8 +1,8 @@
 package reger;
 
 import reger.pageFramework.PageProps;
+import reger.core.Debug;
 
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -118,7 +118,7 @@ public class LoggedInBar {
                     }
                 }
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
 
             //End system message

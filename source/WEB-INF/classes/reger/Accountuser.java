@@ -7,6 +7,7 @@ import reger.core.db.Db;
 import reger.core.Util;
 import reger.core.PasswordHash;
 import reger.core.PasswordVerifier;
+import reger.core.Debug;
 import reger.cache.LogCache;
 
 import java.util.*;
@@ -87,7 +88,7 @@ public class Accountuser {
      * Constructor
      */
     public Accountuser(String username, String password){
-        reger.core.Util.debug(5, "Accountuser(username, password) constructor<br>username=" + username + "<br>password=" + password);
+        Debug.debug(5, "", "Accountuser(username, password) constructor<br>username=" + username + "<br>password=" + password);
         //-----------------------------------
         //-----------------------------------
         String[][] rstUser= Db.RunSQL("SELECT accountuserid FROM accountuser WHERE username='"+reger.core.Util.cleanForSQL(username)+"' AND password='"+reger.core.Util.cleanForSQL(PasswordHash.getHash(password))+"'");
@@ -224,7 +225,7 @@ public class Accountuser {
      */
     public boolean userAuthenticate(String username, String password){
 
-        reger.core.Util.debug(5, "Accountuser.userAuthenticate() called.<br>username=" + username + "<br>password=" + password);
+        Debug.debug(5, "", "Accountuser.userAuthenticate() called.<br>username=" + username + "<br>password=" + password);
 
 
         //-----------------------------------
@@ -234,7 +235,7 @@ public class Accountuser {
         //-----------------------------------
         if(rs!=null && rs.length>=1){
 
-            reger.core.Util.debug(5, "Attempted Login<br>username=" + username + "<br>password=" + password + "<br>rs[0][1]=" + rs[0][1] + "<br>PasswordHash.getHash()=" + PasswordHash.getHash(password));
+            Debug.debug(5, "", "Attempted Login<br>username=" + username + "<br>password=" + password + "<br>rs[0][1]=" + rs[0][1] + "<br>PasswordHash.getHash()=" + PasswordHash.getHash(password));
 
             //If the hash of the incoming password equals the hash that we have in the database, it's a valid login.
             if (PasswordHash.getHash(password).equals(rs[0][1])){
@@ -484,7 +485,7 @@ public class Accountuser {
                 }
             }
             //Execute the SQL
-            reger.core.Util.debug(5, "Accountuser.java - quickpassSql = " + quickpassSql);
+            Debug.debug(5, "", "Accountuser.java - quickpassSql = " + quickpassSql);
             //-----------------------------------
             //-----------------------------------
             String[][] rsLgs=reger.core.db.Db.RunSQL("SELECT megalog.logid, megalog.accountid FROM megalog WHERE "+quickpassSql);
@@ -1189,7 +1190,7 @@ public class Accountuser {
     }
 
     public String savePassword(String password, String verifypassword, PrivateLabel pl){
-        reger.core.Util.debug(5, "Accountuser.java: savePassword():  <br>password="+password+"<br>verifypassword="+verifypassword);
+        Debug.debug(5, "", "Accountuser.java: savePassword():  <br>password="+password+"<br>verifypassword="+verifypassword);
 
             String errortext = validateNewPassword(password, verifypassword, pl);
             if (errortext.equals("")){
@@ -1253,7 +1254,7 @@ public class Accountuser {
         //Only validate password if a new one has been sent in
         String passwordError = "";
         if (!password.equals("") && !verifypassword.equals("")){
-            reger.core.Util.debug(5, "Accountuser.java: validateAccountuser():  <br>password="+password+"<br>verifypassword="+verifypassword);
+            Debug.debug(5, "", "Accountuser.java: validateAccountuser():  <br>password="+password+"<br>verifypassword="+verifypassword);
             passwordError = validateNewPassword(password, verifypassword, pl);
         }
         errortext = errortext + passwordError;
@@ -2181,7 +2182,7 @@ public class Accountuser {
     }
 
     public String getUsername() {
-        reger.core.Util.debug(5, "Accountuser.java - getUsername() called.  returning:" + username);
+        Debug.debug(5, "", "Accountuser.java - getUsername() called.  returning:" + username);
         return username;
     }
 

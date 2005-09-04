@@ -1,11 +1,10 @@
 package reger.pageFramework;
 
 import reger.UserSession;
+import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletOutputStream;
-import java.io.PrintWriter;
 import java.io.ByteArrayOutputStream;
 
 import org.w3c.tidy.Tidy;
@@ -85,7 +84,7 @@ public class GlobalFooter {
                 reger.TrafficHit trafficHit = new reger.TrafficHit(request, pageProps.logProps.logid, tmpAccountid, pageProps.trafficType, userSession.getPl().getPlid(), userSession.getSiteRootUrl(), bandwidth, isSuperCookieOn);
                 reger.cache.TrafficHitCache.addTrafficHit(trafficHit);
             } catch (Exception e){
-                reger.core.Util.errorsave(e, "globalfooter.jsp");
+                Debug.errorsave(e, "", "globalfooter.jsp");
             }
             //End record traffic
             //----------------------------------------------------------------
@@ -109,7 +108,7 @@ public class GlobalFooter {
 
             }
         } catch (Exception ex){
-            reger.core.Util.errorsave(ex, "Error in GlobalFooter.java");
+            Debug.errorsave(ex, "", "Error in GlobalFooter.java");
         }
     }
 

@@ -4,15 +4,13 @@ import reger.core.db.Db;
 import reger.Accountuser;
 import reger.Account;
 import reger.core.ValidationException;
-import reger.core.db.Db;
-import reger.core.ValidationException;
+import reger.core.Debug;
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
 
 import java.util.Hashtable;
 import java.util.Calendar;
 import java.util.Vector;
-import java.util.Enumeration;
 import java.io.*;
 import org.apache.commons.codec.binary.Base64;
 
@@ -107,7 +105,7 @@ public class MetaWebLogApi {
             }
 
         } catch (Exception e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return "Error.";
         }
 
@@ -191,7 +189,7 @@ public class MetaWebLogApi {
             }
 
         } catch (Exception e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return false;
         }
 
@@ -274,7 +272,7 @@ public class MetaWebLogApi {
                 return new Vector();
             }
         } catch (Exception e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return new Vector();
         }
     }
@@ -361,7 +359,7 @@ public class MetaWebLogApi {
             }
 
         } catch (Exception e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return new Hashtable();
         }
     }
@@ -469,7 +467,7 @@ public class MetaWebLogApi {
             }
 
         } catch (Exception e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return "Error.";
         }
 

@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
 import java.net.URL;
 import java.util.Hashtable;
@@ -11,7 +12,7 @@ import java.util.Hashtable;
 public class GroupsClientCallback implements org.apache.xmlrpc.AsyncCallback {
 
     public void handleResult(Object o, URL url, String s) {
-        reger.core.Util.debug(5, "GroupsClientCallback.handleResult<br>o=" + o.toString() + "<br>url=" + url.toString() + "<br>s=" + s);
+        Debug.debug(5, "", "GroupsClientCallback.handleResult<br>o=" + o.toString() + "<br>url=" + url.toString() + "<br>s=" + s);
 
         //Convert the result to a hashtable
         Hashtable result = (Hashtable)o;
@@ -30,7 +31,7 @@ public class GroupsClientCallback implements org.apache.xmlrpc.AsyncCallback {
             if (rstGp!=null && rstGp.length>0){
                 for(int i=0; i<rstGp.length; i++){
                     groupsubscriptionid = Integer.parseInt(rstGp[i][0]);
-                    reger.core.Util.debug(5, "Found groupsubscriptionid=" + groupsubscriptionid);
+                    Debug.debug(5, "", "Found groupsubscriptionid=" + groupsubscriptionid);
                 }
             }
         }
@@ -56,7 +57,7 @@ public class GroupsClientCallback implements org.apache.xmlrpc.AsyncCallback {
                     String[] tmpC = tmpB[1].split("-");
                     if (tmpC.length>1){
                         eventid = tmpC[0];
-                        reger.core.Util.debug(5, "Found eventid=" + eventid);
+                        Debug.debug(5, "", "Found eventid=" + eventid);
                     }
                 }
             }
@@ -86,7 +87,7 @@ public class GroupsClientCallback implements org.apache.xmlrpc.AsyncCallback {
     }
 
     public void handleError(Exception e, URL url, String s) {
-        reger.core.Util.errorsave(e, "GroupsClientCallback.handleResult<br>url=" + url.toString() + "<br>s=" + s);
+        Debug.errorsave(e, "", "GroupsClientCallback.handleResult<br>url=" + url.toString() + "<br>s=" + s);
     }
 
 

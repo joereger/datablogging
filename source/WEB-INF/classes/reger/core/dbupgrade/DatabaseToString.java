@@ -1,15 +1,14 @@
 package reger.core.dbupgrade;
 
+import reger.core.Debug;
+
 import java.sql.DatabaseMetaData;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.util.Properties;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 /**
  * This class connects to a database and dumps all the tables and contents out to stdout in the form of
@@ -61,7 +60,7 @@ public class DatabaseToString {
             try{
                 file.createNewFile();
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
 
@@ -85,7 +84,7 @@ public class DatabaseToString {
 
         }
         catch( Exception e ) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return false;
         }
 
@@ -96,7 +95,7 @@ public class DatabaseToString {
             String tables = props.getProperty("tableName");
             ResultSet rs = dbMetaData.getTables(catalog, schema, tables, null);
             if (! rs.next()) {
-                reger.core.Util.logtodb("Unable to find any tables matching: catalog="+catalog+" schema="+schema+" tables="+tables);
+                Debug.logtodb("Unable to find any tables matching: catalog="+catalog+" schema="+schema+" tables="+tables, "");
                 rs.close();
             } else {
                 // Right, we have some tables, so we can go to work.
@@ -187,7 +186,7 @@ public class DatabaseToString {
                         } catch (SQLException e) {
                             // NB you will get this exception with the JDBC-ODBC link because it says
                             // [Microsoft][ODBC Driver Manager] Driver does not support this function
-                            reger.core.Util.errorsave(e, "Unable to get primary keys for table "+tableName+" because ");
+                            Debug.errorsave(e, "", "Unable to get primary keys for table "+tableName+" because ");
                         }
 
                         fw.write("\n);\n");
@@ -202,7 +201,7 @@ public class DatabaseToString {
             fw.close();
             return true;
         } catch (SQLException e) {
-            reger.core.Util.errorsave(e);  //To change body of catch statement use Options | File Templates.
+            Debug.errorsave(e, "");  //To change body of catch statement use Options | File Templates.
         } finally {
             try{
                 if (dbConn!=null && dbConn.isClosed()==false){
@@ -212,7 +211,7 @@ public class DatabaseToString {
                     fw.close();
                 }
             } catch (Throwable e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
         return false;
@@ -249,7 +248,7 @@ public class DatabaseToString {
             rs.close();
             stmt.close();
         } catch (SQLException e) {
-            reger.core.Util.errorsave(e, "Unable to dump table "+tableName+" because: ");
+            Debug.errorsave(e, "", "Unable to dump table "+tableName+" because: ");
         }
     }
 

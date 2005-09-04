@@ -1,6 +1,6 @@
 package reger.search;
 
-import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * Logid portion of searches
@@ -30,7 +30,7 @@ public class SearchUIChunkChooseAccounts implements SearchUIChunk{
                     selectedTextThis = " checked";
                 }
             } catch (Exception e ){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
             mb.append("<input type=radio name=accountids value="+userSession.getAccount().getAccountid()+" "+selectedTextThis+"> This Site Plus Any Friends' Sites Checked Below");
             mb.append("<br>");
@@ -47,7 +47,7 @@ public class SearchUIChunkChooseAccounts implements SearchUIChunk{
                             selectedText = " checked";
                         }
                     } catch (Exception e ){
-                        reger.core.Util.errorsave(e);
+                        Debug.errorsave(e, "");
                     }
                     mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=checkbox name=accountids value="+tmpAccUser.getAccountid()+" "+selectedText+"> " + tmpAccUser.getSiteRootUrl() );
                     mb.append("<br>");
@@ -67,7 +67,7 @@ public class SearchUIChunkChooseAccounts implements SearchUIChunk{
                 selectedTextAll = " checked";
             }
         } catch (Exception e ){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         mb.append("<br><br>");
         mb.append("<input type=radio name=accountids value="+SearchParameters.ALL+" "+selectedTextAll+"> All Sites");

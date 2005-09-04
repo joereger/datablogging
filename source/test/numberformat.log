@@ -41,7 +41,7 @@ try{
     formatter2.setMaximumIntegerDigits(2);
     expDate = String.valueOf(formatter2.format(expmonth)) + String.valueOf(formatter2.format(expyear));
 } catch (Exception e){
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
 }
 
 mb.append("expDate="+expDate);

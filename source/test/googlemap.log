@@ -163,7 +163,7 @@ mb.append("</table>");
 
 
 } catch (Throwable e) {
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
 }
 
 //

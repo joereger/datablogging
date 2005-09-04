@@ -5,15 +5,14 @@ import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import java.util.Calendar;
 import java.util.TreeMap;
 import java.io.File;
-import java.io.InputStream;
 
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
 import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * Handles multipart uploads via http.
@@ -28,30 +27,30 @@ public class Upload {
     public TreeMap requestParams = new TreeMap();
 
     public Upload(){
-        
+
     }
 
     public Upload(javax.servlet.http.HttpServletRequest request){
-        reger.core.Util.debug(5, "reger.Upload - object created." + request.getRequestURL());
+        Debug.debug(5, "", "reger.Upload - object created." + request.getRequestURL());
         try{
             // Check that we have a file upload request
             isMultipart = FileUpload.isMultipartContent(request);
             //Only continue if we have a multipart message.
             //Multipart is the only point of this object.
             if (isMultipart) {
-                reger.core.Util.debug(5, "reger.Upload - request determined to be multipart." + request.getRequestURL());
-                
+                Debug.debug(5, "", "reger.Upload - request determined to be multipart." + request.getRequestURL());
+
                 //Create a diskupload object
                 DiskFileUpload upload = new DiskFileUpload();
                 // Parse this request by the handler.
                 // This gives me a list of items from the request
                 items = upload.parseRequest(request);
-                reger.core.Util.debug(5, "reger.Upload - items.size()=" + items.size());
+                Debug.debug(5, "", "reger.Upload - items.size()=" + items.size());
 
                 //Find the non-file form fields that went with the upload
                 Iterator myitr = items.iterator();
                 while(myitr.hasNext()) {
-                    reger.core.Util.debug(5, "reger.Upload - processing a file." + request.getRequestURL());
+                    Debug.debug(5, "", "reger.Upload - processing a file." + request.getRequestURL());
                     FileItem myitem = (FileItem) myitr.next();
                     //check if the current item is a form field
                     if(myitem.isFormField()) {
@@ -66,7 +65,7 @@ public class Upload {
             }
 
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 
@@ -78,11 +77,11 @@ public class Upload {
         FileItem[] out = new FileItem[0];
         try{
             if (items!=null){
-                reger.core.Util.debug(3, "reger.Upload.save() - items!=null ");
+                Debug.debug(3, "", "reger.Upload.save() - items!=null ");
                 //Now go get the files
                 Iterator itr = items.iterator();
                 while(itr.hasNext()) {
-                    reger.core.Util.debug(3, "reger.Upload.save() - found file item.");
+                    Debug.debug(3, "", "reger.Upload.save() - found file item.");
                     FileItem item = (FileItem) itr.next();
 
                     //Make sure it's not a form field
@@ -90,33 +89,33 @@ public class Upload {
                         try {
                             out = reger.AddToArray.addToFileItemArray(out, item);
                         } catch (Exception e){
-                            reger.core.Util.errorsave(e);
+                            Debug.errorsave(e, "");
                         }
                     }
                 }
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return out;
     }
 
     public void save(int eventid, String manyimagetags, int accountuserid, reger.UserSession userSession){
-       reger.core.Util.debug(5, "reger.Upload.save() - at top of method ");
+       Debug.debug(5, "", "reger.Upload.save() - at top of method ");
        try{
             if (items!=null){
-                reger.core.Util.debug(5, "reger.Upload.save() - items!=null ");
+                Debug.debug(5, "", "reger.Upload.save() - items!=null ");
                 //Now go get the files
                 Iterator itr = items.iterator();
                 while(itr.hasNext()) {
-                    reger.core.Util.debug(5, "reger.Upload.save() - found file item.");
+                    Debug.debug(5, "", "reger.Upload.save() - found file item.");
                     FileItem item = (FileItem) itr.next();
 
                     //Make sure it's not a form field
                     if(!item.isFormField()) {
                         try {
 
-                            reger.core.Util.debug(5, "reger.Upload.save() - not a form field.");
+                            Debug.debug(5, "", "reger.Upload.save() - not a form field.");
 
                             // The item must be an uploaded file... save it to disk. Note that there
                             // seems to be a bug in item.getName() as it returns the full path on
@@ -128,7 +127,7 @@ public class Upload {
                             String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
                             String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
 
-                            reger.core.Util.debug(5, "reger.Upload.save() - incomingname=" + incomingname);
+                            Debug.debug(5, "", "reger.Upload.save() - incomingname=" + incomingname);
 
                             //reger.core.Util.logtodb("incomingname=" + incomingname + "<br>incomingnamebase=" + incomingnamebase + "<br>incomingnameext=" + incomingnameext );
 
@@ -153,9 +152,9 @@ public class Upload {
                                 savedFile  = new File((String)reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), stamp+incomingnamebase+incrementerstring+"."+incomingnameext);
                             }
                             String finalfilename = stamp+incomingnamebase+incrementerstring+"."+incomingnameext;
-                            reger.core.Util.debug(5, "reger.Upload.save() - finalfilename="+finalfilename);
+                            Debug.debug(5, "", "reger.Upload.save() - finalfilename="+finalfilename);
 
-                            reger.core.Util.debug(5, "reger.Upload.save() - (first check)hasenoughfreespace=" + hasenoughfreespace);
+                            Debug.debug(5, "", "reger.Upload.save() - (first check)hasenoughfreespace=" + hasenoughfreespace);
 
                             if (!incomingname.equals("") && hasenoughfreespace) {
 
@@ -172,7 +171,7 @@ public class Upload {
 
                                 //reger.core.Util.logtodb("Just checked space.");
 
-                                reger.core.Util.debug(5, "reger.Upload.save() - (second check)hasenoughfreespace=" + hasenoughfreespace);
+                                Debug.debug(5, "", "reger.Upload.save() - (second check)hasenoughfreespace=" + hasenoughfreespace);
 
                                 if (hasenoughfreespace) {
 
@@ -181,7 +180,7 @@ public class Upload {
 
                                     //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???
 
-                                    reger.core.Util.debug(5, "reger.Upload.save() - file written to filesystem");
+                                    Debug.debug(5, "", "reger.Upload.save() - file written to filesystem");
 
                                     //-----------------------------------
                                     //-----------------------------------
@@ -189,7 +188,7 @@ public class Upload {
                                     //-----------------------------------
                                     //-----------------------------------
 
-                                    reger.core.Util.debug(5, "reger.Upload.save() - file written to database.");
+                                    Debug.debug(5, "", "reger.Upload.save() - file written to database.");
 
                                     //Get a MediaType handler
                                     MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
@@ -209,7 +208,7 @@ public class Upload {
 
                             }
                         } catch (Exception e) {
-                            reger.core.Util.errorsave(e);
+                            Debug.errorsave(e, "");
                         }
                     }
                 }
@@ -220,7 +219,7 @@ public class Upload {
 
 
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
     }

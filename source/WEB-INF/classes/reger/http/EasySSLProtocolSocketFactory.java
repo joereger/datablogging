@@ -16,6 +16,7 @@ import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 
 import com.sun.net.ssl.SSLContext;
 import com.sun.net.ssl.TrustManager;
+import reger.core.Debug;
 
 /**
  * <p>
@@ -86,7 +87,7 @@ public class EasySSLProtocolSocketFactory implements SecureProtocolSocketFactory
             return context;
         } catch (Exception e) {
 
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
             throw new HttpClientError(e.toString());
         }
     }

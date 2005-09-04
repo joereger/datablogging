@@ -1,6 +1,7 @@
 package reger.core.bandwidthtest;
 
 import reger.core.scheduler.ScheduledTask;
+import reger.core.Debug;
 
 import java.util.Vector;
 import java.util.Calendar;
@@ -86,7 +87,7 @@ public class BandwidthTest implements ScheduledTask {
                 wasSuccessfulTest = true;
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
         //Add this to the results vector

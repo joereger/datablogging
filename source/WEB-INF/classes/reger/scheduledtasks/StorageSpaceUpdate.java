@@ -1,8 +1,8 @@
 package reger.scheduledtasks;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
 import reger.core.scheduler.ScheduledTask;
+import reger.core.Debug;
 
 /**
  * Gets the filesize and entry size and updates them.
@@ -40,7 +40,7 @@ public class StorageSpaceUpdate implements ScheduledTask{
             //Update the message sizes
             recordsupdated = recordsupdated + updateMessages();
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         result = recordsupdated + " records updated.";
     }
@@ -54,7 +54,7 @@ public class StorageSpaceUpdate implements ScheduledTask{
         //-----------------------------------
         //-----------------------------------
         if (rstImages!=null && rstImages.length>0){
-        	for(int i=0; i<rstImages.length; i++){
+            for(int i=0; i<rstImages.length; i++){
                 //Setup the vars
                 int imageid = Integer.parseInt(rstImages[i][0]);
                 String image = rstImages[i][1];
@@ -71,7 +71,7 @@ public class StorageSpaceUpdate implements ScheduledTask{
                     //-----------------------------------
                     recordsupdated=recordsupdated+count;
                 }
-        	}
+            }
         }
         return recordsupdated;
     }
@@ -84,8 +84,8 @@ public class StorageSpaceUpdate implements ScheduledTask{
         //-----------------------------------
         //-----------------------------------
         if (rstEntries!=null && rstEntries.length>0){
-        	for(int i=0; i<rstEntries.length; i++){
-        	    //Setup the vars
+            for(int i=0; i<rstEntries.length; i++){
+                //Setup the vars
                 int eventid = Integer.parseInt(rstEntries[i][0]);
                 String comments = rstEntries[i][1];
                 long sizeinbytes = Long.parseLong(rstEntries[i][2]);
@@ -100,7 +100,7 @@ public class StorageSpaceUpdate implements ScheduledTask{
                     //-----------------------------------
                     recordsupdated=recordsupdated+count;
                 }
-        	}
+            }
         }
         return recordsupdated;
     }
@@ -113,8 +113,8 @@ public class StorageSpaceUpdate implements ScheduledTask{
         //-----------------------------------
         //-----------------------------------
         if (rstMessage!=null && rstMessage.length>0){
-        	for(int i=0; i<rstMessage.length; i++){
-        	    //Setup the vars
+            for(int i=0; i<rstMessage.length; i++){
+                //Setup the vars
                 int messageid = Integer.parseInt(rstMessage[i][0]);
                 String message = rstMessage[i][1];
                 long sizeinbytes = Long.parseLong(rstMessage[i][2]);
@@ -129,7 +129,7 @@ public class StorageSpaceUpdate implements ScheduledTask{
                     //-----------------------------------
                     recordsupdated=recordsupdated+count;
                 }
-        	}
+            }
         }
         return recordsupdated;
     }

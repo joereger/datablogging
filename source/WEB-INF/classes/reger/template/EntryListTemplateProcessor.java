@@ -1,6 +1,6 @@
 package reger.template;
 
-import reger.core.db.Db;
+import reger.core.Debug;
 
 import java.util.Calendar;
 import java.util.regex.Pattern;
@@ -88,7 +88,7 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
                 return tag;
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
         //Find a tag that fulfills the incoming syntax

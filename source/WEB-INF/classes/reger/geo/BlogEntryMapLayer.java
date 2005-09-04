@@ -10,6 +10,7 @@ import com.bbn.openmap.omGraphics.*;
 import com.bbn.openmap.proj.Projection;
 import reger.UserSession;
 import reger.Location;
+import reger.core.Debug;
 
 /**
  * Blog entries on a map
@@ -76,7 +77,7 @@ public class BlogEntryMapLayer extends OMGraphicHandlerLayer {
             Location[] locations = Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());
             for (int i = 0; i < locations.length; i++) {
                 Location location = locations[i];
-                reger.core.Util.debug(5, "BlogEntryMapLayer.java - location=" + location.getLocationname() + "<br>lat=" + location.getLatitude() + "<br>lon=" + location.getLongitude());
+                Debug.debug(5, "", "BlogEntryMapLayer.java - location=" + location.getLocationname() + "<br>lat=" + location.getLatitude() + "<br>lon=" + location.getLongitude());
                 if (activeLocationid==0 || activeLocationid==location.getLocationid()){
                     if (location.getLatitude()>0 || location.getLongitude()>0){
                         if (activeLocationid==location.getLocationid()){

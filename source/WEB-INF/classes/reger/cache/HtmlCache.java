@@ -1,5 +1,7 @@
 package reger.cache;
 
+import reger.core.Debug;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -37,7 +39,7 @@ public class HtmlCache {
         } else {
             if (htmlCache.containsKey(keyGeneratedFromRequest)){
                 Calendar lastUpdatedAt = (Calendar)lastUpdated.get(keyGeneratedFromRequest);
-                reger.core.Util.debug(5, "HtmlCache.java<br>keyGeneratedFromRequest="+keyGeneratedFromRequest+"<br>DateDiff=" + reger.core.DateDiff.dateDiff("second", reger.core.TimeUtils.nowInGmtCalendar(), lastUpdatedAt));
+                Debug.debug(5, "", "HtmlCache.java<br>keyGeneratedFromRequest="+keyGeneratedFromRequest+"<br>DateDiff=" + reger.core.DateDiff.dateDiff("second", reger.core.TimeUtils.nowInGmtCalendar(), lastUpdatedAt));
                 if (reger.core.DateDiff.dateDiff("second", reger.core.TimeUtils.nowInGmtCalendar(), lastUpdatedAt)>refreshintervalinseconds){
                     return true;
                 }

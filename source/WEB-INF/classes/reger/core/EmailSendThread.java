@@ -5,7 +5,6 @@ import javax.mail.Message;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.InternetAddress;
-import java.util.Calendar;
 import java.util.Properties;
 
 /**
@@ -67,11 +66,11 @@ public class EmailSendThread extends Thread {
             transport.sendMessage(msg, addrArray);
 
         } catch (javax.mail.SendFailedException nsend){
-            reger.core.Util.debug(5, nsend);
+            Debug.debug(5, "", nsend);
         } catch (javax.mail.internet.AddressException ex){
-            reger.core.Util.debug(5, ex);
+            Debug.debug(5, "", ex);
         } catch (Exception e) {
-			reger.core.Util.errorsave(e);
+			Debug.errorsave(e, "");
         }
 
     }

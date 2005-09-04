@@ -1,4 +1,5 @@
 <%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -106,13 +107,13 @@ if (userSession.getAccountuser().userCanDoAcl("ADMINHOME", userSession.getAccoun
     }
     //Redirect to the accountuser's admin home page... always
     try{
-        reger.core.Util.debug(5, "login.log - user logged in - redirecting to:" + reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() +"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
+        Debug.debug(5, "", "login.log - user logged in - redirecting to:" + reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() +"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
 
         response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getUrlSplitter().getSiterooturlPlusPortNum()+"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
 
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 }
 

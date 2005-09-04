@@ -71,6 +71,6 @@ try {
 
 
 } catch (Exception e) {
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
 }
 %>

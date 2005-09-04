@@ -57,7 +57,7 @@ if (pageProps.action.equals("add")){
         }
 
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 }
 

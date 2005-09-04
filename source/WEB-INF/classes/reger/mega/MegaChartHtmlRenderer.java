@@ -3,6 +3,7 @@ package reger.mega;
 import reger.*;
 import reger.cache.LogCache;
 import reger.core.db.Db;
+import reger.core.Debug;
 
 import java.util.Vector;
 
@@ -233,7 +234,7 @@ public class MegaChartHtmlRenderer {
 
                 mb.append("<td valign=top>");
 
-                reger.core.Util.debug(5, "MegaChartHtmlRenderer.java: xMegafieldid="+megaChart.getxMegafieldid());
+                Debug.debug(5, "", "MegaChartHtmlRenderer.java: xMegafieldid="+megaChart.getxMegafieldid());
 
                 mb.append("<font face=arial size=-1 class=smallfont>");
                 mb.append("<b>");

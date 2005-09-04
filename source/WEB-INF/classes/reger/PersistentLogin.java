@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
 import javax.servlet.http.Cookie;
 import java.util.Calendar;
@@ -86,7 +87,7 @@ public class PersistentLogin {
             userCookie.setSecure(true);
         }
         userCookie.setPath("/");
-        reger.core.Util.debug(5, "PersistentLogin.java - Creating cookie.<br>value=" + randomString + "<br>domainToSetCookieOn=" + domainToSetCookieOn);
+        Debug.debug(5, "", "PersistentLogin.java - Creating cookie.<br>value=" + randomString + "<br>domainToSetCookieOn=" + domainToSetCookieOn);
 
         //Store this persistent cookie to the database
         //-----------------------------------

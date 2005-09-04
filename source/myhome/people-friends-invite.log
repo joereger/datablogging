@@ -1,6 +1,7 @@
 <%@ page import="reger.core.db.Db,
                  reger.core.Util,
                  reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -56,7 +57,7 @@ if (!userSession.getAccountuser().getEmail().equals("")){
 //If the action is to send
 if (pageProps.action.equals("sendemail")) {
 
-    reger.core.Util.debug(5, "people-friends-invite.log - into sendemail section.");
+    Debug.debug(5, "", "people-friends-invite.log - into sendemail section.");
 
     //At least one email address is required.
     if (emailaddresses.equals("")){
@@ -66,18 +67,18 @@ if (pageProps.action.equals("sendemail")) {
 
     if (!emailaddresses.equals("")){
 
-        reger.core.Util.debug(5, "people-friends-invite.log - into emails not blank.");
+        Debug.debug(5, "", "people-friends-invite.log - into emails not blank.");
 
         //Split the emailaddresses
         String[] emails = emailaddresses.split(",");
         //Loop through the emails
         for (int i = 0; i < emails.length; i++) {
-            reger.core.Util.debug(5, "people-friends-invite.log - iterating emails:" + emails[i]);
+            Debug.debug(5, "", "people-friends-invite.log - iterating emails:" + emails[i]);
 
             //Extract this email address
             String thisEmail = emails[i].trim();
 
-            reger.core.Util.debug(5, "people-friends-invite.log - into friends invitation.");
+            Debug.debug(5, "", "people-friends-invite.log - into friends invitation.");
 
             //Create an invitation entry
             String friendinvitationkey = reger.core.RandomString.randomAlphanumeric(10);
@@ -159,10 +160,10 @@ if (pageProps.action.equals("sendemail")) {
             StringBuffer emailBody = reger.emailtext.BasicEmails.invitationEmail(userSession.getAccountuser(), userSession.getPl(), friendinvitationid);
 
             //Send the email
-            reger.core.Util.debug(5, "people-friends-invite.log - about to send the email to:" + thisEmail);
+            Debug.debug(5, "", "people-friends-invite.log - about to send the email to:" + thisEmail);
             reger.core.EmailSend.sendMail(fromaddress, thisEmail, subject, emailBody.toString());
-            reger.core.Util.debug(5, "people-friends-invite.log - email body to:" + thisEmail + "<br><br>" + emailBody.toString());
-            reger.core.Util.debug(5, "people-friends-invite.log - finished sending email to:" + thisEmail);
+            Debug.debug(5, "", "people-friends-invite.log - email body to:" + thisEmail + "<br><br>" + emailBody.toString());
+            Debug.debug(5, "", "people-friends-invite.log - finished sending email to:" + thisEmail);
 
             mailSent=true;
         }
@@ -174,7 +175,7 @@ if (pageProps.action.equals("sendemail")) {
             response.sendRedirect(pageProps.pathToAppRoot + "myhome/people-friends.log");
             return;
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 

@@ -1,7 +1,7 @@
 package reger.nestednav;
 
 import reger.UserSession;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * A vertical navbar
@@ -12,7 +12,7 @@ public class NestedNavDisplayVertical implements NestedNavDisplay{
         StringBuffer mb = new StringBuffer();
 
         //Start the table
-        reger.core.Util.debug(5, "NestedNavbarVertical.java - Navbar start.");
+        Debug.debug(5, "", "NestedNavbarVertical.java - Navbar start.");
         mb.append("<!-- Start navigation--><table class=navigation cellpadding=0 cellspacing=0 width=100% border=0>");
 
         //Home tab
@@ -26,7 +26,7 @@ public class NestedNavDisplayVertical implements NestedNavDisplay{
 
         //End the table
         mb.append("</table><!-- End navigation -->");
-        reger.core.Util.debug(5, "NestedNavbarVertical.java - Navbar end.");
+        Debug.debug(5, "", "NestedNavbarVertical.java - Navbar end.");
 
         return mb.toString();
     }
@@ -35,7 +35,7 @@ public class NestedNavDisplayVertical implements NestedNavDisplay{
     private String outputItemHtml(NestedNavItem navItem, NestedNavCollection collection, int currentNestedLevel, UserSession userSession, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
-        reger.core.Util.debug(5, "NestedNavbarVertical.java - Item output called.");
+        Debug.debug(5, "", "NestedNavbarVertical.java - Item output called.");
 
         String isOnText = "off";
         if (navItem.isActive(request)){

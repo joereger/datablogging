@@ -1,6 +1,6 @@
 package reger.cache;
 
-import reger.Account;
+import reger.core.Debug;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
@@ -26,7 +26,7 @@ public class StringCache {
                 return stuff;
             } catch (Exception ex) {
                 admin.cancelUpdate(key);
-                reger.core.Util.errorsave(ex);
+                Debug.errorsave(ex, "");
                 return "";
             }
         }
@@ -40,7 +40,7 @@ public class StringCache {
         try{
             admin.putInCache(key, stuff);
         } catch (Exception ex){
-            reger.core.Util.errorsave(ex);
+            Debug.errorsave(ex, "");
         }
     }
 

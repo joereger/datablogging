@@ -1,8 +1,7 @@
 package reger.api;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
-import reger.mega.FieldType;
+import reger.core.Debug;
 import reger.api.rome.MegaDataRSSModule;
 import reger.api.rome.MegaDataRSSModuleImpl;
 import reger.Media.MediaType;
@@ -10,7 +9,6 @@ import reger.Media.MediaTypeFactory;
 import reger.Log;
 
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,6 @@ import com.sun.syndication.feed.atom.Feed;
 import com.sun.syndication.feed.atom.Content;
 import com.sun.syndication.feed.atom.Generator;
 import com.sun.syndication.feed.atom.Entry;
-import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.io.*;
 
 /**
@@ -209,11 +206,11 @@ public class RssRome {
 
 
                 //Instantiate the module
-                reger.core.Util.debug(5, "RssRome.java - Outputting entry... about to get entrydata for eventid="+entry.eventid);
+                Debug.debug(5, "", "RssRome.java - Outputting entry... about to get entrydata for eventid="+entry.eventid);
                 MegaDataRSSModule tm = new MegaDataRSSModuleImpl();
                 tm.setFields(entry.fields);
                 item.getModules().add(tm);
-                reger.core.Util.debug(5, "RssRome.java - item.getModules() has been called<br>item.getModules().size()=" + item.getModules().size());
+                Debug.debug(5, "", "RssRome.java - item.getModules() has been called<br>item.getModules().size()=" + item.getModules().size());
 
 
 
@@ -230,11 +227,11 @@ public class RssRome {
         try{
             WireFeedOutput feedOut = new WireFeedOutput();
             fd.append(feedOut.outputString(rssChannel));
-            reger.core.Util.debug(5, "Successfully output Rome RSS Feed");
+            Debug.debug(5, "", "Successfully output Rome RSS Feed");
         } catch (com.sun.syndication.io.FeedException fe) {
-            reger.core.Util.debug(5, "Rome RSS Feed died:" + fe.toString());
+            Debug.debug(5, "", "Rome RSS Feed died:" + fe.toString());
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
 
 //          //List supported feed types
@@ -256,7 +253,7 @@ public class RssRome {
 //rss_0.94
 
         //Debug
-        reger.core.Util.debug(5, "Rss Feed=" + fd.toString());
+        Debug.debug(5, "", "Rss Feed=" + fd.toString());
 
         return fd;
     }
@@ -403,11 +400,11 @@ public class RssRome {
         try{
             WireFeedOutput feedOut = new WireFeedOutput();
             fd.append(feedOut.outputString(rssChannel));
-            reger.core.Util.debug(5, "Successfully output Rome Atom Feed");
+            Debug.debug(5, "", "Successfully output Rome Atom Feed");
         } catch (com.sun.syndication.io.FeedException fe) {
-            reger.core.Util.debug(5, "Rome Atom Feed died:" + fe.toString());
+            Debug.debug(5, "", "Rome Atom Feed died:" + fe.toString());
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
 
 //          //List supported feed types
@@ -429,7 +426,7 @@ public class RssRome {
 //rss_0.94
 
         //Debug
-        reger.core.Util.debug(5, "Rss Feed=" + fd.toString());
+        Debug.debug(5, "", "Rss Feed=" + fd.toString());
 
         return fd;
     }
@@ -609,11 +606,11 @@ public class RssRome {
             feed.setFeedType(feedType);
             SyndFeedOutput output = new SyndFeedOutput();
             fd.append(output.outputString(feed));
-            reger.core.Util.debug(5, "Successfully output Rome RSS Feed");
+            Debug.debug(5, "", "Successfully output Rome RSS Feed");
         } catch (com.sun.syndication.io.FeedException fe) {
-            reger.core.Util.debug(5, "Rome RSS Feed died:" + fe.toString());
+            Debug.debug(5, "", "Rome RSS Feed died:" + fe.toString());
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
 
 //          //List supported feed types
@@ -635,7 +632,7 @@ public class RssRome {
 //rss_0.94
 
         //Debug
-        reger.core.Util.debug(5, "Rss Feed=" + fd.toString());
+        Debug.debug(5, "", "Rss Feed=" + fd.toString());
 
         return fd;
     }
@@ -653,7 +650,7 @@ public class RssRome {
                   return true;
               }
           }
-          reger.core.Util.debug(5, "Feed type not found=" + type);
+          Debug.debug(5, "", "Feed type not found=" + type);
           return false;
     }
 

@@ -1,8 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
-
-import java.util.Calendar;
+import reger.core.Debug;
 
 /**
  *
@@ -206,7 +205,7 @@ public class MegaHtmlFormBottom {
 
             //Location
             if (pageProps.entry.location!=null){
-                reger.core.Util.debug(5, "Megahtmlformbottom.java calling location locationid=" + pageProps.entry.location.getLocationid() + "<br>getLongitude()=" + pageProps.entry.location.getLongitude());
+                Debug.debug(5, "", "Megahtmlformbottom.java calling location locationid=" + pageProps.entry.location.getLocationid() + "<br>getLongitude()=" + pageProps.entry.location.getLongitude());
             }
 
             mb.append(LocationRenderHtml.getHtmlForEntryPageTable(pageProps.entry.location, displayasadmin, disabledFormText, userSession));
@@ -451,15 +450,15 @@ public class MegaHtmlFormBottom {
                 //-----------------------------------
                 //-----------------------------------
                 if (rstAuthors!=null && rstAuthors.length>0){
-                	for(int i=0; i<rstAuthors.length; i++){
-                	    String selText = "";
-                	    if (pageProps.entry.accountuserid == Integer.parseInt(rstAuthors[i][0])){
+                    for(int i=0; i<rstAuthors.length; i++){
+                        String selText = "";
+                        if (pageProps.entry.accountuserid == Integer.parseInt(rstAuthors[i][0])){
                             selText = " selected";
                         }
                         mb.append("<option value='"+rstAuthors[i][0]+"' "+ selText +">");
                         mb.append(reger.core.Util.cleanForHtml(rstAuthors[i][1]));
                         mb.append("</option>");
-                	}
+                    }
                 }
                 mb.append("</select>");
                 mb.append("<br>");
@@ -495,7 +494,7 @@ public class MegaHtmlFormBottom {
                 //-----------------------------------
                 if (rstGroups!=null && rstGroups.length>0){
 
-                	if (pageProps.logProps.megalogaccess==reger.Vars.LOGACCESSPRIVATE){
+                    if (pageProps.logProps.megalogaccess==reger.Vars.LOGACCESSPRIVATE){
                         mb.append("<img src='"+pageProps.pathToAppRoot+"images/info-icon.gif' border=0>");
                         mb.append(" ");
                         mb.append("<font face=arial size=-2>");
@@ -504,7 +503,7 @@ public class MegaHtmlFormBottom {
                         mb.append("<br>");
                     }
 
-                	for(int i=0; i<rstGroups.length; i++){
+                    for(int i=0; i<rstGroups.length; i++){
                         mb.append("<input type=checkbox name=groupsubscriptionid value='"+rstGroups[i][0]+"' "+disabledFormText+" ");
                         boolean eventIsInGroup = false;
                         if (pageProps.entry.groupsubscriptionids!=null){
@@ -523,7 +522,7 @@ public class MegaHtmlFormBottom {
                         mb.append(rstGroups[i][1]);
                         mb.append("</font>");
                         mb.append("<br>");
-                	}
+                    }
 
                 } else {
                     mb.append("<font face=arial size=-2>");
@@ -549,14 +548,14 @@ public class MegaHtmlFormBottom {
                     mb.append("This entry is posted to these groups.");
                     mb.append("</b></font></td>");
                     mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
-                	for(int i=0; i<rstGroupsThisEventIsIn.length; i++){
+                    for(int i=0; i<rstGroupsThisEventIsIn.length; i++){
                         mb.append("<font face=arial size=-2 class=smallfont>");
                         mb.append("<a href='"+rstGroupsThisEventIsIn[i][2]+"'>");
                         mb.append(rstGroupsThisEventIsIn[i][1]);
                         mb.append("</a>");
                         mb.append("</font> ");
-                	}
-                	mb.append("</td>");
+                    }
+                    mb.append("</td>");
                     mb.append("</tr>");
                 }
             }

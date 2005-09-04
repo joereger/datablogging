@@ -1,7 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
-import reger.core.Util;
+import reger.core.Debug;
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ public class AllMegaLogTypesInSystem {
 
     public AllMegaLogTypesInSystem(){
         if (allMegaLogTypes==null){
-            reger.core.Util.debug(5, "AllMegaLogTypesInSystem.java - Refreshing Point1.");
+            Debug.debug(5, "", "AllMegaLogTypesInSystem.java - Refreshing Point1.");
             refresh();
         }
     }
@@ -23,7 +23,7 @@ public class AllMegaLogTypesInSystem {
      * Empties and then refreshes all logs in the system.
      */
     public static void refresh(){
-        Util.debug(5, "allMegaLogTypes.refresh().");
+        Debug.debug(5, "", "allMegaLogTypes.refresh().");
         allMegaLogTypes=Collections.synchronizedMap(new HashMap());
         synchronized(allMegaLogTypes){            
             //-----------------------------------
@@ -48,7 +48,7 @@ public class AllMegaLogTypesInSystem {
     public static void refresh(int eventtypeid){
         //If it's null, refresh.  Generally won't happen.
         if (allMegaLogTypes==null){
-            reger.core.Util.debug(5, "AllMegaLogTypesInSystem.java - Refreshing Point2rfsh.");
+            Debug.debug(5, "", "AllMegaLogTypesInSystem.java - Refreshing Point2rfsh.");
             refresh();
         }
         if (eventtypeid>0){
@@ -77,7 +77,7 @@ public class AllMegaLogTypesInSystem {
     public static MegaLogType getMegaLogTypeByEventtypeid(int eventtypeid){
         //If it's null, refresh.  Generally won't happen.
         if (allMegaLogTypes==null){
-            reger.core.Util.debug(5, "AllMegaLogTypesInSystem.java - Refreshing Point2.");
+            Debug.debug(5, "", "AllMegaLogTypesInSystem.java - Refreshing Point2.");
             refresh();
         }
 
@@ -87,7 +87,7 @@ public class AllMegaLogTypesInSystem {
         }
 
         //Then refresh.
-        reger.core.Util.debug(5, "AllMegaLogTypesInSystem.java - Refreshing Point3.");
+        Debug.debug(5, "", "AllMegaLogTypesInSystem.java - Refreshing Point3.");
         refresh();
 
         //And check again.
@@ -102,7 +102,7 @@ public class AllMegaLogTypesInSystem {
     public static MegaLogType[] allMegaLogTypesForAccountUser(int accountuserid){
         MegaLogType[] out = new MegaLogType[0];
         if (allMegaLogTypes==null){
-            reger.core.Util.debug(5, "AllMegaLogTypesInSystem.java - Refreshing Point4a.");
+            Debug.debug(5, "", "AllMegaLogTypesInSystem.java - Refreshing Point4a.");
             refresh();
         }
         
@@ -128,7 +128,7 @@ public class AllMegaLogTypesInSystem {
     public static Vector allMegaLogTypesForPlid(int plid){
         Vector out = new Vector();
         if (allMegaLogTypes==null){
-            reger.core.Util.debug(5, "AllMegaLogTypesInSystem.java - Refreshing Point5a.");
+            Debug.debug(5, "", "AllMegaLogTypesInSystem.java - Refreshing Point5a.");
             refresh();
         }
 
@@ -147,7 +147,7 @@ public class AllMegaLogTypesInSystem {
     public static MegaLogType[] allLogTypesInSystem(){
         MegaLogType[] out = new MegaLogType[0];
         if (allMegaLogTypes==null){
-            reger.core.Util.debug(5, "AllMegaLogTypesInSystem.java - Refreshing Point4addd.");
+            Debug.debug(5, "", "AllMegaLogTypesInSystem.java - Refreshing Point4addd.");
             refresh();
         }
 

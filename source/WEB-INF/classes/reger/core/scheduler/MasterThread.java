@@ -3,6 +3,7 @@ package reger.core.scheduler;
 import reger.core.db.Db;
 import reger.core.db.DbConfig;
 import reger.core.Util;
+import reger.core.Debug;
 
 import java.util.Calendar;
 
@@ -76,14 +77,14 @@ public class MasterThread extends Thread {
             try{
                 reger.systemproperties.AllSystemProperties.loadProperties();
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
 
             //Refresh the account cache, now that we have a database connection
             try{
                 reger.cache.AccountCache.flush();
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
 
             while (true) {
@@ -108,7 +109,7 @@ public class MasterThread extends Thread {
                                 updateTask(scheduledTask[i].getTaskName(), scheduledTask[i].getResult() + "<br><font face=arial size=-2>Execution Time: "+time+" ms</font>", masterthreadid);
                             }
                         } catch (Exception e) {
-                            reger.core.Util.errorsave(e);
+                            Debug.errorsave(e, "");
                         }
                     }
                 }
@@ -122,7 +123,7 @@ public class MasterThread extends Thread {
 
         } catch (Exception e) {
             e.printStackTrace();
-			reger.core.Util.errorsave(e);
+			Debug.errorsave(e, "");
 			currentStatus = "Thread dead.";
         }
     }
@@ -209,7 +210,7 @@ public class MasterThread extends Thread {
 
 
         //Log the new thread to the DB
-        reger.core.Util.logtodb("The wheels on the bus are turning.<br>Application startup at:" + reger.core.TimeUtils.dateformatfordb(Calendar.getInstance()) + "<br>This is not an error... it's a good thing.");
+        Debug.logtodb("The wheels on the bus are turning.<br>Application startup at:" + reger.core.TimeUtils.dateformatfordb(Calendar.getInstance()) + "<br>This is not an error... it's a good thing.", "");
 
     }
 

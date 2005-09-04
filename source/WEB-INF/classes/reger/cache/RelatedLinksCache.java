@@ -1,6 +1,7 @@
 package reger.cache;
 
 import reger.RelatedLinks;
+import reger.core.Debug;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
@@ -15,7 +16,7 @@ public class RelatedLinksCache {
 
 
     public static RelatedLinks get(int eventid, String searchterms, reger.UserSession userSession){
-        reger.core.Util.debug(4, "RelatedLinksCache.get("+eventid+") called.");
+        Debug.debug(4, "", "RelatedLinksCache.get("+eventid+") called.");
         if (admin==null){
             Properties props = new Properties();
             props.setProperty("cache.capacity", "5000");
@@ -25,13 +26,13 @@ public class RelatedLinksCache {
         String key = "eventid" + eventid + "-accountuserid" + userSession.getAccountuser().getAccountuserid();
 
         try {
-            reger.core.Util.debug(4, "RelatedLinksCache.get("+key+") trying to return from cache.");
+            Debug.debug(4, "", "RelatedLinksCache.get("+key+") trying to return from cache.");
             int hrstokeep = 12;
             int secstokeep = 60 * 60 * hrstokeep;
             return (RelatedLinks) admin.getFromCache(key, secstokeep);
         } catch (NeedsRefreshException nre) {
             try {
-                reger.core.Util.debug(4, "RelatedLinksCache.get("+key+") refreshing object from database.");
+                Debug.debug(4, "", "RelatedLinksCache.get("+key+") refreshing object from database.");
                 RelatedLinks relLink = new RelatedLinks(eventid, searchterms, userSession);
                 String[] groups = new String[1];
                 groups[0]="eventid"+eventid;
@@ -39,7 +40,7 @@ public class RelatedLinksCache {
                 return relLink;
             } catch (Exception ex) {
                 admin.cancelUpdate(key);
-                reger.core.Util.errorsave(ex);
+                Debug.errorsave(ex, "");
                 return new RelatedLinks(0);
             }
         }
@@ -52,7 +53,7 @@ public class RelatedLinksCache {
             try{
                 admin.flushAll();
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.debug(5, "", e);
             }
         }
     }
@@ -62,7 +63,7 @@ public class RelatedLinksCache {
             try{
                 admin.flushGroup(String.valueOf("eventid"+eventid));
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.debug(5, "", e);
             }
         }
     }

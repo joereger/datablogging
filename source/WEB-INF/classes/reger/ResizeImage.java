@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.swing.ImageIcon;
 import com.sun.image.codec.jpeg.*;
+import reger.core.Debug;
 
 /**
  * Resize an image that already exists on the filesystem
@@ -47,8 +48,8 @@ public class ResizeImage{
             //@todo Copy generic file thumbnail working.  (It is coded but failing because it can't find the sourcefile)
             //Try to copy the generic file thumbnail and if it fails record an error.
             if (!reger.core.Util.copyFile(reger.Vars.THUMBNAILGENERIC + "", outimagelocation)) {
-                reger.core.Util.logtodb("Unsuccessful copy of THUMBNAILGENERIC.  See ResizeImage.java around line 49.  Error will be saved to database in next error entry.");
-                reger.core.Util.errorsave(e);
+                Debug.logtodb("Unsuccessful copy of THUMBNAILGENERIC.  See ResizeImage.java around line 49.  Error will be saved to database in next error entry.", "");
+                Debug.errorsave(e, "");
             }
             return false;
         }

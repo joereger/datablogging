@@ -3,6 +3,7 @@ package reger.mega;
 import reger.UserSession;
 import reger.MegaLogType;
 import reger.Log;
+import reger.core.Debug;
 import reger.cache.LogCache;
 import reger.pageFramework.PageProps;
 
@@ -36,7 +37,7 @@ public class FieldLayout {
             fields = LogCache.get(logid).getFields();
             fieldOrderCollection = LogCache.get(logid).getFieldOrderCollection();
         }
-        reger.core.Util.debug(5, "FieldLayout.java getHtml(eventtypeid="+eventtypeid+", logid="+logid+", LAYOUTMODE="+LAYOUTMODE+")");
+        Debug.debug(5, "", "FieldLayout.java getHtml(eventtypeid="+eventtypeid+", logid="+logid+", LAYOUTMODE="+LAYOUTMODE+")");
 
         //Javascript for dhtml
         mb.append("<script type='text/javascript' src='../js/cross-browser.com/x/x_core.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
@@ -127,7 +128,7 @@ public class FieldLayout {
                 for (int i = 0; i < fields.length; i++) {
                     FieldType fld = fields[i];
                     if (fld!=null){
-                        reger.core.Util.debug(5, "FieldLayout.java field not null.  fld.getFieldname()" + fld.getFieldname());
+                        Debug.debug(5, "", "FieldLayout.java field not null.  fld.getFieldname()" + fld.getFieldname());
                         mb.append("<div id='fieldBox"+fld.getMegafieldid()+"' class='fieldBox'>" + reger.Vars.LINEBREAKCHARFORHTML);
                         mb.append("    <div id='fieldBoxBar"+fld.getMegafieldid()+"' class='fieldBoxBar' title='Drag to Move'>");
                         //Remove field button
@@ -227,13 +228,13 @@ public class FieldLayout {
 
 
     public static void processLayoutChange(int logid, int eventtypeid, int megafieldid, String action, String fieldorderholder){
-        reger.core.Util.debug(5, "FieldLayout.processLayoutChange() called. action=" + action);
+        Debug.debug(5, "", "FieldLayout.processLayoutChange() called. action=" + action);
         //If we have an action and a logid or eventtypeid
         if (!action.equals("") && (logid>0 || eventtypeid>0)){
             //Handle field ordering
             if (action.equals("savelayout")){
                 if (!fieldorderholder.equals("")){
-                    reger.core.Util.debug(5, "FieldLayout.java - fieldorderholder=" + fieldorderholder);
+                    Debug.debug(5, "", "FieldLayout.java - fieldorderholder=" + fieldorderholder);
                     //Save to appropriate object
                     if (logid>0){
                         Log log = LogCache.get(logid);

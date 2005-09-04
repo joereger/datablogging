@@ -1,4 +1,5 @@
 <%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -99,10 +100,10 @@ if (pageProps.action.equals("resendinvitation")){
             StringBuffer emailBody = reger.emailtext.BasicEmails.invitationEmail(userSession.getAccountuser(), userSession.getPl(), friendinvitationid);
 
             //Send the email
-            reger.core.Util.debug(5, "people-friends.log - resend - about to send the email to:" + rstInvite[0][0]);
+            Debug.debug(5, "", "people-friends.log - resend - about to send the email to:" + rstInvite[0][0]);
             reger.core.EmailSend.sendMail(fromaddress, rstInvite[0][0], rstInvite[0][1], emailBody.toString());
-            reger.core.Util.debug(5, "people-friends.log - resend - email body to:" + rstInvite[0][0] + "<br><br>" + emailBody.toString());
-            reger.core.Util.debug(5, "people-friends.log - resend - finished sending email to:" + rstInvite[0][0]);
+            Debug.debug(5, "", "people-friends.log - resend - email body to:" + rstInvite[0][0] + "<br><br>" + emailBody.toString());
+            Debug.debug(5, "", "people-friends.log - resend - finished sending email to:" + rstInvite[0][0]);
 
             //Update the sucker
             //-----------------------------------

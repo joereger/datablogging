@@ -1,5 +1,7 @@
 package reger;
 
+import reger.core.Debug;
+
 import java.util.*;
 import java.lang.reflect.*;
 
@@ -142,7 +144,7 @@ public class debugInfo {
                      eo.append("</td>");
                      eo.append("</tr>");
                 } catch (Exception e) {
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
             }
 

@@ -9,6 +9,7 @@ import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.io.ModuleGenerator;
 import reger.mega.FieldType;
 import reger.mega.FieldData;
+import reger.core.Debug;
 
 /**
  * The Generator element which outputs xml
@@ -44,7 +45,7 @@ public class MegaDataRSSModuleGenerator implements ModuleGenerator {
 
     public void generate(Module module, Element element) {
 
-        reger.core.Util.debug(5, "MegeDataRSSModuleGenerator.java - generate() called.");
+        Debug.debug(5, "", "MegeDataRSSModuleGenerator.java - generate() called.");
 
         // this is not necessary, it is done to avoid the namespace definition in every item.
         Element root = element;
@@ -58,7 +59,7 @@ public class MegaDataRSSModuleGenerator implements ModuleGenerator {
         FieldType[] fields = fm.getFields();
         if (fields!=null){
             for (int i = 0; i < fields.length; i++) {
-                reger.core.Util.debug(5, "MegaDataRSSModuleGenerator.java - Found a fieldid=" + fields[i].getFieldname());
+                Debug.debug(5, "", "MegaDataRSSModuleGenerator.java - Found a fieldid=" + fields[i].getFieldname());
                 //element.addContent(generateSimpleElement("foo",foos.get(i).toString()));
                 element.addContent(generateElementFromField(fields[i]));
             }
@@ -80,13 +81,13 @@ public class MegaDataRSSModuleGenerator implements ModuleGenerator {
         elementFieldid.addContent(String.valueOf(field.getMegafieldid()));
         element.addContent(elementFieldid);
 
-        reger.core.Util.debug(5, "MegaDataRSSModuleGenerator.java - Generating element tag for " + field.getFieldname());
+        Debug.debug(5, "", "MegaDataRSSModuleGenerator.java - Generating element tag for " + field.getFieldname());
 
         //Collect the data
         FieldData[] fieldData = field.getDataForField();
         if (fieldData!=null){
             for (int i = 0; i < fieldData.length; i++) {
-                reger.core.Util.debug(5, "MegaDataRSSModuleGenerator.java - Fielddata for " + field.getFieldname() + " is NOT null.  fieldData[i].getValue()=" + fieldData[i].getValue());
+                Debug.debug(5, "", "MegaDataRSSModuleGenerator.java - Fielddata for " + field.getFieldname() + " is NOT null.  fieldData[i].getValue()=" + fieldData[i].getValue());
 
                 //Data
                 Element elementData = new Element ("data" , ENTRYDATA_NS);

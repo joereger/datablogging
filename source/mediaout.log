@@ -22,6 +22,7 @@ if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbna
                  reger.Media.MediaType,
                  reger.Media.MediaTypeFactory,
                  reger.core.db.Db" %>
+<%@ page import="reger.core.Debug"%>
 
 <%
 /*----------------------------------------------------*/
@@ -147,21 +148,21 @@ try{
                 }catch (java.net.SocketException e){
                     //Do nothing... typically a ClientAbortException
                 }catch (IOException e){
-                    reger.core.Util.debug(3, "IO Exception attempting to read file: '" + fileName + "'<br>" + e.toString());
-                    reger.core.Util.debug(3, e);
+                    Debug.debug(3, "", "IO Exception attempting to read file: '" + fileName + "'<br>" + e.toString());
+                    Debug.debug(3, "", e);
                 }catch (Throwable e){
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
             }
 
         } catch (IOException e){
             //This is a specific error that happens when users abort their connection.
-            reger.core.Util.debug(3, e);
+            Debug.debug(3, "", e);
         } catch (java.lang.IllegalStateException e){
             //This is a specific error that happens when users abort their connection.
-            reger.core.Util.debug(3, e);
+            Debug.debug(3, "", e);
         } catch (Exception e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     } else {
         //Show the placeholder error image
@@ -184,24 +185,24 @@ try{
                     fis.close();
                 }catch (IOException e){
                     //Do nothing unless debugging
-                    reger.core.Util.debug(3, "IO Exception attempting to read file.  Error occurred on mediaout.log: '" + reger.Vars.ERRORIMAGE + "'<br>" + e.toString());
-                    reger.core.Util.debug(3, e);
+                    Debug.debug(3, "", "IO Exception attempting to read file.  Error occurred on mediaout.log: '" + reger.Vars.ERRORIMAGE + "'<br>" + e.toString());
+                    Debug.debug(3, "", e);
                 }catch (Throwable e){
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                 }
             }
 
         } catch (IOException e){
             //This is a specific error that happens when users abort their connection.
-            reger.core.Util.debug(3, e);
+            Debug.debug(3, "", e);
         } catch (java.lang.IllegalStateException e){
             //This is a specific error that happens when users abort their connection.
-            reger.core.Util.debug(3, e);
+            Debug.debug(3, "", e);
         } catch (Exception e) {
             if (!e.toString().substring(0, 21).equals("ClientAbortException:")){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             } else {
-                reger.core.Util.debug(3, e);
+                Debug.debug(3, "", e);
             }
         }
     }
@@ -211,10 +212,10 @@ try{
 
 } catch (java.net.SocketException e){
     //This is a specific error that happens when users abort their connection.
-    reger.core.Util.debug(5, e);
+    Debug.debug(5, "", e);
 }
 
-reger.core.Util.debug(5, "mediaout.log<br>bytesOutput=" + bytesOutput + "<br>baseFileName=" + baseFileName);
+Debug.debug(5, "", "mediaout.log<br>bytesOutput=" + bytesOutput + "<br>baseFileName=" + baseFileName);
 
 //---------------------------------------------------------------
 //Record traffic.  Use pageProps.trafficType
@@ -236,7 +237,7 @@ try{
     reger.TrafficHit trafficHit = new reger.TrafficHit(request, pageProps.logProps.logid, tmpAccountid, pageProps.trafficType, userSession.getPl().getPlid(), userSession.getSiteRootUrl(), bandwidth, isSuperCookieOn);
     reger.cache.TrafficHitCache.addTrafficHit(trafficHit);
 } catch (Exception e){
-    reger.core.Util.errorsave(e, "globalfooter.jsp");
+    Debug.errorsave(e, "", "globalfooter.jsp");
 }
 //End record traffic
 //----------------------------------------------------------------

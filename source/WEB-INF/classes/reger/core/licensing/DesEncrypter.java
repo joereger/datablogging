@@ -1,5 +1,7 @@
 package reger.core.licensing;
 
+import reger.core.Debug;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -45,7 +47,7 @@ public class DesEncrypter {
             //} catch (java.security.NoSuchAlgorithmException e) {
             //} catch (java.security.InvalidKeyException e) {
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
 
@@ -64,7 +66,7 @@ public class DesEncrypter {
             //} catch (UnsupportedEncodingException e) {
             //} catch (java.io.IOException e) {
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
             return null;
         }
@@ -84,7 +86,7 @@ public class DesEncrypter {
             //} catch (UnsupportedEncodingException e) {
             //} catch (java.io.IOException e) {
             } catch (Exception e){
-                reger.core.Util.debug(3, e);
+                Debug.debug(3, "", e);
             }
             return null;
         }

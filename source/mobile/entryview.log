@@ -75,7 +75,7 @@ if (rstEventList!=null && rstEventList.length>0){
 	    try{
 	        entryToDisplay = wholeEntry.substring(start, end);
         } catch (Exception e){
-            reger.core.Util.errorsave(e, "Problem in /mobile/entryview.log.");
+            Debug.errorsave(e, "", "Problem in /mobile/entryview.log.");
         }
 
 

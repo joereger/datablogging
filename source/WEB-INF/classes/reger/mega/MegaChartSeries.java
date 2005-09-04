@@ -1,7 +1,7 @@
 package reger.mega;
 
 import reger.core.db.Db;
-import reger.search.SearchResult;
+import reger.core.Debug;
 
 import java.util.*;
 
@@ -121,7 +121,7 @@ public class MegaChartSeries {
      * the interface FieldType
      */
      public TreeMap getFieldData(int megafieldid, int fieldtype, int[] intListOfEventids){
-        reger.core.Util.debug(5, "MegaChartNew.java: getFieldData()<br>megafieldid=" + megafieldid + "<br>fieldtype=" + fieldtype);
+        Debug.debug(5, "", "MegaChartNew.java: getFieldData()<br>megafieldid=" + megafieldid + "<br>fieldtype=" + fieldtype);
         //Use FieldTypeFactory
         //Now we pass this to the fieldtype handler
         //Figure out which type of field this is
@@ -507,7 +507,7 @@ public class MegaChartSeries {
                 yAxisTitle=getYfield[i][0];
                 yMegadatatype=Integer.parseInt(getYfield[i][1]);
                 yFieldtype=Integer.parseInt(getYfield[i][2]);
-                reger.core.Util.debug(5, "Megachart.java. Successfully found yMegafieldid. yMegafieldid=" + yMegafieldid);
+                Debug.debug(5, "", "Megachart.java. Successfully found yMegafieldid. yMegafieldid=" + yMegafieldid);
             }
         }
         if (yMegafieldid==FieldType.YAXISCOUNT) {

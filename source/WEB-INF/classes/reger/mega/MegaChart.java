@@ -3,7 +3,7 @@ package reger.mega;
 import reger.core.db.Db;
 import reger.UserSession;
 import reger.AddToArray;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 import java.util.Calendar;
 
@@ -230,7 +230,7 @@ public class MegaChart {
         entryChooser = new reger.mega.MegaChartEntryChooser(userSession, this);
         entryChooser.populate();
 
-        reger.core.Util.debug(5, "MegaChart.java - entryChooser.getIntListOfEventids().length="+entryChooser.getIntListOfEventids().length);
+        Debug.debug(5, "", "MegaChart.java - entryChooser.getIntListOfEventids().length="+entryChooser.getIntListOfEventids().length);
         int debugCount = 0;
         //Iterate yAxis and create a series for each
         for (int i = 0; i < yMegafieldid.length; i++) {
@@ -240,10 +240,10 @@ public class MegaChart {
             xAxisTitle = seriesTmp.getxAxisTitle();
             yAxisTitle = seriesTmp.getyAxisTitle();
             megaChartSeries = AddToArray.addToMegaChartSeriesArray(megaChartSeries, seriesTmp);
-            reger.core.Util.debug(5, "MegaChart.java - seriesTmp.cleanData.length="+seriesTmp.cleanData.length);
+            Debug.debug(5, "", "MegaChart.java - seriesTmp.cleanData.length="+seriesTmp.cleanData.length);
             debugCount = debugCount + seriesTmp.cleanData.length;
         }
-        reger.core.Util.debug(5, "MegaChart.java - items graphed="+debugCount);
+        Debug.debug(5, "", "MegaChart.java - items graphed="+debugCount);
     }
 
     public MegaChartSeries[] getMegaChartSeries(){

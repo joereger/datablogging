@@ -1,6 +1,7 @@
 <%@ page isErrorPage="true" %>
 <%@ page import="reger.core.Util,
                  reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 
 <%
 
@@ -15,11 +16,11 @@ try {
         reger.UrlSplitter urlSplitter = new reger.UrlSplitter(request);
 
         //Now try to save with the accountid
-        reger.core.Util.errorsave(exception, accountid, request.getRequestURL().toString(), request);
+        Debug.errorsave(exception, "", accountid, request.getRequestURL().toString(), request);
     } catch (Throwable e){
         //Do nothing.  We failed pardner.  Nothing but a basic save now, pardner
         //Save the error to the database
-        reger.core.Util.errorsave(exception, request.getRequestURL().toString(), request);
+        Debug.errorsave(exception, "", request.getRequestURL().toString(), request);
     }
 
 

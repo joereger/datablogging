@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * A class containing methods to build and maintain side column displays.
@@ -104,9 +105,9 @@ public class SideColumn {
         //-----------------------------------
         //-----------------------------------
         if (rstFavorite!=null && rstFavorite.length>0){
-        	for(int i=0; i<rstFavorite.length; i++){
+            for(int i=0; i<rstFavorite.length; i++){
                 fv.append(reger.SideColumn.sideColContentRow("<img src='images/clear.gif' width='9' height='3' alt='' border='0'><br><img src='images/bullet-arrow.gif' width='9' height='9' alt='' border='0'><a href='entry-logid"+logid+"-eventid"+rstFavorite[i][0]+".log'>" + reger.core.Util.cleanForHtml(rstFavorite[i][1]) + "</a>"));
-        	}
+            }
         } else {
             fv.append(reger.SideColumn.sideColContentRow("None."));
         }
@@ -129,7 +130,7 @@ public class SideColumn {
         //-----------------------------------
         //-----------------------------------
         if (rstEvtid!=null && rstEvtid.length>0){
-        	return chartsngraphs(logid, Integer.parseInt(rstEvtid[0][0]), userSession);
+            return chartsngraphs(logid, Integer.parseInt(rstEvtid[0][0]), userSession);
         }
         return chartsngraphs(logid, 0, userSession);
     }
@@ -155,7 +156,7 @@ public class SideColumn {
         " AND "+
         " (megachart.accountid='"+userSession.getAccount().getAccountid()+"' OR megachart.accountid='0')"+
         " ORDER BY megachart.accountid DESC, megalog.logid ASC, megachart.megachartid DESC";
-        reger.core.Util.debug(5, sql);
+        Debug.debug(5, "", sql);
 
         //-----------------------------------
         //-----------------------------------
@@ -200,7 +201,7 @@ public class SideColumn {
         //-----------------------------------
         //-----------------------------------
         if (rstMessages!=null && rstMessages.length>0 && !rstMessages[0][0].equals("0")){
-        	fv.append(reger.SideColumn.sideColContentRow("<a href='messages.log?logid="+logid+"'>"+rstMessages[0][0] + " Messages Available</a>"));
+            fv.append(reger.SideColumn.sideColContentRow("<a href='messages.log?logid="+logid+"'>"+rstMessages[0][0] + " Messages Available</a>"));
         } else {
             fv.append(reger.SideColumn.sideColContentRow("None."));
         }

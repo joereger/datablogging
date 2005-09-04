@@ -1,14 +1,10 @@
 package reger.mega;
 
-import reger.Entry;
-import reger.MegaLogTypeXmlSchemaRenderer;
 import reger.AddToArray;
+import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeMap;
-import java.util.List;
 
 import org.jdom.Element;
 
@@ -244,7 +240,7 @@ public class FieldTypeDropdown extends Field implements FieldType, ChartField{
         sm.loadData(this.megafieldid, eventid, logid);
         this.fieldData[0] = new FieldData(NAMEOFDATAVALUE, sm.value);
         this.possibleValues = sm.possibleValues;
-        reger.core.Util.debug(5, "Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid + "<br>this.fieldData[0].getValue()=" + this.fieldData[0].getValue());
+        Debug.debug(5, "", "Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid + "<br>this.fieldData[0].getValue()=" + this.fieldData[0].getValue());
      }
 
      /**
@@ -280,7 +276,7 @@ public class FieldTypeDropdown extends Field implements FieldType, ChartField{
             } catch (reger.core.ValidationException ex){
                 errortext = errortext +  ">> " + this.fieldname + ": " + ex.getErrorsAsSingleString() + "<br>";
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
 
@@ -420,7 +416,7 @@ public class FieldTypeDropdown extends Field implements FieldType, ChartField{
      */
     public boolean fulfillsQuery(FieldQueryElement[] fieldQueryElements, int logidOrEtid) {
 
-        reger.core.Util.debug(5, "FieldTypeDropdown.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData[0].getValue());
+        Debug.debug(5, "", "FieldTypeDropdown.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData[0].getValue());
 
         if (this.megadatatypeid==reger.mega.DataTypeString.DATATYPEID){
             //Get the values

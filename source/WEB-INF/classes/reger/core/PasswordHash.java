@@ -1,10 +1,7 @@
 package reger.core;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import sun.misc.BASE64Encoder;
-import sun.misc.CharacterEncoder;
 
 /**
  * Gives passwords as a hash
@@ -18,7 +15,7 @@ public class PasswordHash {
         try{
           md = MessageDigest.getInstance("SHA"); //step 1
         }catch(Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
         try{
@@ -26,7 +23,7 @@ public class PasswordHash {
                 md.update(plaintextPassword.getBytes("UTF-8")); //step 2
             }
         }catch(Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
         byte raw[] = md.digest(); //step 3

@@ -4,6 +4,7 @@
                  java.util.ListIterator,
                  java.util.Iterator,
                  reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 
 
 <%
@@ -32,7 +33,7 @@ if (pageProps.action.equals("setsupercookie")) {
 	Cookie userCookie = new Cookie("testcookie", "supercookieon");
     userCookie.setMaxAge(60*60*24*365);
     userCookie.setDomain("." + userSession.getPl().getServernameMinusOneHost());
-    reger.core.Util.logtodb("userSession.getPl().getServernameMinusOneHost()=" + userSession.getPl().getServernameMinusOneHost());
+    Debug.logtodb("userSession.getPl().getServernameMinusOneHost()=" + userSession.getPl().getServernameMinusOneHost(), "");
     if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
         userCookie.setSecure(true);
     }

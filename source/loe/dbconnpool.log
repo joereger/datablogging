@@ -26,7 +26,7 @@ mb.append("<font face=arial size=-1>");
 try{
     mb.append(reger.core.db.Db.printDriverStats());
 } catch (Exception e){
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
     mb.append("Error getting stats: " + e.getMessage());
 }
 

@@ -1,6 +1,5 @@
 package reger.core;
 
-import reger.Account;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
@@ -28,7 +27,7 @@ public class TimeZoneCache {
                 return tz;
             } catch (Exception ex) {
                 admin.cancelUpdate(id);
-                Util.errorsave(ex);
+                Debug.errorsave(ex, "");
                 return TimeZone.getTimeZone("GMT");
             }
         }

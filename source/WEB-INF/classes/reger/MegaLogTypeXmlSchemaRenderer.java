@@ -5,6 +5,7 @@ import org.jdom.Document;
 import org.jdom.Namespace;
 import org.jdom.output.XMLOutputter;
 import reger.mega.FieldType;
+import reger.core.Debug;
 
 
 /**
@@ -150,7 +151,7 @@ public class MegaLogTypeXmlSchemaRenderer {
             return outp.outputString(doc);
 
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return "Fail.";
     }

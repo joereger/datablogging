@@ -46,7 +46,7 @@ if (pageProps.action.equals("redirect")){
             response.sendRedirect(reger.Vars.getHttpUrlPrefix() + siteUrl + "/friendassociateend.log?accountuseridtarget=" + accountuseridtarget);
             return;
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         out.println("<br>Error redirecting to your site.  Please use your browser's back button and try again.");
         return;

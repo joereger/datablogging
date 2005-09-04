@@ -1,3 +1,4 @@
+<%@ page import="reger.core.Debug"%>
 <%
 //executionTime Object Creation for Performance Analysis
 reger.executionTime executionTime = new reger.executionTime();
@@ -17,7 +18,7 @@ reger.pageFramework.GlobalHeader.get(request, response, out, pageProps, userSess
 
 //If the response has been committed, return, there's nothing else that can be done
 if (response.isCommitted()){
-    reger.core.Util.debug(5, "If/then on isCommitted in globalheader.jsp - response.isCommitted()=" + response.isCommitted());
+    Debug.debug(5, "", "If/then on isCommitted in globalheader.jsp - response.isCommitted()=" + response.isCommitted());
     return;
 }
 %>

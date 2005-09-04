@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * Processes accepted invitations
@@ -49,7 +50,7 @@ public class InvitationProcessor {
                 //-----------------------------------
                 if (rstLogs!=null && rstLogs.length>0){
                     mb.append("You have been given permission to the following logs which you can find by clicking the My Privileges link at the top of the screen:<br><br>");
-                	for(int i=0; i<rstLogs.length; i++){
+                    for(int i=0; i<rstLogs.length; i++){
                         //Read access
                         if (rstLogs[i][2].equals("1")){
                             au.grantLogAccess(Integer.parseInt(rstLogs[i][0]));
@@ -60,7 +61,7 @@ public class InvitationProcessor {
                         }
                         //User messaging
                         mb.append("> " + rstLogs[i][1] + "<br>");
-                	}
+                    }
                 }
 
                 //Handle Log Types
@@ -71,10 +72,10 @@ public class InvitationProcessor {
                 //-----------------------------------
                 if (rstLogTypes!=null && rstLogTypes.length>0){
                     mb.append("You have been invited to the following log types:<br><br>");
-                	for(int i=0; i<rstLogTypes.length; i++){
+                    for(int i=0; i<rstLogTypes.length; i++){
 
                          mb.append("> <a href='logs-newlog-detail.log?eventtypeid="+rstLogTypes[i][0]+"'>" + rstLogTypes[i][1] + "</a><br>");
-                	}
+                    }
                 }
 
                 //Grant special group access
@@ -87,7 +88,7 @@ public class InvitationProcessor {
 
                     mb.append("<br><br>You have been given read permission to the following groups, which you can find by clicking the Groups tab at the top of the page:<br><br>");
 
-                	for(int i=0; i<rstGroups.length; i++){
+                    for(int i=0; i<rstGroups.length; i++){
                         //Select the details of the server for this groupsubscription
                         //-----------------------------------
                         //-----------------------------------
@@ -96,25 +97,25 @@ public class InvitationProcessor {
                         //-----------------------------------
                         if (rstGpSub!=null && rstGpSub.length>0){
                             int groupserversubscriptionid = -1;
-                            reger.core.Util.debug(5, "InvitationProcessor.java - Seeing if user has a proper groupserversubscription.");
-                        	//See if the user has this server and set the groupserversubscriptionid
-                        	//-----------------------------------
-                        	//-----------------------------------
-                        	String[][] rstChkSrvr= Db.RunSQL("SELECT groupserversubscriptionid FROM groupserversubscription WHERE accountuserid='"+au.getAccountuserid()+"' AND serverurl='"+reger.core.Util.cleanForSQL(rstGpSub[0][0])+"'");
-                        	//-----------------------------------
-                        	//-----------------------------------
-                        	if (rstChkSrvr!=null && rstChkSrvr.length>0){
-                        	    //They do have this server already, so set the value
-                        	    groupserversubscriptionid = Integer.parseInt(rstChkSrvr[0][0]);
-                        	    reger.core.Util.debug(5, "InvitationProcessor.java - They have this groupserversubscriptionid already.");
-                        	} else {
+                            Debug.debug(5, "", "InvitationProcessor.java - Seeing if user has a proper groupserversubscription.");
+                            //See if the user has this server and set the groupserversubscriptionid
+                            //-----------------------------------
+                            //-----------------------------------
+                            String[][] rstChkSrvr= Db.RunSQL("SELECT groupserversubscriptionid FROM groupserversubscription WHERE accountuserid='"+au.getAccountuserid()+"' AND serverurl='"+reger.core.Util.cleanForSQL(rstGpSub[0][0])+"'");
+                            //-----------------------------------
+                            //-----------------------------------
+                            if (rstChkSrvr!=null && rstChkSrvr.length>0){
+                                //They do have this server already, so set the value
+                                groupserversubscriptionid = Integer.parseInt(rstChkSrvr[0][0]);
+                                Debug.debug(5, "", "InvitationProcessor.java - They have this groupserversubscriptionid already.");
+                            } else {
                                 //Got to create a new groupserversubscription
                                 //-----------------------------------
                                 //-----------------------------------
                                 groupserversubscriptionid = Db.RunSQLInsert("INSERT INTO groupserversubscription(accountuserid, serverurl, serverkey) VALUES('"+au.getAccountuserid()+"', '"+reger.core.Util.cleanForSQL(rstGpSub[0][0])+"', '"+reger.core.Util.cleanForSQL(rstGpSub[0][1])+"')");
                                 //-----------------------------------
                                 //-----------------------------------
-                                reger.core.Util.debug(5, "InvitationProcessor.java - They did not have this groupserversubscription yet.  Created it.");
+                                Debug.debug(5, "", "InvitationProcessor.java - They did not have this groupserversubscription yet.  Created it.");
                             }
 
                             //See if this user has the groupsubscription with this serverurl
@@ -133,7 +134,7 @@ public class InvitationProcessor {
                                     //-----------------------------------
                                     //-----------------------------------
                                     mb.append("> " + rstGpSub[0][3]+"<br>");
-                                    reger.core.Util.debug(5, "InvitationProcessor.java - Added group by updating keys. groupsubscriptionid=" + rstChkGpSub[0][0]);
+                                    Debug.debug(5, "", "InvitationProcessor.java - Added group by updating keys. groupsubscriptionid=" + rstChkGpSub[0][0]);
                                 } else {
                                     //The groupkey is no good so do nothing
                                 }
@@ -145,12 +146,12 @@ public class InvitationProcessor {
                                 //-----------------------------------
                                 //-----------------------------------
                                 mb.append(">" + rstGpSub[0][3]+"<br>");
-                                reger.core.Util.debug(5, "InvitationProcessor.java - Added group by creating groupsubscription.");
+                                Debug.debug(5, "", "InvitationProcessor.java - Added group by creating groupsubscription.");
                             }
 
 
                         }
-                	}
+                    }
                 }
 
                 mb.append("<br><br>Enjoy!");

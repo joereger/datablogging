@@ -2,10 +2,8 @@ package reger.api.rome;
 
 import com.sun.syndication.feed.module.ModuleImpl;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import reger.mega.FieldType;
+import reger.core.Debug;
 
 /**
  * MegaDataRSSModule implementation
@@ -18,7 +16,7 @@ public class MegaDataRSSModuleImpl extends ModuleImpl implements MegaDataRSSModu
     public MegaDataRSSModuleImpl() {
 
         super(MegaDataRSSModule.class,MegaDataRSSModule.URI);
-        reger.core.Util.debug(5, "MegaDataRSSModuleImpl.java - Instantiated.");
+        Debug.debug(5, "", "MegaDataRSSModuleImpl.java - Instantiated.");
 
     }
 
@@ -38,7 +36,7 @@ public class MegaDataRSSModuleImpl extends ModuleImpl implements MegaDataRSSModu
 
     public void setFields(FieldType[] foos) {
         _foos = foos;
-        reger.core.Util.debug(5, "MegaDataRSSModuleImpl.java - setFields() called.");
+        Debug.debug(5, "", "MegaDataRSSModuleImpl.java - setFields() called.");
     }
 
 

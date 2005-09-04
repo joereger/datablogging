@@ -1,9 +1,8 @@
 package reger.core.licensing;
 
-import reger.core.ValidationException;
+import reger.core.Debug;
 import reger.systemproperties.AllSystemProperties;
 
-import java.util.Calendar;
 import java.util.Vector;
 import java.util.Hashtable;
 import java.net.MalformedURLException;
@@ -90,17 +89,17 @@ public class RegerLicensingApiClient {
                 //reger.core.Util.errorsave(e, "RegerLicensingApiClient.java");
             //}
 
-            reger.core.Util.logHashTableToDb("Result after calling regerlicensingapi.createLicense", result);
+            Debug.logHashTableToDb("Result after calling regerlicensingapi.createLicense", result);
 
             return result;
         } catch (MalformedURLException urle){
-            reger.core.Util.errorsave(urle);
+            Debug.errorsave(urle, "");
             return errorMessage("The URL for the licensing server is invalid.  Please contact reger.com for a fix.");
         } catch (IOException ioex){
-            reger.core.Util.errorsave(ioex);
+            Debug.errorsave(ioex, "");
             return errorMessage("The datablogging server was unable to connect to the internet in order to communicate with the licensing server.");
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return errorMessage("There was an unknown error: " + e.getMessage());
         }
     }
@@ -119,17 +118,17 @@ public class RegerLicensingApiClient {
             XmlRpcClient xmlrpc = new XmlRpcClient(licensingServerUrl);
             Hashtable result = (Hashtable) xmlrpc.execute("regerlicensingapi.isLicenseBillingOk", params);
 
-            reger.core.Util.logHashTableToDb("Result after calling regerlicensingapi.isLicenseBillingOk", result);
+            Debug.logHashTableToDb("Result after calling regerlicensingapi.isLicenseBillingOk", result);
 
             return result;
         } catch (MalformedURLException urle){
-            reger.core.Util.errorsave(urle);
+            Debug.errorsave(urle, "");
             return errorMessage("The URL for the licensing server is invalid.  Please contact reger.com for a fix.");
         } catch (IOException ioex){
-            reger.core.Util.errorsave(ioex);
+            Debug.errorsave(ioex, "");
             return errorMessage("The datablogging server was unable to connect to the internet in order to communicate with the licensing server.");
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return errorMessage("There was an unknown error: " + e.getMessage());
         }
 
@@ -149,17 +148,17 @@ public class RegerLicensingApiClient {
             XmlRpcClient xmlrpc = new XmlRpcClient(licensingServerUrl);
             Hashtable result = (Hashtable) xmlrpc.execute("regerlicensingapi.cancelLicense", params);
 
-            reger.core.Util.logHashTableToDb("Result after calling regerlicensingapi.cancelLicense", result);
+            Debug.logHashTableToDb("Result after calling regerlicensingapi.cancelLicense", result);
 
             return result;
         } catch (MalformedURLException urle){
-            reger.core.Util.errorsave(urle);
+            Debug.errorsave(urle, "");
             return errorMessage("The URL for the licensing server is invalid.  Please contact reger.com for a fix.");
         } catch (IOException ioex){
-            reger.core.Util.errorsave(ioex);
+            Debug.errorsave(ioex, "");
             return errorMessage("The datablogging server was unable to connect to the internet in order to communicate with the licensing server.");
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             return errorMessage("There was an unknown error: " + e.getMessage());
         }
     }

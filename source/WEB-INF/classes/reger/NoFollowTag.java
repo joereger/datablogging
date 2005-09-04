@@ -1,6 +1,8 @@
 package reger;
 
 
+import reger.core.Debug;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -37,7 +39,7 @@ public class NoFollowTag {
 
             return out.toString();
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
             return in;
         }
     }

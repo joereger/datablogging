@@ -100,7 +100,7 @@ public class Util {
                 return tmp[tmp.length-1];
             }
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
         return uri;
     }
@@ -236,165 +236,19 @@ public class Util {
 			return isTime(hour, min, sec);
 	}
 
-	/*
-	 * Saves an exception to the database with a recorded accountid.
-	 * Note that I only use DbNoErrorsave class here.  Otherwise an infinite loop can develop.
-	 */
-	public static void errorsave(Throwable e, int accountid, String message, javax.servlet.http.HttpServletRequest request){
-        try {
-            boolean doRecord = true;
-            try{
-                if (e instanceof org.apache.catalina.connector.ClientAbortException){
-                    doRecord=false;
-                }
-            }catch (Throwable ee){
-                //Do nothing
-            }
-
-            if (doRecord){
-                //Convert the exception to a string
-                //String prettyError = getErrorString(e, message);
-                String prettyError = "";
-
-                //Add the new dissection stuff
-                prettyError = reger.core.ErrorDissect.dissect(e, request, message);
 
 
-                //Try to find a current error with the same description
-                //-----------------------------------
-                //-----------------------------------
-                String[][] rstCurrErr= reger.core.db.DbNoErrorsave.RunSQL("SELECT errorid FROM error WHERE description='"+reger.core.Util.cleanForSQL(prettyError)+"' ORDER BY errorid DESC LIMIT 0,1");
-                //-----------------------------------
-                //-----------------------------------
-                if (rstCurrErr!=null && rstCurrErr.length>0){
-                    //Just update the count
-                    //-----------------------------------
-                    //-----------------------------------
-                    int count = reger.core.db.DbNoErrorsave.RunSQLUpdate("UPDATE error SET count=count+1 WHERE errorid='"+rstCurrErr[0][0]+"'");
-                    //-----------------------------------
-                    //-----------------------------------
-                } else {
-                    //Couldn't find one... just add a new one
-                    //-----------------------------------
-                    //-----------------------------------
-                    int identity = reger.core.db.DbNoErrorsave.RunSQLInsert("INSERT INTO error(date, description, accountid, count) VALUES('"+reger.core.TimeUtils.nowInGmtString()+"', '"+ cleanForSQL(prettyError) +"', '"+accountid+"', '1')");
-                    //-----------------------------------
-                    //-----------------------------------
-                }
-            }
-        } catch (Exception f){
-            f.printStackTrace();
-        }
-
-	}
-
-	/*
-	 * Override to allow simple mode.
-	 */
-	public static void errorsave(Throwable e){
-        errorsave(e, -1, "", null);
-    }
 
     /*
-	 * Override to allow a message to be added.
-	 */
-	public static void errorsave(Throwable e, String message){
-        errorsave(e, -1, message, null);
-    }
-
-    /*
-	 * Override to allow a message to be added.
-	 */
-	public static void errorsave(Throwable e, String message, javax.servlet.http.HttpServletRequest request){
-        errorsave(e, -1, message, request);
-    }
-
-    /*
-	 * Override to allow a just accountid.
-	 */
-	public static void errorsave(Throwable e, int accountid){
-        errorsave(e, accountid, "", null);
-    }
-
-    /*
-	 * Override to allow a just accountid.
-	 */
-	public static void errorsave(Throwable e, int accountid, String message){
-        errorsave(e, accountid, message, null);
-    }
-
-    /*
-	 * Debug method. Will only record if the debugLevel specified is less than/equal to the level set in reger.DebugLevel
-	 * debugLevel 0 = off
-	 * debugLevel 5 = high detail
-	 */
-	public static void debug(int debugLevel, Throwable e){
-	    if (debugLevel<=reger.core.DegubLevel.getDebugLevel()){
-            errorsave(e, -1, "", null);
-        }
-    }
-
-    /*
-	 * Debug method. Will only record if the debugLevel specified is less than/equal to the level set in reger.DebugLevel
-	 * debugLevel 0 = off
-	 * debugLevel 5 = high detail
-	 */
-	public static void debug(int debugLevel, String whatToLog){
-	    if (debugLevel<=reger.core.DegubLevel.getDebugLevel()){
-            logtodb(whatToLog);
-        }
-    }
-
-	/*
-	 * Log to database
-	 */
-	public static void logtodb(String whattolog){
-		//-----------------------------------
-		//-----------------------------------
-		int identity = reger.core.db.Db.RunSQLInsert("INSERT INTO error(date, description) VALUES('"+reger.core.TimeUtils.nowInGmtString()+"', '"+ cleanForSQL(whattolog) +"')");
-		//-----------------------------------
-		//-----------------------------------
-	}
-
-	/*
-	 * Log to database
-	 */
-	public static void logtodb(byte[] whattolog){
-	    StringBuffer mb = new StringBuffer();
-	    for (int i = 0; i < whattolog.length; i++) {
-            mb.append(Byte.toString(whattolog[i]));
-        }
-		//-----------------------------------
-		//-----------------------------------
-		int identity = reger.core.db.Db.RunSQLInsert("INSERT INTO error(date, description) VALUES('"+reger.core.TimeUtils.nowInGmtString()+"', '"+ cleanForSQL(mb.toString()) +"')");
-		//-----------------------------------
-		//-----------------------------------
-	}
-
-	/*
-	 * Log to database
-	 */
-	public static void logtodbCleanForSQLWithSlashes(String whattolog){
-		//-----------------------------------
-		//-----------------------------------
-		int identity = reger.core.db.Db.RunSQLInsert("INSERT INTO error(date, description) VALUES('"+reger.core.TimeUtils.nowInGmtString()+"', '"+ cleanForSQLWithSlashes(whattolog) +"')");
-		//-----------------------------------
-		//-----------------------------------
-	}
-
-
-
-
- 	/*
-	 * Returns the absolute value of a number
-	 */
-	public static long qAbs(long num){
- 		if (num < 0) {
-			return -1*num;
-		} else {
-			return num;
-		}
-	}
+      * Returns the absolute value of a number
+      */
+   public static long qAbs(long num){
+        if (num < 0) {
+           return -1*num;
+       } else {
+           return num;
+       }
+   }
 
 
 	/*
@@ -917,9 +771,9 @@ public class Util {
              in.close();
              out.close();
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
             //@todo Uncomment this prior to production release.
-            reger.core.Util.logtodb("Error copying file.<br>Source=" + source.getAbsolutePath() + "<br>Dest=" + dest.getAbsolutePath());
+            Debug.logtodb("Error copying file.<br>Source=" + source.getAbsolutePath() + "<br>Dest=" + dest.getAbsolutePath(), "");
             return false;
         }
         return true;
@@ -949,7 +803,7 @@ public class Util {
                 filehandler.delete();
             }
         } catch (Exception e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 
@@ -1209,7 +1063,7 @@ public class Util {
                 return(defaultValue);
             }
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
             return(defaultValue);
         }
         return(defaultValue);
@@ -1229,7 +1083,7 @@ public class Util {
                 }
             }
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
         return false;
     }
@@ -1245,150 +1099,14 @@ public class Util {
                 return true;
             }
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return false;
     }
 
-    /**
-     * Debug method. Write all elements of a hashtable to log.
-     */
-    public static void logHashTableToDb(String desc, Hashtable hash){
-        StringBuffer tst = new StringBuffer();
-        for ( Enumeration e = hash.keys() ; e.hasMoreElements() ; ) {
-            // retrieve the object_key
-            String object_key = (String) e.nextElement();
-            // retrieve the object associated with the key
-            String value = (String) hash.get ( object_key );
-            tst.append("<br>key=" + object_key + " - value=" + value);
-        }
-        reger.core.Util.logtodb(desc + "<br>Contents of HashTable:" + tst);
-    }
-
-    /**
-     * Debug method. Write all elements of a hashmap to log.
-     */
-    public static void logHashMapToDb(String desc, HashMap hash){
-        StringBuffer tst = new StringBuffer();
-        for (Iterator i=hash.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry e = (Map.Entry) i.next();
-            tst.append("<br>key=" + e.getKey() + " - value=" + e.getValue());
-        }
-        reger.core.Util.logtodb(desc + "<br>Contents of HashMap:" + tst);
-    }
-
-    /**
-     * Debug method. Write all elements of a hashmap to log.
-     */
-    public static void logTreeMapToDb(String desc, TreeMap hash){
-        StringBuffer tst = new StringBuffer();
-        for (Iterator i=hash.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry e = (Map.Entry) i.next();
-            tst.append("<br>key=" + e.getKey() + " - value=" + e.getValue());
-        }
-        reger.core.Util.logtodb(desc + "<br>Contents of TreeMap:" + tst);
-    }
-
-    /**
-     * Debug method. Write all elements of an array to log.
-     */
-    public static void logStringArrayToDb(String desc, String[] array){
-        if (array!=null){
-            StringBuffer tst = new StringBuffer();
-            for (int i = 0; i < array.length; i++) {
-                tst.append("<br>" + array[i]);
-            }
-            reger.core.Util.logtodb(desc + "<br>Contents of Array:" + tst);
-        }
-    }
-
-    /**
-     * Debug method. Write all elements of a double array to log.
-     */
-    public static void logDoubleStringArrayToDb(String desc, String[][] array){
-        StringBuffer tst = new StringBuffer();
-        tst.append("<table cellpadding=0 cellspacing=0 border=1>");
-        for (int i = 0; i < array.length; i++) {
-            String[] row = array[i];
-            tst.append("<tr>");
-            for (int j = 0; j < row.length; j++) {
-                tst.append("<td valign=top>");
-                tst.append(row[j]);
-                tst.append("</td>");
-            }
-            tst.append("</tr>");
-        }
-        tst.append("</table>");
-        reger.core.Util.logtodb(desc + "<br>Contents of Double Array:" + tst);
-    }
-
-    /**
-     * Debug method. Write all elements of an array to log.
-     */
-    public static void logIntArrayToDb(String desc, int[] array){
-        StringBuffer tst = new StringBuffer();
-        for (int i = 0; i < array.length; i++) {
-            tst.append("<br>" + array[i]);
-        }
-        reger.core.Util.logtodb(desc + "<br>Contents of Array:" + tst);
-    }
-
-
-    /**
-     * Debug method. Write all elements of a double array to log.
-     */
-    public static void logDoubleIntArrayToDb(String desc, int[][] array){
-        StringBuffer tst = new StringBuffer();
-        if (array==null){
-            array = new int[0][0];
-        }
-        for (int i = 0; i < array.length; i++) {
-            StringBuffer tstTmp = new StringBuffer();
-            for (int j = 0; j < array[i].length; j++) {
-                tstTmp.append("<br>" + array[i][j]);
-            }
-            tst.append("<br><b>Contents of Array["+i+"][]:</b>" + tstTmp);
-        }
-        reger.core.Util.logtodb(desc + "<br><b>Contents of the Double Array:</b>" + tst);
-    }
 
 
 
-
-
-    /**
-     * Logs a request object's headers and other pertinent info to the database to the Db
-     *
-     */
-    public static void logRequestObjectToDb(javax.servlet.http.HttpServletRequest request){
-        String tmp="";
-
-        tmp=tmp+"<br>" +"getCharacterEncoding: " + request.getCharacterEncoding();
-        tmp=tmp+"<br>" +"getContentLength: " + request.getContentLength();
-        tmp=tmp+"<br>" +"getContentType: " + request.getContentType();
-        tmp=tmp+"<br>" +"getProtocol: " + request.getProtocol();
-        tmp=tmp+"<br>" +"getRemoteAddr: " + request.getRemoteAddr();
-        tmp=tmp+"<br>" +"getRemoteHost: " + request.getRemoteHost();
-        tmp=tmp+"<br>" +"getScheme: " + request.getScheme();
-        tmp=tmp+"<br>" +"getServerName: " + request.getServerName();
-        tmp=tmp+"<br>" +"getServerPort: " + request.getServerPort();
-        tmp=tmp+"<br>" +"getAuthType: " + request.getAuthType();
-        tmp=tmp+"<br>" +"getMethod: " + request.getMethod();
-        tmp=tmp+"<br>" +"getPathInfo: " + request.getPathInfo();
-        tmp=tmp+"<br>" +"getPathTranslated: " + request.getPathTranslated();
-        tmp=tmp+"<br>" +"getQueryString: " + request.getQueryString();
-        tmp=tmp+"<br>" +"getRemoteUser: " + request.getRemoteUser();
-        tmp=tmp+"<br>" +"getRequestURI: " + request.getRequestURI();
-        tmp=tmp+"<br>" +"getServletPath: " + request.getServletPath();
-
-        Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-        String name = (String) headerNames.nextElement();
-        String value = request.getHeader(name);
-        tmp=tmp+"<br>request.getHeader(" + name + ") : " + value;
-        }
-        reger.core.Util.logtodb(tmp);
-    }
 
     /**
      * Javascript to disable all links on a page
@@ -1515,9 +1233,9 @@ public class Util {
             }
             reader.close();
         } catch (FileNotFoundException e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         } catch (IOException e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
         sb.append(new String(chars));
@@ -1540,9 +1258,9 @@ public class Util {
             }
             reader.close();
         } catch (FileNotFoundException e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         } catch (IOException e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
         sb.append(new String(chars));
@@ -1731,7 +1449,7 @@ public class Util {
             objOut.close();
             str = arrayOut.toString();
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return str;
     }

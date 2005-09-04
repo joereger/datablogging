@@ -58,7 +58,7 @@ try {
         newMessages=reger.TrafficNumericSummary.countMessages(userSession.getAccount().getAccountid()) + " Unapproved Messages";
     }
 } catch (Exception e) {
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
 }
 
 mb.append("<p>");

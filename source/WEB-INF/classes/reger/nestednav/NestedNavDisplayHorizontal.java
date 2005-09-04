@@ -1,7 +1,7 @@
 package reger.nestednav;
 
 import reger.UserSession;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * A Horizontal navbar
@@ -13,7 +13,7 @@ public class NestedNavDisplayHorizontal implements NestedNavDisplay{
         StringBuffer mb = new StringBuffer();
 
         //Start
-        reger.core.Util.debug(5, "NestedNavbarHorizontal.java - Navbar start.");
+        Debug.debug(5, "", "NestedNavbarHorizontal.java - Navbar start.");
         mb.append("<!-- Start Navigation -->");
 
         //Call the rows
@@ -21,7 +21,7 @@ public class NestedNavDisplayHorizontal implements NestedNavDisplay{
 
         //End
         mb.append("<!-- End Navigation -->");
-        reger.core.Util.debug(5, "NestedNavbarHorizontal.java - Navbar end.");
+        Debug.debug(5, "", "NestedNavbarHorizontal.java - Navbar end.");
 
         return mb.toString();
     }
@@ -29,7 +29,7 @@ public class NestedNavDisplayHorizontal implements NestedNavDisplay{
     private String outputRow(NestedNavItem navItem, NestedNavCollection collection, UserSession userSession, javax.servlet.http.HttpServletRequest request, int currentNestedLevel){
         StringBuffer mb = new StringBuffer();
 
-        reger.core.Util.debug(5, "NestedNavbarHorizontal.java - Row called. parent="+navItem.getNestedNavLinkText());
+        Debug.debug(5, "", "NestedNavbarHorizontal.java - Row called. parent="+navItem.getNestedNavLinkText());
 
         //Get the children of the current parent
         NestedNavItem[] children = collection.getChildrenUserCanView(navItem, userSession.getAccountuser());
@@ -81,7 +81,7 @@ public class NestedNavDisplayHorizontal implements NestedNavDisplay{
     private String outputItemHtml(NestedNavItem navItem, NestedNavCollection collection, int currentNestedLevel, UserSession userSession, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
-        reger.core.Util.debug(5, "NestedNavbarHorizontal.java - Item output called. navItem=" + navItem.getNestedNavLinkText());
+        Debug.debug(5, "", "NestedNavbarHorizontal.java - Item output called. navItem=" + navItem.getNestedNavLinkText());
 
         String isOnText = "off";
         if (NestedNavCollection.isAnyChildActive(navItem, collection, userSession, request) || navItem.isActive(request)){
@@ -102,7 +102,7 @@ public class NestedNavDisplayHorizontal implements NestedNavDisplay{
             mb.append("<!-- End Tab -->");
         }
 
-        reger.core.Util.debug(5, mb.toString());
+        Debug.debug(5, "", mb.toString());
 
         return mb.toString();
     }

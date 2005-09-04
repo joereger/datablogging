@@ -32,7 +32,7 @@ if (!userSession.getAccountuser().userCanDoAcl("ADDEDITENTRIES", userSession.get
         response.sendRedirect("index.log");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
         return;
     }
 }
@@ -51,7 +51,7 @@ if (rstEntry!=null && rstEntry.length>0){
         response.sendRedirect("index.log");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
         return;
     }
 }
@@ -74,7 +74,7 @@ if (pageProps.action.equals("delete")){
         response.sendRedirect("index.log");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
         return;
     }
 

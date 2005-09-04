@@ -1,7 +1,6 @@
 package reger;
 
-import javax.sql.*;
-import java.sql.*;
+import reger.core.Debug;
 
 public class navBars {
 
@@ -10,7 +9,7 @@ public class navBars {
   public static StringBuffer preview(int isvertical, Accountuser accountUser, int accountid, int currentlogid, boolean showhometab, String hometabtext, boolean showlogintab, String currentpagename) {
 
     //Create the StringBuffer that will hold the navbar
-	StringBuffer nb=new StringBuffer();
+    StringBuffer nb=new StringBuffer();
 
     try {
 
@@ -105,7 +104,7 @@ public class navBars {
         nb.append(outclosetr + "</table><!-- end navigation -->");
 
     } catch (Exception e) {
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 
 

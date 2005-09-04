@@ -38,7 +38,7 @@ public class RequestSaver {
                         }
                         qs.append(java.net.URLEncoder.encode(name, "UTF-8")+"="+java.net.URLEncoder.encode(values[j], "UTF-8"));
                     } catch (Exception ex){
-                        reger.core.Util.errorsave(ex);
+                        Debug.errorsave(ex, "");
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package reger.cache;
 
 import reger.Account;
+import reger.core.Debug;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
@@ -13,18 +14,18 @@ public class AccountCache {
 
 
     public static Account get(int accountid){
-        reger.core.Util.debug(4, "AccountCache.get("+accountid+") called.");
+        Debug.debug(4, "", "AccountCache.get("+accountid+") called.");
         if (admin==null){
             admin = new GeneralCacheAdministrator();
         }
 
         if (accountid>0){
             try {
-                reger.core.Util.debug(4, "AccountCache.get("+accountid+") trying to return from cache.");
+                Debug.debug(4, "", "AccountCache.get("+accountid+") trying to return from cache.");
                 return (Account) admin.getFromCache(String.valueOf(accountid));
             } catch (NeedsRefreshException nre) {
                 try {
-                    reger.core.Util.debug(4, "AccountCache.get("+accountid+") refreshing object from database.");
+                    Debug.debug(4, "", "AccountCache.get("+accountid+") refreshing object from database.");
                     Account acct = new Account(accountid);
                     //if (accountid>0 && acct!=null){
                         admin.putInCache(String.valueOf(accountid), acct);
@@ -35,7 +36,7 @@ public class AccountCache {
     //                }
                 } catch (Exception ex) {
                     admin.cancelUpdate(String.valueOf(accountid));
-                    reger.core.Util.errorsave(ex);
+                    Debug.errorsave(ex, "");
                     return new Account(0);
                 }
             }
@@ -51,7 +52,7 @@ public class AccountCache {
         try{
             admin.putInCache(key, acct);
         } catch (Exception ex){
-            reger.core.Util.errorsave(ex);
+            Debug.errorsave(ex, "");
         }
     }
 
@@ -60,7 +61,7 @@ public class AccountCache {
             try{
                 admin.flushAll();
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
     }

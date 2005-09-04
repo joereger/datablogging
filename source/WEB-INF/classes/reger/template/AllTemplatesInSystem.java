@@ -1,10 +1,8 @@
 package reger.template;
 
 import reger.core.db.Db;
-import reger.Log;
-import reger.PrivateLabel;
 import reger.AddToArray;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 
 import java.util.Hashtable;
@@ -40,7 +38,7 @@ public class AllTemplatesInSystem {
      * Empties and then refreshes all templates in the system.
      */
     public static void refresh(){
-        reger.core.Util.debug(5, "AllTemplatesInSystem.refresh().");
+        Debug.debug(5, "", "AllTemplatesInSystem.refresh().");
         allTemplates=null;
         allTemplates=new Hashtable();
 
@@ -69,7 +67,7 @@ public class AllTemplatesInSystem {
     }
 
     public static void refresh(int templateid){
-        reger.core.Util.debug(5, "AllTemplatesInSystem.refresh(templateid="+templateid+").");
+        Debug.debug(5, "", "AllTemplatesInSystem.refresh(templateid="+templateid+").");
         //If it's null, refresh.  Generally won't happen.
         if (allTemplates==null){
             refresh();

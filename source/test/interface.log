@@ -28,7 +28,7 @@ pageProps.pathToAppRoot="";
 
 
 String[] implementingClasses = reger.FindInterfaceImplementations.find("reger.mega", "reger.mega.ChartField");
-reger.core.Util.logStringArrayToDb("Implementations of reger.mega.ChartField:", implementingClasses);
+Debug.logStringArrayToDb("Implementations of reger.mega.ChartField:", implementingClasses);
 
 
 mb.append("<br><br><br><br><br>");

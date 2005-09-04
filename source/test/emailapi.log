@@ -7,8 +7,10 @@
                  java.security.NoSuchAlgorithmException,
                  javax.crypto.*,
                  java.io.*,
-                 java.util.*,
-                 reger.MegaLogType"%><%
+                 java.util.*"%>
+
+
+<%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
@@ -17,32 +19,38 @@ pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
 pageProps.pathToAppRoot="";
 /*----------------------------------------------------*/
-%><%@ include file="../globalheader.jsp" %><%
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
 /*----------------------------------------------------*/
 /*                  Main Body                         */
             StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-
-
-try {
-
-    response.setContentType("text/xml");
-    out.print(reger.EntryXmlRenderer.get(new reger.Entry(3354)));
-
-
-} catch (Throwable e) {
-    Debug.errorsave(e, "");
+if (request.getParameter("emailbody")!=null && !request.getParameter("emailbody").equals("")){
+    reger.api.EmailApi emailApi = new reger.api.EmailApi(request.getParameter("emailbody"));
 }
 
 
+mb.append("<form action=emailapi.log method=post>");
+mb.append("<textarea name=emailbody style=\"width: 100%;\" rows=15 cols=75></textarea>");
+mb.append("<br>");
+mb.append("<input type=submit>");
+mb.append("</form>");
+
 mb.append("<br><br><br><br><br>");
 
-%><%
+%>
+
+<%
 /*----------------------------------------------------*/
 /*                  Side Column                       */
             StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
 
-%><%//@ include file="../globalfooter.jsp" %>
+%>
+
+<%@ include file="../globalfooter.jsp" %>
 

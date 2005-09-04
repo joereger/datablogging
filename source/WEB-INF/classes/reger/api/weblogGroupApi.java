@@ -2,12 +2,10 @@ package reger.api;
 
 import reger.core.db.Db;
 import reger.PrivateLabel;
-import reger.core.db.Db;
+import reger.core.Debug;
 
 import java.util.Vector;
 import java.util.Hashtable;
-import java.util.Calendar;
-import java.util.Enumeration;
 
 public class weblogGroupApi {
 
@@ -59,7 +57,7 @@ public class weblogGroupApi {
         //-----------------------------------
         //-----------------------------------
         if (rstGroups!=null && rstGroups.length>0){
-        	for(int i=0; i<rstGroups.length; i++){
+            for(int i=0; i<rstGroups.length; i++){
                 boolean viewingentriesrequiresgroupkey = false;
                 if (rstGroups[i][3].equals("1")){
                     viewingentriesrequiresgroupkey = true;
@@ -78,8 +76,8 @@ public class weblogGroupApi {
                 uGroup.put(String.valueOf("addingEntriesRequiresGroupKey"), new Boolean(addingentriesrequiresgroupkey));
                 uGroup.put(String.valueOf("feedUrlOfGroup"), ""+reger.Vars.getHttpUrlPrefix()+pl.getPlBaseUrl()+"/groups/group"+rstGroups[i][0]+".xml");
                 uGroup.put(String.valueOf("webUrlOfGroup"), ""+reger.Vars.getHttpUrlPrefix()+pl.getPlBaseUrl()+"/groups/group"+rstGroups[i][0]+".log");
-        	    return uGroup;
-        	}
+                return uGroup;
+            }
         }
         return returnError("Group not found.");
     }
@@ -101,10 +99,10 @@ public class weblogGroupApi {
         //-----------------------------------
         //-----------------------------------
         if (rstGroups!=null && rstGroups.length>0){
-        	for(int i=0; i<rstGroups.length; i++){
-        	    //reger.core.Util.logtodb("Adding group:" + rstGroups[i][1]);
+            for(int i=0; i<rstGroups.length; i++){
+                //reger.core.Util.logtodb("Adding group:" + rstGroups[i][1]);
                 groupArray.add(i, getGroupDetails(Integer.parseInt(rstGroups[i][0])));
-        	}
+            }
         }
 
         return groupArray;
@@ -124,7 +122,7 @@ public class weblogGroupApi {
             //-----------------------------------
             //-----------------------------------
             if (rstExistingGroup!=null && rstExistingGroup.length>0){
-            	return returnError("A group with that name already exists.");
+                return returnError("A group with that name already exists.");
             } else {
                 String tmpViewBoolean = "0";
                 if (viewingEntriesRequiresGroupKey){
@@ -272,7 +270,7 @@ public class weblogGroupApi {
         //-----------------------------------
         //-----------------------------------
         if (rstGroup!=null && rstGroup.length>0){
-        	return true;
+            return true;
         }
         return false;
     }
@@ -284,7 +282,7 @@ public class weblogGroupApi {
         //-----------------------------------
         //-----------------------------------
         if (rstGroup!=null && rstGroup.length>0){
-        	return true;
+            return true;
         }
         return false;
     }
@@ -300,7 +298,7 @@ public class weblogGroupApi {
      */
     public boolean removeEntryFromGroup(String controlKey, String groupAdminKey, String entryUrl, int groupid){
 
-        reger.core.Util.debug(5, "weblogGroupApi.removeEntryFromGroup()<br>entryurl=" + entryUrl + "<br>controlkey=" + controlKey + "<br>groupadminkey=" + groupAdminKey + "<br>groupid=" + groupid);
+        Debug.debug(5, "", "weblogGroupApi.removeEntryFromGroup()<br>entryurl=" + entryUrl + "<br>controlkey=" + controlKey + "<br>groupadminkey=" + groupAdminKey + "<br>groupid=" + groupid);
 
         boolean groupAdminKeyIsCorrect = false;
         //-----------------------------------
@@ -334,14 +332,14 @@ public class weblogGroupApi {
             //-----------------------------------
             //-----------------------------------
             if (count>0){
-                reger.core.Util.debug(5, "returning true, deleted.");
+                Debug.debug(5, "", "returning true, deleted.");
                 return true;
             } else {
-                reger.core.Util.debug(5, "returning false, sql called but none deleted.");
+                Debug.debug(5, "", "returning false, sql called but none deleted.");
                 return false;
             }
         }
-        reger.core.Util.debug(5, "returning false, default return... no action.");
+        Debug.debug(5, "", "returning false, default return... no action.");
         return false;
     }
 

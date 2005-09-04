@@ -15,7 +15,9 @@
                  org.jdom.output.XMLOutputter,
                  org.jdom.output.Format,
                  reger.Location,
-                 java.awt.*"%><%
+                 java.awt.*"%>
+<%@ page import="reger.core.Debug"%>
+<%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
@@ -51,7 +53,7 @@ try{
                 elTit.addContent("Test Page");
                 pageTag.addContent(elTit);
             } catch (org.jdom.IllegalDataException ex){
-                reger.core.Util.debug(5, ex);
+                Debug.debug(5, "", ex);
             }
 
             try{
@@ -60,7 +62,7 @@ try{
                 query.addContent("Why?");
                 pageTag.addContent(query);
             } catch (org.jdom.IllegalDataException ex){
-                reger.core.Util.debug(5, ex);
+                Debug.debug(5, "", ex);
             }
 
             try{
@@ -68,7 +70,7 @@ try{
                 Element req = new Element("request");
                 pageTag.addContent(req);
             } catch (org.jdom.IllegalDataException ex){
-                reger.core.Util.debug(5, ex);
+                Debug.debug(5, "", ex);
             }
 
 
@@ -98,7 +100,7 @@ try{
                         Location[] locations = Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());
                         for (int i = 0; i < locations.length; i++) {
                             Location loc = locations[i];
-                            reger.core.Util.debug(5, "googlemapxml.java - location=" + loc.getLocationname() + "<br>lat=" + loc.getLatitude() + "<br>lon=" + loc.getLongitude());
+                            Debug.debug(5, "", "googlemapxml.java - location=" + loc.getLocationname() + "<br>lat=" + loc.getLatitude() + "<br>lon=" + loc.getLongitude());
                             if (locationid==0 || locationid==loc.getLocationid()){
                                 if (loc.getLatitude()>0 || loc.getLongitude()>0){
 
@@ -176,7 +178,7 @@ try{
                         center.setAttribute("lng", String.valueOf(centerLon));
                         pageTag.addContent(center);
                     } catch (org.jdom.IllegalDataException ex){
-                        reger.core.Util.debug(5, ex);
+                        Debug.debug(5, "", ex);
                     }
 
                     try{
@@ -188,14 +190,14 @@ try{
                         span.setAttribute("lng", String.valueOf(spanLon));
                         pageTag.addContent(span);
                    } catch (org.jdom.IllegalDataException ex){
-                        reger.core.Util.debug(5, ex);
+                        Debug.debug(5, "", ex);
                    }
 
 
 
 
             } catch (org.jdom.IllegalDataException ex){
-                reger.core.Util.debug(5, ex);
+                Debug.debug(5, "", ex);
             }
 
 
@@ -209,7 +211,7 @@ try{
     out.print(outp.outputString(doc));
 
 } catch (Exception e){
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
 }
 
 

@@ -1,4 +1,5 @@
 <%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.core.Debug"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -48,7 +49,7 @@ if (pageProps.action.equals("login")){
             errortext = "Sorry.  Login Failed.";
         }
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 }
 

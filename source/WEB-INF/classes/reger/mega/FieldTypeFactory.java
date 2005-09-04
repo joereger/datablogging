@@ -1,5 +1,7 @@
 package reger.mega;
 
+import reger.core.Debug;
+
 
 public class FieldTypeFactory {
     /**
@@ -22,7 +24,7 @@ public class FieldTypeFactory {
         } else if (fieldtype==FieldType.FIELDTYPEVERTICALRADIOS){
             return new FieldTypeVerticalradios();
         } else {
-            reger.core.Util.logtodb("No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming fieldtype=" + fieldtype);
+            Debug.logtodb("No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming fieldtype=" + fieldtype, "");
             return null;
         }
     }
@@ -43,7 +45,7 @@ public class FieldTypeFactory {
         } else if (field.getFieldtype()==FieldType.FIELDTYPEVERTICALRADIOS){
             return new FieldTypeVerticalradios((FieldTypeVerticalradios)field);
         } else {
-            reger.core.Util.logtodb("No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming field.getFieldname()=" + field.getFieldname());
+            Debug.logtodb("No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming field.getFieldname()=" + field.getFieldname(), "");
             return null;
         }
     }

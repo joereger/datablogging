@@ -120,7 +120,7 @@ if (pageProps.action.equals("fix")){
             response.sendRedirect("tools-linkrot.log?msg=fixed");
             return;
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
     }

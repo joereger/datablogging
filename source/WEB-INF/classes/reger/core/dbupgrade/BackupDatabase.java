@@ -1,6 +1,7 @@
 package reger.core.dbupgrade;
 
 import reger.core.db.Db;
+import reger.core.Debug;
 
 /**
  * This class will create database backups.
@@ -19,7 +20,7 @@ public class BackupDatabase {
             //file.mkdirs();
         //}
 
-        reger.core.Util.logtodb("Database Backup Directory: " + dirname);
+        Debug.logtodb("Database Backup Directory: " + dirname, "");
 
         //-----------------------------------
         //-----------------------------------
@@ -27,7 +28,7 @@ public class BackupDatabase {
         //-----------------------------------
         //-----------------------------------
         if (rstTables!=null && rstTables.length>0){
-        	for(int i=0; i<rstTables.length; i++){
+            for(int i=0; i<rstTables.length; i++){
 
                 //-----------------------------------
                 //-----------------------------------
@@ -35,14 +36,14 @@ public class BackupDatabase {
                 //-----------------------------------
                 //-----------------------------------
                 if (rstBackup!=null && rstBackup.length>0){
-                	for(int j=0; j<rstBackup.length; j++){
-                	    reger.core.Util.logtodb("Table:" + rstBackup[j][0] + "<br>Operation:" + rstBackup[j][1] + "<br>MessageType:" + rstBackup[j][2] + "<br>MessageText:" + rstBackup[j][3]);
-                	}
+                    for(int j=0; j<rstBackup.length; j++){
+                        Debug.logtodb("Table:" + rstBackup[j][0] + "<br>Operation:" + rstBackup[j][1] + "<br>MessageType:" + rstBackup[j][2] + "<br>MessageText:" + rstBackup[j][3], "");
+                    }
                 }
 
 
 
-        	}
+            }
         }
     }
 

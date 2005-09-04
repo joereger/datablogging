@@ -21,6 +21,7 @@ pageProps.isUploadPage = true;
                  reger.core.db.Db,
                  reger.Help" %>
 <%@ page import="java.io.*" %>
+<%@ page import="reger.core.Debug"%>
 
 <%
 /*----------------------------------------------------*/
@@ -38,7 +39,7 @@ pageProps.isUploadPage = true;
 mb.append(reger.core.Util.popupCloseReturnToEntryJavascript());
 
 //debug
-reger.core.Util.debug(5, reger.core.ErrorDissect.ServletUtilsdissect(request));
+Debug.debug(5, "", reger.core.ErrorDissect.ServletUtilsdissect(request));
 
 
 //Parse the upload
@@ -62,9 +63,9 @@ if (ul.requestParams.get("imagetags")!=null){
 if (ul.isMultipart) {
     //Note the false indicating that this is not a profile upload.
     //Note that accountuserid param is 0 because this is not a profile upload.
-    reger.core.Util.debug(5, "entry-addmedia.log - Before ul.save()");
+    Debug.debug(5, "", "entry-addmedia.log - Before ul.save()");
     ul.save(localEventid, imagetags, 0, userSession);
-    reger.core.Util.debug(5, "entry-addmedia.log - After ul.save()");
+    Debug.debug(5, "", "entry-addmedia.log - After ul.save()");
 }
 
 //Redirect if upload was successful

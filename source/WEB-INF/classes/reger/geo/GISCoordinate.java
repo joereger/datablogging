@@ -1,5 +1,7 @@
 package reger.geo;
 
+import reger.core.Debug;
+
 
 /**
  *
@@ -210,15 +212,15 @@ public class GISCoordinate {
         String latDir=Character.toString(s.charAt(s.indexOf('(')+1));
         String lon=s.substring(s.indexOf(",")+1,s.lastIndexOf('('));
         String lonDir=Character.toString(s.charAt(s.lastIndexOf("(")+1));
-	    GISCoordinate g=new GISCoordinate(lat,latDir,lon,lonDir);
+        GISCoordinate g=new GISCoordinate(lat,latDir,lon,lonDir);
         return g;
     }
 
     public static GISCoordinate FromString(String latIn, String lonIn) throws Exception {
-        reger.core.Util.debug(5, "GISCoordinate.java<br>latIn=" + latIn + "<br>lonIn=" + lonIn);
+        Debug.debug(5, "", "GISCoordinate.java<br>latIn=" + latIn + "<br>lonIn=" + lonIn);
         //DD:MM.MM(N) or DD:MM:SS.SS(N)
         if (latIn.indexOf(':')>0 || latIn.indexOf(':')>0){
-            reger.core.Util.debug(5, "GISCoordinate.java DD:MM:SS format<br>latIn=" + latIn + "<br>lonIn=" + lonIn);
+            Debug.debug(5, "", "GISCoordinate.java DD:MM:SS format<br>latIn=" + latIn + "<br>lonIn=" + lonIn);
             String lat = latIn;
             String latDir = "N";
             if (latIn.indexOf('(')>0){
@@ -237,12 +239,12 @@ public class GISCoordinate {
             return g;
         //DD.DD
         } else {
-            reger.core.Util.debug(5, "GISCoordinate.java decimal format<br>latIn=" + latIn + "<br>lonIn=" + lonIn);
+            Debug.debug(5, "", "GISCoordinate.java decimal format<br>latIn=" + latIn + "<br>lonIn=" + lonIn);
             if (reger.core.Util.isnumeric(latIn) && reger.core.Util.isnumeric(lonIn)){
                 GISCoordinate g = new GISCoordinate(Double.parseDouble(latIn), Double.parseDouble(lonIn), false);
                 return g;
             } else {
-                reger.core.Util.debug(5, "GISCoordinate.java inputs not numeric<br>latIn=" + latIn + "<br>lonIn=" + lonIn);
+                Debug.debug(5, "", "GISCoordinate.java inputs not numeric<br>latIn=" + latIn + "<br>lonIn=" + lonIn);
             }
         }
 

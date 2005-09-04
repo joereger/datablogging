@@ -1,12 +1,8 @@
 package reger.core.dbupgrade;
 
 import reger.core.db.Db;
-import reger.core.licensing.License;
-import reger.versioninfo.VersionInfo;
-import reger.versioninfo.Version;
+import reger.core.Debug;
 import reger.licensing.ServerLicense;
-
-import java.util.Calendar;
 
 /**
  * This class is run once at startup to make sure the current app has the
@@ -28,7 +24,7 @@ public class UpgradeCheckAtStartup {
                 //If class isn't found, break
                 break;
             } catch (Throwable e){
-                reger.core.Util.debug(5, e);
+                Debug.debug(5, "", e);
                 break;
             }
             maxVer = maxVer + 1;
@@ -72,27 +68,27 @@ public class UpgradeCheckAtStartup {
                 try{
                     //Do the upgrade
                     System.out.println("Reger.com UpgradeCheckAtStartup.java: Start Db Upgrade from "+currentDatabaseVersion+" to "+(currentDatabaseVersion+1)+".");
-                    reger.core.Util.logtodb("Start upgrade database to version " + (currentDatabaseVersion+1));
+                    Debug.logtodb("Start upgrade database to version " + (currentDatabaseVersion+1), "");
                     UpgradeDatabaseOneVersion upg = (UpgradeDatabaseOneVersion)(Class.forName("reger.dbversion.Version"+currentDatabaseVersion+"ToVersion" + (currentDatabaseVersion+1)).newInstance());
                     upg.doUpgrade();
                     updateDatabase((currentDatabaseVersion+1));
-                    reger.core.Util.logtodb("End upgrade database to version " + (currentDatabaseVersion+1));
+                    Debug.logtodb("End upgrade database to version " + (currentDatabaseVersion+1), "");
                     System.out.println("Reger.com UpgradeCheckAtStartup.java: End Db Upgrade from "+currentDatabaseVersion+" to "+(currentDatabaseVersion+1)+".");
                 } catch (ClassNotFoundException ex){
                     //Class isn't found, report it and exit
-                    reger.core.Util.errorsave(ex);
+                    Debug.errorsave(ex, "");
                     ex.printStackTrace();
                     keepWorking = false;
                     reger.core.dbupgrade.RequiredDatabaseVersion.error = reger.core.dbupgrade.RequiredDatabaseVersion.error + reger.core.ErrorDissect.dissect(ex);
-                    reger.core.Util.logtodb("Error: Upgrade database to version " + (currentDatabaseVersion+1) + ".  Class not found.");
+                    Debug.logtodb("Error: Upgrade database to version " + (currentDatabaseVersion+1) + ".  Class not found.", "");
                 } catch (Exception e){
                     //Some other sort of error
                     System.out.println("Reger.com UpgradeCheckAtStartup.java: Error upgrading Db:" + e.getMessage());
                     e.printStackTrace();
-                    reger.core.Util.errorsave(e);
+                    Debug.errorsave(e, "");
                     keepWorking = false;
                     reger.core.dbupgrade.RequiredDatabaseVersion.error = reger.core.dbupgrade.RequiredDatabaseVersion.error + reger.core.ErrorDissect.dissect(e);
-                    reger.core.Util.logtodb("Error: Upgrade database to version " + (currentDatabaseVersion+1) + " had issues recorded.");
+                    Debug.logtodb("Error: Upgrade database to version " + (currentDatabaseVersion+1) + " had issues recorded.", "");
                 }
 
             } else {
@@ -104,7 +100,7 @@ public class UpgradeCheckAtStartup {
         if (currentDatabaseVersion==reger.core.dbupgrade.RequiredDatabaseVersion.version){
             //Successful upgrade through all versions
             reger.core.dbupgrade.RequiredDatabaseVersion.havecorrectversion = true;
-            reger.core.Util.logtodb("The correct database version is installed.  Version: " + currentDatabaseVersion);
+            Debug.logtodb("The correct database version is installed.  Version: " + currentDatabaseVersion, "");
         }
 
     }

@@ -2,8 +2,6 @@ package reger.core;
 
 import edu.vt.middleware.password.*;
 
-import java.io.File;
-
 import reger.PrivateLabel;
 
 /**
@@ -26,7 +24,7 @@ public class PasswordVerifier {
     }
 
     public String validatePassword(String password, String verifypassword){
-        reger.core.Util.debug(5, "PasswordVerifier.java: Verifying passwords.  <br>password="+password+"<br>verifypassword="+verifypassword);
+        Debug.debug(5, "", "PasswordVerifier.java: Verifying passwords.  <br>password="+password+"<br>verifypassword="+verifypassword);
 
         if (!password.equals(verifypassword)){
             return "Password and Verify Password must match.";

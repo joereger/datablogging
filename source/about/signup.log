@@ -22,7 +22,7 @@ if (!userSession.getPl().getIssignupenabled()){
         response.sendRedirect("http://www.reger.com/about/signup.log");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 }
 

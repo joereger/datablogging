@@ -14,7 +14,9 @@
                  reger.mega.FieldType,
                  org.jdom.output.XMLOutputter,
                  org.jdom.output.Format,
-                 reger.Location"%><%
+                 reger.Location"%>
+<%@ page import="reger.core.Debug"%>
+<%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
@@ -45,7 +47,7 @@ pageProps.pathToAppRoot="";
                     elTit.addContent("Map");
                     pageTag.addContent(elTit);
                 } catch (org.jdom.IllegalDataException ex){
-                    reger.core.Util.debug(5, ex);
+                    Debug.debug(5, "", ex);
                 }
 
                 try{
@@ -54,7 +56,7 @@ pageProps.pathToAppRoot="";
                     query.addContent("Why?");
                     pageTag.addContent(query);
                 } catch (org.jdom.IllegalDataException ex){
-                    reger.core.Util.debug(5, ex);
+                    Debug.debug(5, "", ex);
                 }
 
                 try{
@@ -62,7 +64,7 @@ pageProps.pathToAppRoot="";
                     Element req = new Element("request");
                     pageTag.addContent(req);
                 } catch (org.jdom.IllegalDataException ex){
-                    reger.core.Util.debug(5, ex);
+                    Debug.debug(5, "", ex);
                 }
 
 
@@ -92,7 +94,7 @@ pageProps.pathToAppRoot="";
                             Location[] locations = Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());
                             for (int i = 0; i < locations.length; i++) {
                                 Location loc = locations[i];
-                                reger.core.Util.debug(5, "googlemapxml.java - location=" + loc.getLocationname() + "<br>lat=" + loc.getLatitude() + "<br>lon=" + loc.getLongitude());
+                                Debug.debug(5, "", "googlemapxml.java - location=" + loc.getLocationname() + "<br>lat=" + loc.getLatitude() + "<br>lon=" + loc.getLongitude());
                                 if (locationid==0 || locationid==loc.getLocationid()){
                                     if (loc.getLatitude()>0 || loc.getLongitude()>0){
 
@@ -109,9 +111,9 @@ pageProps.pathToAppRoot="";
                                         if (loc.getLongitude()<minLon || minLon==0){
                                             minLon = loc.getLongitude();
                                         }
-                                        reger.core.Util.debug(5, "googlemapxml.log<br>loc.getLocationname()=" + loc.getLocationname());
-                                        reger.core.Util.debug(5, "googlemapxml.log<br>loc.getLatitude()=" + loc.getLatitude() + "<br>loc.getLongitude()=" + loc.getLongitude());
-                                        reger.core.Util.debug(5, "googlemapxml.log<br>maxLat=" + maxLat + "<br>minLat=" + minLat + "<br>maxLon=" + maxLon + "<br>minLon=" + minLon);
+                                        Debug.debug(5, "", "googlemapxml.log<br>loc.getLocationname()=" + loc.getLocationname());
+                                        Debug.debug(5, "", "googlemapxml.log<br>loc.getLatitude()=" + loc.getLatitude() + "<br>loc.getLongitude()=" + loc.getLongitude());
+                                        Debug.debug(5, "", "googlemapxml.log<br>maxLat=" + maxLat + "<br>minLat=" + minLat + "<br>maxLon=" + maxLon + "<br>minLon=" + minLon);
 
 
                                         //Location
@@ -185,13 +187,13 @@ pageProps.pathToAppRoot="";
                             //Center
                             double centerLat = (maxLat + minLat)/2;
                             double centerLon = (maxLon + minLon)/2;
-                            reger.core.Util.debug(5, "googlemapxml.log<br>centerLat=" + centerLat + "<br>centerLon=" + centerLon);
+                            Debug.debug(5, "", "googlemapxml.log<br>centerLat=" + centerLat + "<br>centerLon=" + centerLon);
                             Element center = new Element("center");
                             center.setAttribute("lat", String.valueOf(centerLat));
                             center.setAttribute("lng", String.valueOf(centerLon));
                             pageTag.addContent(center);
                         } catch (org.jdom.IllegalDataException ex){
-                            reger.core.Util.debug(5, ex);
+                            Debug.debug(5, "", ex);
                         }
 
                         try{
@@ -202,20 +204,20 @@ pageProps.pathToAppRoot="";
                                 spanLat = 30;
                                 spanLon = 30;
                             }
-                            reger.core.Util.debug(5, "googlemapxml.log<br>spanLat=" + spanLat + "<br>spanLon=" + spanLon);
+                            Debug.debug(5, "", "googlemapxml.log<br>spanLat=" + spanLat + "<br>spanLon=" + spanLon);
                             Element span = new Element("span");
                             span.setAttribute("lat", String.valueOf(spanLat));
                             span.setAttribute("lng", String.valueOf(spanLon));
                             pageTag.addContent(span);
                        } catch (org.jdom.IllegalDataException ex){
-                            reger.core.Util.debug(5, ex);
+                            Debug.debug(5, "", ex);
                        }
 
 
 
 
                 } catch (org.jdom.IllegalDataException ex){
-                    reger.core.Util.debug(5, ex);
+                    Debug.debug(5, "", ex);
                 }
 
 
@@ -229,7 +231,7 @@ pageProps.pathToAppRoot="";
         out.print(outp.outputString(doc));
 
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 
 

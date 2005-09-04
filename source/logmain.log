@@ -35,11 +35,11 @@ if(log!=null){
     String tmp = "";
     if (template!=null){
         tmp = template.getTemplate();
-        reger.core.Util.debug(5, "logmain.log - found valid template:<br>" + tmp);
+        Debug.debug(5, "", "logmain.log - found valid template:<br>" + tmp);
     }  else {
         Template tmpTemplate = AllTemplatesInSystem.getTemplateByTemplateid(userSession.getPl().getHptemplateid(), Template.TEMPLATETYPEHOMEPAGE);
         tmp = tmpTemplate.getTemplate();
-        reger.core.Util.debug(5, "logmain.log - using pl default template:<br>" + tmp);
+        Debug.debug(5, "", "logmain.log - using pl default template:<br>" + tmp);
     }
     //Output the page layout
     mb.append(HpTemplateProcessor.getHtml(tmp, userSession, request, pageProps));

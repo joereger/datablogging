@@ -3,10 +3,7 @@ package reger;
 import reger.nestednav.NestedNavItem;
 import reger.nestednav.NestedNavCollection;
 import reger.core.db.Db;
-import reger.core.TimeUtils;
-import reger.core.Util;
-import reger.core.DateDiff;
-import reger.core.ValidationException;
+import reger.core.*;
 import reger.core.licensing.License;
 import reger.core.licensing.RegerLicensingApiClient;
 import reger.cache.LogCache;
@@ -289,11 +286,11 @@ public class Account {
         //Add all logs
         for (int i = 0; i < alllogsforaccountid.length; i++) {
             Log log = LogCache.get(alllogsforaccountid[i]);
-            reger.core.Util.debug(5, "Account.java - log added:" + log.getName());
+            Debug.debug(5, "", "Account.java - log added:" + log.getName());
             allNestedNavItems = AddToArray.addToNestedNavItemArray(allNestedNavItems, (NestedNavItem)log);
 
         }
-        reger.core.Util.debug(5, "Account.java - allNestedNavItems.length:" + allNestedNavItems.length);
+        Debug.debug(5, "", "Account.java - allNestedNavItems.length:" + allNestedNavItems.length);
 
 
         //contentPages added to allNestedNavItems
@@ -338,7 +335,7 @@ public class Account {
         } catch (ValidationException v) {
             throw v;
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 
@@ -417,7 +414,7 @@ public class Account {
    * Updates total and individual space usage
    */
   public void updateSpaceused(){
-    reger.core.Util.debug(3, "Account.java- updateSpaceUsed() called.");
+    Debug.debug(3, "", "Account.java- updateSpaceUsed() called.");
     updateImagespaceused();
     updateTextspaceused();
     this.spaceused = this.imagespaceused + this.textspaceused;
@@ -627,7 +624,7 @@ public class Account {
                         err.append("Accountid=" + rstAccount[i][0] + "<br>");
                     }
                     err.append("This is a problem because it means that for the URL above multiple sites are found, but only one can be returned.  This means that at least one site is obscured, unavailable.  To correct, the accounturl of the accounts above needs to be made such that it does not conflict.  In theory the software has safeguards against this so manual database editing may have happened.  Or a bug in the software.");
-                    reger.core.Util.logtodb(err.toString());
+                    Debug.logtodb(err.toString(), "");
                 }
                 //return reger.cache.AccountCache.get(Integer.parseInt(rstAccount[0][0]));
                 //return new reger.Account(Integer.parseInt(rstAccount[0][0]));
@@ -1090,49 +1087,49 @@ public class Account {
 
     public void calculateIsPro(){
         //@todo As is, this will be run on every page... should I populate an ispro var once on Account object creation?
-        reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+". Function has been called.");
+        Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+". Function has been called.");
         if (accountLicense!=null){
             if (accountLicense.getProperty(License.PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS).equals("1")){
-                reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" Individual users pay to upgrade.");
+                Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" Individual users pay to upgrade.");
                 if (accountLicense.getProperty(License.PROPSTRINGISRECURRINGBILLING).equals("1")){
-                    reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" PROPSTRINGISRECURRINGBILLING is blank.");
+                    Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" PROPSTRINGISRECURRINGBILLING is blank.");
                     if (reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid)){
-                        reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning true.  Individual users do pay to upgrade, isrecurringbilling=true and isBillingok came back true.");
+                        Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning true.  Individual users do pay to upgrade, isrecurringbilling=true and isBillingok came back true.");
                         isPro=true;
                         return;
                     }
-                    reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid) came back false.");
+                    Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid) came back false.");
                 } else {
-                    reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" PROPSTRINGISRECURRINGBILLING is not 1.");
+                    Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" PROPSTRINGISRECURRINGBILLING is not 1.");
                     if (!accountLicense.getProperty(License.PROPSTRINGEXPDATEGMT).equals("")){
                         try{
                             Calendar expDate = reger.core.TimeUtils.dbstringtocalendar(accountLicense.getProperty(License.PROPSTRINGEXPDATEGMT));
                             if (expDate.after(reger.core.TimeUtils.nowInGmtCalendar())){
                                 if (reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid)){
-                                    reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning true.  Expiration date is after today.  Individual users do pay to upgrade and isBillingok came back true.");
+                                    Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning true.  Expiration date is after today.  Individual users do pay to upgrade and isBillingok came back true.");
                                     isPro=true;
                                     return;
                                 }
                             }
                         } catch (Exception e){
-                            reger.core.Util.debug(5, e);
-                            reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning false.  There was an exception: " + e.getMessage());
+                            Debug.debug(5, "", e);
+                            Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning false.  There was an exception: " + e.getMessage());
                             isPro=false;
                             return;
                         }
                     }
                 }
             } else {
-                reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning true.  Individual users to not pay to upgrade.");
+                Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning true.  Individual users to not pay to upgrade.");
                 isPro=true;
                 return;
             }
         } else {
-            reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning false because the license is null.");
+            Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning false because the license is null.");
             isPro=false;
             return;
         }
-        reger.core.Util.debug(5, "Account.isPro() - accountid = "+accountid+" returning false because no true result was found... false is the default.");
+        Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning false because no true result was found... false is the default.");
         isPro=false;
         return;
     }
@@ -1172,18 +1169,18 @@ public class Account {
     }
 
     public void doBilling(){
-        reger.core.Util.debug(3, "Account.doBilling() called on accountid=" + accountid);
+        Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid);
         //Only call if accounts are required to upgrade
         if (accountLicense!=null){
             if (((String)accountLicense.getProperty(License.PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS)).equals("1")){
                 //There must be a licenseid to call the licensing server
                 if (reger.core.Util.isinteger(accountLicense.getPropertyWithoutInheritingFromParent(License.PROPSTRINGLICENSEID)) && Integer.parseInt(accountLicense.getPropertyWithoutInheritingFromParent(License.PROPSTRINGLICENSEID))>0){
                     //Call Licensing Server
-                    reger.core.Util.debug(3, "Account.doBilling() called on accountid=" + accountid + "<br>licenseid="+accountLicense.getPropertyWithoutInheritingFromParent(License.PROPSTRINGLICENSEID)+"<br>Calling licensing server.");
+                    Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>licenseid="+accountLicense.getPropertyWithoutInheritingFromParent(License.PROPSTRINGLICENSEID)+"<br>Calling licensing server.");
                     Hashtable result = RegerLicensingApiClient.isLicenseBillingOk(accountLicense.getEncryptedLicense());
                     //Save the result
                     if (result.get("successful")!=null && result.get("successful").equals("true")){
-                        reger.core.Util.debug(3, "Account.doBilling() called on accountid=" + accountid + "<br>Successful call.");
+                        Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>Successful call.");
                         //Save to DB
                         setBillingIsOkInDb();
                     } else {
@@ -1191,20 +1188,20 @@ public class Account {
                         if (result.get("errormessage")!=null){
                             billingerror = (String)result.get("errormessage");
                         }
-                        reger.core.Util.debug(3, "Account.doBilling() called on accountid=" + accountid + "<br>Failed call.<br>billingerror=" + billingerror);
+                        Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>Failed call.<br>billingerror=" + billingerror);
                         //Save to Db
                         setBillingIsNotOkInDb(billingerror);
                     }
                 } else {
-                    reger.core.Util.debug(3, "Account.doBilling() called on accountid=" + accountid + "<br>No licenseid so no call to billing server.");
+                    Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>No licenseid so no call to billing server.");
                     setBillingIsOkInDb();
                 }
             } else {
-                reger.core.Util.debug(3, "Account.doBilling() called on accountid=" + accountid + "<br>PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS is: " + accountLicense.getProperty(License.PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS));
+                Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS is: " + accountLicense.getProperty(License.PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS));
                 setBillingIsOkInDb();
             }
         } else {
-            reger.core.Util.logtodb("NULL accountLicense found on accountid=" + accountid);
+            Debug.logtodb("NULL accountLicense found on accountid=" + accountid, "");
         }
 
         //Update the last checked date

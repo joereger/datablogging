@@ -34,7 +34,7 @@ int megafieldid=-1;
 if (request.getParameter("megafieldid")!=null && reger.core.Util.isinteger(request.getParameter("megafieldid"))) {
     megafieldid=Integer.parseInt(request.getParameter("megafieldid"));
 } else {
-    reger.core.Util.logtodb("entry-fieldoptions.log was accessed without an megafieldid.  it's mass hysteria.");
+    Debug.logtodb("entry-fieldoptions.log was accessed without an megafieldid.  it's mass hysteria.", "");
     response.sendRedirect("index.log");
     return;
 }
@@ -46,7 +46,7 @@ if (request.getParameter("newoptiontext")!=null && !request.getParameter("newopt
     //-----------------------------------
     //-----------------------------------
 
-    reger.core.Util.logtodb("INSERT INTO megaoption(logid, megafieldid, optiontext, isdefault, isactive) VALUES('"+ pageProps.logProps.logid +"', '"+ megafieldid +"', '"+ reger.core.Util.cleanForSQL(request.getParameter("newoptiontext")) +"', '0', '1')");
+    Debug.logtodb("INSERT INTO megaoption(logid, megafieldid, optiontext, isdefault, isactive) VALUES('"+ pageProps.logProps.logid +"', '"+ megafieldid +"', '"+ reger.core.Util.cleanForSQL(request.getParameter("newoptiontext")) +"', '0', '1')", "");
 }
 
 if (pageProps.action.equals("editoptions")) {

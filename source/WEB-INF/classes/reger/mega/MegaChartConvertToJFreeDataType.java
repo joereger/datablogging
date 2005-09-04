@@ -8,6 +8,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.Millisecond;
+import reger.core.Debug;
 
 /**
  * Converts data for a megachart into a jFree type
@@ -34,7 +35,7 @@ public class MegaChartConvertToJFreeDataType {
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
                             //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
-                            reger.core.Util.errorsave(e, "graph.log - Error Adding Data to jFreeChart Data Set.");
+                            Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }
                 }
@@ -65,7 +66,7 @@ public class MegaChartConvertToJFreeDataType {
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
                             //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
-                            reger.core.Util.errorsave(e, "graph.log - Error Adding Data to jFreeChart Data Set.");
+                            Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }
                 }
@@ -94,7 +95,7 @@ public class MegaChartConvertToJFreeDataType {
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
                             //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
-                            reger.core.Util.errorsave(e, "graph.log - Error Adding Data to jFreeChart Data Set.");
+                            Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }
                 }
@@ -126,14 +127,14 @@ public class MegaChartConvertToJFreeDataType {
                                 //Which is a lot of overhead in Java's slow date classes.  Instead,
                                 //I'm relying on the Millisecond's built-in check to see if the date is
                                 //between 1900 and 9999.  Not as elegant as I'd like, but it works.
-                                reger.core.Util.debug(5, e);
+                                Debug.debug(5, "", e);
                             }
                         } catch (Exception e) {
                             //Do not rely on this catch to fix bugs... the reason it's here
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
                             //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
-                            reger.core.Util.errorsave(e, "graph.log - Error Adding Data to jFreeChart Data Set.");
+                            Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }
                 }
@@ -165,7 +166,7 @@ public class MegaChartConvertToJFreeDataType {
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
                             //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
-                            reger.core.Util.errorsave(e, "graph.log - Error Adding Data to jFreeChart Data Set.");
+                            Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }
                 }

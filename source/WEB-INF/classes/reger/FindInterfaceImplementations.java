@@ -1,5 +1,7 @@
 package reger;
 
+import reger.core.Debug;
+
 import java.io.File;
 
 import java.io.*;
@@ -34,7 +36,7 @@ public class FindInterfaceImplementations {
                 out = out + find(pcks[i].getName(),tosubclass);
             }
         } catch (ClassNotFoundException ex) {
-            reger.core.Util.errorsave(ex, "Class "+tosubclassname+" not found!");
+            Debug.errorsave(ex, "", "Class "+tosubclassname+" not found!");
         }
         return out;
     }
@@ -49,7 +51,7 @@ public class FindInterfaceImplementations {
             Class tosubclass = Class.forName(tosubclassname);
             out = find(pckname,tosubclass);
         } catch (ClassNotFoundException ex) {
-            reger.core.Util.errorsave(ex, "Class "+tosubclassname+" not found!");
+            Debug.errorsave(ex, "", "Class "+tosubclassname+" not found!");
         }
         return out;
     }
@@ -115,7 +117,7 @@ public class FindInterfaceImplementations {
                         implementingClasses = reger.core.Util.addToStringArray(implementingClasses, pckgname+"."+classname);
                     }
                 } catch (ClassNotFoundException cnfex) {
-                    reger.core.Util.errorsave(cnfex);
+                    Debug.errorsave(cnfex, "");
                 } catch (InstantiationException iex) {
                     // We try to instanciate an interface
                     // or an object that does not have a
@@ -155,7 +157,7 @@ public class FindInterfaceImplementations {
                         implementingClasses = reger.core.Util.addToStringArray(implementingClasses, classname);
                     }
                 } catch (ClassNotFoundException cnfex) {
-                    reger.core.Util.errorsave(cnfex);
+                    Debug.errorsave(cnfex, "");
                 } catch (InstantiationException iex) {
                     // We try to instanciate an interface
                     // or an object that does not have a
@@ -166,7 +168,7 @@ public class FindInterfaceImplementations {
                 }
             }
             } catch (IOException ioex) {
-                reger.core.Util.errorsave(ioex);
+                Debug.errorsave(ioex, "");
             }
         }
         return implementingClasses;

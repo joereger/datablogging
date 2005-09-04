@@ -22,6 +22,7 @@ pageProps.pathToAppRoot="";
 <%@ page import="javax.servlet.http.HttpServletRequest" %>
 <%@ page import="javax.servlet.http.HttpServletResponse" %>
 <%@ page import="org.apache.xmlrpc.*" %>
+<%@ page import="reger.core.Debug"%>
 
 <%
 //Create our output stream to the browser
@@ -55,6 +56,6 @@ outStream.close();
 //Record the size of the output
 //@todo Decode accountid from username and password so that api.log traffic is properly applied
 reger.Bandwidth.addActivity(0, result.length);
-reger.core.Util.debug(5, "api.log<br>Output Length: "+result.length);
+Debug.debug(5, "", "api.log<br>Output Length: "+result.length);
 
 %>

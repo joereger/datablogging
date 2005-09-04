@@ -1,21 +1,11 @@
 package reger.api;
 
 import reger.core.db.Db;
-import reger.core.db.Db;
-import reger.Media.MediaType;
-import reger.Media.MediaTypeFactory;
+import reger.core.Debug;
 
-import java.util.Calendar;
-import java.util.Enumeration;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.syndication.feed.rss.*;
-import com.sun.syndication.feed.synd.*;
-import com.sun.syndication.feed.atom.Feed;
-import com.sun.syndication.feed.atom.Content;
-import com.sun.syndication.feed.atom.Generator;
-import com.sun.syndication.feed.atom.Entry;
 import com.sun.syndication.io.*;
 
 /**
@@ -143,17 +133,17 @@ public class RssRomeGroups {
         try{
             WireFeedOutput feedOut = new WireFeedOutput();
             fd.append(feedOut.outputString(rssChannel));
-            reger.core.Util.debug(5, "Successfully output Rome RSS Feed");
+            Debug.debug(5, "", "Successfully output Rome RSS Feed");
         } catch (FeedException fe) {
-            reger.core.Util.debug(5, "Rome RSS Feed died:" + fe.toString());
+            Debug.debug(5, "", "Rome RSS Feed died:" + fe.toString());
         } catch (Exception e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
 
 
 
         //Debug
-        reger.core.Util.debug(5, "Rss Groups Feed=" + fd.toString());
+        Debug.debug(5, "", "Rss Groups Feed=" + fd.toString());
 
         return fd;
     }
@@ -168,7 +158,7 @@ public class RssRomeGroups {
                   return true;
               }
           }
-          reger.core.Util.debug(5, "Feed type not found=" + type);
+          Debug.debug(5, "", "Feed type not found=" + type);
           return false;
     }
 

@@ -31,11 +31,11 @@ pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(),
 //Make sure this user can admin this log
 if (!userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
     try{
-        reger.core.Util.debug(5, "myhome/entry.log - response.isCommitted()=" + response.isCommitted() + "<br>response.toString():<br>" + response.toString() + "<br>");
+        Debug.debug(5, "", "myhome/entry.log - response.isCommitted()=" + response.isCommitted() + "<br>response.toString():<br>" + response.toString() + "<br>");
         response.sendRedirect(pageProps.pathToAppRoot + "permissiondenied.log");
         return;
     } catch (Exception e){
-        reger.core.Util.debug(5, e);
+        Debug.debug(5, "", e);
         return;
     }
 }

@@ -3,6 +3,7 @@
                  java.awt.*,
                  javax.imageio.ImageIO,
                  java.awt.geom.*"%>
+<%@ page import="reger.core.Debug"%>
 
 <%
 /*----------------------------------------------------*/
@@ -81,7 +82,7 @@ try {
 
     ImageIO.write(bufferedImage, "jpg", outStream);
 } catch (Exception e) {
-    reger.core.Util.errorsave(e);
+    Debug.errorsave(e, "");
 }
 
 

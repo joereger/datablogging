@@ -2,6 +2,7 @@ package reger;
 
 import reger.core.db.Db;
 import reger.core.ValidationException;
+import reger.core.Debug;
 import reger.linkrot.AnchorFinder;
 import reger.cache.LogCache;
 
@@ -504,7 +505,7 @@ public class Entry {
             String [] anchors = AnchorFinder.parseUrlsFromText(title + comments);
             reger.linkrot.Util.updateLinkrotEventidRelationship(anchors, eventid);
         } catch (Exception e){
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
 
@@ -518,7 +519,7 @@ public class Entry {
 
 
 
-        reger.core.Util.debug(5, "Entry edited: eventid=" + eventid);
+        Debug.debug(5, "", "Entry edited: eventid=" + eventid);
 
     }
 
@@ -545,7 +546,7 @@ public class Entry {
                 dateGmt = reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][0]);
             } catch (Exception e){
                 dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
 
             //Convert server time to user time
@@ -560,9 +561,9 @@ public class Entry {
             comments = rstEventdetails[0][3];
             favorite = Integer.parseInt(rstEventdetails[0][4]);
             //Set location
-            reger.core.Util.debug(5, "Entry.java load() setting location for locationid=" + rstEventdetails[0][5]);
+            Debug.debug(5, "", "Entry.java load() setting location for locationid=" + rstEventdetails[0][5]);
             location=new Location(Integer.parseInt(rstEventdetails[0][5]));
-            reger.core.Util.debug(5, "Entry.java load() setting location done setting for locationid=" + rstEventdetails[0][5] + "<br>location.getLongitude()=" + location.getLongitude());
+            Debug.debug(5, "", "Entry.java load() setting location done setting for locationid=" + rstEventdetails[0][5] + "<br>location.getLongitude()=" + location.getLongitude());
             logid = Integer.parseInt(rstEventdetails[0][6]);
             isDraft = Integer.parseInt(rstEventdetails[0][7]);
             isApproved = Integer.parseInt(rstEventdetails[0][8]);
@@ -631,14 +632,14 @@ public class Entry {
         //Go get the fields
         if (fields==null){
             try{
-                reger.core.Util.debug(5, "---------<br>Entry.java - about to call LogCache for logid=" + logid);
+                Debug.debug(5, "", "---------<br>Entry.java - about to call LogCache for logid=" + logid);
                 Log logByLogid = LogCache.get(logid);
                 if (logByLogid!=null){
-                    reger.core.Util.debug(5, "Entry.java - logByLogid.getName()=" + logByLogid.getName() + "<br>--------");
+                    Debug.debug(5, "", "Entry.java - logByLogid.getName()=" + logByLogid.getName() + "<br>--------");
                     fields = AllFieldsInSystem.copyFieldTypeArray(logByLogid.getFields());
                 }
             } catch (Exception e) {
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
 
@@ -646,9 +647,9 @@ public class Entry {
         if (fields!=null) {
             for (int i = 0; i < fields.length; i++) {
                 //Populate the object with values from the eventid
-                reger.core.Util.debug(5, "Entry.java - fields[i].loadDataForEventid() will be called for " + fields[i].getFieldname());
+                Debug.debug(5, "", "Entry.java - fields[i].loadDataForEventid() will be called for " + fields[i].getFieldname());
                 fields[i].loadDataForEventid(eventid, logid);
-                reger.core.Util.debug(5, "Entry.java - fieldname= " + fields[i].getFieldname() + " fields[i].getDataForField()[0].getValue()=" + fields[i].getDataForField()[0].getValue());
+                Debug.debug(5, "", "Entry.java - fieldname= " + fields[i].getFieldname() + " fields[i].getDataForField()[0].getValue()=" + fields[i].getDataForField()[0].getValue());
             }
         }
 
@@ -1140,7 +1141,7 @@ public class Entry {
                     //Delete the thumbnail
                     reger.core.Util.deleteFile(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"thumbnails/"+rstImg[i][0]);
                 } catch (Exception e) {
-                    reger.core.Util.logtodb("Failure to delete the image="+ rstImg[i][0] +" from the filesystem.");
+                    Debug.logtodb("Failure to delete the image="+ rstImg[i][0] +" from the filesystem.", "");
                 }
             }
         }
@@ -1383,17 +1384,17 @@ public class Entry {
     }
 
     public static boolean checkEntryKey(String entryKey, int eventid){
-        reger.core.Util.debug(5, "Checking entryKey. eventid=" + eventid + " entryKey=" + entryKey);
+        Debug.debug(5, "", "Checking entryKey. eventid=" + eventid + " entryKey=" + entryKey);
         //-----------------------------------
         //-----------------------------------
         String[][] rstEntry= Db.RunSQL("SELECT eventid FROM event WHERE eventid='"+eventid+"' AND entrykey='"+reger.core.Util.cleanForSQL(entryKey)+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstEntry!=null && rstEntry.length>0){
-            reger.core.Util.debug(5, "Returning True. eventid=" + eventid + " entryKey=" + entryKey);
+            Debug.debug(5, "", "Returning True. eventid=" + eventid + " entryKey=" + entryKey);
         	return true;
         }
-        reger.core.Util.debug(5, "Returning False. eventid=" + eventid + " entryKey=" + entryKey);
+        Debug.debug(5, "", "Returning False. eventid=" + eventid + " entryKey=" + entryKey);
         return false;
     }
 

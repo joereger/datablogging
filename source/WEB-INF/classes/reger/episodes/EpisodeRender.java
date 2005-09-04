@@ -1,6 +1,6 @@
 package reger.episodes;
 
-import reger.core.db.Db;
+import reger.core.Debug;
 import reger.Account;
 
 /**
@@ -68,7 +68,7 @@ public class EpisodeRender {
         try{
             width = 100/episode.getNumberOfDefaultScalePeriodsInEpisode();
         } catch (java.lang.ArithmeticException e){
-            reger.core.Util.debug(5, e);
+            Debug.debug(5, "", e);
         }
 
 

@@ -1,5 +1,7 @@
 package reger.Media;
 
+import reger.core.Debug;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -21,7 +23,7 @@ public class MsPowerpoint implements MediaType {
         try{
             reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images\\mediatypeicons\\icon-powerpoint.gif", pathToThumbnail);
         } catch (Throwable e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 

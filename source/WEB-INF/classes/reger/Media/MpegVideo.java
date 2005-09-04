@@ -1,5 +1,7 @@
 package reger.Media;
 
+import reger.core.Debug;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -27,7 +29,7 @@ public class MpegVideo implements MediaType {
             reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images\\mediatypeicons\\icon-video.gif", pathToThumbnail);
 
         } catch (Throwable e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
     }
 

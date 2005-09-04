@@ -7,6 +7,7 @@
                  java.util.Enumeration"%>
 
 <%@ page import="java.text.*"%>
+<%@ page import="reger.core.Debug"%>
 
 
 
@@ -100,7 +101,7 @@ if (request.getParameter("msg")!=null) {
 
 //ReturnUrl Link
 if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl").equals("")){
-    reger.core.Util.debug(5, "/myhome/index.log<br>java.net.URLDecoder.decode(returnurl, \"UTF-8\")=" + java.net.URLDecoder.decode(request.getParameter("returnurl"), "UTF-8"));
+    Debug.debug(5, "", "/myhome/index.log<br>java.net.URLDecoder.decode(returnurl, \"UTF-8\")=" + java.net.URLDecoder.decode(request.getParameter("returnurl"), "UTF-8"));
     String theLink = java.net.URLDecoder.decode(request.getParameter("returnurl"), "UTF-8");
     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "You are logged-in.  We noticed that you were trying to go <a href='"+theLink+"'>here</a>. Please note that you still may not be able to access that resource, depending on your credentials.  Give it a shot."));
 }
@@ -622,9 +623,9 @@ if (accts!=null){
 
         reger.Account acct = userSession.getAccount();
         if (accountid.intValue()!=userSession.getAccount().getAccountid()){
-            reger.core.Util.debug(5, "/myhome/index.log - About to call on cache for accountid=" + accountid.intValue());
+            Debug.debug(5, "", "/myhome/index.log - About to call on cache for accountid=" + accountid.intValue());
             acct = reger.cache.AccountCache.get(accountid.intValue());
-            reger.core.Util.debug(5, "/myhome/index.log - Done calling on cache for accountid=" + accountid.intValue());
+            Debug.debug(5, "", "/myhome/index.log - Done calling on cache for accountid=" + accountid.intValue());
         }
 
         //reger.Account acct = new reger.Account(accountid.intValue());

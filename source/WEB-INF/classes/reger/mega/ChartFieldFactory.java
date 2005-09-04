@@ -1,5 +1,7 @@
 package reger.mega;
 
+import reger.core.Debug;
+
 
 public class ChartFieldFactory {
     /**
@@ -40,7 +42,7 @@ public class ChartFieldFactory {
         } else if (fieldtype==FieldType.YAXISCOUNT) {
             return new ChartFieldEntrycount();
         } else {
-            reger.core.Util.logtodb("No handler found: ChartFieldFactory.getHandlerByFieldtype - incoming fieldtype=" + fieldtype);
+            Debug.logtodb("No handler found: ChartFieldFactory.getHandlerByFieldtype - incoming fieldtype=" + fieldtype, "");
             return null;
         }
     }

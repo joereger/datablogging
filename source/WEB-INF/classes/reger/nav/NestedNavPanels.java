@@ -2,6 +2,7 @@ package reger.nav;
 
 import reger.pageFramework.PageProps;
 import reger.UserSession;
+import reger.core.Debug;
 
 /**
  * Nests NavPanels
@@ -13,7 +14,7 @@ public class NestedNavPanels {
 
     public NestedNavPanels(PageProps pageProps, UserSession userSession){
 
-        reger.core.Util.debug(5, "NestedNavPanels Created.  <br>pageProps.navButtonName = " + pageProps.navButtonName);
+        Debug.debug(5, "", "NestedNavPanels Created.  <br>pageProps.navButtonName = " + pageProps.navButtonName);
 
         //Reset the html vars
         topHtml="";
@@ -22,7 +23,7 @@ public class NestedNavPanels {
         //Safety in case pageProps.navButtonName is not set
         if (pageProps.navButtonName==null){
             pageProps.navButtonName = "";
-            reger.core.Util.logtodb("PageProps.navButtonName not set.  PageProps.title=" + pageProps.title);
+            Debug.logtodb("PageProps.navButtonName not set.  PageProps.title=" + pageProps.title, "");
         }
 
         //Get the current NavButton
@@ -33,7 +34,7 @@ public class NestedNavPanels {
 
 
         while (true){
-            reger.core.Util.debug(5, "NestedNavPanels While Loop.  <br>currentNavButton.navButtonName = " + currentNavButton.navButtonName);
+            Debug.debug(5, "", "NestedNavPanels While Loop.  <br>currentNavButton.navButtonName = " + currentNavButton.navButtonName);
             //Add the current button
             navPathToLevelZero = reger.core.Util.addToStringArray(navPathToLevelZero, currentNavButton.navButtonName);
             //Increment the safety counter
@@ -75,7 +76,7 @@ public class NestedNavPanels {
     }
 
     public String getTopHtml(){
-        reger.core.Util.debug(5, "NestedNavPanelt.getTopHtml()<br>" + topHtml);
+        Debug.debug(5, "", "NestedNavPanelt.getTopHtml()<br>" + topHtml);
         return topHtml;
     }
 

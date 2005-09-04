@@ -1,16 +1,9 @@
 package reger;
 
-import reger.template.Template;
-import reger.template.AllTemplatesInSystem;
 import reger.core.db.Db;
-import reger.core.Util;
 import reger.core.ValidationException;
+import reger.core.Debug;
 import reger.core.licensing.License;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Hashtable;
-import java.util.Map;
 
 /**
  * This class represents a private label.
@@ -226,7 +219,7 @@ public class PrivateLabel {
             //Load peers
             loadPeers();
 
-            Util.debug(5, "Found pl.  plid=" + plid);
+            Debug.debug(5, "", "Found pl.  plid=" + plid);
             return true;
         }
         return false;
@@ -240,9 +233,9 @@ public class PrivateLabel {
         //-----------------------------------
         //-----------------------------------
         if (rstPlEv!=null && rstPlEv.length>0){
-        	for(int i=0; i<rstPlEv.length; i++){
-        	    megaLogTypes = reger.core.Util.addToIntArray(megaLogTypes, Integer.parseInt(rstPlEv[i][0]));
-        	}
+            for(int i=0; i<rstPlEv.length; i++){
+                megaLogTypes = reger.core.Util.addToIntArray(megaLogTypes, Integer.parseInt(rstPlEv[i][0]));
+            }
         }
     }
 
@@ -286,7 +279,7 @@ public class PrivateLabel {
      * Each page calls this function.
      */
     public static int findPlid(reger.UrlSplitter urlSplitter){
-        reger.core.Util.debug(4, "PrivateLabel.java - Searching for pl.  urlSplitter.getServername()=" + urlSplitter.getServername());
+        Debug.debug(4, "", "PrivateLabel.java - Searching for pl.  urlSplitter.getServername()=" + urlSplitter.getServername());
         //-----------------------------------
         //-----------------------------------
         String[][] rstPl= Db.RunSQL("SELECT plid FROM pl "+
@@ -297,7 +290,7 @@ public class PrivateLabel {
         //-----------------------------------
         //-----------------------------------
         if (rstPl!=null && rstPl.length>0){
-            reger.core.Util.debug(5, "Found PL.  Plid=" + rstPl[0][0]);
+            Debug.debug(5, "", "Found PL.  Plid=" + rstPl[0][0]);
             //Return a new and populated private label
             return Integer.parseInt(rstPl[0][0]);
         }
@@ -315,10 +308,10 @@ public class PrivateLabel {
                 err.append("Plid=" + rstPl[i][0] + "<br>");
             }
             err.append("This is a problem because it means that for the URL above multiple private labels are found, but only one can be returned.  This means that at least one site is obscured, unavailable.  To correct, the plbasedomain of the private labels above needs to be made such that it does not conflict.  In theory the software has safeguards against this so manual database editing may have happened.  Or a bug in the software.");
-            reger.core.Util.logtodb(err.toString());
+            Debug.logtodb(err.toString(), "");
         }
         //No private label found
-        reger.core.Util.debug(4, "PrivateLabel.java - No plid found. urlSplitter.getServername()="+ urlSplitter.getServername());
+        Debug.debug(4, "", "PrivateLabel.java - No plid found. urlSplitter.getServername()="+ urlSplitter.getServername());
         return -1;
     }
 
@@ -361,10 +354,10 @@ public class PrivateLabel {
         try{
             validateData();
         } catch (ValidationException valError){
-            reger.core.Util.debug(3, "PrivateLabel.java - save() called. Validation fails.");
+            Debug.debug(3, "", "PrivateLabel.java - save() called. Validation fails.");
             throw valError;
         }
-        reger.core.Util.debug(3, "PrivateLabel.java - save() called. Validation passed.");
+        Debug.debug(3, "", "PrivateLabel.java - save() called. Validation passed.");
 
         //-----------------------------------
         //-----------------------------------
@@ -378,7 +371,7 @@ public class PrivateLabel {
             //-----------------------------------
             //-----------------------------------
         } else {
-            reger.core.Util.debug(3, "PrivateLabel.java - save() called. Validation passed. Couldn't update so adding new.");
+            Debug.debug(3, "", "PrivateLabel.java - save() called. Validation passed. Couldn't update so adding new.");
             //-----------------------------------
             //-----------------------------------
             plid = Db.RunSQLInsert("INSERT INTO pl(plname, titlebar, plusertemplate, showadsmarketing, homelink, sectionhome, sectionhelp, sectionsignup, sectiontour, comments, plbasedomain, issignupenabled, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, termsofservice, newaccountsrequireadminapproval, forcelogintoviewsites, isgoogleapion, isweblogscompingon, emailtonotifyofnewaccounts, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, hideregercomlogo, sectionfeatures, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, showbusinesstab, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth) VALUES('"+ reger.core.Util.cleanForSQL(plname)+"','"+ reger.core.Util.cleanForSQL(titlebar)+"','"+ reger.core.Util.cleanForSQL(plusertemplate)+"','"+ showadsmarketing+"','"+ reger.core.Util.cleanForSQL(homelink)+"','"+ reger.core.Util.cleanForSQL(sectionhome)+"','"+ reger.core.Util.cleanForSQL(sectionhelp)+"','"+ reger.core.Util.cleanForSQL(sectionsignup)+"','"+ reger.core.Util.cleanForSQL(sectiontour)+"','"+ reger.core.Util.cleanForSQL(comments)+"','"+ reger.core.Util.cleanForSQL(plbasedomain)+"','"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', '"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', '"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', '"+ defaultmaxspaceinbytes+"', '"+ defaultmaxbandwidth+"', '"+ reger.core.Util.cleanForSQL(termsofservice)+"', '"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', '"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"',  '"+reger.core.Util.booleanAsSQLText(isgoogleapion)+"', '"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', '"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', '"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', '"+minPasswordChars+"', '"+minPasswordUpperCaseChars+"', '"+minPasswordLowerCaseChars+"', '"+minPasswordSpecialChars+"', '"+ minPasswordNumericChars +"', '"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', '"+reger.core.Util.booleanAsSQLText(hideregercomlogo)+"', '"+ reger.core.Util.cleanForSQL(sectionfeatures)+"', '"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', '"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', '"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', '"+publicsitetemplateid+"', '"+entlisttemplateid+"', '"+hptemplateid+"', '"+marketingsitetemplateid+"', '"+marketingsitehptemplateid+"', '"+reger.core.Util.booleanAsSQLText(showbusinesstab)+"', '"+defaulteventtypeid+"', '"+reger.core.Util.cleanForSQL(encryptedlicense)+"', '"+baseaccountprice+"', '"+priceper100mbstorage+"', '"+pricepergbbandwidth+"')");
@@ -473,7 +466,7 @@ public class PrivateLabel {
         //-----------------------------------
         if (rstCreatepathbadflag!=null && rstCreatepathbadflag.length>0){
             if (Integer.parseInt(rstCreatepathbadflag[0][0])>0){
-                reger.core.Util.debug(5, "PrivateLabel.java - validating plbasedomain and plbasedomain exists in the count of pls");
+                Debug.debug(5, "", "PrivateLabel.java - validating plbasedomain and plbasedomain exists in the count of pls");
                 valError.addValidationError("Sorry, that plbasedomain already exists.");
                 throw valError;
             }
@@ -490,7 +483,7 @@ public class PrivateLabel {
         //-----------------------------------
         if (rstAccount!=null && rstAccount.length>0){
             for(int i=0; i<rstAccount.length; i++){
-                reger.core.Util.debug(5, "PrivateLabel.java - validating plbasedomain and plbasedomain exists in the account");
+                Debug.debug(5, "", "PrivateLabel.java - validating plbasedomain and plbasedomain exists in the account");
                 valError.addValidationError("Sorry, that plbasedomain already exists.");
                 throw valError;
             }
@@ -595,7 +588,7 @@ public class PrivateLabel {
         priceper100mbstorage = reger.core.RequestParam.getDouble(request, "priceper100mbstorage", priceper100mbstorage);
         pricepergbbandwidth = reger.core.RequestParam.getDouble(request, "pricepergbbandwidth", priceper100mbstorage);
 
-                        
+
         String contentapproval=reger.core.RequestParam.getString(request, "contentapproval", "unmoderated");;
         if (contentapproval.equals("unmoderated")){
             iscontentflaggingon=false;

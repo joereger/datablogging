@@ -1,6 +1,6 @@
 package reger;
 
-import reger.api.RssRome;
+import reger.core.Debug;
 
 /**
  *
@@ -36,7 +36,7 @@ public class MegaHtmlFormTop {
             mb.append(reger.Vars.LINEBREAKCHARFORHTML);
             mb.append(reger.Vars.LINEBREAKCHARFORHTML);
         } catch (Exception e){
-            reger.core.Util.errorsave(e, "Problem outputting entry as structured blogging xml.");
+            Debug.errorsave(e, "", "Problem outputting entry as structured blogging xml.");
         }
 
 
@@ -118,7 +118,7 @@ public class MegaHtmlFormTop {
                 submitstring="defaultsubmit";
             } else {
                 if (pageProps.entry.eventid>0){
-                    submitstring="editsubmit";        
+                    submitstring="editsubmit";
                 } else {
                     submitstring="addsubmit";
                 }
@@ -133,7 +133,7 @@ public class MegaHtmlFormTop {
 
 
 
-        
+
         if (displayasadmin) {
 
             //Start form
@@ -173,7 +173,7 @@ public class MegaHtmlFormTop {
         } else {
            if (!displayasadmin) {
                 if (userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
-                    mb.append("<a href='myhome/entry.log?eventid="+pageProps.entry.eventid+"&action=edit'><font face=arial size=-1 class=mediumfont>Edit this Entry</font></a>");    
+                    mb.append("<a href='myhome/entry.log?eventid="+pageProps.entry.eventid+"&action=edit'><font face=arial size=-1 class=mediumfont>Edit this Entry</font></a>");
                 }
            }
 

@@ -1,7 +1,6 @@
 package reger.core;
 
 import com.thoughtworks.xstream.XStream;
-import reger.core.Util;
 
 /**
  * Wrapper class for xml serializing services
@@ -15,7 +14,7 @@ public class XmlSerializer {
             XStream xstream = new XStream();
             str = xstream.toXML(obj);
         } catch (Exception e){
-            Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return str;
     }
@@ -25,7 +24,7 @@ public class XmlSerializer {
             XStream xstream = new XStream();
             return xstream.fromXML(str);
         } catch (Exception e){
-            Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
         return null;
     }

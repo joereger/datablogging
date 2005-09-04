@@ -1,11 +1,9 @@
 package reger;
 
-import reger.nestednav.NestedNavItem;
 import reger.core.db.Db;
 import reger.core.Util;
 import reger.core.ValidationException;
-
-import javax.servlet.http.HttpServletRequest;
+import reger.core.Debug;
 
 /**
  * This class models a content page.
@@ -62,7 +60,7 @@ public class Location {
                     } else {
                         this.longitude=0;
                     }
-                    reger.core.Util.debug(5, "Location.load()<br>locationid="+locationid+"<br>latitude=" + latitude + "<br>longitude=" + longitude);
+                    Debug.debug(5, "", "Location.load()<br>locationid="+locationid+"<br>latitude=" + latitude + "<br>longitude=" + longitude);
                     this.city=rstLoc[i][5];
                     this.state=rstLoc[i][6];
                     this.country=rstLoc[i][7];
@@ -135,7 +133,7 @@ public class Location {
 
         String sql = "SELECT DISTINCT location.locationid, locationname, location.accountid, latitude, longitude, city, state, country FROM location, event WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.locationid=location.locationid AND "+accountUser.LogsUserCanViewQueryendNoMegalog(accountLookingForLocationsIn.getAccountid())+" AND event.accountid='"+ accountLookingForLocationsIn.getAccountid() +"' ORDER BY locationname ASC";
 
-        reger.core.Util.debug(5, "Location.java - getLocationsUserCanView()<br>" + sql);
+        Debug.debug(5, "", "Location.java - getLocationsUserCanView()<br>" + sql);
         //-----------------------------------
         //-----------------------------------
         String[][] rstLocation= reger.core.db.Db.RunSQL(sql);
@@ -177,7 +175,7 @@ public class Location {
                 this.longitude = gis.getLonInDecDeg();
             } catch (Exception e){
                 //reger.core.Util.debug(5, "Location.java - GIS conversion<br>request.getParameter(\"latitude\")=" + request.getParameter("latitude") + "<br>request.getParameter(\"longitude\")=" + request.getParameter("longitude") + "<br>error: " + e.getMessage());
-                reger.core.Util.errorsave(e, "Location.java - GIS conversion<br>request.getParameter(\"latitude\")=" + request.getParameter("latitude") + "<br>request.getParameter(\"longitude\")=" + request.getParameter("longitude"));
+                Debug.errorsave(e, "", "Location.java - GIS conversion<br>request.getParameter(\"latitude\")=" + request.getParameter("latitude") + "<br>request.getParameter(\"longitude\")=" + request.getParameter("longitude"));
                 this.latitude = 0;
                 this.longitude = 0;
             }

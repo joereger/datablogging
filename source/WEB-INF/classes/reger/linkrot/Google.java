@@ -3,8 +3,8 @@ package reger.linkrot;
 
 import com.google.soap.search.GoogleSearch;
 import com.google.soap.search.GoogleSearchResult;
-import com.google.soap.search.GoogleSearchFault;
 import com.google.soap.search.GoogleSearchResultElement;
+import reger.core.Debug;
 
 /**
  * Class to call the Google API
@@ -32,7 +32,7 @@ public class Google {
             s.setQueryString(directiveArg);
             r = s.doSearch();
         } catch (Exception e) {
-            reger.core.Util.errorsave(e);
+            Debug.errorsave(e, "");
         }
 
         return r;

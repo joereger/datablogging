@@ -3,7 +3,7 @@ package reger.template;
 import reger.pageFramework.PageProps;
 import reger.UserSession;
 import reger.Entry;
-import reger.pageFramework.PageProps;
+import reger.core.Debug;
 
 /**
  *
@@ -45,17 +45,17 @@ public class SiteTemplateTagEntryTitle implements SiteTemplateTag{
      * @return
      */
     public String getValue(StringBuffer mb, StringBuffer sc, PageProps pageProps, UserSession userSession, javax.servlet.http.HttpServletRequest request) {
-        reger.core.Util.debug(5, "SiteTemplateTagEntryTitle.java -<br>pageProps.entry.eventid="+pageProps.entry.eventid+"<br>request.getParameter(\"eventid\")="+request.getParameter("eventid"));
+        Debug.debug(5, "", "SiteTemplateTagEntryTitle.java -<br>pageProps.entry.eventid="+pageProps.entry.eventid+"<br>request.getParameter(\"eventid\")="+request.getParameter("eventid"));
         if (pageProps.entry.eventid>0){
             if (pageProps.entry.title.equals("")){
-                reger.core.Util.debug(5, "SiteTemplateTagEntryTitle.java - returning page title from pageProps.entry.title.");
+                Debug.debug(5, "", "SiteTemplateTagEntryTitle.java - returning page title from pageProps.entry.title.");
                 return reger.core.Util.cleanForHtml(Entry.entryTitleFromEventid(pageProps.entry.eventid));
             } else {
-                reger.core.Util.debug(5, "SiteTemplateTagEntryTitle.java - returning \""+pageProps.entry.title+"\" from pageProps.entry.title.");
+                Debug.debug(5, "", "SiteTemplateTagEntryTitle.java - returning \""+pageProps.entry.title+"\" from pageProps.entry.title.");
                 return pageProps.entry.title;
             }
         }
-        reger.core.Util.debug(5, "SiteTemplateTagEntryTitle.java - returning blank page title.");
+        Debug.debug(5, "", "SiteTemplateTagEntryTitle.java - returning blank page title.");
         return "";
     }
 

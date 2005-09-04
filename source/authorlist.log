@@ -50,7 +50,7 @@ if (rstAuthors!=null && rstAuthors.length==1){
         response.sendRedirect(pageProps.pathToAppRoot + "author.log");
         return;
     } catch (Exception e){
-        reger.core.Util.errorsave(e);
+        Debug.errorsave(e, "");
     }
 }
 

@@ -1,4 +1,5 @@
 <%@ page import="java.util.Calendar"%>
+<%@ page import="reger.core.Debug"%>
 <%
     //Update cache
     if (request.getMethod().equals("GET")){
@@ -19,6 +20,6 @@ try{
         mb.append("<br><br>");
     }
 } catch (Exception e){
-    reger.core.Util.errorsave(e, "Error in htmlcacheend.jsp.");
+    Debug.errorsave(e, "", "Error in htmlcacheend.jsp.");
 }
 %>

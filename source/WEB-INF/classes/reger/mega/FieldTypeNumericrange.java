@@ -1,11 +1,9 @@
 package reger.mega;
 
-import reger.Entry;
 import reger.AddToArray;
+import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeMap;
 
 import org.jdom.Element;
@@ -329,7 +327,7 @@ public class FieldTypeNumericrange extends Field implements FieldType, ChartFiel
             } catch (reger.core.ValidationException ex){
                 errortext = errortext +  ">> " + this.fieldname + ": " + ex.getErrorsAsSingleString() + "<br>";
             } catch (Exception e){
-                reger.core.Util.errorsave(e);
+                Debug.errorsave(e, "");
             }
         }
 
@@ -553,7 +551,7 @@ public class FieldTypeNumericrange extends Field implements FieldType, ChartFiel
      */
     public boolean fulfillsQuery(FieldQueryElement[] fieldQueryElements, int logidOrEtid) {
 
-        reger.core.Util.debug(5, "FieldTypeNumericrange.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData[0].getValue());
+        Debug.debug(5, "", "FieldTypeNumericrange.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData[0].getValue());
 
 
         //Get the values
