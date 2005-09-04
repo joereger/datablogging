@@ -14,18 +14,18 @@ public class AccountCache {
 
 
     public static Account get(int accountid){
-        Debug.debug(4, "", "AccountCache.get("+accountid+") called.");
+        Debug.debug(5, "", "AccountCache.get("+accountid+") called.");
         if (admin==null){
             admin = new GeneralCacheAdministrator();
         }
 
         if (accountid>0){
             try {
-                Debug.debug(4, "", "AccountCache.get("+accountid+") trying to return from cache.");
+                Debug.debug(5, "", "AccountCache.get("+accountid+") trying to return from cache.");
                 return (Account) admin.getFromCache(String.valueOf(accountid));
             } catch (NeedsRefreshException nre) {
                 try {
-                    Debug.debug(4, "", "AccountCache.get("+accountid+") refreshing object from database.");
+                    Debug.debug(5, "", "AccountCache.get("+accountid+") refreshing object from database.");
                     Account acct = new Account(accountid);
                     //if (accountid>0 && acct!=null){
                         admin.putInCache(String.valueOf(accountid), acct);

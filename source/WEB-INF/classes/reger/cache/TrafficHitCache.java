@@ -29,7 +29,7 @@ public class TrafficHitCache {
                     trafficHits.add(hit);
                 }
             } else {
-                Debug.debug(4, "", "TrafficHitCache.java - NULL TrafficHit handed to TrafficHitCache.addTrafficHit().");
+                Debug.debug(5, "", "TrafficHitCache.java - NULL TrafficHit handed to TrafficHitCache.addTrafficHit().");
             }
         }
     }

@@ -279,7 +279,7 @@ public class PrivateLabel {
      * Each page calls this function.
      */
     public static int findPlid(reger.UrlSplitter urlSplitter){
-        Debug.debug(4, "", "PrivateLabel.java - Searching for pl.  urlSplitter.getServername()=" + urlSplitter.getServername());
+        Debug.debug(5, "", "PrivateLabel.java - Searching for pl.  urlSplitter.getServername()=" + urlSplitter.getServername());
         //-----------------------------------
         //-----------------------------------
         String[][] rstPl= Db.RunSQL("SELECT plid FROM pl "+
@@ -311,7 +311,7 @@ public class PrivateLabel {
             Debug.logtodb(err.toString(), "");
         }
         //No private label found
-        Debug.debug(4, "", "PrivateLabel.java - No plid found. urlSplitter.getServername()="+ urlSplitter.getServername());
+        Debug.debug(5, "", "PrivateLabel.java - No plid found. urlSplitter.getServername()="+ urlSplitter.getServername());
         return -1;
     }
 
@@ -354,10 +354,10 @@ public class PrivateLabel {
         try{
             validateData();
         } catch (ValidationException valError){
-            Debug.debug(3, "", "PrivateLabel.java - save() called. Validation fails.");
+            Debug.debug(5, "", "PrivateLabel.java - save() called. Validation fails.");
             throw valError;
         }
-        Debug.debug(3, "", "PrivateLabel.java - save() called. Validation passed.");
+        Debug.debug(5, "", "PrivateLabel.java - save() called. Validation passed.");
 
         //-----------------------------------
         //-----------------------------------
@@ -371,7 +371,7 @@ public class PrivateLabel {
             //-----------------------------------
             //-----------------------------------
         } else {
-            Debug.debug(3, "", "PrivateLabel.java - save() called. Validation passed. Couldn't update so adding new.");
+            Debug.debug(5, "", "PrivateLabel.java - save() called. Validation passed. Couldn't update so adding new.");
             //-----------------------------------
             //-----------------------------------
             plid = Db.RunSQLInsert("INSERT INTO pl(plname, titlebar, plusertemplate, showadsmarketing, homelink, sectionhome, sectionhelp, sectionsignup, sectiontour, comments, plbasedomain, issignupenabled, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, termsofservice, newaccountsrequireadminapproval, forcelogintoviewsites, isgoogleapion, isweblogscompingon, emailtonotifyofnewaccounts, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, hideregercomlogo, sectionfeatures, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, showbusinesstab, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth) VALUES('"+ reger.core.Util.cleanForSQL(plname)+"','"+ reger.core.Util.cleanForSQL(titlebar)+"','"+ reger.core.Util.cleanForSQL(plusertemplate)+"','"+ showadsmarketing+"','"+ reger.core.Util.cleanForSQL(homelink)+"','"+ reger.core.Util.cleanForSQL(sectionhome)+"','"+ reger.core.Util.cleanForSQL(sectionhelp)+"','"+ reger.core.Util.cleanForSQL(sectionsignup)+"','"+ reger.core.Util.cleanForSQL(sectiontour)+"','"+ reger.core.Util.cleanForSQL(comments)+"','"+ reger.core.Util.cleanForSQL(plbasedomain)+"','"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', '"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', '"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', '"+ defaultmaxspaceinbytes+"', '"+ defaultmaxbandwidth+"', '"+ reger.core.Util.cleanForSQL(termsofservice)+"', '"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', '"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"',  '"+reger.core.Util.booleanAsSQLText(isgoogleapion)+"', '"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', '"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', '"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', '"+minPasswordChars+"', '"+minPasswordUpperCaseChars+"', '"+minPasswordLowerCaseChars+"', '"+minPasswordSpecialChars+"', '"+ minPasswordNumericChars +"', '"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', '"+reger.core.Util.booleanAsSQLText(hideregercomlogo)+"', '"+ reger.core.Util.cleanForSQL(sectionfeatures)+"', '"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', '"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', '"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', '"+publicsitetemplateid+"', '"+entlisttemplateid+"', '"+hptemplateid+"', '"+marketingsitetemplateid+"', '"+marketingsitehptemplateid+"', '"+reger.core.Util.booleanAsSQLText(showbusinesstab)+"', '"+defaulteventtypeid+"', '"+reger.core.Util.cleanForSQL(encryptedlicense)+"', '"+baseaccountprice+"', '"+priceper100mbstorage+"', '"+pricepergbbandwidth+"')");

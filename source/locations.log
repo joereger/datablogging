@@ -79,7 +79,7 @@ if (displayMap && !userSession.getAccount().getGooglemapsapikey().equals("")){
         Location[] locations = Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());
         for (int i = 0; i < locations.length; i++) {
             Location loc = locations[i];
-            Debug.debug(3, "", "locations.log<br>location=" + loc.getLocationname() + "<br>lat=" + loc.getLatitude() + "<br>lon=" + loc.getLongitude());
+            Debug.debug(5, "", "locations.log<br>location=" + loc.getLocationname() + "<br>lat=" + loc.getLatitude() + "<br>lon=" + loc.getLongitude());
             if (locationid==0 || locationid==loc.getLocationid()){
                 if (loc.getLatitude()>0 || loc.getLongitude()>0){
 
@@ -96,9 +96,9 @@ if (displayMap && !userSession.getAccount().getGooglemapsapikey().equals("")){
                     if (loc.getLongitude()<minLon || minLon==0){
                         minLon = loc.getLongitude();
                     }
-                    Debug.debug(3, "", "locations.log<br>loc.getLocationname()=" + loc.getLocationname());
-                    Debug.debug(3, "", "locations.log<br>loc.getLatitude()=" + loc.getLatitude() + "<br>loc.getLongitude()=" + loc.getLongitude());
-                    Debug.debug(3, "", "locations.log<br>maxLat=" + maxLat + "<br>minLat=" + minLat + "<br>maxLon=" + maxLon + "<br>minLon=" + minLon);
+                    Debug.debug(5, "", "locations.log<br>loc.getLocationname()=" + loc.getLocationname());
+                    Debug.debug(5, "", "locations.log<br>loc.getLatitude()=" + loc.getLatitude() + "<br>loc.getLongitude()=" + loc.getLongitude());
+                    Debug.debug(5, "", "locations.log<br>maxLat=" + maxLat + "<br>minLat=" + minLat + "<br>maxLon=" + maxLon + "<br>minLon=" + minLon);
 
                     //Link to locations-detail.log?locationid="+loc.getLocationid())
 
@@ -127,7 +127,7 @@ if (displayMap && !userSession.getAccount().getGooglemapsapikey().equals("")){
     //Center
     double centerLat = (maxLat + minLat)/2;
     double centerLon = (maxLon + minLon)/2;
-    Debug.debug(3, "", "locations.log<br>centerLat=" + centerLat + "<br>centerLon=" + centerLon);
+    Debug.debug(5, "", "locations.log<br>centerLat=" + centerLat + "<br>centerLon=" + centerLon);
 
 
 
@@ -144,7 +144,7 @@ if (displayMap && !userSession.getAccount().getGooglemapsapikey().equals("")){
             spanLon = 2;
         }
     }
-    Debug.debug(3, "", "locations.log<br>spanLat=" + spanLat + "<br>spanLon=" + spanLon);
+    Debug.debug(5, "", "locations.log<br>spanLat=" + spanLat + "<br>spanLon=" + spanLon);
 
     mb.append(reger.Vars.LINEBREAKCHARFORHTML);
     mb.append("<div id=\"map\" style=\"width: 800; height: 600px\"></div>" + reger.Vars.LINEBREAKCHARFORHTML);

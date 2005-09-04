@@ -16,7 +16,7 @@ public class HpTemplateCacheTags {
     private static TemplateTag[] tags;
 
     public static TemplateTag get(String syntax){
-        //reger.core.Util.debug(4, "HpTemplateTagCache.get("+syntax+") called.");
+        //reger.core.Util.debug(5, "HpTemplateTagCache.get("+syntax+") called.");
         if (admin==null){
             Properties props = new Properties();
             props.setProperty("cache.capacity", "50");
@@ -24,11 +24,11 @@ public class HpTemplateCacheTags {
         }
 
         try {
-            //reger.core.Util.debug(3, "HpTemplateTagCache.get("+syntax+") trying to return from cache.");
+            //reger.core.Util.debug(5, "HpTemplateTagCache.get("+syntax+") trying to return from cache.");
             return (TemplateTag) admin.getFromCache(syntax);
         } catch (NeedsRefreshException nre) {
             try {
-                //reger.core.Util.debug(3, "HpTemplateTagCache.get("+syntax+") refreshing object from database.");
+                //reger.core.Util.debug(5, "HpTemplateTagCache.get("+syntax+") refreshing object from database.");
 
                 if (tags==null){
                     loadTags();
@@ -56,7 +56,7 @@ public class HpTemplateCacheTags {
     }
 
     public static void loadTags(){
-        //reger.core.Util.debug(3, "HpTemplateTagCache.loadTags() refreshing tag list.");
+        //reger.core.Util.debug(5, "HpTemplateTagCache.loadTags() refreshing tag list.");
         tags = new TemplateTag[0];
         synchronized(tags){
             HpTemplateProcessor processor = new HpTemplateProcessor();

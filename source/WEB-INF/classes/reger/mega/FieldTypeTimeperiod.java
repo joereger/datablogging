@@ -11,7 +11,7 @@ import java.util.TreeMap;
 import org.jdom.Element;
 
 /**
- * A dropdown field
+ * A time period
  */
 public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
 
@@ -116,6 +116,8 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
     public String getHtmlAdmin(int logid, boolean isFormActive) {
         StringBuffer outstring = new StringBuffer();
 
+        reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Into getHtmlAdmin()<br>fieldData[0].getValue()=" + fieldData[0].getValue());
+
         //isFormActive determines whether the form is turned on or off
         String disabledFormText = "";
         if (!isFormActive){
@@ -129,6 +131,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
 		//Populate the hms object with the correct number of baseSeconds
 		if (reger.core.Util.isinteger(fieldData[0].getValue())){
             hms = new reger.core.HoursMinutesSeconds(Integer.parseInt(fieldData[0].getValue()));
+            reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Into getHtmlAdmin()<br>fieldData[0].getValue() determined to be integer");
         }
 
         outstring.append("<table><tr><td nowrap>");
@@ -141,6 +144,9 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
         outstring.append("sec");
         outstring.append("</font>");
         outstring.append("</td></tr></table>");
+
+        reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Into getHtmlAdmin() - output<br>"+outstring.toString());
+
 
 
 		return outstring.toString();
@@ -244,10 +250,11 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
      * Use a FieldDAO object to do this.
      */
      public void loadDataForEventid(int eventid, int logid){
-        //reger.core.Util.logtodb("Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid);
+        reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         FieldDAOSimple sm = new FieldDAOSimple();
         sm.loadData(this.megafieldid, eventid, logid);
         this.fieldData[0].setValue(sm.value);
+        reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid + "<br>this.fieldData[0].getValue()=" + this.fieldData[0].getValue());
      }
 
      /**

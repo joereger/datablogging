@@ -77,11 +77,11 @@ public class Upload {
         FileItem[] out = new FileItem[0];
         try{
             if (items!=null){
-                Debug.debug(3, "", "reger.Upload.save() - items!=null ");
+                Debug.debug(5, "", "reger.Upload.save() - items!=null ");
                 //Now go get the files
                 Iterator itr = items.iterator();
                 while(itr.hasNext()) {
-                    Debug.debug(3, "", "reger.Upload.save() - found file item.");
+                    Debug.debug(5, "", "reger.Upload.save() - found file item.");
                     FileItem item = (FileItem) itr.next();
 
                     //Make sure it's not a form field

@@ -148,8 +148,8 @@ try{
                 }catch (java.net.SocketException e){
                     //Do nothing... typically a ClientAbortException
                 }catch (IOException e){
-                    Debug.debug(3, "", "IO Exception attempting to read file: '" + fileName + "'<br>" + e.toString());
-                    Debug.debug(3, "", e);
+                    Debug.debug(5, "", "IO Exception attempting to read file: '" + fileName + "'<br>" + e.toString());
+                    Debug.debug(5, "", e);
                 }catch (Throwable e){
                     Debug.errorsave(e, "");
                 }
@@ -157,10 +157,10 @@ try{
 
         } catch (IOException e){
             //This is a specific error that happens when users abort their connection.
-            Debug.debug(3, "", e);
+            Debug.debug(5, "", e);
         } catch (java.lang.IllegalStateException e){
             //This is a specific error that happens when users abort their connection.
-            Debug.debug(3, "", e);
+            Debug.debug(5, "", e);
         } catch (Exception e) {
             Debug.errorsave(e, "");
         }
@@ -185,8 +185,8 @@ try{
                     fis.close();
                 }catch (IOException e){
                     //Do nothing unless debugging
-                    Debug.debug(3, "", "IO Exception attempting to read file.  Error occurred on mediaout.log: '" + reger.Vars.ERRORIMAGE + "'<br>" + e.toString());
-                    Debug.debug(3, "", e);
+                    Debug.debug(5, "", "IO Exception attempting to read file.  Error occurred on mediaout.log: '" + reger.Vars.ERRORIMAGE + "'<br>" + e.toString());
+                    Debug.debug(5, "", e);
                 }catch (Throwable e){
                     Debug.errorsave(e, "");
                 }
@@ -194,15 +194,15 @@ try{
 
         } catch (IOException e){
             //This is a specific error that happens when users abort their connection.
-            Debug.debug(3, "", e);
+            Debug.debug(5, "", e);
         } catch (java.lang.IllegalStateException e){
             //This is a specific error that happens when users abort their connection.
-            Debug.debug(3, "", e);
+            Debug.debug(5, "", e);
         } catch (Exception e) {
             if (!e.toString().substring(0, 21).equals("ClientAbortException:")){
                 Debug.errorsave(e, "");
             } else {
-                Debug.debug(3, "", e);
+                Debug.debug(5, "", e);
             }
         }
     }

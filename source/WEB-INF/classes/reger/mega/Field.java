@@ -271,7 +271,6 @@ public class Field implements Cloneable, FieldInterface {
 
     /**
      * A value of -1 is a system field
-     * @return
      */
     public boolean isFieldOwnedByAccountuser(Accountuser au){
         StringBuffer debug = new StringBuffer();
@@ -395,7 +394,6 @@ public class Field implements Cloneable, FieldInterface {
     /**
      * Strips spaces and any non alphanumeric chars to create a nice
      * <fieldname></fieldname> friendly name
-     * @return
      */
     public String getFieldnameForApis() {
         if (fieldname!=null){

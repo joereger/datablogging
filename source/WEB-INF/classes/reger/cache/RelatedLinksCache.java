@@ -16,7 +16,7 @@ public class RelatedLinksCache {
 
 
     public static RelatedLinks get(int eventid, String searchterms, reger.UserSession userSession){
-        Debug.debug(4, "", "RelatedLinksCache.get("+eventid+") called.");
+        Debug.debug(5, "", "RelatedLinksCache.get("+eventid+") called.");
         if (admin==null){
             Properties props = new Properties();
             props.setProperty("cache.capacity", "5000");
@@ -26,13 +26,13 @@ public class RelatedLinksCache {
         String key = "eventid" + eventid + "-accountuserid" + userSession.getAccountuser().getAccountuserid();
 
         try {
-            Debug.debug(4, "", "RelatedLinksCache.get("+key+") trying to return from cache.");
+            Debug.debug(5, "", "RelatedLinksCache.get("+key+") trying to return from cache.");
             int hrstokeep = 12;
             int secstokeep = 60 * 60 * hrstokeep;
             return (RelatedLinks) admin.getFromCache(key, secstokeep);
         } catch (NeedsRefreshException nre) {
             try {
-                Debug.debug(4, "", "RelatedLinksCache.get("+key+") refreshing object from database.");
+                Debug.debug(5, "", "RelatedLinksCache.get("+key+") refreshing object from database.");
                 RelatedLinks relLink = new RelatedLinks(eventid, searchterms, userSession);
                 String[] groups = new String[1];
                 groups[0]="eventid"+eventid;

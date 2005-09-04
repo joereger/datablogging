@@ -414,7 +414,7 @@ public class Account {
    * Updates total and individual space usage
    */
   public void updateSpaceused(){
-    Debug.debug(3, "", "Account.java- updateSpaceUsed() called.");
+    Debug.debug(5, "", "Account.java- updateSpaceUsed() called.");
     updateImagespaceused();
     updateTextspaceused();
     this.spaceused = this.imagespaceused + this.textspaceused;
@@ -1169,18 +1169,18 @@ public class Account {
     }
 
     public void doBilling(){
-        Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid);
+        Debug.debug(5, "", "Account.doBilling() called on accountid=" + accountid);
         //Only call if accounts are required to upgrade
         if (accountLicense!=null){
             if (((String)accountLicense.getProperty(License.PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS)).equals("1")){
                 //There must be a licenseid to call the licensing server
                 if (reger.core.Util.isinteger(accountLicense.getPropertyWithoutInheritingFromParent(License.PROPSTRINGLICENSEID)) && Integer.parseInt(accountLicense.getPropertyWithoutInheritingFromParent(License.PROPSTRINGLICENSEID))>0){
                     //Call Licensing Server
-                    Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>licenseid="+accountLicense.getPropertyWithoutInheritingFromParent(License.PROPSTRINGLICENSEID)+"<br>Calling licensing server.");
+                    Debug.debug(5, "", "Account.doBilling() called on accountid=" + accountid + "<br>licenseid="+accountLicense.getPropertyWithoutInheritingFromParent(License.PROPSTRINGLICENSEID)+"<br>Calling licensing server.");
                     Hashtable result = RegerLicensingApiClient.isLicenseBillingOk(accountLicense.getEncryptedLicense());
                     //Save the result
                     if (result.get("successful")!=null && result.get("successful").equals("true")){
-                        Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>Successful call.");
+                        Debug.debug(5, "", "Account.doBilling() called on accountid=" + accountid + "<br>Successful call.");
                         //Save to DB
                         setBillingIsOkInDb();
                     } else {
@@ -1188,16 +1188,16 @@ public class Account {
                         if (result.get("errormessage")!=null){
                             billingerror = (String)result.get("errormessage");
                         }
-                        Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>Failed call.<br>billingerror=" + billingerror);
+                        Debug.debug(5, "", "Account.doBilling() called on accountid=" + accountid + "<br>Failed call.<br>billingerror=" + billingerror);
                         //Save to Db
                         setBillingIsNotOkInDb(billingerror);
                     }
                 } else {
-                    Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>No licenseid so no call to billing server.");
+                    Debug.debug(5, "", "Account.doBilling() called on accountid=" + accountid + "<br>No licenseid so no call to billing server.");
                     setBillingIsOkInDb();
                 }
             } else {
-                Debug.debug(3, "", "Account.doBilling() called on accountid=" + accountid + "<br>PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS is: " + accountLicense.getProperty(License.PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS));
+                Debug.debug(5, "", "Account.doBilling() called on accountid=" + accountid + "<br>PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS is: " + accountLicense.getProperty(License.PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS));
                 setBillingIsOkInDb();
             }
         } else {

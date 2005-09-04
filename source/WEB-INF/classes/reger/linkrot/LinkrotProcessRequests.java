@@ -19,7 +19,7 @@ public class LinkrotProcessRequests implements Runnable {
 
         //Go get the URL from the web
 
-        Debug.debug(3, "", "url:"+url+"<br>LinkrotProcessRequests.processRequest() - starting call");
+        Debug.debug(5, "", "url:"+url+"<br>LinkrotProcessRequests.processRequest() - starting call");
 
         if (!url.equals("")){
 
@@ -29,7 +29,7 @@ public class LinkrotProcessRequests implements Runnable {
             for (int i = 0; i < pls.length; i++) {
                 PrivateLabel pl = pls[i];
                 if (url.indexOf(pl.getPlbasedomain())>0){
-                    Debug.debug(3, "", "FOUND PL-Centered Url: " + url);
+                    Debug.debug(5, "", "FOUND PL-Centered Url: " + url);
                     isExternal = false;
                 }
             }
@@ -43,7 +43,7 @@ public class LinkrotProcessRequests implements Runnable {
 
                 if (myHttp!=null && myHttp.successfulCallWasMade){
                     //Debug
-                    Debug.debug(3, "", "url:"+myHttp.url+"<br>LinkrotProcessRequests.processRequest() - successfulCallWasMade myHttp.statusCode=" + myHttp.statusCode);
+                    Debug.debug(5, "", "url:"+myHttp.url+"<br>LinkrotProcessRequests.processRequest() - successfulCallWasMade myHttp.statusCode=" + myHttp.statusCode);
                     if (myHttp.statusCode<300){
                         process200(myHttp);
                     } else if (myHttp.statusCode==300){

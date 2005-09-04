@@ -82,12 +82,12 @@ public class SmtpListener implements Runnable  {
             }
         } catch (java.net.BindException e)  {
             e.printStackTrace();
-            Debug.debug(3, "", e);
-            Debug.debug(3, "", "SMTP Listener did not bind to port 25.  Incoming email API will not function properly.");
+            Debug.debug(5, "", e);
+            Debug.debug(5, "", "SMTP Listener did not bind to port 25.  Incoming email API will not function properly.");
             reger.core.EmailSend.sendMail(reger.Vars.EMAILDEFAULTTO, reger.Vars.EMAILDEFAULTTO, "Weblogs SMTP Listener Failed to Bind to Port 25", "This is generally caused by another service running on port 25 or by a conflict with Tomcat on startup.  It can generally be fixed by restarting Tomcat.");
         } catch (java.net.SocketException sockex){
             sockex.printStackTrace();
-            Debug.debug(3, "", sockex);
+            Debug.debug(5, "", sockex);
         } catch (Exception e)  {
             e.printStackTrace();
             Debug.errorsave(e, "");

@@ -16,7 +16,7 @@ public class SiteTemplateCacheTags {
     private static TemplateTag[] tags;
 
     public static TemplateTag get(String syntax){
-        //reger.core.Util.debug(4, "SiteTemplateTagCache.get("+syntax+") called.");
+        //reger.core.Util.debug(5, "SiteTemplateTagCache.get("+syntax+") called.");
         if (admin==null){
             Properties props = new Properties();
             props.setProperty("cache.capacity", "50");
@@ -24,11 +24,11 @@ public class SiteTemplateCacheTags {
         }
 
         try {
-            //reger.core.Util.debug(3, "SiteTemplateTagCache.get("+syntax+") trying to return from cache.");
+            //reger.core.Util.debug(5, "SiteTemplateTagCache.get("+syntax+") trying to return from cache.");
             return (TemplateTag) admin.getFromCache(syntax);
         } catch (NeedsRefreshException nre) {
             try {
-                //reger.core.Util.debug(3, "SiteTemplateTagCache.get("+syntax+") refreshing object from database.");
+                //reger.core.Util.debug(5, "SiteTemplateTagCache.get("+syntax+") refreshing object from database.");
 
                 if (tags==null){
                     loadTags();
@@ -56,7 +56,7 @@ public class SiteTemplateCacheTags {
     }
 
     public static void loadTags(){
-        //reger.core.Util.debug(3, "SiteTemplateTagCache.loadTags() refreshing tag list.");
+        //reger.core.Util.debug(5, "SiteTemplateTagCache.loadTags() refreshing tag list.");
         tags = new TemplateTag[0];
         synchronized(tags){
             SiteTemplateProcessor processor = new SiteTemplateProcessor();

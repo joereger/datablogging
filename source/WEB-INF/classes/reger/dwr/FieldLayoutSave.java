@@ -16,13 +16,14 @@ public class FieldLayoutSave {
     private UserSession userSession;
 
     public FieldLayoutSave(){
+        Debug.debug(5, "DWR FieldLayoutSave", "FieldLayoutSave() object created.");
         HttpServletRequest request = ExecutionContext.get().getHttpServletRequest();
         reger.AllUserSessions allUserSessions = new reger.AllUserSessions();
         userSession = allUserSessions.getUserSession(request, null);
     }
 
     public String processLayoutChange(int logid, int eventtypeid, int megafieldid, String action, String fieldorderholder){
-        Debug.debug(5, "", "FieldLayoutSave.processLayoutChange() called. action=" + action);
+        Debug.debug(5, "DWR FieldLayoutSave", "FieldLayoutSave.processLayoutChange() called. action=" + action);
         //Security check
         boolean doUpdate = false;
 

@@ -40,7 +40,7 @@ public class DoBilling implements ScheduledTask{
 
         String sql = "SELECT accountid FROM account WHERE lastbillingcheck<'"+reger.core.TimeUtils.dateformatfordb(cutoffTime)+"' OR lastbillingcheck IS NULL ORDER BY accountid ASC";
 
-        Debug.debug(3, "", "DoBilling.java<br>"+sql);
+        Debug.debug(5, "", "DoBilling.java<br>"+sql);
 
         //-----------------------------------
         //-----------------------------------
@@ -48,7 +48,7 @@ public class DoBilling implements ScheduledTask{
         //-----------------------------------
         //-----------------------------------
         if (rstAcct!=null && rstAcct.length>0){
-            Debug.debug(3, "", "DoBilling.java<br>" + rstAcct.length + " accounts to be checked.");
+            Debug.debug(5, "", "DoBilling.java<br>" + rstAcct.length + " accounts to be checked.");
             for(int i=0; i<rstAcct.length; i++){
                 Account acct = new Account(Integer.parseInt(rstAcct[i][0]));
                 numberOfAccountsChecked = numberOfAccountsChecked + 1;

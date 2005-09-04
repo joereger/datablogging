@@ -21,18 +21,18 @@ public class AccountCountCache {
         String[] group = new String[2];
         group[0] = String.valueOf(account.getAccountid());
         group[1] = String.valueOf(accountuser.getAccountuserid());
-        Debug.debug(4, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") called.");
+        Debug.debug(5, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") called.");
 
         if (admin==null){
             admin = new GeneralCacheAdministrator();
         }
 
         try {
-            Debug.debug(4, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") trying to return from cache.");
+            Debug.debug(5, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") trying to return from cache.");
             return (AccountCounts) admin.getFromCache(key);
         } catch (NeedsRefreshException nre) {
             try {
-                Debug.debug(3, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") refreshing object from database.");
+                Debug.debug(5, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") refreshing object from database.");
                 AccountCounts acctCounts = new AccountCounts(account, accountuser);
                 admin.putInCache(key, acctCounts, group);
                 return acctCounts;

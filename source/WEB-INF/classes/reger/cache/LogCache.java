@@ -23,17 +23,17 @@ public class LogCache {
 
 
     public static Log get(int logid){
-        Debug.debug(4, "", "LogCache.get("+logid+") called.");
+        Debug.debug(5, "", "LogCache.get("+logid+") called.");
         if (admin==null){
             admin = new GeneralCacheAdministrator();
         }
 
         try {
-            Debug.debug(4, "", "LogCache.get("+logid+") trying to return from cache.");
+            Debug.debug(5, "", "LogCache.get("+logid+") trying to return from cache.");
             return (Log) admin.getFromCache(String.valueOf(logid));
         } catch (NeedsRefreshException nre) {
             try {
-                Debug.debug(4, "", "LogCache.get("+logid+") refreshing object from database.");
+                Debug.debug(5, "", "LogCache.get("+logid+") refreshing object from database.");
                 Log log = new Log(logid);
                 //Create groups for megafieldid and eventtypeid usage
                 String[] groups = new String[0];

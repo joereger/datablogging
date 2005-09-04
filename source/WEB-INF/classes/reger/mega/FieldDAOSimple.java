@@ -80,9 +80,11 @@ public class FieldDAOSimple implements FieldDAO{
         //-----------------------------------
         if (rstVal!=null && rstVal.length>0){
         	for(int i=0; i<rstVal.length; i++){
-        	    //reger.core.Util.logtodb("Value is set for<br>megafieldid=" + megafieldid +"<br>value=" + rstVal[i][1]);
+        	    reger.core.Debug.debug(5, "FieldDAOSinple.java", "Value is set from DB for<br>megafieldid=" + megafieldid +"<br>value=" + rstVal[i][0]);
                 value = rstVal[i][0];
         	}
+        }  else {
+            reger.core.Debug.debug(5, "FieldDAOSinple.java", "No value found in DB for<br>megafieldid=" + megafieldid);
         }
 
     }

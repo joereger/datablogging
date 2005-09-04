@@ -16,7 +16,7 @@ public class MarketingSiteTemplateCacheTags {
     private static TemplateTag[] tags;
 
     public static TemplateTag get(String syntax){
-        Debug.debug(4, "", "MarketingSiteTemplateTagCache.get("+syntax+") called.");
+        Debug.debug(5, "", "MarketingSiteTemplateTagCache.get("+syntax+") called.");
         if (admin==null){
             Properties props = new Properties();
             props.setProperty("cache.algorithm", "com.opensymphony.oscache.base.algorithm.LRUCache");
@@ -25,11 +25,11 @@ public class MarketingSiteTemplateCacheTags {
         }
 
         try {
-            Debug.debug(3, "", "MarketingSiteTemplateTagCache.get("+syntax+") trying to return from cache.");
+            Debug.debug(5, "", "MarketingSiteTemplateTagCache.get("+syntax+") trying to return from cache.");
             return (TemplateTag) admin.getFromCache(syntax);
         } catch (NeedsRefreshException nre) {
             try {
-                Debug.debug(3, "", "MarketingSiteTemplateTagCache.get("+syntax+") refreshing object from database.");
+                Debug.debug(5, "", "MarketingSiteTemplateTagCache.get("+syntax+") refreshing object from database.");
 
                 if (tags==null){
                     loadTags();
@@ -40,14 +40,14 @@ public class MarketingSiteTemplateCacheTags {
                     for (int i = 0; i < tags.length; i++) {
                         if (tags[i]!=null){
                             if (tags[i].acceptsParticularSyntax(syntax)){
-                                Debug.debug(3, "", "MarketingSiteTemplateTagCache.get("+syntax+") putting tag into cache, returning tag.");
+                                Debug.debug(5, "", "MarketingSiteTemplateTagCache.get("+syntax+") putting tag into cache, returning tag.");
                                 admin.putInCache(syntax, tags[i]);
                                 return tags[i];
                             }
                         }
                     }
                 }
-                Debug.debug(3, "", "MarketingSiteTemplateTagCache.get("+syntax+") returning null.");
+                Debug.debug(5, "", "MarketingSiteTemplateTagCache.get("+syntax+") returning null.");
                 admin.cancelUpdate(syntax);
                 return null;
             } catch (Exception ex) {
@@ -59,7 +59,7 @@ public class MarketingSiteTemplateCacheTags {
     }
 
     public static void loadTags(){
-        Debug.debug(3, "", "MarketingSiteTemplateTagCache.loadTags() refreshing tag list.");
+        Debug.debug(5, "", "MarketingSiteTemplateTagCache.loadTags() refreshing tag list.");
         tags = new TemplateTag[0];
         synchronized(tags){
             MarketingSiteTemplateProcessor processor = new MarketingSiteTemplateProcessor();

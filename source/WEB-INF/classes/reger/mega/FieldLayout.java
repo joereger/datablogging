@@ -20,24 +20,32 @@ public class FieldLayout {
     public static String getHtml(int eventtypeid, int logid, int LAYOUTMODE, UserSession userSessionOfSaver, String pageName, String fieldPageName, String newFieldPageName, reger.pageFramework.PageProps pageProps){
         StringBuffer mb = new StringBuffer();
 
+        Debug.debug(5, "FieldLayout.java", "FieldLayout.java getHtml(eventtypeid="+eventtypeid+", logid="+logid+", LAYOUTMODE="+LAYOUTMODE+")");
+
         //If this is edit mode
         if (LAYOUTMODE==LAYOUTMODEEDIT) {
             mb.append(topLayoutBar(eventtypeid, logid, pageName, newFieldPageName, pageProps));
             mb.append("<img src=images/clear.gif width=1 height=2 border=0>");
         }
 
-        //Go get the fields to work with, either from the log or the log type
+        //Go get the fields to work with, either from the entry, log or the log type
         FieldType[] fields = null;
         FieldOrderCollection fieldOrderCollection = null;
         if (eventtypeid>0){
             fields = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getMegaFields();
             fieldOrderCollection = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getFieldOrderCollection();
+            Debug.debug(5, "FieldLayout.java", "Using fields from AllMegaLogTypesInSystem");
         }
         if (logid>0){
             fields = LogCache.get(logid).getFields();
             fieldOrderCollection = LogCache.get(logid).getFieldOrderCollection();
+            Debug.debug(5, "FieldLayout.java", "Using fields from LogCache");
         }
-        Debug.debug(5, "", "FieldLayout.java getHtml(eventtypeid="+eventtypeid+", logid="+logid+", LAYOUTMODE="+LAYOUTMODE+")");
+        if (pageProps.entry.eventid>0){
+            fields=pageProps.entry.fields;
+            Debug.debug(5, "FieldLayout.java", "Using fields from pageProps.entry");
+        }
+
 
         //Javascript for dhtml
         mb.append("<script type='text/javascript' src='../js/cross-browser.com/x/x_core.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
@@ -128,7 +136,10 @@ public class FieldLayout {
                 for (int i = 0; i < fields.length; i++) {
                     FieldType fld = fields[i];
                     if (fld!=null){
-                        Debug.debug(5, "", "FieldLayout.java field not null.  fld.getFieldname()" + fld.getFieldname());
+
+
+
+                        Debug.debug(5, "FieldLayout.java", "FieldLayout.java field not null.  fld.getFieldname()" + fld.getFieldname());
                         mb.append("<div id='fieldBox"+fld.getMegafieldid()+"' class='fieldBox'>" + reger.Vars.LINEBREAKCHARFORHTML);
                         mb.append("    <div id='fieldBoxBar"+fld.getMegafieldid()+"' class='fieldBoxBar' title='Drag to Move'>");
                         //Remove field button
@@ -159,19 +170,21 @@ public class FieldLayout {
                         //Field content
                         mb.append("    <div id='fieldBoxContent"+fld.getMegafieldid()+"' class='fieldBoxContent'>" + reger.Vars.LINEBREAKCHARFORHTML);
 
-                        //Start field output
-                        if (LAYOUTMODE==LAYOUTMODEADMIN){
-                            mb.append(fld.getHtmlAdmin(logid, true));
-                        } else if (LAYOUTMODE==LAYOUTMODEEDIT) {
-                            mb.append(fld.getHtmlAdmin(logid, false));
-                        } else {
-                            String tmp = fld.getHtmlPublic(logid);
-                            if (tmp.equals("")){
-                                mb.append("&nbsp;");
+                        //Start field output, synchronize the field
+                        //synchronized(fld){
+                            if (LAYOUTMODE==LAYOUTMODEADMIN){
+                                mb.append(fld.getHtmlAdmin(logid, true));
+                            } else if (LAYOUTMODE==LAYOUTMODEEDIT) {
+                                mb.append(fld.getHtmlAdmin(logid, false));
                             } else {
-                                mb.append(tmp);
+                                String tmp = fld.getHtmlPublic(logid);
+                                if (tmp.equals("")){
+                                    mb.append("&nbsp;");
+                                } else {
+                                    mb.append(tmp);
+                                }
                             }
-                        }
+                        //}
                         //End field output
 
                         mb.append("    </div>" + reger.Vars.LINEBREAKCHARFORHTML);

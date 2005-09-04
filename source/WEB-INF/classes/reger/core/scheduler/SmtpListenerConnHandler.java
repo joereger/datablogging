@@ -30,7 +30,7 @@ class SmtpListenerConnHandler implements Runnable  {
 
 
     public void run()  {
-        Debug.debug(4, "", "SMTP: connection from " + sclient.getInetAddress().getHostAddress());
+        Debug.debug(5, "", "SMTP: connection from " + sclient.getInetAddress().getHostAddress());
 
         try  {
             InputStream inpStream = sclient.getInputStream();
@@ -69,11 +69,11 @@ class SmtpListenerConnHandler implements Runnable  {
             }
 
             writeln("221 " + serverName + " closing connection");
-            Debug.debug(4, "", "SMTP: finished session, closing connection.");
+            Debug.debug(5, "", "SMTP: finished session, closing connection.");
             sclient.close();
             
         }   catch(IOException ioe){
-            Debug.debug(4, "", ioe);
+            Debug.debug(5, "", ioe);
         }   catch(Exception e)   {
             Debug.errorsave(e, "");
         }
@@ -84,7 +84,7 @@ class SmtpListenerConnHandler implements Runnable  {
 
         String[] allRcptTo = new String[0];
 
-        Debug.debug(4, "", "SMTP: Reading mail message.");
+        Debug.debug(5, "", "SMTP: Reading mail message.");
 
 //            String sSenderEmailAddr = findEmailAddr(clientcommand);
 //            ack();
@@ -112,7 +112,7 @@ class SmtpListenerConnHandler implements Runnable  {
                 }
             }
 
-            Debug.debug(4, "", "SMTP: All explicit RCPT TO: in next debug statement.");
+            Debug.debug(5, "", "SMTP: All explicit RCPT TO: in next debug statement.");
             //reger.core.Util.logStringArrayToDb("SMTP: allRcptTo", allRcptTo);
 
 //            if (s==null || !s.equals("DATA"))  {
@@ -153,7 +153,7 @@ class SmtpListenerConnHandler implements Runnable  {
             }
             writeln("250 Message accepted");
 
-            Debug.debug(4, "", reger.core.Util.cleanForHtml(rawMailMessage.toString()));
+            Debug.debug(5, "", reger.core.Util.cleanForHtml(rawMailMessage.toString()));
 
 
             //Turn it into a mime message
@@ -193,11 +193,11 @@ class SmtpListenerConnHandler implements Runnable  {
 
     protected final void writeln(String s)  {
         try{
-            Debug.debug(4, "", "SMTP: server sending (" + reger.core.Util.cleanForHtml(s) + ")");
+            Debug.debug(5, "", "SMTP: server sending (" + reger.core.Util.cleanForHtml(s) + ")");
             out.write(s+ "\r\n");
             out.flush();
         }   catch(IOException ioe){
-            Debug.debug(4, "", ioe);
+            Debug.debug(5, "", ioe);
         }   catch(Exception e)   {
             Debug.errorsave(e, "");
         }
@@ -206,10 +206,10 @@ class SmtpListenerConnHandler implements Runnable  {
     protected final String readln() {
         try{
             String s = in.readLine();
-            Debug.debug(4, "", "SMTP: client sent    [" + reger.core.Util.cleanForHtml(s) + "]");
+            Debug.debug(5, "", "SMTP: client sent    [" + reger.core.Util.cleanForHtml(s) + "]");
             return s;
         }   catch(IOException ioe){
-            Debug.debug(4, "", ioe);
+            Debug.debug(5, "", ioe);
         }   catch(Exception e)   {
             Debug.errorsave(e, "");
         }

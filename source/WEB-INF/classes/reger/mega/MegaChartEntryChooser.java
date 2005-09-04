@@ -104,7 +104,7 @@ public class MegaChartEntryChooser {
             //This query generates a list of eventids that are relevant to this chart.  That's it.
             //@todo Wrap in multiple calls to DB to batch
             String sql = "SELECT event.eventid FROM event WHERE "+logidSql+ " " + dateSql + " AND " + reger.Entry.sqlOfLiveEntry;
-            Debug.debug(3, "", sql);
+            Debug.debug(5, "", sql);
             //-----------------------------------
             //-----------------------------------
             String [][] rawListOfEventids = Db.RunSQL(sql, 500000);

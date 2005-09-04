@@ -99,7 +99,7 @@ public class htmlListEvents {
 		//For debugging, output the sql to the screen
 		//list.append("<br>" + sql);
 
-		Debug.debug(3, "", "htmlListEvents.java - <br>sql:<br>"+sql+"<br><br>sqlCount:<br>"+sqlCount);
+		Debug.debug(5, "", "htmlListEvents.java - <br>sql:<br>"+sql+"<br><br>sqlCount:<br>"+sqlCount);
 		//Count total records
 		//-----------------------------------
 		//-----------------------------------

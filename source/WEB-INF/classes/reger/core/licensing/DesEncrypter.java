@@ -86,7 +86,7 @@ public class DesEncrypter {
             //} catch (UnsupportedEncodingException e) {
             //} catch (java.io.IOException e) {
             } catch (Exception e){
-                Debug.debug(3, "", e);
+                Debug.debug(5, "", e);
             }
             return null;
         }

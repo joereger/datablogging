@@ -334,7 +334,7 @@ public class License {
             }
         }
 
-        Debug.debug(3, "", "License.java licensesAreEqual()<br>" + debug + "<br><br>Returning: " +theyMatch);
+        Debug.debug(5, "", "License.java licensesAreEqual()<br>" + debug + "<br><br>Returning: " +theyMatch);
 
         return theyMatch;
     }
