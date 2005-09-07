@@ -176,14 +176,19 @@ public class MegaLogType {
             }
         }
 
-        //Update the log-type stuff
         //-----------------------------------
         //-----------------------------------
-        int count = Db.RunSQLUpdate("UPDATE megalogtype SET accountuserid='"+accountuserid+"', megalogname='"+ reger.core.Util.cleanForSQL(megalogname) +"', description='"+ reger.core.Util.cleanForSQL(description) +"', showlocation='"+ showLocationTxt +"', showonhomepage='"+showOnHomePageTxt+"', issystemlogtype='"+issystemlogtype+"', isprivate='"+reger.core.Util.booleanAsSQLText(isprivate)+"', fieldorder='"+reger.core.Util.cleanForSQL(fieldorder)+"' , hiddenfields='"+reger.core.Util.cleanForSQL(hiddenfieldsForSql.toString())+"' WHERE eventtypeid='"+ eventtypeid +"'");
+        String[][] rstLt= Db.RunSQL("SELECT eventtypeid FROM megalogtype WHERE eventtypeid='"+eventtypeid+"'");
         //-----------------------------------
         //-----------------------------------
-
-        if (count<1){
+        if (rstLt!=null && rstLt.length>0){
+            //Update the log-type stuff
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE megalogtype SET accountuserid='"+accountuserid+"', megalogname='"+ reger.core.Util.cleanForSQL(megalogname) +"', description='"+ reger.core.Util.cleanForSQL(description) +"', showlocation='"+ showLocationTxt +"', showonhomepage='"+showOnHomePageTxt+"', issystemlogtype='"+issystemlogtype+"', isprivate='"+reger.core.Util.booleanAsSQLText(isprivate)+"', fieldorder='"+reger.core.Util.cleanForSQL(fieldorder)+"' , hiddenfields='"+reger.core.Util.cleanForSQL(hiddenfieldsForSql.toString())+"' WHERE eventtypeid='"+ eventtypeid +"'");
+            //-----------------------------------
+            //-----------------------------------
+        } else {
             //Create a new one
             newMegaLogType();
         }

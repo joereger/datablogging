@@ -260,7 +260,7 @@ public class Field implements Cloneable, FieldInterface {
 
         debug.append("this.megafieldid=" + this.megafieldid);
 
-        Debug.debug(5, "", debug.toString());
+        Debug.debug(5, "Field.java", debug.toString());
     }
 
 

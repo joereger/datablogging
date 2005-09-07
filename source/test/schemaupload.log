@@ -1,0 +1,92 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+<%@ page import="org.apache.commons.fileupload.FileItem"%>
+<%@ page import="org.jdom.Document"%>
+<%@ page import="org.jdom.input.SAXBuilder"%>
+<%@ page import="org.jdom.Element"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("<br>About to create reger.Upload object.<br>");
+reger.Upload upload = new reger.Upload(request);
+mb.append("<br>About to see if there are any FileItems.<br>");
+FileItem[] fileItems = upload.getFileItems();
+if (fileItems!=null && fileItems.length>0){
+    mb.append("<br>There is a FileItem.<br>");
+    for (int i = 0; i < fileItems.length; i++) {
+        FileItem fileItem = fileItems[i];
+        InputStream fileStream = fileItem.getInputStream();
+
+        try{
+            SAXBuilder sb = new SAXBuilder();
+            Document doc = sb.build(fileStream);
+
+            mb.append(reger.xml.JdomNodeLister.listNodes(doc));
+
+
+
+
+
+
+
+        } catch (Exception e){
+            mb.append("<br>Error parsing doc:" + e.getMessage());
+            reger.core.Debug.debug(3, "schemaupload", e);
+        }
+
+
+    }
+}
+
+
+
+mb.append("<form action=schemaupload.log method=post enctype='multipart/form-data'>");
+mb.append("<input type=hidden name=action value=upload>");
+mb.append("<input type=file name=file1>");
+mb.append("<br>");
+mb.append("<input type=submit value='Upload Schema'>");
+mb.append("</form>");
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

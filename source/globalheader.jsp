@@ -1,5 +1,4 @@
-<%@ page import="reger.core.Debug"%>
-<%
+<%@ page import="reger.core.Debug"%><%
 //executionTime Object Creation for Performance Analysis
 reger.executionTime executionTime = new reger.executionTime();
 

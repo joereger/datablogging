@@ -427,7 +427,8 @@ This is a reference showing the jar file to module relationship:
 
 12) jcaptcha
     - jcaptcha.jar
-    - ehcache.jar 
+    - ehcache.jar
+
 
 
 
