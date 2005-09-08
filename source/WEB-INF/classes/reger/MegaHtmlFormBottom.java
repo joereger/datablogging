@@ -368,7 +368,7 @@ public class MegaHtmlFormBottom {
 
             //Time Periods
             if (userSession.getAccount().getIstimeperiodon() && !displayasadmin){
-                reger.TimeLine tl = new reger.TimeLine(null, null, reger.core.TimeUtils.usertogmttime(pageProps.entry.getCalendar(), userSession.getAccount().getTimezoneid()), userSession.getAccount().getAccountid(), userSession);
+                reger.TimeLine tl = new reger.TimeLine(null, null, pageProps.entry.dateGmt, userSession.getAccount().getAccountid(), userSession);
                 if  (tl.timeperiodids.length>0) {
                     mb.append("<tr>");
                     mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top  class=logentryheader><font face=arial size=-1><b>Time Period</b></font><br><font face=arial size=-2><b>This entry took place during these time periods.</b></font><br>");

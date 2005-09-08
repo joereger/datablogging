@@ -25,9 +25,6 @@ pageProps.isLogidRequired=true;
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-//Instantiate the entry object
-pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
-
 
 //If the user can't do this
 if (!userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid) || !userSession.getAccountuser().userCanDoAcl("DELETELOG", userSession.getAccount().getAccountid())){
@@ -159,7 +156,7 @@ if (pageProps.action.equals("delete")){
     mb.append("<table cellpadding=5 cellspacing=0 border=0>");
     //-----------------------------------
     //-----------------------------------
-    String[][] rstSameType= Db.RunSQL("SELECT logid, name FROM megalog WHERE megalog.logid<>'"+pageProps.entry.logid+"' AND megalog.eventtypeid='"+log.getEventtypeid()+"' AND " + userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid()));
+    String[][] rstSameType= Db.RunSQL("SELECT logid, name FROM megalog WHERE megalog.logid<>'"+pageProps.logProps.logid+"' AND megalog.eventtypeid='"+log.getEventtypeid()+"' AND " + userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid()));
     //-----------------------------------
     //-----------------------------------
     if (rstSameType!=null && rstSameType.length>0){
@@ -194,7 +191,7 @@ if (pageProps.action.equals("delete")){
     mb.append("<table cellpadding=5 cellspacing=0 border=0>");
     //-----------------------------------
     //-----------------------------------
-    String[][] rstDiffType= Db.RunSQL("SELECT logid, name FROM megalog WHERE megalog.logid<>'"+pageProps.entry.logid+"' AND megalog.eventtypeid<>'"+log.getEventtypeid()+"' AND " + userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid()));
+    String[][] rstDiffType= Db.RunSQL("SELECT logid, name FROM megalog WHERE megalog.logid<>'"+pageProps.logProps.logid+"' AND megalog.eventtypeid<>'"+log.getEventtypeid()+"' AND " + userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid()));
     //-----------------------------------
     //-----------------------------------
     if (rstDiffType!=null && rstDiffType.length>0){

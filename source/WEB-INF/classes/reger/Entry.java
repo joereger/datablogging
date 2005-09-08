@@ -3,6 +3,7 @@ package reger;
 import reger.core.db.Db;
 import reger.core.ValidationException;
 import reger.core.Debug;
+import reger.core.TimeUtils;
 import reger.linkrot.AnchorFinder;
 import reger.cache.LogCache;
 
@@ -20,11 +21,6 @@ public class Entry {
     public int eventid=-1;
     public int logid=-1;
 
-    //Objects
-    private reger.Account accountOfEntry;
-    private reger.Accountuser accountuserOfPersonAccessing;
-    private reger.PrivateLabel plOfEntry;
-
     //Some basic entry fields
     public String title="";
     public String comments="";
@@ -32,11 +28,7 @@ public class Entry {
     public int isDraft=0;
     public int isApproved=-1;
     public int istemporary = 0;
-    public Calendar lastmodifiedbyuserdate;
-
-
-
-
+    private Calendar lastmodifiedbyuserdate;
 
     /**
      * Here's how these moderator approval flags work:
@@ -59,32 +51,16 @@ public class Entry {
     //All others are backup versioninfo, pending changes for moderator approval or temporary entries.
     public static final String sqlOfLiveEntry = "(event.isdraft='0' AND event.isapproved='1' AND event.istemporary='0' AND event.ismoderatorapproved='1' AND event.requiresmoderatorapproval='0')";
 
-    //This is the primarytimezoneid for this entry.
-    //When a user is adding or editing in the admin section,
-    //this is set to userSession.getAccountuser().getUsertimezoneid().
-    //When a user is viewing in the public site,
-    //this is set to userSession.getAccount().getTimezoneid().
-    //When an entry object is initially created and then
-    //populated with the populate() method I simply
-    //take userSession.getAccount().getTimezoneid()... the account... not the user.
-    //Then, on entry.log I manually override this value with the
-    //user's value userSession.getAccountuser().getUsertimezoneid().
-    //Note inside of this class I should only be using
-    //this variable... I shouldn't be using userSession.getAccount().getTimezoneid(), etc.
-    //On construction, this is defaulted to the reger.Vars value
-    //for safety in case an account doesn't have one (impossible, in theory).
-    public String entryTimezoneid=reger.Vars.TIMEZONEIDDEFAULT;
-
     public String author="";
 
     public Calendar dateGmt;
 
-    public int mm=1;
-    public int dd=1;
-    public int yyyy=2004;
-    public int h=12;
-    public int m=0;
-    public String ampm="AM";
+    //public int mm=1;
+    //public int dd=1;
+    //public int yyyy=2004;
+    //public int h=12;
+    //public int m=0;
+    //public String ampm="AM";
 
     public int eventtypeid;
 
@@ -144,40 +120,31 @@ public class Entry {
         this.eventid = eventid;
         this.title = title;
         this.comments = comments;
-        populateThisEventTimeVarsFromCal(cal);
+        this.dateGmt = cal;
     }
 
 
     /**
      * Constructor:
      */
-    public Entry(reger.Accountuser accountuserOfPersonAccessing, reger.Account accountOfEntry, reger.PrivateLabel plOfEntry, int logid, javax.servlet.http.HttpServletRequest request){
-        populate(accountuserOfPersonAccessing, accountOfEntry, plOfEntry, logid, request);
-    }
+//    public Entry(reger.Accountuser accountuserOfPersonAccessing, reger.Account accountOfEntry, reger.PrivateLabel plOfEntry, int logid, javax.servlet.http.HttpServletRequest request){
+//        populate(plOfEntry, logid, request, "XOXOXOXO");
+//    }
 
     /**
      * Constructor:
      */
-    public Entry(reger.Accountuser accountuserOfAuthor, reger.Account accountOfEntry, reger.PrivateLabel plOfEntry, int logid){
-        populate(accountuserOfAuthor, accountOfEntry, plOfEntry, logid, null);
-    }
+//    public Entry(reger.Accountuser accountuserOfAuthor, reger.Account accountOfEntry, reger.PrivateLabel plOfEntry, int logid){
+//        populate(plOfEntry, logid, null, "XOXOXOXO");
+//    }
 
 
-    public void populate(reger.Accountuser accountuserOfPersonAccessing, reger.Account accountOfEntry, reger.PrivateLabel plOfEntry, int logid, javax.servlet.http.HttpServletRequest request){
-        //reger.core.Util.logtodb("Entry.populate().");
-        this.accountuserOfPersonAccessing=accountuserOfPersonAccessing;
-        this.accountOfEntry = accountOfEntry;
-        this.plOfEntry = plOfEntry;
-        if (accountOfEntry!=null){
-            this.accountid=accountOfEntry.getAccountid();
-            //Set the timezone to the account's timezoneid... this can be overridden by object users
-            this.entryTimezoneid = accountOfEntry.getTimezoneid();
-        }
+    public void populate(int logid, javax.servlet.http.HttpServletRequest request, String timezoneid){
         //Set logid
         this.logid=logid;
         if (request!=null){
             //Fills in generic fields like title, comments, etc.
-            populateGenericObjectFromRequest(request);
+            populateGenericObjectFromRequest(request, timezoneid);
             //Puts megadata fields into megafieldvalues hashtable.
             populateMegafieldValuesFromRequest(request);
         }
@@ -194,8 +161,8 @@ public class Entry {
 
 
 
-    public void populateGenericObjectFromRequest(javax.servlet.http.HttpServletRequest request){
-        //reger.core.Util.logtodb("Entry.populateGenericObjectFromRequest().");
+    private void populateGenericObjectFromRequest(javax.servlet.http.HttpServletRequest request, String timezoneid){
+        reger.core.Debug.debug(4, "Entry.java", "Entry.populateGenericObjectFromRequest().");
 
         if (request.getParameter("logid")!=null && reger.core.Util.isinteger(request.getParameter("logid"))) {
             this.logid=Integer.parseInt(request.getParameter("logid"));
@@ -232,24 +199,42 @@ public class Entry {
         if (request.getParameter("isapproved")!=null && reger.core.Util.isinteger(request.getParameter("isapproved"))) {
             this.isApproved=Integer.parseInt(request.getParameter("isapproved"));
         }
+        //Start date
+        int mm = 0;
         if (request.getParameter("mm")!=null && reger.core.Util.isinteger(request.getParameter("mm"))) {
-            this.mm=Integer.parseInt(request.getParameter("mm"));
+            mm=Integer.parseInt(request.getParameter("mm"));
         }
+        int dd = 0;
         if (request.getParameter("dd")!=null && reger.core.Util.isinteger(request.getParameter("dd"))) {
-            this.dd=Integer.parseInt(request.getParameter("dd"));
+            dd=Integer.parseInt(request.getParameter("dd"));
         }
+        int yyyy = 0;
         if (request.getParameter("yyyy")!=null && reger.core.Util.isinteger(request.getParameter("yyyy"))) {
-            this.yyyy=Integer.parseInt(request.getParameter("yyyy"));
+            yyyy=Integer.parseInt(request.getParameter("yyyy"));
         }
+        int h=0;
         if (request.getParameter("h")!=null && reger.core.Util.isinteger(request.getParameter("h"))) {
-            this.h=Integer.parseInt(request.getParameter("h"));
+            h=Integer.parseInt(request.getParameter("h"));
         }
+        int m = 0;
         if (request.getParameter("m")!=null && reger.core.Util.isinteger(request.getParameter("m"))) {
-            this.m=Integer.parseInt(request.getParameter("m"));
+            m=Integer.parseInt(request.getParameter("m"));
         }
+        String ampm = "am";
         if (request.getParameter("ampm")!=null) {
-            this.ampm=request.getParameter("ampm");
+            ampm=request.getParameter("ampm");
         }
+        if (mm==0 && dd==0 && yyyy==0 && h==0 && m==0){
+            dateGmt = TimeUtils.nowInGmtCalendar();
+        } else {
+            try{
+                Calendar dateFromForm = reger.core.TimeUtils.formtocalendar(yyyy, mm, dd, h, m, 0, ampm);
+                dateGmt = reger.core.TimeUtils.usertogmttime(dateFromForm, timezoneid);
+            } catch (Exception e){
+                reger.core.Debug.errorsave(e, "Entry.java");
+            }
+        }
+        //End date
         if (request.getParameter("eventtypeid")!=null  && !request.getParameter("eventtypeid").equals("") && reger.core.Util.isinteger(request.getParameter("eventtypeid"))) {
             this.eventtypeid=Integer.parseInt(request.getParameter("eventtypeid"));
         }
@@ -340,8 +325,10 @@ public class Entry {
      * This is used immediately upon clicking to create a new entry.  An eventid is created so that other elements like files
      * have a key to work off of.
      */
-    public boolean newEntryTemporary() {
+    public boolean newEntryTemporary(Account account, Accountuser accountUser) {
         boolean wasAGeneratedTitleUsed = false;
+        this.accountid = account.getAccountid();
+        this.accountuserid = accountUser.getAccountuserid();
         if (title.equals("")){
             wasAGeneratedTitleUsed = true;
             String logname = "";
@@ -357,14 +344,11 @@ public class Entry {
         }
 
         int tmpAcctuserid = -1;
-        if (accountuserOfPersonAccessing!=null){
-            tmpAcctuserid=accountuserOfPersonAccessing.getAccountuserid();
-        }
 
         //Add a new record to the Event Table.  This is a temporary entry.
         //-------------------------------------------------
         //---------------------=======---------------------
-        eventid = reger.core.db.Db.RunSQLInsert("INSERT INTO event(eventtypeid, locationid, date, title, comments, accountid, logid, favorite, isdraft, createdate, sizeinbytes, isapproved, accountuserid, istemporary) VALUES('"+ eventtypeid +"','0','"+ convertUsingEntrytimezoneid() +"','"+ reger.core.Util.cleanForSQL(title) +"','"+ reger.core.Util.cleanForSQL(comments) +"','"+ accountid +"','"+ logid +"','"+ favorite +"','"+ isDraft +"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+reger.core.Util.sizeInBytes(comments)+"','"+ isApproved +"', '"+tmpAcctuserid+"', '1')");
+        eventid = reger.core.db.Db.RunSQLInsert("INSERT INTO event(eventtypeid, locationid, date, title, comments, accountid, logid, favorite, isdraft, createdate, sizeinbytes, isapproved, accountuserid, istemporary) VALUES('"+ eventtypeid +"','0','"+ TimeUtils.dateformatfordb(dateGmt) +"','"+ reger.core.Util.cleanForSQL(title) +"','"+ reger.core.Util.cleanForSQL(comments) +"','"+ accountid +"','"+ logid +"','"+ favorite +"','"+ isDraft +"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+reger.core.Util.sizeInBytes(comments)+"','"+ isApproved +"', '"+tmpAcctuserid+"', '1')");
         //---------------------=======---------------------
         //-------------------------------------------------
 
@@ -383,13 +367,15 @@ public class Entry {
 
 
 
-    public void editEntryAll(int eventid) throws ValidationException{
+    public void editEntryAll(Account account, Accountuser accountUser, PrivateLabel pl) throws ValidationException{
         ValidationException validationErrors = new ValidationException();
 
-        this.eventid = eventid;
 
-        //reger.core.Util.logtodb("Made it to Entry.editEntryAll(): eventid=" + eventid);
 
+        this.accountid=account.getAccountid();
+        this.accountuserid = accountUser.getAccountuserid();
+
+        Debug.debug(3, "Entry.java", "Edit entry called: eventid=" + eventid + ", accountid=" + accountid + ", accountuserid=" + accountuserid);
 
         //Validate the entry and the accompanying megadata
         try {
@@ -399,7 +385,7 @@ public class Entry {
         }
         //Validate main entry
         try {
-            validateEntryAll();
+            validateEntryAll(account, accountUser);
         } catch (ValidationException mainErrors){
             validationErrors.addErrorsFromAnotherValidationException(mainErrors);
         }
@@ -424,20 +410,20 @@ public class Entry {
         }
 
         //If the user can't publish without approval
-        if (!accountuserOfPersonAccessing.userCanDoAcl("PUBLISHWITHOUTAPPROVAL", accountOfEntry.getAccountid()) || isApproved!=1){
+        if (!accountUser.userCanDoAcl("PUBLISHWITHOUTAPPROVAL", account.getAccountid()) || isApproved!=1){
             isApproved = 0;
         }
 
         //Ping trackbacks
         if (isApproved==1 && isDraft==0){
-            pingTrackback();
+            pingTrackback(account);
         }
 
         //Content flagging
-        if (plOfEntry.getIscontentflaggingon()){
-            if (reger.OffensiveContentFlagger.isOffensive(this, plOfEntry.getPlid())){
+        if (pl.getIscontentflaggingon()){
+            if (reger.OffensiveContentFlagger.isOffensive(this, pl.getPlid())){
                 isflaggedformoderator = 1;
-                if (plOfEntry.getDoesflaggedcontentneedtobeapproved()){
+                if (pl.getDoesflaggedcontentneedtobeapproved()){
                     ismoderatorapproved = 0;
                     requiresmoderatorapproval = 1;
                 }
@@ -445,14 +431,14 @@ public class Entry {
         }
 
         //Deal with pl.doallpostsneedtobeapproved
-        if (plOfEntry.getDoallpostsneedtobeapproved()){
+        if (pl.getDoallpostsneedtobeapproved()){
             ismoderatorapproved = 0;
             requiresmoderatorapproval = 1;
         }
 
 
         //Set lastmodifiedbyuserdate to now
-        lastmodifiedbyuserdate = reger.core.TimeUtils.nowInUserTimezone("GMT");
+        lastmodifiedbyuserdate = reger.core.TimeUtils.nowInGmtCalendar();
         //reger.core.Util.logtodb("isflaggedformoderator=" + isflaggedformoderator + "<br>ismoderatorapproved=" + ismoderatorapproved);
 
 
@@ -471,7 +457,7 @@ public class Entry {
         //Edit the entry in the database
         //-------------------------------------------------
         //---------------------=======---------------------
-        int rs2 = reger.core.db.Db.RunSQLUpdate("UPDATE event SET locationid='"+ locationid +"', date='"+ convertUsingEntrytimezoneid() +"', title='"+ reger.core.Util.cleanForSQL(title) +"', comments='"+ reger.core.Util.cleanForSQL(comments) +"', favorite='"+ favorite +"', isdraft='"+ isDraft +"', sizeinbytes='"+reger.core.Util.sizeInBytes(comments)+"', isapproved='"+ isApproved +"', accountuserid='"+accountuserid+"', istemporary='0', isflaggedformoderator='"+isflaggedformoderator+"', lastmodifiedbyuserdate='"+reger.core.TimeUtils.dateformatfordb(lastmodifiedbyuserdate)+"', ismoderatorapproved='"+ismoderatorapproved+"', requiresmoderatorapproval='"+requiresmoderatorapproval+"' WHERE eventid='"+ this.eventid +"' AND accountid='"+ accountid +"'");
+        int rs2 = reger.core.db.Db.RunSQLUpdate("UPDATE event SET locationid='"+ locationid +"', date='"+ TimeUtils.dateformatfordb(dateGmt) +"', title='"+ reger.core.Util.cleanForSQL(title) +"', comments='"+ reger.core.Util.cleanForSQL(comments) +"', favorite='"+ favorite +"', isdraft='"+ isDraft +"', sizeinbytes='"+reger.core.Util.sizeInBytes(comments)+"', isapproved='"+ isApproved +"', accountuserid='"+accountuserid+"', istemporary='0', isflaggedformoderator='"+isflaggedformoderator+"', lastmodifiedbyuserdate='"+reger.core.TimeUtils.dateformatfordb(lastmodifiedbyuserdate)+"', ismoderatorapproved='"+ismoderatorapproved+"', requiresmoderatorapproval='"+requiresmoderatorapproval+"' WHERE eventid='"+ this.eventid +"' AND accountid='"+ accountid +"'");
         //---------------------=======---------------------
         //-------------------------------------------------
 
@@ -496,8 +482,8 @@ public class Entry {
 
 
         //Only ping when public entries are made
-        if (!plOfEntry.getForcelogintoviewsites() && plOfEntry.getIsweblogscompingon() && getLogPermission(logid)==reger.Vars.LOGACCESSPUBLIC && ismoderatorapproved==1) {
-            reger.api.WebLogsComPing.ping(accountOfEntry.getAccountid());
+        if (!pl.getForcelogintoviewsites() && pl.getIsweblogscompingon() && getLogPermission(logid)==reger.Vars.LOGACCESSPUBLIC && ismoderatorapproved==1) {
+            reger.api.WebLogsComPing.ping(account.getAccountid());
         }
 
         //Linkrot parse of urls
@@ -519,7 +505,7 @@ public class Entry {
 
 
 
-        Debug.debug(5, "", "Entry edited: eventid=" + eventid);
+        Debug.debug(3, "Entry.java", "Entry edited: eventid=" + eventid);
 
     }
 
@@ -549,12 +535,7 @@ public class Entry {
                 Debug.errorsave(e, "");
             }
 
-            //Convert server time to user time
-            //Calendar usertime=reger.core.TimeUtils.gmttousertime( reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][0]), getTimezoneIdFromAccountid(accountid));
-            Calendar usertime=reger.core.TimeUtils.gmttousertime( dateGmt, entryTimezoneid);
 
-            //Populate this object's time vars
-            populateThisEventTimeVarsFromCal(usertime);
 
             eventtypeid = Integer.parseInt(rstEventdetails[0][1]);
             title = rstEventdetails[0][2];
@@ -578,7 +559,7 @@ public class Entry {
             isflaggedformoderator = Integer.parseInt(rstEventdetails[0][10]);
             ismoderatorapproved = Integer.parseInt(rstEventdetails[0][11]);
             istemporary = Integer.parseInt(rstEventdetails[0][12]);
-            lastmodifiedbyuserdate = reger.core.TimeUtils.gmttousertime( reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][13]), entryTimezoneid);
+            lastmodifiedbyuserdate = reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][13]);
             entryKey = rstEventdetails[0][14];
         }
 
@@ -673,14 +654,10 @@ public class Entry {
             return false;
         }
 
-        //Get time on the physical server (probably in Atlanta)
-        Calendar usertime = reger.core.TimeUtils.nowInUserTimezone(entryTimezoneid);;
-
-        //Populate this object's time vars
-        populateThisEventTimeVarsFromCal(usertime);
+        dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
 
         //Set the accountuserid to the currently logged-in user
-        this.accountuserid = accountuserOfPersonAccessing.getAccountuserid();
+        //this.accountuserid = accountuserOfPersonAccessing.getAccountuserid();
         this.author = setAuthorFromAccountuserid(accountuserid);
 
         //Set some basic values
@@ -726,7 +703,7 @@ public class Entry {
 
 
 
-    public void validateEntryAll() throws ValidationException {
+    private void validateEntryAll(Account account, Accountuser accountUser) throws ValidationException {
         ValidationException validationErrors = new ValidationException();
         //Spell check
         if (dospellcheck && haveSpellingErrors){
@@ -734,18 +711,18 @@ public class Entry {
         }
 
         //Make sure we have enough space on the account before processing it.
-        if ((long)reger.core.Util.sizeInBytes(comments)>(accountOfEntry.getMaxspaceinbytes() - accountOfEntry.getSpaceused())){
+        if ((long)reger.core.Util.sizeInBytes(comments)>(account.getMaxspaceinbytes() - account.getSpaceused())){
             validationErrors.addValidationError("There is not enough text space available in this account. You can upgrade to <a href='accountstatus.log'>Pro</a> for more space.");
         }
 
         //Make sure the logged-in user can administer this log
-        if (!accountuserOfPersonAccessing.userCanViewLog(logid)){
+        if (!accountUser.userCanAuthorLog(logid)){
             validationErrors.addValidationError("The logged-in user doesn't have access to this log.");
         }
 
         //logid must be associated with this account
-        if (!Account.isLogidValidForAccountid(accountid, logid)){
-            validationErrors.addValidationError("The given log is not associated with the given account.");
+        if (!Account.isLogidValidForAccountid(account.getAccountid(), logid)){
+            validationErrors.addValidationError("The given log (logid="+logid+") is not associated with the given account (accountid="+accountid+").");
         }
 
         //Title must not be blank
@@ -763,10 +740,7 @@ public class Entry {
             validationErrors.addErrorsFromAnotherValidationException(locErrors);
         }
 
-        //Make sure the user's date is valid
-        if (!reger.core.Util.isDate(yyyy,mm,dd)) {
-            validationErrors.addValidationError("The date you entered is not a valid date.");
-        }
+
         //End Date Verify
 
         if (validationErrors.getErrors().length>0){
@@ -875,75 +849,21 @@ public class Entry {
     /*
     * Converts the incoming time to a String
     */
-    public String convertUsingEntrytimezoneid() {
-        //dbstringtocalendar(String instr)
-        Calendar convertTime = reger.core.TimeUtils.formtocalendar(yyyy, mm+1, dd, h, m, 0, ampm);
-
-        //reger.core.Util.logtodb("eventGeneric.java<br>h="+h+"<br>m="+m+"<br>ampm="+ampm+"<br>mm="+mm+"<br>dd="+dd+"<br>yyyy="+yyyy);
-
-        //Convert from the user's time to the server's time
-        //First try to use the user's timezoneid but if one doesn't exist, revert to the account timezoneid.
-
-        //reger.core.Util.logtodb("eventGeneric.java before usertogmttime()<br>convertUsingEntrytimezoneid=" + reger.core.TimeUtils.dateformatfordb(convertUsingEntrytimezoneid));
-        convertTime=reger.core.TimeUtils.usertogmttime(convertTime, entryTimezoneid);
-        //reger.core.Util.logtodb("eventGeneric.java after usertogmttime()<br>convertUsingEntrytimezoneid=" + reger.core.TimeUtils.dateformatfordb(convertUsingEntrytimezoneid));
-
-        //Format as string
-        String out = reger.core.TimeUtils.dateformatfordb(convertTime);
-
-        return out;
-    }
+//    public String convertUsingEntrytimezoneid() {
+//        //dbstringtocalendar(String instr)
+//        Calendar convertTime = reger.core.TimeUtils.formtocalendar(yyyy, mm+1, dd, h, m, 0, ampm);
+//        convertTime=reger.core.TimeUtils.usertogmttime(convertTime, entryTimezoneid);
+//
+//        //Format as string
+//        String out = reger.core.TimeUtils.dateformatfordb(convertTime);
+//
+//        return out;
+//    }
 
 
-    /*
-    * Populates this object's h,m,ampm,mm,dd,yyyy with values from a calendar
-    */
-    public void populateThisEventTimeVarsFromCal(Calendar cal) {
 
-        String date = reger.core.TimeUtils.dateformatfordb(cal);
 
-        //Date, ugly way
-        //2004-02-05 12:44:31
-        h=Integer.parseInt(date.substring(11,13));
-        m=Integer.parseInt(date.substring(14,16));
-        mm = Integer.parseInt(date.substring(5,7))-1;
-        dd = Integer.parseInt(date.substring(8,10));
-        yyyy = Integer.parseInt(date.substring(0,4));
 
-        if (h>=13){
-            ampm = "PM";
-            h=h-12;
-        } else if (h==12){
-            ampm = "PM";
-            h=12;
-        } else if (h==0){
-            ampm = "AM";
-            h=12;
-        } else {
-            ampm = "AM";
-            h=h;
-        }
-
-        //if (h>=12){
-        //ampm="PM";
-        //} //else {
-        //ampm="AM";
-        //}
-
-        //Date, clean, but not working way
-        //h=cal.get(Calendar.HOUR);
-        //m=cal.get(Calendar.MINUTE);
-        //mm = cal.get(Calendar.MONTH);
-        //dd = cal.get(Calendar.DAY_OF_MONTH);
-        //yyyy = cal.get(Calendar.YEAR);
-        //int calampm = cal.get(Calendar.AM_PM);
-        //if (calampm == Calendar.PM){
-        //   ampm="PM";
-        //} else {
-        //	ampm="AM";
-        //}
-
-    }
 
 
 
@@ -1001,14 +921,14 @@ public class Entry {
     }
 
 
-    public void pingTrackback(){
-        if (accountOfEntry.getIstrackbackon() && !trackbackurl.equals("")){
+    public void pingTrackback(Account account){
+        if (account.getIstrackbackon() && !trackbackurl.equals("")){
             //The thread is initialized
             reger.api.TrackbackPing tThr = new reger.api.TrackbackPing();
             //Set some vars
             tThr.rawUrlsToPing = this.trackbackurl;
             tThr.eventid = this.eventid;
-            tThr.accountOfEntry = this.accountOfEntry;
+            tThr.accountOfEntry = account;
             //The thread is started
             tThr.start();
         }
@@ -1017,9 +937,9 @@ public class Entry {
     /**
      * Gets a calendar using the current values in mm, dd, yyyy h:m
      */
-    public Calendar getCalendar(){
-        return reger.core.TimeUtils.formtocalendar(yyyy, mm+1, dd, h, m, 0, ampm);
-    }
+//    public Calendar getCalendar(){
+//        return dateGmt;
+//    }
 
 
     /**
@@ -1167,8 +1087,9 @@ public class Entry {
 
 
         //Update space usage now that the event is gone
-        if (accountOfEntry!=null){
-            accountOfEntry.updateSpaceused();
+        Account account = reger.cache.AccountCache.get(accountid);
+        if (account!=null){
+            account.updateSpaceused();
         }
 
         //Update the AccountCounts cache

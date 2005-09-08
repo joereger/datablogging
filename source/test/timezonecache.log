@@ -31,7 +31,7 @@ pageProps.pathToAppRoot="";
 
 reger.executionTime executionTime1 = new reger.executionTime();
 for (int i = 1; i<=5000; i++) {
-    Calendar est1 = reger.core.TimeUtils.gmttousertime(Calendar.getInstance(), "CST");
+    Calendar est1 = reger.core.TimeUtils.gmttousertime(Calendar.getInstance(), "Australia/Sydney");
 }
 mb.append("<br>executionTime1=" + executionTime1.getElapsedMillis() + " ms");
 

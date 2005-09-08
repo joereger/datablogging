@@ -38,7 +38,7 @@ public class EntryStructuredBlogginglRenderer {
 
                     //Datetime
                     Element elDt = new Element("datetime");
-                    elDt.addContent(TimeUtils.dateformatUtc(ent.getCalendar()));
+                    elDt.addContent(TimeUtils.dateformatUtc(ent.dateGmt));
                     entry.addContent(elDt);
 
 

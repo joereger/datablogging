@@ -24,7 +24,7 @@ pageProps.helpText="This page allows you to add or edit weblog entries.  Once yo
 /*----------------------------------------------------*/
 
 //Instantiate the entry object
-pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
+pageProps.entry.populate(pageProps.logProps.logid, request, userSession.getAccountuser().getUsertimezoneid());
 
 
 
@@ -40,9 +40,6 @@ if (!userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
     }
 }
 
-//Any log entry viewed from this admin entry.log should use userSession.getAccountuser().getUsertimezoneid()
-pageProps.entry.entryTimezoneid=userSession.getAccountuser().getUsertimezoneid();
-
 //Start Pageflow
 if (pageProps.action!=null && !pageProps.action.equals("")) {
     if (pageProps.action.equals("refresh")) {
@@ -54,7 +51,7 @@ if (pageProps.action!=null && !pageProps.action.equals("")) {
         }
     } else if (pageProps.action.equals("leavepage")) {
         try{
-            pageProps.entry.editEntryAll(pageProps.entry.eventid);
+            pageProps.entry.editEntryAll(userSession.getAccount(), userSession.getAccountuser(), userSession.getPl());
             //Update images
             boolean imagesuccess = reger.MegaHtmlFormImageEdits.saveEdits(userSession, pageProps, request);
             //Update the usage data
@@ -77,8 +74,8 @@ if (pageProps.action!=null && !pageProps.action.equals("")) {
 	} else if (pageProps.action.equals("editsubmit")) {
 	    try{
             pageProps.entry.getEntryAll(pageProps.entry.eventid);
-            pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl() , pageProps.logProps.logid, request);
-            pageProps.entry.editEntryAll(pageProps.entry.eventid);
+            pageProps.entry.populate(pageProps.logProps.logid, request, userSession.getAccountuser().getUsertimezoneid());
+            pageProps.entry.editEntryAll(userSession.getAccount(), userSession.getAccountuser(), userSession.getPl());
             //Update images
             boolean imagesuccess = reger.MegaHtmlFormImageEdits.saveEdits(userSession, pageProps, request);
             //Update the usage data
@@ -120,7 +117,7 @@ if (pageProps.action!=null && !pageProps.action.equals("")) {
 		pageProps.entry.getBlankEntryAll();
 	} else {
 		pageProps.entry.getBlankEntryAll();
-		pageProps.entry.newEntryTemporary();
+		pageProps.entry.newEntryTemporary(userSession.getAccount(), userSession.getAccountuser());
 	}
 } else {
     //If we have an eventid we can force an edit
@@ -139,7 +136,7 @@ if (pageProps.action!=null && !pageProps.action.equals("")) {
 boolean displayasadmin=true;
 
 //Append the top of the form
-mb.append(reger.MegaHtmlFormTop.getHtml(userSession, pageProps, displayasadmin, request));
+mb.append(reger.MegaHtmlFormTop.getHtml(userSession, pageProps, displayasadmin, request, userSession.getAccountuser().getUsertimezoneid()));
 //Append the center of the page
 mb.append(reger.MegaHtmlFormCenter.getHtml(userSession, pageProps, displayasadmin, request));
 //Append the bottom of the form

@@ -62,74 +62,79 @@ mb.append("<font face=arial size=-1>Sample</font>");
 mb.append("</td>");
 mb.append("</tr>");
 
-//Var
-FieldType fld;
+////Var
+//FieldType fld;
+//
+////Text Box
+//fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPETEXTBOX);
+//mb.append("<tr>");
+//mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPETEXTBOX+"' checked></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+//mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
+//mb.append("</td>");
+//mb.append("</tr>");
+//
+////Dropdown
+//fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPEDROPDOWN);
+//mb.append("<tr>");
+//mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPEDROPDOWN+"'></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+//mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
+//mb.append("</td>");
+//mb.append("</tr>");
+//
+////Radios Vertical
+//fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPEVERTICALRADIOS);
+//mb.append("<tr>");
+//mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPEVERTICALRADIOS+"'></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+//mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
+//mb.append("</td>");
+//mb.append("</tr>");
+//
+////Radios Horizontal
+//fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPEHORIZONTALRADIOS);
+//mb.append("<tr>");
+//mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPEHORIZONTALRADIOS+"'></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+//mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
+//mb.append("</td>");
+//mb.append("</tr>");
+//
+////Numeric Range
+//fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPENUMERICRANGE);
+//mb.append("<tr>");
+//mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPENUMERICRANGE+"'></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+//mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+//mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
+//mb.append("</td>");
+//mb.append("</tr>");
 
-//Text Box
-fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPETEXTBOX);
-mb.append("<tr>");
-mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPETEXTBOX+"' checked></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
-mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
-mb.append("</td>");
-mb.append("</tr>");
 
-//Dropdown
-fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPEDROPDOWN);
-mb.append("<tr>");
-mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPEDROPDOWN+"'></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
-mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
-mb.append("</td>");
-mb.append("</tr>");
+FieldType[] fts = FieldTypeFactory.getAllFieldTypes();
+for (int i = 0; i < fts.length; i++) {
+    reger.mega.FieldType fld = fts[i];
+    
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPETIME+"'></td>");
+    mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
+    mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
+    mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
+    mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
+    mb.append("</td>");
+    mb.append("</tr>");
 
-//Radios Vertical
-fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPEVERTICALRADIOS);
-mb.append("<tr>");
-mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPEVERTICALRADIOS+"'></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
-mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
-mb.append("</td>");
-mb.append("</tr>");
-
-//Radios Horizontal
-fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPEHORIZONTALRADIOS);
-mb.append("<tr>");
-mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPEHORIZONTALRADIOS+"'></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
-mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
-mb.append("</td>");
-mb.append("</tr>");
-
-//Numeric Range
-fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPENUMERICRANGE);
-mb.append("<tr>");
-mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPENUMERICRANGE+"'></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
-mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
-mb.append("</td>");
-mb.append("</tr>");
-
-//Time
-fld = FieldTypeFactory.getHandlerByFieldtype(FieldType.FIELDTYPETIME);
-mb.append("<tr>");
-mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPETIME+"'></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
-mb.append("<td valign=middle align=left bgcolor=#eeeeee>");
-mb.append(reger.Help.tip("Sample", fld.getHtmlAdminSample(), false, pageProps.pathToAppRoot));
-mb.append("</td>");
-mb.append("</tr>");
+ }
 
 
 

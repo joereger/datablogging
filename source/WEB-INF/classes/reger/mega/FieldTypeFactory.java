@@ -7,7 +7,6 @@ public class FieldTypeFactory {
     /**
      * Accepts a fieldtype and returns a FieldType handler object.
      * @param fieldtype
-     * @return
      */
     public static FieldType getHandlerByFieldtype(int fieldtype){
 
@@ -23,6 +22,8 @@ public class FieldTypeFactory {
             return new FieldTypeTimeperiod();
         } else if (fieldtype==FieldType.FIELDTYPEVERTICALRADIOS){
             return new FieldTypeVerticalradios();
+        } else if (fieldtype==FieldType.FIELDTYPECONTAINER){
+            return new FieldTypeContainer();
         } else {
             Debug.logtodb("No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming fieldtype=" + fieldtype, "");
             return null;
@@ -44,11 +45,27 @@ public class FieldTypeFactory {
             return new FieldTypeTimeperiod((FieldTypeTimeperiod)field);
         } else if (field.getFieldtype()==FieldType.FIELDTYPEVERTICALRADIOS){
             return new FieldTypeVerticalradios((FieldTypeVerticalradios)field);
+        } else if (field.getFieldtype()==FieldType.FIELDTYPECONTAINER){
+            return new FieldTypeContainer((FieldTypeContainer)field);
         } else {
             Debug.logtodb("No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming field.getFieldname()=" + field.getFieldname(), "");
             return null;
         }
     }
+
+
+    public static FieldType[] getAllFieldTypes(){
+        FieldType[] fts = new FieldType[7];
+        fts[0] = new FieldTypeDropdown();
+        fts[1] = new FieldTypeHorizontalradios();
+        fts[2] = new FieldTypeNumericrange();
+        fts[3] = new FieldTypeTextbox();
+        fts[4] = new FieldTypeTimeperiod();
+        fts[5] = new FieldTypeVerticalradios();
+        fts[6] = new FieldTypeContainer();
+        return fts;
+    }
+
 }
 
 

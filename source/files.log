@@ -86,10 +86,6 @@ mb.append(reger.ImageListHtml.tableEnd());
         StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
 
-//Instantiate the entry object
-pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
-
-
 sc.append(reger.SideColumn.sideColTableStart("Keyword Tags"));
 sc.append(reger.SideColumn.sideColHeaderRow("Keyword Tags"));
 

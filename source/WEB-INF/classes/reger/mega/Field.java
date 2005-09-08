@@ -61,6 +61,16 @@ public class Field implements Cloneable, FieldInterface {
         return null;
     }
 
+    public Field(int fieldtype, int eventtypeid, int logid, String fieldname, String fielddescription, int megadatatypeid, int isrequired){
+        this.fieldtype = fieldtype;
+        this.eventtypeid = eventtypeid;
+        this.fieldname = fieldname;
+        this.fielddescription = fielddescription;
+        this.megadatatypeid = megadatatypeid;
+        this.isrequired = isrequired;
+        this.logid = logid;
+    }
+
     public void populateFromAnotherField(Field field){
         this.megafieldid = field.megafieldid;
         this.fieldtype = field.fieldtype;
@@ -150,7 +160,7 @@ public class Field implements Cloneable, FieldInterface {
 //        debug.append("isFieldOwnedByUser="+isFieldOwnedByUser+"<br>");
 
 
-        if (fieldname.equals("")) {
+        if (fieldname==null || fieldname.equals("")) {
             fieldname="New Field";
         }
 

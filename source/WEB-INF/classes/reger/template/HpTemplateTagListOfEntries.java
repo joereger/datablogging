@@ -38,7 +38,6 @@ public class HpTemplateTagListOfEntries implements HpTemplateTag{
      * The workhorse of the tag which services live requests.
      * It takes in these elements and then spits out what the
      * tag should be replaced with on the screen.
-     * @return
      */
     public String getHtml(UserSession userSession, javax.servlet.http.HttpServletRequest request, PageProps pageProps){
 

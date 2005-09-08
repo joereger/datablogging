@@ -2,14 +2,8 @@ package reger.marketingSite;
 
 import reger.core.db.Db;
 import reger.UserSession;
-import reger.Log;
 import reger.mega.FieldLayout;
-import reger.mega.Field;
-import reger.mega.MegaChart;
-import reger.mega.MegaChartHtmlRenderer;
 import reger.template.Template;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Html for the marketing site tour section.
@@ -75,7 +69,7 @@ public class TourHtml {
             mb.append("<tr>");
             mb.append("<td valign=top bgcolor=#ffffff>");
             //Append the top of the form
-            mb.append(reger.MegaHtmlFormTop.getHtml(tmpUserSession, pageProps, displayasadmin, request));
+            mb.append(reger.MegaHtmlFormTop.getHtml(tmpUserSession, pageProps, displayasadmin, request, "GMT"));
             //Append the center of the page
             //mb.append(reger.MegaHtmlFormCenter.getHtml(userSession, pageProps, displayasadmin, request));
             //Display the fields
@@ -1283,7 +1277,7 @@ public class TourHtml {
         //-----------------------------------
         //-----------------------------------
         if (rstEventtype!=null && rstEventtype.length>0){
-        	for(int i=0; i<rstEventtype.length; i++){
+            for(int i=0; i<rstEventtype.length; i++){
 
 
                 ff.append("<!-- Begin Row -->");
@@ -1325,7 +1319,7 @@ public class TourHtml {
 
 
                 ff.append("<!-- End Row -->");
-        	}
+            }
         }
 
 

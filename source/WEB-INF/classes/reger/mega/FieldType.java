@@ -21,6 +21,7 @@ public interface FieldType extends FieldInterface{
     public static final int FIELDTYPETEXTBOX = 5;
     public static final int FIELDTYPENUMERICRANGE = 7;
     public static final int FIELDTYPETIME = 8;
+    public static final int FIELDTYPECONTAINER = 9;
     //Charting x Axis derived xMegafieldid values.  These must be negative
     public static final int XAXISDATETIME = -2;
     public static final int XAXISTIMEOFDAY = -3;

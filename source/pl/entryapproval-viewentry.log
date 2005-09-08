@@ -30,7 +30,7 @@ pageProps.isEventidRequired=true;
 /*----------------------------------------------------*/
 
 //Instantiate the entry object
-pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
+pageProps.entry.populate(pageProps.logProps.logid, request, userSession.getAccountuser().getUsertimezoneid());
 
 
 //Start PLID-choosing SQL
@@ -131,7 +131,7 @@ mb.append("</table>");
 boolean displayasadmin=false;
 
 //Append the top of the form
-mb.append(reger.MegaHtmlFormTop.getHtml(userSession, pageProps, displayasadmin, request));
+mb.append(reger.MegaHtmlFormTop.getHtml(userSession, pageProps, displayasadmin, request, userSession.getAccountuser().getUsertimezoneid()));
 //Append the center of the page
 mb.append(reger.MegaHtmlFormCenter.getHtml(userSession, pageProps, displayasadmin, request));
 //Append the bottom of the form

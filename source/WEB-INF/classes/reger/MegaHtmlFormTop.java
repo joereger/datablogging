@@ -1,13 +1,14 @@
 package reger;
 
 import reger.core.Debug;
+import reger.core.TimeUtils;
 
 /**
  *
  */
 public class MegaHtmlFormTop {
 
-    public static StringBuffer getHtml(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, boolean displayasadmin, javax.servlet.http.HttpServletRequest request){
+    public static StringBuffer getHtml(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, boolean displayasadmin, javax.servlet.http.HttpServletRequest request, String timezoneid){
         StringBuffer mb = new StringBuffer();
 
 
@@ -140,7 +141,8 @@ public class MegaHtmlFormTop {
             if (!editLayout){
                 mb.append("<form name='entryform' id='entryform' method='post' action='entry.log' name='post'>");
                 //dHtml jscalendar - also note script call below date/time fields
-                String initialDate = pageProps.entry.yyyy+"-"+(pageProps.entry.mm+1)+"-"+pageProps.entry.dd+" "+pageProps.entry.h+":"+pageProps.entry.m+" "+pageProps.entry.ampm.toUpperCase();
+                //String initialDate = pageProps.entry.yyyy+"-"+(pageProps.entry.mm+1)+"-"+pageProps.entry.dd+" "+pageProps.entry.h+":"+pageProps.entry.m+" "+pageProps.entry.ampm.toUpperCase();
+                String initialDate = TimeUtils.dateformatfordb(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid));
                 mb.append(reger.MegaHtmlFormJscalendar.scriptHtmlSetup(pageProps.pathToAppRoot, initialDate));
                 mb.append("<input type=hidden name=action value='"+submitstring+"'>");
                 mb.append("<input type=hidden name=eventid value='"+pageProps.entry.eventid+"'>");
@@ -189,6 +191,7 @@ public class MegaHtmlFormTop {
 
             mb.append("<tr>");
             //Month
+            int mm = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "month");
             mb.append("<td bgcolor='#cccccc' width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin){
 
@@ -196,48 +199,50 @@ public class MegaHtmlFormTop {
                 mb.append("<select name='mm' id=\"j_mm\" "+disabledFormText+">");
                 for(int i=0; i<=11; i++){
                     mb.append("<option value='" + i + "' ");
-                    if (i==pageProps.entry.mm) {
+                    if (i==mm) {
                         mb.append("selected");
                     }
                     mb.append(">" + (i+1) + "</option>");
                 }
                 mb.append("</select>");
             } else {
-                mb.append((pageProps.entry.mm+1));
+                mb.append((mm+1));
             }
             mb.append("<br><font face=arial size=-2 class=smallfont>Month</font></td>");
 
             //Day
+            int dd = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "day");
             mb.append("<td bgcolor='#cccccc' width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin) {
                 mb.append("<select name='dd' id=\"j_dd\" "+disabledFormText+">");
                 for(int i=1; i<=31; i++){
                     mb.append("<option value='" + i + "' ");
-                    if (i==pageProps.entry.dd) {
+                    if (i==dd) {
                         mb.append("selected");
                     }
                     mb.append(">" + i + "</option>");
                 }
                 mb.append("</select>");
             } else {
-                mb.append(pageProps.entry.dd);
+                mb.append(dd);
             }
             mb.append("<br><font face=arial size=-2 class=smallfont>Day</font></td>");
 
             //Year
+            int yyyy = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "year");
             mb.append("<td bgcolor='#cccccc' width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin) {
                 mb.append("<select name='yyyy' id=\"j_yyyy\" "+disabledFormText+">");
                 for(int i=1900; i<=2020; i++){
                     mb.append("<option value='" + i + "' ");
-                    if (i==pageProps.entry.yyyy) {
+                    if (i==yyyy) {
                         mb.append("selected");
                     }
                     mb.append(">" + i + "</option>");
                 }
                 mb.append("</select>");
             } else {
-                mb.append(pageProps.entry.yyyy);
+                mb.append(yyyy);
             }
             mb.append("<br><font face=arial size=-2 class=smallfont>Year</font></td>");
 
@@ -255,10 +260,10 @@ public class MegaHtmlFormTop {
             mb.append("</tr>");
 
             //Hour
+            int h = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "hour");
             mb.append("<tr><td bgcolor='#cccccc' align=left valign=top class=logentryheader>");
             if (displayasadmin) {
                 mb.append("<select name='h' id=\"j_h\" "+disabledFormText+">");
-                int h=pageProps.entry.h;
                 if (h>=13) {
                     h=h-12;
                 } else if (h==0){
@@ -273,7 +278,6 @@ public class MegaHtmlFormTop {
                 }
                 mb.append("</select>");
             } else {
-                int h=pageProps.entry.h;
                 if (h>=13) {
                     h=h-12;
                 } else if (h==0){
@@ -284,39 +288,41 @@ public class MegaHtmlFormTop {
             mb.append("<br><font face=arial size=-2 class=smallfont>Hour</font></td>");
 
             //Minute
+            int m = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "minute");
             mb.append("<td bgcolor='#cccccc' align=left valign=top class=logentryheader>");
             if (displayasadmin) {
                 mb.append("<select name='m' id=\"j_m\" "+disabledFormText+">");
                 for(int i=0; i<=59; i++){
                     mb.append("<option value='" + i + "' ");
-                    if (i==pageProps.entry.m) {
+                    if (i==m) {
                         mb.append("selected");
                     }
                     mb.append(">" + i + "</option>");
                 }
                 mb.append("</select>");
             } else {
-                mb.append(pageProps.entry.m);
+                mb.append(m);
             }
             mb.append("<br><font face=arial size=-2 class=smallfont>Minute</font></td>");
 
             //AMPM
+            String ampm = TimeUtils.getAmPm(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid));
             mb.append("<td bgcolor='#cccccc' align=left valign=top class=logentryheader>");
             if (displayasadmin) {
                 mb.append("<select name='ampm' id=\"j_ampm\" "+disabledFormText+">");
                 mb.append("<option value='AM' ");
-                if (pageProps.entry.ampm!=null && pageProps.entry.ampm.equals("AM")) {
+                if (ampm!=null && ampm.equals("AM")) {
                     mb.append("selected");
                 }
                 mb.append(">AM</option>");
                 mb.append("<option value='PM' ");
-                if (pageProps.entry.ampm!=null && pageProps.entry.ampm.equals("PM")) {
+                if (ampm!=null && ampm.equals("PM")) {
                     mb.append("selected");
                 }
                 mb.append(">PM</option>");
                 mb.append("</select>");
             } else {
-                if (pageProps.entry.ampm!=null && pageProps.entry.ampm.equals("AM")) {
+                if (ampm!=null && ampm.equals("AM")) {
                     mb.append("AM");
                 } else {
                     mb.append("PM");
@@ -344,7 +350,7 @@ public class MegaHtmlFormTop {
 
             //Show the timezone
             mb.append("<tr><td colspan=3 bgcolor=#cccccc valign=top class=logentryheader>");
-            mb.append("<font face=arial size=-2 class=smallfont>Timezone: <b>"+pageProps.entry.entryTimezoneid+"</b></font>");
+            mb.append("<font face=arial size=-2 class=smallfont>Timezone: <b>"+timezoneid+"</b></font>");
             mb.append("</td></tr>");
 
             //Show the calendar chooser or the Ago Text
@@ -356,7 +362,7 @@ public class MegaHtmlFormTop {
                     mb.append(reger.MegaHtmlFormJscalendar.theScript(pageProps));
                 }
             } else {
-                mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.convertFromOneTimeZoneToAnother(pageProps.entry.getCalendar(), userSession.getAccount().getTimezoneid(), "GMT")));
+                mb.append(reger.core.TimeUtils.agoText(pageProps.entry.dateGmt));
             }
             mb.append("</td></tr>");
 

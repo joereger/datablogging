@@ -29,10 +29,6 @@ if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.g
 }
 pageProps.entry = reger.cache.EntryCache.get(tmpEventid);
 
-//Any log entry viewed from this public entry.log should use userSession.getAccount().getTimezoneid()
-pageProps.entry.entryTimezoneid=userSession.getAccount().getTimezoneid();
-//pageProps.entry.getEntryAll();
-
 //Hide draft and unapproved entries
 if (pageProps.entry.isDraft==1 || pageProps.entry.isApproved==0){
     response.sendRedirect("index.log");
@@ -44,7 +40,7 @@ if (pageProps.entry.isDraft==1 || pageProps.entry.isApproved==0){
 boolean displayasadmin=false;
 
 //Append the top of the form
-mb.append(reger.MegaHtmlFormTop.getHtml(userSession, pageProps, displayasadmin, request));
+mb.append(reger.MegaHtmlFormTop.getHtml(userSession, pageProps, displayasadmin, request, userSession.getAccount().getTimezoneid()));
 //Append the center of the page
 mb.append(reger.MegaHtmlFormCenter.getHtml(userSession, pageProps, displayasadmin, request));
 //Append the bottom of the form

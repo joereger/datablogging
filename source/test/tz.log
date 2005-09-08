@@ -30,7 +30,7 @@ mb.append("<br><br><b>Test 1 ---------------- </b>");
 //Select user's create date
 //-----------------------------------
 //-----------------------------------
-String[][] rstCreateDate= db.RunSQL("SELECT createdate FROM account WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+String[][] rstCreateDate= reger.core.db.Db.RunSQL("SELECT createdate FROM account WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
 //-----------------------------------
 //-----------------------------------
 if (rstCreateDate!=null && rstCreateDate.length>0){
@@ -47,7 +47,7 @@ if (rstCreateDate!=null && rstCreateDate.length>0){
 
         //Convert to user time
         cal = reger.core.TimeUtils.gmttousertime(cal, userSession.getAccount().getTimezoneid());
-        mb.append("<br><br>Converted to usertime with gmttousertime().  Output with cal.toString(): " + cal.toString());
+        mb.append("<br><br>Converted to usertime with gmttousertime(). userSession.getAccount().getTimezoneid()="+userSession.getAccount().getTimezoneid()+" Output with cal.toString(): " + cal.toString());
 
         //Output cal withdateformatfordb
         mb.append("<br><br>TimeUtils.dateformatfordb(cal): " + reger.core.TimeUtils.dateformatfordb(cal));
@@ -92,7 +92,7 @@ mb.append("<br><br><b>Test 3 ---------------- </b>");
 //Create a cal with now
 String date2 = "2004-01-30 04:10:00";
 String oldtimezoneid = "America/New_York";
-String newtimezoneid = "US/Pacific";
+String newtimezoneid = "Australia/Sydney";
 
 mb.append("<br><br>Raw input: " + date2);
 mb.append("<br><br>oldtimezoneid: " + oldtimezoneid);
@@ -150,6 +150,32 @@ mb.append("<br><br>Output with now4.toString(): " + now4.toString());
 mb.append("<br><br>TimeUtils.dateformatfordb(now4): " + reger.core.TimeUtils.dateformatfordb(now4));
 mb.append("<br><br>Output with now4a.toString(): " + now4a.toString());
 mb.append("<br><br>TimeUtils.dateformatfordb(now4a): " + reger.core.TimeUtils.dateformatfordb(now4a));
+
+
+//Test 5
+mb.append("<br><br><b>Test 5 ---------------- </b>");
+
+//Create a cal with now
+String nowInGmt = reger.core.TimeUtils.nowInGmtString();
+
+mb.append("<br><br>nowInGmt: " + nowInGmt);
+
+Calendar estNow = reger.core.TimeUtils.gmttousertime(nowInGmt, "EST");
+
+mb.append("<br><br>estNow using string nowInGmt: " + reger.core.TimeUtils.dateformatfordb(estNow));
+
+//convert to sydney time
+Calendar sydneyNow = reger.core.TimeUtils.gmttousertime(nowInGmt, "Australia/Sydney");
+
+mb.append("<br><br>sydneyNow using string nowInGmt: " + reger.core.TimeUtils.dateformatfordb(sydneyNow));
+
+Calendar sydneyNowCal = reger.core.TimeUtils.gmttousertime(reger.core.TimeUtils.nowInGmtCalendar(), "Australia/Sydney");
+
+mb.append("<br><br>sydneyNow using Cal nowInGmt: " + reger.core.TimeUtils.dateformatfordb(sydneyNowCal));
+
+Calendar sydneyNowInUserTz = reger.core.TimeUtils.nowInUserTimezone("Australia/Sydney");
+
+mb.append("<br><br>sydneyNow using nowInUserTimezone: " + reger.core.TimeUtils.dateformatfordb(sydneyNowInUserTz));
 
 
 

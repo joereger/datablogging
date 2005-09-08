@@ -12,6 +12,11 @@
 <%@ page import="org.jdom.Document"%>
 <%@ page import="org.jdom.input.SAXBuilder"%>
 <%@ page import="org.jdom.Element"%>
+<%@ page import="reger.core.TimeUtils"%>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.MegaLogType"%>
+<%@ page import="reger.mega.FieldType"%>
+<%@ page import="reger.mega.FieldOrderCollection"%>
 
 
 <%
@@ -34,46 +39,49 @@ pageProps.pathToAppRoot="";
 /*----------------------------------------------------*/
 
 
+mb.append("<form action=schemaupload.log method=post enctype='multipart/form-data'>");
+mb.append("<font face=arial size=-1>Log Type Name:</font>");
+mb.append("<br>");
+mb.append("<input type=text name=logtypename value='Log Type from XML Schema "+TimeUtils.dateformatcompactwithtime(TimeUtils.nowInUserTimezone("EST"))+"'>");
+mb.append("<br>");
+mb.append("<input type=file name=file1>");
+mb.append("<br>");
+mb.append("<input type=submit value='Upload Schema'>");
+mb.append("</form><br><br>");
 
-mb.append("<br>About to create reger.Upload object.<br>");
+
 reger.Upload upload = new reger.Upload(request);
-mb.append("<br>About to see if there are any FileItems.<br>");
 FileItem[] fileItems = upload.getFileItems();
 if (fileItems!=null && fileItems.length>0){
-    mb.append("<br>There is a FileItem.<br>");
+    mb.append("<br>Processing uploaded file.<br>");
     for (int i = 0; i < fileItems.length; i++) {
         FileItem fileItem = fileItems[i];
         InputStream fileStream = fileItem.getInputStream();
 
         try{
+            //Create an XML doc from the uploaded file
             SAXBuilder sb = new SAXBuilder();
             Document doc = sb.build(fileStream);
-
+            //Output some visibility to the screen
             mb.append(reger.xml.JdomNodeLister.listNodes(doc));
+            MegaLogType logType = new MegaLogType(userSession.getAccountuser().getAccountuserid(), upload.requestParams.get("logtypename").toString(), "", "", true, "", true, 0, new FieldType[0], false, "", new int[0], new FieldType[0], new FieldOrderCollection(""));
+            logType.save();
+            //Create a log type
+            reger.xml.LogTypeCreator.createFromXMLSchema(doc, logType);
 
-
-
-
-
-
-
+        } catch (ValidationException e){
+            mb.append("<br>Error creating log type:" + e.getErrorsAsSingleString());
+            reger.core.Debug.debug(3, "schemaupload", e.getErrorsAsSingleString());
         } catch (Exception e){
             mb.append("<br>Error parsing doc:" + e.getMessage());
             reger.core.Debug.debug(3, "schemaupload", e);
         }
-
-
     }
 }
 
 
 
-mb.append("<form action=schemaupload.log method=post enctype='multipart/form-data'>");
-mb.append("<input type=hidden name=action value=upload>");
-mb.append("<input type=file name=file1>");
-mb.append("<br>");
-mb.append("<input type=submit value='Upload Schema'>");
-mb.append("</form>");
+
 
 
 

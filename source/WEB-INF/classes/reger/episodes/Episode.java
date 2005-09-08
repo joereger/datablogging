@@ -119,16 +119,16 @@ public class Episode {
         for (int i = 0; i < entriesInEpisode.length; i++) {
             Entry entry = entriesInEpisode[i];
 
-            Calendar entryDate = reger.core.TimeUtils.formtocalendar(entry.yyyy, entry.mm+1, entry.dd, entry.h, entry.m, 0, entry.ampm);
+            //Calendar entryDate = reger.core.TimeUtils.formtocalendar(entry.yyyy, entry.mm+1, entry.dd, entry.h, entry.m, 0, entry.ampm);
 
-            debug.append("<br><br>eventid=" + entry.eventid + "<br>entryDate=" + reger.core.TimeUtils.dateformatfordb(entryDate));
+            //debug.append("<br><br>eventid=" + entry.eventid + "<br>entryDate=" + reger.core.TimeUtils.dateformatfordb(entryDate));
 
-            if (startDateGMT==null || entryDate.before(startDateGMT)){
-                startDateGMT = entryDate;
+            if (startDateGMT==null || entry.dateGmt.before(startDateGMT)){
+                startDateGMT = entry.dateGmt;
             }
 
-            if (endDateGMT==null || entryDate.after(endDateGMT)){
-                endDateGMT = entryDate;
+            if (endDateGMT==null || entry.dateGmt.after(endDateGMT)){
+                endDateGMT = entry.dateGmt;
             }
 
         }
@@ -242,10 +242,10 @@ public class Episode {
                     debug.append("<br>max=" + reger.core.TimeUtils.dateformatfordb(max));
 
                     //Get the event's date
-                    Calendar entryDate = reger.core.TimeUtils.formtocalendar(entry.yyyy, entry.mm+1, entry.dd, entry.h, entry.m, 0, entry.ampm);
-                    debug.append("<br>entryDate(before timezone)=" + reger.core.TimeUtils.dateformatfordb(entryDate));
+                    //Calendar entryDate = reger.core.TimeUtils.formtocalendar(entry.yyyy, entry.mm+1, entry.dd, entry.h, entry.m, 0, entry.ampm);
+                    //debug.append("<br>entryDate(before timezone)=" + reger.core.TimeUtils.dateformatfordb(entryDate));
 
-                    entryDate = reger.core.TimeUtils.gmttousertime(entryDate, timezoneid);
+                    Calendar entryDate = reger.core.TimeUtils.gmttousertime(entry.dateGmt, timezoneid);
 
                     debug.append("<br>entryDate(after timezone)=" + reger.core.TimeUtils.dateformatfordb(entryDate));
 

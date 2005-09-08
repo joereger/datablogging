@@ -4,6 +4,11 @@
                  reger.mega.FieldType,
                  reger.mega.FieldLayout,
                  reger.MegaLogType"%>
+<%@ page import="org.apache.commons.fileupload.FileItem"%>
+<%@ page import="org.jdom.Document"%>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="org.jdom.input.SAXBuilder"%>
+<%@ page import="java.io.InputStream"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -27,7 +32,13 @@ pageProps.pathToAppRoot="../";
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+//Get the multipart/encoded data from the form
+reger.Upload upload = new reger.Upload(request);
 
+//Set pageProps.action
+if (upload.requestParams.get("action")!=null){
+    pageProps.action = String.valueOf(upload.requestParams.get("action"));
+}
 
 
 //set navtab
@@ -43,36 +54,36 @@ String isRequired;
 
 //Make sure we have an eventtypeid
 int eventtypeid=-1;
-if (request.getParameter("eventtypeid")!=null && !request.getParameter("eventtypeid").equals("") && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
-    eventtypeid=Integer.parseInt(request.getParameter("eventtypeid"));
+if (upload.requestParams.get("eventtypeid")!=null && !upload.requestParams.get("eventtypeid").toString().equals("") && reger.core.Util.isinteger(upload.requestParams.get("eventtypeid").toString())){
+    eventtypeid=Integer.parseInt(upload.requestParams.get("eventtypeid").toString());
 }
 
 //Create a megalogtype
 MegaLogType megaLogType = new MegaLogType(eventtypeid);
 
 //Get some request vars if they're there
-if (request.getParameter("megalogname")!=null && !request.getParameter("megalogname").equals("")){
-    megaLogType.setMegalogname(request.getParameter("megalogname"));
+if (upload.requestParams.get("megalogname")!=null && !upload.requestParams.get("megalogname").toString().equals("")){
+    megaLogType.setMegalogname(upload.requestParams.get("megalogname").toString());
 }
-if (request.getParameter("description")!=null && !request.getParameter("description").equals("")){
+if (upload.requestParams.get("description")!=null && !upload.requestParams.get("description").toString().equals("")){
     megaLogType.setDescription(request.getParameter("description"));
 }
-if (request.getParameter("showlocation")!=null && !request.getParameter("showlocation").equals("")){
-    if(request.getParameter("showlocation").equals("1")){
+if (upload.requestParams.get("showlocation")!=null && !upload.requestParams.get("showlocation").toString().equals("")){
+    if(upload.requestParams.get("showlocation").toString().equals("1")){
         megaLogType.setShowlocation(true);
     } else {
         megaLogType.setShowlocation(false);
     }
 }
-if (request.getParameter("showonhomepage")!=null && !request.getParameter("showonhomepage").equals("")){
-    if(request.getParameter("showonhomepage").equals("1")){
+if (upload.requestParams.get("showonhomepage")!=null && !upload.requestParams.get("showonhomepage").toString().equals("")){
+    if(upload.requestParams.get("showonhomepage").toString().equals("1")){
         megaLogType.setShowonhomepage(true);
     } else {
         megaLogType.setShowonhomepage(false);
     }
 }
-if (request.getParameter("isprivate")!=null && !request.getParameter("isprivate").equals("")){
-    if(request.getParameter("isprivate").equals("1")){
+if (upload.requestParams.get("isprivate")!=null && !upload.requestParams.get("isprivate").toString().equals("")){
+    if(upload.requestParams.get("isprivate").toString().equals("1")){
         megaLogType.setIsprivate(true);
     } else {
         megaLogType.setIsprivate(false);
@@ -120,6 +131,35 @@ if (pageProps.action.equals("endadd") || pageProps.action.equals("go")){
     //-----------------------------------
     //-----------------------------------
 
+
+    //Handle uploaded schemas
+    FileItem[] fileItems = upload.getFileItems();
+    if (fileItems!=null && fileItems.length>0){
+        mb.append("<br>Processing uploaded file.<br>");
+        for (int i = 0; i < fileItems.length; i++) {
+            FileItem fileItem = fileItems[i];
+            InputStream fileStream = fileItem.getInputStream();
+            try{
+                //Create an XML doc from the uploaded file
+                SAXBuilder sb = new SAXBuilder();
+                Document doc = sb.build(fileStream);
+                //Output some visibility to the screen
+                mb.append(reger.xml.JdomNodeLister.listNodes(doc));
+                //Create a log type
+                reger.xml.LogTypeCreator.createFromXMLSchema(doc, megaLogType);
+
+            } catch (ValidationException e){
+                mb.append("<br>Error creating log type:" + e.getErrorsAsSingleString());
+                reger.core.Debug.debug(3, "logs-type-properties", e.getErrorsAsSingleString());
+            } catch (Exception e){
+                mb.append("<br>Error parsing doc:" + e.getMessage());
+                reger.core.Debug.debug(3, "logs-type-properties", e);
+            }
+        }
+    }
+
+
+
     //Important to refresh the LogCache object after megalog changes
     LogCache.flushByLogid(newlogid);
 
@@ -154,7 +194,7 @@ String currentNavButtonName = "logs-type-properties";
 
 
 
-mb.append("<form action='logs-type-properties.log' method=post>");
+mb.append("<form action='logs-type-properties.log' method=post enctype='multipart/form-data'>");
 if (pageProps.action.equals("startadd") || pageProps.action.equals("endadd")){
     mb.append("<input type=hidden name=action value=endadd>");
 } else {
@@ -227,6 +267,17 @@ radiosShowonhomepage.put("0","No");
 radiosShowonhomepage.put("1","Yes (Recommended)");
 mb.append(reger.formControl.radioList(radiosShowonhomepage, showonhomepageTxt, "showonhomepage", "vertical"));
 //End Radio Control
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#eeeeee' valign=top align=right>");
+mb.append("<font face=arial size=-1><strong>(Optional) Upload XML Schema File</strong></font><br><font face=arial size=-2><strong>Advanced users can upload files in XML Schema format to jumpstart their datablog format.</strong></font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top align=left>");
+mb.append("<input type=file name=file1>");
+mb.append("<br><font face=arial size=-2>Optional</font>");
 mb.append("</td>");
 mb.append("</tr>");
 

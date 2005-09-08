@@ -445,7 +445,8 @@ public class EmailApi {
                 Debug.debug(5, "EmailApi", "EmailApi newPost() - accountuserOfPersonAccessing.getAccountuserid()=" + accountuserOfPersonAccessing.getAccountuserid());
 
                 //Create the entry
-                entry = new reger.Entry(accountuserOfPersonAccessing, accountOfEntry, plOfEntry, logid);
+                entry = new reger.Entry();
+                entry.logid = logid;
                 entry.accountid = accountid;
 
                 //Set the title
@@ -490,11 +491,10 @@ public class EmailApi {
                 //Set the logid
                 entry.logid=logid;
 
-                //Get the current time in the user's timezone
-                Calendar nowInUsertimezone = reger.core.TimeUtils.nowInUserTimezone(timezoneid);
+
 
                 //Populate the date/time vars in the event object
-                entry.populateThisEventTimeVarsFromCal(nowInUsertimezone);
+                entry.dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
 
                 //Set the author in the EmailApi posts.
                 entry.accountuserid = accountuserid;
@@ -503,8 +503,8 @@ public class EmailApi {
                 if (mailtype==EMAILPOST || (mailtype==CAMPHONEPOST && consolidatecamphonetoonedailyentry==0)){
                     try{
                         //Save the entry to the database
-                        entry.newEntryTemporary();
-                        entry.editEntryAll(entry.eventid);
+                        entry.newEntryTemporary(accountOfEntry, accountuserOfPersonAccessing);
+                        entry.editEntryAll(accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
                     } catch (ValidationException error){
                         //@todo Handle the exception and send it back to user via email?
                         Debug.debug(5, "EmailApi", "EmailApi Error:" + error.getErrorsAsSingleString());
@@ -546,8 +546,8 @@ public class EmailApi {
                     } else {
                         try{
                             //And if there isn't one, create one with a call to entry.newEntryAll();
-                            entry.newEntryTemporary();
-                            entry.editEntryAll(entry.eventid);
+                            entry.newEntryTemporary(accountOfEntry, accountuserOfPersonAccessing);
+                            entry.editEntryAll(accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
                             Debug.debug(5, "EmailApi", "EmailApi.java - New eventid:" + entry.eventid);
                         } catch (ValidationException error){
                             //@todo Handle the exception and send it back to user via email?

@@ -8,6 +8,14 @@ public class ValidationException extends Throwable{
 
     private String[] validationErrors = new String[0];
 
+    public ValidationException(){
+
+    }
+
+    public ValidationException(String validationError){
+        addValidationError(validationError);
+    }
+
     public String getErrorsAsSingleString(){
         StringBuffer mb = new StringBuffer();
         for (int i = 0; i < validationErrors.length; i++) {

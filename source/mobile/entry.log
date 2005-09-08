@@ -33,20 +33,15 @@ if (pageProps.action.equals("add")){
 		entry.comments=reger.core.Util.getParameterClean(request.getParameter("comments"));
 
 		entry.logid=pageProps.logProps.logid;
-		entry.accountid=userSession.getAccount().getAccountid();
         entry.accountid=userSession.getAccountuser().getAccountuserid();
-        entry.userSession = userSession;
+        //entry.userSession = userSession;
 
-		//Convert to usertime because mm, dd, etc. need to emulate user input
-		Calendar apidate=reger.core.TimeUtils.gmttousertime(Calendar.getInstance(), userSession.getAccount().getTimezoneid());
-
-        //Populate the date fields of the entry object
-		entry.populateThisEventTimeVarsFromCal(apidate);
+		entry.dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
 
 		//Make the actual entry
-		entry.newEntryTemporary();
+		entry.newEntryTemporary(userSession.getAccount(), userSession.getAccountuser());
 		try{
-            entry.editEntryAll(entry.eventid);
+            entry.editEntryAll(userSession.getAccount(), userSession.getAccountuser(), userSession.getPl());
             //Then redirect to the correct place
 			//@todo On  successful mobile entry, show a success screen.
 			response.sendRedirect("home.log");

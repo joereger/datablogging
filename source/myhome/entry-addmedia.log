@@ -71,8 +71,9 @@ if (ul.isMultipart) {
 //Redirect if upload was successful
 if (ul.hasenoughfreespace) {
     if (ul.isMultipart){
-        //response.sendRedirect("entry.log?eventid="+localEventid+"&action=edit");
-        //return;
+        //Flush cache
+        reger.cache.EntryCache.flush(localEventid);
+        //Message
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Files uploaded successfully.  Please <a href=\"javascript:returnToEntryPage()\">click here to return to the entry</a> or upload more files below."));
     }
 } else {

@@ -3,8 +3,10 @@ package reger.api;
 import reger.core.db.Db;
 import reger.Accountuser;
 import reger.Account;
+import reger.PrivateLabel;
 import reger.core.ValidationException;
 import reger.core.Debug;
+import reger.core.TimeUtils;
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
 
@@ -42,6 +44,9 @@ public class MetaWebLogApi {
         //Get the account
         Account account = new reger.Account(au.getAccountid());
 
+        //Get the pl
+        PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+
         try {
 
             //Get this user's data
@@ -77,19 +82,18 @@ public class MetaWebLogApi {
                     return "blogid must be an integer.";
                 }
 
-                //Get the current time in the user's timezone
-                Calendar nowInUsertimezone = reger.core.TimeUtils.nowInUserTimezone(timezoneid);
+
 
                 //Populate the date/time vars in the event object
-                entry.populateThisEventTimeVarsFromCal(nowInUsertimezone);
+                entry.dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
 
                 //Set the author in the posts.
                 entry.accountuserid = au.getAccountuserid();
 
                 try{
                     //Save the entry to the database
-                    entry.newEntryTemporary();
-                    entry.editEntryAll(entry.eventid);
+                    entry.newEntryTemporary(account, au);
+                    entry.editEntryAll(account, au, pl);
                 } catch (ValidationException error){
                     return error.getErrorsAsSingleString();
                 }
@@ -124,6 +128,9 @@ public class MetaWebLogApi {
 
         //Get the account
         Account account = new reger.Account(au.getAccountid());
+
+        //Get the pl
+        PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
 
         try {
 
@@ -175,7 +182,7 @@ public class MetaWebLogApi {
 
                 //Edit the actual entry
                 try{
-                    entry.editEntryAll(entry.eventid);
+                    entry.editEntryAll(account, au, pl);
                 } catch (ValidationException error){
                     return false;
                 }
@@ -330,7 +337,7 @@ public class MetaWebLogApi {
                 outPost.put("content", entry.comments);
                 outPost.put("userid", account.getSiteRootUrl());
                 outPost.put("postid", postid);
-                outPost.put("datecreated", reger.core.TimeUtils.dateformatUtc(reger.core.TimeUtils.dbstringtocalendar(entry.convertUsingEntrytimezoneid())));
+                outPost.put("datecreated", TimeUtils.dateformatUtc(TimeUtils.dbstringtocalendar(TimeUtils.dateformatfordb(entry.dateGmt))));
 
                 //Megalog Start
 
@@ -376,6 +383,9 @@ public class MetaWebLogApi {
         //Get the account
         Account account = new reger.Account(au.getAccountid());
 
+        //Get the pl
+        PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+
         try {
 
             //Get this user's data
@@ -404,13 +414,12 @@ public class MetaWebLogApi {
 
                 //Define the content of the entry
                 entry.title = "New media object of type " + content.get("type") + ".";
-                //@todo This time in MetaWebLogApi should be converted to usertime before being passed.
-                entry.populateThisEventTimeVarsFromCal(Calendar.getInstance());
+                entry.dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
 
                 //Make the entry
                 try{
-                    entry.newEntryTemporary();
-                    entry.editEntryAll(entry.eventid);
+                    entry.newEntryTemporary(account, au);
+                    entry.editEntryAll(account, au, pl);
                 } catch (ValidationException error){
                     return error.getErrorsAsSingleString();
                 }

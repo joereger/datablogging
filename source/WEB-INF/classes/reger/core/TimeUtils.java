@@ -146,11 +146,51 @@ public class TimeUtils {
 		} catch(Exception e) {
 			//reger.core.Util.errorsave(e);
 			//If the parse fails, return current date/time
-			cal=null;
 			cal=Calendar.getInstance();
 		}
 		return cal;
 	}
+
+	public static int getDatePart(Calendar cal, String datePartToGet){
+	    String date = reger.core.TimeUtils.dateformatfordb(cal);
+
+        if (datePartToGet.equals("month")){
+            return Integer.parseInt(date.substring(5,7))-1;
+        } else if (datePartToGet.equals("day")){
+            return Integer.parseInt(date.substring(8,10));
+        } else if (datePartToGet.equals("year")){
+            return Integer.parseInt(date.substring(0,4));
+        } else if (datePartToGet.equals("hour")){
+            int h =  Integer.parseInt(date.substring(11,13));
+            if (h>=13){
+                h=h-12;
+            } else if (h==12){
+                h=12;
+            } else if (h==0){
+                h=12;
+            }
+            return h;
+        } else if (datePartToGet.equals("minute")){
+            return Integer.parseInt(date.substring(14,16));
+        }
+        return 0;
+    }
+
+    public static String getAmPm(Calendar cal){
+        String date = reger.core.TimeUtils.dateformatfordb(cal);
+        int h =  Integer.parseInt(date.substring(11,13));
+        String ampm = "";
+        if (h>=13){
+            ampm = "PM";
+        } else if (h==12){
+            ampm = "PM";
+        } else if (h==0){
+            ampm = "AM";
+        } else {
+            ampm = "AM";
+        }
+        return ampm;
+    }
 	
 	
 	/**
@@ -186,7 +226,7 @@ public class TimeUtils {
 	* Converts from incoming form data to a calendar with the correct ampm.
 	*/
 	public static Calendar formtocalendar(int yyyy, int mm, int dd, int h, int m, int s, String ampm) {
-		if (ampm.equals("PM")){
+		if (ampm.equalsIgnoreCase("PM")){
 			h=h+12;
 			if (h==24){
 				h=12;

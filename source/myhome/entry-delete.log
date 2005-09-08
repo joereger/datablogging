@@ -23,7 +23,7 @@ pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 
 //Instantiate the entry object
-pageProps.entry.populate(userSession.getAccountuser(), userSession.getAccount(), userSession.getPl(), pageProps.logProps.logid, request);
+pageProps.entry.populate(pageProps.logProps.logid, request, userSession.getAccountuser().getUsertimezoneid());
 
 
 //If the user can't do this

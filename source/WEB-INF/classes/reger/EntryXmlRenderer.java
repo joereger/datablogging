@@ -40,7 +40,7 @@ public class EntryXmlRenderer {
                     try{
                         //Datetime
                         Element elDt = new Element("datetime");
-                        elDt.addContent(reger.core.TimeUtils.dateformatUtc(ent.getCalendar()));
+                        elDt.addContent(reger.core.TimeUtils.dateformatUtc(ent.dateGmt));
                         entry.addContent(elDt);
                     } catch (org.jdom.IllegalDataException ex){
                         Debug.debug(5, "", ex);
