@@ -68,7 +68,7 @@ public class ImageCaptchaServlet extends HttpServlet {
             responseOutputStream.flush();
             responseOutputStream.close();
         } catch (Exception e){
-            Debug.errorsave(e, "");
+            Debug.errorsave(e, "ImageCaptchaServlet.java", "captchaId="+httpServletRequest.getSession().getId());
         }
     }
 }

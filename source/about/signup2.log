@@ -100,10 +100,10 @@ if (pageProps.action.equals("createaccount")) {
         isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
     } catch (CaptchaServiceException e) {
          isResponseCorrect = new Boolean(false);
-         Debug.errorsave(e, "");
+         Debug.errorsave(e, "signup2.log", "captchaId="+ captchaId);
     }
     if (!isResponseCorrect.booleanValue()){
-        errortext = errortext + "You failed to enter the letters in the box correctly.  Don't despair.  Sometimes they're tough to read.  Please try again.<br>";
+        errortext = errortext + "You failed to enter the letters in the box correctly.  Don't despair.  Sometimes they're tough to read.  And sometimes they simply don't work.  This is done to prevent spammers and automated bots from creating accounts and affecting your quality of service.  Please try again.<br>";
     }
     //Servername validation
     errortext = errortext + Account.validateServername(siteurl, userSession.getPl().getPlid());

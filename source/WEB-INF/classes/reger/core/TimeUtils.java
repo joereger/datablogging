@@ -79,19 +79,22 @@ public class TimeUtils {
     * Format a calendar date object in the correct string format so that it can be saved in mySql
     */
 	public static String dateformatfordb(Calendar date) {
-	    if (date!=null){
-		    DateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		    return myDateFormat.format(date.getTime());
+	    DateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    if (date==null){
+            date = nowInGmtCalendar();
         }
-        return "";
+		return myDateFormat.format(date.getTime());
 	}
 
 	/**
     * Format a calendar date object in UTC format.
     */
 	public static String dateformatUtc(Calendar date) {
-		DateFormat myDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ");
-		return myDateFormat.format(date.getTime()) + date.getTimeZone().getID();
+	    DateFormat myDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ");
+	    if (date==null){
+            date = nowInGmtCalendar();
+        }
+        return myDateFormat.format(date.getTime()) + date.getTimeZone().getID();
 	}
 
 	/**
@@ -99,6 +102,9 @@ public class TimeUtils {
     */
 	public static String dateformatfilestamp(Calendar date) {
 		DateFormat myDateFormat = new SimpleDateFormat("(yyyy-MM-dd)HH-mm-ss");
+		if (date==null){
+            date = nowInGmtCalendar();
+        }
 		return myDateFormat.format(date.getTime());
 	}
 
@@ -107,6 +113,9 @@ public class TimeUtils {
     */
 	public static String dateformatdate(Calendar date) {
 		DateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		if (date==null){
+            date = nowInGmtCalendar();
+        }
 		return myDateFormat.format(date.getTime());
 	}
 
@@ -115,6 +124,9 @@ public class TimeUtils {
     */
 	public static String dateformatdateSlashes(Calendar date) {
 		DateFormat myDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		if (date==null){
+            date = nowInGmtCalendar();
+        }
 		return myDateFormat.format(date.getTime());
 	}
 
@@ -123,6 +135,9 @@ public class TimeUtils {
     */
 	public static String dateformatdateMmddyyyy(Calendar date) {
 		DateFormat myDateFormat = new SimpleDateFormat("MMddyyyy");
+		if (date==null){
+            date = nowInGmtCalendar();
+        }
 		return myDateFormat.format(date.getTime());
 	}
 
@@ -131,6 +146,9 @@ public class TimeUtils {
     */
 	public static String dateformattime(Calendar date) {
 		DateFormat myDateFormat = new SimpleDateFormat("HH-mm-ss");
+		if (date==null){
+            date = nowInGmtCalendar();
+        }
 		return myDateFormat.format(date.getTime());
 	}
     
@@ -152,27 +170,36 @@ public class TimeUtils {
 	}
 
 	public static int getDatePart(Calendar cal, String datePartToGet){
-	    String date = reger.core.TimeUtils.dateformatfordb(cal);
-
-        if (datePartToGet.equals("month")){
-            return Integer.parseInt(date.substring(5,7))-1;
-        } else if (datePartToGet.equals("day")){
-            return Integer.parseInt(date.substring(8,10));
-        } else if (datePartToGet.equals("year")){
-            return Integer.parseInt(date.substring(0,4));
-        } else if (datePartToGet.equals("hour")){
-            int h =  Integer.parseInt(date.substring(11,13));
-            if (h>=13){
-                h=h-12;
-            } else if (h==12){
-                h=12;
-            } else if (h==0){
-                h=12;
+	    try{
+            String date = reger.core.TimeUtils.dateformatfordb(cal);
+            if (datePartToGet.equals("month")){
+                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (Integer.parseInt(date.substring(5,7))));
+                return Integer.parseInt(date.substring(5,7));
+            } else if (datePartToGet.equals("day")){
+                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (date.substring(8,10)));
+                return Integer.parseInt(date.substring(8,10));
+            } else if (datePartToGet.equals("year")){
+                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (date.substring(0,4)));
+                return Integer.parseInt(date.substring(0,4));
+            } else if (datePartToGet.equals("hour")){
+                int h =  Integer.parseInt(date.substring(11,13));
+                if (h>=13){
+                    h=h-12;
+                } else if (h==12){
+                    h=12;
+                } else if (h==0){
+                    h=12;
+                }
+                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + h);
+                return h;
+            } else if (datePartToGet.equals("minute")){
+                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (date.substring(14,16)));
+                return Integer.parseInt(date.substring(14,16));
             }
-            return h;
-        } else if (datePartToGet.equals("minute")){
-            return Integer.parseInt(date.substring(14,16));
+        } catch (Exception e){
+            reger.core.Debug.errorsave(e, "TimeUtils.java", "getDatePart() failed<br>incoming cal=" + cal.toString());
         }
+        reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>cal=" + cal.toString() + "<br>datePartToGet=" + datePartToGet + "<br>returning 0 as default");
         return 0;
     }
 
@@ -199,6 +226,9 @@ public class TimeUtils {
     */
 	public static String dateformatcompact(Calendar date) {
 		DateFormat myDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+		if (date==null){
+            date = nowInGmtCalendar();
+        }
 		return myDateFormat.format(date.getTime());
 	}
 
@@ -208,6 +238,9 @@ public class TimeUtils {
     */
 	public static String dateformatcompactwithtime(Calendar date) {
 		DateFormat myDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy HH:mm:ss");
+		if (date==null){
+            date = nowInGmtCalendar();
+        }
 		return myDateFormat.format(date.getTime());
 	}
 

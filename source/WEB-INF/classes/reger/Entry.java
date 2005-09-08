@@ -200,6 +200,7 @@ public class Entry {
             this.isApproved=Integer.parseInt(request.getParameter("isapproved"));
         }
         //Start date
+        reger.core.Debug.debug(3, "Entry.java", "dateGmt before populateGenericObjectFromRequest()=" + reger.core.TimeUtils.dateformatfordb(dateGmt));
         int mm = 0;
         if (request.getParameter("mm")!=null && reger.core.Util.isinteger(request.getParameter("mm"))) {
             mm=Integer.parseInt(request.getParameter("mm"));
@@ -234,6 +235,7 @@ public class Entry {
                 reger.core.Debug.errorsave(e, "Entry.java");
             }
         }
+        reger.core.Debug.debug(3, "Entry.java", "dateGmt after populateGenericObjectFromRequest()=" + reger.core.TimeUtils.dateformatfordb(dateGmt));
         //End date
         if (request.getParameter("eventtypeid")!=null  && !request.getParameter("eventtypeid").equals("") && reger.core.Util.isinteger(request.getParameter("eventtypeid"))) {
             this.eventtypeid=Integer.parseInt(request.getParameter("eventtypeid"));

@@ -192,21 +192,20 @@ public class MegaHtmlFormTop {
             mb.append("<tr>");
             //Month
             int mm = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "month");
+            reger.core.Debug.debug(3, "MegaHtmlFormTop.java", "MegaHtmlFormTop mm=" + mm + "<br>dateGmt="+ TimeUtils.dateformatfordb(pageProps.entry.dateGmt) + "<br>TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid)="+TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid));
             mb.append("<td bgcolor='#cccccc' width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin){
-
-
                 mb.append("<select name='mm' id=\"j_mm\" "+disabledFormText+">");
-                for(int i=0; i<=11; i++){
+                for(int i=1; i<=12; i++){
                     mb.append("<option value='" + i + "' ");
                     if (i==mm) {
                         mb.append("selected");
                     }
-                    mb.append(">" + (i+1) + "</option>");
+                    mb.append(">" + (i) + "</option>");
                 }
                 mb.append("</select>");
             } else {
-                mb.append((mm+1));
+                mb.append((mm));
             }
             mb.append("<br><font face=arial size=-2 class=smallfont>Month</font></td>");
 
