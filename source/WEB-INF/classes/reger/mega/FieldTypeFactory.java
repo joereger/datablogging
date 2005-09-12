@@ -54,15 +54,15 @@ public class FieldTypeFactory {
     }
 
 
-    public static FieldType[] getAllFieldTypes(){
-        FieldType[] fts = new FieldType[7];
-        fts[0] = new FieldTypeDropdown();
-        fts[1] = new FieldTypeHorizontalradios();
-        fts[2] = new FieldTypeNumericrange();
-        fts[3] = new FieldTypeTextbox();
-        fts[4] = new FieldTypeTimeperiod();
-        fts[5] = new FieldTypeVerticalradios();
-        fts[6] = new FieldTypeContainer();
+    public static int[] getAllFieldTypes(){
+        int[] fts = new int[6];
+        fts[0] = FieldType.FIELDTYPEDROPDOWN;
+        fts[1] = FieldType.FIELDTYPEHORIZONTALRADIOS;
+        fts[2] = FieldType.FIELDTYPENUMERICRANGE;
+        fts[3] = FieldType.FIELDTYPETEXTBOX;
+        fts[4] = FieldType.FIELDTYPETIME;
+        fts[5] = FieldType.FIELDTYPEVERTICALRADIOS;
+        //fts[6] = FieldType.FIELDTYPECONTAINER;
         return fts;
     }
 

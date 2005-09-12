@@ -121,12 +121,12 @@ mb.append("</tr>");
 //mb.append("</tr>");
 
 
-FieldType[] fts = FieldTypeFactory.getAllFieldTypes();
+int[] fts = FieldTypeFactory.getAllFieldTypes();
 for (int i = 0; i < fts.length; i++) {
-    reger.mega.FieldType fld = fts[i];
+    reger.mega.FieldType fld = FieldTypeFactory.getHandlerByFieldtype(fts[i]);
     
     mb.append("<tr>");
-    mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+FieldType.FIELDTYPETIME+"'></td>");
+    mb.append("<td bgcolor=#eeeeee align=center valign=middle><input type=radio name=fieldtype value='"+fts[i]+"'></td>");
     mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-1><strong>"+fld.getBackEndFriendlyName()+"</strong></font></td>");
     mb.append("<td valign=middle align=left bgcolor=#eeeeee><font face=arial size=-2>"+fld.getBackEndDescription()+"</font></td>");
     mb.append("<td valign=middle align=left bgcolor=#eeeeee>");

@@ -26,18 +26,21 @@ pageProps.pathToAppRoot="../";
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+reger.core.Debug.debug(4, "logs-field.log", "New request.");
 
 //Get the eventtypeid from the request
 int eventtypeid = 0;
 if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
     eventtypeid = Integer.parseInt(request.getParameter("eventtypeid"));
 }
+reger.core.Debug.debug(4, "logs-field.log", "eventtypeid=" + eventtypeid);
 
 //Determine whether this field is being edited for a log or for an eventtypeid
 int EDITFIELDFOR = reger.mega.Field.EDITFIELDFORLOG;
 if (eventtypeid>0){
     EDITFIELDFOR = reger.mega.Field.EDITFIELDFOREVENTTYPE;
 }
+reger.core.Debug.debug(4, "logs-field.log", "EDITFIELDFOR=" + EDITFIELDFOR);
 
 
 //This Field variable represents the field that we're working with on this page
@@ -51,6 +54,9 @@ int fieldtype = 0;
 if (request.getParameter("fieldtype")!=null && reger.core.Util.isinteger(request.getParameter("fieldtype"))){
     fieldtype = Integer.parseInt(request.getParameter("fieldtype"));
 }
+reger.core.Debug.debug(4, "logs-field.log", "request.getParameter(\"fieldtype\")=" + request.getParameter("fieldtype"));
+reger.core.Debug.debug(4, "logs-field.log", "fieldtype=" + fieldtype);
+
 
 
 //Get the megafieldid from the request
@@ -58,6 +64,7 @@ int megafieldid = 0;
 if (request.getParameter("megafieldid")!=null && reger.core.Util.isinteger(request.getParameter("megafieldid"))){
     megafieldid = Integer.parseInt(request.getParameter("megafieldid"));
 }
+reger.core.Debug.debug(4, "logs-field.log", "megafieldid=" + megafieldid);
 
 
 //If we have a megafieldid, use it to get a field and determine which type of editing is being done
@@ -90,10 +97,13 @@ if (request.getParameter("returntopage")==null || request.getParameter("returnto
         pageToRedirectToAfterEdit = "logs-log-list.log";
     }
 }
-Debug.debug(5, "", "logs-field.log - pageToRedirectToAfterEdit = " + pageToRedirectToAfterEdit);
+Debug.debug(4, "logs-field.log", "logs-field.log - pageToRedirectToAfterEdit = " + pageToRedirectToAfterEdit);
 
 //If the field isn't null
 if (field!=null){
+
+    reger.core.Debug.debug(4, "logs-field.log", "field!=null");
+
     //Populate the main field object from the request
     if (request.getParameter("fieldname")!=null && !request.getParameter("fieldname").equals("")){
         field.setFieldname(request.getParameter("fieldname"));
@@ -128,7 +138,7 @@ if (field!=null){
     return;
 }
 
-Debug.debug(5, "", "logs-field.log - pageProps.action="+pageProps.action+"");
+Debug.debug(4, "logs-field.log", "pageProps.action="+pageProps.action+"");
 
 //Edit field
 String errortext="";
