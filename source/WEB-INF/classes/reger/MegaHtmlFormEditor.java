@@ -5,7 +5,7 @@ package reger;
  */
 public class MegaHtmlFormEditor {
 
-    public static StringBuffer getHtml(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, boolean displayasadmin){
+    public static StringBuffer getHtml(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, boolean displayasadmin, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
 
@@ -96,7 +96,7 @@ public class MegaHtmlFormEditor {
             }
         } else {
             //Get the Wysiwyg editor
-            mb.append(reger.MegaHtmlFormFckeditor.getHtml(userSession, pageProps, displayasadmin, pageProps.entry.comments));
+            mb.append(reger.MegaHtmlFormFckeditor.getHtml(userSession, pageProps, displayasadmin, pageProps.entry.comments, request));
         }
 
 

@@ -340,7 +340,8 @@ public class MegaHtmlFormTop {
 
             //Show the editor or the post itself
             if (!editLayout){
-                mb.append(reger.MegaHtmlFormEditor.getHtml(userSession, pageProps, displayasadmin));
+
+                mb.append(reger.MegaHtmlFormEditor.getHtml(userSession, pageProps, displayasadmin, request));
             }
 
             mb.append("</td>");

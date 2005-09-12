@@ -127,6 +127,8 @@ public class MegaHtmlFormBottom {
                 //Put the submit button on the page, sometimes with the javascript, sometimes without
                 if (userSession.getAccountuser().getEntrymode()==reger.Vars.ENTRYMODEADVANCED) {
                     mb.append("<INPUT TYPE=submit NAME=newreview VALUE='"+submittext+"' onclick=\"submitPost();\" "+disabledFormText+">");
+                    //mb.append("<INPUT TYPE=submit NAME=newreview VALUE='"+submittext+"' "+disabledFormText+">");
+
                 } else {
                     mb.append("<input type='submit' value='"+submittext+"' onclick=\"submitPost();\" "+disabledFormText+">");
                 }

@@ -6,7 +6,7 @@ package reger;
 public class MegaHtmlFormFckeditor {
 
 
-    public static StringBuffer getHtml(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, boolean displayasadmin, String initialvalue){
+    public static StringBuffer getHtml(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, boolean displayasadmin, String initialvalue, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
         mb.append("<script type=\"text/javascript\" src=\"/js/fckeditor/fckeditor.js\"></script>" + "\n");
