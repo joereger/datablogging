@@ -327,8 +327,13 @@ public class TimeUtils {
 	* Must pass a GMT date
 	*/
 	public static String agoText(Calendar indate){
-	    Calendar indateClone = (Calendar) indate.clone();
-
+	    Calendar indateClone = null;
+	    try{
+	        indateClone = (Calendar) indate.clone();
+        } catch (Exception e){
+            reger.core.Debug.debug(4, "TimeUtils.java", "input to agoText(indate) was not a date.");
+            indateClone = Calendar.getInstance();
+        }
 
         //Get time on the physical server (probably in Atlanta)
         Calendar now = Calendar.getInstance();
@@ -378,6 +383,18 @@ public class TimeUtils {
 					if (Util.qAbs(daysago) < 31) {
 						//Days
 						result = agoTextEnd(daysago, "Day");
+						//Special for yesterday
+                        if (daysago==1){
+                            result = "Yesterday";
+                        }
+                        //Special for today
+                        if (daysago==0){
+                            result = "Today";
+                        }
+                        //Special for tomorrow
+                        if (daysago==-1){
+                            result = "Tomorrow";    
+                        }
 					} else {
 						if (Util.qAbs(weeksago) < 4) {
 							//Weeks
