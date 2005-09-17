@@ -1,0 +1,118 @@
+<%@ page import="reger.core.db.Db,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//HtmlCache
+String cachekey = "CommunityEntriesPageLogTypes" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+int refreshintervalinseconds = 3600;
+%><%@ include file="../htmlcachestart.jsp" %><%
+
+    String currentNavButtonName = "community-entries-logtypes";
+    %><%@ include file="community-header.jsp" %><%
+
+    mb.append("<br>");
+    mb.append("<br>");
+
+
+    //Start Most Recent Entries By Log Type
+    mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Most Recent Entries By Log Type");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<form action=community-entries-logtypes.log method=GET>");
+    mb.append("Choose a log type:<br>");
+    mb.append("<select name=eventtypeid>");
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstEventtype= Db.RunSQL("SELECT megalogtype.eventtypeid, megalogname FROM megalogtype, pleventtypeid WHERE pleventtypeid.plid='"+userSession.getPl().getPlid()+"' AND pleventtypeid.eventtypeid=megalogtype.eventtypeid ORDER BY megalogtype.megalogname ASC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstEventtype!=null && rstEventtype.length>0){
+        for(int i=0; i<rstEventtype.length; i++){
+            String selectedText = "";
+            if (request.getParameter("eventtypeid")!=null && request.getParameter("eventtypeid").equals(rstEventtype[i][0])){
+                selectedText = " selected";
+            }
+            mb.append("<option value="+rstEventtype[i][0]+" "+selectedText+">"+rstEventtype[i][1]+"</option>");
+        }
+    }
+    mb.append("</select>");
+    mb.append("<input type=submit value='Go'>");
+    if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+        mb.append("<br>");
+        mb.append("<br>");
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstEventByType= Db.RunSQL("SELECT eventid, title, account.accountid, megalog.logid FROM event, account, megalog, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND "+reger.Entry.sqlOfLiveEntry+" AND  megalog.eventtypeid='"+request.getParameter("eventtypeid")+"' AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"'  ORDER BY event.date DESC LIMIT 0,25");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstEventByType!=null && rstEventByType.length>0){
+            for(int i=0; i<rstEventByType.length; i++){
+                mb.append((i+1)+") ");
+                String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstEventByType[i][2]));
+                mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/entry-logid"+rstEventByType[i][3]+"-eventid"+rstEventByType[i][0]+".log'>");
+                mb.append(rstEventByType[i][1]);
+                mb.append("</a>");
+                mb.append("<br>");
+            }
+        } else {
+            mb.append("None.");
+        }
+    }
+    mb.append("</font>");
+    mb.append("</form>");
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //End Most Recent Entries By Log Type
+
+
+
+
+
+    %><%@ include file="community-footer.jsp" %><%
+
+//HtmlCache
+%><%@ include file="../htmlcacheend.jsp" %><%
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

@@ -7,26 +7,12 @@ pageProps.siteSection=pageProps.MARKETINGSITE;
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
-pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
 /*----------------------------------------------------*/
 %>
 
 <%@ include file="../globalheader.jsp" %>
 
-
-
-<%
-//Redirect to reger.com/about/signup.log if this pl doesn't have signup enabled
-if (!userSession.getPl().getIssignupenabled()){
-    try {
-        response.sendRedirect("http://www.reger.com/about/signup.log");
-        return;
-    } catch (Exception e){
-        Debug.errorsave(e, "");
-    }
-}
-
-%>
 
 
 
@@ -38,11 +24,13 @@ if (!userSession.getPl().getIssignupenabled()){
 /*----------------------------------------------------*/
 //reger.UserSession userSession;
 
+pageProps.entry = new reger.Entry(0);
+
 reger.MegaLogType logType = null;
 if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
     logType = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(Integer.parseInt(request.getParameter("eventtypeid")));
 } else {
-    response.sendRedirect("signup.log");
+    response.sendRedirect("community-logtypes.log");
     return;
 }
 
@@ -62,18 +50,17 @@ String cachekeyLoggedin = "";
 if (userSession.getAccountuser()!=null && userSession.getAccountuser().isLoggedIn){
     cachekeyLoggedin = " ACCOUNTUSERID=" + userSession.getAccountuser().getAccountuserid() + " ";
 }
-String cachekey = "SignupLogDetail" + cachekeyLoggedin + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
-int refreshintervalinseconds = 600;
+String cachekey = "CommunityLogDetail" + cachekeyLoggedin + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
-mb.append("<br>");
-mb.append(reger.marketingSite.SignupProgressBar.getBar(1));
-mb.append("<br>");
+    String currentNavButtonName = "community-logtypes";
+    %><%@ include file="community-header.jsp" %><%
 
+        mb.append("<br>");
+        mb.append(reger.MegaLogTypeHtmlrender.getSummary(logType, logtypedetailtoshow, "signup2.log", "community-logtypes-detail.log", request, response, userSession, pageProps));
 
-mb.append(reger.MegaLogTypeHtmlrender.getSummary(logType, logtypedetailtoshow, "signup2.log", "signup-log-type-detail.log", request, response, userSession, pageProps));
-
-
+    %><%@ include file="community-footer.jsp" %><%
 
 %><%@ include file="../htmlcacheend.jsp" %><%
 

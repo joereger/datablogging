@@ -15,18 +15,6 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
 
 
 
-<%
-//Redirect to reger.com/about/signup.log if this pl doesn't have signup enabled
-if (!userSession.getPl().getIssignupenabled()){
-    try {
-        response.sendRedirect("http://www.reger.com/about/signup.log");
-        return;
-    } catch (Exception e){
-        Debug.errorsave(e, "");
-    }
-}
-
-%>
 
 
 
@@ -36,44 +24,10 @@ if (!userSession.getPl().getIssignupenabled()){
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-//reger.UserSession userSession;
-
-
-int tmpAcctuserid = 0;
-if (userSession.getAccountuser()!=null){
-    tmpAcctuserid = userSession.getAccountuser().getAccountuserid();
-}
-
-//Pl is locked down but user is not logged-in
-if((userSession.getPl().getForcelogintoviewsites() && (userSession.getAccountuser()==null || !userSession.getAccountuser().isLoggedIn))){
-    response.sendRedirect("signup2.log?eventtypeid=" + userSession.getPl().getDefaulteventtypeid());
+if (1==1){
+    response.sendRedirect("signup2.log");
     return;
 }
-
-//HtmlCache
-String cachekeyLoggedin = "";
-if (userSession.getAccountuser()!=null && userSession.getAccountuser().isLoggedIn){
-    cachekeyLoggedin = " ACCOUNTUSERID=" + userSession.getAccountuser().getAccountuserid() + " ";
-}
-String cachekey = "SignupPage" + cachekeyLoggedin + " ACCOUNTUSERID:" + tmpAcctuserid + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
-int refreshintervalinseconds = 600;
-%><%@ include file="../htmlcachestart.jsp" %><%
-
-mb.append("<br>");
-mb.append(reger.marketingSite.SignupProgressBar.getBar(1));
-mb.append("<br>");
-
-if (pageProps.action.equals("search")){
-    mb.append(reger.MegaLogTypeListHtmlRenderer.getSearchResults(request.getParameter("searchterms"), "signup2.log", "signup.log", "signup-log-type-detail.log", request, response, userSession, pageProps));
-} else {
-    mb.append(reger.MegaLogTypeListHtmlRenderer.getLogTypeList("signup2.log", "signup.log", "signup-log-type-detail.log", request, response, userSession, pageProps));
-}
-
-
-
-mb.append("<br><br><br><br><br>");
-
-%><%@ include file="../htmlcacheend.jsp" %><%
 
 
 
@@ -82,10 +36,9 @@ mb.append("<br><br><br><br><br>");
 <%
 /*----------------------------------------------------*/
 /*                  Side Column                       */
-        StringBuffer sc = new StringBuffer();
+        //StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
 %>
 
 
-<%@ include file="../globalfooter.jsp" %>
-
+<%//@ include file="../globalfooter.jsp" %>

@@ -41,6 +41,7 @@ public class PageProps{
     public static int MARKETINGSITESECTIONSIGNUP=4;
     public static int MARKETINGSITESECTIONBIZ=5;
     public static int MARKETINGSITESECTIONCOMMUNITY=6;
+    public static int MARKETINGSITESECTIONFORUM=7;
 
 	//Log and event-specific vars - will be deprecated
 	//public int eventid=-1;

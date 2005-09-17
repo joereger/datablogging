@@ -24,7 +24,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
 
 //HtmlCache
 String cachekey = "CommunitySitesPage" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
-int refreshintervalinseconds = 600;
+int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
 

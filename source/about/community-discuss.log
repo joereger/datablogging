@@ -1,10 +1,10 @@
 <%@ page import="reger.core.db.Db,
-                 reger.core.db.Db"%>
+                 reger.search.SearchUIFlowAdvSearch"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.siteSection=pageProps.MARKETINGSITE;
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -16,39 +16,23 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
 
 
 
-
 <%
 /*----------------------------------------------------*/
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-//HtmlCache
-String cachekey = "CommunityPageLogTypes" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
-int refreshintervalinseconds = 3600;
-%><%@ include file="../htmlcachestart.jsp" %><%
 
-    String currentNavButtonName = "community-logtypes";
+
+
+    String currentNavButtonName = "community-discuss";
     %><%@ include file="community-header.jsp" %><%
 
-        mb.append("<br>");
-
-
-        if (pageProps.action.equals("search")){
-            mb.append(reger.MegaLogTypeListHtmlRenderer.getSearchResults(request.getParameter("searchterms"), "signup2.log", "community-logtypes.log", "community-logtypes-detail.log", request, response, userSession, pageProps));
-        } else {
-            mb.append(reger.MegaLogTypeListHtmlRenderer.getLogTypeList("signup2.log", "community-logtypes.log", "community-logtypes-detail.log", request, response, userSession, pageProps));
-        }
-
-
-
-
+    mb.append("<iframe src=\"http://www.reger.com/jforum/\" name=\"forum\" width=100% height=1000></iframe>");
 
 
     %><%@ include file="community-footer.jsp" %><%
 
-//HtmlCache
-%><%@ include file="../htmlcacheend.jsp" %><%
 
 
 %>
