@@ -7,7 +7,7 @@ pageProps.title = "Structured Blogging Support";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
-pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 %>
 
@@ -24,10 +24,10 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
 
 
 mb.append(reger.core.Util.popup());
+mb.append(reger.marketingSite.Biz.getCss());
 
-%>
-<%@ include file="biz-header.jsp" %>
-<%
+String currentNavButtonName = "moreinfo-whatisdatablogging";
+%><%@ include file="moreinfo-header.jsp" %><%
 
 mb.append("<style>blockquote.quote {\n" +
 "    padding: 10px;\n" +
@@ -36,6 +36,9 @@ mb.append("<style>blockquote.quote {\n" +
 "}</style>");
 
 String lineBreak = "\n";
+
+mb.append("<br><br>");
+mb.append("<blockquote>");
 
 mb.append("<br clear=all>");
 mb.append("<h1>Preliminary Support</h1>");
@@ -50,13 +53,12 @@ mb.append("<br clear=all>");
 mb.append("<h1>Next Steps</h1>");
 mb.append("Read more about Structured Blogging and watch it evolve.");
 
+%><%@ include file="what-is-datablogging-footer.jsp" %><%
+
+mb.append("</blockquote>");
 
 
-
-
-%>
-<%@ include file="biz-footer.jsp" %>
-<%
+%><%@ include file="moreinfo-footer.jsp" %><%
 
 %>
 

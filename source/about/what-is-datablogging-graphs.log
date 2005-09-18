@@ -3,11 +3,11 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Query Custom Data";
+pageProps.title = "Custom Data Graphs";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
-pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 %>
 
@@ -24,26 +24,27 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
 
 
 mb.append(reger.core.Util.popup());
+mb.append(reger.marketingSite.Biz.getCss());
 
-%>
-<%@ include file="biz-header.jsp" %>
-<%
+String currentNavButtonName = "moreinfo-whatisdatablogging";
+%><%@ include file="moreinfo-header.jsp" %><%
 
-
-
-mb.append("<br clear=all>");
-mb.append("<h1>Find Entries Based on Data Criteria</h1>");
-mb.append("You can build powerful data queries to locate entries that fulfill certain criteria.");
+mb.append("<br><br>");
+mb.append("<blockquote>");
 
 mb.append("<br clear=all>");
+mb.append("<h1>Graph Custom Data Fields</h1>");
+mb.append("Once you add a custom data field to a log you can immediately create custom graphs using it.");
+
 mb.append("<br clear=all>");
-mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("advsearch.gif", "left", "", ""));
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("graph.gif", "left", "", ""));
 
+%><%@ include file="what-is-datablogging-footer.jsp" %><%
 
+mb.append("</blockquote>");
 
-%>
-<%@ include file="biz-footer.jsp" %>
-<%
+%><%@ include file="moreinfo-footer.jsp" %><%
 
 %>
 

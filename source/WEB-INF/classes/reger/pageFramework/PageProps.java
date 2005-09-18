@@ -36,12 +36,13 @@ public class PageProps{
 
     //Marketing site static vars
     public static int MARKETINGSITESECTIONHOME=1;
-    public static int MARKETINGSITESECTIONFEATURES=2;
-    public static int MARKETINGSITESECTIONTOUR=3;
+    //public static int MARKETINGSITESECTIONFEATURES=2;
+    //public static int MARKETINGSITESECTIONTOUR=3;
     public static int MARKETINGSITESECTIONSIGNUP=4;
-    public static int MARKETINGSITESECTIONBIZ=5;
+    //public static int MARKETINGSITESECTIONBIZ=5;
     public static int MARKETINGSITESECTIONCOMMUNITY=6;
-    public static int MARKETINGSITESECTIONFORUM=7;
+    //public static int MARKETINGSITESECTIONFORUM=7;
+    public static int MARKETINGSITESECTIONMOREINFO=8;
 
 	//Log and event-specific vars - will be deprecated
 	//public int eventid=-1;

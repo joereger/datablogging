@@ -6,7 +6,7 @@ pageProps.siteSection=pageProps.MARKETINGSITE;
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
-pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONFEATURES;
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 %>
 
@@ -20,6 +20,11 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONFEATURES;
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
+
+
+
+String currentNavButtonName = "moreinfo-features";
+%><%@ include file="moreinfo-header.jsp" %><%
 
 mb.append(reger.core.Util.popup());
 
@@ -105,6 +110,10 @@ if (request.getParameter("feature")!=null && !request.getParameter("feature").eq
     mb.append("</a>");
     mb.append("</center>");
 }
+
+
+
+%><%@ include file="moreinfo-footer.jsp" %><%
 
 %>
 

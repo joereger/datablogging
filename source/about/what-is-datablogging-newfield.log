@@ -7,7 +7,7 @@ pageProps.title = "Adding Custom Fields to a Log";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
-pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 %>
 
@@ -24,12 +24,13 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
 
 
 mb.append(reger.core.Util.popup());
+mb.append(reger.marketingSite.Biz.getCss());
 
-%>
-<%@ include file="biz-header.jsp" %>
-<%
+String currentNavButtonName = "moreinfo-whatisdatablogging";
+%><%@ include file="moreinfo-header.jsp" %><%
 
-
+mb.append("<br><br>");
+mb.append("<blockquote>");
 
 mb.append("<br clear=all>");
 mb.append("<h1>How are Custom Logs Created?</h1>");
@@ -55,10 +56,11 @@ mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("newfielddon
 
 mb.append("</center>");
 
+%><%@ include file="what-is-datablogging-footer.jsp" %><%
 
-%>
-<%@ include file="biz-footer.jsp" %>
-<%
+mb.append("</blockquote>");
+
+%><%@ include file="moreinfo-footer.jsp" %><%
 
 %>
 

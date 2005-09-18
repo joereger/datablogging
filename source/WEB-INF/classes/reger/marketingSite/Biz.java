@@ -14,15 +14,15 @@ public class Biz {
 
         mb.append(mainButton("Contact Us", "contactus.log", pathToAppRoot));
 
-        mb.append(mainButton("What is datablogging?", "what-is-datablogging.log", pathToAppRoot));
-        mb.append(smallButton("Adding Custom Fields to a Log", "what-is-datablogging-newfield.log", pathToAppRoot));
-        mb.append(smallButton("Graph Custom Data", "what-is-datablogging-graphs.log", pathToAppRoot));
-        mb.append(smallButton("Advanced Search Using Data", "what-is-datablogging-search.log", pathToAppRoot));
-        mb.append(smallButton("RSS Includes Custom Data", "what-is-datablogging-rss.log", pathToAppRoot));
-        mb.append(smallButton("RSS Embedded in Html", "what-is-datablogging-rss-in-html.log", pathToAppRoot));
-        mb.append(smallButton("Structured Blogging Support", "what-is-datablogging-preliminary-structured-blogging-support.log", pathToAppRoot));
-        mb.append(smallButton("Log Types as XML Schema", "what-is-datablogging-xml-schema.log", pathToAppRoot));
-        mb.append(smallButton("Advanced Data Search + Graphing", "what-is-datablogging-graphandsearch.log", pathToAppRoot));
+//        mb.append(mainButton("What is datablogging?", "what-is-datablogging.log", pathToAppRoot));
+//        mb.append(smallButton("Adding Custom Fields to a Log", "what-is-datablogging-newfield.log", pathToAppRoot));
+//        mb.append(smallButton("Graph Custom Data", "what-is-datablogging-graphs.log", pathToAppRoot));
+//        mb.append(smallButton("Advanced Search Using Data", "what-is-datablogging-search.log", pathToAppRoot));
+//        mb.append(smallButton("RSS Includes Custom Data", "what-is-datablogging-rss.log", pathToAppRoot));
+//        mb.append(smallButton("RSS Embedded in Html", "what-is-datablogging-rss-in-html.log", pathToAppRoot));
+//        mb.append(smallButton("Structured Blogging Support", "what-is-datablogging-preliminary-structured-blogging-support.log", pathToAppRoot));
+//        mb.append(smallButton("Log Types as XML Schema", "what-is-datablogging-xml-schema.log", pathToAppRoot));
+//        mb.append(smallButton("Advanced Data Search + Graphing", "what-is-datablogging-graphandsearch.log", pathToAppRoot));
 
 
 

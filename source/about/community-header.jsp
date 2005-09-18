@@ -11,7 +11,7 @@ communityButtons = AddToArray.addToNavButtonArray(communityButtons, new NavButto
 communityButtons = AddToArray.addToNavButtonArray(communityButtons, new NavButton("community-logtypes", "", "LOG TYPES", "about/community-logtypes.log", false, ""));
 communityButtons = AddToArray.addToNavButtonArray(communityButtons, new NavButton("community-findsite", "", "FIND A SITE", "about/community-findsite.log", false, ""));
 communityButtons = AddToArray.addToNavButtonArray(communityButtons, new NavButton("community-search", "", "SEARCH ENTRIES", "about/community-search.log", false, ""));
-
+communityButtons = AddToArray.addToNavButtonArray(communityButtons, new NavButton("community-search", "", "TELL A FRIEND", "about/community-tellfriend.log", false, ""));
 
 NavPanel navPanel = new NavPanel("", currentNavButtonName, communityButtons, 1);
 mb.append("<br><br>");

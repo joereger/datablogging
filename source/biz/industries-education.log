@@ -7,7 +7,7 @@ pageProps.title = "Education";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
-pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 %>
 

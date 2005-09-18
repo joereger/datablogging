@@ -8,7 +8,7 @@ pageProps.siteSection=pageProps.MARKETINGSITE;
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
-pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONTOUR;
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 %>
 
@@ -20,6 +20,11 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONTOUR;
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
+
+
+String currentNavButtonName = "moreinfo-tour";
+%><%@ include file="moreinfo-header.jsp" %><%
+
 
 mb.append("<font face=arial size=-2>");
 mb.append("<br>");
@@ -120,6 +125,8 @@ reger.demos.DemoCategory[] demoCategories = reger.demos.AllDemos.getAllDemoCateg
     }
 
 
+
+%><%@ include file="moreinfo-footer.jsp" %><%
 
 
 mb.append("<br><br><br><br>");

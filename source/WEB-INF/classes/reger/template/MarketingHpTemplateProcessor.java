@@ -183,6 +183,99 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
 
         mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
         mb.append("<tr>");
+        mb.append("<td valign='top' bgcolor=#ffcc33>");
+        mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#ffcc33 align=right valign=middle>");
+        mb.append("<br><br>");
+
+        mb.append("<center>");
+
+        mb.append("<a href='signup.log'><img src=../images/hp-freeblog.gif border=0></a>");
+
+        mb.append("<a href='download.log'><img src=../images/hp-download.gif border=0></a>");
+
+        mb.append("<a href='moreinfo.log'><img src=../images/hp-moreinfo.gif border=0></a>");
+
+        mb.append("</center>");
+
+        mb.append("<br><br>");
+
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("</table>");
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("<tr>");
+        mb.append("<td valign='top' bgcolor=#000000>");
+        mb.append("<img src=../images/clear.gif width=1 height=1>");
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("</table>");
+
+
+
+
+        mb.append("<table cellspacing='0' width=275 cellpadding='10' border='0'>");
+        mb.append("<tr>");
+        mb.append("<td valign='top'>");
+
+
+
+        mb.append("<$LogInBox$>");
+
+
+        mb.append("<font face=arial size=-1><b>Recent News/Updates/Status</b></font>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=-2>For the latest datablogging and Reger.com news, visit Joe Reger, Jr's blog:");
+        mb.append("<br>");
+        mb.append("<img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9 align=middle> <a href='http://www.joereger.com/logmain7.log'>Get News Here.</a></font>");
+        mb.append("<br><br>");
+
+        mb.append("<font face=arial size=-1><b>Questions/Feedback?</b></font>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=-2>Visit the Reger.com discussion forum:");
+        mb.append("<br>");
+        mb.append("<img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9 align=middle>  <font face=arial size=-2><a href='http://www.reger.com/jforum/'>Visit the Forum.</a></font>");
+        mb.append("<br><br>");
+
+        mb.append("<font face=arial size=-1><b>Current Version:</b></font>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=+2 color=#cccccc><b><$VersionNumber$></b></font>");
+        mb.append("<br>");
+        mb.append("<img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9 align=middle>  <font face=arial size=-2><a href='versions.log'>List All Versions.</a></font>");
+        mb.append("<br><br>");
+
+
+
+
+
+        mb.append("<br><br><br>");
+
+        mb.append("</td>");
+
+        mb.append("<td valign='top'>");
+        mb.append("<font face=arial size=+3 color=#cccccc>You invest a lot living your life... invest a little capturing it.</font>");
+        mb.append("</td>");
+
+        mb.append("</tr></table>");
+
+
+
+
+
+
+
+
+
+        return mb.toString();
+    }
+
+    public String getDefaultTemplateOld(){
+        StringBuffer mb = new StringBuffer();
+
+        mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
+        mb.append("<tr>");
         mb.append("<td valign='top' bgcolor=#ffcc00><table cellspacing='0' cellpadding='0' width=100% border='0'>");
         mb.append("<tr>");
         mb.append("<td bgcolor=#ffcc00 align=right valign=middle>");

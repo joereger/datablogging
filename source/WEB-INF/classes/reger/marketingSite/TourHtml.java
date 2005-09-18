@@ -1423,8 +1423,8 @@ public class TourHtml {
         mb.append("</font>");
         mb.append("<br>");
 
-        mb.append("<a href='imagedisplay.log?imagename="+fileNameOfScreenshot+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
-        mb.append("<img src='images/databloggingscreens/thumbs/"+fileNameOfScreenshot+"' alt='' border='0'>");
+        mb.append("<a href='../biz/imagedisplay.log?imagename="+fileNameOfScreenshot+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
+        mb.append("<img src='../biz/images/databloggingscreens/thumbs/"+fileNameOfScreenshot+"' alt='' border='0'>");
         mb.append("<br>");
         mb.append("<font face=arial size=-2 style=\"font-size: 11px; font-weight:900;\">");
         mb.append("+ ZOOM SCREENSHOT");

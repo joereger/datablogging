@@ -1,5 +1,5 @@
 <%@ page import="reger.core.db.Db,
-                 reger.core.db.Db"%>
+                 reger.search.SearchUIFlowAdvSearch"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -23,19 +23,31 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
 /*----------------------------------------------------*/
 
 //HtmlCache
-String cachekey = "CommunityPage" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+String cachekey = "CommunityTellFriend" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
 int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
 
-    String currentNavButtonName = "community-main";
+    String currentNavButtonName = "community-tellfriend";
     %><%@ include file="community-header.jsp" %><%
 
     mb.append("<br>");
     mb.append("<br>");
-    mb.append("Welcome!");
+
+    mb.append("<br>");
+    mb.append("<form action='emailafriend.log' method=post><font face=arial size=-1><b>Tell a Friend.</b></font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>Share this with a friend.</font>");
+    mb.append("<br>");
+    mb.append("<input type='text' name='friendemail' value='Friend's Email**' size=15 maxlength=100 style='font-size: 10px'>");
+    mb.append("<br>");
+    mb.append("<input type='submit' value='Tell A Friend.' style='font-size: 10px'></form>");
 
 
+
+
+
+    mb.append("<br><br>");
 
 
     %><%@ include file="community-footer.jsp" %><%

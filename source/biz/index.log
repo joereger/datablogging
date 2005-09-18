@@ -7,7 +7,7 @@ pageProps.title = "Business Overview";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
-pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONBIZ;
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 %>
 
@@ -40,7 +40,7 @@ mb.append("Blogs are an excellent way to capture knowledge and foster communicat
 
 mb.append("<br>");
 mb.append("<h1>What Makes Us Unique</h1>");
-mb.append("We've got all of the blogging basics.  What makes us unique is something called datablogging.  It allows you to attach custom data fields to each blog entry and then graph, share or mine that data.  Read more about <a href='what-is-datablogging.log'>datablogging</a>.");
+mb.append("We've got all of the blogging basics.  What makes us unique is something called datablogging.  It allows you to attach custom data fields to each blog entry and then graph, share or mine that data.  Read more about <a href='../about/what-is-datablogging.log'>datablogging</a>.");
 
 mb.append("<br>");
 mb.append("<h1>Launch Process</h1>");

@@ -1,0 +1,147 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+String currentNavButtonName = "moreinfo-main";
+%><%@ include file="moreinfo-header.jsp" %><%
+
+mb.append("<br>");
+
+mb.append("<table cellpadding=10 cellspacing=5 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top width=250>");
+
+mb.append(reger.ui.RoundedCornersFixedWidthAnyColor.get("What is datablogging?", "Introduction to the concept of datablogging.<br><br><a href='what-is-datablogging.log'>Click Here</a>", pageProps.pathToAppRoot, "fc3", "fff", "ffc"));
+mb.append(reger.ui.RoundedCornersFixedWidthAnyColor.get("Features", "See some of the powerful features available in this datablogging system.<br><br><a href='features.log'>Click Here</a>", pageProps.pathToAppRoot, "fc3", "fff", "ffc"));
+mb.append(reger.ui.RoundedCornersFixedWidthAnyColor.get("Demo Tours", "Screencast demos of the system in action.<br><br><a href='tour.log'>Click Here</a>", pageProps.pathToAppRoot, "fc3", "fff", "ffc"));
+mb.append(reger.ui.RoundedCornersFixedWidthAnyColor.get("Versions", "View current and past versions of the software.<br><br><a href='versions.log'>Click Here</a>", pageProps.pathToAppRoot, "fc3", "fff", "ffc"));
+mb.append(reger.ui.RoundedCornersFixedWidthAnyColor.get("Enterprise and Business Use", "Datablogging has immense power in the enterprise.<br><br><a href='../biz/index.log'>Click Here</a>", pageProps.pathToAppRoot, "fc3", "fff", "ffc"));
+
+mb.append("</td>");
+mb.append("<td valign=top>");
+
+
+//Begin center
+mb.append("<center>");
+
+//mb.append("<img src='images/hp-datablogging.jpg' width=366 height=467 border=0>");
+
+//mb.append("<br><br>");
+
+mb.append("<table width=100% cellpadding=4 cellspacing=0 border=0>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff align=center>");
+mb.append(reger.ui.ShadowBox.start("../"));
+mb.append("<font face=arial size=+1 color=#666666><b>A Full-featured Blogging Tool</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2><b>This is a full-featured blogging tool.  Using it you can create a blog and publish your first entry in minutes.  You can customize your site's look and feel, use open APIs, publish RSS feeds, password-protect entries and do everything else you'd expect to be able to do with a blogging tool... even some things you wouldn't expect.</b></font>");
+mb.append("<br>");
+mb.append("<a href='features.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>View the feature list.</b></font></a>");
+mb.append(reger.ui.ShadowBox.end("../"));
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff align=center>");
+mb.append(reger.ui.ShadowBox.start("../"));
+mb.append("<font face=arial size=+1 color=#666666><b>datablogging is Powerful</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2><b>datablogging is what makes this tool unique.  You can do basic blog entries with a title, date and body.  But what this tool excels at is allowing you to capture extended data fields with each entry.  As you blog and collect data, you can then mine that data with custom graphs, advanced saved data searches and data-enabled RSS feeds.  All right out of the box with no complex user manuals or custom code.  You can create a custom log type to log any sort of activity you can imagine. The sky's the limit. A few sample log types are provided, but they only scratch the surface of what's possible. Be creative. Have fun.</b></font>");
+mb.append("<br>");
+mb.append("<a href='../biz/what-is-datablogging.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>More on datablogging.</b></font></a>");
+mb.append(reger.ui.ShadowBox.end("../"));
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff align=center>");
+mb.append(reger.ui.ShadowBox.start("../"));
+mb.append("<font face=arial size=+1 color=#666666><b>Opening the Archive</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2><b>This tool is also unique because it doesn't focus on your blog's homepage.  Sure, it does an excellent job with the homepage... you can customize the heck out of it.  But your blog is more than just your homepage.  Entries don't slide off of it never to be seen again.  On the contrary, a number of features unique to this tool help weave your past entries and the context they create into your current entries.  This tool attempts to create a story out of your entries.  Some people call it a digital scrapbook.  Academics call it a personal data repository.  Businesses call it a knowledge management tool.  You say potato.  We say potato.  At the core, this tool helps you leverage your old log entries, whether that means to wax nostalgic or run a Fortune 100 business.</b></font>");
+mb.append("<br>");
+mb.append("<a href='features.log?feature=comparison'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>Open sesame</b></font></a>");
+mb.append(reger.ui.ShadowBox.end("../"));
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff align=center>");
+mb.append(reger.ui.ShadowBox.start("../"));
+mb.append("<font face=arial size=+1 color=#666666><b>Business or Pleasure?</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2><b>It's up to you.  You can use datablogging to track personal things like triathlon training, movie watching or eating out.  Or you can use it in business to track meetings, keep up with projects, share files and announce progress.  We offer custom installations of the server software for business and in the coming months will have a downloadable personal version too.</b></font>");
+mb.append("<br>");
+mb.append("<a href='../biz/index.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>Business folks can learn more</b></font></a>");
+mb.append("<br>");
+mb.append("<a href='tour.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>Personal bloggers can take a tour</b></font></a>");
+mb.append(reger.ui.ShadowBox.end("../"));
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor=#ffffff align=center>");
+mb.append(reger.ui.ShadowBox.start("../"));
+mb.append("<font face=arial size=+1 color=#666666><b>It's Easy and Free to Get Started</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2><b>Creating an account takes seconds and does not require a credit card.  You'll get a free upgrade to Pro features for "+reger.Vars.TRIALACCOUNTDAYS+" days.  After that you can keep using the site for free or you can pay a small fee for storage and traffic, generally around $4 per month.</b></font>");
+mb.append("<br>");
+mb.append("<a href='signup.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>Start datablogging now</b></font></a>");
+mb.append(reger.ui.ShadowBox.end("../"));
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("</center>");
+
+//End center
+
+
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+mb.append("<br>");
+
+%><%@ include file="moreinfo-footer.jsp" %><%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
