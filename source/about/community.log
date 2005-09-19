@@ -22,6 +22,11 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+if (1==1){
+    response.sendRedirect("community-sites.log");
+    return;
+}
+
 //HtmlCache
 String cachekey = "CommunityPage" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
 int refreshintervalinseconds = 3600;

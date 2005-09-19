@@ -70,7 +70,7 @@ mb.append("<font face=arial size=+1 color=#666666><b>datablogging is Powerful</b
 mb.append("<br>");
 mb.append("<font face=arial size=-2><b>datablogging is what makes this tool unique.  You can do basic blog entries with a title, date and body.  But what this tool excels at is allowing you to capture extended data fields with each entry.  As you blog and collect data, you can then mine that data with custom graphs, advanced saved data searches and data-enabled RSS feeds.  All right out of the box with no complex user manuals or custom code.  You can create a custom log type to log any sort of activity you can imagine. The sky's the limit. A few sample log types are provided, but they only scratch the surface of what's possible. Be creative. Have fun.</b></font>");
 mb.append("<br>");
-mb.append("<a href='../biz/what-is-datablogging.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>More on datablogging.</b></font></a>");
+mb.append("<a href='what-is-datablogging.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>More on datablogging.</b></font></a>");
 mb.append(reger.ui.ShadowBox.end("../"));
 mb.append("</td>");
 mb.append("</tr>");

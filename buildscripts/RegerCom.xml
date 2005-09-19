@@ -221,7 +221,7 @@
             <fileset dir="${sourcedir}" excludes="**/Thumbs.db"/>
         </copy>
 
-     	<javac srcdir="${javasrc}" destdir="${quickbuild.compiled.destination.directory}" excludes="**.x" debug="on" />
+     	<javac srcdir="${javasrc}" destdir="${quickbuild.compiled.destination.directory}" classpath="${tomcatjarsforclasspath}; ${thirdpartylibs}" excludes="**.x" debug="on" />
 		<copy todir="${quickbuild.tomcat.root.directory}">
 			<fileset dir="${lastbuild}">
 			</fileset>

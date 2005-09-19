@@ -191,9 +191,9 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
 
         mb.append("<center>");
 
-        mb.append("<a href='signup.log'><img src=../images/hp-freeblog.gif border=0></a>");
+        mb.append("<a href='signup2.log'><img src=../images/hp-freeblog.gif border=0></a>");
 
-        mb.append("<a href='download.log'><img src=../images/hp-download.gif border=0></a>");
+        //mb.append("<a href='download.log'><img src=../images/hp-download.gif border=0></a>");
 
         mb.append("<a href='moreinfo.log'><img src=../images/hp-moreinfo.gif border=0></a>");
 
@@ -216,15 +216,15 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
 
 
 
-        mb.append("<table cellspacing='0' width=275 cellpadding='10' border='0'>");
+        mb.append("<table cellspacing='0' width=460 cellpadding='10' border='0' align=center>");
         mb.append("<tr>");
-        mb.append("<td valign='top'>");
+        mb.append("<td valign='top' align=center>");
 
 
-
+        mb.append(reger.ui.ShadowBox.start("../"));
         mb.append("<$LogInBox$>");
 
-
+        mb.append("<br>");
         mb.append("<font face=arial size=-1><b>Recent News/Updates/Status</b></font>");
         mb.append("<br>");
         mb.append("<font face=arial size=-2>For the latest datablogging and Reger.com news, visit Joe Reger, Jr's blog:");
@@ -245,6 +245,7 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
         mb.append("<br>");
         mb.append("<img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9 align=middle>  <font face=arial size=-2><a href='versions.log'>List All Versions.</a></font>");
         mb.append("<br><br>");
+        mb.append(reger.ui.ShadowBox.end("../"));
 
 
 
@@ -254,9 +255,9 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
 
         mb.append("</td>");
 
-        mb.append("<td valign='top'>");
-        mb.append("<font face=arial size=+3 color=#cccccc>You invest a lot living your life... invest a little capturing it.</font>");
-        mb.append("</td>");
+//        mb.append("<td valign='top'>");
+//        mb.append("<font face=arial size=+3 color=#cccccc>You invest a lot living your life... invest a little capturing it.</font>");
+//        mb.append("</td>");
 
         mb.append("</tr></table>");
 
@@ -349,7 +350,7 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
         mb.append("<br>");
         mb.append("<font face=arial size=-2><b>datablogging is what makes this tool unique.  You can do basic blog entries with a title, date and body.  But what this tool excels at is allowing you to capture extended data fields with each entry.  As you blog and collect data, you can then mine that data with custom graphs, advanced saved data searches and data-enabled RSS feeds.  All right out of the box with no complex user manuals or custom code.  You can create a custom log type to log any sort of activity you can imagine. The sky's the limit. A few sample log types are provided, but they only scratch the surface of what's possible. Be creative. Have fun.</b></font>");
         mb.append("<br>");
-        mb.append("<a href='../biz/what-is-datablogging.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>More on datablogging.</b></font></a>");
+        mb.append("<a href='what-is-datablogging.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>More on datablogging.</b></font></a>");
         mb.append(reger.ui.ShadowBox.end("../"));
         mb.append("</td>");
         mb.append("</tr>");

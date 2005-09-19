@@ -73,7 +73,8 @@ if (!reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getS
 //Page Vars
 String errortext="";
 String siteurl=reger.core.Util.getParameterClean(request.getParameter("siteurl"));
-String homepagetitle=reger.core.Util.getParameterClean(request.getParameter("homepagetitle"));
+//String homepagetitle=reger.core.Util.getParameterClean(request.getParameter("homepagetitle"));
+String homepagetitle=reger.core.Util.getParameterClean(request.getParameter("siteurl"));
 
 //Create accountuser object
 reger.Accountuser au = new reger.Accountuser(-1);
@@ -110,9 +111,9 @@ if (pageProps.action.equals("createaccount")) {
     //Accountuser validation
     errortext = errortext + au.validateAccountuser(userSession.getPl());
     //Homepagetitle is required
-    if (request.getParameter("homepagetitle")==null || request.getParameter("homepagetitle").equals("")){
-        errortext=errortext + "You must provide a site name.<br>";    
-    }
+//    if (request.getParameter("homepagetitle")==null || request.getParameter("homepagetitle").equals("")){
+//        errortext=errortext + "You must provide a site name.<br>";
+//    }
 
 	//If there is any sort of error
 	if (!errortext.equals("")){
@@ -285,11 +286,11 @@ if (pageProps.action.equals("createaccount")) {
     } else {
         errortext = "Sorry, that username/password combination was not found.";
     }
-} else {
+} else if (pageProps.action.equals("alreadyloggedin")){
 //If user is logged-in, add the log --------------------------------------------
 //------------------------------------------------------------------------------
     au = userSession.getAccountuser();
-    if (au.getIsLoggedIn()){
+    if (au.getIsLoggedIn() && request.getParameter("explicitdesiretocreate")!=null && request.getParameter("explicitdesiretocreate").equals("true")){
 
         //Set ordering info by finding all on first level and getting highest
         reger.Account acct = new reger.Account(au.getAccountid());
@@ -335,37 +336,13 @@ if (!errortext.equals("")) {
 
 
 
-mb.append("<br>");
-mb.append(reger.marketingSite.SignupProgressBar.getBar(2));
-mb.append("<br>");
-
-
-
-
-
-
-mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
-
-mb.append("<center><font face=arial size=+2 color=#666666><b>");
-if (logTypeToAdd!=null){
-    mb.append("You have chosen to create a log of type: " + logTypeToAdd.getMegalogname() );
-    if (!logname.equals(logTypeToAdd.getMegalogname())){
-        //mb.append(" which you will call \""+logname+"\"");
-    }
-    mb.append(". ");
-    mb.append("</b></font>");
-    mb.append("<br>");
-}
-mb.append("<font face=arial size=-1 color=#666666><b>");
-mb.append("To continue, either log in or create a new account. ");
-mb.append("</font>");
 //mb.append("<br>");
-mb.append("<font face=arial size=-1 color=#666666><b>");
-mb.append("Once you do so you will be able to add more logs, customize the ones you have and add log entries to them.");
-mb.append("</font>");
-mb.append("</center><br>");
+//mb.append(reger.marketingSite.SignupProgressBar.getBar(2));
+//mb.append("<br>");
+//
+//
+//
 
-mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
 
 
 
@@ -373,54 +350,7 @@ mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
 //Wrapper table
 mb.append("<table cellpadding=5 align=center width=100% cellspacing=1 border=0>");
 mb.append("<tr>");
-mb.append("<td width=25% valign=top>");
 
-
-    //Login
-    mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
-    mb.append("<center><font face=arial size=+2 color=#666666><b>Existing Users</b></font></center><br>");
-    mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
-    mb.append("<form action=signup2.log method=post>");
-    mb.append("<input type=hidden name=action value=login>");
-    mb.append("<input type=hidden name=eventtypeid value="+request.getParameter("eventtypeid")+">");
-    mb.append("<input type=hidden name=logname value=\""+reger.core.Util.cleanForHtml(request.getParameter("logname"))+"\">");
-    mb.append("<tr>");
-    mb.append("<td valign=top nowrap align=left bgcolor=#cccccc colspan=2>");
-    mb.append("<font face=arial size=-1 color=#000000><b>Log In</b></font><br>");
-    mb.append("</td>");
-    mb.append("</tr>");
-    mb.append("<tr>");
-    mb.append("<td bgcolor=#ffffff valign=center align=right>");
-    mb.append("<font face=arial size=-1 color=#000000><b>Username</b></font>");
-    mb.append("</td>");
-    mb.append("<td bgcolor=#e6e6e6 valign=center nowrap align=left>");
-    mb.append("<input type='text' name='acctusername' value='' size='20' maxlength='49'>");
-    mb.append("</td>");
-    mb.append("</tr>");
-    mb.append("<tr>");
-    mb.append("<td bgcolor=#ffffff valign=center align=right>");
-    mb.append("<font face=arial size=-1 color=#000000><b>Password</b></font>");
-    mb.append("</td>");
-    mb.append("<td bgcolor=#e6e6e6 valign=center nowrap align=left>");
-    mb.append("<input type='password' name='acctuserpassword' value='' size='20' maxlength='49'>");
-    mb.append("</td>");
-    mb.append("</tr>");
-    mb.append("<tr>");
-    mb.append("<td bgcolor=#ffffff valign=center align=right>");
-    mb.append("<font face=arial size=-1 color=#000000><b>&nbsp;</b></font>");
-    mb.append("</td>");
-    mb.append("<td bgcolor=#ffffff valign=center nowrap align=left>");
-    mb.append("<input type=submit value='Log In'>");
-    mb.append("<br>");
-    mb.append("<font face=arial size=-2 color=#000000><b>New users: create an account to the right.</b></font>");
-    mb.append("</td>");
-    mb.append("</tr>");
-    mb.append("</table>");
-    mb.append("</form>");
-    mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
-
-//Wrapper table
-mb.append("</td>");
 mb.append("<td valign=top>");
 
     //Sign Up
@@ -432,6 +362,7 @@ mb.append("<td valign=top>");
 
     mb.append("<form action=signup2.log method=post>");
     mb.append("<input type=hidden name=action value=createaccount>");
+    mb.append("<input type=hidden name=explicitdesiretocreate value=true>");
     mb.append("<input type=hidden name=eventtypeid value="+request.getParameter("eventtypeid")+">");
     mb.append("<input type=hidden name=logname value=\""+reger.core.Util.cleanForHtml(request.getParameter("logname"))+"\">");
 
@@ -464,17 +395,17 @@ mb.append("<td valign=top>");
     mb.append("</td>");
     mb.append("</tr>");
 
-    mb.append("<tr>");
-    mb.append("<td bgcolor=#ffffff valign=center align=right>");
-    mb.append("<font face=arial size=-1 color=#000000><b>Site Name</b></font><br>");
-    mb.append("<font face=arial size=-2 color=#000000>");
-    mb.append("Give your site a name.  You can easily change it later.  Example: Joe's Cool Site.");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td bgcolor=#e6e6e6 valign=top nowrap align=left>");
-    mb.append("<input type='text' name='homepagetitle' value='" + reger.core.Util.cleanForHtml(homepagetitle) + "' size='20' maxlength='49'>");
-    mb.append("</td>");
-    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td bgcolor=#ffffff valign=center align=right>");
+//    mb.append("<font face=arial size=-1 color=#000000><b>Site Name</b></font><br>");
+//    mb.append("<font face=arial size=-2 color=#000000>");
+//    mb.append("Give your site a name.  You can easily change it later.  Example: Joe's Cool Site.");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("<td bgcolor=#e6e6e6 valign=top nowrap align=left>");
+//    mb.append("<input type='text' name='homepagetitle' value='" + reger.core.Util.cleanForHtml(homepagetitle) + "' size='20' maxlength='49'>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
 
 
 
@@ -558,6 +489,106 @@ mb.append("<td valign=top>");
 
 //Wrapper table
 mb.append("</td>");
+
+
+mb.append("<td width=25% valign=top>");
+
+
+    //Login
+    mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+    if (userSession.getAccountuser().getIsLoggedIn()){
+        //User is logged-in so make sure they want to add to this account
+        mb.append("<center><font face=arial size=+2 color=#666666><b>You're Logged-In Already</b></font></center><br>");
+        mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
+        mb.append("<form action=signup2.log method=post>");
+        mb.append("<input type=hidden name=action value=alreadyloggedin>");
+        mb.append("<input type=hidden name=explicitdesiretocreate value=true>");
+        mb.append("<input type=hidden name=eventtypeid value="+request.getParameter("eventtypeid")+">");
+        mb.append("<input type=hidden name=logname value=\""+reger.core.Util.cleanForHtml(request.getParameter("logname"))+"\">");
+
+        mb.append("<tr>");
+        mb.append("<td valign=top align=left bgcolor=#ffffff colspan=2>");
+        //mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+        mb.append("<center><font face=arial size=+2 color=#666666><b>");
+        if (logTypeToAdd!=null){
+            mb.append("You have chosen to create a log of type: " + logTypeToAdd.getMegalogname() );
+            if (!logname.equals(logTypeToAdd.getMegalogname())){
+                //mb.append(" which you will call \""+logname+"\"");
+            }
+            mb.append(". ");
+            mb.append("</b></font>");
+            mb.append("<br>");
+        }
+        mb.append("<font face=arial size=-1 color=#666666><b>");
+        mb.append("To continue, either log in or create a new account. ");
+        mb.append("</font>");
+        //mb.append("<br>");
+        mb.append("<font face=arial size=-1 color=#666666><b>");
+        mb.append("Once you do so you will be able to add more logs, customize the ones you have and add log entries to them.");
+        mb.append("</font>");
+        mb.append("</center><br>");
+        //mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+        mb.append("</td>");
+        mb.append("</tr>");
+
+
+        mb.append("<td bgcolor=#ffffff valign=center align=left>");
+        mb.append("<input type=submit value='Add Log To My Account'>");
+        mb.append("<br><br>");
+        mb.append("<font face=arial size=-2 color=#000000><b>New users: create an account to the right.  Or <a href='login.log?action=logout'>log out</a> if you don't want to add to this account.</b></font>");
+        mb.append("</form>");
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("</table>");
+    } else {
+        //Allow user to log in
+        mb.append("<center><font face=arial size=+2 color=#666666><b>Existing Users Log In</b></font></center><br>");
+        mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
+        mb.append("<form action=signup2.log method=post>");
+        mb.append("<input type=hidden name=action value=login>");
+        mb.append("<input type=hidden name=explicitdesiretocreate value=true>");
+        mb.append("<input type=hidden name=eventtypeid value="+request.getParameter("eventtypeid")+">");
+        mb.append("<input type=hidden name=logname value=\""+reger.core.Util.cleanForHtml(request.getParameter("logname"))+"\">");
+        mb.append("<tr>");
+        mb.append("<td valign=top nowrap align=left bgcolor=#cccccc colspan=2>");
+        mb.append("<font face=arial size=-1 color=#000000><b>Log In</b></font><br>");
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#ffffff valign=center align=right>");
+        mb.append("<font face=arial size=-1 color=#000000><b>Username</b></font>");
+        mb.append("</td>");
+        mb.append("<td bgcolor=#e6e6e6 valign=center nowrap align=left>");
+        mb.append("<input type='text' name='acctusername' value='' size='20' maxlength='49'>");
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#ffffff valign=center align=right>");
+        mb.append("<font face=arial size=-1 color=#000000><b>Password</b></font>");
+        mb.append("</td>");
+        mb.append("<td bgcolor=#e6e6e6 valign=center nowrap align=left>");
+        mb.append("<input type='password' name='acctuserpassword' value='' size='20' maxlength='49'>");
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("<tr>");
+        mb.append("<td bgcolor=#ffffff valign=center align=right>");
+        mb.append("<font face=arial size=-1 color=#000000><b>&nbsp;</b></font>");
+        mb.append("</td>");
+        mb.append("<td bgcolor=#ffffff valign=center nowrap align=left>");
+        mb.append("<input type=submit value='Log In'>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=-2 color=#000000><b>New users: create an account to the right.</b></font>");
+        mb.append("</form>");
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("</table>");
+    }
+    mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+//Wrapper table
+mb.append("</td>");
+
+
 mb.append("</tr>");
 mb.append("</table>");
 
