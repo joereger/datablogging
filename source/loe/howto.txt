@@ -1,6 +1,6 @@
 <br>
 
-<b>Setup Outline</b>
+<b>Rough Setup Outline</b>
 
 1) Install MySQL (See MySQL Config notes below)
 
@@ -429,7 +429,7 @@ This is a reference showing the jar file to module relationship:
     - jcaptcha.jar
     - ehcache.jar
 
-
+This was added.
 
 
 
@@ -450,6 +450,8 @@ To fix googleapi.jar:
 or
 
 <Valve className="org.apache.catalina.valves.AccessLogValve" prefix="regerAccess." suffix=".txt" pattern="combined"/>
+
+This was just added.
 
 
 
