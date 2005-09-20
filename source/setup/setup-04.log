@@ -1,8 +1,17 @@
 <%@ page import="reger.core.db.DbConfig,
                  reger.core.db.Db,
-                 reger.MegaLogType,
                  reger.Account,
-                 reger.core.Util"%>
+                 reger.core.Util,
+                 java.util.Calendar,
+                 java.util.Hashtable,
+                 reger.core.licensing.License"%>
+<%@ page import="reger.cache.LogCache"%>
+<%@ page import="reger.systemproperties.PathUploadMedia"%>
+<%@ page import="reger.systemproperties.EmailServer"%>
+<%@ page import="reger.systemproperties.AllSystemProperties"%>
+<%@ page import="reger.PrivateLabel"%>
+<%@ page import="reger.AllPrivateLabelsInSystem"%>
+<%@ page import="reger.core.ValidationException"%>
 <%
 //Only do this page if we have an invalid database connection.
 //Otherwise, anybody's going to be able to reset the database
@@ -21,21 +30,170 @@ String[][] rstUser= Db.RunSQL("SELECT accountuser.accountuserid FROM accountuser
 //-----------------------------------
 //-----------------------------------
 if (rstUser!=null && rstUser.length>0){
-    //There is a user
+
 } else {
-    //There is not yet a user with LOEAdmin permissions in the database.
+    //There is NOT a user with LOEAdmin permissions in the database.
     response.sendRedirect("setup-03.log");
     return;
 }
 %>
 
 
+<%
+StringBuffer mb = new StringBuffer();
+String errortext = "";
+
+//Get PATHUPLOADMEDIA
+PathUploadMedia pathuploadmedia = new PathUploadMedia();
+
+//Get EMAILASERVER
+EmailServer emailserver = new EmailServer();
+
+//Get plbasedomain
+String plbasedomain = request.getServerName();
+
+
+//Create an account ------------------------------------------------------------
+//------------------------------------------------------------------------------
+if (request.getParameter("action")!=null && request.getParameter("action").equals("save")) {
+
+    //PATHUPLOADMEDIA
+    if (request.getParameter(pathuploadmedia.getPropertyName())!=null){
+        pathuploadmedia.setPropertyValue(request.getParameter(pathuploadmedia.getPropertyName()));
+        pathuploadmedia.save();
+        AllSystemProperties.loadProperties();
+    }
+
+    //EMAILSERVER
+    if (request.getParameter(emailserver.getPropertyName())!=null){
+        emailserver.setPropertyValue(request.getParameter(emailserver.getPropertyName()));
+        emailserver.save();
+        AllSystemProperties.loadProperties();
+    }
+
+    //PLBASEDOMAIN
+    if (request.getParameter("plbasedomain")!=null){
+        //-----------------------------------
+        //-----------------------------------
+        int count = reger.core.db.Db.RunSQLUpdate("UPDATE pl SET plbasedomain='"+reger.core.Util.cleanForHtml(request.getParameter("plbasedomain"))+"' WHERE plid='1'");
+        //-----------------------------------
+        //-----------------------------------
+
+    }
+
+    //Redirect on success
+    if (errortext.equals("")){
+        response.sendRedirect("setup-05.log");
+        return;
+    }
+
+}
+
+%>
+<%@ include file="setup-header.jsp" %>
 
 
 
-<font face=arial size=+3 color=#cccccc>Setup Finished!</font>
+<font face=arial size=+3 color=#cccccc>System Properties</font>
 <br><br>
-<font face=arial size=-1 color=#cccccc><a href='../index.log'>Click here to go to the homepage where you can log in.</a></font>
+
+<%
+//Display any errors
+if (!errortext.equals("")) {
+    out.print(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, "../", errortext));
+}
+%>
+
+
+<center>
+<form action=setup-04.log method=post>
+<input type=hidden name=action value=save>
+
+<table cellpadding=5 cellspacing=0 width=75% border=0>
+
+<!-- Begin Prop -->
+<tr>
+<td valign=top align=left colspan=2>
+<font face=arial size=+2 color=#cccccc>
+Folder to Save User Uploads/Files
+</font>
+</td>
+</tr>
+<tr>
+<td valign=top align=left>
+<font face=arial size=-1>
+<input type=text name="<%=pathuploadmedia.getPropertyName()%>" value="<%=reger.core.Util.cleanForHtml(pathuploadmedia.getPropertyValue())%>" size=45 maxlength=255>
+</font>
+</td>
+<td valign=top align=left>
+<font face=arial size=-1>
+Users can upload images and files to their blogs.  Those files must be stored somewhere on the server.  Choose the path where the datablogging server should put those files.  Example: c:/blogserver-data/  Note that there must be a trailing slash.
+</font>
+</td>
+</tr>
+<!-- End Prop -->
+
+<!-- Begin Prop -->
+<tr>
+<td valign=top align=left colspan=2>
+<font face=arial size=+2 color=#cccccc>
+Outbound Email SMTP Server
+</font>
+</td>
+</tr>
+<tr>
+<td valign=top align=left>
+<font face=arial size=-1>
+<input type=text name="<%=emailserver.getPropertyName()%>" value="<%=reger.core.Util.cleanForHtml(emailserver.getPropertyValue())%>" size=45 maxlength=255>
+</font>
+</td>
+<td valign=top align=left>
+<font face=arial size=-1>
+There are a number of system warnings, notifications and messages that can be sent.  The datablogging server should have an SMTP outbound email server at its disposal.  Example: mail.mycompany.com
+</font>
+</td>
+</tr>
+<!-- End Prop -->
+
+<!-- Begin Prop -->
+<tr>
+<td valign=top align=left colspan=2>
+<font face=arial size=+2 color=#cccccc>
+Server URL
+</font>
+</td>
+</tr>
+<tr>
+<td valign=top align=left>
+<font face=arial size=-1>
+<input type=text name=plbasedomain value="<%=reger.core.Util.cleanForHtml(plbasedomain)%>" size=45 maxlength=255>
+</font>
+</td>
+<td valign=top align=left>
+<font face=arial size=-1>
+The base URL used for blogs.  It is pre-set to the address you are using to access the server.  In general there is no need to change this.  It can be changed later if so desired.  Be careful.  Setting this incorrectly may break the system.  If you set it to another value, make sure that the url is configured to route to the datablogging server machine's IP address.  Common examples are "localhost" or "127.0.0.1"
+</font>
+</td>
+</tr>
+<!-- End Prop -->
+
+
+<tr>
+<td valign=top align=left colspan=2>
+<font face=arial size=+2 color=#cccccc>
+<input type=submit value='Save System Properties'>
+</font>
+</form>
+</td>
+</tr>
+
+
+</table>
+
+
+</form>
+</center>
 
 
 
+<%@ include file="setup-footer.jsp" %>

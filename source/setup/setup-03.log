@@ -153,7 +153,9 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 
 }
 
-
+%>
+<%@ include file="setup-header.jsp" %>
+<%
 
 mb.append("<font face=arial size=+3 color=#cccccc>System Administrator Account</font>");
 mb.append("<br><br>");
@@ -280,3 +282,4 @@ out.print(mb.toString());
 
 %>
 
+<%@ include file="setup-footer.jsp" %>

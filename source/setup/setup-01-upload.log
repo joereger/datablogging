@@ -65,6 +65,9 @@ if (fileItems!=null && fileItems.length>0){
 
 %>
 
+
+<%@ include file="setup-header.jsp" %>
+
 <font face=arial size=+3 color=#cccccc>Database Connection Setup</font>
 <br><br>
 
@@ -88,5 +91,8 @@ if (!errortext.equals("")){
 
 
 </form>
+
+
+<%@ include file="setup-footer.jsp" %>
 
 

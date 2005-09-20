@@ -1,4 +1,4 @@
-
+<%@ include file="setup-header.jsp" %>
 
 <font face=arial size=+3 color=#cccccc>MySql Database Setup Instructions</font>
 <br><br>
@@ -42,5 +42,8 @@
 
 
 <br><br>
+<%out.print(reger.ui.ShadowBox.start("../"));%>
 <font face=arial size=-1 color=#cccccc><a href='setup-00.log'>I'm done! The MySql database is setup and configured per above.</a></font>
+<%out.print(reger.ui.ShadowBox.end("../"));%>
 <br>
+<%@ include file="setup-footer.jsp" %>

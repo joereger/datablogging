@@ -41,6 +41,17 @@ public class AllSystemProperties {
         return "";
     }
 
+    public static SystemProperty getProperty(String propertyName){
+        if (properties!=null && propertyName!=null){
+            for (int i = 0; i < properties.length; i++) {
+                if (properties[i].getPropertyName()!=null && properties[i].getPropertyName().equals(propertyName)){
+                    return properties[i];
+                }
+            }
+        }
+        return null;
+    }
+
 
 
 

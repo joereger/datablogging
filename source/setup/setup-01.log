@@ -56,6 +56,9 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 }
 %>
 
+
+<%@ include file="setup-header.jsp" %>
+
 <font face=arial size=+3 color=#cccccc>Database Connection Setup</font>
 <br><br>
 
@@ -315,3 +318,5 @@ if (!errortext.equals("")){
 <%
 }
 %>
+
+<%@ include file="setup-footer.jsp" %>

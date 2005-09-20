@@ -857,6 +857,10 @@ public class PrivateLabel {
     public void setHptemplateid(int hptemplateid) {
         this.hptemplateid = hptemplateid;
     }
+    
+    public void setPlbasedomain(String plbasedomain) {
+        this.plbasedomain = plbasedomain;
+    }
 
     public void setEntlisttemplateid(int entlisttemplateid) {
         this.entlisttemplateid = entlisttemplateid;

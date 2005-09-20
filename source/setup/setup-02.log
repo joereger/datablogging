@@ -17,6 +17,8 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 }
 %>
 
+
+
 <html>
 <head>
 <!--meta http-equiv="refresh" content="2"-->
@@ -53,6 +55,8 @@ window.onload=starttime
 
 </head>
 <body>
+
+<%@ include file="setup-header.jsp" %>
 
 <font face=arial size=+3 color=#cccccc>Database Version Check</font>
 <br><br>
@@ -99,5 +103,8 @@ if (!reger.core.dbupgrade.RequiredDatabaseVersion.error.equals("")){
 <%
 }
 %>
+
+<%@ include file="setup-footer.jsp" %>
+
 </body>
 </html>
