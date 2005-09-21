@@ -193,7 +193,7 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
 
         mb.append("<a href='signup2.log'><img src=../images/hp-freeblog.gif border=0></a>");
 
-        //mb.append("<a href='download.log'><img src=../images/hp-download.gif border=0></a>");
+        mb.append("<a href='download.log'><img src=../images/hp-download.gif border=0></a>");
 
         mb.append("<a href='moreinfo.log'><img src=../images/hp-moreinfo.gif border=0></a>");
 

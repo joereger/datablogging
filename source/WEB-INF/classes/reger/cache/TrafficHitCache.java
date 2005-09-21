@@ -35,7 +35,7 @@ public class TrafficHitCache {
     }
 
     public static void saveAndPurge(){
-        if (trafficHits!=null){
+        if (trafficHits!=null && !trafficHits.isEmpty()){
             synchronized(trafficHits){
                 //Save
                 for (Iterator iterator = trafficHits.iterator(); iterator.hasNext();) {

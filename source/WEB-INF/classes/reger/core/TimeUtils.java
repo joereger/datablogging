@@ -327,7 +327,7 @@ public class TimeUtils {
 	* Must pass a GMT date
 	*/
 	public static String agoText(Calendar indate){
-	    Calendar indateClone = null;
+	    Calendar indateClone;
 	    try{
 	        indateClone = (Calendar) indate.clone();
         } catch (Exception e){

@@ -1087,49 +1087,49 @@ public class Account {
 
     public void calculateIsPro(){
         //@todo As is, this will be run on every page... should I populate an ispro var once on Account object creation?
-        Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+". Function has been called.");
+        Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+". Function has been called.");
         if (accountLicense!=null){
             if (accountLicense.getProperty(License.PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS).equals("1")){
-                Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" Individual users pay to upgrade.");
+                Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" Individual users pay to upgrade.");
                 if (accountLicense.getProperty(License.PROPSTRINGISRECURRINGBILLING).equals("1")){
-                    Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" PROPSTRINGISRECURRINGBILLING is blank.");
+                    Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" PROPSTRINGISRECURRINGBILLING is blank.");
                     if (reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid)){
-                        Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning true.  Individual users do pay to upgrade, isrecurringbilling=true and isBillingok came back true.");
+                        Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" returning true.  Individual users do pay to upgrade, isrecurringbilling=true and isBillingok came back true.");
                         isPro=true;
                         return;
                     }
-                    Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid) came back false.");
+                    Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid) came back false.");
                 } else {
-                    Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" PROPSTRINGISRECURRINGBILLING is not 1.");
+                    Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" PROPSTRINGISRECURRINGBILLING is not 1.");
                     if (!accountLicense.getProperty(License.PROPSTRINGEXPDATEGMT).equals("")){
                         try{
                             Calendar expDate = reger.core.TimeUtils.dbstringtocalendar(accountLicense.getProperty(License.PROPSTRINGEXPDATEGMT));
                             if (expDate.after(reger.core.TimeUtils.nowInGmtCalendar())){
                                 if (reger.IsBillingOk.isbillingok(isbillingokencrypted, accountid)){
-                                    Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning true.  Expiration date is after today.  Individual users do pay to upgrade and isBillingok came back true.");
+                                    Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" returning true.  Expiration date is after today.  Individual users do pay to upgrade and isBillingok came back true.");
                                     isPro=true;
                                     return;
                                 }
                             }
                         } catch (Exception e){
-                            Debug.debug(5, "", e);
-                            Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning false.  There was an exception: " + e.getMessage());
+                            Debug.debug(4, "Account.isPro()", e);
+                            Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" returning false.  There was an exception: " + e.getMessage());
                             isPro=false;
                             return;
                         }
                     }
                 }
             } else {
-                Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning true.  Individual users to not pay to upgrade.");
+                Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" returning true.  Individual users to not pay to upgrade.");
                 isPro=true;
                 return;
             }
         } else {
-            Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning false because the license is null.");
+            Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" returning false because the license is null.");
             isPro=false;
             return;
         }
-        Debug.debug(5, "", "Account.isPro() - accountid = "+accountid+" returning false because no true result was found... false is the default.");
+        Debug.debug(4, "Account.isPro()", "Account.isPro() - accountid = "+accountid+" returning false because no true result was found... false is the default.");
         isPro=false;
         return;
     }

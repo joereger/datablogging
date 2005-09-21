@@ -47,10 +47,10 @@ if (pageProps.action.equals("edit") || pageProps.action.equals("add")) {
         userSession.getPl().refresh();
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Private Label Saved Successfully."));
     } catch (ValidationException valError){
-        Debug.debug(5, "", "plmanage.log - Error caught.");
+        Debug.debug(5, "plmanage.log", "plmanage.log - Error caught.");
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, valError.getErrorsAsSingleString()));
     } catch (Exception e){
-        reger.core.Debug.errorsave(e, "");
+        reger.core.Debug.errorsave(e, "plmanage.log");
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, the Private Label was not saved.  System error."));
     }
 //Action=delete ------------------------------------

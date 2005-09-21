@@ -1,0 +1,71 @@
+<%@ page import="reger.core.db.Db,
+                 reger.search.SearchUIFlowAdvSearch"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+    mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+
+    mb.append("<font face=arial size=+3>Downloadable BETA</font>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("Available for immediate install!  This BETA downloadable version of the Reger.com datablogging server includes the production code used to run reger.com packaged in a way that allows you to run it on your own server.  We need your help to make it robust!");
+    mb.append("<ul>");
+    mb.append("<li>BETA status:  Danger! The distributable form is new and may cause issues on various systems.  If you need a robust installed version please contact us directly... we can, and have, installed behind firewalls into enterprise environments.</li>");
+    mb.append("<li>We need your feedback to make it work better.  Tell us what you like and don't like in the <a href='http://www.reger.com/jforum/'>support forum</a>.</li>");
+    mb.append("<li>Up to three users, unlimited logs</li>");
+    mb.append("<li>In this early BETA period there is no automated licensing built into the product.  Contact us if you'd like a license.  We'll be releasing a pricing plan and automated licensing process soon.</li>");
+    mb.append("</ul>");
+
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("Installation Overview:");
+    mb.append("<li>Browse the window below to find the downloadable file for your operating system</li>");
+    mb.append("<li>Install MySQL and create an empty database named \"reger\" and a user with full access to that database (all privileges)</li>");
+    mb.append("<li>Run the installer</li>");
+    mb.append("<li>In a browser go to http://127.0.0.1/ and complete the setup wizard</li>");
+    mb.append("<li>Start datablogging!</li>");
+    mb.append("</ul>");
+
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<iframe src=\"http://www.reger.com/download/\" name=\"download\" width=75% height=300></iframe>");
+
+    mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

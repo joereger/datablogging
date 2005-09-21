@@ -144,6 +144,9 @@ if (pageProps.action.equals("editaccount")) {
             int count = Db.RunSQLUpdate("UPDATE account SET accounturl='"+reger.core.Util.cleanForSQL(request.getParameter("accounturl"))+"', customservername='"+reger.core.Util.cleanForSQL(internalcustomdomain)+"', customservername2='"+reger.core.Util.cleanForSQL(internalcustomdomain2)+"', customservername3='"+reger.core.Util.cleanForSQL(internalcustomdomain3)+"', isactiveaccount='"+isactiveaccount+"', isnewpendingadminapproval='"+isnewpendingadminapproval+"', encryptedlicense='"+reger.core.Util.cleanForSQL(encLic)+"' WHERE accountid='"+rstAcctVrfy[0][0]+"'");
             //-----------------------------------
             //-----------------------------------
+
+            Account tmpAcct2 = reger.cache.AccountCache.get(Integer.parseInt(request.getParameter("accountid")));
+            tmpAcct2.refresh();
         }
 
     } else {

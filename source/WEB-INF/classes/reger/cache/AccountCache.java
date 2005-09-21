@@ -66,5 +66,15 @@ public class AccountCache {
         }
     }
 
+    public static void flush(int accountid){
+        if (admin!=null){
+            try{
+                admin.flushEntry(String.valueOf(accountid));
+            } catch (Exception e){
+                Debug.errorsave(e, "");
+            }
+        }
+    }
+
 
 }

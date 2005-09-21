@@ -416,7 +416,8 @@ public class MessageListHtml {
             isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
         } catch (CaptchaServiceException e) {
              isResponseCorrect = new Boolean(false);
-             Debug.errorsave(e, "");
+             Debug.debug(3, "jcaptcha - MessageListHtml.java", e);
+             Debug.debug(3, "jcaptcha - MessageListHtml.java", "captchaId on previous error="+ captchaId);
         }
         if (!isResponseCorrect.booleanValue()){
             haveValidMessage = false;

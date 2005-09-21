@@ -390,15 +390,21 @@ public class PrivateLabel {
 
     public boolean canAddAnotherPrivateLabel(){
         //Maxpl validation
-        if (reger.core.Util.isinteger(plLicense.getProperty(License.PROPSTRINGMAXPRIVATELABELS))){
+        if (plLicense !=null && plLicense.getProperty(License.PROPSTRINGMAXPRIVATELABELS)!=null && reger.core.Util.isinteger(plLicense.getProperty(License.PROPSTRINGMAXPRIVATELABELS))){
             int maxpls = Integer.parseInt(plLicense.getProperty(License.PROPSTRINGMAXPRIVATELABELS));
             if (maxpls>0){
                 if((numberOfPlsInSystem()+1)>maxpls){
                     return false;
+                } else {
+                    return true;
                 }
+            } else {
+                //A zero setting means infinite pls can be added
+                return true;
             }
         }
-        return true;
+        //If there's no value
+        return false;
     }
 
     public int numberOfPlsInSystem(){
@@ -422,7 +428,7 @@ public class PrivateLabel {
 
         //Make sure we can add another pl
         if (plid<=0 && !canAddAnotherPrivateLabel()){
-            valError.addValidationError("The current license does not another private label to be added.  Please contact your system administrator or increase the number of maximum private labels in your license.");
+            valError.addValidationError("The current license does not allow another private label to be added.  Please contact your system administrator or increase the number of maximum private labels in your license.");
             throw valError;
         }
 
@@ -584,6 +590,7 @@ public class PrivateLabel {
         showbusinesstab = reger.core.RequestParam.getBoolean(request, "showbusinesstab", true);
         defaulteventtypeid = reger.core.RequestParam.getInt(request, "defaulteventtypeid", defaulteventtypeid);
         encryptedlicense = reger.core.RequestParam.getString(request, "encryptedlicense", "");
+        plLicense = plLicense = new License(reger.licensing.ServerLicense.getLicense(), encryptedlicense);
         baseaccountprice = reger.core.RequestParam.getDouble(request, "baseaccountprice", baseaccountprice);
         priceper100mbstorage = reger.core.RequestParam.getDouble(request, "priceper100mbstorage", priceper100mbstorage);
         pricepergbbandwidth = reger.core.RequestParam.getDouble(request, "pricepergbbandwidth", priceper100mbstorage);
@@ -857,7 +864,7 @@ public class PrivateLabel {
     public void setHptemplateid(int hptemplateid) {
         this.hptemplateid = hptemplateid;
     }
-    
+
     public void setPlbasedomain(String plbasedomain) {
         this.plbasedomain = plbasedomain;
     }

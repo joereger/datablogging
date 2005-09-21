@@ -37,6 +37,14 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 //Get the current license
 License lic = reger.licensing.ServerLicense.getLicense();
 
+
+
+
+
+mb.append("<font face=arial size=-1 color=#ff0000><b>The server licensing system is not automated yet in this beta version of the downloadable.  If you're interested in pricing for personal, corporate or charitable use, please contact <a href='mailto:joe@reger.com'>joe@reger.com</a> or visit the <a href='http://www.reger.com/jforum/'>support forum</a>.  We apologize for the inconvenience, appreciate your involvement and look forward to making this an automated and simple licensing process.</b></font>");
+mb.append("<br><br>");
+
+
 mb.append("<form action='systemlicense.log' method=post>");
 mb.append("<input type=hidden name=action value=addlicense>");
 
