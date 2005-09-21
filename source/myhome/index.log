@@ -596,6 +596,21 @@ sc.append("<!-- End Alerts -->");
 //sc.append("<!-- End URL's -->");
 
 
+//Forum Link Start
+sc.append("<!-- Other Site Start -->");
+sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+sc.append(reger.ui.BubbleBox.start("Need Help?", pageProps.pathToAppRoot));
+
+sc.append("<font face=arial size=-2>");
+sc.append("<br>");
+sc.append("Questions?  Bugs?  Feature Requests?  Template help?");
+sc.append("<br><br>");
+sc.append("Visit the new <a href='http://www.reger.com/jforum/'>Support Forum</a>!");
+sc.append("</font>");
+
+sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+sc.append("<!-- Other Site End -->");
+//Forum Link End
 
 
 //Other Sites Start
