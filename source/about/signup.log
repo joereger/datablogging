@@ -24,7 +24,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-if (1==1){
+if (1==2){
     response.sendRedirect("signup2.log");
     return;
 }
@@ -35,7 +35,7 @@ mb.append("<table cellpadding=5 width=470 align=center cellspacing=10 border=0>"
 
 mb.append("<tr>");
 mb.append("<td valign=top colspan=2 align=center>");
-mb.append("<font face=arial size=+3 color=#cccccc><b>There are two ways to get started:</b></font>");
+mb.append("<font face=impact size=+1 color=#e6e6e6 style=\"font-family: impact, arial; font-size: 72px;\"><b>Two ways to get started:</b></font>");
 mb.append("</td>");
 mb.append("</tr>");
 
@@ -44,24 +44,24 @@ mb.append("<tr>");
 
 mb.append("<td valign=top width=50% align=left>");
 mb.append("<a href='signup2.log'><img src=../images/getstarted-freeblog.gif border=0></a>");
-mb.append("<font face=arial size=-2 color=#666666>");
-mb.append("<ul>");
-mb.append("<li>Quick, easy signup means that you'll be blogging in minutes.</li>");
-mb.append("<li>After a 15 day full-featured trial plans start at less than $5 per month.</li>");
-mb.append("<li>Using our advanced datablogging features you'll be able to track anything... running, movies, restaurants... anything.  Use pre-built log types or create your own.</li>");
-mb.append("</ul>");
-mb.append("</font>");
+//mb.append("<font face=arial size=-2 color=#666666>");
+//mb.append("<ul>");
+//mb.append("<li>Quick, easy signup means that you'll be blogging in minutes.</li>");
+//mb.append("<li>After a 15 day full-featured trial plans start at less than $5 per month.</li>");
+//mb.append("<li>Using our advanced datablogging features you'll be able to track anything... running, movies, restaurants... anything.  Use pre-built log types or create your own.</li>");
+//mb.append("</ul>");
+//mb.append("</font>");
 mb.append("</td>");
 
 mb.append("<td valign=top width=50% align=left>");
 mb.append("<a href='download.log'><img src=../images/getstarted-download.gif border=0></a>");
-mb.append("<font face=arial size=-2 color=#666666>");
-mb.append("<ul>");
-mb.append("<li>Advanced users can host blogs on their own server.</li>");
-mb.append("<li>Simple, automated setup with installable file.</li>");
-mb.append("<li>Free usage for 15 days, licensing built-in to application.</li>");
-mb.append("</ul>");
-mb.append("</font>");
+//mb.append("<font face=arial size=-2 color=#666666>");
+//mb.append("<ul>");
+//mb.append("<li>Advanced users can host blogs on their own server.</li>");
+//mb.append("<li>Simple, automated setup with installable file.</li>");
+//mb.append("<li>Free usage for 15 days, licensing built-in to application.</li>");
+//mb.append("</ul>");
+//mb.append("</font>");
 mb.append("</td>");
 
 mb.append("</tr>");

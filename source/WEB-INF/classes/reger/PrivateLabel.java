@@ -433,13 +433,13 @@ public class PrivateLabel {
         }
 
         //Defaultmaxspaceinbytes must be less than what the license allows
-        if (defaultmaxspaceinbytes>Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXSPACEINBYTES))){
+        if (Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXSPACEINBYTES))>0 && defaultmaxspaceinbytes>Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXSPACEINBYTES))){
             valError.addValidationError("The current license only allows you to set the MAXSPACEINBYTES for each account to a maximum of:" + plLicense.getProperty(License.PROPSTRINGMAXSPACEINBYTES));
             throw valError;
         }
 
         //Defaultmaxbandwidth must be less than what the license allows
-        if (defaultmaxbandwidth>Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXBANDWIDTH))){
+        if (Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXBANDWIDTH))>0 && defaultmaxbandwidth>Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXBANDWIDTH))){
             valError.addValidationError("The current license only allows you to set the MAXBANDWIDTH for each account to a maximum of:" + plLicense.getProperty(License.PROPSTRINGMAXBANDWIDTH));
             throw valError;
         }

@@ -165,7 +165,7 @@ public class Upload {
                                 userSession.getAccount().updateSpaceused();
 
                                 //Now check to see if there's enough space to add this one
-                                if (((long)mediafilesize + userSession.getAccount().getSpaceused()) > userSession.getAccount().getMaxspaceinbytes()){
+                                if (userSession.getAccount().getMaxspaceinbytes()>0 && ((long)mediafilesize + userSession.getAccount().getSpaceused()) > userSession.getAccount().getMaxspaceinbytes()){
                                     hasenoughfreespace=false;
                                 }
 

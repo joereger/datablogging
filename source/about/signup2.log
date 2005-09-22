@@ -345,7 +345,10 @@ if (!errortext.equals("")) {
 //
 
 
-
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<font face=impact size=+1 color=#e6e6e6 style=\"font-family: impact, arial; font-size: 72px;\">&nbsp;Get Started</font>");
+mb.append("<br>");
 
 
 //Wrapper table
@@ -353,6 +356,10 @@ mb.append("<table cellpadding=5 align=center width=100% cellspacing=1 border=0>"
 mb.append("<tr>");
 
 mb.append("<td valign=top>");
+
+
+
+
 
     //Sign Up
     mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
@@ -578,7 +585,7 @@ mb.append("<td width=25% valign=top>");
         mb.append("<td bgcolor=#ffffff valign=center nowrap align=left>");
         mb.append("<input type=submit value='Log In'>");
         mb.append("<br>");
-        mb.append("<font face=arial size=-2 color=#000000><b>New users: create an account to the right.</b></font>");
+        mb.append("<font face=arial size=-2 color=#000000><b>New users: create an account to the left.</b></font>");
         mb.append("</form>");
         mb.append("</td>");
         mb.append("</tr>");

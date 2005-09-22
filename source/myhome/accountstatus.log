@@ -60,12 +60,20 @@ pageProps.pathToAppRoot="../";
 
     mb.append("<tr>");
     mb.append("<td width=25% bgcolor=#cccccc><font face=arial size=-1><strong>Max Storage Space</strong></font></td>");
-    mb.append("<td bgcolor=#e6e6e6><font face=arial size=-1>"+userSession.getAccount().getMaxspaceinbytes()/(long)1000000+" Mb</font></td>");
+    if (userSession.getAccount().getMaxspaceinbytes()>0){
+        mb.append("<td bgcolor=#e6e6e6><font face=arial size=-1>"+userSession.getAccount().getMaxspaceinbytes()/(long)1000000+" Mb</font></td>");
+    } else {
+        mb.append("<td bgcolor=#e6e6e6><font face=arial size=-1>Unlimited</font></td>");
+    }
     mb.append("</tr>");
 
     mb.append("<tr>");
     mb.append("<td bgcolor=#cccccc><font face=arial size=-1><strong>Max Monthly Bandwidth</strong></font></td>");
-    mb.append("<td bgcolor=#e6e6e6><font face=arial size=-1>"+(double)userSession.getAccount().getMaxbandwidth()/(double)1000000+" Mb</font></td>");
+    if (userSession.getAccount().getMaxbandwidth()>0){
+        mb.append("<td bgcolor=#e6e6e6><font face=arial size=-1>"+(double)userSession.getAccount().getMaxbandwidth()/(double)1000000+" Mb</font></td>");
+    } else {
+        mb.append("<td bgcolor=#e6e6e6><font face=arial size=-1>Unlimited</font></td>");
+    }
     mb.append("</tr>");
 
 

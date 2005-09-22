@@ -713,7 +713,7 @@ public class Entry {
         }
 
         //Make sure we have enough space on the account before processing it.
-        if ((long)reger.core.Util.sizeInBytes(comments)>(account.getMaxspaceinbytes() - account.getSpaceused())){
+        if (account.getMaxspaceinbytes()>0 && (long)reger.core.Util.sizeInBytes(comments)>(account.getMaxspaceinbytes() - account.getSpaceused())){
             validationErrors.addValidationError("There is not enough text space available in this account. You can upgrade to <a href='accountstatus.log'>Pro</a> for more space.");
         }
 

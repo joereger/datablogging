@@ -61,8 +61,8 @@ public class License {
             allPropTypes.put(PROPSTRINGMINBASEACCOUNTPRICE, new LicenseProp(PROPSTRINGMINBASEACCOUNTPRICE, "2.95"));
             allPropTypes.put(PROPSTRINGMINPRICEPER100MBSTORAGE, new LicenseProp(PROPSTRINGMINPRICEPER100MBSTORAGE, ".35"));
             allPropTypes.put(PROPSTRINGMINPRICEPERGBBANDWIDTH, new LicenseProp(PROPSTRINGMINPRICEPERGBBANDWIDTH, ".5"));
-            allPropTypes.put(PROPSTRINGMAXSPACEINBYTES, new LicenseProp(PROPSTRINGMAXSPACEINBYTES, "10000000"));
-            allPropTypes.put(PROPSTRINGMAXBANDWIDTH, new LicenseProp(PROPSTRINGMAXBANDWIDTH, "1000000000"));
+            allPropTypes.put(PROPSTRINGMAXSPACEINBYTES, new LicenseProp(PROPSTRINGMAXSPACEINBYTES, "0"));
+            allPropTypes.put(PROPSTRINGMAXBANDWIDTH, new LicenseProp(PROPSTRINGMAXBANDWIDTH, "0"));
             allPropTypes.put(PROPSTRINGEXPDATEGMT, new LicenseProp(PROPSTRINGEXPDATEGMT, reger.core.TimeUtils.dateformatfordb(reger.core.TimeUtils.nowInGmtCalendar())));
             allPropTypes.put(PROPSTRINGRANDOMSALT, new LicenseProp(PROPSTRINGRANDOMSALT, reger.core.RandomString.randomAlphanumeric(10)));
             allPropTypes.put(PROPSTRINGISCHARGEDTOCREDITCARD, new LicenseProp(PROPSTRINGISCHARGEDTOCREDITCARD, "0"));

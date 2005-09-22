@@ -22,30 +22,50 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+    mb.append("<font face=impact size=+1 color=#e6e6e6 style=\"font-family: impact, arial; font-size: 72px;\">&nbsp;Downloadable BETA datablogging Server</font>");
+
+    mb.append("<blockquote>");
 
     mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
 
-    mb.append("<font face=arial size=+3>Downloadable BETA</font>");
-    mb.append("<br>");
-    mb.append("<br>");
     mb.append("<font face=arial size=-1>");
-    mb.append("Available for immediate install!  This BETA downloadable version of the Reger.com datablogging server includes the production code used to run reger.com packaged in a way that allows you to run it on your own server.  We need your help to make it robust!");
+    mb.append("<b>Sep 22nd, 2005: Available for immediate install!  This early BETA downloadable version of the Reger.com datablogging server includes the production-quality code used to run reger.com packaged in a way that allows you to run it on your own server.  We know the core code is solid but we need your help to make sure the distribution packaging and install process make sense.</b>");
     mb.append("<ul>");
-    mb.append("<li>BETA status:  Danger! The distributable form is new and may cause issues on various systems.  If you need a robust installed version please contact us directly... we can, and have, installed behind firewalls into enterprise environments.</li>");
+    mb.append("<li>BETA status:  <font color=#ff0000>Danger!</font> The distributable form is new and may cause issues on various systems.  If you need a robust installed version please contact us directly... we can, and have, installed behind firewalls into enterprise environments.</li>");
     mb.append("<li>We need your feedback to make it work better.  Tell us what you like and don't like in the <a href='http://www.reger.com/jforum/'>support forum</a>.</li>");
-    mb.append("<li>Up to three users, unlimited logs</li>");
-    mb.append("<li>In this early BETA period there is no automated licensing built into the product.  Contact us if you'd like a license.  We'll be releasing a pricing plan and automated licensing process soon.</li>");
+    mb.append("<li>In this early BETA period there is no automated licensing built into the product.  Contact us if you'd like a license.  We'll be releasing a pricing plan and automated licensing process soon.  With the free version you get 3 users, unlimited sites, unlimited logs and one private label.</li>");
     mb.append("</ul>");
 
     mb.append("<br>");
     mb.append("<br>");
-    mb.append("Installation Overview:");
-    mb.append("<li>Browse the window below to find the downloadable file for your operating system</li>");
+    mb.append("<b>Not for you?  Don't want to download and install?</b>");
+    mb.append("<ul>");
+    mb.append("<li>No problem.  Use our hosted service.  You'll be <a href='http://localhost.com/about/signup2.log'>blogging in minutes</a>!</li>");
+    mb.append("</ul>");
+
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<b>Installation Overview:</b>");
+    mb.append("<ul>");
+    mb.append("<li>Browse the window below to find the downloadable file for your operating system (or click <a href='http://www.reger.com/download/'>here</a> and browse)</li>");
     mb.append("<li>Install MySQL and create an empty database named \"reger\" and a user with full access to that database (all privileges)</li>");
     mb.append("<li>Run the installer</li>");
     mb.append("<li>In a browser go to http://127.0.0.1/ and complete the setup wizard</li>");
     mb.append("<li>Start datablogging!</li>");
     mb.append("</ul>");
+
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<b>Free Version Includes:</b>");
+    mb.append("<ul>");
+    mb.append("<li>Unlimited usage for 3 users... you are now datablogging!</li>");
+    mb.append("<li>Easy usage of bug fixes and future upgrades at no cost (simply download new builds as they're available and run the installer)</li>");
+    mb.append("<li>One private label, meaning that you get a community aggregator and signup point that's customizable... think of your own Reger.com signup site.</li>");
+    mb.append("<li>Unlimited logs.  You can use any number of the built-in log types (running, swimming, movie reviews, etc)</li>");
+    mb.append("<li>Unlimited sites.  Each site has a unique url and you can have as many as you like.  One user can run many sites.</li>");
+    mb.append("<li>The ability to create log types by uploading an XML Schema file... very Web 2.0... and also a very new beta feature.</li>");
+    mb.append("</ul>");
+
 
     mb.append("</font>");
     mb.append("<br>");
@@ -54,7 +74,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
 
     mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
 
-
+    mb.append("</blockquote>");
 
 
 %>

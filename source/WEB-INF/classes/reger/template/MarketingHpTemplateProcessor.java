@@ -220,6 +220,10 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
         mb.append("<tr>");
         mb.append("<td valign='top' align=center>");
 
+        mb.append("<font face=impact size=+1 color=#e6e6e6 style=\"font-family: impact, arial; font-size: 45px;\">Your life is amazing... capture it.</font>");
+        mb.append("<br><br>");
+
+
 
         mb.append(reger.ui.ShadowBox.start("../"));
         mb.append("<$LogInBox$>");
