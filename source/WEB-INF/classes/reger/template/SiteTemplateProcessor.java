@@ -175,20 +175,31 @@ public class SiteTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new SiteTemplateTag[13];
+        tags = new SiteTemplateTag[22];
         tags[0] = new SiteTemplateTagEntryTitle();
         tags[1] = new SiteTemplateTagLogName();
         tags[2] = new SiteTemplateTagMainBody();
         tags[3] = new SiteTemplateTagNavbarHorizontal();
         tags[4] = new SiteTemplateTagNavbarVertical();
-        tags[5] = new SiteTemplateTagSideColumn();
-        tags[6] = new SiteTemplateTagSiteDescription();
-        tags[7] = new SiteTemplateTagSiteName();
-        tags[8] = new SiteTemplateTagFavoriteEntries();
-        tags[9] = new SiteTemplateTagMostRead7Days();
-        tags[10] = new SiteTemplateTagMostRecentFiles();
-        tags[11] = new SiteTemplateTagMostRecentList();
-        tags[12] = new SiteTemplateTagRandomFiles();
+        tags[5] = new SiteTemplateTagSiteDescription();
+        tags[6] = new SiteTemplateTagSiteName();
+        tags[7] = new SiteTemplateTagFavoriteEntries();
+        tags[8] = new SiteTemplateTagMostRead7Days();
+        tags[9] = new SiteTemplateTagMostRecentFiles();
+        tags[10] = new SiteTemplateTagMostRecentList();
+        tags[11] = new SiteTemplateTagRandomFiles();
+        tags[12] = new SiteTemplateTagQuickStats();
+        tags[13] = new SiteTemplateTagSmallCalendar();
+        tags[14] = new SiteTemplateTagOnThisDay();
+        tags[15] = new SiteTemplateTagBlogroll();
+        tags[16] = new SiteTemplateTagComments();
+        tags[17] = new SiteTemplateTagSearchBox();
+        tags[18] = new SiteTemplateTagEmailSubscribe();
+        tags[19] = new SiteTemplateTagGraphs();
+        tags[20] = new SiteTemplateTagRssXmlLink();
+        tags[21] = new SiteTemplateTagWapLink();
+
+
     }
 
 
@@ -642,7 +653,22 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         mb.append("<$Main.Body$>" + "");
         mb.append("</td>" + "");
         mb.append("<td valign=top bgcolor=#cccccc width=200 align=right class=rightcol>" + "");
-        mb.append("<$Side.Column$>" + "");
+        //mb.append("<$Side.Column$>" + "");
+
+        mb.append("<$Quick.Stats$>" + "<br>");
+        mb.append("<$Small.Calendar$>" + "<br>");
+        mb.append("<$On.This.Day$>" + "<br>");
+        mb.append("<$Blogroll$>" + "<br>");
+        mb.append("<$Comments$>" + "<br>");
+        mb.append("<$Search.Box$>" + "<br>");
+        mb.append("<$Email.Subscribe.Box$>" + "<br>");
+        mb.append("<$Graphs.List$>" + "<br>");
+        mb.append("<Rss.Link$>" + "<br>");
+        mb.append("<Wap.Link$>" + "<br>");
+
+
+
+
         mb.append("</td>" + "");
         mb.append("</tr>" + "");
 

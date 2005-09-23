@@ -42,7 +42,6 @@ public class SiteTemplateTagEntryTitle implements SiteTemplateTag{
      * @param sc
      * @param pageProps
      * @param userSession
-     * @return
      */
     public String getValue(StringBuffer mb, StringBuffer sc, PageProps pageProps, UserSession userSession, javax.servlet.http.HttpServletRequest request) {
         Debug.debug(5, "", "SiteTemplateTagEntryTitle.java -<br>pageProps.entry.eventid="+pageProps.entry.eventid+"<br>request.getParameter(\"eventid\")="+request.getParameter("eventid"));

@@ -56,24 +56,6 @@ if(log!=null){
         StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
 
-
-//Charts and Graphs
-sc.append(reger.SideColumn.chartsngraphs(pageProps.logProps.logid, userSession));
-
-//Favorite entries
-sc.append(reger.SideColumn.favorites(pageProps.logProps.logid, pageProps.logProps.megalogname));
-
-//Messages for this log
-sc.append(reger.SideColumn.messages(pageProps.logProps.logid, pageProps.logProps.megalogname));
-
-//Calendar
-sc.append(reger.CalendarHtml.smallcalendar(reger.Vars.CALENDARTYPEEMPTYEVENTFINDER, request.getParameter("viewmonth"), pageProps.logProps.logid, "logmain.log", userSession));
-
-//Xml link
-sc.append("<br><!-- XML Start --><a href='rssfeeds.log'><img src='images/xml-newsfeed.png' alt='View this site in XML RSS 2.0' border=0></a><!-- XML End -->");
-
-
-
 %>
 
 <%@ include file="globalfooter.jsp" %>
