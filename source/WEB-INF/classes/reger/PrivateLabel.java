@@ -434,32 +434,37 @@ public class PrivateLabel {
 
         //Defaultmaxspaceinbytes must be less than what the license allows
         if (Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXSPACEINBYTES))>0 && defaultmaxspaceinbytes>Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXSPACEINBYTES))){
-            valError.addValidationError("The current license only allows you to set the MAXSPACEINBYTES for each account to a maximum of:" + plLicense.getProperty(License.PROPSTRINGMAXSPACEINBYTES));
-            throw valError;
+            //valError.addValidationError("The current license only allows you to set the MAXSPACEINBYTES for each account to a maximum of:" + plLicense.getProperty(License.PROPSTRINGMAXSPACEINBYTES));
+            //throw valError;
+            defaultmaxspaceinbytes = Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXSPACEINBYTES));
         }
 
         //Defaultmaxbandwidth must be less than what the license allows
         if (Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXBANDWIDTH))>0 && defaultmaxbandwidth>Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXBANDWIDTH))){
-            valError.addValidationError("The current license only allows you to set the MAXBANDWIDTH for each account to a maximum of:" + plLicense.getProperty(License.PROPSTRINGMAXBANDWIDTH));
-            throw valError;
+            //valError.addValidationError("The current license only allows you to set the MAXBANDWIDTH for each account to a maximum of:" + plLicense.getProperty(License.PROPSTRINGMAXBANDWIDTH));
+            //throw valError;
+            defaultmaxbandwidth = Long.parseLong(plLicense.getProperty(License.PROPSTRINGMAXBANDWIDTH));
         }
 
         //Baseaccountprice must be more than what the license allows
         if (baseaccountprice<Double.parseDouble(plLicense.getProperty(License.PROPSTRINGMINBASEACCOUNTPRICE))){
-            valError.addValidationError("The current license only allows you to set the BASE ACCOUNT PRICE for each account to a minimum of:" + plLicense.getProperty(License.PROPSTRINGMINBASEACCOUNTPRICE));
-            throw valError;
+            //valError.addValidationError("The current license only allows you to set the BASE ACCOUNT PRICE for each account to a minimum of:" + plLicense.getProperty(License.PROPSTRINGMINBASEACCOUNTPRICE) + ". The current value is: " + baseaccountprice + ". plid=" + plid);
+            //throw valError;
+            baseaccountprice = Double.parseDouble(plLicense.getProperty(License.PROPSTRINGMINBASEACCOUNTPRICE));
         }
 
         //priceper100mbstorage must be more than what the license allows
         if (priceper100mbstorage<Double.parseDouble(plLicense.getProperty(License.PROPSTRINGMINPRICEPER100MBSTORAGE))){
-            valError.addValidationError("The current license only allows you to set the PRICE PER 100MB STORAGE for each account to a minimum of:" + plLicense.getProperty(License.PROPSTRINGMINPRICEPER100MBSTORAGE));
-            throw valError;
+            //valError.addValidationError("The current license only allows you to set the PRICE PER 100MB STORAGE for each account to a minimum of:" + plLicense.getProperty(License.PROPSTRINGMINPRICEPER100MBSTORAGE));
+            //throw valError;
+            priceper100mbstorage = Double.parseDouble(plLicense.getProperty(License.PROPSTRINGMINPRICEPER100MBSTORAGE));
         }
 
         //pricepergbbandwidth must be more than what the license allows
         if (pricepergbbandwidth<Double.parseDouble(plLicense.getProperty(License.PROPSTRINGMINPRICEPERGBBANDWIDTH))){
-            valError.addValidationError("The current license only allows you to set the PRICE PER 1GB BANDWIDTH for each account to a minimum of:" + plLicense.getProperty(License.PROPSTRINGMINPRICEPERGBBANDWIDTH));
-            throw valError;
+            //valError.addValidationError("The current license only allows you to set the PRICE PER 1GB BANDWIDTH for each account to a minimum of:" + plLicense.getProperty(License.PROPSTRINGMINPRICEPERGBBANDWIDTH));
+            //throw valError;
+            pricepergbbandwidth = Double.parseDouble(plLicense.getProperty(License.PROPSTRINGMINPRICEPERGBBANDWIDTH));
         }
 
 

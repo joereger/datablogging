@@ -6,7 +6,7 @@ package reger.template;
 public class TemplateHtml {
 
 
-    public static StringBuffer getBox(Template activeTemplate, Template[] userTemplates, Template[] systemTemplates, String upperLeftTitle, String upperLeftSubtitle, int logid, int type, String thisPageName, String editPageName, boolean showEditButton, boolean showUseThisOneButton, boolean showCreateNewTemplateLink, boolean outputFormTags, String dropdownName, boolean showExportAsJavaButton){
+    public static StringBuffer getBox(Template activeTemplate, Template[] userTemplates, Template[] systemTemplates, String upperLeftTitle, String upperLeftSubtitle, int plid, int logid, int type, String thisPageName, String editPageName, boolean showEditButton, boolean showUseThisOneButton, boolean showCreateNewTemplateLink, boolean outputFormTags, String dropdownName, boolean showExportAsJavaButton){
         StringBuffer topLeft;
         StringBuffer topRight;
         StringBuffer mb = new StringBuffer();
@@ -43,6 +43,7 @@ public class TemplateHtml {
             topRight.append("<input type=hidden name=action value='usethisone'>");
             topRight.append("<input type=hidden name=logid value='"+logid+"'>");
             topRight.append("<input type=hidden name=type value='"+type+"'>");
+            topRight.append("<input type=hidden name=plid value='"+plid+"'>");
             topRight.append("<input type=hidden name=returnurl value='"+thisPageName+"'>");
         }
         topRight.append("<select name="+dropdownName+">");

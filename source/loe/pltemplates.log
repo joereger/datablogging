@@ -4,6 +4,8 @@
                  reger.template.Template,
                  reger.PrivateLabel,
                  reger.core.db.Db" %>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.InfoBox"%>
 
 <%
 /*----------------------------------------------------*/
@@ -35,7 +37,8 @@ if (request.getParameter("templateid")!=null && reger.core.Util.isinteger(reques
 //Populate the object
 PrivateLabel pl = new PrivateLabel();
 if (request.getParameter("plid")!=null && reger.core.Util.isinteger(request.getParameter("plid"))){
-    pl = new PrivateLabel(Integer.parseInt(request.getParameter("plid")));
+    //pl = new PrivateLabel(Integer.parseInt(request.getParameter("plid")));
+    pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(Integer.parseInt(request.getParameter("plid")));
 }
 
 //Get type
@@ -47,30 +50,28 @@ if (request.getParameter("type")!=null && reger.core.Util.isinteger(request.getP
 //Load the template
 Template template = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(templateid, type);
 
+String errortext = "";
+
 //Use this one sets the
 //reger.UserSession userSession;
 if (pageProps.action.equals("usethisone")){
     if (template!=null){
         if (template.getType()==Template.TEMPLATETYPESITE){
             pl.setPublicsitetemplateid(template.getTemplateid());
-            pl.save();
-            userSession.getAccount().refresh();
         } else if (template.getType()==Template.TEMPLATETYPEENTRYLIST){
             pl.setEntlisttemplateid(template.getTemplateid());
-            pl.save();
-            userSession.getAccount().refresh();
         } else if (template.getType()==Template.TEMPLATETYPEHOMEPAGE){
             pl.setHptemplateid(template.getTemplateid());
-            pl.save();
-            userSession.getAccount().refresh();
         } else if (template.getType()==Template.TEMPLATETYPEMARKETINGSITE){
             pl.setMarketingsitetemplateid(template.getTemplateid());
-            pl.save();
-            userSession.getAccount().refresh();
         } else if (template.getType()==Template.TEMPLATETYPEMARKETINGHOMEPAGE){
             pl.setMarketingsitehptemplateid(template.getTemplateid());
+        }
+        try{
             pl.save();
             userSession.getAccount().refresh();
+        } catch (ValidationException vex){
+            errortext = vex.getErrorsAsSingleString();
         }
     }
 }
@@ -98,6 +99,10 @@ if (pageProps.action.equals("export")){
 mb.append(reger.core.Util.popup());
 
 
+if (!errortext.equals("")){
+    mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+
 
 mb.append("<br>");
 mb.append("<br>");
@@ -113,7 +118,7 @@ mb.append("<br>");
 Template activeTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(pl.getPublicsitetemplateid(), Template.TEMPLATETYPESITE);
 Template[] siteUserTemplates = null;
 Template[] siteSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPESITE);
-mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "PL Default Site Template", "This is the overall template that determines the general look of your site.", -1, Template.TEMPLATETYPESITE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "PL Default Site Template", "This is the overall template that determines the general look of your site.", pl.getPlid(), -1, Template.TEMPLATETYPESITE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
 
 //Spacer
 mb.append("<br>");
@@ -125,7 +130,7 @@ mb.append("<br>");
 Template activeEntryListTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(pl.getEntlisttemplateid(), Template.TEMPLATETYPEENTRYLIST);
 Template[] entUserTemplates = null;
 Template[] entSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEENTRYLIST);
-mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "PL Default Entry List Templates", "This template governs entries as they appear in a list on the homepage. This template can be overridden for each log on your site.", -1, Template.TEMPLATETYPEENTRYLIST, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "PL Default Entry List Templates", "This template governs entries as they appear in a list on the homepage. This template can be overridden for each log on your site.", pl.getPlid(), -1, Template.TEMPLATETYPEENTRYLIST, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
 
 //Spacer
 mb.append("<br>");
@@ -137,7 +142,7 @@ mb.append("<br>");
 Template activeHpTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(pl.getHptemplateid(), Template.TEMPLATETYPEHOMEPAGE);
 Template[] hpUserTemplates = null;
 Template[] hpSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEHOMEPAGE);
-mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "PL Default Site Homepage Templates", "This template controls how the homepage of your site operates.", -1, Template.TEMPLATETYPEHOMEPAGE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "PL Default Site Homepage Templates", "This template controls how the homepage of your site operates.", pl.getPlid(), -1, Template.TEMPLATETYPEHOMEPAGE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
 
 //Spacer
 mb.append("<br>");
@@ -149,7 +154,7 @@ mb.append("<br>");
 Template activeMktgSiteTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(pl.getMarketingsitetemplateid(), Template.TEMPLATETYPEMARKETINGSITE);
 Template[] mktgSiteUserTemplates = null;
 Template[] mktgSiteSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEMARKETINGSITE);
-mb.append(reger.template.TemplateHtml.getBox(activeMktgSiteTemplate, mktgSiteUserTemplates, mktgSiteSystemTemplates, "PL Marketing Site Template", "This template controls how the marketing site operates.", -1, Template.TEMPLATETYPEMARKETINGSITE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeMktgSiteTemplate, mktgSiteUserTemplates, mktgSiteSystemTemplates, "PL Marketing Site Template", "This template controls how the marketing site operates.", pl.getPlid(), -1, Template.TEMPLATETYPEMARKETINGSITE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
 
 //Spacer
 mb.append("<br>");
@@ -161,7 +166,7 @@ mb.append("<br>");
 Template activeMktgHpTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(pl.getMarketingsitehptemplateid(), Template.TEMPLATETYPEMARKETINGHOMEPAGE);
 Template[] mktgHpUserTemplates = null;
 Template[] mktgHpSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEMARKETINGHOMEPAGE);
-mb.append(reger.template.TemplateHtml.getBox(activeMktgHpTemplate, mktgHpUserTemplates, mktgHpSystemTemplates, "PL Marketing Homepage Template", "This template controls how the homepage of the marketing site.", -1, Template.TEMPLATETYPEMARKETINGHOMEPAGE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeMktgHpTemplate, mktgHpUserTemplates, mktgHpSystemTemplates, "PL Marketing Homepage Template", "This template controls how the homepage of the marketing site.", pl.getPlid(), -1, Template.TEMPLATETYPEMARKETINGHOMEPAGE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
 
 //Spacer
 mb.append("<br>");

@@ -136,7 +136,7 @@ Template[] logElSystemTemplates = reger.template.AllTemplatesInSystem.getSystemT
 
 //Log hp
 Template activeLogHpTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(  log.getMaintemplateid(), Template.TEMPLATETYPEHOMEPAGE  );
-mb.append(reger.template.TemplateHtml.getBox(activeLogHpTemplate, logHpUserTemplates, logHpSystemTemplates, log.getName() + " Homepage Template", "This template controls how the homepage of "+log.getName()+" operates.", log.getLogid(), Template.TEMPLATETYPEHOMEPAGE, "logs-log-templates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeLogHpTemplate, logHpUserTemplates, logHpSystemTemplates, log.getName() + " Homepage Template", "This template controls how the homepage of "+log.getName()+" operates.", -1, log.getLogid(), Template.TEMPLATETYPEHOMEPAGE, "logs-log-templates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
 
 //Spacer
 mb.append("<br>");
@@ -145,7 +145,7 @@ mb.append("<br>");
 
 //Log entry
 Template activeLogElTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(  log.getEntlisttemplateid(), Template.TEMPLATETYPEENTRYLIST  );
-mb.append(reger.template.TemplateHtml.getBox(activeLogElTemplate, logElUserTemplates, logElSystemTemplates, log.getName() + " Entry List Template", "This template controls how entry lists on "+log.getName()+" look.", log.getLogid(), Template.TEMPLATETYPEENTRYLIST, "logs-log-templates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeLogElTemplate, logElUserTemplates, logElSystemTemplates, log.getName() + " Entry List Template", "This template controls how entry lists on "+log.getName()+" look.", -1, log.getLogid(), Template.TEMPLATETYPEENTRYLIST, "logs-log-templates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
 
 //Spacer
 mb.append("<br>");

@@ -89,7 +89,7 @@ if (template==null){
         Template activeTemplate = null;
         Template[] siteUserTemplates = reger.template.AllTemplatesInSystem.getTemplatesByTypeAndAccountid(template.getType(), userSession.getAccount().getAccountid());
         Template[] siteSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(template.getType());
-        mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "Convert Those that Use It to Another Template", "Choose a template on the right.  Any uses of "+template.getName()+" will be converted to using the template to the right.", -1, template.getType(), "settings-template-main.log", "settings-template-edit.log", false, false, false, true, "newtemplateid", false));
+        mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "Convert Those that Use It to Another Template", "Choose a template on the right.  Any uses of "+template.getName()+" will be converted to using the template to the right.", -1, -1, template.getType(), "settings-template-main.log", "settings-template-edit.log", false, false, false, true, "newtemplateid", false));
 
     }
 

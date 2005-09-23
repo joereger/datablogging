@@ -737,7 +737,7 @@ public class TourHtml {
         Template activeTemplate = null;
         Template[] siteUserTemplates = null;
         Template[] siteSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPESITE);
-        mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "Site Template", "This is the overall template that determines the general look of your site.", -1, Template.TEMPLATETYPESITE, "", "", false, false, false, false, "templateid", false));
+        mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "Site Template", "This is the overall template that determines the general look of your site.", -1, -1, Template.TEMPLATETYPESITE, "", "", false, false, false, false, "templateid", false));
 
         //Spacer
         mb.append("<br>");
@@ -749,7 +749,7 @@ public class TourHtml {
         Template activeEntryListTemplate = null;
         Template[] entUserTemplates = null;
         Template[] entSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEENTRYLIST);
-        mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "Default Entry List Template", "This template governs entries as they appear in a list on the homepage. This template can be overridden for each log on your site.", -1, Template.TEMPLATETYPEENTRYLIST, "", "", false, false, false, false, "templateid", false));
+        mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "Default Entry List Template", "This template governs entries as they appear in a list on the homepage. This template can be overridden for each log on your site.", -1, -1, Template.TEMPLATETYPEENTRYLIST, "", "", false, false, false, false, "templateid", false));
 
         //Spacer
         mb.append("<br>");
@@ -761,7 +761,7 @@ public class TourHtml {
         Template activeHpTemplate = null;
         Template[] hpUserTemplates = null;
         Template[] hpSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEHOMEPAGE);
-        mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "Site Homepage Template", "This template controls how the homepage of your site operates.", -1, Template.TEMPLATETYPEHOMEPAGE, "", "", false, false, false, false, "templateid", false));
+        mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "Site Homepage Template", "This template controls how the homepage of your site operates.", -1, -1, Template.TEMPLATETYPEHOMEPAGE, "", "", false, false, false, false, "templateid", false));
 
         //Spacer
         mb.append("<br>");

@@ -61,7 +61,7 @@ mb.append("<br>");
 Template activeTemplate = null;
 Template[] siteUserTemplates = null;
 Template[] siteSystemTemplates = reger.template.AllTemplatesInSystem.getUserTemplatesByType(Template.TEMPLATETYPESITE);
-mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "USER Site Templates", "This is the overall template that determines the general look of your site.", -1, Template.TEMPLATETYPESITE, "settings-template-main.log", "settings-template-edit.log", true, false, true, true, "templateid", true));
+mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "USER Site Templates", "This is the overall template that determines the general look of your site.", -1, -1, Template.TEMPLATETYPESITE, "settings-template-main.log", "settings-template-edit.log", true, false, true, true, "templateid", true));
 
 //Spacer
 mb.append("<br>");
@@ -73,7 +73,7 @@ mb.append("<br>");
 Template activeEntryListTemplate = null;
 Template[] entUserTemplates = null;
 Template[] entSystemTemplates = reger.template.AllTemplatesInSystem.getUserTemplatesByType(Template.TEMPLATETYPEENTRYLIST);
-mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "USER Entry List Templates", "This template governs entries as they appear in a list on the homepage. This template can be overridden for each log on your site.", -1, Template.TEMPLATETYPEENTRYLIST, "settings-template-main.log", "settings-template-edit.log", true, false, true, true, "templateid", true));
+mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "USER Entry List Templates", "This template governs entries as they appear in a list on the homepage. This template can be overridden for each log on your site.", -1, -1, Template.TEMPLATETYPEENTRYLIST, "settings-template-main.log", "settings-template-edit.log", true, false, true, true, "templateid", true));
 
 //Spacer
 mb.append("<br>");
@@ -85,7 +85,7 @@ mb.append("<br>");
 Template activeHpTemplate = null;
 Template[] hpUserTemplates = null;
 Template[] hpSystemTemplates = reger.template.AllTemplatesInSystem.getUserTemplatesByType(Template.TEMPLATETYPEHOMEPAGE);
-mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "USER Site Homepage Templates", "This template controls how the homepage of your site operates.", -1, Template.TEMPLATETYPEHOMEPAGE, "settings-template-main.log", "settings-template-edit.log", true, false, true, true, "templateid", true));
+mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "USER Site Homepage Templates", "This template controls how the homepage of your site operates.", -1, -1, Template.TEMPLATETYPEHOMEPAGE, "settings-template-main.log", "settings-template-edit.log", true, false, true, true, "templateid", true));
 
 //Spacer
 mb.append("<br>");
