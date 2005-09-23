@@ -1,0 +1,30 @@
+
+--Setup the following directory structure:
+
+C:/RegerProject/
+C:/RegerProject/Tomcat/
+C:/RegerProject/ProjectFiles/
+C:/RegerProject/ProjectFiles/buildscripts/
+C:/RegerProject/ProjectFiles/builds/
+C:/RegerProject/ProjectFiles/builds/lastbuild/
+C:/RegerProject/ProjectFiles/builds/WARs/
+C:/RegerProject/SvnSource/
+C:/RegerProject/SvnSource/Reger/
+
+--Check out the proper branch from SVN to C:/RegerProject/SvnSource/Reger/
+
+--Move a local copy of C:/RegerProject/SvnSource/Reger/buildscripts/Regercom.properties to C:/RegerProject/ProjectFiles/buildscripts/Regercom.properties
+
+--Customize C:/RegerProject/ProjectFiles/buildscripts/Regercom.properties per below:
+
+tomcat.path=/
+tomcat.mgr.url=http://localhost/manager
+tomcat.mgr.username=admin
+tomcat.mgr.password=pass
+builds.directory=C:/RegerProject/EclipseFiles/builds/
+source.root.directory=C:/RegerProject/SvnSource/Reger/branches/martyAndPeter/source/
+tomcat.install.directory=C:/RegerProject/Tomcat/
+quickbuild.compiled.destination.directory=C:/RegerProject/Tomcat/webapps/ROOT/WEB-INF/classes
+quickbuild.tomcat.root.directory=C:/RegerProject/Tomcat/webapps/ROOT/
+
+--Sit back and enjoy the show!
