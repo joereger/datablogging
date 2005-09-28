@@ -21,53 +21,60 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-String trafficSection = "Trackback";
+if (userSession.getAccount().getIstrackbackon() && userSession.getPl().getIstrackbackenabled()){
 
+    String trafficSection = "Trackback";
 
-
-//Deal with updates
-if (pageProps.action.equals("togglestatus")) {
-    if (request.getParameter("tostatus")!=null && reger.core.Util.isinteger(request.getParameter("tostatus")) && request.getParameter("trackbackid")!=null && reger.core.Util.isinteger(request.getParameter("trackbackid"))){
-        //Make sure this messageid is tied to this account
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstChkMsg= Db.RunSQL("SELECT trackbackid FROM trackback, event WHERE trackbackid='"+request.getParameter("trackbackid")+"' AND accountid='"+userSession.getAccount().getAccountid()+"' AND trackback.eventid=event.eventid");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstChkMsg!=null && rstChkMsg.length>0){
-            //And if it is, update the status
-        	//-----------------------------------
-            //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE trackback SET isapproved='"+request.getParameter("tostatus")+"' WHERE trackbackid='"+request.getParameter("trackbackid")+"'");
+    //Deal with updates
+    if (pageProps.action.equals("togglestatus")) {
+        if (request.getParameter("tostatus")!=null && reger.core.Util.isinteger(request.getParameter("tostatus")) && request.getParameter("trackbackid")!=null && reger.core.Util.isinteger(request.getParameter("trackbackid"))){
+            //Make sure this messageid is tied to this account
             //-----------------------------------
             //-----------------------------------
+            String[][] rstChkMsg= Db.RunSQL("SELECT trackbackid FROM trackback, event WHERE trackbackid='"+request.getParameter("trackbackid")+"' AND accountid='"+userSession.getAccount().getAccountid()+"' AND trackback.eventid=event.eventid");
+            //-----------------------------------
+            //-----------------------------------
+            if (rstChkMsg!=null && rstChkMsg.length>0){
+                //And if it is, update the status
+                //-----------------------------------
+                //-----------------------------------
+                int count = Db.RunSQLUpdate("UPDATE trackback SET isapproved='"+request.getParameter("tostatus")+"' WHERE trackbackid='"+request.getParameter("trackbackid")+"'");
+                //-----------------------------------
+                //-----------------------------------
+            }
         }
     }
-}
 
-//Deal with deletes
-if (pageProps.action.equals("delete")) {
-    if (request.getParameter("trackbackid")!=null && reger.core.Util.isinteger(request.getParameter("trackbackid"))){
-        //Make sure this messageid is tied to this account
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstChkMsg= Db.RunSQL("SELECT trackbackid FROM trackback, event WHERE trackbackid='"+request.getParameter("trackbackid")+"' AND accountid='"+userSession.getAccount().getAccountid()+"' AND trackback.eventid=event.eventid");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstChkMsg!=null && rstChkMsg.length>0){
-            //And if it is, delete it
-        	//-----------------------------------
-            //-----------------------------------
-            int count = Db.RunSQLUpdate("DELETE FROM trackback WHERE trackbackid='"+request.getParameter("trackbackid")+"'");
+    //Deal with deletes
+    if (pageProps.action.equals("delete")) {
+        if (request.getParameter("trackbackid")!=null && reger.core.Util.isinteger(request.getParameter("trackbackid"))){
+            //Make sure this messageid is tied to this account
             //-----------------------------------
             //-----------------------------------
+            String[][] rstChkMsg= Db.RunSQL("SELECT trackbackid FROM trackback, event WHERE trackbackid='"+request.getParameter("trackbackid")+"' AND accountid='"+userSession.getAccount().getAccountid()+"' AND trackback.eventid=event.eventid");
+            //-----------------------------------
+            //-----------------------------------
+            if (rstChkMsg!=null && rstChkMsg.length>0){
+                //And if it is, delete it
+                //-----------------------------------
+                //-----------------------------------
+                int count = Db.RunSQLUpdate("DELETE FROM trackback WHERE trackbackid='"+request.getParameter("trackbackid")+"'");
+                //-----------------------------------
+                //-----------------------------------
+            }
         }
     }
+
+    //Output the list
+    mb.append(reger.TrackbackAdmin.htmlOut(userSession, 25, request, true, "Trackbacks", pageProps.pathToAppRoot));
+
+}else {
+    if (userSession.getPl().getIstrackbackenabled()){
+        mb.append("Trackback is disabled on this account.");
+    } else {
+        mb.append("Trackback is disabled by the system administrator.");
+    }
 }
-
-//Output the list
-mb.append(reger.TrackbackAdmin.htmlOut(userSession, 25, request, true, "Trackbacks", pageProps.pathToAppRoot));
-
 
 %>
 

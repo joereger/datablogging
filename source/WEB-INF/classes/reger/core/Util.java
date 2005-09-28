@@ -24,6 +24,20 @@ public class Util {
 		return "";
     }
 
+    public static String cleanDirectorySlashesUseSystemFileSeparator(String directoryOrFileName){
+        reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator=" + File.separator);
+        reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName before replace="+directoryOrFileName);
+        if (File.separator.equals("\\\\")){
+            reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is backslash.");
+            directoryOrFileName.replaceAll("/", "\\\\");
+        } else if (File.separator.equals("/")){
+            reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is forwardslash.");
+            directoryOrFileName.replaceAll("\\\\", "/");
+        }
+        reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName after replace="+directoryOrFileName);
+        return directoryOrFileName;
+    }
+
     public static String escapeBackslash(String instring){
 		if (instring!=null){
 	    	instring=instring.replaceAll("\\\\", "\\\\\\\\");
@@ -571,7 +585,6 @@ public class Util {
 
 	/**
      * Combines two double int arrays by appending b to a.
-     * @return
      */
     public static int[][] combineTwoDoubleIntArrays(int[][] a, int[][] b){
         //Fix nulls
@@ -919,7 +932,6 @@ public class Util {
     /**
      * Simply checks to see if this string is a null and if so converts it to a blank string.
      * @param in
-     * @return
      */
     public static String getParameterClean(String in){
         if (in==null){
@@ -1050,7 +1062,6 @@ public class Util {
      * @param cookies
      * @param cookieName
      * @param defaultValue
-     * @return
      */
     public static String getCookieValue(Cookie[] cookies, String cookieName, String defaultValue) {
         try{
@@ -1075,7 +1086,6 @@ public class Util {
      * Tells me whether the supercookie is on.
      * @param request
      * @param accountid
-     * @return
      */
     public static boolean isSupercookieOn(javax.servlet.http.HttpServletRequest request, int accountid) {
         try{
@@ -1093,7 +1103,6 @@ public class Util {
     /**
      * Tells me whether the mastercookie is on.
      * @param request
-     * @return
      */
     public static boolean isMastercookieOn(javax.servlet.http.HttpServletRequest request) {
         try {
@@ -1280,7 +1289,6 @@ public class Util {
     /**
      * Verifies that a username is of the correct form... not that it matches any account.
      * @param username
-     * @return
      */
     public static String validateUsername(String username){
         String errortext = "";
@@ -1324,7 +1332,6 @@ public class Util {
      * @param stringToSearch
      * @param stringToMatch
      * @param charsAroundToReturn
-     * @return
      */
     public static String returnSubstringAroundMatch(String stringToSearch, String stringToMatch, int charsAroundToReturn){
         //Find the start of the match
@@ -1407,7 +1414,6 @@ public class Util {
 
     /**
      * Determines whether to output an http:// or https:// prefix based on whether or not the current request is secure now.
-     * @return
      */
 //    public static String getHttpOrHttpsString(javax.servlet.http.HttpServletRequest request){
 //        if (request.isSecure()){

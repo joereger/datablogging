@@ -64,8 +64,8 @@ if (title.equals("")){
 }
 
 //Make sure trackback is turned on for this account
-if (!userSession.getAccount().getIstrackbackon()){
-    errortext = errortext + "Trackback is not turned on for this account. ";
+if (userSession.getAccount().getIstrackbackon() && userSession.getPl().getIstrackbackenabled()){
+    errortext = errortext + "Trackback is disabled.";
 }
 
 //Isapproved?

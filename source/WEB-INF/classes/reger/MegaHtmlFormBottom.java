@@ -574,7 +574,7 @@ public class MegaHtmlFormBottom {
 
 
              //Trackback Selection
-            if (userSession.getAccount().getIstrackbackon()){
+            if (userSession.getAccount().getIstrackbackon() && userSession.getPl().getIstrackbackenabled()){
 
 
                 if (displayasadmin) {
@@ -631,7 +631,7 @@ public class MegaHtmlFormBottom {
                     mb.append("<table cellpadding=0 cellspacing=1 width=100% border=0>");
                     //-----------------------------------
                     //-----------------------------------
-                    String[][] rstListTrackbacks= Db.RunSQL("SELECT url, posttitle, blogname, excerpt, datetime FROM trackback WHERE eventid='"+pageProps.entry.eventid+"' AND isoutbound='0' ORDER BY datetime ASC");
+                    String[][] rstListTrackbacks= Db.RunSQL("SELECT url, posttitle, blogname, excerpt, datetime FROM trackback WHERE eventid='"+pageProps.entry.eventid+"' AND isoutbound='0' AND isapproved='1' ORDER BY datetime ASC");
                     //-----------------------------------
                     //-----------------------------------
                     if (rstListTrackbacks!=null && rstListTrackbacks.length>0){

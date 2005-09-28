@@ -39,6 +39,9 @@ PrivateLabel pl = new PrivateLabel();
 if (request.getParameter("plid")!=null && reger.core.Util.isinteger(request.getParameter("plid"))){
     //pl = new PrivateLabel(Integer.parseInt(request.getParameter("plid")));
     pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(Integer.parseInt(request.getParameter("plid")));
+} else {
+    response.sendRedirect("pl.log");
+    return;
 }
 
 //Get type

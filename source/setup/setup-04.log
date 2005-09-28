@@ -94,7 +94,7 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 
 
 
-<font face=arial size=+3 color=#cccccc>System Properties</font>
+<font face=arial size=+3 color=#cccccc>Optional System Properties</font>
 <br><br>
 
 <%

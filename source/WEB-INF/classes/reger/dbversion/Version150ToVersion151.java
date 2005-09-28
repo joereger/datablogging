@@ -31,7 +31,7 @@ public class Version150ToVersion151 implements UpgradeDatabaseOneVersion{
 
         //-----------------------------------
         //-----------------------------------
-        int count3 = Db.RunSQLUpdate("ALTER account SET istrackbackon='0'");
+        int count3 = Db.RunSQLUpdate("UPDATE account SET istrackbackon='0'");
         //-----------------------------------
         //-----------------------------------
 

@@ -45,7 +45,7 @@ public class Account {
     private int emailnewsletter=1;
     private int emailsendhour=3;
     private int issearchmysiteon=1;
-    public boolean istrackbackon = true;
+    public boolean istrackbackon = false;
     public boolean islistedindirectory = true;
     public boolean trackbackrequiresapproval = true;
     private boolean istimeperiodon = true;
@@ -174,10 +174,10 @@ public class Account {
             timezoneid= rs[0][21];
             issearchmysiteon= Integer.parseInt(rs[0][22]);
 
-            if (rs[0][23].equals("0")){
-                istrackbackon = false;
-            } else {
+            if (rs[0][23].equals("1")){
                 istrackbackon = true;
+            } else {
+                istrackbackon = false;
             }
             if (rs[0][24].equals("0")){
                 islistedindirectory = false;

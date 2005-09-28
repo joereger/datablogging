@@ -393,50 +393,51 @@ mb.append("</td>");
 mb.append("</tr>");
 
 
-mb.append("<tr>");
-mb.append("<td bgcolor='#ffffff' valign=top>");
-mb.append("<font face=arial size=-1><b>Trackback</b></font>");
-mb.append("<br>");
-mb.append("<font face=arial size=-2>Trackback allows other sites to tell your site when they are talking about you.");
-mb.append("</font></td>");
-mb.append("<td bgcolor='#ffffff' valign=top>");
-//Radio Control
-java.util.TreeMap radiosIstrackbackon=new TreeMap();
-radiosIstrackbackon.put("1","On");
-radiosIstrackbackon.put("0","Off");
-String stringTrackback = "1";
-if (!userSession.getAccount().getIstrackbackon()){
-    stringTrackback = "0";
+if (userSession.getPl().getIstrackbackenabled()){
+    mb.append("<tr>");
+    mb.append("<td bgcolor='#ffffff' valign=top>");
+    mb.append("<font face=arial size=-1><b>Trackback</b></font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>Trackback allows other sites to tell your site when they are talking about you.");
+    mb.append("</font></td>");
+    mb.append("<td bgcolor='#ffffff' valign=top>");
+    //Radio Control
+    java.util.TreeMap radiosIstrackbackon=new TreeMap();
+    radiosIstrackbackon.put("1","On");
+    radiosIstrackbackon.put("0","Off");
+    String stringTrackback = "1";
+    if (!userSession.getAccount().getIstrackbackon()){
+        stringTrackback = "0";
+    }
+    mb.append(reger.formControl.radioList(radiosIstrackbackon, stringTrackback, "istrackbackon", "vertical"));
+    //End Radio Control
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+
+
+
+    mb.append("<tr>");
+    mb.append("<td bgcolor='#ffffff' valign=top>");
+    mb.append("<font face=arial size=-1><b>Trackbacks Require Approval?</b></font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>Decide whether Trackbacks need to be approved before they appear on your site.");
+    mb.append("</font></td>");
+    mb.append("<td bgcolor='#ffffff' valign=top>");
+    //Radio Control
+    java.util.TreeMap radiosIstrackbackApproval=new java.util.TreeMap();
+    radiosIstrackbackApproval.put("1","Approval Required");
+    radiosIstrackbackApproval.put("0","No Approval Required");
+    String stringTrackbackApp = "1";
+    if (!userSession.getAccount().getTrackbackrequiresapproval()){
+        stringTrackbackApp = "0";
+    }
+    mb.append(reger.formControl.radioList(radiosIstrackbackApproval, stringTrackbackApp, "trackbackrequiresapproval", "vertical"));
+    //End Radio Control
+    mb.append("</td>");
+    mb.append("</tr>");
 }
-mb.append(reger.formControl.radioList(radiosIstrackbackon, stringTrackback, "istrackbackon", "vertical"));
-//End Radio Control
-mb.append("</td>");
-mb.append("</tr>");
-
-
-
-
-
-mb.append("<tr>");
-mb.append("<td bgcolor='#ffffff' valign=top>");
-mb.append("<font face=arial size=-1><b>Trackbacks Require Approval?</b></font>");
-mb.append("<br>");
-mb.append("<font face=arial size=-2>Decide whether Trackbacks need to be approved before they appear on your site.");
-mb.append("</font></td>");
-mb.append("<td bgcolor='#ffffff' valign=top>");
-//Radio Control
-java.util.TreeMap radiosIstrackbackApproval=new java.util.TreeMap();
-radiosIstrackbackApproval.put("1","Approval Required");
-radiosIstrackbackApproval.put("0","No Approval Required");
-String stringTrackbackApp = "1";
-if (!userSession.getAccount().getTrackbackrequiresapproval()){
-    stringTrackbackApp = "0";
-}
-mb.append(reger.formControl.radioList(radiosIstrackbackApproval, stringTrackbackApp, "trackbackrequiresapproval", "vertical"));
-//End Radio Control
-mb.append("</td>");
-mb.append("</tr>");
-
 
 
 mb.append("<tr>");

@@ -9,10 +9,10 @@ import reger.core.db.Db;
  */
 public class SystemProperty {
 
-    private String propertyName;
-    private String propertyValue;
-    private String propertyDefault;
-    private String propertyDescription;
+    protected String propertyName;
+    protected String propertyValue;
+    protected String propertyDefault;
+    protected String propertyDescription;
 
     public SystemProperty(){
 
