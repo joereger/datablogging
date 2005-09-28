@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<html xmlns="http://www.w3.org/2002/06/xhtml2"
+    xmlns:xforms="http://www.w3.org/2002/xforms"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    >
+    <head>
+        <title>Controls</title>
+
+        <xforms:model>
+            <xforms:submission id="debug" action="../jsp/debug-instance.jsp" method="post" replace="all"/>
+            <xforms:instance xmlns="">
+                <data>
+                    <input1/>
+                    <input2/>
+                    <output1>an output value</output1>
+                    <output2>inline</output2>
+                    <output3>images/chiba50t.gif</output3>
+                    <output4>images/chiba50t.gif</output4>
+                    <range1></range1>
+                    <secret1>very secret</secret1>
+                    <select1>foo</select1>
+                    <select11>true</select11>
+                    <select2>bar</select2>
+                    <select3>baz</select3>
+                    <select4>foo bar</select4>
+                    <select5>bar baz</select5>
+                    <select6>foo baz</select6>
+                    <text1>this is intended for longer texts that do not fit on a single line ;)</text1>
+                    <upload1 type="" file=""/>
+                </data>
+            </xforms:instance>
+            <xforms:bind id="bind1" nodeset="input1" type="string"/>
+            <xforms:bind id="bind2" nodeset="input2" type="date"/>
+            <xforms:bind id="bind3" nodeset="output1"/>
+            <xforms:bind id="bind4" nodeset="output2"/>
+            <xforms:bind id="bind5" nodeset="output3"/>
+            <xforms:bind id="bind6" nodeset="output4"/>
+            <xforms:bind id="bind7" nodeset="range1" type="integer"/>
+            <xforms:bind id="bind8" nodeset="secret1"/>
+            <xforms:bind id="bind9" nodeset="select1"/>
+            <xforms:bind id="bind9_1" nodeset="select11"/>
+            <xforms:bind id="bind10" nodeset="select2"/>
+            <xforms:bind id="bind11" nodeset="select3"/>
+            <xforms:bind id="bind12" nodeset="select4"/>
+            <xforms:bind id="bind13" nodeset="select5"/>
+            <xforms:bind id="bind14" nodeset="select6"/>
+            <xforms:bind id="bind15" nodeset="text1"/>
+            <xforms:bind id="bind16" nodeset="upload1" type="anyURI"/>
+        </xforms:model>
+    </head>
+    <body>
+        <xforms:group appearance="minimal">
+            <xforms:label>XForms Controls</xforms:label>
+
+            <xforms:group appearance="multi-column">
+                <xforms:group>
+
+                    <xforms:group appearance="full">
+                        <xforms:label>Variations of Input</xforms:label>
+                        <xforms:input bind="bind1">
+                            <xforms:label>plain string input</xforms:label>
+                        </xforms:input>
+                        <xforms:input bind="bind2">
+                            <xforms:label>Input bound to 'date' type</xforms:label>
+                        </xforms:input>
+                    </xforms:group>
+                    <xforms:group appearance="full">
+                        <xforms:label>Variations of output</xforms:label>
+                        <xforms:output bind="bind3">
+                            <xforms:label>a block output</xforms:label>
+                        </xforms:output>
+                This output is ...
+                        <xforms:output bind="bind4"/>.
+                        <xforms:output appearance="image" bind="bind5">
+                            <xforms:label>an image output</xforms:label>
+                        </xforms:output>
+                        <xforms:output appearance="anchor" bind="bind6">
+                            <xforms:label>an anchor</xforms:label>
+                        </xforms:output>
+                    </xforms:group>
+                    <xforms:group appearance="full">
+                        <xforms:label>range</xforms:label>
+                        <xforms:range bind="bind7">
+                            <xforms:label>a range control</xforms:label>
+                        </xforms:range>
+                    </xforms:group>
+                    <xforms:group appearance="full">
+                        <xforms:label>a password input (secret)</xforms:label>
+                        <xforms:secret bind="bind8">
+                            <xforms:label>a password input</xforms:label>
+                        </xforms:secret>
+                    </xforms:group>
+                    <xforms:group appearance="full">
+                        <xforms:label>appearances of select1</xforms:label>
+                        <xforms:select1 bind="bind9_1" appearance="boolean">
+                            <xforms:label>a boolean one</xforms:label>
+                            <xforms:item>
+                                <xforms:label>yes</xforms:label>
+                                <xforms:value>true</xforms:value>
+                            </xforms:item>
+                            <xforms:item>
+                                <xforms:label>no</xforms:label>
+                                <xforms:value>false</xforms:value>
+                            </xforms:item>
+                        </xforms:select1>
+                        <xforms:select1 bind="bind9" appearance="minimal">
+                            <xforms:label>a minimal one</xforms:label>
+                            <xforms:choices>
+                                <xforms:item>
+                                    <xforms:label>foo</xforms:label>
+                                    <xforms:value>foo</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>bar</xforms:label>
+                                    <xforms:value>bar</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>baz</xforms:label>
+                                    <xforms:value>baz</xforms:value>
+                                </xforms:item>
+                            </xforms:choices>
+                        </xforms:select1>
+                        <xforms:select1 bind="bind10" appearance="compact">
+                            <xforms:label>a compact one</xforms:label>
+                            <xforms:choices>
+                                <xforms:item>
+                                    <xforms:label>foo</xforms:label>
+                                    <xforms:value>foo</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>bar</xforms:label>
+                                    <xforms:value>bar</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>baz</xforms:label>
+                                    <xforms:value>baz</xforms:value>
+                                </xforms:item>
+                            </xforms:choices>
+                        </xforms:select1>
+                        <xforms:select1 bind="bind11" appearance="full">
+                            <xforms:label>a full one</xforms:label>
+                            <xforms:choices>
+                                <xforms:item>
+                                    <xforms:label>foo</xforms:label>
+                                    <xforms:value>foo</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>bar</xforms:label>
+                                    <xforms:value>bar</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>baz</xforms:label>
+                                    <xforms:value>baz</xforms:value>
+                                </xforms:item>
+                            </xforms:choices>
+                        </xforms:select1>
+                    </xforms:group>
+                </xforms:group>
+
+
+                <xforms:group appearance="full">
+                    <xforms:group appearance="full">
+                        <xforms:label>appearances of select</xforms:label>
+                        <xforms:select bind="bind12" appearance="minimal">
+                            <xforms:label>a minimal one</xforms:label>
+                            <xforms:choices>
+                                <xforms:item>
+                                    <xforms:label>foo</xforms:label>
+                                    <xforms:value>foo</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>bar</xforms:label>
+                                    <xforms:value>bar</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>baz</xforms:label>
+                                    <xforms:value>baz</xforms:value>
+                                </xforms:item>
+                            </xforms:choices>
+                        </xforms:select>
+                        <xforms:select bind="bind13" appearance="compact">
+                            <xforms:label>a compact one</xforms:label>
+                            <xforms:choices>
+                                <xforms:item>
+                                    <xforms:label>foo</xforms:label>
+                                    <xforms:value>foo</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>bar</xforms:label>
+                                    <xforms:value>bar</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>baz</xforms:label>
+                                    <xforms:value>baz</xforms:value>
+                                </xforms:item>
+                            </xforms:choices>
+                        </xforms:select>
+                        <xforms:select bind="bind14" appearance="full">
+                            <xforms:label>a full one</xforms:label>
+                            <xforms:choices>
+                                <xforms:item>
+                                    <xforms:label>foo</xforms:label>
+                                    <xforms:value>foo</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>bar</xforms:label>
+                                    <xforms:value>bar</xforms:value>
+                                </xforms:item>
+                                <xforms:item>
+                                    <xforms:label>baz</xforms:label>
+                                    <xforms:value>baz</xforms:value>
+                                </xforms:item>
+                            </xforms:choices>
+                        </xforms:select>
+                    </xforms:group>
+                    <xforms:group appearance="full">
+                        <xforms:label>textarea</xforms:label>
+                        <xforms:textarea bind="bind15">
+                            <xforms:label>a textarea</xforms:label>
+                        </xforms:textarea>
+                    </xforms:group>
+                    <xforms:group appearance="full">
+                        <xforms:label>triggers</xforms:label>
+                        <xforms:submit submission="debug">
+                            <xforms:label>a submit button</xforms:label>
+                        </xforms:submit>
+                        <xforms:trigger>
+                            <xforms:label>a trigger</xforms:label>
+                        </xforms:trigger>
+                    </xforms:group>
+                    <xforms:group appearance="full">
+                        <xforms:label>upload</xforms:label>
+                        <xforms:upload bind="bind16">
+                            <xforms:label>an upload control</xforms:label>
+                            <xforms:filename ref="attribute::file"/>
+                            <xforms:mediatype ref="attribute::type"/>
+                        </xforms:upload>
+                    </xforms:group>
+                </xforms:group>
+            </xforms:group>
+
+
+        </xforms:group>
+    </body>
+</html>

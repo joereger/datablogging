@@ -204,49 +204,49 @@ if (rstRecomm!=null && rstRecomm.length>0){
 
 
 
-//Google search
-if (keywords.trim().equals("")){
-    keywords = originalurl;
-}
-GoogleSearchResult r = reger.linkrot.Google.search(keywords);
-//Get individual results
-GoogleSearchResultElement[] results = r.getResultElements();
-
-//Iterate
-for (int i = 0; i < results.length; i++) {
-    String title = results[i].getTitle();
-    String resulturl = results[i].getURL();
-    String summary = results[i].getSummary();
-    summary = results[i].getSnippet();
-    //Output row
-    mb.append("<tr>");
-    mb.append("<td valign=top bgcolor=#ffffff colspan=2>");
-    mb.append("<font face=arial size=-2 color=#666666>");
-    mb.append("<form action=tools-linkrot-fix.log method=post>");
-    mb.append("<input type=hidden name=newurl value=\""+reger.core.Util.cleanForHtml(resulturl)+"\">");
-    mb.append("<input type=hidden name=eventid value=\""+eventid+"\">");
-    mb.append("<input type=hidden name=linkrotid value=\""+linkrotid+"\">");
-    mb.append("<input type=hidden name=action value=\"fix\">");
-    mb.append("<input type=submit value='Use This >'>");
-    mb.append("</form>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top bgcolor=#ffffff colspan=2>");
-    mb.append("<font face=arial size=-2 color=#666666>");
-    mb.append("<a href=\""+reger.core.Util.cleanForHtml(resulturl)+"\" target=linkrotid"+linkrotid+">");
-    mb.append(resulturl);
-    mb.append("</a>");
-    mb.append("<br>");
-    mb.append(summary);
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top bgcolor=#ffffff colspan=2>");
-    mb.append("<font face=arial size=-2 color=#666666>");
-    mb.append("Google.com");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
-}
+////Google search
+//if (keywords.trim().equals("")){
+//    keywords = originalurl;
+//}
+//GoogleSearchResult r = reger.linkrot.Google.search(keywords);
+////Get individual results
+//GoogleSearchResultElement[] results = r.getResultElements();
+//
+////Iterate
+//for (int i = 0; i < results.length; i++) {
+//    String title = results[i].getTitle();
+//    String resulturl = results[i].getURL();
+//    String summary = results[i].getSummary();
+//    summary = results[i].getSnippet();
+//    //Output row
+//    mb.append("<tr>");
+//    mb.append("<td valign=top bgcolor=#ffffff colspan=2>");
+//    mb.append("<font face=arial size=-2 color=#666666>");
+//    mb.append("<form action=tools-linkrot-fix.log method=post>");
+//    mb.append("<input type=hidden name=newurl value=\""+reger.core.Util.cleanForHtml(resulturl)+"\">");
+//    mb.append("<input type=hidden name=eventid value=\""+eventid+"\">");
+//    mb.append("<input type=hidden name=linkrotid value=\""+linkrotid+"\">");
+//    mb.append("<input type=hidden name=action value=\"fix\">");
+//    mb.append("<input type=submit value='Use This >'>");
+//    mb.append("</form>");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("<td valign=top bgcolor=#ffffff colspan=2>");
+//    mb.append("<font face=arial size=-2 color=#666666>");
+//    mb.append("<a href=\""+reger.core.Util.cleanForHtml(resulturl)+"\" target=linkrotid"+linkrotid+">");
+//    mb.append(resulturl);
+//    mb.append("</a>");
+//    mb.append("<br>");
+//    mb.append(summary);
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("<td valign=top bgcolor=#ffffff colspan=2>");
+//    mb.append("<font face=arial size=-2 color=#666666>");
+//    mb.append("Google.com");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//}
 
 mb.append("</table>");
 

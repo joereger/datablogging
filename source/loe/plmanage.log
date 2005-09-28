@@ -569,15 +569,15 @@ if (!pageProps.action.equals("deletestart")) {
 
     mb.append("<DIV class=yellowbox>");
 
-    //Googleapi start
-    mb.append("<font face=arial size=-1><strong>Enable googleApi calls?</strong><br>");
-    mb.append("<input type='radio' name='isgoogleapion' value='0' ");
-    if (!pl.getIsgoogleapion()) {
+    //Trackback on start
+    mb.append("<font face=arial size=-1><strong>Enable trackback?</strong><br>");
+    mb.append("<input type='radio' name='istrackbackenabled' value='0' ");
+    if (!pl.getIstrackbackenabled()) {
         mb.append(" checked");
     }
     mb.append("><b>No</b>");
-    mb.append("<br><input type='radio' name='isgoogleapion' value='1' ");
-    if (pl.getIsgoogleapion()) {
+    mb.append("<br><input type='radio' name='istrackbackenabled' value='1' ");
+    if (pl.getIstrackbackenabled()) {
         mb.append(" checked");
     }
     mb.append("><b>Yes</b> ");
@@ -585,10 +585,10 @@ if (!pageProps.action.equals("deletestart")) {
     mb.append("</font>");
     mb.append("<br>");
     mb.append("<font face=arial size=-2><strong>");
-    mb.append("The googleApi enables a feature called the Linkrot Fixer.  Any links in weblog entries that are broken are broken into keywords and those keywords are sent to google to search for replacement pages.  This may not be desired in a closed corporate setting.   To be clear, setting Yes will allow the system to send abstracted content to google to get search results.");
+    mb.append("Whether or not trackback is an option that users can enable.  Trackback is a possible source of spam postings that annoy and frustrate users.");
     mb.append("</strong></font><br>");
     mb.append("<br><br>");
-    //Googleapi end
+    //Trackback on end
 
 
     //Weblogscom start

@@ -53,7 +53,7 @@ public class Loader extends HttpServlet {
         tThr.addScheduledTask(new DeleteOrphanedAccountUserLogAccessAndAcl());
         tThr.addScheduledTask(new DoBilling());
         tThr.addScheduledTask(new TrafficCleanse());
-        //@todo tThr.addScheduledTask(new LinkrotSpider());
+        tThr.addScheduledTask(new LinkrotSpider());
         tThr.addScheduledTask(new DeleteOldPersistentLoginRecords());
         tThr.addScheduledTask(new BandwidthTest());
         //@todo Allow plugin tasks here

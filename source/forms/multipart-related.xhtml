@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<html xmlns="http://www.w3.org/2002/06/xhtml2"
+    xmlns:xforms="http://www.w3.org/2002/xforms"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <head>
+        <title>hello</title>
+        <model xmlns="http://www.w3.org/2002/xforms" id="C-1">
+            <submission id="debug" action="../jsp/debug-instance.jsp" method="multipart-post" replace="all"/>
+            <instance id="C-2">
+                <data xmlns="">
+                    <name>A name</name>
+                    <file path="" contentType=""></file>
+                    <file2 path="" contentType=""></file2>
+                    <file3 path="" contentType=""></file3>
+                </data>
+            </instance>
+            <bind id="bind-name" nodeset="name" required="true()"/>
+            <bind id="bind1" nodeset="file" type="base64Binary"/>
+            <bind id="bind2" nodeset="file2" type="hexBinary"/>
+            <bind id="bind3" nodeset="file3" type="anyURI"/>
+        </model>
+    </head>
+    <body>
+        <group xmlns="http://www.w3.org/2002/xforms" id="C-3" appearance="full">
+            <label id="C-4">Three different upload methods</label>
+            <input id="name-input" bind="bind-name">
+                <label id="C-5">Your name: </label>
+                <alert id="C-6">Please put your name here</alert>
+                <hint id="C-7">Please input your name into this field</hint>
+            </input>
+            <upload id="upload-input" bind="bind1" mediatype="text/plain image/* application/*">
+                <label>Select a file</label>
+                <filename ref="attribute::path"/>
+                <mediatype ref="attribute::contentType"/>
+                <hint>The file will be uploaded using base64 encoding</hint>
+            </upload>
+            <upload id="upload-input-hex" bind="bind2">
+                <label>Select another file</label>
+                <filename ref="attribute::path"/>
+                <mediatype ref="attribute::contentType"/>
+                <hint>The file will be uploaded using hex encoding</hint>
+            </upload>
+            <upload id="upload-uri" bind="bind3">
+                <label>Select a last file</label>
+                <filename ref="attribute::path"/>
+                <mediatype ref="attribute::contentType"/>
+                <hint>The file will be uploaded using an URI</hint>
+            </upload>
+            <group id="C-8" appearance="minimal">
+                <submit id="C-9" submission="debug">
+                    <label id="C-10">Debug</label>
+                </submit>
+                <trigger id="reset-btn">
+                    <label id="C-11">Reset</label>
+                    <action id="C-12">
+                        <reset id="reset"/>
+                    </action>
+                </trigger>
+            </group>
+        </group>
+    </body>
+</html>

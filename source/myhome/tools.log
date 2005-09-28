@@ -84,7 +84,7 @@ mb.append("<font face=arial size=-2>Use the power of the Supercookie to clean up
 mb.append("</font></td>");
 mb.append("</tr>");
 
-if (userSession.getPl().getIsgoogleapion()){
+if (reger.systemproperties.AllSystemProperties.getProp("ISLINKROTFIXERON").equals("1")){
     mb.append("<tr>");
     mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
     mb.append("<a href=tools-linkrot.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Linkrot Fixer</b></font></a>");
