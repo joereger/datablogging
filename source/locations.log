@@ -72,8 +72,6 @@ if (displayMap && !userSession.getAccount().getGooglemapsapikey().equals("")){
     double maxLon = 0;
     double minLon = 0;
 
-
-
      StringBuffer markers = new StringBuffer();
      if (userSession!=null){
         Location[] locations = Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount());

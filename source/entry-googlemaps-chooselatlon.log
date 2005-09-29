@@ -1,0 +1,216 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired=false;
+pageProps.isEventidRequired=false;
+pageProps.onunloadJavascriptMethod = "updateLatLonOnCallingPage()";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICMISC;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Return to entry javascript
+//mb.append(reger.core.Util.popupCloseReturnToEntryJavascript());
+
+
+//Start New Google Map API
+StringBuffer script = new StringBuffer();
+if (!userSession.getAccount().getGooglemapsapikey().equals("")){
+
+
+    //Some vars
+    double maxLat = 0;
+    double minLat = 0;
+    double maxLon = 0;
+    double minLon = 0;
+
+    //Max/mins
+    boolean useDefault = false;
+    if (maxLat==0 && minLat==0 && maxLon==0 && minLon==0){
+        maxLat = 39.201;
+        minLat = 39.201;
+        maxLon = -95.068;
+        minLon = -95.068;
+        useDefault = true;
+    }
+
+
+    //Center
+    double centerLat = (maxLat + minLat)/2;
+    double centerLon = (maxLon + minLon)/2;
+    Debug.debug(5, "entry-googlemaps-chooselatlon.log", "centerLat=" + centerLat + "<br>centerLon=" + centerLon);
+
+
+
+    //Span
+    double spanLat = (maxLat - minLat) + ((.1)*(maxLat-minLat));
+    double spanLon = (maxLon - minLon) + ((.1)*(maxLon-minLon));
+    if (useDefault){
+        spanLat = 30;
+        spanLon = 30;
+    }
+    if (spanLat==0 && spanLon==0){
+        if (maxLat!=0 && maxLon!=0){
+            spanLat = 2;
+            spanLon = 2;
+        }
+    }
+    Debug.debug(5, "", "locations.log<br>spanLat=" + spanLat + "<br>spanLon=" + spanLon);
+
+
+    mb.append(reger.Vars.LINEBREAKCHARFORHTML);
+    //mb.append("<div id=\"map\" style=\"width: 800; height: 600px\"></div>" + reger.Vars.LINEBREAKCHARFORHTML);
+    mb.append("<div id=\"status\" style=\"position:absolute;top:10px;left:20px;width:600px; height: 60px;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:10px;border:1px solid black;background-color:#ffffff; padding: 0px;\"></div>");
+    mb.append("<div id=\"mapG\" style=\"position:absolute;top:100px;left:20px;width:600px; height: 400px;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;border:1px solid black; padding: 0px;\"></div>");
+    //mb.append("<div id=\"thecenter\" style=\"position:absolute;top:292px;left:312px;width:11px;height:11px;z-index:10;border:0px;margin:0px;padding:0px;\"><img src=\"images/BlackCrossHair.png\" /></div>");
+
+
+    //Standard stuff
+    script.append(reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("<script src=\"http://maps.google.com/maps?file=api&v=1&key="+userSession.getAccount().getGooglemapsapikey()+"\" type=\"text/javascript\"></script>" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("<script type=\"text/javascript\">" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    //<![CDATA[" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+    //Icon creation
+    script.append("var center_icon = new GIcon();" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("center_icon.image = \"images/BlackCrossHair.png\";" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("center_icon.iconSize = new GSize(11, 11);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("center_icon.iconAnchor = new GPoint(5, 5);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("center_icon.infoWindowAnchor = new GPoint(5, 5);" + reger.Vars.LINEBREAKCHARFORHTML);
+
+    //Marker creation
+    script.append("function createMarker(gpoint){" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    var marker = new GMarker(gpoint, center_icon);" + reger.Vars.LINEBREAKCHARFORHTML);
+    //script.append("    var html = \"<b>Move/zoom the map to position this marker over your location.</b><br><a href='javascript: updateLatLonOnCallingPage();'>When Done, Click Here</a>\";" + reger.Vars.LINEBREAKCHARFORHTML);
+    //script.append("    GEvent.addListener(marker, \"click\", function() {marker.openInfoWindowHtml(html);});" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    return marker;" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+    //Marker creation
+    script.append("function updateMarker(){" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    mapG.removeOverlay(mapG.centermarker);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    mapG.centermarker = createMarker(mapG.getCenterLatLng());" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    mapG.addOverlay(mapG.centermarker);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+
+    //Standard stuff
+    script.append("    var mapG = new GMap(document.getElementById(\"mapG\"));" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    mapG.addControl(new GLargeMapControl());" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    mapG.addControl(new GMapTypeControl());" + reger.Vars.LINEBREAKCHARFORHTML);
+
+    //Zoom Level
+    script.append("    var span = new GSize("+spanLon+", "+spanLat+");" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    var center = new GPoint("+centerLon+", "+centerLat+");" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    var newZoom = mapG.spec.getLowestZoomLevel(center, span, mapG.viewSize);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    if (mapG.getZoomLevel() != newZoom) {" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("        mapG.centerAndZoom(center, newZoom);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    } else {" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("        mapG.recenterOrPanToLatLng(center);" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    }" + reger.Vars.LINEBREAKCHARFORHTML);
+
+    //Status
+    script.append("    function updateStatus(){" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("        var point = mapG.getCenterLatLng();" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("        var status = \"<center><br><b>Map center location:</b> \"+ Math.round(point.x*100000)/100000 + \"&deg;, \" + Math.round(point.y*100000)/100000+ \"&deg;<br><br><a href=\\\"javascript: updateLatLonOnCallingPage();\\\">Use This Coordinate</a></center>\";" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("        document.getElementById(\"status\").innerHTML = status;" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("    }" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("    function onMapMove(){" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("        updateStatus();" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("        updateMarker();" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("    }" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("    function onMapZoom(oldZoom, newZoom){	// zoom handler for map" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("        updateStatus();" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("        updateMarker();" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("    }" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("    GEvent.addListener(mapG, 'move', onMapMove);" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("    GEvent.addListener(mapG, 'zoom', onMapZoom);" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("    updateStatus();" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("    updateMarker();" + reger.Vars.LINEBREAKCHARFORHTML);
+
+	//Update calling window lat/lon
+	script.append("    function updateLatLonOnCallingPage(){" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("        var curCenterX = mapG.getCenterLatLng().x;" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("        var curCenterY = mapG.getCenterLatLng().y;" + reger.Vars.LINEBREAKCHARFORHTML);
+	script.append("        opener.document.entryform.latitude.value = escape(curCenterY);" + "\n");
+    script.append("        opener.document.entryform.longitude.value = escape(curCenterX);" + "\n");
+    script.append("        window.close();" + "\n");
+	script.append("    }" + reger.Vars.LINEBREAKCHARFORHTML);
+
+    //Closing
+    script.append("    //]]>" + reger.Vars.LINEBREAKCHARFORHTML);
+    script.append("    </script>" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+
+
+
+} else {
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, "", "You must have a googleApi key for your site to use the mapping features.  To learn more, click the Settings tab in your admin site and scroll to the bottom... you'll see a googleApi box with more info."));
+    out.print(mb.toString());
+    return;
+}
+//End New Google Map API
+
+%>
+
+<html>
+<head>
+
+</head>
+<body onunload="javascript:updateLatLonOnCallingPage();">
+<%
+//Output the page
+out.print(mb.toString());
+%>
+<%
+//Output the script
+out.print(reger.Vars.LINEBREAKCHARFORHTML);
+out.print(script.toString());
+%>
+</body>
+
+</html>
+
+<%
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%//@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+

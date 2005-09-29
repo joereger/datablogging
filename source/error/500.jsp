@@ -21,6 +21,7 @@ try {
         //Do nothing.  We failed pardner.  Nothing but a basic save now, pardner
         //Save the error to the database
         Debug.errorsave(exception, "", request.getRequestURL().toString(), request);
+        e.printStackTrace();
     }
 
 

@@ -178,6 +178,19 @@ public class LocationRenderHtml {
             mb.append("</td>");
             mb.append("</tr>");
 
+            if (displayasadmin) {
+                mb.append(reger.core.Util.popup());
+
+                mb.append("<tr>");
+                mb.append("<td valign=top align=left><font face=arial size=-2><strong></strong></font></td>");
+                mb.append("<td valign=top align=left colspan=2>");
+                mb.append("<a href='../entry-googlemaps-chooselatlon.log' onclick=\"javascript:NewWindow(this.href,'name','700','600','yes');return false;\">");
+                mb.append("<font face=arial size=-2><strong>Find Coordinated Easily on a Map</strong></font>");
+                mb.append("</a>");
+                mb.append("</td>");
+                mb.append("</tr>");
+            }
+
 
 
 

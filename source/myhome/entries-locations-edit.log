@@ -37,12 +37,14 @@ if (request.getParameter("locationid")!=null && !request.getParameter("locationi
 
 //If we don't have a location, redirect
 if (loc==null || loc.getLocationid()==0){
+    reger.core.Debug.debug(3, "entries-locations-edit.log", "Redirecting to entries-locations.log because loc is null or locid==0;");
     response.sendRedirect("entries-locations.log");
     return;
 }
 
 //Make sure this user can edit this location
 if (loc.getAccountid()!=userSession.getAccount().getAccountid()){
+    reger.core.Debug.debug(3, "entries-locations-edit.log", "Redirecting to entries-locations.log because location's accountid is not this accountid.;");
     response.sendRedirect("entries-locations.log");
     return;
 }
@@ -64,7 +66,7 @@ if (pageProps.action.equals("delete")){
 
 //Start edit
 if (pageProps.action.equals("editstart")){
-    mb.append("<form action=entries-locations-edit.log method=post>");
+    mb.append("<form name='entryform' id='entryform' action=entries-locations-edit.log method=post>");
     mb.append("<input type=hidden name=action value=edit>");
     mb.append("<input type=hidden name=locationid value="+loc.getLocationid()+">");
     mb.append(LocationRenderHtml.getSingleLocationAsHtml(loc, true, ""));

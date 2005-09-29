@@ -57,7 +57,7 @@ public class AccountCounts {
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstLocactionCount= Db.RunSQL("SELECT count(DISTINCT location.locationid) FROM location, event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.locationid=location.locationid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
+        String[][] rstLocactionCount= Db.RunSQL("SELECT count(DISTINCT location.locationid) FROM location, event, megalog WHERE location.accountid>0 AND "+reger.Entry.sqlOfLiveEntry+" AND event.locationid=location.locationid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
         //-----------------------------------
         //-----------------------------------
         if (rstLocactionCount!=null && rstLocactionCount.length>0){

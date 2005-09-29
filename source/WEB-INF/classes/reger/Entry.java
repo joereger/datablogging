@@ -289,7 +289,6 @@ public class Entry {
             this.location = new Location(Integer.parseInt(request.getParameter("locationid")));
         } else {
             this.location = new Location(0);
-            this.location.setAccountid(accountid);
             this.location.populateFromRequest(request);
         }
 
@@ -446,6 +445,7 @@ public class Entry {
 
         //Save location
         if (location!=null){
+            location.setAccountid(accountid);
             location.save();
         }
 
