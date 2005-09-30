@@ -315,38 +315,40 @@ if (rstMessageCount!=null && rstMessageCount.length>0){
 
 
 //Trackbacks
-int totaltrackback=0;
-//-----------------------------------
-//-----------------------------------
-String[][] rstTbC= Db.RunSQL("SELECT count(*) FROM trackback, event WHERE trackback.isapproved='0' AND trackback.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" AND trackback.isoutbound='0' ORDER BY trackback.datetime DESC");
-//-----------------------------------
-//-----------------------------------
-if (rstTbC!=null && rstTbC.length>0){
-    totaltrackback=Integer.parseInt(rstTbC[0][0]);
-    if (totaltrackback>0){
-        haveAlerts=true;
-        sc.append("<tr>");
-        sc.append("<td valign=middle width=25>");
-        sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
-        sc.append("</td>");
-        sc.append("<td valign=middle>");
-        sc.append("<a href='traffic-trackback.log'>");
-        sc.append("<font face=arial size=-1>");
-        sc.append("<b>");
-        sc.append(totaltrackback);
-        sc.append(" ");
-        sc.append("Unapproved Trackback");
-        if (totaltrackback>1){
-            sc.append("s");
+if (userSession.getAccount().getIstrackbackon() && userSession.getPl().getIstrackbackenabled()){
+
+    int totaltrackback=0;
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstTbC= Db.RunSQL("SELECT count(*) FROM trackback, event WHERE trackback.isapproved='0' AND trackback.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" AND trackback.isoutbound='0' ORDER BY trackback.datetime DESC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstTbC!=null && rstTbC.length>0){
+        totaltrackback=Integer.parseInt(rstTbC[0][0]);
+        if (totaltrackback>0){
+            haveAlerts=true;
+            sc.append("<tr>");
+            sc.append("<td valign=middle width=25>");
+            sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
+            sc.append("</td>");
+            sc.append("<td valign=middle>");
+            sc.append("<a href='traffic-trackback.log'>");
+            sc.append("<font face=arial size=-1>");
+            sc.append("<b>");
+            sc.append(totaltrackback);
+            sc.append(" ");
+            sc.append("Unapproved Trackback");
+            if (totaltrackback>1){
+                sc.append("s");
+            }
+            sc.append("</b>");
+            sc.append("</font>");
+            sc.append("</a>");
+            sc.append("</td>");
+            sc.append("</tr>");
         }
-        sc.append("</b>");
-        sc.append("</font>");
-        sc.append("</a>");
-        sc.append("</td>");
-        sc.append("</tr>");
     }
 }
-
 
 //Inbox
 int totalinbox = 0;

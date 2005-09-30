@@ -308,7 +308,7 @@ public class MegaHtmlFormBottom {
                 //-----------------------------------
                 //-----------------------------------
                 if (rstEpisodes!=null && rstEpisodes.length>0){
-                    mb.append("<select name=episodeid size=3 style=\"font-size: 10px;\" "+disabledFormText+">");
+                    mb.append("<select multiple name=episodeid size=3 style=\"font-size: 10px;\" "+disabledFormText+">");
                     for(int i=0; i<rstEpisodes.length; i++){
                         String selectedText = "";
                         for (int j = 0; j < pageProps.entry.episodesThisEntryBelongsTo.length; j++) {
