@@ -201,6 +201,17 @@ public class Util {
 		return result;
 	}
 
+	public static boolean arrayContainsValue(int[] array, int value){
+       if (array!=null){
+            for (int i = 0; i < array.length; i++) {
+                if (array[i]==value){
+                    return true;
+                }
+            }
+       }
+       return false;
+    }
+
 
 	/*
 	 * Determines whether yyyy, mm, dd is a valid date.

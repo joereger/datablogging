@@ -37,7 +37,9 @@ public class WebLogsComPing {
                 }
 
                 try {
-                    XmlRpcClientLite xmlrpc = new XmlRpcClientLite ("http://rpc.weblogs.com/RPC2");
+                    //XmlRpcClientLite xmlrpc = new XmlRpcClientLite ("http://rpc.weblogs.com/RPC2");
+
+                    XmlRpcClientLite xmlrpc = new XmlRpcClientLite ("http://rpc.pingomatic.com/");
                     Vector params = new Vector ();
                     params.addElement (name);
                     params.addElement (urlhost);

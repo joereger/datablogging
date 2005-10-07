@@ -163,7 +163,7 @@ public class MegaChartHtmlRenderer {
             //Create the chart-customizing form
             mb.append("<tr><td bgcolor=#ffffff>");
 
-                mb.append("<form action=graphs-detail.log method=post>");
+                mb.append("<form action=graphs-detail.log method=get>");
                 mb.append("<center><input type=submit value='Redraw Graph'></center>");
 
                 if (isPreview) {

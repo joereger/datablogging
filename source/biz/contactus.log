@@ -47,16 +47,11 @@ mb.append("reger.com-enabled blog: <a href='http://www.joereger.com'>http://www.
 mb.append("<br>");
 mb.append("<br>");
 mb.append("<h1>Sales</h1>");
-mb.append("Mark Lowman");
+mb.append("John Broadus");
 mb.append("<br>");
-mb.append("Director of Sales");
+mb.append("ph: 404.661.3440");
 mb.append("<br>");
-mb.append("ph: 404.784.2186");
-mb.append("<br>");
-mb.append("email: <a href='mailto:mark.lowman@reger.com'>mark.lowman@reger.com</a>");
-mb.append("<br>");
-mb.append("reger.com-enabled blog: <a href='http://particleman.reger.com'>http://particleman.qlogger.com</a>");
-
+mb.append("email: <a href='mailto:jb@reger.com'>jb@reger.com</a>");
 %>
 <%@ include file="biz-footer.jsp" %>
 <%

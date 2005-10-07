@@ -140,17 +140,24 @@ public class MegaChart {
         }
         if (yMegafieldChoice.length>0){
             //Break apart the yMegafieldChoice which is of the format <fieldid>_<logid>_<eventtypeid>
+            //reger.core.Debug.logtodb("Starting to dissect yMegafieldChoice", "MegaChart.java");
             for (int i = 0; i < yMegafieldChoice.length; i++) {
-                if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[0])){
-                    yMegafieldid = reger.core.Util.addToIntArray(yMegafieldid, Integer.parseInt(yMegafieldChoice[i].split("_")[0]));
+                if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[0]) && !reger.core.Util.arrayContainsValue(yMegafieldid, new Integer(yMegafieldChoice[i].split("_")[0]).intValue())){
+                    if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[0])){
+                        yMegafieldid = reger.core.Util.addToIntArray(yMegafieldid, Integer.parseInt(yMegafieldChoice[i].split("_")[0]));
+                    }
+                    if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[1])){
+                        yLogid = reger.core.Util.addToIntArray(yLogid, Integer.parseInt(yMegafieldChoice[i].split("_")[1]));
+                    }
+                    if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[2])){
+                        yEventtypeid = reger.core.Util.addToIntArray(yEventtypeid, Integer.parseInt(yMegafieldChoice[i].split("_")[2]));
+                    }
                 }
-                if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[1])){
-                    yLogid = reger.core.Util.addToIntArray(yLogid, Integer.parseInt(yMegafieldChoice[i].split("_")[1]));
-                }
-                if (reger.core.Util.isinteger(yMegafieldChoice[i].split("_")[2])){
-                    yEventtypeid = reger.core.Util.addToIntArray(yEventtypeid, Integer.parseInt(yMegafieldChoice[i].split("_")[2]));
-                }
+                //reger.core.Debug.logIntArrayToDb("MegaChart.java - inside loop on yMegafieldChoice i="+i+" now tracking yMegafieldid", yMegafieldid);
+
             }
+            //reger.core.Debug.logIntArrayToDb("MegaChart.java - FINAL yMegafieldid", yMegafieldid);
+            //reger.core.Debug.logtodb("Done dissecting yMegafieldChoice", "MegaChart.java");
         } else {
             yMegafieldid = new int[1];
             yMegafieldid[0] = reger.mega.FieldType.YAXISCOUNT;
