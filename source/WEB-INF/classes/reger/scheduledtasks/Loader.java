@@ -42,7 +42,7 @@ public class Loader extends HttpServlet {
         //The master thread is created
         tThr = new reger.core.scheduler.MasterThread();
         //Add scheduled tasks
-        tThr.addScheduledTask(new ExpireUserSessions());
+        //tThr.addScheduledTask(new ExpireUserSessions());
         tThr.addScheduledTask(new TrafficHitCacheRecording());
         tThr.addScheduledTask(new PurgeHtmlCacheOfStaleContent());
         tThr.addScheduledTask(new SystemMessageExpiration());

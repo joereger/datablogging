@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * A user session that holds all critical login, pl and account information.
  */
-public class UserSession {
+public class UserSession implements java.io.Serializable {
 
     //Main contents of the object
     //private reger.Account account;
@@ -35,6 +35,7 @@ public class UserSession {
 
 
     public UserSession(javax.servlet.http.HttpServletRequest request){
+        reger.core.Debug.debug(3, "UserSession.java", "New UserSession created.");
         //Get the basic information
         processNewRequest(request);
         if (accountuser!=null && !accountuser.isLoggedIn){

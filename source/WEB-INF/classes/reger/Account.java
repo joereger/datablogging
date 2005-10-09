@@ -17,7 +17,7 @@ import java.util.*;
 * Once the userLogin() function is called user-specific vars are
 * populated.
 */
-public class Account {
+public class Account implements java.io.Serializable {
 
     //Basic account variables
     private int accountid=0;

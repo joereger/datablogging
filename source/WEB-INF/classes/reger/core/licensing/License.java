@@ -8,7 +8,7 @@ import java.util.*;
  * This class handles the main license rules for the installed version of the application.
  * The LM uses a single encoded string in the context.xml file to determine licensing properties.
  */
-public class License {
+public class License implements java.io.Serializable {
 
     //This absolutely can't change because old licenses won't work.
     private static String passPhrase = "pupper";

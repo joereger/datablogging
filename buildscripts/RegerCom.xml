@@ -87,6 +87,9 @@
         ${sourcedir}/WEB-INF/lib/xsltc.jar;
         ${sourcedir}/WEB-INF/lib/dom3-xercesImpl.jar;
         ${sourcedir}/WEB-INF/lib/dom3-xml-apis.jar;
+        ${sourcedir}/WEB-INF/lib/jcs-1.2.6.5.jar;
+        ${sourcedir}/WEB-INF/lib/commons-lang-2.1.jar;
+        ${sourcedir}/WEB-INF/lib/concurrent.jar;
   "/>
 
 

@@ -5,7 +5,7 @@ import reger.core.Debug;
 /**
  * Splits incoming urls into an accounturl, plbasedomain and virtualdir.
  */
-public class UrlSplitter {
+public class UrlSplitter implements java.io.Serializable {
 
     private String rawIncomingServername = "";
     private String servername = "";

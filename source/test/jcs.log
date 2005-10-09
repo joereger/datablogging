@@ -1,0 +1,53 @@
+<%@ page import="reger.SideColumn,
+                 java.util.*"%>
+<%@ page import="reger.cache.jcs.BookVObjManager"%>
+<%@ page import="reger.cache.jcs.BookVObj"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+BookVObjManager mgr = BookVObjManager.getInstance();
+BookVObj book1 = mgr.getBookVObj(1);
+mb.append("<br>book1.bookId=" + book1.bookId);
+
+BookVObj book2 = mgr.getBookVObj(2);
+mb.append("<br>book2.bookId=" + book2.bookId);
+
+BookVObj book1a = mgr.getBookVObj(1);
+mb.append("<br>book1a.bookId=" + book1a.bookId);
+
+
+
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

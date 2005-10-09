@@ -34,7 +34,7 @@ public class AllSystemProperties {
     public static String getProp(String propertyName){
         if (properties!=null && propertyName!=null){
             for (int i = 0; i < properties.length; i++) {
-                if (properties[i].getPropertyName()!=null && properties[i].getPropertyName().equals(propertyName)){
+                if (properties[i]!=null && properties[i].getPropertyName()!=null && properties[i].getPropertyName().equals(propertyName)){
                     return properties[i].getPropertyValue();
                 }
             }

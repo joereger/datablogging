@@ -457,6 +457,11 @@ This is a reference showing the jar file to module relationship:
        - WEB-INF/lib/xercesImpl.jar -> dom3-xercesImpl.jar
        - WEB-INF/lib/xml-apis.jar -> dom3-xml-apis.jar
 
+14) jakarta.apache.org/jcs
+       - jcs-1.2.6.5.jar
+       - commons-lang-2.1.jar
+       - concurrent.jar
+
 
 
 
