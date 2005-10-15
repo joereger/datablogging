@@ -31,15 +31,34 @@
   	<!-- Base reger.com Service -->
   	<Service name="Catalina">
     		<Connector port="80" address="127.0.0.1" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="8443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true"/>
-		<!--
-		<Connector port="443" address="127.0.0.1" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true" scheme="https" secure="true" clientAuth="false" sslProtocol="TLS" keystoreFile="C:\SuperFly\certificates\regerdotcomnew.keystore" keystorePass="changeit" keystoreType="JKS"/>
-      		-->
-		<Engine name="Catalina" defaultHost="localhost" debug="0">
+		<!--<Connector port="81" address="127.0.0.1" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="8443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true"/>-->
+		<!--<Connector port="443" address="127.0.0.1" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true" scheme="https" secure="true" clientAuth="false" sslProtocol="TLS" keystoreFile="C:\SuperFly\certificates\regerdotcomnew.keystore" keystorePass="changeit" keystoreType="JKS"/>-->
+		<Connector port="80" address="192.168.1.110" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="8443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true"/>
+		<!--<Connector port="80" address="10.1.2.36" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="8443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true"/>-->		
+
+            <Engine name="Catalina" defaultHost="localhost" debug="0">
+			<Valve className="org.apache.catalina.valves.AccessLogValve" prefix="regerAccess." suffix=".txt" pattern="%v %h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot;"/>
       		<Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase" />
 			<Host name="localhost" debug="0" appBase="webapps" unpackWAR="true" autoDeploy="true" xmlValidation="false" xmlNamespaceAware="false" antiJARLocking="true" antiResourceLocking="true">
       			<Context path="/manager" docBase="../server/webapps/manager" debug="0" privileged="true">
   					<ResourceLink name="users" global="UserDatabase" type="org.apache.catalina.realm.UserDatabaseRealm"/>
 				</Context>
+			</Host>
+    		</Engine>
+  	</Service>
+
+	<!-- Duplicate reger.com Service -->
+  	<Service name="CatalinaDupe">
+    		<Connector port="8080" address="127.0.0.1" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="8443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true"/>
+		<!--
+		<Connector port="443" address="127.0.0.1" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" enableLookups="false" redirectPort="443" acceptCount="100" debug="0" connectionTimeout="20000"  disableUploadTimeout="true" scheme="https" secure="true" clientAuth="false" sslProtocol="TLS" keystoreFile="C:\SuperFly\certificates\regerdotcomnew.keystore" keystorePass="changeit" keystoreType="JKS"/>
+      		-->
+		<Engine name="CatalinaDupe" defaultHost="localhostdupe" debug="0">
+      		<Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase" />
+			<Host name="localhostDupe" debug="0" appBase="webappsDupe" unpackWAR="true" autoDeploy="true" xmlValidation="false" xmlNamespaceAware="false" antiJARLocking="true" antiResourceLocking="true">
+      			<Context path="/manager" docBase="../server/webapps/manager" debug="0" privileged="true">
+  					<ResourceLink name="users" global="UserDatabase" type="org.apache.catalina.realm.UserDatabaseRealm"/>
+			</Context>
 			</Host>
     		</Engine>
   	</Service>
