@@ -8,6 +8,8 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
+ * "Support Open Source software. What about a donation today?"
+ * 
  * File Name: fckxhtmlentities.js
  * 	This file define the HTML entities handled by the editor.
  * 
@@ -17,7 +19,7 @@
 
 if ( FCKConfig.ProcessHTMLEntities )
 {
-	FCKXHtmlEntities = new Object();
+	var FCKXHtmlEntities = new Object() ;
 
 	FCKXHtmlEntities.Entities = {
 		// Latin-1 Entities

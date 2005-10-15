@@ -8,6 +8,8 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
+ * "Support Open Source software. What about a donation today?"
+ * 
  * File Name: fckeditor.asp
  * 	This is the integration file for ASP.
  * 
@@ -77,8 +79,15 @@ Class FCKeditor
 
 		If IsCompatible() Then
 
+			Dim sFile
+			If Request.QueryString( "fcksource" ) = "true" Then
+				sFile = "fckeditor.original.html"
+			Else
+				sFile = "fckeditor.html"
+			End If
+
 			Dim sLink
-			sLink = sBasePath & "editor/fckeditor.html?InstanceName=" + instanceName
+			sLink = sBasePath & "editor/" & sFile & "?InstanceName=" + instanceName
 
 			If (sToolbarSet & "") <> "" Then
 				sLink = sLink + "&amp;Toolbar=" & sToolbarSet

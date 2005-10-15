@@ -8,6 +8,8 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
+ * "Support Open Source software. What about a donation today?"
+ * 
  * File Name: fckcommands.js
  * 	Define all commands available in the editor.
  * 
@@ -103,7 +105,7 @@ FCKCommands.GetCommand = function( commandName )
 			else
 			{
 				alert( FCKLang.UnknownCommand.replace( /%1/g, commandName ) ) ;
-				return ;
+				return null ;
 			}
 	}
 	

@@ -8,6 +8,8 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
+ * "Support Open Source software. What about a donation today?"
+ * 
  * File Name: fcktoolbaritems.js
  * 	Toolbar items definitions.
  * 
@@ -105,7 +107,7 @@ FCKToolbarItems.GetItem = function( itemName )
 
 		default:
 			alert( FCKLang.UnknownToolbarItem.replace( /%1/g, itemName ) ) ;
-			return ;
+			return null ;
 	}
 
 	FCKToolbarItems.LoadedItems[ itemName ] = oItem ;

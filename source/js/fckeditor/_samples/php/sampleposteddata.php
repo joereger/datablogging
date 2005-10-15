@@ -9,6 +9,8 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
+ * "Support Open Source software. What about a donation today?"
+ * 
  * File Name: sampleposteddata.php
  * 	This page lists the data posted by a form.
  * 
@@ -36,12 +38,10 @@
 			</tr>
 <?php
 
-if ( version_compare( phpversion(), '4.1.0' ) == -1 )
-    // prior to 4.1.0, use HTTP_POST_VARS
-    $postArray = &$HTTP_POST_VARS ;
+if ( isset( $_POST ) )
+   $postArray = &$_POST ;			// 4.1.0 or later, use $_POST
 else
-    // 4.1.0 or later, use $_POST
-    $postArray = &$_POST ;
+   $postArray = &$HTTP_POST_VARS ;	// prior to 4.1.0, use HTTP_POST_VARS
 
 foreach ( $postArray as $sForm => $value )
 {
