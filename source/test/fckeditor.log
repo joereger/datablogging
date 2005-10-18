@@ -1,0 +1,61 @@
+<%@ page import="reger.SideColumn,
+                 java.util.*"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+String initialvalue = "This is some text.";
+
+mb.append("\n");
+mb.append("\n");
+mb.append("<script type=\"text/javascript\" src=\"/js/fckeditor/fckeditor.js\"></script>" + "\n");
+
+
+mb.append("<form action=\"/post/sampleposteddata.php\" method=\"post\" target=\"_blank\">");
+
+
+mb.append("<script type=\"text/javascript\">" + "\n");
+mb.append("<!--" + "\n");
+mb.append("var oFCKeditor = new FCKeditor( 'comments' ) ;" + "\n");
+mb.append("oFCKeditor.BasePath = \"/js/fckeditor/\" ;" + "\n");
+initialvalue=initialvalue.replaceAll("(\n|\r)", "").replaceAll("\"", "\\\\\"");
+mb.append("oFCKeditor.Value = \""+initialvalue+"\" ;" + "\n");
+mb.append("oFCKeditor.Create();" + "\n");
+mb.append("//-->" + "\n");
+mb.append("</script>" + "\n");
+mb.append("\n");
+
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

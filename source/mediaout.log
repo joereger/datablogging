@@ -1,4 +1,7 @@
 <%
+
+reger.core.Debug.debug(3, "mediaout.log", "Made it to mediaout.log top");
+
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
@@ -30,6 +33,8 @@ if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbna
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+
+reger.core.Debug.debug(3, "mediaout.log", "Made it to mediaout.log imageid=" + request.getParameter("imageid"));
 
 int bytesOutput = 0;
 

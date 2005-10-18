@@ -184,7 +184,7 @@ public class Upload {
 
                                     //-----------------------------------
                                     //-----------------------------------
-                                    int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"')");
+                                    int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename, accountid) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+userSession.getAccount().getAccountid()+"')");
                                     //-----------------------------------
                                     //-----------------------------------
 
@@ -199,8 +199,6 @@ public class Upload {
 
                                     //Do the imagetags
                                     reger.ImageTag.addMultipleTagsToImage(manyimagetags, identity);
-
-                                    
 
                                     //Update the AccountCounts cache
                                     reger.cache.AccountCountCache.flushByAccountid(userSession.getAccount().getAccountid());

@@ -456,7 +456,7 @@ public class MetaWebLogApi {
 
                 //-----------------------------------
                 //-----------------------------------
-                int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, originalfilename) VALUES('"+entry.eventid+"', '"+finalfilename+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(incomingname)+"')");
+                int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, originalfilename, accountid) VALUES('"+entry.eventid+"', '"+finalfilename+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"')");
                 //-----------------------------------
                 //-----------------------------------
 

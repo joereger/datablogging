@@ -249,6 +249,31 @@
         <to>/mediaout.log?imageid=$1&amp;isProfileImage=$2&amp;entrykey=$3&amp;$6</to>
     </rule>
 
+
+
+
+
+
+
+
+    <rule>
+        <name>Media files done in a way to preserve</name>
+        <note>The main redirect. </note>
+        <from>/js/fckeditor/editor/dialog/mediaout.log(\?)*(.*)</from>
+        <to>/mediaout.log?$2</to>
+    </rule>
+
+    <rule>
+        <name>Media files done in a way to preserve</name>
+        <note>The main redirect. </note>
+        <from>/js/fckeditor/editor/mediaout.log(\?)*(.*)</from>
+        <to>/mediaout.log?$2</to>
+    </rule>
+
+
+
+
+
     <rule>
         <name>Robotstxt</name>
         <note>Redirect robots.txt to robots.log.</note>

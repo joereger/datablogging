@@ -10,8 +10,6 @@ import java.util.Properties;
 public class PathUploadMedia extends SystemProperty{
 
     public PathUploadMedia(){
-
-
         setPropertyName("PATHUPLOADMEDIA");
         setPropertyDefault("");
         setPropertyValue("");

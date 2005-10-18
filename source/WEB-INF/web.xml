@@ -75,6 +75,32 @@
         <param-value>true</param-value>
         </init-param>
    </servlet>
+   <!-- Start fckeditor -->
+   <servlet>
+        <servlet-name>ConnectorServlet</servlet-name>
+        <servlet-class>reger.fckeditor.ConnectorServlet</servlet-class>
+   </servlet>
+   <servlet>
+        <servlet-name>SimpleUploaderServlet</servlet-name>
+        <servlet-class>reger.fckeditor.SimpleUploaderServlet</servlet-class>
+   </servlet>
+   <servlet-mapping>
+        <servlet-name>ConnectorServlet</servlet-name>
+        <url-pattern>/js/fckeditor/editor/filemanager/browser/default/connectors/jsp/connector</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+        <servlet-name>ConnectorServlet</servlet-name>
+        <url-pattern>/~*/js/fckeditor/editor/filemanager/browser/default/connectors/jsp/connector</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+        <servlet-name>SimpleUploaderServlet</servlet-name>
+        <url-pattern>/js/fckeditor/editor/filemanager/upload/simpleuploader</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+        <servlet-name>SimpleUploaderServlet</servlet-name>
+        <url-pattern>/~*/js/fckeditor/editor/filemanager/upload/simpleuploader</url-pattern>
+   </servlet-mapping>
+   <!-- End fckeditor -->
    <!-- Start Chiba Additions -->
     <servlet-mapping>
         <servlet-name>dwr-invoker</servlet-name>
@@ -117,10 +143,12 @@
         <servlet-name>jsp</servlet-name>
         <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
+    <!--
     <servlet-mapping>
         <servlet-name>jsp</servlet-name>
         <url-pattern>*.xml</url-pattern>
     </servlet-mapping>
+    -->
     <session-config>
         <session-timeout>20</session-timeout>
     </session-config>

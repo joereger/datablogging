@@ -68,22 +68,24 @@ public class AllUserSessions {
         }
         //If we have an id, work with it
         if (!userSessionId.equals("")){
-            //reger.core.Util.logtodb("AllUserSessions.getUserSession() - userSessionId=" + userSessionId);
+            reger.core.Debug.debug(4, "AllUserSessions.java", "AllUserSessions.getUserSession() - userSessionId=" + userSessionId);
             reger.UserSession us = getUserSession(userSessionId);
             if (us!=null){
+                reger.core.Debug.debug(4, "AllUserSessions.java", "AllUserSessions.getUserSession() - found a userSession");
                 us.processNewRequest(request);
                 return us;
             }
         } else {
             //One last try to find the session based on jsessionid
             //Note that this assumes I'm keying my own session scheme off of Tomcat's jsessionid
+            reger.core.Debug.debug(3, "AllUserSessions.java", "userSessionId was blank so trying to use sessionid.");
             reger.UserSession us = getUserSession(request.getSession().getId());
             if (us!=null){
                 us.processNewRequest(request);
                 return us;
             }
         }
-        //reger.core.Util.logtodb("AllUserSessions.getUserSession() - Existing session not found.  Will create a new session.");
+        reger.core.Debug.debug(3, "AllUseressions.java", "AllUserSessions.getUserSession() - Existing session not found.  Will create a new session.");
         //Create a new session
         reger.UserSession us = new reger.UserSession(request);
         //Add the session to the session hashtable

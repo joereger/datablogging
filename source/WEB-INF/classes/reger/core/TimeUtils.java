@@ -173,13 +173,13 @@ public class TimeUtils {
 	    try{
             String date = reger.core.TimeUtils.dateformatfordb(cal);
             if (datePartToGet.equals("month")){
-                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (Integer.parseInt(date.substring(5,7))));
+                reger.core.Debug.debug(4, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (Integer.parseInt(date.substring(5,7))));
                 return Integer.parseInt(date.substring(5,7));
             } else if (datePartToGet.equals("day")){
-                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (date.substring(8,10)));
+                reger.core.Debug.debug(4, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (date.substring(8,10)));
                 return Integer.parseInt(date.substring(8,10));
             } else if (datePartToGet.equals("year")){
-                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (date.substring(0,4)));
+                reger.core.Debug.debug(4, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (date.substring(0,4)));
                 return Integer.parseInt(date.substring(0,4));
             } else if (datePartToGet.equals("hour")){
                 int h =  Integer.parseInt(date.substring(11,13));
@@ -190,16 +190,16 @@ public class TimeUtils {
                 } else if (h==0){
                     h=12;
                 }
-                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + h);
+                reger.core.Debug.debug(4, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + h);
                 return h;
             } else if (datePartToGet.equals("minute")){
-                reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (date.substring(14,16)));
+                reger.core.Debug.debug(4, "TimeUtils.java", "Start getDatePart()<br>date=" + date + "<br>datePartToGet=" + datePartToGet + "<br>returning:" + (date.substring(14,16)));
                 return Integer.parseInt(date.substring(14,16));
             }
         } catch (Exception e){
             reger.core.Debug.errorsave(e, "TimeUtils.java", "getDatePart() failed<br>incoming cal=" + cal.toString());
         }
-        reger.core.Debug.debug(3, "TimeUtils.java", "Start getDatePart()<br>cal=" + cal.toString() + "<br>datePartToGet=" + datePartToGet + "<br>returning 0 as default");
+        reger.core.Debug.debug(4, "TimeUtils.java", "Start getDatePart()<br>cal=" + cal.toString() + "<br>datePartToGet=" + datePartToGet + "<br>returning 0 as default");
         return 0;
     }
 
