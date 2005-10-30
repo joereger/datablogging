@@ -663,8 +663,8 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         mb.append("<$Search.Box$>" + "<br>");
         mb.append("<$Email.Subscribe.Box$>" + "<br>");
         mb.append("<$Graphs.List$>" + "<br>");
-        mb.append("<Rss.Link$>" + "<br>");
-        mb.append("<Wap.Link$>" + "<br>");
+        mb.append("<$Rss.Link$>" + "<br>");
+        mb.append("<$Wap.Link$>" + "<br>");
 
 
 

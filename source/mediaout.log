@@ -1,6 +1,6 @@
 <%
 
-reger.core.Debug.debug(3, "mediaout.log", "Made it to mediaout.log top");
+reger.core.Debug.debug(5, "mediaout.log", "Made it to mediaout.log top");
 
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -34,7 +34,7 @@ if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbna
 /*----------------------------------------------------*/
 
 
-reger.core.Debug.debug(3, "mediaout.log", "Made it to mediaout.log imageid=" + request.getParameter("imageid"));
+reger.core.Debug.debug(5, "mediaout.log", "Made it to mediaout.log imageid=" + request.getParameter("imageid"));
 
 int bytesOutput = 0;
 

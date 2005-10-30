@@ -25,16 +25,16 @@ public class Util {
     }
 
     public static String cleanDirectorySlashesUseSystemFileSeparator(String directoryOrFileName){
-        reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator=" + File.separator);
-        reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName before replace="+directoryOrFileName);
+        reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator=" + File.separator);
+        reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName before replace="+directoryOrFileName);
         if (File.separator.equals("\\\\")){
-            reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is backslash.");
+            reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is backslash.");
             directoryOrFileName.replaceAll("/", "\\\\");
         } else if (File.separator.equals("/")){
-            reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is forwardslash.");
+            reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is forwardslash.");
             directoryOrFileName.replaceAll("\\\\", "/");
         }
-        reger.core.Debug.debug(3, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName after replace="+directoryOrFileName);
+        reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName after replace="+directoryOrFileName);
         return directoryOrFileName;
     }
 

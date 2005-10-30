@@ -98,7 +98,7 @@ public class LogTypeCreator {
         String fieldname = e.getAttributeValue("name");
         if (fieldname!=null && !fieldname.equals("")){
             //Debug
-            reger.core.Debug.debug(3, "LogTypeCreator.java", "createField() called for fieldname="+fieldname+":<br><br>" + JdomElementInspector.inspect(e, "<br>"));
+            reger.core.Debug.debug(5, "LogTypeCreator.java", "createField() called for fieldname="+fieldname+":<br><br>" + JdomElementInspector.inspect(e, "<br>"));
 
             Field field = new Field(Field.FIELDTYPETEXTBOX, logType.getEventtypeid(), 0, fieldname, "", reger.mega.DataTypeString.DATATYPEID, 0);
             field.saveField();

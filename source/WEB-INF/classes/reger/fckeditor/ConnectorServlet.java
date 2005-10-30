@@ -53,7 +53,7 @@ public class ConnectorServlet extends HttpServlet {
      */
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        reger.core.Debug.debug(3, "ConnectorServlet.java", "doGet called on fckeditor connector servlet.");
+        reger.core.Debug.debug(5, "ConnectorServlet.java", "doGet called on fckeditor connector servlet.");
 
         response.setContentType("text/xml; charset=UTF-8");
         response.setHeader("Cache-Control","no-cache");
@@ -78,7 +78,7 @@ public class ConnectorServlet extends HttpServlet {
 
         Node root=CreateCommonXml(document,commandStr,typeStr,currentFolderStr,"");
 
-        reger.core.Debug.debug(3, "ConnectorServlet.java", "fckeditor Command = " + commandStr);
+        reger.core.Debug.debug(5, "ConnectorServlet.java", "fckeditor Command = " + commandStr);
 
         reger.AllUserSessions allUserSessions = new reger.AllUserSessions();
         reger.UserSession userSession = allUserSessions.getUserSession(request, response);
@@ -127,9 +127,9 @@ public class ConnectorServlet extends HttpServlet {
             if (1==1) {
                 //StreamResult dbgResult = new StreamResult(System.out);
                 //transformer.transform(source, dbgResult);
-                //reger.core.Debug.debug(3, "ConnectorServlet.java", "fckeditor output = " + source.toString());
+                //reger.core.Debug.debug(5, "ConnectorServlet.java", "fckeditor output = " + source.toString());
             }
-            reger.core.Debug.debug(3, "ConnectorServlet.java", "fckeditor End doGet");
+            reger.core.Debug.debug(5, "ConnectorServlet.java", "fckeditor End doGet");
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -152,7 +152,7 @@ public class ConnectorServlet extends HttpServlet {
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        reger.core.Debug.debug(3, "ConnectorServlet.java", "fckeditor doPost called");
+        reger.core.Debug.debug(5, "ConnectorServlet.java", "fckeditor doPost called");
 
         response.setContentType("text/html; charset=UTF-8");
         response.setHeader("Cache-Control","no-cache");
@@ -166,7 +166,7 @@ public class ConnectorServlet extends HttpServlet {
         //String currentDirPath=getServletContext().getRealPath(currentPath);
         String currentDirPath=AllSystemProperties.getProp("PATHUPLOADMEDIA");
 
-        reger.core.Debug.debug(3, "ConnectorServlet.java", "fckeditor currentdirpath = " + currentDirPath);
+        reger.core.Debug.debug(5, "ConnectorServlet.java", "fckeditor currentdirpath = " + currentDirPath);
 
         String retVal="0";
         String newName="";
@@ -243,7 +243,7 @@ public class ConnectorServlet extends HttpServlet {
         out.flush();
         out.close();
 
-        reger.core.Debug.debug(3, "ConnectorServlet.java", "fckeditor End doPost");
+        reger.core.Debug.debug(5, "ConnectorServlet.java", "fckeditor End doPost");
 
     }
 

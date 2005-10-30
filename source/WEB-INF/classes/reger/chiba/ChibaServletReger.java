@@ -1,13 +1,10 @@
 package reger.chiba;
 
-import org.apache.log4j.Category;
 import org.chiba.adapter.ChibaAdapter;
-import org.chiba.xml.xforms.config.Config;
 import org.chiba.xml.xforms.exception.XFormsException;
+import org.xml.sax.InputSource;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,9 +15,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.net.URISyntaxException;
 
-import reger.chiba.adapter.servlet.ServletAdapter;
 import reger.core.WebAppRootDir;
 import reger.systemproperties.PathUploadMedia;
+import reger.Entry;
+import reger.Log;
 
 /**
  * The ChibaServlet handles all interactions between client and
@@ -34,49 +32,27 @@ import reger.systemproperties.PathUploadMedia;
  * Incoming request params will be mapped to data and action-handlers.
  *
  */
-public class ChiReger {
-    //init-params
-    //private static Category cat = Category.getInstance(ChibaServlet.class);
+public class ChibaServletReger {
 
-    private static final String FORM_PARAM_NAME = "form";
     private static final String XSL_PARAM_NAME = "xslt";
     private static final String CSS_PARAM_NAME = "css";
     private static final String ACTIONURL_PARAM_NAME = "action_url";
     private static final String JAVASCRIPT_PARAM_NAME = "JavaScript";
 
-    /*
-     * It is not thread safe to modify these variables once the
-     * init(ServletConfig) method has been called
-     */
-    // the absolute path to the Chiba config-file
-    private String configPath = null;
-
-    // the rootdir of this app; forms + documents fill be searched under this root
-    private String contextRoot = null;
-
-    // where uploaded files are stored
-    private String uploadDir = null;
-
-    private String stylesPath = null;
+    private Entry entry;
+    private Log log;
 
 
+    public ChibaServletReger(Entry entry, Log log){
+        reger.core.Debug.debug(3, "ChibaServletReger.java", "--------------- creating instance of ChibaServletReger... ---------------");
 
-    /**
-     * Initialize.
-     *
-     */
-    public void init() {
-        reger.core.Debug.debug(3, "ChibaServlet.java", "--------------- initing ChibaServlet... ---------------");
+        this.entry = entry;
+        this.log = log;
 
-        configPath = WebAppRootDir.getWebAppRootPath() + "/WEB-INF/default.xml";
-
-        contextRoot = WebAppRootDir.getWebAppRootPath();
-
-        stylesPath = contextRoot + "/forms/xslt/";
-
-        PathUploadMedia pathUploadMedia = new PathUploadMedia();
-        uploadDir = reger.systemproperties.AllSystemProperties.getProp(pathUploadMedia.getPropertyName());
     }
+
+
+
 
     /**
      * Starts a new form-editing session.<br>
@@ -107,47 +83,33 @@ public class ChiReger {
      */
     public String doGet(HttpServletRequest request, HttpServletResponse response){
 
-        ServletAdapter servletAdapter = null;
+        reger.core.Debug.debug(3, "ChibaServletReger.java", "ChibaServletReger.doGet(request, response) called.");
+
+        ServletAdapterReger servletAdapter = null;
         HttpSession session = request.getSession(true);
 
-        reger.core.Debug.debug(3, "ChibaServlet.java", "--------------- new XForms session ---------------");
+        reger.core.Debug.debug(3, "ChibaServletReger.java", "--------------- new XForms session ---------------");
         try {
-
-            // determine Form to load
-            String formURI = getRequestURI(request) + request.getParameter(FORM_PARAM_NAME);
-            if (formURI == null) {
-                throw new IOException("Resource not found: " + formURI + " not found");
-            }
-
-            String xslFile = request.getParameter(XSL_PARAM_NAME);
-            String css = request.getParameter(CSS_PARAM_NAME);
-            String javascriptEnabled = request.getParameter(JAVASCRIPT_PARAM_NAME);
-
             // build actionURL where forms are submitted to
             String actionURL = getActionURL(request, response);
-
-            servletAdapter = setupServletAdapter(actionURL, session, formURI, xslFile, css);
+            String requestURI = getRequestURI(request) + request.getServletPath();
+            servletAdapter = setupServletAdapter(actionURL, session, requestURI);
             updateContext(servletAdapter, request, session);
 
             //add all request params that are not used by this servlet to the context map in ChibaBean
             storeContextParams(request, servletAdapter);
             servletAdapter.init();
-
             servletAdapter.dispatch(null);
-
             StringWriter out = new StringWriter();
-
             servletAdapter.buildUI(out);
-
             session.setAttribute("chiba.adapter", servletAdapter);
-
             String returnValue = out.toString();
 
             out.close();
 
             return returnValue;
         } catch (Exception e) {
-            reger.core.Debug.errorsave(e, "ChibaServlet.java");
+            reger.core.Debug.errorsave(e, "ChibaServletReger.java");
             shutdown(servletAdapter, session, e, response, request);
         }
         return "";
@@ -162,10 +124,10 @@ public class ChiReger {
      * @param request        the ServletRequest
      * @param session        the ServletSession
      */
-    protected void updateContext(ServletAdapter servletAdapter, HttpServletRequest request, HttpSession session) {
-        servletAdapter.setContextProperty(ServletAdapter.USERAGENT, request.getHeader("User-Agent"));
-        servletAdapter.setContextProperty(ServletAdapter.HTTP_SERVLET_REQUEST, request);
-        servletAdapter.setContextProperty(ServletAdapter.HTTP_SESSION_OBJECT, session);
+    protected void updateContext(ServletAdapterReger servletAdapter, HttpServletRequest request, HttpSession session) {
+        servletAdapter.setContextProperty(ServletAdapterReger.USERAGENT, request.getHeader("User-Agent"));
+        servletAdapter.setContextProperty(ServletAdapterReger.HTTP_SERVLET_REQUEST, request);
+        servletAdapter.setContextProperty(ServletAdapterReger.HTTP_SESSION_OBJECT, session);
     }
 
 
@@ -178,19 +140,21 @@ public class ChiReger {
      * @throws java.io.IOException
      */
     public String doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        reger.core.Debug.debug(3, "ChibaServletReger.java", "ChibaServletReger.doPost(request, response) called.");
+
         HttpSession session = request.getSession(true);
-        ServletAdapter servletAdapter = null;
+        ServletAdapterReger servletAdapter = null;
 
         try {
 
             //@todo Put in userSession, not session
-            servletAdapter = (ServletAdapter) session.getAttribute("chiba.adapter");
+            servletAdapter = (ServletAdapterReger) session.getAttribute("chiba.adapter");
             if (servletAdapter == null) {
-                reger.core.Debug.debug(3, "ChiReger.java", "Invalid session in doPost()");
+                reger.core.Debug.debug(5, "ChibaServletReger.java", "Invalid session in doPost()");
                 return "";
             }
             updateContext(servletAdapter, request, session);
-            //servletAdapter.executeHandler();
             servletAdapter.dispatch(null);
 
             // handle setRedirect <xforms:load show='replace'/>
@@ -198,6 +162,9 @@ public class ChiReger {
             // NOTE - this needs to be checked *before* the this.getForwardMap()
             // as a submission handler may force a redirect
             if (servletAdapter.getRedirectUri() != null) {
+
+                reger.core.Debug.debug(3, "ChibaServletReger.java", "servletAdapter.getRedirectUri() is NOT null = " + servletAdapter.getRedirectUri());
+
                 String redirectTo = servletAdapter.getRedirectUri();
 
                 // shutdown processor
@@ -216,6 +183,8 @@ public class ChiReger {
             InputStream forwardStream = (InputStream) forwardMap.get(ChibaAdapter.SUBMISSION_RESPONSE_STREAM);
             if (forwardStream != null) {
 
+                reger.core.Debug.debug(3, "ChibaServletReger.java", "forwardStream is NOT null");
+
                 // shutdown processor
                 servletAdapter.getChibaBean().shutdown();
 
@@ -227,6 +196,7 @@ public class ChiReger {
                 return "";
             }
 
+            reger.core.Debug.debug(3, "ChibaServletReger.java", "Did not redirect and did not forward to stream... returning response myself.");
 
             // render result to output
             StringWriter out = new StringWriter();
@@ -243,36 +213,30 @@ public class ChiReger {
     /**
      * creates and configures the ServletAdapter which does the actual request processing.
      *
+     * it is then stored in the user's session
+     *
      * @param actionURL - the URL to submit to
      * @param session   - the Servlet session
-     * @param formPath  - the relative location where forms are stored
-     * @param xslFile   - the xsl file to use for transform
-     * @param cssFile   - the CSS file to use for styling the output
      * @return ServletAdapter
      */
-    private ServletAdapter setupServletAdapter(String actionURL,
-                                               HttpSession session,
-                                               String formPath,
-                                               String xslFile,
-                                               String cssFile) throws XFormsException, URISyntaxException {
-        //setup and configure the adapter
-        ServletAdapter aAdapter = new ServletAdapter();
-        aAdapter.setContextRoot(contextRoot);
-//        if ((configPath != null) && !(configPath.equals(""))) {
-//            aAdapter.setConfigPath(configPath);
-//        }
-        aAdapter.setXFormsURI(formPath);
-        aAdapter.setStylesheetPath(stylesPath);
-        aAdapter.setActionUrl(actionURL);
-        aAdapter.setUploadDir(uploadDir);
+    private ServletAdapterReger setupServletAdapter(String actionURL, HttpSession session, String requestURI) throws XFormsException, URISyntaxException {
 
-        if (xslFile != null) {
-            aAdapter.setStylesheet(xslFile);
-            reger.core.Debug.debug(3, "ChibaServlet.java", "using xsl stylesheet: " + xslFile);
-        }
-        if (cssFile != null) {
-            aAdapter.setCSS(cssFile);
-            reger.core.Debug.debug(3, "ChibaServlet.java", "using css stylesheet: " + cssFile);
+        ServletAdapterReger aAdapter = new ServletAdapterReger();
+
+        try{
+            aAdapter.setContextRoot(WebAppRootDir.getWebAppRootPath());
+            aAdapter.setConfigPath(reger.core.WebAppRootDir.getWebAppRootPath() + "WEB-INF"+java.io.File.separator+"chibaConfig.xml");
+            aAdapter.setActionUrl(actionURL);
+            PathUploadMedia pathUploadMedia = new PathUploadMedia();
+            aAdapter.setUploadDir(reger.systemproperties.AllSystemProperties.getProp(pathUploadMedia.getPropertyName()));
+            aAdapter.setBaseURI(requestURI);
+            aAdapter.setStylesheetPath(reger.core.WebAppRootDir.getWebAppRootPath() + "css" + java.io.File.separator + "chibaXslt");
+            //XForm itself... eventually this will be loaded from the Log, which will cache it
+            String xFormPath = reger.core.WebAppRootDir.getWebAppRootPath() + "forms"+java.io.File.separator+"address-db.xhtml";
+            InputSource xForm = new InputSource(new FileInputStream(xFormPath));
+            aAdapter.setXForms(xForm);
+        } catch (Exception e){
+            reger.core.Debug.errorsave(e, "ChibaServletReger.java");
         }
 
         Map servletMap = new HashMap();
@@ -282,31 +246,22 @@ public class ChiReger {
         return aAdapter;
     }
 
-    private void storeContextParams(HttpServletRequest request, ServletAdapter servletAdapter) {
+    private void storeContextParams(HttpServletRequest request, ServletAdapterReger servletAdapter) {
         Enumeration params = request.getParameterNames();
         String s;
         while (params.hasMoreElements()) {
             s = (String) params.nextElement();
             //store all request-params we don't use in the context map of ChibaBean
-            if (!(s.equals(FORM_PARAM_NAME) || s.equals(XSL_PARAM_NAME) || s.equals(CSS_PARAM_NAME) || s.equals(ACTIONURL_PARAM_NAME))) {
+            if (!(s.equals(XSL_PARAM_NAME) || s.equals(CSS_PARAM_NAME) || s.equals(ACTIONURL_PARAM_NAME))) {
                 String value = request.getParameter(s);
                 servletAdapter.setContextProperty(s, value);
-                reger.core.Debug.debug(3, "ChibaServlet.java", "added request param '" + s + "' added to context");
+                reger.core.Debug.debug(3, "ChibaServletReger.java", "added request param '" + s + "' added to context");
             }
         }
     }
 
     private String getActionURL(HttpServletRequest request, HttpServletResponse response) {
-/*
-        String defaultActionURL =
-                request.getScheme()
-                + "://"
-                + request.getServerName()
-                + ":"
-                + request.getServerPort()
-                + request.getContextPath()
-                + request.getServletPath();
-*/
+
         String defaultActionURL = getRequestURI(request) + request.getServletPath();
         String encodedDefaultActionURL = response.encodeURL(defaultActionURL);
         int sessIdx = encodedDefaultActionURL.indexOf(";jsession");
@@ -321,7 +276,7 @@ public class ChiReger {
             actionURL += sessionId;
         }
 
-        reger.core.Debug.debug(3, "ChibaServlet.java", "actionURL: " + actionURL);
+        reger.core.Debug.debug(3, "ChibaServletReger.java", "getActionURL actionURL: " + actionURL);
         // encode the URL to allow for session id rewriting
         actionURL = response.encodeURL(actionURL);
         return actionURL;
@@ -362,7 +317,7 @@ public class ChiReger {
         outputStream.close();
     }
 
-    private void shutdown(ServletAdapter servletAdapter, HttpSession session, Exception e, HttpServletResponse response, HttpServletRequest request) {
+    private void shutdown(ServletAdapterReger servletAdapter, HttpSession session, Exception e, HttpServletResponse response, HttpServletRequest request) {
         // attempt to shutdown processor
         if (servletAdapter != null && servletAdapter.getChibaBean() != null) {
             try {
@@ -381,7 +336,7 @@ public class ChiReger {
             request.getSession().getServletContext().getInitParameter("error.page")));
             return;
         } catch (Exception ex){
-            reger.core.Debug.errorsave(ex, "ChiReger.java");
+            reger.core.Debug.errorsave(ex, "ChibaServletReger.java");
         }
     }
 }

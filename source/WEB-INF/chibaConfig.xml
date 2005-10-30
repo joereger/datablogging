@@ -9,7 +9,7 @@
             Chiba starts to support user-agents. Language may vary from
             instance to instance or even from request to request
         -->
-        <property name="language" value="de"/>
+        <property name="language" value="en"/>
 
         <!--
             This property allows to switch the stylesheet compilation on.
@@ -76,12 +76,14 @@
         <uri-resolver scheme="xmlrpc" class="org.chiba.connectors.xmlrpc.XMLRPCURIResolver"/>
         <uri-resolver scheme="context" class="org.chiba.xml.xforms.connector.context.ContextResolver"/>
         <uri-resolver scheme="contextobject" class="org.chiba.xml.xforms.connector.context.ContextObjectResolver"/>
+        <uri-resolver scheme="regerdb" class="reger.chiba.connectors.DbURIResolver"/>
 
         <submission-handler scheme="context" class="org.chiba.xml.xforms.connector.context.ContextSubmissionHandler"/>
         <submission-handler scheme="file" class="org.chiba.xml.xforms.connector.file.FileSubmissionHandler"/>
         <submission-handler scheme="http" class="org.chiba.xml.xforms.connector.http.HTTPSubmissionHandler"/>
         <submission-handler scheme="mailto" class="org.chiba.connectors.smtp.SMTPSubmissionHandler"/>
         <submission-handler scheme="xmlrpc" class="org.chiba.connectors.xmlrpc.XMLRPCSubmissionHandler"/>
+        <submission-handler scheme="regerdb" class="reger.chiba.connectors.DbSubmissionHandler"/>
         <!--        <submission-handler scheme="jms" class="org.chiba.connectors.jms.JMSSubmissionHandler"/>-->
         <!--
             These connector types are deprecated. Their usage is strongly discouraged,

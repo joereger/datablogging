@@ -26,7 +26,7 @@ pageProps.pathToAppRoot="../";
 
 
 if (request.getParameter("action")!=null && request.getParameter("action").equals("kill")){
-    reger.core.Debug.debug(3, "sessions.log", "Into action=kill");
+    reger.core.Debug.debug(5, "sessions.log", "Into action=kill");
     UserSessionCache ucs = UserSessionCache.getInstance();
     ucs.removeUserSessionByCacheKey(request.getParameter("sessionid"));
 }

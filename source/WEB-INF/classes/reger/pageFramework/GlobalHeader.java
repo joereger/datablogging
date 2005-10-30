@@ -63,7 +63,8 @@ public class GlobalHeader {
                     }
 
                     //If the user isn't logged in
-                    if ((userSession.getAccountuser()==null || userSession.getAccount().getAccountid()==0) || !userSession.getAccountuser().isLoggedIn) {
+                    //if ((userSession.getAccountuser()==null || userSession.getAccount().getAccountid()==0) || !userSession.getAccountuser().isLoggedIn) {
+                    if ((userSession.getAccountuser()==null) || !userSession.getAccountuser().isLoggedIn) {
                         Debug.debug(5, "GlobalHeader", "globalheader.jsp - redirecting to force a login because the user is not logged in.");
                         response.sendRedirect(request.getScheme()+"://"+userSession.getPl().getPlBaseUrl()+"/about/forcelogin.log?returnurl=" + java.net.URLEncoder.encode(request.getRequestURL()+"?"+request.getQueryString(), "UTF-8"));
                         return;
@@ -244,15 +245,19 @@ public class GlobalHeader {
                 //If there's an entrykey
                 if (request.getParameter("entrykey")!=null){
                     //If entrykey doesn't work for eventid
-                    if (!reger.Entry.checkEntryKey(request.getParameter("entrykey"), pageProps.entry.eventid)){
+                    int tmpEventid=pageProps.entry.eventid;
+                    if(request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+                        tmpEventid = Integer.parseInt(request.getParameter("eventid"));
+                    }
+                    if (!reger.Entry.checkEntryKey(request.getParameter("entrykey"), tmpEventid)){
                         //Then send to permission denied
-                        Debug.debug(5, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log");
+                        Debug.debug(3, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because entrykey fails");
                         response.sendRedirect(pageProps.pathToAppRoot + "permissiondenied.log");
                         return;
                     }
                 } else {
                     //There's no entry key so send to permission denied
-                    Debug.debug(5, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log");
+                    Debug.debug(3, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because no entry key");
                     response.sendRedirect(pageProps.pathToAppRoot + "permissiondenied.log");
                     return;
                 }

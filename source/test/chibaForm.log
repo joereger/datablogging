@@ -17,7 +17,7 @@ reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.PUBLICSITE;
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
-pageProps.pathToAppRoot="";
+pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
 
@@ -30,18 +30,134 @@ pageProps.pathToAppRoot="";
 /*----------------------------------------------------*/
 
 
+//Instantiate the entry object
+pageProps.entry.populate(pageProps.logProps.logid, request, userSession.getAccountuser().getUsertimezoneid());
+
+
+
+//Make sure this user can admin this log
+if (!userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
+    try{
+        Debug.debug(5, "", "myhome/entry.log - response.isCommitted()=" + response.isCommitted() + "<br>response.toString():<br>" + response.toString() + "<br>");
+        response.sendRedirect(pageProps.pathToAppRoot + "permissiondenied.log");
+        return;
+    } catch (Exception e){
+        Debug.debug(5, "", e);
+        return;
+    }
+}
+
+//Start Pageflow
+if (pageProps.action!=null && !pageProps.action.equals("")) {
+    if (pageProps.action.equals("refresh")) {
+        pageProps.entry.populateMegafieldValuesFromRequest(request);
+        if (pageProps.entry.eventid<=0){
+            pageProps.action="add";
+        } else {
+            pageProps.action="edit";
+        }
+    } else if (pageProps.action.equals("leavepage")) {
+        try{
+            pageProps.entry.editEntryAll(userSession.getAccount(), userSession.getAccountuser(), userSession.getPl());
+            //Update images
+            boolean imagesuccess = reger.MegaHtmlFormImageEdits.saveEdits(userSession, pageProps, request);
+            //Update the usage data
+            userSession.getAccount().updateSpaceused();
+            //Go to the page
+            if (request.getParameter("gotopage")!=null && !request.getParameter("gotopage").equals("")){
+                //mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Woulda redirected you to:<br>" + request.getParameter("gotopage")));
+                response.sendRedirect(request.getParameter("gotopage"));
+                return;
+            }
+        } catch (reger.core.ValidationException error){
+            //Validation has failed and we have to go back to this page.
+            //We have to make sure mageFields have correct values from request.
+            //Upon failure of validation in Entry, they are told to load their default data from DB.
+            //Doing so overrides their this.value parameter so we now need to call their populateFromRequest.
+            pageProps.entry.populateMegafieldValuesFromRequest(request);
+            //Display the error
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Before going to the page you've requested please fix the following so that your entry can be saved:<br><br>" + error.getErrorsAsSingleString()));
+        }
+	} else if (pageProps.action.equals("editsubmit")) {
+	    try{
+            pageProps.entry.getEntryAll(pageProps.entry.eventid);
+            pageProps.entry.populate(pageProps.logProps.logid, request, userSession.getAccountuser().getUsertimezoneid());
+            pageProps.entry.editEntryAll(userSession.getAccount(), userSession.getAccountuser(), userSession.getPl());
+            //Update images
+            boolean imagesuccess = reger.MegaHtmlFormImageEdits.saveEdits(userSession, pageProps, request);
+            //Update the usage data
+            userSession.getAccount().updateSpaceused();
+            //Return to AdminTools
+            if (request.getParameter("returntoadmintools")!=null && request.getParameter("returntoadmintools").equals("1")){
+                response.sendRedirect(pageProps.pathToAppRoot + "entry-logid"+ pageProps.logProps.logid +"-eventid"+ pageProps.entry.eventid+".log");
+                return;
+            } else {
+                response.sendRedirect("index.log?msg=entryedited&logid="+ pageProps.logProps.logid +"&eventid="+ pageProps.entry.eventid);
+                return;
+            }
+        } catch (reger.core.ValidationException error){
+            //Validation has failed and we have to go back to this page.
+            //We have to make sure mageFields have correct values from request.
+            //Upon failure of validation in Entry, they are told to load their default data from DB.
+            //Doing so overrides their this.value parameter so we now need to call their populateFromRequest.
+            pageProps.entry.populateMegafieldValuesFromRequest(request);
+            //Display the error
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, error.getErrorsAsSingleString()));
+        }
+
+
+	} else if (pageProps.action.equals("defaultsubmit")) {
+		try{
+            pageProps.entry.setDefaultMega();
+            response.sendRedirect("entry.log?logid="+ pageProps.logProps.logid +"&action=add");
+			return;
+        } catch (reger.core.ValidationException error){
+            //Display the error
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, error.getErrorsAsSingleString()));
+        }
+
+	} else if (pageProps.action.equals("edit")) {
+	    //Go get the entry.
+		//pageProps.entry.getEntryAll(pageProps.entry.eventid);
+		pageProps.entry=reger.cache.EntryCache.get(pageProps.entry.eventid);
+	} else if (pageProps.action.equals("default")) {
+		pageProps.entry.getBlankEntryAll();
+	} else {
+		pageProps.entry.getBlankEntryAll();
+		pageProps.entry.newEntryTemporary(userSession.getAccount(), userSession.getAccountuser());
+	}
+} else {
+    //If we have an eventid we can force an edit
+    if (pageProps.entry.eventid>0){
+        pageProps.action = "edit";
+	    //Go get the entry.
+        pageProps.entry.getEntryAll(pageProps.entry.eventid);
+    } else {
+        pageProps.entry.getBlankEntryAll();
+    }
+}
+//End Pageflow
+
+//Start the page display:
 //Determine which mode to display the page
 boolean displayasadmin=true;
 
 //Append the top of the form
-//mb.append(reger.MegaHtmlFormTop.getHtml(userSession, pageProps, displayasadmin, request, userSession.getAccountuser().getUsertimezoneid()));
+mb.append(reger.MegaHtmlFormTopChiba.getHtml(userSession, pageProps, displayasadmin, request, userSession.getAccountuser().getUsertimezoneid()));
 //Append the center of the page
+mb.append("<!-- START XFORM -->");
 mb.append(reger.MegaHtmlFormCenterChiba.getHtml(userSession, pageProps, displayasadmin, request, response));
+mb.append("<!-- END XFORM -->");
 //Append the bottom of the form
-//mb.append(reger.MegaHtmlFormBottom.getHtml(userSession, pageProps, displayasadmin, request, response));
+mb.append(reger.MegaHtmlFormBottomChiba.getHtml(userSession, pageProps, displayasadmin, request, response));
 
 
-mb.append("<br><br><br><br><br>");
+mb.append("<br><br><br>");
+
+mb.append(reger.core.ErrorDissect.ServletUtilsdissect(request));
+
+
+//out.print(mb.toString());
 
 %>
 

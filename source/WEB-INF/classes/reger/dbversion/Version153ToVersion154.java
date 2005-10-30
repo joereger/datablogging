@@ -12,21 +12,11 @@ import java.util.regex.Matcher;
 /**
  * This creates the base database if none exists.
  */
-public class Version149ToVersion150 implements UpgradeDatabaseOneVersion{
+public class Version153ToVersion154 implements UpgradeDatabaseOneVersion{
 
     public void doUpgrade(){
 
-        StringBuffer mb = new StringBuffer();
-        mb.append("<$Quick.Stats$>" + "<br>");
-        mb.append("<$Small.Calendar$>" + "<br>");
-        mb.append("<$On.This.Day$>" + "<br>");
-        mb.append("<$Blogroll$>" + "<br>");
-        mb.append("<$Comments$>" + "<br>");
-        mb.append("<$Search.Box$>" + "<br>");
-        mb.append("<$Email.Subscribe.Box$>" + "<br>");
-        mb.append("<$Graphs.List$>" + "<br>");
-        mb.append("<$Rss.Link$>" + "<br>");
-        mb.append("<$Wap.Link$>" + "<br>");
+
 
 
 
@@ -48,16 +38,32 @@ public class Version149ToVersion150 implements UpgradeDatabaseOneVersion{
 
                 // Create a pattern to match cat
                 //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>)");
-                Pattern p = Pattern.compile("(\\<\\$(Side\\.Column)*?\\$\\>)");
+                Pattern p = Pattern.compile("(\\<(Rss\\.Link)*?\\$\\>)");
                 // Create a matcher with an input string
                 Matcher m = p.matcher(templateOriginal);
                 // Loop through
                 while(m!=null && m.find()) {
-                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(mb.toString()));
+                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement("<$Rss.Link$>"));
                 }
                 // Add the last segment
                 try{
                     m.appendTail(pg);
+                } catch (Exception e){
+                    //Do nothing... just null pointer... there was no tail because a tag was last char
+                }
+
+                // Create a pattern to match cat
+                //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>)");
+                Pattern p2 = Pattern.compile("(\\<(Wap\\.Link)*?\\$\\>)");
+                // Create a matcher with an input string
+                Matcher m2 = p2.matcher(templateOriginal);
+                // Loop through
+                while(m2!=null && m2.find()) {
+                    m2.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement("<Wap.Link$>"));
+                }
+                // Add the last segment
+                try{
+                    m2.appendTail(pg);
                 } catch (Exception e){
                     //Do nothing... just null pointer... there was no tail because a tag was last char
                 }
@@ -71,7 +77,7 @@ public class Version149ToVersion150 implements UpgradeDatabaseOneVersion{
                 //-----------------------------------
                 //-----------------------------------
 
-                reger.core.Debug.debug(5, "Version149ToVersion150.java", "Original:<br>" + templateOriginal.replaceAll("<", "&lt;") + "<br><br>Final:<br>" + templateReplaced.replaceAll("<", "&lt;"));
+                reger.core.Debug.debug(5, "Version153ToVersion154.java", "Original:<br>" + templateOriginal.replaceAll("<", "&lt;") + "<br><br>Final:<br>" + templateReplaced.replaceAll("<", "&lt;"));
 
             }
         }

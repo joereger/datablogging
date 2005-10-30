@@ -1,6 +1,6 @@
 <%
 //Forwards request to mediaout.log in root
-reger.core.Debug.debug(3, "mediaout.log", "Made it to /myhome/mediaout.log");
+reger.core.Debug.debug(5, "mediaout.log", "Made it to /myhome/mediaout.log");
 RequestDispatcher rd = request.getRequestDispatcher("../mediaout.log");
 rd.forward(request, response);
 %>

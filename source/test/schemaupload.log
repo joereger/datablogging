@@ -71,10 +71,10 @@ if (fileItems!=null && fileItems.length>0){
 
         } catch (ValidationException e){
             mb.append("<br>Error creating log type:" + e.getErrorsAsSingleString());
-            reger.core.Debug.debug(3, "schemaupload", e.getErrorsAsSingleString());
+            reger.core.Debug.debug(5, "schemaupload", e.getErrorsAsSingleString());
         } catch (Exception e){
             mb.append("<br>Error parsing doc:" + e.getMessage());
-            reger.core.Debug.debug(3, "schemaupload", e);
+            reger.core.Debug.debug(5, "schemaupload", e);
         }
     }
 }

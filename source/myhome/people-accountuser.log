@@ -211,7 +211,7 @@ if (userSession.getAccountuser().getAccountuserid()==au.getAccountuserid()){
 //Wrapper table
 mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
 mb.append("<tr>");
-mb.append("<td valign=top align=left bgcolor=#ffffff>");
+mb.append("<td valign=top align=left width=50% bgcolor=#ffffff>");
 
 
 
@@ -231,9 +231,6 @@ mb.append("</td>");
 mb.append("</tr>");
 mb.append("<tr>");
 mb.append("<td valign=top align=center bgcolor=#eeeeee>");
-mb.append("&nbsp;");
-mb.append("</td>");
-mb.append("<td valign=top align=center bgcolor=#eeeeee>");
 mb.append("<b>");
 mb.append("<font face=arial size=-1>");
 mb.append("Read");
@@ -246,6 +243,9 @@ mb.append("<font face=arial size=-1>");
 mb.append("Author");
 mb.append("</font>");
 mb.append("</b>");
+mb.append("</td>");
+mb.append("<td valign=top align=center bgcolor=#eeeeee>");
+mb.append("&nbsp;");
 mb.append("</td>");
 mb.append("</tr>");
 //-----------------------------------
@@ -261,13 +261,6 @@ if (rsAllLgs!=null && rsAllLgs.length>0){
         //If the logged-in user can view this log
         if (log!=null && userSession.getAccountuser().userCanViewLog(log.getLogid())){
             mb.append("<tr>");
-            mb.append("<td valign=top align=right bgcolor=#ffffff>");
-            mb.append("<font face=arial size=-1>");
-            mb.append("<b>");
-            mb.append(log.getName());
-            mb.append("</b> ");
-            mb.append("</font>");
-            mb.append("</td>");
             mb.append("<td bgcolor='#ffffff' valign=top align=center>");
             if (!au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid())){
                 if (log.getLogaccess()==reger.Vars.LOGACCESSPUBLIC){
@@ -275,7 +268,7 @@ if (rsAllLgs!=null && rsAllLgs.length>0){
                     mb.append("Yes.  This is a public log.");
                     mb.append("</font>");
                 } else {
-                    if (au.userCanViewLog(log.getLogid())){
+                    if (au.userCanViewLog(log.getLogid()) || (request.getParameter("action")!=null && request.getParameter("action").equals("newstart"))){
                         mb.append("<input type=checkbox name='canviewlogid-"+log.getLogid()+"' value='1' checked>");
                     } else {
                         mb.append("<input type=checkbox name='canviewlogid-"+log.getLogid()+"' value='1'>");
@@ -289,7 +282,7 @@ if (rsAllLgs!=null && rsAllLgs.length>0){
             mb.append("</td>");
             mb.append("<td bgcolor='#ffffff' valign=top align=center>");
             if (!au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid())){
-                if (au.userCanAuthorLog(log.getLogid())){
+                if (au.userCanAuthorLog(log.getLogid()) || (request.getParameter("action")!=null && request.getParameter("action").equals("newstart"))){
                     mb.append("<input type=checkbox name='canauthorlogid-"+log.getLogid()+"' value='1' checked>");
                 } else {
                     mb.append("<input type=checkbox name='canauthorlogid-"+log.getLogid()+"' value='1'>");
@@ -299,6 +292,13 @@ if (rsAllLgs!=null && rsAllLgs.length>0){
                 mb.append("Yes.  This is the site owner.");
                 mb.append("</font>");
             }
+            mb.append("</td>");
+            mb.append("<td valign=top align=left width=200 bgcolor=#ffffff>");
+            mb.append("<font face=arial size=-1>");
+            mb.append("<b>");
+            mb.append(log.getName());
+            mb.append("</b> ");
+            mb.append("</font>");
             mb.append("</td>");
             mb.append("</tr>");
 
@@ -343,15 +343,6 @@ for (int i = 0; i < allAclObjects.length; i++) {
     //Only display the permission if the logged-in user can do it for this account
     if (userSession.getAccountuser().userCanDoAcl(aclObject.aclobjectid, userSession.getAccount().getAccountid())){
         mb.append("<tr>");
-        mb.append("<td valign=top align=right bgcolor=#ffffff>");
-        mb.append("<font face=arial size=-1><b>");
-        mb.append(aclObject.aclfriendlyname);
-        mb.append("</b></font>");
-        mb.append("<br>");
-        mb.append("<font face=arial size=-2>");
-        mb.append(aclObject.acldesc);
-        mb.append("</font>");
-        mb.append("</td>");
         mb.append("<td valign=top align=left bgcolor=#ffffff>");
         if (au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid())){
             mb.append("<font face=arial size=-2 color=#cccccc>");
@@ -360,11 +351,20 @@ for (int i = 0; i < allAclObjects.length; i++) {
         } else {
             mb.append("<input type=checkbox name=aclobjectid-"+aclObject.aclobjectid+" value=1");
             //Check the actual user's account... not the logged-in user's account
-            if ((au.getAccountuserid()!=-1 && (au.userCanDoAcl(aclObject.aclobjectid, userSession.getAccount().getAccountid()))) || (request.getParameter("aclobjectid-"+aclObject.aclobjectid)!=null && request.getParameter("aclobjectid-"+aclObject.aclobjectid).equals("1"))){
+            if ((au.getAccountuserid()!=-1 && (au.userCanDoAcl(aclObject.aclobjectid, userSession.getAccount().getAccountid()))) || (request.getParameter("aclobjectid-"+aclObject.aclobjectid)!=null && request.getParameter("aclobjectid-"+aclObject.aclobjectid).equals("1")) || (request.getParameter("action")!=null && request.getParameter("action").equals("newstart"))){
                 mb.append(" checked");
             }
             mb.append(">");
         }
+        mb.append("</td>");
+        mb.append("<td valign=top align=left bgcolor=#ffffff>");
+        mb.append("<font face=arial size=-1><b>");
+        mb.append(aclObject.aclfriendlyname);
+        mb.append("</b></font>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(aclObject.acldesc);
+        mb.append("</font>");
         mb.append("</td>");
         mb.append("</tr>");
     }

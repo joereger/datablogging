@@ -101,8 +101,8 @@ if (pageProps.action.equals("createaccount")) {
         isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
     } catch (CaptchaServiceException e) {
          isResponseCorrect = new Boolean(false);
-         Debug.debug(3, "jcaptcha - signup2.log", e);
-         Debug.debug(3, "jcaptcha - signup2.log", "captchaId on previous error="+ captchaId);
+         Debug.debug(5, "jcaptcha - signup2.log", e);
+         Debug.debug(5, "jcaptcha - signup2.log", "captchaId on previous error="+ captchaId);
     }
     if (!isResponseCorrect.booleanValue()){
         errortext = errortext + "You failed to enter the letters in the box correctly.  Don't despair.  Sometimes they're tough to read.  And sometimes they simply don't work.  This is done to prevent spammers and automated bots from creating accounts and affecting your quality of service.  Please try again.<br>";

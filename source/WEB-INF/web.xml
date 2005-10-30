@@ -45,7 +45,7 @@
 
          <init-param>
              <param-name>chiba.config</param-name>
-             <param-value>WEB-INF/default.xml</param-value>
+             <param-value>WEB-INF/chibaConfig.xml</param-value>
          </init-param>
     </servlet>
     <servlet>

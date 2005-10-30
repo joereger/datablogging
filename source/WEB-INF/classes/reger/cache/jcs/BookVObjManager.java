@@ -71,9 +71,9 @@ public class BookVObjManager {
 
             if (vObj == null){
                 vObj = loadBookVObj(id);
-                reger.core.Debug.debug(3, "BookVObjManager.java", "Item not found in cache.");
+                reger.core.Debug.debug(5, "BookVObjManager.java", "Item not found in cache.");
             } else {
-                reger.core.Debug.debug(3, "BookVObjManager.java", "Found item in cache.");
+                reger.core.Debug.debug(5, "BookVObjManager.java", "Found item in cache.");
             }
 
             return  vObj;

@@ -40,7 +40,7 @@ public class SimpleUploaderServlet extends HttpServlet {
 
 
 
-         reger.core.Debug.debug(3, "SimpleUploaderServlet.java", "initialize.");
+         reger.core.Debug.debug(5, "SimpleUploaderServlet.java", "initialize.");
 
     }
 
@@ -58,7 +58,7 @@ public class SimpleUploaderServlet extends HttpServlet {
 
 
 
-        reger.core.Debug.debug(3, "SimpleUploaderServlet.java", "doGet called on fckeditor simpleuploader servlet.");
+        reger.core.Debug.debug(5, "SimpleUploaderServlet.java", "doGet called on fckeditor simpleuploader servlet.");
 
         response.setContentType("text/html; charset=UTF-8");
         response.setHeader("Cache-Control","no-cache");
@@ -72,7 +72,7 @@ public class SimpleUploaderServlet extends HttpServlet {
         //currentPath=request.getContextPath()+currentPath;
         String currentPath= AllSystemProperties.getProp("PATHUPLOADMEDIA");
 
-        reger.core.Debug.debug(3, "SimpleUploaderServlet.java", "currentpath="+currentPath);
+        reger.core.Debug.debug(5, "SimpleUploaderServlet.java", "currentpath="+currentPath);
 
         String retVal="0";
         String newName="";
@@ -86,7 +86,7 @@ public class SimpleUploaderServlet extends HttpServlet {
         reger.UserSession userSession = allUserSessions.getUserSession(request, response);
         if (userSession.getAccountuser().isLoggedIn && userSession.getAccountuser().userCanDoAcl("ADDMEDIA", userSession.getAccount().getAccountid())){
             reger.Upload ul = new reger.Upload(request);
-            reger.core.Debug.debug(3, "SimpleUploaderServlet.java", "userSession.getAccount().getAccountid()="+userSession.getAccount().getAccountid());
+            reger.core.Debug.debug(5, "SimpleUploaderServlet.java", "userSession.getAccount().getAccountid()="+userSession.getAccount().getAccountid());
             int localEventid = 0;
             if (userSession.getAttribute("eventidForFckEditor")!=null && reger.core.Util.isinteger(String.valueOf(userSession.getAttribute("eventidForFckEditor")))){
                 //@todo Actually set the userSession eventidForFckEditor attribute
@@ -114,7 +114,7 @@ public class SimpleUploaderServlet extends HttpServlet {
         out.flush();
         out.close();
 
-        reger.core.Debug.debug(3, "SimpleUploaderServlet.java", "End doPost");
+        reger.core.Debug.debug(5, "SimpleUploaderServlet.java", "End doPost");
 
     }
 
@@ -141,13 +141,13 @@ public class SimpleUploaderServlet extends HttpServlet {
 
      private ArrayList stringToArrayList(String str) {
 
-     reger.core.Debug.debug(3, "SimpleUploaderServlet.java", str);
+     reger.core.Debug.debug(5, "SimpleUploaderServlet.java", str);
      String[] strArr=str.split("\\|");
 
      ArrayList tmp=new ArrayList();
      if(str.length()>0) {
          for(int i=0;i<strArr.length;++i) {
-                 reger.core.Debug.debug(3, "SimpleUploaderServlet.java", i +" - "+strArr[i]);
+                 reger.core.Debug.debug(5, "SimpleUploaderServlet.java", i +" - "+strArr[i]);
                  tmp.add(strArr[i].toLowerCase());
             }
         }

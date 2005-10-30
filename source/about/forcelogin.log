@@ -43,7 +43,7 @@ if (pageProps.action.equals("login")){
     }
 }
 
-mb.append("<img src='images/login-required.gif' align=right>");
+
 
 //Errortext
 if (!errortext.equals("")){
@@ -52,6 +52,12 @@ if (!errortext.equals("")){
 
 mb.append("<center>");
 mb.append("<table cellpadding=15 cellspacing=10 width=75% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top colspan=2 align=center bgcolor=#e6e6e6>");
+mb.append("<img src='images/login-required.gif' align=right>");
+mb.append("</td>");
+mb.append("</tr>");
+
 mb.append("<tr>");
 
 

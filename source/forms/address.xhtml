@@ -9,7 +9,7 @@
     <head>
         <xforms:model id="address" ev:event="xforms-revalidate" ev:defaultAction="cancel">
             <!--            <xforms:submission id="save" xforms:action="http://localhost:8080/chiba-1.0.0/jsp/forms.jsp" xforms:method="post" xforms:replace="all"/>-->
-            <xforms:submission id="debug" xforms:action="../jsp/debug-instance.jsp" xforms:method="post" xforms:replace="all"/>
+            <xforms:submission id="debug" xforms:action="chibaDebugInstance.log" xforms:method="post" xforms:replace="all"/>
             <xforms:bind id="N10006" xforms:nodeset="/addr:address"/>
             <xforms:bind id="N1001B" xforms:nodeset="/addr:address/addr:gender" xforms:type="string"/>
             <xforms:bind id="N1003C" xforms:nodeset="/addr:address/addr:firstname" xforms:required="true()" xforms:type="string"/>

@@ -150,10 +150,10 @@ if (pageProps.action.equals("endadd") || pageProps.action.equals("go")){
 
             } catch (ValidationException e){
                 mb.append("<br>Error creating log type:" + e.getErrorsAsSingleString());
-                reger.core.Debug.debug(3, "logs-type-properties", e.getErrorsAsSingleString());
+                reger.core.Debug.debug(5, "logs-type-properties", e.getErrorsAsSingleString());
             } catch (Exception e){
                 mb.append("<br>Error parsing doc:" + e.getMessage());
-                reger.core.Debug.debug(3, "logs-type-properties", e);
+                reger.core.Debug.debug(5, "logs-type-properties", e);
             }
         }
     }

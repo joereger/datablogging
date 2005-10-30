@@ -83,7 +83,7 @@ public class HttpRequestHandler implements InteractionHandler {
         debug.append("<br>request isMultipart: " + isMultipart);
         debug.append("<br>base URI: " + this.chibaBean.getBaseURI());
         debug.append("<br>user agent: " + request.getHeader("User-Agent"));
-        reger.core.Debug.debug(3, "HttpRequestHandler.java", debug.toString());
+        reger.core.Debug.debug(5, "HttpRequestHandler.java", debug.toString());
 
         if (isMultipart) {
             trigger = processMultiPartRequest(request, trigger);
@@ -93,7 +93,7 @@ public class HttpRequestHandler implements InteractionHandler {
 
         // finally activate trigger if any
         if (trigger != null) {
-            reger.core.Debug.debug(3, "HttpRequestHandler.java", "trigger '" + trigger + "'");
+            reger.core.Debug.debug(5, "HttpRequestHandler.java", "trigger '" + trigger + "'");
 
             this.chibaBean.dispatch(trigger, EventFactory.DOM_ACTIVATE);
         }
@@ -116,7 +116,7 @@ public class HttpRequestHandler implements InteractionHandler {
         upload.setRepositoryPath(this.uploadRoot);
 
 
-        reger.core.Debug.debug(3, "HttpRequestHandler.java", "root dir for uploads: " + this.uploadRoot);
+        reger.core.Debug.debug(5, "HttpRequestHandler.java", "root dir for uploads: " + this.uploadRoot);
 
 
         List items;
@@ -140,7 +140,7 @@ public class HttpRequestHandler implements InteractionHandler {
                         + " and id is: " + id);
             debug.append("<br>Is formfield: " + item.isFormField());
             debug.append("<br>Content: " + item.getString());
-            reger.core.Debug.debug(3, "HttpRequestHandler.java", debug.toString());
+            reger.core.Debug.debug(5, "HttpRequestHandler.java", debug.toString());
 
             if (item.isFormField()) {
 
@@ -210,7 +210,7 @@ public class HttpRequestHandler implements InteractionHandler {
             for (int i = 0; i < values.length; i++) {
                 debug.append(this + " value: " + values[i]);
             }
-            reger.core.Debug.debug(3, "HttpRequestHandler.java", debug.toString());
+            reger.core.Debug.debug(5, "HttpRequestHandler.java", debug.toString());
 
 
             // [1] handle data

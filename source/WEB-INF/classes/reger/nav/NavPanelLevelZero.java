@@ -14,38 +14,14 @@ public class NavPanelLevelZero {
         StringBuffer mb = new StringBuffer();
 
 
-
-//        mb.append("<div id=\"navlevel-zero-div\">");
-//        mb.append("<div id=\"navlevel-zero-holder\">");
-//        mb.append("<div id=\"navlevel-zero\">");
-//
-//        //Need one for each button
-//        String url = "";
-//        String text = "";
-//        for(int i=0; i<navButtons.length; i++){
-//            //Make sure the user has enough permissions to view this button
-//            if (navButtons[i].aclNameRequiredToShowButton.equals("") || userSession.getAccountuser().userCanDoAcl(navButtons[i].aclNameRequiredToShowButton, userSession.getAccount().getAccountid())){
-//                url = pathToAppRoot + navButtons[i].buttonUrlFromSiteRoot;
-//                text = navButtons[i].buttonTitle;
-//                if (navButtons[i].navButtonName.equals(currentNavButtonName)){
-//                    mb.append("<div class=\"tab\" id=\"navlevel-zero-here\"><a href=\""+url+"\">"+text+"</a></div>");
-//                } else {
-//                    mb.append("<div class=\"tab\"><a href=\""+url+"\">"+text+"</a></div>");
-//                }
-//            }
-//        }
-//
-//        mb.append("</div>");
-//        mb.append("</div>");
-//        mb.append("</div>");
-//
-//
-//        mb.append("<div id=\"main-page\">");
-
-
-        mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 background='"+pathToAppRoot+"images/pattern-yellowsquigglies.gif'>");
+        //mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 background='"+pathToAppRoot+"images/pattern-yellowsquigglies.gif'>");
+        mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 background='"+pathToAppRoot+"images/navlevel0bg2.gif'>");
         mb.append("<tr>");
-        mb.append("<td class=navlevel0topbar><img src='images/clear.gif' width=1 height=45></td>");
+        mb.append("<td class=navlevel0topbar colspan=10><img src='images/clear.gif' width=1 height=85 align=right>");
+//        mb.append("<font face=impact size=+2 style=\"font-size: 30px; color: ffffcc;\">");
+//        mb.append(reger.Vars.getHttpUrlPrefix()+userSession.getSiteRootUrl()+"/");
+//        mb.append("</font>");
+        mb.append("</td>");
         mb.append("</tr>");
         //mb.append("</table>");
 
@@ -89,14 +65,6 @@ public class NavPanelLevelZero {
                 }
             }
         }
-
-
-
-
-
-
-
-
 
         mb.append("<td class=navtablevel0spacer width=50% >");
         mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=25 height=1>");

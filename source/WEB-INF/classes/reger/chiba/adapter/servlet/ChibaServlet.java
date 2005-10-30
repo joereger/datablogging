@@ -86,7 +86,7 @@ public class ChibaServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        reger.core.Debug.debug(3, "ChibaServlet.java", "--------------- initing ChibaServlet... ---------------");
+        reger.core.Debug.debug(5, "ChibaServlet.java", "--------------- initing ChibaServlet... ---------------");
         //read some params from web-inf
         contextRoot = getServletConfig().getServletContext().getRealPath("");
         if (contextRoot == null)
@@ -106,7 +106,7 @@ public class ChibaServlet extends HttpServlet {
         //get the real path for the stylesheets and configure a new StylesheetLoader with it
         if (path != null) {
             stylesPath = getServletConfig().getServletContext().getRealPath(path);
-            reger.core.Debug.debug(3, "ChibaServlet.java", "stylesPath: " + stylesPath);
+            reger.core.Debug.debug(5, "ChibaServlet.java", "stylesPath: " + stylesPath);
         }
 
         //uploadDir = contextRoot	+ "/" + getServletConfig().getServletContext().getInitParameter("chiba.upload");
@@ -149,14 +149,14 @@ public class ChibaServlet extends HttpServlet {
      * @see org.chiba.xml.xforms.connector.context.ContextResolver
      * @see org.chiba.xml.xforms.connector.ConnectorFactory
      */
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        reger.core.Debug.debug(3, "ChibaServlet.java", "ChibaServlet.doGet(request, response) called.");
 
         ServletAdapter servletAdapter = null;
         HttpSession session = request.getSession(true);
 
-        reger.core.Debug.debug(3, "ChibaServlet.java", "--------------- new XForms session ---------------");
+        reger.core.Debug.debug(5, "ChibaServlet.java", "--------------- new XForms session ---------------");
         try {
             response.setContentType("text/html");
             java.io.PrintWriter out = response.getWriter();
@@ -182,6 +182,7 @@ public class ChibaServlet extends HttpServlet {
 
             // build actionURL where forms are submitted to
             String actionURL = getActionURL(request, response);
+            reger.core.Debug.debug(3, "ChibaServlet.java", "actionURL=" + actionURL);
 
             servletAdapter = setupServletAdapter(actionURL, session, formURI, xslFile, css);
             updateContext(servletAdapter, request, session);
@@ -225,9 +226,10 @@ public class ChibaServlet extends HttpServlet {
      * @throws javax.servlet.ServletException
      * @throws java.io.IOException
      */
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        reger.core.Debug.debug(3, "ChibaServlet.java", "ChibaServlet.doPost(request, response) called.");
+
         HttpSession session = request.getSession(true);
         ServletAdapter servletAdapter = null;
 
@@ -245,6 +247,7 @@ public class ChibaServlet extends HttpServlet {
             // NOTE - this needs to be checked *before* the this.getForwardMap()
             // as a submission handler may force a redirect
             if (servletAdapter.getRedirectUri() != null) {
+                reger.core.Debug.debug(3, "ChibaServlet.java", "servletAdapter.getRedirectUri() is NOT null = " + servletAdapter.getRedirectUri());
                 String redirectTo = servletAdapter.getRedirectUri();
                 // todo: remove from session ?
                 // shutdown processor
@@ -262,6 +265,7 @@ public class ChibaServlet extends HttpServlet {
             Map forwardMap = servletAdapter.getForwardMap();
             InputStream forwardStream = (InputStream) forwardMap.get(ChibaAdapter.SUBMISSION_RESPONSE_STREAM);
             if (forwardStream != null) {
+                reger.core.Debug.debug(3, "ChibaServlet.java", "forwardStream is NOT null");
                 // todo: remove from session ?
                 // shutdown processor
                 servletAdapter.getChibaBean().shutdown();
@@ -273,6 +277,8 @@ public class ChibaServlet extends HttpServlet {
                 servletAdapter.forward(null);
                 return;
             }
+
+            reger.core.Debug.debug(3, "ChibaServlet.java", "Did not redirect and did not forward to stream... returning response myself.");
 
             // set content type
             response.setContentType("text/html");
@@ -313,11 +319,11 @@ public class ChibaServlet extends HttpServlet {
 
         if (xslFile != null) {
             aAdapter.setStylesheet(xslFile);
-            reger.core.Debug.debug(3, "ChibaServlet.java", "using xsl stylesheet: " + xslFile);
+            reger.core.Debug.debug(5, "ChibaServlet.java", "using xsl stylesheet: " + xslFile);
         }
         if (cssFile != null) {
             aAdapter.setCSS(cssFile);
-            reger.core.Debug.debug(3, "ChibaServlet.java", "using css stylesheet: " + cssFile);
+            reger.core.Debug.debug(5, "ChibaServlet.java", "using css stylesheet: " + cssFile);
         }
 
         Map servletMap = new HashMap();
@@ -336,7 +342,7 @@ public class ChibaServlet extends HttpServlet {
             if (!(s.equals(FORM_PARAM_NAME) || s.equals(XSL_PARAM_NAME) || s.equals(CSS_PARAM_NAME) || s.equals(ACTIONURL_PARAM_NAME))) {
                 String value = request.getParameter(s);
                 servletAdapter.setContextProperty(s, value);
-                reger.core.Debug.debug(3, "ChibaServlet.java", "added request param '" + s + "' added to context");
+                reger.core.Debug.debug(5, "ChibaServlet.java", "added request param '" + s + "' added to context");
             }
         }
     }
@@ -366,7 +372,7 @@ public class ChibaServlet extends HttpServlet {
             actionURL += sessionId;
         }
 
-        reger.core.Debug.debug(3, "ChibaServlet.java", "actionURL: " + actionURL);
+        reger.core.Debug.debug(5, "ChibaServlet.java", "actionURL: " + actionURL);
         // encode the URL to allow for session id rewriting
         actionURL = response.encodeURL(actionURL);
         return actionURL;
