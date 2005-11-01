@@ -22,8 +22,8 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("adminhome", "", "MY HOME", "myhome/index.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logs", "", "LOGS", "myhome/logs.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entries", "", "ENTRIES", "myhome/entries-recent.log", false, ""));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodes", "", "EPISODES", "myhome/episodes.log", false, ""));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiods", "", "PERIODS", "myhome/timeperiods.log", false, ""));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodes", "", "EPISODES", "myhome/episodes.log", false, ""));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiods", "", "PERIODS", "myhome/timeperiods.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphs", "", "GRAPHS", "myhome/graphs.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffic", "", "TRAFFIC", "myhome/traffic.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("people", "", "PEOPLE", "myhome/people.log", false, ""));
@@ -52,10 +52,12 @@ public class AllNavButtons {
         //allNavButtons = reger.core.Util.addToNavButtonArray(allNavButtons, new NavButton("logsstaticcontentpages", "logs", "STATIC CONTENT PAGES", "myhome/logs-contentpage.log", false, ""));
 
         //Entries Buttons
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesrecent", "entries", "RECENT ENTRIES", "myhome/entries-recent.log", false, ""));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessearchtop", "entries", "SEARCH ENTRIES", "myhome/entries-simplesearch.log", false, ""));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesdraft", "entries", "DRAFT ENTRIES", "myhome/entries-draft.log", false, ""));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entrieslocations", "entries", "ENTRY LOCATIONS", "myhome/entries-locations.log", false, ""));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesrecent", "entries", "RECENT", "myhome/entries-recent.log", false, ""));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessearchtop", "entries", "SEARCH", "myhome/entries-simplesearch.log", false, ""));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesdraft", "entries", "DRAFTS", "myhome/entries-draft.log", false, ""));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entrieslocations", "entries", "LOCATIONS", "myhome/entries-locations.log", false, ""));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodes", "entries", "EPISODES", "myhome/episodes.log", false, ""));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiods", "entries", "PERIODS", "myhome/timeperiods.log", false, ""));
 
         //Entries Search
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessimplesearch", "entriessearchtop", "SIMPLE SEARCH", "myhome/entries-simplesearch.log", false, ""));
@@ -63,7 +65,7 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessaved", "entriessearchtop", "SAVED SEARCHES", "myhome/entries-savedsearches.log", false, ""));
 
         //Graphs
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphsmain", "graphs", "MAIN", "myhome/graphs.log", false, ""));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphsmain", "graphs", "GRAPHS", "myhome/graphs.log", false, ""));
 
 
         //Episodes

@@ -9,7 +9,9 @@
     <head>
         <xforms:model id="address" ev:event="xforms-revalidate" ev:defaultAction="cancel">
             <!--            <xforms:submission id="save" xforms:action="http://localhost:8080/chiba-1.0.0/jsp/forms.jsp" xforms:method="post" xforms:replace="all"/>-->
-            <xforms:submission id="debug" xforms:action="regerdb://foo" xforms:method="post" xforms:replace="all"/>
+            <xforms:submission id="debug" xforms:action="regerdb://foo" xforms:method="post" xforms:replace="none"/>
+            <xforms:instance src="regerdb://foo" id="C-1"/>
+
             <xforms:bind id="N10006" xforms:nodeset="/addr:address"/>
             <xforms:bind id="N1001B" xforms:nodeset="/addr:address/addr:gender" xforms:type="string"/>
             <xforms:bind id="N1003C" xforms:nodeset="/addr:address/addr:firstname" xforms:required="true()" xforms:type="string"/>
@@ -25,26 +27,8 @@
                 <xforms:bind id="N10132" xforms:nodeset="addr:type" xforms:type="string"/>
             </xforms:bind>
             <xforms:bind id="N1015D" xforms:nodeset="/addr:address/addr:notes" xforms:type="string"/>
-            <xforms:instance id="C-1">
-                <addr:address xmlns:addr="http://chiba.sourceforge.net/samples/address">
-                    <addr:gender>male</addr:gender>
-                    <addr:title>prof dr</addr:title>
-                    <addr:firstname>-firstname-</addr:firstname>
-                    <addr:lastname>-lastname-</addr:lastname>
-                    <addr:company/>
-                    <addr:street/>
-                    <addr:city/>
-                    <addr:zip>123456</addr:zip>
-                    <addr:country>germany</addr:country>
-                    <addr:phones>
-                        <addr:phone>
-                            <addr:phonenumber/>
-                            <addr:type/>
-                        </addr:phone>
-                    </addr:phones>
-                    <addr:notes/>
-                </addr:address>
-            </xforms:instance>
+
+
         </xforms:model>
     </head>
     <body>
@@ -224,12 +208,6 @@
                 </xforms:textarea>
             </xforms:group>
             <xforms:group appearance="minimal">
-                <!--
-                                <xforms:trigger id="save-trigger">
-                                    <xforms:label id="C-100">submit + exit</xforms:label>
-                                    <xforms:send id="act-send" xforms:submission="save"/>
-                                </xforms:trigger>
-                -->
                 <xforms:trigger id="debug-trigger">
                     <xforms:label id="C-101">debug</xforms:label>
                     <xforms:send id="act-debug" xforms:submission="debug"/>

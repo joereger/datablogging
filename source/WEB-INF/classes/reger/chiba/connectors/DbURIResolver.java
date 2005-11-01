@@ -13,6 +13,9 @@ import java.net.URI;
 
 public class DbURIResolver extends AbstractConnector implements URIResolver {
 
+    public DbURIResolver(){
+        reger.core.Debug.debug(3, "DbURIResolver.java", "DbURIResolver instantiated");
+    }
 
     /**
      * Performs link traversal of the <code>file</code> URI and returns the
@@ -22,12 +25,16 @@ public class DbURIResolver extends AbstractConnector implements URIResolver {
      * @throws XFormsException if any error occurred during link traversal.
      */
     public Object resolve() throws XFormsException {
+        reger.core.Debug.debug(3, "DbURIResolver.java", "DbURIResolver.resolve() called");
         try {
             // create uri
             URI uri = new URI(getURI());
 
             // use scheme specific part in order to handle UNC names
-            String fileName = uri.getSchemeSpecificPart();
+            //String fileName = uri.getSchemeSpecificPart();
+            
+            String fileName = reger.core.WebAppRootDir.getWebAppRootPath()+"savedInstanceData.xml";
+
             reger.core.Debug.debug(3, "DbURIResolver", "loading file '" + fileName + "'");
 
             // create file
@@ -52,6 +59,7 @@ public class DbURIResolver extends AbstractConnector implements URIResolver {
             return document;
         }
         catch (Exception e) {
+            reger.core.Debug.debug(3, "DbURIResolver.java", e);
             throw new XFormsException(e);
         }
     }
