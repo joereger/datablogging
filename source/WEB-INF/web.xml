@@ -41,7 +41,7 @@
     <!-- Start Chiba Additions -->
     <servlet>
         <servlet-name>XFormsServlet</servlet-name>
-        <servlet-class>reger.chiba.adapter.servlet.ChibaServlet</servlet-class>
+        <servlet-class>reger.xforms.chiba.adapter.servlet.ChibaServlet</servlet-class>
 
          <init-param>
              <param-name>chiba.config</param-name>
@@ -50,7 +50,7 @@
     </servlet>
     <servlet>
         <servlet-name>ShowAttachmentServlet</servlet-name>
-        <servlet-class>reger.chiba.adapter.servlet.ShowAttachmentServlet</servlet-class>
+        <servlet-class>reger.xforms.chiba.adapter.servlet.ShowAttachmentServlet</servlet-class>
     </servlet>
     <!-- End Chiba Additions -->
     <servlet>

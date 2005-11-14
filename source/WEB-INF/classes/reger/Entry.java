@@ -6,6 +6,7 @@ import reger.core.Debug;
 import reger.core.TimeUtils;
 import reger.linkrot.AnchorFinder;
 import reger.cache.LogCache;
+import reger.xforms.EventXformData;
 
 import java.util.Calendar;
 import java.util.ArrayList;
@@ -87,17 +88,20 @@ public class Entry {
     public reger.mega.FieldType[] fields = null;
 
     //Groups
-    int[] groupsubscriptionids = null;
+    public int[] groupsubscriptionids = null;
     String entryKey;
 
     //Episodes
-    int[] episodesThisEntryBelongsTo = null;
+    public int[] episodesThisEntryBelongsTo = null;
     String newepisodename;
     String newepisodedescription;
 
     //Counts
     int messagecount = 0;
     int filecount = 0;
+
+    //Xform
+    private EventXformData eventXformData = null;
 
     /**
      * Constructor:
@@ -635,6 +639,10 @@ public class Entry {
                 Debug.debug(5, "", "Entry.java - fieldname= " + fields[i].getFieldname() + " fields[i].getDataForField()[0].getValue()=" + fields[i].getDataForField()[0].getValue());
             }
         }
+
+        //Load xform
+        eventXformData = new EventXformData();
+        eventXformData.loadByEventid(eventid, logid);
 
         return true;
 
@@ -1408,5 +1416,9 @@ public class Entry {
         }
 
         return -1;
+    }
+
+    public EventXformData getEventXformData() {
+        return eventXformData;
     }
 }

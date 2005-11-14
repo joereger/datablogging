@@ -15,9 +15,20 @@ public class htmlListEvents {
 		//Create the output stringbuffer
 		StringBuffer list = new StringBuffer();
 
+		//Number of entries to display
+		int numberofentriestodisplay = userSession.getAccount().getDisplaynumberofentries();
+		if (request.getParameter("numberofentriestodisplay")!=null && reger.core.Util.isinteger(request.getParameter("numberofentriestodisplay"))){
+            numberofentriestodisplay = Integer.parseInt(request.getParameter("numberofentriestodisplay"));
+        }
+
+        //Override display
+        if (request.getParameter("displaypagingnumbers")!=null && request.getParameter("displaypagingnumbers").equals("false")){
+            displaypagingnumbers = false;
+        }
+
 		//Deal with paging
-		int limitMin = (currentpage * userSession.getAccount().getDisplaynumberofentries()) - userSession.getAccount().getDisplaynumberofentries();
-		int limitMax = userSession.getAccount().getDisplaynumberofentries();
+		int limitMin = (currentpage * numberofentriestodisplay) - numberofentriestodisplay;
+		int limitMax = numberofentriestodisplay;
 
 		//Logid SQL clause
 		String logidSql="";
@@ -127,8 +138,8 @@ public class htmlListEvents {
 
 		//Create the paging links
 		StringBuffer pagingLinks = new StringBuffer();
-		if (userSession!=null && userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && reger.core.Util.isinteger(String.valueOf(userSession.getAccount().getDisplaynumberofentries())) && request!=null){
-		    pagingLinks.append(reger.pagingLinkPrint.getHtml(counttotal, currentpage, userSession.getAccount().getDisplaynumberofentries(), request));
+		if (userSession!=null && userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && reger.core.Util.isinteger(String.valueOf(numberofentriestodisplay)) && request!=null){
+		    pagingLinks.append(reger.pagingLinkPrint.getHtml(counttotal, currentpage, numberofentriestodisplay, request));
         }
 
 		//Append the paginglinks to the top of the page

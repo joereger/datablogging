@@ -46,6 +46,23 @@ try{
 
 mb.append("expDate="+expDate);
 
+
+
+NumberFormat formatter = DecimalFormat.getInstance();
+formatter.setMinimumFractionDigits(2);
+formatter.setMaximumFractionDigits(2);
+
+
+
+try{
+    mb.append("<br><br>3="+formatter.format(Double.parseDouble("3")));
+    mb.append("<br><br>3.0987="+formatter.format(Double.parseDouble("3.0987")));
+    mb.append("<br><br>03.09="+formatter.format(Double.parseDouble("03.09")));
+    mb.append("<br><br>03.000000009="+formatter.format(Double.parseDouble("3.000000009")));
+} catch (Exception e){
+    reger.core.Debug.errorsave(e, "numberformat.log");
+}
+
 mb.append("<br><br><br><br><br>");
 
 %>

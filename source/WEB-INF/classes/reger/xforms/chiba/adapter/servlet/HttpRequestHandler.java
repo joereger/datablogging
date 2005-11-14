@@ -1,10 +1,9 @@
-package reger.chiba.adapter.servlet;
+package reger.xforms.chiba.adapter.servlet;
 
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.log4j.Category;
 import org.chiba.adapter.InteractionHandler;
 import org.chiba.xml.xforms.ChibaBean;
 import org.chiba.xml.xforms.config.Config;

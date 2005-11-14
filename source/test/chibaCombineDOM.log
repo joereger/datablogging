@@ -1,0 +1,101 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+<%@ page import="reger.Log"%>
+<%@ page import="reger.cache.LogCache"%>
+<%@ page import="reger.MegaLogType"%>
+<%@ page import="reger.AllMegaLogTypesInSystem"%>
+<%@ page import="org.w3c.dom.Document"%>
+<%@ page import="org.xml.sax.InputSource"%>
+<%@ page import="javax.xml.parsers.DocumentBuilderFactory"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+int eventid=1;
+int logid=1;
+
+//Go get the logid
+Log log = LogCache.get(logid);
+
+//Go get the event type
+MegaLogType logType = AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(log.getEventtypeid());
+
+//Get the Xform source
+String xformsource = logType.getLogtypexform().getXform();
+String xformdata = "";
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstXform= Db.RunSQL("SELECT eventxformdataid, eventid, xformdata FROM eventxformdata WHERE eventid='"+eventid+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstXform!=null && rstXform.length>0){
+    for(int i=0; i<rstXform.length; i++){
+        //this.eventxformdataid = Integer.parseInt(rstXform[i][0]);
+        //this.eventid = Integer.parseInt(rstXform[i][1]);
+        xformdata = rstXform[i][2];
+    }
+}
+
+//Now, combine the two
+
+mb.append("<br><br>--------xformsource: " + xformsource.replaceAll("<", "&lt;"));
+
+mb.append("<br><br>--------xformdata: " + xformdata.replaceAll("<", "&lt;"));
+
+//Put both into DOMs
+try{
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    factory.setValidating(false);
+    Document sourceDOM = factory.newDocumentBuilder().parse(new InputSource(new StringReader(xformsource)));
+    Document dataDOM = factory.newDocumentBuilder().parse(new InputSource(new StringReader(xformdata)));
+    mb.append("<br><br>--------DOM docs created successfully.");
+} catch (Exception e){
+    reger.core.Debug.errorsave(e, "chibaCombineDOM.log");
+    mb.append("<br><br>-------Error creating DOMs: " + e.getMessage());
+}
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

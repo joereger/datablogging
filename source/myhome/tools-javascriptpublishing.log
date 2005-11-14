@@ -72,6 +72,11 @@ if (userSession.getAccount().isPro()) {
     mb.append("<a href='accountstatus.log'><img src='../images/pro-only-in.gif' alt='' border='0'></a>");
 }
 mb.append("</strong>");
+
+mb.append("<br><br>");
+mb.append("Note that you can also add a parameter to control the number of entries to output on each screen.  Add numberofentriestodisplay=X.  For example: /javascript.log?numberofentriestodisplay=20.  Similarly, you can turn the pagingnumbers on and off with: displaypagingnumbers=false.");
+
+
 mb.append("</font>");
 mb.append("</td>");
 mb.append("</tr>");

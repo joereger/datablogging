@@ -7,6 +7,7 @@ import reger.core.db.Db;
 import reger.core.Util;
 import reger.core.Debug;
 import reger.cache.LogCache;
+import reger.xforms.LogTypeXform;
 
 import java.util.Calendar;
 
@@ -563,4 +564,6 @@ public class Log implements NestedNavItem {
     public FieldOrderCollection getFieldOrderCollection() {
         return fieldOrderCollection;
     }
+
+ 
 }

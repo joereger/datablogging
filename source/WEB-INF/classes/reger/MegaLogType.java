@@ -6,6 +6,7 @@ import reger.core.db.Db;
 import reger.core.Util;
 import reger.core.Debug;
 import reger.cache.LogCache;
+import reger.xforms.LogTypeXform;
 
 /**
  * Represents a Log
@@ -28,6 +29,8 @@ public class MegaLogType {
 
     private FieldType[] megaFields;
     private FieldType[] megaFieldsHidden;
+
+    private LogTypeXform logtypexform = null;
 
     public MegaLogType(int eventtypeid){
         this.eventtypeid = eventtypeid;
@@ -119,6 +122,10 @@ public class MegaLogType {
 
                 //Load the fields
                 loadFields();
+
+                //Load the xform
+                logtypexform = new LogTypeXform();
+                logtypexform.loadByEventtypeid(eventtypeid);
             }
         }
     }
@@ -404,4 +411,10 @@ public class MegaLogType {
     public FieldOrderCollection getFieldOrderCollection() {
         return fieldOrderCollection;
     }
+
+    public LogTypeXform getLogtypexform() {
+        return logtypexform;
+    }
+
+    
 }

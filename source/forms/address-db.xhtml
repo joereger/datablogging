@@ -8,9 +8,9 @@
     xmlns:ev="http://www.w3.org/2001/xml-events">
     <head>
         <xforms:model id="address" ev:event="xforms-revalidate" ev:defaultAction="cancel">
-            <!--            <xforms:submission id="save" xforms:action="http://localhost:8080/chiba-1.0.0/jsp/forms.jsp" xforms:method="post" xforms:replace="all"/>-->
-            <xforms:submission id="debug" xforms:action="regerdb://foo" xforms:method="post" xforms:replace="none"/>
-            <xforms:instance src="regerdb://foo" id="C-1"/>
+            <xforms:submission id="debug" xforms:action="regerdb://foo?logid={logid}" xforms:method="post" xforms:replace="none"/>
+            <!--<xforms:instance src="regerdb://foo" id="C-1"/>-->
+            <!--<xforms:instance id="C-1"/>-->
 
             <xforms:bind id="N10006" xforms:nodeset="/addr:address"/>
             <xforms:bind id="N1001B" xforms:nodeset="/addr:address/addr:gender" xforms:type="string"/>
@@ -35,9 +35,6 @@
         <xforms:group id="C-2" xforms:bind="N10006" xforms:ref="/addr:address" appearance="full">
             <xforms:label id="C-3">
                 Address DB - Booyah
-                <br/>
-
-                This form uses namespaces in its Instance-data.
             </xforms:label>
             <xforms:select1 id="C-4" xforms:appearance="full" xforms:bind="N1001B" xforms:ref="gender">
                 <xforms:label id="gender-label">Gender: </xforms:label>

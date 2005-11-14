@@ -15,7 +15,7 @@ public class TimeLine {
     java.util.Calendar boundaryDateGMT;
     int accountid;
     reger.UserSession userSession = null; //The person trying to view this timeline
-    int[] timeperiodids = new int[0];
+    public int[] timeperiodids = new int[0];
 
     /**
      * If you submit dates as null you'll get all time periods in the account.

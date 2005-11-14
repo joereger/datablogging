@@ -1,7 +1,8 @@
-package reger;
+package reger.xforms;
 
 import reger.core.db.Db;
 import reger.core.Debug;
+import reger.*;
 
 /**
  *

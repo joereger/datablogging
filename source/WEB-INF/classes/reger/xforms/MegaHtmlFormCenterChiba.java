@@ -1,8 +1,9 @@
-package reger;
+package reger.xforms;
 
 
-import reger.chiba.ChibaServletReger;
+import reger.xforms.chiba.ChibaServletReger;
 import reger.pageFramework.PageProps;
+import reger.UserSession;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,11 +38,6 @@ public class MegaHtmlFormCenterChiba {
 
             //Output result to the screen
             mb.append(chibaOutput.toString());
-
-
-            //Check some state on the chibabean
-
-
 
 
         } catch (Exception e){

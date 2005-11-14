@@ -447,7 +447,7 @@ This is a reference showing the jar file to module relationship:
     - servlet.jar
 
     - Other items added for Chiba
-       - reger.chiba.* package
+       - reger.xforms.chiba.* package
        - WEB-INF/default.xml
        - WEB-INF/web.xml additions - commented as chiba-based
        - /forms/ directory

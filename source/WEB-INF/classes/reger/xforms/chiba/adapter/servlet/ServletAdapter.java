@@ -1,4 +1,4 @@
-package reger.chiba;
+package reger.xforms.chiba.adapter.servlet;
 
 import org.chiba.adapter.AbstractChibaAdapter;
 import org.chiba.adapter.InteractionHandler;
@@ -9,21 +9,23 @@ import org.chiba.tools.xslt.XSLTGenerator;
 import org.chiba.xml.xforms.ChibaBean;
 import org.chiba.xml.xforms.config.Config;
 import org.chiba.xml.xforms.exception.XFormsException;
-import org.xml.sax.InputSource;
+import org.w3c.dom.Node;
 
 import java.io.Writer;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-
-import reger.chiba.adapter.servlet.HttpRequestHandler;
 
 /**
  * integrates XForms Processor into Web-applications and handles request processing. This is the default
  * implementation of ChibaAdapter and besides handling the interaction it also
  * manages a UIGenerator to build the rendered output for the browser.
  *
+ * @author joern turner
+ * @version $Id: ServletAdapter.java,v 1.3 2005/06/07 23:47:28 joernt Exp $
  */
-public class ServletAdapterReger extends AbstractChibaAdapter{
+public class ServletAdapter extends AbstractChibaAdapter{
 
     //private static final Category LOGGER = Category.getInstance(ServletAdapter.class);
     public static final String HTTP_SERVLET_REQUEST = "chiba.web.request";
@@ -31,22 +33,22 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
     public static final String HTTP_UPLOAD_DIR = "chiba.web.uploadDir";
 
     private ChibaBean chibaBean = null;
-    private String baseURI = null;
+    private String formURI = null;
     private String actionUrl = null;
     private String CSSFile = null;
-    private String stylesheetPath = null;
-    private String XSLTstylesheet = null;
+    private String stylesheet = null;
     private String contextRoot = null;
     private UIGenerator generator = null;
+    private String stylesheetPath = null;
     private HashMap context = null;
     public static final String USERAGENT = "chiba.useragent";
     private InteractionHandler handler;
-    private InputSource xForm = null;
+    private Node formNode;
 
     /**
      * Creates a new ServletAdapter object.
      */
-    public ServletAdapterReger() {
+    public ServletAdapter() {
         this.chibaBean = createProcessor();
         this.context = new HashMap();
         chibaBean.setContext(this.context);
@@ -56,21 +58,33 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
     /**
      * creates an instance of ChibaBean, configures it and creates a generator instance
      *
-     * @throws org.chiba.xml.xforms.exception.XFormsException If an error occurs
+     * @throws XFormsException If an error occurs
      */
     public void init() throws XFormsException {
 
-        //XForm was loaded with a call to setXForm() in ChibaServletReger.java
-        this.chibaBean.setBaseURI(baseURI);
+        if (this.formURI != null) {
+            //this.chibaBean.setXMLContainer(this.formURI);
+            try {
+                setXForms(new URI(this.formURI));
+            } catch (URISyntaxException e) {
+                throw new XFormsException("URI not well-formed",e);
+            }
+            this.chibaBean.setBaseURI(this.formURI.toString());
+        } else if(formNode != null){
+            // todo: base uri should be set to some default - the forms dir ? or leave to the developer?
+            // this.chibaBean.setBaseURI(...);
+            setXForms(this.formNode);
+        }
 
         StringBuffer debug = new StringBuffer();
         debug.append(this.toString());
+        debug.append("<br>Form URI: " + formURI);
         debug.append("<br>baseURL: " + baseURI);
         debug.append("<br>CSS-File: " + CSSFile);
-        debug.append("<br>XSLTstylesheet: " + XSLTstylesheet);
+        debug.append("<br>XSLTstylesheet: " + stylesheet);
         debug.append("<br>stylesheetPath: " + stylesheetPath);
         debug.append("<br>action URL: " + actionUrl);
-        reger.core.Debug.debug(3, "ServletAdapterReger.java", "Init() called.<br>"+debug.toString());
+        reger.core.Debug.debug(3, "ServletAdapter.java", "Init() called.<br>"+debug.toString());
 
 
         this.chibaBean.init();
@@ -78,8 +92,18 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
         generator = createUIGenerator();
     }
 
-
-
+    /**
+     * uses an URI in string representation to point to the XForms document to process. This URI always comes
+     * as a http Url in the context of servlet processing.
+     *
+     * @param uriString a http URI pointing to the requested XForms
+     * @throws URISyntaxException thrown in case an invalid http Url is passed in
+     * @throws XFormsException thrown in case the processor couldn't be initialized from given URI, mostly likely due
+     * to a problem in the form.
+     */
+    public void setXFormsURI(String uriString) throws URISyntaxException, XFormsException {
+        this.formURI = uriString;
+    }
 
     /**
      * return a new InteractionHandler.
@@ -88,8 +112,10 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
      *
      * @return returns a new
      */
-    protected InteractionHandler getNewInteractionHandler() throws XFormsException {
-        return new HttpRequestHandler(this.chibaBean);
+    protected InteractionHandler getNewInteractionHandler()
+	throws XFormsException
+    {
+	return new HttpRequestHandler(this.chibaBean);
     }
 
 
@@ -98,7 +124,7 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
      * and applies all request params and the triggerd action in one batch process.
      *
      * @param event ignored
-     * @throws org.chiba.xml.xforms.exception.XFormsException
+     * @throws XFormsException
      */
     public void dispatch(UIEvent event) throws XFormsException {
         this.handler.execute();
@@ -138,12 +164,12 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
      *
      * This method generates the user interface.
      *
-     * @throws org.chiba.xml.xforms.exception.XFormsException
+     * @throws XFormsException
      */
     public final void buildUI() throws XFormsException {
         String dataPrefix = Config.getInstance().getProperty("chiba.web.dataPrefix");
         String triggerPrefix = Config.getInstance().getProperty("chiba.web.triggerPrefix");
-        String userAgent = (String) getContextProperty(ServletAdapterReger.USERAGENT);
+        String userAgent = (String) getContextProperty(ServletAdapter.USERAGENT);
 
         generator.setParameter("data-prefix", dataPrefix);
         generator.setParameter("trigger-prefix", triggerPrefix);
@@ -153,19 +179,18 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
         }
 
         StringBuffer debug = new StringBuffer();
-        debug.append(">>> setting UI generator params...");
         debug.append("<br>data-prefix=" + dataPrefix);
         debug.append("<br>trigger-prefix=" + triggerPrefix);
         debug.append("<br>user-agent=" + userAgent);
         debug.append("<br>baseURL: " + baseURI);
         debug.append("<br>CSS-File: " + CSSFile);
-        debug.append("<br>XSLT XSLTstylesheet: " + XSLTstylesheet);
+        debug.append("<br>XSLTstylesheet: " + stylesheet);
         debug.append("<br>action URL: " + actionUrl);
         if (CSSFile != null) {
             debug.append("<br>css-file=" + CSSFile);
         }
         debug.append("<br>>>> setting UI generator params...end");
-        reger.core.Debug.debug(3, "ServletAdapterReger.java", debug.toString());
+        reger.core.Debug.debug(3, "ServletAdapter.java", debug.toString());
 
         generator.setInputNode(this.chibaBean.getXMLContainer());
         generator.generate();
@@ -178,7 +203,7 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
      * using a java.io.Writer.
      *
      * @param responseWriter the Writer to use for the result stream
-     * @throws org.chiba.xml.xforms.exception.XFormsException
+     * @throws XFormsException
      */
     public void buildUI(Writer responseWriter) throws XFormsException {
         generator.setOutput(responseWriter);
@@ -190,41 +215,28 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
      * factory method for creating UIGenerator instances.
      *
      * @return the created UIGenerator instance
-     * @throws org.chiba.xml.xforms.exception.XFormsException
+     * @throws XFormsException
      */
     public UIGenerator createUIGenerator() throws XFormsException {
         //create and configure StylesheetLoader
         StylesheetLoader stylesLoader = new StylesheetLoader(stylesheetPath);
 
-        //if there's a XSLTstylesheet specified in the request
-        if (XSLTstylesheet != null) {
-            stylesLoader.setStylesheetFile(XSLTstylesheet);
+        //if there's a stylesheet specified in the request
+        if (stylesheet != null) {
+            stylesLoader.setStylesheetFile(stylesheet);
         }
 
         if (generator == null) {
             generator = getNewUIGenerator(stylesLoader);
         }
-
-        StringBuffer debug = new StringBuffer();
-        debug.append(">>> createUIGenerator()");
-        debug.append("<br>baseURL: " + baseURI);
-        debug.append("<br>CSS-File: " + CSSFile);
-        debug.append("<br>stylesheetPath: " + stylesheetPath);
-        debug.append("<br>XSLT XSLTstylesheet: " + XSLTstylesheet);
-        debug.append("<br>action URL: " + actionUrl);
-        if (CSSFile != null) {
-            debug.append("<br>css-file=" + CSSFile);
-        }
-        debug.append("<br>>>> setting UI generator params...end");
-        reger.core.Debug.debug(3, "ServletAdapterReger.java", debug.toString());
-
-
         //todo: move these params to buildUI too
         generator.setParameter("action-url", actionUrl);
         generator.setParameter("debug-enabled", String.valueOf(true));
-        String selectorPrefix = Config.getInstance().getProperty(HttpRequestHandler.SELECTOR_PREFIX_PROPERTY, HttpRequestHandler.SELECTOR_PREFIX_DEFAULT);
+        String selectorPrefix = Config.getInstance().getProperty(HttpRequestHandler.SELECTOR_PREFIX_PROPERTY,
+                                                                 HttpRequestHandler.SELECTOR_PREFIX_DEFAULT);
         generator.setParameter("selector-prefix", selectorPrefix);
-        String removeUploadPrefix = Config.getInstance().getProperty(HttpRequestHandler.REMOVE_UPLOAD_PREFIX_PROPERTY, HttpRequestHandler.REMOVE_UPLOAD_PREFIX_DEFAULT);
+        String removeUploadPrefix = Config.getInstance().getProperty(HttpRequestHandler.REMOVE_UPLOAD_PREFIX_PROPERTY,
+                                                                     HttpRequestHandler.REMOVE_UPLOAD_PREFIX_DEFAULT);
         generator.setParameter("remove-upload-prefix", removeUploadPrefix);
         if (CSSFile != null) {
             generator.setParameter("css-file", CSSFile);
@@ -297,6 +309,36 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
         this.contextRoot = contextRoot;
     }
 
+
+    /**
+     * sets the path where to find XForms documents.
+     *
+     * @param formPath the path where to find XForms documents
+     */
+/*
+    public void setFormPath(String formPath) {
+        this.formPath = formPath;
+        this.formURI = null;
+        this.formNode = null;
+    }
+*/
+
+/*
+    public void setFormURI(URI formURI) {
+        this.formURI = formURI;
+    }
+*/
+
+    /**
+     * sets a XForms host document for processing by directly passing a DOM Node.
+     *
+     * @param formNode the rootnode of the host document
+     * @deprecated use setXForms(Node node) from ChibaAdapter instead
+     */
+    public void setFormDocument(Node formNode) {
+        this.formNode = formNode;
+    }
+
     /**
      * gets a context property from Chiba's context hashmap.
      *
@@ -333,10 +375,10 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
     /**
      * sets the path where to find the xslt stylesheets
      *
-     * @param stylesheetPath the path where to find the xslt stylesheets
+     * @param stylesPath the path where to find the xslt stylesheets
      */
-    public void setStylesheetPath(String stylesheetPath) {
-        this.stylesheetPath = stylesheetPath;
+    public void setStylesheetPath(String stylesPath) {
+        this.stylesheetPath = stylesPath;
     }
 
     /**
@@ -349,12 +391,12 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
     }
 
     /**
-     * sets the name of the xslt XSLTstylesheet to use for building the UI
+     * sets the name of the xslt stylesheet to use for building the UI
      *
-     * @param XSLTstylesheet the name of the xslt XSLTstylesheet to use for building the UI
+     * @param stylesheetFile the name of the xslt stylesheet to use for building the UI
      */
-    public void setXSLTstylesheet(String XSLTstylesheet) {
-        this.XSLTstylesheet = XSLTstylesheet;
+    public void setStylesheet(String stylesheetFile) {
+        this.stylesheet = stylesheetFile;
     }
 
     /**

@@ -1,23 +1,19 @@
-<%@ page import="reger.SideColumn,
-                 com.swabunga.spell.event.SpellCheckEvent,
-                 reger.core.db.Db,
-                 javax.crypto.spec.PBEKeySpec,
-                 javax.crypto.spec.PBEParameterSpec,
-                 java.security.InvalidKeyException,
-                 java.security.NoSuchAlgorithmException,
-                 javax.crypto.*,
-                 java.io.*,
-                 java.util.*"%>
-
-
+<%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.AllMegaLogTypesInSystem"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-pageProps.siteSection=pageProps.PUBLICSITE;
-pageProps.isPasswordProtected = false;
-pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.isLogidRequired=true;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
 pageProps.pathToAppRoot="../";
+//pageProps.onloadJavascriptMethod = "makeFormDraggable();";
+pageProps.helpText="This page allows you to add or edit weblog entries.  Once you're done editing, click to Save the Entry.<br><br>Below the save button you'll find a number of important extended properties that are related to this entry.  Explore these special features... they can dramatically improve your weblogging experience.";
 /*----------------------------------------------------*/
 %>
 
@@ -26,9 +22,8 @@ pageProps.pathToAppRoot="../";
 <%
 /*----------------------------------------------------*/
 /*                  Main Body                         */
-            StringBuffer mb = new StringBuffer();
+        StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-
 
 //Instantiate the entry object
 pageProps.entry.populate(pageProps.logProps.logid, request, userSession.getAccountuser().getUsertimezoneid());
@@ -146,7 +141,9 @@ boolean displayasadmin=true;
 mb.append(reger.xforms.MegaHtmlFormTopChiba.getHtml(userSession, pageProps, displayasadmin, request, userSession.getAccountuser().getUsertimezoneid()));
 //Append the center of the page
 mb.append("<!-- START XFORM -->");
-mb.append(reger.xforms.MegaHtmlFormCenterChiba.getHtml(userSession, pageProps, displayasadmin, request, response));
+if (!AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(LogCache.get(pageProps.logProps.logid).getEventtypeid()).getLogtypexform().getXform().equals("")){
+    mb.append(reger.xforms.MegaHtmlFormCenterChiba.getHtml(userSession, pageProps, displayasadmin, request, response));
+}
 mb.append("<!-- END XFORM -->");
 //Append the bottom of the form
 mb.append(reger.xforms.MegaHtmlFormBottomChiba.getHtml(userSession, pageProps, displayasadmin, request, response));
@@ -156,18 +153,16 @@ mb.append("<br><br><br>");
 
 mb.append(reger.core.ErrorDissect.ServletUtilsdissect(request));
 
-
-//out.print(mb.toString());
-
 %>
 
 <%
 /*----------------------------------------------------*/
 /*                  Side Column                       */
-            StringBuffer sc = new StringBuffer();
+        StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
+
 
 %>
 
-<%@ include file="../globalfooter.jsp" %>
 
+<%@ include file="../globalfooter.jsp" %>
