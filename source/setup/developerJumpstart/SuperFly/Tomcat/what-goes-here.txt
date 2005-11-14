@@ -1,0 +1,2 @@
+This is where you install your Tomcat to.  This directory is Tomcat Home.  You'll know you've installed Tomcat correctly when you have subdirectories in this one like /conf/, /webapps/  etc.
+

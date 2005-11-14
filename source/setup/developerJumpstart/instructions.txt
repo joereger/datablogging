@@ -1,0 +1,70 @@
+
+GET STARTED, INSTALL SOME APPS
+==============================
+
+1) Extract this zip file to your C: drive.  Use the C: drive because Ant scripts and other components are tied to it.  You can certainly use another drive, but C: will be easiest and require the least headaches as you get started.  Extracting this zip file will create a directory structure on your C: drive that starts with C:/SuperFly/
+
+2) Install Java 1.4.2.  It doesn't matter where on your hard drive you do so... Java's default install directory is fine.
+
+3) Install MySql 4.1 into the C:/SuperFly/MySql/ directory.  Note the root username and password that you used during the installation.
+
+4) Install Tomcat 5.0.28 to the C:\SuperFly\Tomcat\ directory.
+
+5) Install Ant to the C:\SuperFly\Ant\ directory.
+
+BUILD THE APP FROM SOURCE
+=========================
+
+1) Move a copy of RegerCom.xml from:
+
+C:\Superfly\SourceSvn\Reger\branches\myBranch\buildscripts\RegerCom.xml 
+
+    to 
+
+C:\Superfly\SourceIdeaProjects\Reger\buildscripts\RegerCom.xml
+
+2) Open a command prompt and switch directories to:
+C:\Superfly\SourceIdeaProjects\Reger\buildscripts\
+(Which is the directory where you just moved the RegerCom.xml to)
+
+
+3) Issue the command:
+ant -buildfile RegerCom.xml buildWar
+
+4) This will build a WAR file called ROOT.war to:
+C:\Superfly\SourceIdeaProjects\Reger\builds\WARs\RegerCom\ROOT.war
+
+DEPLOY THE APP TO TOMCAT
+========================
+
+1) Make sure Tomcat is running.  Go to http://localhost:8080/ and you should see the Tomcat welcome screen.  If it isn't working, try http://localhost/.  If it's still not working, check out C:\Superfly\Tomcat\logs\stdout.log... it may give you a clue.  The most common problem is that the JAVA_HOME variable isn't setup correctly.  Check http://tomcat.apache.org/ for more information, help, etc.
+
+2) Undeploy the ROOT app that comes with Tomcat.  Do 2a) or 2b).
+
+2a) Go to http://localhost:8080/manager/html.  Log in with the credentials you used when you set up Tomcat.  You'll see a list of installed applications.  There's one with the path of "/".  Click Undeploy to undeploy it.
+
+2b) Shut down the Tomcat service by going to Start -> Control Panel -> Administrator Tools -> Services.  Stop the Apache Tomcat service.  Delete the file: C:\Superfly\Tomcat\conf\Catalina\localhost\ROOT.xml.  Delete the directory: C:\Superfly\Tomcat\webapps\ROOT.  Delete the file (if it exists): C:\Superfly\Tomcat\webapps\ROOT.war.  Restart the Tomcat service.
+
+3) Deploy the RegerCom app.  Go to http://localhost:8080/manager/html.  Scroll down to the section called "WAR file to deploy".  Click the Browse button.  Find the WAR file on your hard drive... it should be at: C:\Superfly\SourceIdeaProjects\Reger\builds\WARs\RegerCom\ROOT.war.  Click Deploy.  You should see a verification message that it was deployed correctly.
+
+INITIALIZE THE APP
+==================
+
+1) Go to http://localhost:8080/.  You should see a Reger.com setup screen.  
+
+2) Enter the database username, password, etc on the screen.  There will be a few steps to go through.
+
+3) Congrats, you're up and running!
+
+DEVELOPMENT NOTES
+=================
+
+1) You don't need to create a WAR file each time you make a change on the application. You can use the RegerCom.xml quickBuild target to simply recompile changed java files and move new files over. This is done with the command:
+ant -buildfile RegerCom.xml quickBuild
+
+2) A powerful page is http://localhost:8080/~youraccountname/loe/viewevents.jsp   This page is the event log for the app and can tell you when the app restarts, what errors occur, what debug information is available etc.  I generally have two browser tabs open... one with the page I'm working on and one with the viewevents.jsp page.
+
+3) You can edit Tomcat's /conf/server.xml file to use port 80 so that you don't have to type :8080 all the time.  In fact, you should do this because the app sometimes gets a little wacky when the port is in there.
+
+4) Use the reger.core.Debug class to write information from the app to the viewevents.jsp log.  Choose a debug level from 1 - 5 and choose a label that reflects the page/class you're working on.  Set the debug level on viewevents.jsp.  
+

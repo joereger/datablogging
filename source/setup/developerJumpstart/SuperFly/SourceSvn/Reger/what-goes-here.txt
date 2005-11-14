@@ -1,0 +1,23 @@
+This is where the source files go.  
+
+You get them from the SVN repository at:
+svn://www.reger.com/Reger
+
+Username and password are required.
+
+Within the /Reger source tree you'll find:
+
+/Reger/branches/
+/Reger/tags/
+/Reger/trunk/
+
+Generally you'll be working on one of the branches.  So, to check out a branch called "myBranch" you'll go to:
+svn://www.reger.com/Reger/branches/myBranch
+
+You'll tell your SVN client to put it in /branches/myBranch relative to this directory.
+
+
+
+
+
+
