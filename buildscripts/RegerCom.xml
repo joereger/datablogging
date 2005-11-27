@@ -90,6 +90,7 @@
         ${sourcedir}/WEB-INF/lib/jcs-1.2.6.5.jar;
         ${sourcedir}/WEB-INF/lib/commons-lang-2.1.jar;
         ${sourcedir}/WEB-INF/lib/concurrent.jar;
+        ${sourcedir}/WEB-INF/lib/sequoia-driver.jar;
   "/>
 
 

@@ -20,6 +20,7 @@ public class DbConfig {
     private static String dbMaxIdle;
     private static String dbMinIdle;
     private static String dbMaxWait;
+    private static String dbDriverName;
 
     private static String passPhrase = "pupper";
 
@@ -84,6 +85,7 @@ public class DbConfig {
             dbMaxIdle = properties.getProperty("dbMaxIdle", "15");
             dbMinIdle = properties.getProperty("dbMinIdle", "10");
             dbMaxWait = properties.getProperty("dbMaxWait", "10000");
+            dbDriverName = properties.getProperty("dbDriverName", "com.mysql.jdbc.Driver");
 
             haveAttemptedToLoadDefaultPropsFile = true;
             haveNewConfigToTest = true;
@@ -124,6 +126,9 @@ public class DbConfig {
                 if (dbMaxWait!=null){
                     properties.setProperty("dbMaxWait", dbMaxWait);
                 }
+                if (dbDriverName!=null){
+                    properties.setProperty("dbDriverName", dbDriverName);
+                }
                 //Save to the file system in the conf directory
                 File fil = new File(dbPropsInternalFilename);
                 FileOutputStream fos = new FileOutputStream(fil);
@@ -154,25 +159,32 @@ public class DbConfig {
 
             //-----------------------------------
             //-----------------------------------
-            int count = DbNoErrorsave.RunSQLUpdate("DROP TABLE test");
+            //int count = DbNoErrorsave.RunSQLUpdate("DROP TABLE test");
             //-----------------------------------
             //-----------------------------------
 
             //-----------------------------------
             //-----------------------------------
-            int count1 = DbNoErrorsave.RunSQLUpdate("CREATE TABLE `test` (`testid` int(11) NOT NULL auto_increment, `test` varchar(255) NOT NULL default '0', PRIMARY KEY  (`testid`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+            //int count1 = DbNoErrorsave.RunSQLUpdate("CREATE TABLE `test` (`testid` int(11) NOT NULL auto_increment, `test` varchar(255) NOT NULL default '0', PRIMARY KEY  (`testid`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
             //-----------------------------------
             //-----------------------------------
 
             //-----------------------------------
             //-----------------------------------
-            String[][] rstTest= DbNoErrorsave.RunSQL("DESCRIBE test");
+            //int identity = Db.RunSQLInsert("INSERT INTO test(test) VALUES('This is a test: "+reger.core.TimeUtils.nowInGmtString()+"')");
+            //-----------------------------------
+            //-----------------------------------
+
+            //-----------------------------------
+            //-----------------------------------
+            //String[][] rstTest= DbNoErrorsave.RunSQL("SELECT testid FROM test");
+            String[][] rstTest= DbNoErrorsave.RunSQL("SELECT 1");
             //-----------------------------------
             //-----------------------------------
             if (rstTest!=null && rstTest.length>0){
                 //-----------------------------------
                 //-----------------------------------
-                int count2 = DbNoErrorsave.RunSQLUpdate("DROP TABLE test");
+                //int count2 = DbNoErrorsave.RunSQLUpdate("DROP TABLE test");
                 //-----------------------------------
                 //-----------------------------------
 
@@ -283,7 +295,11 @@ public class DbConfig {
 
     public static String getDbDriverName(){
         load();
-        return "com.mysql.jdbc.Driver";
+        return dbDriverName;
+    }
+
+    public static void setDbDriverName(String dbDriverName) {
+        DbConfig.dbDriverName = dbDriverName;
     }
 
     public static boolean haveNewConfigToTest() {
@@ -293,4 +309,6 @@ public class DbConfig {
     public static void setHaveNewConfigToTest(boolean haveNewConfigToTest) {
         DbConfig.haveNewConfigToTest = haveNewConfigToTest;
     }
+
+
 }

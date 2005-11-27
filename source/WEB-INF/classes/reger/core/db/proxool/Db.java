@@ -47,6 +47,7 @@ public class Db {
             //Set the driver flag first
             driverHasBeenConfigured = true;
             System.out.println("Reger.com alias="+alias+": Ds setup appears successful.");
+            System.out.println("Reger.com alias="+alias+": Ds url="+url);
 
         } catch (Exception e){
                 System.out.println("Reger.com alias="+alias+": Error configuring proxool connection.");

@@ -26,7 +26,7 @@ try {
 
 
     //Do the redirect
-    response.sendRedirect("/index.log");
+    response.sendRedirect("index.log");
     return;
 
 } catch (Throwable e){

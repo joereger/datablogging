@@ -1,0 +1,93 @@
+
+These are instructions for setting up database clustering to improve performance of the system.
+This is an advanced operation and is not recommended for most installations.   It is only required
+as you increase traffic and need to overcome a database performance bottleneck.
+
+Clustering the database involves setting up Sequoia as a controller.  Think of this software as combining
+many MySql databases into a single load-balanced virtual database.
+
+More on sequoia here:
+http://sequoia.continuent.org/HomePage
+
+Sequoia is a java app and to run it as a service you need to use Java Service Wrapper:
+http://wrapper.tanukisoftware.org/doc/english/introduction.html
+
+Download both sequoia and the java service wrapper.  We're going to put a few files from java service wrapper into
+sequoia and run it there.  An example of this process can be found here:
+http://wrapper.tanukisoftware.org/doc/english/integrate-simple-win.html
+
+INSTALL THE CONTROLLER AS A SERVICE
+======================
+1) Copy these four files to the sequoia /bin/ directory
+{WRAPPER_HOME}\bin\Wrapper.exe
+{WRAPPER_HOME}\src\bin\App.bat.in
+{WRAPPER_HOME}\src\bin\InstallApp-NT.bat.in
+{WRAPPER_HOME}\src\bin\UninstallApp-NT.bat.in
+
+2) Rename from *.bat.in to *.bat
+
+3) Copy these two files to sequoia /lib/
+{WRAPPER_HOME}\lib\Wrapper.DLL
+{WRAPPER_HOME}\lib\wrapper.jar
+
+4) Create a sequoia /conf/ directory
+
+5) Create a sequoia /logs/ directory
+
+6) Put the wrapper.conf file included in this reger.com package (in this /setup/ directory) in the sequoia /conf/ directory
+
+7) In wrapper.conf, make sure this line is pointing to the valid database driver:
+wrapper.java.classpath.33=%SEQUOIA_HOME%\drivers\mysql-connector-java-3.1.8-bin.jar
+
+8) Set the system environment variable SEQUOIA_HOME to the sequoia home directory
+
+9) Move controller-raidb1-reger.com to sequoia /config/controller/
+
+10) Copy the RAIDb1-mysql-cluster-reger.xml file from this directory to the sequoia /config/virtualdatabase/ directory.
+
+11) Customize the DatabaseBackend elements.  Each one of these elements configures a connection to a single MySql database.
+
+12) Customize recovery log elements
+
+13) Create a database called regersequoiabackup and make sure that the recovery log element points to it.
+
+14) Move mysql-connector-java-3.1.8-bin.jar to sequoia /drivers/
+
+15) Run App.bat to verify that the controller can run
+
+16) You can now install the controller as a service with InstallApp-NT.bat
+
+CONFIGURE THE APP TO USE THE CONTROLLER AS A DATABASE
+=====================
+1) Change the jdbc driver name to use sequoia's driver and point it to the controller. Do this in the application
+on the /LOE tab in the System Settings/Database Setup screen.
+dbDriverName=org.continuent.sequoia.driver.Driver
+dbConnectionUrl=jdbc:sequoia://localhost/reger
+
+or, if you edit the config file manually (not recommended):
+dbDriverName=org.continuent.sequoia.driver.Driver
+dbConnectionUrl=jdbc\:sequoia\://localhost/reger
+
+ADDING A NEW BACKEND
+======================
+1) Make sure Sequoia knows about the database by adding a backend node to RAIDb1-mysql-cluster-reger.xml
+
+2) Start sequoia_home/bin/console.bat
+
+3) admin reger
+
+4) You'll be prompted for username and password...  enter values in xml file configuring sequoia, admin:XXXXX
+
+5) backup reger1 dumpname Octopus c:/superfly/sequoia-db-dumps/
+
+6) You'll be prompted for username and password... enter the values of the u/p stored on the database itself, not xml file
+
+7) disable reger2
+
+8) restore backend reger2 dumpname
+
+9) enable reger2
+
+
+
+

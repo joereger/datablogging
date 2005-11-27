@@ -110,7 +110,7 @@ public class SystemProperty {
         try{
             //-----------------------------------
             //-----------------------------------
-            String[][] rstT = Db.RunSQL("DESCRIBE systemproperty");
+            String[][] rstT = Db.RunSQL("SELECT COUNT(*) FROM systemproperty");
             //-----------------------------------
             //-----------------------------------
             if (rstT!=null && rstT.length>0){

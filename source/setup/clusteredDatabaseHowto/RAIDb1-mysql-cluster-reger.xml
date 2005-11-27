@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE SEQUOIA PUBLIC "-//Continuent//DTD SEQUOIA 2.3//EN" "http://sequoia.continuent.org/dtds/sequoia-2.3.dtd">
+
+<SEQUOIA>
+
+  <VirtualDatabase name="reger">
+  
+  
+	<Backup>
+      <Backuper backuperName="Octopus" className="org.continuent.sequoia.controller.backup.backupers.OctopusBackuper"/>
+	</Backup> 
+
+    <AuthenticationManager>
+      <Admin>
+       	<User username="admin" password="catalyst"/>
+      </Admin>
+      <VirtualUsers>
+        <VirtualLogin vLogin="webapp" vPassword="r3g3r"/>
+      </VirtualUsers>
+    </AuthenticationManager>
+    
+    
+    
+
+    <DatabaseBackend name="reger1" driver="org.gjt.mm.mysql.Driver" url="jdbc:mysql://localhost/reger" connectionTestStatement="select 1">
+	  <DatabaseSchema dynamicPrecision="table"/>
+      <ConnectionManager vLogin="webapp" rLogin="root" rPassword="catalyst">
+			<VariablePoolConnectionManager initPoolSize="20" minPoolSize="5" maxPoolSize="0" idleTimeout="180" waitTimeout="0"/>
+      </ConnectionManager>
+    </DatabaseBackend>
+
+    <DatabaseBackend name="reger2" driver="org.gjt.mm.mysql.Driver" url="jdbc:mysql://gascowboy/reger" connectionTestStatement="select 1">
+	  <DatabaseSchema dynamicPrecision="table"/>
+      <ConnectionManager vLogin="webapp" rLogin="root" rPassword="catalyst">
+			<VariablePoolConnectionManager initPoolSize="20" minPoolSize="5" maxPoolSize="0" idleTimeout="180" waitTimeout="0"/>
+      </ConnectionManager>
+    </DatabaseBackend>
+
+
+    <RequestManager>
+    
+      <RequestScheduler>
+         <RAIDb-1Scheduler level="pessimisticTransaction"/>
+      </RequestScheduler>
+      
+      
+
+      <RequestCache>
+         <MetadataCache/>
+         <ParsingCache/>
+         <ResultCache granularity="table" maxNbOfEntries="100000"/>
+      </RequestCache>
+
+      <LoadBalancer>
+         <RAIDb-1>
+            <WaitForCompletion policy="all"/>
+            <RAIDb-1-LeastPendingRequestsFirst/>
+         </RAIDb-1>
+      </LoadBalancer>
+
+	
+	<RecoveryLog driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/regersequoiabackup" login="root" password="catalyst">
+            <RecoveryLogTable tableName="recovery" idColumnType="INT(11) NOT NULL" vloginColumnType="VARCHAR(255) NOT NULL" sqlColumnName="sql_ins" sqlColumnType="LONGTEXT NOT NULL" transactionIdColumnType="INT(11) NOT NULL" extraStatementDefinition=",PRIMARY KEY (id)"/>
+            <CheckpointTable tableName="checkpoint" checkpointNameColumnType="VARCHAR(255) NOT NULL" requestIdColumnType="INT(11) NOT NULL"/>
+            <BackendTable tableName="backend" databaseNameColumnType="VARCHAR(255) NOT NULL" backendNameColumnType="VARCHAR(255) NOT NULL" checkpointNameColumnType="VARCHAR(255) NOT NULL"/>
+            <DumpTable tableName="dump" dumpNameColumnType="VARCHAR(255) NOT NULL" dumpDateColumnType="VARCHAR(255)" dumpPathColumnType="VARCHAR(255) NOT NULL" dumpFormatColumnType ="VARCHAR(255) NOT NULL" checkpointNameColumnType="VARCHAR(255) NOT NULL" backendNameColumnType="VARCHAR(255) NOT NULL" tablesColumnType="VARCHAR(255) NOT NULL"/>
+         </RecoveryLog>
+
+    </RequestManager>
+    
+
+  </VirtualDatabase>
+  
+
+</SEQUOIA>

@@ -146,7 +146,7 @@ public class UpgradeCheckAtStartup {
         try{
             //-----------------------------------
             //-----------------------------------
-            String[][] rstT = Db.RunSQL("DESCRIBE databaseversion");
+            String[][] rstT = Db.RunSQL("SELECT COUNT(*) FROM databaseversion");
             //-----------------------------------
             //-----------------------------------
             if (rstT!=null && rstT.length>0){

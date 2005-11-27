@@ -218,7 +218,7 @@ public class MasterThread extends Thread {
         try{
             //-----------------------------------
             //-----------------------------------
-            String[][] rstT = Db.RunSQL("DESCRIBE scheduler");
+            String[][] rstT = Db.RunSQL("SELECT COUNT(*) FROM scheduler");
             //-----------------------------------
             //-----------------------------------
             if (rstT!=null && rstT.length>0){

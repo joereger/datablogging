@@ -53,7 +53,7 @@ public class DbURIResolver extends AbstractConnector implements URIResolver {
             reger.core.Debug.debug(3, "DbURIResolver", "loading xform from database");
 
             //Load from the database
-            //eventid=1;
+            eventid=1;
             EventXformData eventXformData = new EventXformData();
             eventXformData.loadByEventid(eventid, logid);
 

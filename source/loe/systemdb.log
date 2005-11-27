@@ -31,9 +31,13 @@ pageProps.pathToAppRoot="../";
 //Save the properties, test them
 String errortext = "";
 if (request.getParameter("action")!=null && request.getParameter("action").equals("save")){
+    if (request.getParameter("dbdrivername")!=null){
+        DbConfig.setDbDriverName(request.getParameter("dbdrivername"));
+    }
     if (request.getParameter("dbserver")!=null && request.getParameter("dbport")!=null && request.getParameter("dbname")!=null){
-        String dbConnUrl = "jdbc:mysql://"+request.getParameter("dbserver")+":"+request.getParameter("dbport")+"/"+request.getParameter("dbname")+"?autoReconnect=true";
-        DbConfig.setDbConnectionUrl(dbConnUrl);
+        //String dbConnUrl = "jdbc:mysql://"+request.getParameter("dbserver")+":"+request.getParameter("dbport")+"/"+request.getParameter("dbname")+"?autoReconnect=true";
+        //DbConfig.setDbConnectionUrl(dbConnUrl);
+        DbConfig.setDbConnectionUrl(request.getParameter("dbconnectionurl"));
     }
     if (request.getParameter("dbusername")!=null){
         DbConfig.setDbUsername(request.getParameter("dbusername"));
@@ -89,23 +93,89 @@ if (!errortext.equals("")){
 
     mb.append("<table cellpadding=5 cellspacing=0 width=75% border=0>");
 
+//    mb.append("<!-- Begin Prop -->");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left colspan=2>");
+//    mb.append("<font face=arial size=+2 color=#cccccc>");
+//    mb.append("Database Machine Location");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("<input type=text name=dbserver value=\"localhost\" size=45 maxlength=255>");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("The name of the server that MySQL is installed on.   This can be a machine name like 'localhost' or an ip address like '127.0.0.1'");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<!-- End Prop -->");
+//
+//    mb.append("<!-- Begin Prop -->");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left colspan=2>");
+//    mb.append("<font face=arial size=+2 color=#cccccc>");
+//    mb.append("Database Port");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("<input type=text name=dbport value=\"3306\" size=45 maxlength=255>");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("The port that MySql is running on.  By default it runs on port '3306'");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<!-- End Prop --> ");
+//
+//    mb.append("<!-- Begin Prop -->");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left colspan=2>");
+//    mb.append("<font face=arial size=+2 color=#cccccc>");
+//    mb.append("Database Name");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<tr>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("<input type=text name=dbname value=\"reger\" size=45 maxlength=255>");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("<td valign=top align=left>");
+//    mb.append("<font face=arial size=-1>");
+//    mb.append("The name of the database on MySql that should be used to store blog entries and other data.  This database needs to exist already in MySql (it can be empty), and the username/password combo you define on this page must be able to access it... the application will setup the tables needed to run the blogging server. See the username for access requirements.");
+//    mb.append("</font>");
+//    mb.append("</td>");
+//    mb.append("</tr>");
+//    mb.append("<!-- End Prop -->");
+
     mb.append("<!-- Begin Prop -->");
     mb.append("<tr>");
     mb.append("<td valign=top align=left colspan=2>");
     mb.append("<font face=arial size=+2 color=#cccccc>");
-    mb.append("Database Machine Location");
+    mb.append("Database Driver Name");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("</tr>");
     mb.append("<tr>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("<input type=text name=dbserver value=\"localhost\" size=45 maxlength=255>");
+    mb.append("<input type=text name=dbdrivername value=\""+DbConfig.getDbDriverName()+"\" size=45 maxlength=255>");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("The name of the server that MySQL is installed on.   This can be a machine name like 'localhost' or an ip address like '127.0.0.1'");
+    mb.append("The database driver used to connect to the database.  Default value to connect to a MySql database is: com.mysql.jdbc.Driver");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("</tr>");
@@ -115,41 +185,19 @@ if (!errortext.equals("")){
     mb.append("<tr>");
     mb.append("<td valign=top align=left colspan=2>");
     mb.append("<font face=arial size=+2 color=#cccccc>");
-    mb.append("Database Port");
+    mb.append("Database Connection URL");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("</tr>");
     mb.append("<tr>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("<input type=text name=dbport value=\"3306\" size=45 maxlength=255>");
+    mb.append("<input type=text name=dbconnectionurl value=\""+DbConfig.getDbConnectionUrl()+"\" size=45 maxlength=255>");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("The port that MySql is running on.  By default it runs on port '3306'");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
-    mb.append("<!-- End Prop --> ");
-
-    mb.append("<!-- Begin Prop -->");
-    mb.append("<tr>");
-    mb.append("<td valign=top align=left colspan=2>");
-    mb.append("<font face=arial size=+2 color=#cccccc>");
-    mb.append("Database Name");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
-    mb.append("<tr>");
-    mb.append("<td valign=top align=left>");
-    mb.append("<font face=arial size=-1>");
-    mb.append("<input type=text name=dbname value=\"reger\" size=45 maxlength=255>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top align=left>");
-    mb.append("<font face=arial size=-1>");
-    mb.append("The name of the database on MySql that should be used to store blog entries and other data.  This database needs to exist already in MySql (it can be empty), and the username/password combo you define on this page must be able to access it... the application will setup the tables needed to run the blogging server. See the username for access requirements.");
+    mb.append("The database connection string used to connect to the database.  As an example: jdbc:mysql://localhost:3306/reger?autoReconnect=true  This reflects a MySql database called reger running on port 3306 of the localhost computer.");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("</tr>");
@@ -166,7 +214,7 @@ if (!errortext.equals("")){
     mb.append("<tr>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("<input type=text name=dbusername value=\"username\" size=45 maxlength=255>");
+    mb.append("<input type=text name=dbusername value=\""+DbConfig.getDbUsername()+"\" size=45 maxlength=255>");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top align=left>");
@@ -188,7 +236,7 @@ if (!errortext.equals("")){
     mb.append("<tr>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("<input type=text name=dbpassword value=\"password\" size=45 maxlength=255>");
+    mb.append("<input type=text name=dbpassword value=\""+DbConfig.getDbPassword()+"\" size=45 maxlength=255>");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top align=left>");
@@ -210,7 +258,7 @@ if (!errortext.equals("")){
     mb.append("<tr>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("<input type=text name=dbmaxactive value=\"30\" size=45 maxlength=255>");
+    mb.append("<input type=text name=dbmaxactive value=\""+DbConfig.getDbMaxActive()+"\" size=45 maxlength=255>");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top align=left>");
@@ -232,7 +280,7 @@ if (!errortext.equals("")){
     mb.append("<tr>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("<input type=text name=dbmaxidle value=\"15\" size=45 maxlength=255>");
+    mb.append("<input type=text name=dbmaxidle value=\""+DbConfig.getDbMaxIdle()+"\" size=45 maxlength=255>");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top align=left>");
@@ -254,7 +302,7 @@ if (!errortext.equals("")){
     mb.append("<tr>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("<input type=text name=dbminidle value=\"10\" size=45 maxlength=255>");
+    mb.append("<input type=text name=dbminidle value=\""+DbConfig.getDbMinIdle()+"\" size=45 maxlength=255>");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top align=left>");
@@ -276,7 +324,7 @@ if (!errortext.equals("")){
     mb.append("<tr>");
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
-    mb.append("<input type=text name=dbmaxwait value=\"10000\" size=45 maxlength=255>");
+    mb.append("<input type=text name=dbmaxwait value=\""+DbConfig.getDbMaxWait()+"\" size=45 maxlength=255>");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top align=left>");

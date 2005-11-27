@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE SEQUOIA-CONTROLLER PUBLIC "-//Continuent//DTD SEQUOIA-CONTROLLER 2.3//EN"  "http://sequoia.continuent.org/dtds/sequoia-controller-2.3.dtd">
+<SEQUOIA-CONTROLLER>
+  <Controller port="25322">
+    <Report/>
+    <JmxSettings>
+      <RmiJmxAdaptor/>
+    </JmxSettings>
+    <VirtualDatabase configFile="RAIDb1-mysql-cluster-reger.xml" virtualDatabaseName="reger" autoEnableBackends="force"/>
+  </Controller>
+</SEQUOIA-CONTROLLER>

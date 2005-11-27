@@ -8,6 +8,8 @@ import java.util.*;
 
 /**
  * This class holds all user sessions that are active on the web system.
+ *
+ * Sessions themselves are stored in the session cache.
  */
 public class AllUserSessions {
 
