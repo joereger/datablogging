@@ -30,6 +30,8 @@ pageProps.helpText="This is the control center of your site.  All of the tools y
 
 <%
 
+//Joe was here
+
 //Display page performance in milliseconds
 //out.println("Top of page: " + reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
 
