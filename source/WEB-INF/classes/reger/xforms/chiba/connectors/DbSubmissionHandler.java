@@ -86,7 +86,7 @@ public class DbSubmissionHandler extends AbstractConnector implements Submission
 
 
             EventXformData eventXformData = new EventXformData();
-            eventXformData.loadByEventid(eventid);
+            eventXformData.loadByEventid(eventid, logid);
             eventXformData.setEventid(eventid);
             eventXformData.setXformdata(serializedData);
             eventXformData.save();
