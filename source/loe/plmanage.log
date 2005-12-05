@@ -111,7 +111,7 @@ if (!pageProps.action.equals("deletestart")) {
     if (pl.getUsedynamicdns()) {
         mb.append(" checked");
     }
-    mb.append("><b>Yes</b> ("+reger.Vars.getHttpUrlPrefix()+"user.plbasedomain/)");
+    mb.append("><b>Yes</b> (http://user.plbasedomain/)");
 
     mb.append("</font>");
     mb.append("<br>");
@@ -120,8 +120,8 @@ if (!pageProps.action.equals("deletestart")) {
     if (!pl.getUsedynamicdns()) {
         mb.append(" checked");
     }
-    mb.append("><b>No</b> ("+reger.Vars.getHttpUrlPrefix()+"plbasedomain/~user/)");
-    mb.append("</font><font face=arial size=-2><br><strong>If you choose no, accounts will be of the form "+reger.Vars.getHttpUrlPrefix()+"plbasedomain/~username/</strong></font><br>");
+    mb.append("><b>No</b> (http://plbasedomain/~user/)");
+    mb.append("</font><font face=arial size=-2><br><strong>If you choose no, accounts will be of the form http://plbasedomain/~username/</strong></font><br>");
     mb.append("</DIV>");
 
     mb.append("<br><br>");

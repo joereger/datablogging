@@ -19,7 +19,7 @@ public class NavPanelLevelZero {
         mb.append("<tr>");
         mb.append("<td class=navlevel0topbar colspan=10><img src='images/clear.gif' width=1 height=85 align=right>");
 //        mb.append("<font face=impact size=+2 style=\"font-size: 30px; color: ffffcc;\">");
-//        mb.append(reger.Vars.getHttpUrlPrefix()+userSession.getSiteRootUrl()+"/");
+//        mb.append(userSession.getAccount().getSiteRootUrl(userSession)+"/");
 //        mb.append("</font>");
         mb.append("</td>");
         mb.append("</tr>");

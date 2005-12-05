@@ -31,7 +31,7 @@ pageProps.pathToAppRoot="../";
 
 String emailaddresses = "";
 String message="";
-String subject = userSession.getAccountuser().getFriendlyname() + " has invited you to "+reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + "/";
+String subject = userSession.getAccountuser().getFriendlyname() + " has invited you to "+ userSession.getAccount().getSiteRootUrl(userSession) + "/";
 boolean mailSent=false;
 String errortext="";
 String fromaddress = reger.Vars.EMAILDEFAULTFROM;

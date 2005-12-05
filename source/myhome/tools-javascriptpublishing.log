@@ -49,7 +49,7 @@ mb.append("</td>");
 mb.append("</tr>");
 
 
-String baseScriptStart =  "<script language=\"JavaScript\" src=\""+reger.Vars.getHttpUrlPrefix()+userSession.getSiteRootUrl()+"/javascript.log";
+String baseScriptStart =  "<script language=\"JavaScript\" src=\""+userSession.getAccount().getSiteRootUrl(userSession)+"/javascript.log";
 String baseScriptEnd   =  "\"></script>";
 
 String theScript = baseScriptStart + baseScriptEnd;

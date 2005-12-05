@@ -55,6 +55,7 @@ public class Loader extends HttpServlet {
         tThr.addScheduledTask(new TrafficCleanse());
         tThr.addScheduledTask(new LinkrotSpider());
         tThr.addScheduledTask(new DeleteOldPersistentLoginRecords());
+        tThr.addScheduledTask(new RefreshTemplateCache());
         tThr.addScheduledTask(new BandwidthTest());
         //@todo Allow plugin tasks here
         //Run the thread

@@ -1,10 +1,7 @@
 package reger;
 
-import reger.nav.NavPanel;
 import reger.nav.NestedNavPanels;
 import reger.template.SiteTemplateProcessor;
-
-import java.util.regex.*;
 
 public class tRexAdminPageEngine {
 
@@ -13,28 +10,28 @@ public class tRexAdminPageEngine {
     */
     public static StringBuffer pageout(StringBuffer mb, StringBuffer sc, reger.UserSession userSession, reger.pageFramework.PageProps pageProps, javax.servlet.http.HttpServletRequest request) {
 
-		StringBuffer ap = new StringBuffer();
+        StringBuffer ap = new StringBuffer();
 
 
 
 
-		ap.append("<html><head><title>" + reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + "/ Admin Section</title>");
+        ap.append("<html><head><title>" + userSession.getAccount().getSiteRootUrl(userSession) + "/ Admin Section</title>");
 
-		ap.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/nav.css\" type=\"text/css\" />");
+        ap.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/nav.css\" type=\"text/css\" />");
         ap.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />");
         ap.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />");
 
-		ap.append("</head>");
-		ap.append("<body bgcolor=#ffffff link='#0000ff' vlink='#0000ff' text='#000000' LEFTMARGIN='0' TOPMARGIN='0' MARGINWIDTH='0' MARGINHEIGHT='0'");
-		//Onload handler
-		if (pageProps.onloadJavascriptMethod!=null && !pageProps.onloadJavascriptMethod.equals("")){
+        ap.append("</head>");
+        ap.append("<body bgcolor=#ffffff link='#0000ff' vlink='#0000ff' text='#000000' LEFTMARGIN='0' TOPMARGIN='0' MARGINWIDTH='0' MARGINHEIGHT='0'");
+        //Onload handler
+        if (pageProps.onloadJavascriptMethod!=null && !pageProps.onloadJavascriptMethod.equals("")){
             ap.append(" onLoad=\""+pageProps.onloadJavascriptMethod+"\"");
         }
         //Onunload handler
-		if (pageProps.onunloadJavascriptMethod!=null && !pageProps.onunloadJavascriptMethod.equals("")){
+        if (pageProps.onunloadJavascriptMethod!=null && !pageProps.onunloadJavascriptMethod.equals("")){
             ap.append(" onUnload=\""+pageProps.onunloadJavascriptMethod+"\"");
         }
-		ap.append(">");
+        ap.append(">");
 
        //Figure out what AdminTools and LoggedInBar look like
        StringBuffer appendToTop = new StringBuffer();
@@ -43,16 +40,16 @@ public class tRexAdminPageEngine {
        }
        ap.append(appendToTop);
 
-		//Start dHtml Help Scripts
-		mb.append("<!-- Begin dHTML Help Scripts -->");
+        //Start dHtml Help Scripts
+        mb.append("<!-- Begin dHTML Help Scripts -->");
         mb.append("<DIV id=\"TipLayer\" style=\"visibility:hidden;position:absolute;z-index:1000;top:-100\"></DIV>");
         mb.append("<SCRIPT language=\"JavaScript1.2\" src=\""+pageProps.pathToAppRoot+"js/dhtmlhelp/main.js\"type=\"text/javascript\"></SCRIPT>");
         mb.append("<SCRIPT language=\"JavaScript1.2\" src=\""+pageProps.pathToAppRoot+"js/dhtmlhelp/style.js\" type=\"text/javascript\"></SCRIPT>");
         mb.append("<!-- End dHTML Help Scripts -->");
         //End dHtml Help Scripts
 
-		//Start Top Navbar
-		ap.append("<!-- start top navbar-->");
+        //Start Top Navbar
+        ap.append("<!-- start top navbar-->");
 
 
         //NestedNavPanels Object Creation
@@ -62,26 +59,26 @@ public class tRexAdminPageEngine {
 
 
 
-		ap.append("<!-- end top navbar-->");
-		//End Top Navbar
+        ap.append("<!-- end top navbar-->");
+        //End Top Navbar
 
 
 
 
 
 
-		ap.append("<!-- main outer table with two columns... left and right-->");
-		ap.append("<table width=100% cellpadding=0 cellspacing=0 border=0>");
+        ap.append("<!-- main outer table with two columns... left and right-->");
+        ap.append("<table width=100% cellpadding=0 cellspacing=0 border=0>");
 
 
 
 
-		ap.append("<!-- main outer table center row... left column-->");
-		ap.append("<tr><td valign=top align=left bgcolor=#ffffff>");
+        ap.append("<!-- main outer table center row... left column-->");
+        ap.append("<tr><td valign=top align=left bgcolor=#ffffff>");
 
 
 
-		//Put the vertical Google banner on the left side if the account isn't Pro or Trial
+        //Put the vertical Google banner on the left side if the account isn't Pro or Trial
 //        if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && !userSession.getAccount().isPro()){
 //            ap.append("<br><font face=arial size=+3>&nbsp;</font><br>");
 //            //ap.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
@@ -92,73 +89,73 @@ public class tRexAdminPageEngine {
 //            ap.append("<br>") ;
 //        }
 
-		ap.append("<!-- end  left side table -->");
-		ap.append("<!-- main outer table... creating gutter-->");
-		ap.append("</td><td valign=top nowrap>&nbsp;&nbsp;&nbsp;</td>");
-		ap.append("<!-- main outer table... creating right column-->");
-		ap.append("</td><td valign=top width=100% >");
-		ap.append("<!-- main body of the admin page begins here-->");
-		ap.append("<!-- main body of the admin page begins here-->");
-		ap.append("<!-- main body of the admin page begins here-->");
+        ap.append("<!-- end  left side table -->");
+        ap.append("<!-- main outer table... creating gutter-->");
+        ap.append("</td><td valign=top nowrap>&nbsp;&nbsp;&nbsp;</td>");
+        ap.append("<!-- main outer table... creating right column-->");
+        ap.append("</td><td valign=top width=100% >");
+        ap.append("<!-- main body of the admin page begins here-->");
+        ap.append("<!-- main body of the admin page begins here-->");
+        ap.append("<!-- main body of the admin page begins here-->");
 
         //Page title
         if (pageProps.title!=null && !pageProps.title.equals("")) {
             ap.append("<br><font face=arial size=+3>"+pageProps.title+"</font><br>");
         }
 
-		//Insert main body of Admin Page
-		ap.append(mb);
-		ap.append("<br><br><br>");
+        //Insert main body of Admin Page
+        ap.append(mb);
+        ap.append("<br><br><br>");
 
-		//Now show footer
-		ap.append("<!-- main body of the admin page ends here-->");
-		ap.append("<!-- main body of the admin page ends here-->");
-		ap.append("<!-- main body of the admin page ends here-->");
+        //Now show footer
+        ap.append("<!-- main body of the admin page ends here-->");
+        ap.append("<!-- main body of the admin page ends here-->");
+        ap.append("<!-- main body of the admin page ends here-->");
 
 
-		ap.append("</td>");
+        ap.append("</td>");
 
-		ap.append("<!-- Right Column -->");
-		ap.append("<td valign=top nowrap>&nbsp;&nbsp;&nbsp;</td>");
-		ap.append("<td valign=top>");
+        ap.append("<!-- Right Column -->");
+        ap.append("<td valign=top nowrap>&nbsp;&nbsp;&nbsp;</td>");
+        ap.append("<td valign=top>");
 
-		ap.append("<br><font face=arial size=+3>&nbsp;</font><br>");
+        ap.append("<br><font face=arial size=+3>&nbsp;</font><br>");
 
-		if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && !userSession.getAccount().isPro()){
+        if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && !userSession.getAccount().isPro()){
             sc.append("<br>") ;
             //sc.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-            sc.append(reger.Banner.getVerticalGoogleBanner());
+            sc.append(reger.Banner.getVerticalGoogleBanner(userSession));
             //sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
             sc.append("<br>") ;
             sc.append("<br>") ;
             sc.append("<br>") ;
         }
 
-		ap.append(sc);
+        ap.append(sc);
 
-		ap.append("</td>");
-		ap.append("<!-- End Right Column -->");
+        ap.append("</td>");
+        ap.append("<!-- End Right Column -->");
         ap.append("<td valign=top nowrap>&nbsp;&nbsp;&nbsp;</td>");
-		ap.append("</tr>");
+        ap.append("</tr>");
 
 
 
-		ap.append("</table>");
+        ap.append("</table>");
 
-		//NestedNavPanels Close
-		ap.append(nnp.getBottomHtml());
+        //NestedNavPanels Close
+        ap.append(nnp.getBottomHtml());
 
-		ap.append(reger.core.Util.pageFooter(pageProps.pathToAppRoot, userSession.getPl()));
+        ap.append(reger.core.Util.pageFooter(pageProps.pathToAppRoot, userSession.getPl()));
 
-		ap.append("</body>");
-		ap.append("</html>");
+        ap.append("</body>");
+        ap.append("</html>");
 
-		//Wrap in a plusertemplate
+        //Wrap in a plusertemplate
         ap = SiteTemplateProcessor.wrapInPlUserTemplate(ap, pageProps, userSession);
 
 
-		return ap;
-	}
+        return ap;
+    }
 
 
 //	private static StringBuffer adminTab(String thistabsection, String activetabsection, String tabtext, String taburl){

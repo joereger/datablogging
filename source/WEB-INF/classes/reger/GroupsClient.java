@@ -203,7 +203,7 @@ public class GroupsClient {
         if (accountuserid>0){
             reger.Accountuser au = new reger.Accountuser(accountid, accountuserid);
             author = au.getFriendlyname();
-            authorurl = "http://"+au.getSiteRootUrl()+"/author.log?accountuserid=" + accountuserid;
+            authorurl = "http://"+au.getSiteRootUrlOfPrimaryAccount()+"/author.log?accountuserid=" + accountuserid;
         }
 
         //Get the server info

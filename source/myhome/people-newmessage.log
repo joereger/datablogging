@@ -96,19 +96,19 @@ if (rstAuthors!=null && rstAuthors.length>0){
             mb.append("<tr>");
         }
 
-        String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAuthors[i][4]));
+        reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstAuthors[i][4]));
 
         //@todo Hide the list of users until the user selects the radio that says "Only Checked Friends"
 
         //@todo When one of these checkboxes is checked use javascript to automatically check the only checked friends radio button
 
         mb.append("<td valign=top align=left>");
-        mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
+        mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
         mb.append("<img src='"+ac.primaryImage(pageProps.pathToAppRoot, true)+"' width=35 border=0 align=left>");
         mb.append("</a>");
         mb.append("<input type=checkbox name=accountuseridtosendto-"+rstAuthors[i][0]+" value=1>");
         mb.append("<font face=arial size=-2>");
-        mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
+        mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
         mb.append(rstAuthors[i][1]);
         mb.append("</a>");
         mb.append("</font>");

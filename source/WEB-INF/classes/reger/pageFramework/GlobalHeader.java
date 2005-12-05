@@ -116,7 +116,7 @@ public class GlobalHeader {
                 if (userSession.getAccount()==null || userSession.getAccount().getAccountid()==0) {
                     try {
                         Debug.debug(5, "GlobalHeader", "Redirecting to marketing site "+userSession.getPl().getPlBaseUrl()+" because it's a public or admin but we don't have an account.");
-                        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getPl().getPlBaseUrl() + "/about/index.log");
+                        response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/index.log");
                         return;
                     } catch (Exception e){
                         Debug.errorsave(e, "GlobalHeader");
@@ -127,10 +127,10 @@ public class GlobalHeader {
                     //If it's a valid account but it's not active then we need to tell the user what's up
                     if (!userSession.getAccount().getIsActiveAccount()){
                         if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && userSession.getAccount().getIsNewPendingAdminApproval()){
-                            response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getPl().getPlBaseUrl() + "/about/awaitingapproval.log?accountid="+userSession.getAccount().getAccountid());
+                            response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/awaitingapproval.log?accountid="+userSession.getAccount().getAccountid());
                             return;
                         } else {
-                            response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getPl().getPlBaseUrl() + "/about/sitenotactive.log?accountid="+userSession.getAccount().getAccountid());
+                            response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/sitenotactive.log?accountid="+userSession.getAccount().getAccountid());
                             return;
                         }
                     }
@@ -152,7 +152,7 @@ public class GlobalHeader {
             if (pageProps.siteSection!=pageProps.API && pageProps.siteSection!=pageProps.MARKETINGSITE && pageProps.siteSection!=pageProps.MARKETINGSITEWITHUSERCONTENT && pageProps.siteSection!=pageProps.GROUPSSITE && pageProps.siteSection!=pageProps.MASTERADMINSITE && pageProps.siteSection!=pageProps.PLADMINSITE && (userSession.getAccount()==null || userSession.getAccount().getAccountid()==0)){
                 try {
                     Debug.debug(5, "GlobalHeader", "Bounced to /about/index.log 1.");
-                    response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getPl().getPlBaseUrl() + "/about/index.log");
+                    response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/index.log");
                     return;
                 } catch (Exception e) {
                     Debug.errorsave(e, "GlobalHeader");

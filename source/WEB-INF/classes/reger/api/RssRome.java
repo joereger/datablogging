@@ -58,19 +58,19 @@ public class RssRome {
         //Channel Title
         String channelTitle = userSession.getAccount().getHomepagetitle();
         if (channelTitle.equals("")) {
-            channelTitle="" + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+            channelTitle="" + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         }
         rssChannel.setTitle(channelTitle);
 
         //Channel Description
         String channelDesc = userSession.getAccount().getHomepagehtml();
         if (channelDesc.equals("")) {
-            channelDesc="A web log called " + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+            channelDesc="A web log called " + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         }
         rssChannel.setDescription(channelDesc);
 
         //Channel Link
-        String channelLink = "" + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+        String channelLink = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         rssChannel.setLink(channelLink);
 
         //Channel Generator
@@ -132,7 +132,7 @@ public class RssRome {
 
                 //Item Link
                 String entryurl=reger.Entry.entryFileNameStatic(entry.logid, entry.eventid, entry.title);
-                String itemLink="" + reger.Vars.getHttpUrlPrefix() +userSession.getAccount().getSiteRootUrl() +"/" + entryurl;
+                String itemLink="" +userSession.getAccount().getSiteRootUrl(userSession) +"/" + entryurl;
                 if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
                     if (!log.getPassword().equals("")){
                         itemLink = itemLink + "?qpass=" + log.getPassword();
@@ -190,7 +190,7 @@ public class RssRome {
                 //-----------------------------------
                 if (rstEnc!=null && rstEnc.length>0){
                 	for(int j=0; j<rstEnc.length; j++){
-                        String encLink="" + reger.Vars.getHttpUrlPrefix() +userSession.getAccount().getSiteRootUrl() +"/mediaout.log?imageid=" + rstEnc[j][0];
+                        String encLink="" +userSession.getAccount().getSiteRootUrl(userSession) +"/mediaout.log?imageid=" + rstEnc[j][0];
                         String extension = reger.core.Util.getFilenameExtension(rstEnc[j][1]);
                         MediaType mt = MediaTypeFactory.getHandlerByFileExtension(extension);
                         Enclosure enc = new Enclosure();
@@ -270,21 +270,21 @@ public class RssRome {
         //Channel Title
         String channelTitle = userSession.getAccount().getHomepagetitle();
         if (channelTitle.equals("")) {
-            channelTitle="" + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+            channelTitle="" + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         }
         rssChannel.setTitle(channelTitle);
 
         //Channel Description
         String channelDesc = userSession.getAccount().getHomepagehtml();
         if (channelDesc.equals("")) {
-            channelDesc="A web log called " + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+            channelDesc="A web log called " + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         }
         Content atomDesc = new Content();
         atomDesc.setValue(channelDesc);
         rssChannel.setTagline(atomDesc);
 
         //Channel Link
-        //String channelLink = "" + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+        //String channelLink = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         //rssChannel.setLink(channelLink);
 
         //Channel Generator
@@ -340,7 +340,7 @@ public class RssRome {
                 item.setCreated(gmttime.getTime());
 
                 //Item Link
-                //String itemLink="" + reger.Vars.getHttpUrlPrefix() +userSession.getAccount().getSiteRootUrl() +"/entry-logid"+rstEvent[i][2]+"-eventid"+rstEvent[i][1]+".log";
+                //String itemLink="" + userSession.getAccount().getSiteRootUrl(userSession) +"/entry-logid"+rstEvent[i][2]+"-eventid"+rstEvent[i][1]+".log";
                 //item.setLink(itemLink);
 
                 //Item title
@@ -444,19 +444,19 @@ public class RssRome {
         //Channel Title
         String channelTitle = userSession.getAccount().getHomepagetitle();
         if (channelTitle.equals("")) {
-            channelTitle="" + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+            channelTitle="" + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         }
         feed.setTitle(channelTitle);
 
         //Channel Description
         String channelDesc = userSession.getAccount().getHomepagehtml();
         if (channelDesc.equals("")) {
-            channelDesc="A web log called " + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+            channelDesc="A web log called " + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         }
         feed.setDescription(channelDesc);
 
         //Channel Link
-        String channelLink = "" + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+        String channelLink = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         feed.setLink(channelLink);
 
         //Channel Generator
@@ -508,7 +508,7 @@ public class RssRome {
 
                 //Item Link
                 String entryurl=reger.Entry.entryFileNameStatic(entry.logid, entry.eventid, entry.title);
-                String itemLink="" + reger.Vars.getHttpUrlPrefix() +userSession.getAccount().getSiteRootUrl() +"/" + entryurl;
+                String itemLink="" + userSession.getAccount().getSiteRootUrl(userSession) +"/" + entryurl;
                 if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
                     if (!log.getPassword().equals("")){
                         itemLink = itemLink + "?qpass=" + log.getPassword();
@@ -568,7 +568,7 @@ public class RssRome {
                 if (rstEnc!=null && rstEnc.length>0){
                 	for(int j=0; j<rstEnc.length; j++){
                         Enclosure enc = new Enclosure();
-                        String encLink="" + reger.Vars.getHttpUrlPrefix() +userSession.getAccount().getSiteRootUrl() +"/mediaout.log?imageid=" + rstEnc[j][0];
+                        String encLink="" + userSession.getAccount().getSiteRootUrl(userSession) +"/mediaout.log?imageid=" + rstEnc[j][0];
                         enc.setUrl(encLink);
                         enc.setLength(Long.parseLong(rstEnc[j][3]));
                         encList.add(enc);

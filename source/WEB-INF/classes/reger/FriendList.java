@@ -66,18 +66,18 @@ public class FriendList {
 
                 reger.Accountuser ac = new reger.Accountuser(userSession.getAccount().getAccountid(), Integer.parseInt(rstAuthors[i][0]));
 
-                String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAuthors[i][4]));
+                reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstAuthors[i][4]));
 
                 mb.append("<tr>");
                 mb.append("<td valign=top align=left>");
-                mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
+                mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
                 mb.append("<img src='"+ac.primaryImage(pathToAppRoot, true)+"' width=35 border=0 align=top>");
                 mb.append("</a>");
                 mb.append("</td>");
 
                 mb.append("<td valign=top align=left>");
                 mb.append("<font face=arial size=-1>");
-                mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
+                mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
                 mb.append(rstAuthors[i][1]);
                 mb.append("</a>");
                 mb.append("</font>");
@@ -106,7 +106,7 @@ public class FriendList {
                             mb.append("</td>");
                             mb.append("<td valign=top>");
                             mb.append("<font face=arial size=-2>");
-                            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/"+"entry-eventid"+rstRecent[j][0]+".log'>");
+                            mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/"+"entry-eventid"+rstRecent[j][0]+".log'>");
                             mb.append(rstRecent[j][1]);
                             mb.append("</a>");
                             mb.append("</font>");

@@ -1,14 +1,14 @@
 <%
 
-if (request.getParameter("accountid")!=null && reger.util.isinteger(request.getParameter("accountid"))){
-    String rootUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(request.getParameter("accountid")));
+if (request.getParameter("accountid")!=null && reger.core.Util.isinteger(request.getParameter("accountid"))){
+    reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(request.getParameter("accountid")));
     try {
-        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + rootUrl + "/");
+        response.sendRedirect(acctTmp.getSiteRootUrl(userSession) + "/");
         return;
     } catch (Exception e){
         reger.util.errorsave(e);
     }
-    out.print("Please click <a href='" + reger.Vars.getHttpUrlPrefix() + rootUrl + "/'>here</a>.");
+    out.print("Please click <a href='" + acctTmp.getSiteRootUrl(userSession) + "/'>here</a>.");
 } else {
     out.print("Site not found.  Please try again.");    
 }

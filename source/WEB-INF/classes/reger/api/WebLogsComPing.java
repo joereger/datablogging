@@ -25,8 +25,10 @@ public class WebLogsComPing {
 
                 //Get the URL
                 String urlhost;
-                String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(accountid);
-                urlhost="" +reger.Vars.getHttpUrlPrefix() + baseSiteUrl + "/";
+
+                reger.Account acctTmp = reger.cache.AccountCache.get(accountid);
+
+                urlhost="" + acctTmp.getSiteRootUrl() + "/";
 
                 //Set the name
                 String name;

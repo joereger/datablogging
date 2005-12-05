@@ -67,7 +67,7 @@ public class AllTemplatesInSystem {
     }
 
     public static void refresh(int templateid){
-        Debug.debug(5, "", "AllTemplatesInSystem.refresh(templateid="+templateid+").");
+        Debug.debug(5, "AllTemplatesInSystem.java", "AllTemplatesInSystem.refresh(templateid="+templateid+").");
         //If it's null, refresh.  Generally won't happen.
         if (allTemplates==null){
             refresh();
@@ -92,21 +92,6 @@ public class AllTemplatesInSystem {
     public static void removeTemplate(int templateid){
         allTemplates.remove(new Integer(templateid));
     }
-
-//    public static Template getTemplateByTemplateid(int templateid){
-//        //If it's null, refresh.  Generally won't happen.
-//        if (allTemplates==null){
-//            refresh();
-//        }
-//
-//        //See if it contains the logid. Most should get caught here.
-//        if (allTemplates.containsKey(new Integer(templateid))){
-//            return (Template)allTemplates.get(new Integer(templateid));
-//        }
-//
-//        //If we still don't have it, return null.
-//        return null;
-//    }
 
     public static Template getTemplateByTemplateid(int templateid, int type){
         //If it's null, refresh.  Generally won't happen.
@@ -198,7 +183,27 @@ public class AllTemplatesInSystem {
     }
 
 
+    public static String debugPrintHtmlListOfTemplates(){
+        if (allTemplates==null){
+            refresh();
+        }
 
+        StringBuffer out = new StringBuffer();
+
+        if (allTemplates!=null){
+            for (Iterator i=allTemplates.entrySet().iterator(); i.hasNext(); ) {
+                Map.Entry e = (Map.Entry) i.next();
+                //out.println(e.getKey() + ": " + e.getValue());
+                //Get each log
+                Template template = (Template)e.getValue();
+
+                out.append("<br><b>"+template.getName() + "</b> - templateid=" + template.getTemplateid() + " - type=" + template.getType());
+
+            }
+        }
+
+        return out.toString();
+    }
 
 
 }

@@ -38,7 +38,6 @@
         ${tomcat.install.directory}/server/lib/catalina.jar;
         ${tomcat.install.directory}/server/lib/catalina-optional.jar;
         ${tomcat.install.directory}/server/lib/catalina-ant.jar;
-        ${tomcat.install.directory}/server/lib/servlets-common.jar;
         ${tomcat.install.directory}/server/lib/servlets-default.jar;
   "/>
   <property name="thirdpartylibs" value="

@@ -213,7 +213,7 @@ public class SiteTemplateProcessor implements TemplateProcessor {
                 title = userSession.getAccount().getHomepagetitle();
             }
 
-            autodiscovery = "<link rel=\"alternate\" type=\"application/rss+xml\" title=\""+reger.core.Util.cleanForHtml(title)+"\" href=\""+reger.Vars.getHttpUrlPrefix()+userSession.getAccount().getSiteRootUrl()+"/rss.xml\">";
+            autodiscovery = "<link rel=\"alternate\" type=\"application/rss+xml\" title=\""+reger.core.Util.cleanForHtml(title)+"\" href=\""+userSession.getAccount().getSiteRootUrl(userSession)+"/rss.xml\">";
         }
         return autodiscovery;
     }
@@ -236,7 +236,7 @@ public class SiteTemplateProcessor implements TemplateProcessor {
                 } else if (m.group().equalsIgnoreCase("<$Banner$>")){
                     //Only show banners if it's a free account
                     if (!userSession.getAccount().isPro()){
-                        m.appendReplacement(out, reger.core.Util.cleanForAppendreplacement(reger.Banner.getBannerHtml(pageProps.pathToAppRoot)));
+                        m.appendReplacement(out, reger.core.Util.cleanForAppendreplacement(reger.Banner.getBannerHtml(userSession)));
                     } else {
                         m.appendReplacement(out, reger.core.Util.cleanForAppendreplacement(""));
                     }

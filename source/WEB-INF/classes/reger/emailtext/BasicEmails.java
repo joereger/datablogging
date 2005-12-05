@@ -28,8 +28,8 @@ public class BasicEmails {
 
         content.append("Welcome!  Your account has been created.  Keep this email for your records." + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Your public weblog is here: " +reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/" + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Administer your site here: " +reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/myhome/" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Your public weblog is here: " + acct.getSiteRootUrl() + "/" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Administer your site here: " + acct.getSiteRootUrl() + "/myhome/" + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append("Your Username: " + au.getUsername() + reger.Vars.LINEBREAKCHARFOREMAIL);
         if (pl.getIsPasswordSentViaEmail()){
             content.append("Your Password: " + cleartextPassword + reger.Vars.LINEBREAKCHARFOREMAIL);
@@ -71,8 +71,8 @@ public class BasicEmails {
                     mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
-                    mes.append("Your public weblog is here: "+reger.Vars.getHttpUrlPrefix() + au.getSiteRootUrl() + "/" + reger.Vars.LINEBREAKCHARFOREMAIL);
-                    mes.append("Administer your site here: "+reger.Vars.getHttpUrlPrefix() + au.getSiteRootUrl() + "/myhome/" + reger.Vars.LINEBREAKCHARFOREMAIL);
+                    mes.append("Your public weblog is here: "+ au.getSiteRootUrlOfPrimaryAccount() + "/" + reger.Vars.LINEBREAKCHARFOREMAIL);
+                    mes.append("Administer your site here: "+ au.getSiteRootUrlOfPrimaryAccount() + "/myhome/" + reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append("Your Username: " + au.getUsername() + reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
@@ -96,7 +96,7 @@ public class BasicEmails {
 
                 reger.Account acct = new reger.Account(accountid);
 
-                newAcctMsg = newAcctMsg + "" +reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/";
+                newAcctMsg = newAcctMsg + "" + acct.getSiteRootUrl() + "/";
 
                 newAcctMsg = newAcctMsg + reger.Vars.LINEBREAKCHARFOREMAIL;
                 newAcctMsg = newAcctMsg + reger.Vars.LINEBREAKCHARFOREMAIL;
@@ -146,104 +146,12 @@ public class BasicEmails {
         mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
         mes.append("Click below to see the invitation:");
         mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        mes.append(""+reger.Vars.getHttpUrlPrefix()+pl.getPlBaseUrl()+"/about/invitation-"+friendinvitationid+"-"+friendinvitationkey+".log");
+        mes.append(""+pl.getPlBaseUrl()+"/about/invitation-"+friendinvitationid+"-"+friendinvitationkey+".log");
         mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
         return mes;
     }
 
-//    public static StringBuffer groupsInvitationEmail(String friendlyname, String plname, String servername, int groupserversubscriptionid){
-//        StringBuffer mes = new StringBuffer();
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append("-----------");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append(friendlyname +" has invited you to join a weblog group.");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append("Click below to join:");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append(""+reger.Vars.getHttpUrlPrefix()+servername+"/about/groupinvitation.log?groupsubscriptionid="+groupsubscriptionid+"");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append("-----------");
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        return mes;
-//    }
-//
-//
-//    public static StringBuffer invitationEmail(String friendlyname, String plname, String servername, int friendinvitationid){
-//        StringBuffer mes = new StringBuffer();
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append("-----------");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append(friendlyname +" has invited you to join "+friendlyname+"'s personal and private ");
-//        mes.append("community at "+plname+", where you and "+friendlyname+" can network with each ");
-//        mes.append("other's friends, create personal activity-specific web logs and grow your online presence.");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append("Click below to join:");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append(""+reger.Vars.getHttpUrlPrefix()+servername+"/about/invitation.log?friendinvitationid="+friendinvitationid+"");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append("-----------");
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        return mes;
-//    }
-//
-//    public static StringBuffer showWebLogEmail(String servername, int logid, String logname, String friendlyname, String password){
-//        StringBuffer mes = new StringBuffer();
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append("-----------");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append(friendlyname +" has invited you to see the following web log:");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append(logname);
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        if (logid>0){
-//            mes.append(""+reger.Vars.getHttpUrlPrefix()+servername+"/logmain"+logid+".log");
-//            if (password!=null && !password.equals("")){
-//                mes.append("?qpass=" + password);
-//            }
-//        } else {
-//            mes.append(""+reger.Vars.getHttpUrlPrefix()+servername+"/");
-//        }
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append("-----------");
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        return mes;
-//    }
-//
-//
-//    public static StringBuffer showRssEmail(String servername, int logid, String logname, String friendlyname, String password){
-//        StringBuffer mes = new StringBuffer();
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append("-----------");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append(friendlyname +" has invited you to use the following RSS feed:");
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append(logname);
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        if (logid>0){
-//            mes.append(""+reger.Vars.getHttpUrlPrefix()+servername+"/rss-logid"+logid+".log");
-//            if (password!=null && !password.equals("")){
-//                mes.append("?qpass=" + password);
-//            }
-//        } else {
-//            mes.append(""+reger.Vars.getHttpUrlPrefix()+servername+"/rss.log");
-//        }
-//        mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        mes.append("-----------");
-//        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-//        return mes;
-//    }
+
 
     public static StringBuffer messagesEmailNotify(String servername, int eventid, String eventTitle){
         StringBuffer mes = new StringBuffer();
@@ -252,7 +160,7 @@ public class BasicEmails {
         mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
         mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
         String entryurl=reger.Entry.entryFileNameStatic(eventid, "");
-        mes.append(""+reger.Vars.getHttpUrlPrefix()+servername+"/" + entryurl);
+        mes.append(""+servername+"/" + entryurl);
 
         return mes;
     }

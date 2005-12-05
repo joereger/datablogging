@@ -17,7 +17,7 @@ public class LogTypeXform {
     
 
     public void loadByEventtypeid(int eventtypeid){
-        reger.core.Debug.debug(3, "LogTypeXForm.java", "Loading xform from database by eventtypeid="+eventtypeid);
+        reger.core.Debug.debug(4, "LogTypeXForm.java", "Loading xform from database by eventtypeid="+eventtypeid);
 
         this.logtypexformid = 0;
         this.eventtypeid=0;
@@ -30,17 +30,17 @@ public class LogTypeXform {
         //-----------------------------------
         if (rstXform!=null && rstXform.length>0){
             for(int i=0; i<rstXform.length; i++){
-                reger.core.Debug.debug(3, "LogTypeXForm.java", "Found record for eventtypeid="+eventtypeid);
+                reger.core.Debug.debug(5, "LogTypeXForm.java", "Found record for eventtypeid="+eventtypeid);
                 this.logtypexformid = Integer.parseInt(rstXform[i][0]);
                 this.eventtypeid = Integer.parseInt(rstXform[i][1]);
                 //@todo Possibly make this an array to hold multiple xforms per log.  As is it'll use the last one if there are multiple.
                 this.xform = rstXform[i][2];
             }
         } else {
-            reger.core.Debug.debug(3, "LogTypeXForm.java", "No db records found for eventtypeid="+eventtypeid);
+            reger.core.Debug.debug(4, "LogTypeXForm.java", "No db records found for eventtypeid="+eventtypeid);
         }
 
-        reger.core.Debug.debug(3, "LogTypeXForm.java", "xform="+this.xform.replaceAll("<", "&lt;"));
+        reger.core.Debug.debug(4, "LogTypeXForm.java", "xform="+this.xform.replaceAll("<", "&lt;"));
 
     }
     

@@ -119,7 +119,7 @@ if (!ul.hasenoughfreespace){
 if (userSession.getAccount().isPro()) {
 
     //Build a url with the sesionid attached so that when the applet passes a request to the server it can still access the session
-    String url = reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + "/myhome/entry-addmedia-advanced.log;jsessionid="+session.getId()+"?eventid="+localEventid+"&imagetags="+java.net.URLEncoder.encode(imagetags, "UTF-8");
+    String url = userSession.getAccount().getSiteRootUrl(userSession) + "/myhome/entry-addmedia-advanced.log;jsessionid="+session.getId()+"?eventid="+localEventid+"&imagetags="+java.net.URLEncoder.encode(imagetags, "UTF-8");
     //String url = "http://" + userSession.getSiteRootUrl() + "/myhome/entry-addmedia-advanced.log;jsessionid="+session.getId()+"?eventid="+localEventid+"&imagecategoryid="+imagecategoryid;
 
     mb.append("<center>");

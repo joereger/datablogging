@@ -242,7 +242,7 @@ if (pageProps.action.equals("createaccount")) {
 
 
         //Redirect to log the user in
-        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + baseUrlOfAccount +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=signupcomplete");
+        response.sendRedirect(au.getSiteRootUrlOfPrimaryAccount(userSession) +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=signupcomplete");
         return;
 
     }
@@ -282,7 +282,7 @@ if (pageProps.action.equals("createaccount")) {
         }
 
         //Redirect to log the user in
-        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + au.getSiteRootUrl() +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=logadded");
+        response.sendRedirect(au.getSiteRootUrlOfPrimaryAccount(userSession) +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=logadded");
         return;
     } else {
         errortext = "Sorry, that username/password combination was not found.";
@@ -324,7 +324,7 @@ if (pageProps.action.equals("createaccount")) {
         }
 
         //Redirect to log the user in
-        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + au.getSiteRootUrl() +"/myhome/index.log?msg=logadded");
+        response.sendRedirect(au.getSiteRootUrlOfPrimaryAccount(userSession) +"/myhome/index.log?msg=logadded");
         return;
         //mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Would have redirected user to admin home."));
     }
@@ -393,7 +393,7 @@ mb.append("<td valign=top>");
     if (userSession.getPl().getUsedynamicdns()){
         mb.append("<b>"+request.getScheme() + ":// <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> ." + userSession.getPl().getPlbasedomain() + "/ </b>");
     } else {
-        mb.append("<b>"+reger.Vars.getHttpUrlPrefix() +userSession.getPl().getPlbasedomain()+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
+        mb.append("<b>"+userSession.getPl().getPlbasedomain(userSession)+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
     }
     mb.append("</font>");
     mb.append("<br>");

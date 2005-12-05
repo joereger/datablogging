@@ -111,6 +111,8 @@ public class MetaWebLogApi {
         } catch (Exception e) {
             Debug.errorsave(e, "");
             return "Error.";
+
+
         }
 
     }
@@ -469,7 +471,7 @@ public class MetaWebLogApi {
 
 
                 //Return the public URL where this can be accessed
-                return "" + reger.Vars.getHttpUrlPrefix() + account.getSiteRootUrl() + "/mediaout.log?imageid=" + imageid;
+                return "" + account.getSiteRootUrl() + "/mediaout.log?imageid=" + imageid;
             } else {
                 //@todo Learn to throw an xml-rpc exception
                 return "Invalid servername or password.";

@@ -43,9 +43,7 @@ public class BloggerApi {
                     //The struct that holds info on one web log
                     Hashtable ublogs = new Hashtable();
 
-                    String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(account.getAccountid());
-
-                    ublogs.put(String.valueOf("url"), "" + reger.Vars.getHttpUrlPrefix() + baseSiteUrl + "/");
+                    ublogs.put(String.valueOf("url"), "" + account.getSiteRootUrl() + "/");
                     ublogs.put(String.valueOf("blogid"), rstGetLogList[i][0]);
                     ublogs.put(String.valueOf("blogname"), rstGetLogList[i][1]);
 

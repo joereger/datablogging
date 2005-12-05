@@ -1,5 +1,6 @@
 <%@ page import="reger.core.db.Db,
                  reger.core.db.Db"%>
+<%@ page import="reger.Account"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -211,9 +212,9 @@ if (request.getParameter("searchsites")!=null || request.getParameter("alpha")!=
             mb.append("</td>");
             mb.append("<td valign=top bgcolor=#ffffff>");
             mb.append("<font face=arial size=-2>");
-            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSearch[i][0]));
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
-            mb.append(""+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/");
+            Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstSearch[i][0]));
+            mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/'>");
+            mb.append(""+acctTmp.getSiteRootUrl(userSession)+"/");
             mb.append("</a>");
             mb.append("</font>");
             mb.append("</td>");
@@ -286,8 +287,7 @@ mb.append("</table>");
 //    if (rstSites!=null && rstSites.length>0){
 //        for(int i=0; i<rstSites.length; i++){
 //            mb.append((i+1)+") ");
-//            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSites[i][2]));
-//            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+//            mb.append("<a href='"+baseSiteUrl+"/'>");
 //            String sitename = rstSites[i][1];
 //            if (sitename.equals("")){
 //                sitename=rstSites[i][2];
@@ -330,8 +330,7 @@ mb.append("</table>");
 //    if (rstStsMstRd!=null && rstStsMstRd.length>0){
 //        for(int i=0; i<rstStsMstRd.length; i++){
 //            mb.append((i+1)+") ");
-//            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstStsMstRd[i][2]));
-//            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+//            mb.append("<a href='"+baseSiteUrl+"/'>");
 //            String sitename = rstStsMstRd[i][1];
 //            if (sitename.equals("")){
 //                sitename=rstStsMstRd[i][2];
@@ -375,8 +374,7 @@ mb.append("</table>");
 //    if (rstStsMstRdAllTime!=null && rstStsMstRdAllTime.length>0){
 //        for(int i=0; i<rstStsMstRdAllTime.length; i++){
 //            mb.append((i+1)+") ");
-//            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstStsMstRdAllTime[i][2]));
-//            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+//            mb.append("<a href='"+baseSiteUrl+"/'>");
 //            String sitename = rstStsMstRdAllTime[i][1];
 //            if (sitename.equals("")){
 //                sitename=rstStsMstRdAllTime[i][2];

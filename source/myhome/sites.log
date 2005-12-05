@@ -94,7 +94,7 @@ if (accts!=null){
         String sitename = (String) accts.get ( accountid );
         //Create an account object
         reger.Account acct = new reger.Account(accountid.intValue());
-        //sc.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/'>");
+        //sc.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/'>");
         mb.append("<tr>");
         mb.append("<td valign=top align=center>");
         if (accountid.intValue()==userSession.getAccount().getAccountid()){
@@ -110,7 +110,7 @@ if (accts!=null){
         //sc.append("</a>");
         mb.append("</td>");
         mb.append("<td valign=top nowrap>");
-        mb.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/'>");
+        mb.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/'>");
         mb.append("<font face=arial size=-2>");
         mb.append("<img src='../images/icon-public.gif' border=0>");
         mb.append("View this Site");
@@ -119,7 +119,7 @@ if (accts!=null){
         mb.append("</td>");
         mb.append("<td valign=top nowrap>");
         if (userSession.getAccountuser().userCanDoAcl("ADMINHOME", accountid.intValue())){
-            mb.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/myhome/'>");
+            mb.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/myhome/'>");
             mb.append("<font face=arial size=-2>");
             mb.append("<img src='images/icon-edit.gif' border=0>");
             mb.append("Admin for this Site");

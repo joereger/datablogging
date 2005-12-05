@@ -59,8 +59,8 @@ int refreshintervalinseconds = 3600;
     if (rstEvent!=null && rstEvent.length>0){
         for(int i=0; i<rstEvent.length; i++){
             mb.append((i+1)+") ");
-            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstEvent[i][2]));
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/entry-logid"+rstEvent[i][3]+"-eventid"+rstEvent[i][0]+".log'>");
+            reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstEvent[i][2]));
+            mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/entry-logid"+rstEvent[i][3]+"-eventid"+rstEvent[i][0]+".log'>");
             mb.append(rstEvent[i][1]);
             mb.append("</a>");
             mb.append("<br>");
@@ -97,8 +97,8 @@ int refreshintervalinseconds = 3600;
     if (rstMostRead!=null && rstMostRead.length>0){
         for(int i=0; i<rstMostRead.length; i++){
             mb.append((i+1)+") ");
-            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstMostRead[i][2]));
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/entry-logid"+rstMostRead[i][4]+"-eventid"+rstMostRead[i][0]+".log?'>");
+            reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstMostRead[i][2]));
+            mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/entry-logid"+rstMostRead[i][4]+"-eventid"+rstMostRead[i][0]+".log?'>");
             mb.append(rstMostRead[i][1]);
             mb.append("</a>");
             mb.append(" ("+rstMostRead[i][3]+")");
@@ -136,8 +136,8 @@ int refreshintervalinseconds = 3600;
     if (rstMostReadAllTime!=null && rstMostReadAllTime.length>0){
         for(int i=0; i<rstMostReadAllTime.length; i++){
             mb.append((i+1)+") ");
-            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstMostReadAllTime[i][2]));
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/entry-logid"+rstMostReadAllTime[i][4]+"-eventid"+rstMostReadAllTime[i][0]+".log'>");
+            reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstMostReadAllTime[i][2]));
+            mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/entry-logid"+rstMostReadAllTime[i][4]+"-eventid"+rstMostReadAllTime[i][0]+".log'>");
             mb.append(rstMostReadAllTime[i][1]);
             mb.append("</a>");
             mb.append(" ("+rstMostReadAllTime[i][3]+")");

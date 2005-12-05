@@ -22,17 +22,11 @@ public class UserSession implements java.io.Serializable {
     //Identifiers
     private reger.UrlSplitter urlSplitter;
 
-    //Outcome - the siteRootUrl
-    private String siteRootUrl;
-
     //Activity for timeout
     private Calendar mostRecentActivity;
 
     //Session attributes map
     private HashMap attributes = new HashMap();
-
-
-
 
     public UserSession(javax.servlet.http.HttpServletRequest request){
         reger.core.Debug.debug(5, "UserSession.java", "New UserSession created.");
@@ -75,7 +69,7 @@ public class UserSession implements java.io.Serializable {
         UrlSplitter urlSplitter = new UrlSplitter(request);
 
         //If we're seeing a new url scheme, refresh the objects in the session
-        if (this.urlSplitter==null || (!urlSplitter.getServername().equals(this.urlSplitter.getServername()) || !urlSplitter.getVirtualdir().equals(this.urlSplitter.getVirtualdir()))) {
+        if (this.urlSplitter==null || (!urlSplitter.getServername().equals(this.urlSplitter.getServername()) || !urlSplitter.getVirtualdir().equals(this.urlSplitter.getVirtualdir()) || !urlSplitter.getScheme().equals(this.urlSplitter.getScheme()) || !String.valueOf(urlSplitter.getPort()).equals(String.valueOf(this.urlSplitter.getPort())))) {
             Debug.debug(5, "", "Refresh of UserSession object triggered.");
             Debug.debug(5, "", "UserSession.processNewRequest() - after urlSplitter. <br>urlSplitter.getRawIncomingServername()=" + urlSplitter.getRawIncomingServername() + "<br>urlSplitter.getServername()=" + urlSplitter.getServername() + "<br>urlSplitter.getVirtualdir()=" + urlSplitter.getVirtualdir() + "<br>urlSplitter.getSiterooturl()=" + urlSplitter.getSiterooturl());
             if (reger.core.DegubLevel.getDebugLevel()>=5){
@@ -83,8 +77,6 @@ public class UserSession implements java.io.Serializable {
             }
             //Set the new urlSplitter to be the one for the session
             this.urlSplitter = urlSplitter;
-            //Set the siterooturl
-            this.siteRootUrl = urlSplitter.getSiterooturl();
             //Find the account using the URL Splitter
             this.accountid = reger.cache.UrlToAccountidLookupCache.get(urlSplitter);
             this.account=null;
@@ -122,6 +114,28 @@ public class UserSession implements java.io.Serializable {
         }
     }
 
+    public String getUrlWithPortSmartlyAttached(String inUrl){
+        String outUrl = inUrl;
+        reger.core.Debug.debug(5, "UserSession.java", "inUrl = " + inUrl);
+        try{
+            //Parse the incoming URL
+            java.net.URL urlParsed = new java.net.URL(inUrl);
+            reger.core.Debug.debug(5, "UserSession.java", "urlParsed.toString() = " + urlParsed.toString() + "<br>urlParsed.getProtocol() = "+urlParsed.getProtocol()+"<br>getUrlSplitter().getPort() = "+getUrlSplitter().getPort());
+
+            //Now create a new version of the URL, manually controlling the port num, scheme
+            java.net.URL urlPortControlled = new java.net.URL(getUrlSplitter().getScheme(), urlParsed.getHost(), getUrlSplitter().getPort(), urlParsed.getFile());
+
+            //Now get the output
+            outUrl = urlPortControlled.toString();
+        } catch (Exception ex){
+            reger.core.Debug.debug(5, "UserSession.java", ex);
+        }
+        reger.core.Debug.debug(5, "UserSession.java", "outUrl = " + outUrl);
+        return outUrl;
+    }
+
+
+
     public void setAttribute(String attributename, Object obj){
         attributes.put(attributename, obj);
     }
@@ -155,10 +169,6 @@ public class UserSession implements java.io.Serializable {
 
     public Calendar getMostRecentActivity() {
         return mostRecentActivity;
-    }
-
-    public String getSiteRootUrl() {
-        return siteRootUrl;
     }
 
     public Account getAccount() {

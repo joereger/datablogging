@@ -22,8 +22,6 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("adminhome", "", "MY HOME", "myhome/index.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logs", "", "LOGS", "myhome/logs.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entries", "", "ENTRIES", "myhome/entries-recent.log", false, ""));
-        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodes", "", "EPISODES", "myhome/episodes.log", false, ""));
-        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiods", "", "PERIODS", "myhome/timeperiods.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphs", "", "GRAPHS", "myhome/graphs.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffic", "", "TRAFFIC", "myhome/traffic.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("people", "", "PEOPLE", "myhome/people.log", false, ""));

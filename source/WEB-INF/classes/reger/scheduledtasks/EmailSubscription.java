@@ -98,14 +98,11 @@ public class EmailSubscription implements ScheduledTask{
                                 messagebody="";
 
                                 //Get the site root url
-                                String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSubs[i][2]));
+                                reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstSubs[i][2]));
 
                                 //Calculate the url of the site
-                                if (!rstSubs[i][8].equals("")){
-                                    url="" +reger.Vars.getHttpUrlPrefix() + rstSubs[i][8] + "/";
-                                } else {
-                                    url=""+reger.Vars.getHttpUrlPrefix() + baseSiteUrl + "/";
-                                }
+                                url="" + acctTmp.getSiteRootUrl() + "/";
+
 
                                 //Subject
                                 String newslettersubject = "Email update for: " + url;

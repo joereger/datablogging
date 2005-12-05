@@ -615,7 +615,7 @@ public class MegaHtmlFormBottom {
                     mb.append("<font face=arial size=-2>");
                     mb.append("<b>Trackback URL for this entry:</b>");
                     mb.append("<br>");
-                    String trackbackurl = ""+reger.Vars.getHttpUrlPrefix()+userSession.getAccount().getSiteRootUrl()+"/trackback-eventid"+pageProps.entry.eventid+".log";
+                    String trackbackurl = ""+userSession.getAccount().getSiteRootUrl(userSession)+"/trackback-eventid"+pageProps.entry.eventid+".log";
                     mb.append("<i>");
                     mb.append(trackbackurl);
                     mb.append("</i>");

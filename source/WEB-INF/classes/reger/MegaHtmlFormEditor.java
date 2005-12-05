@@ -79,7 +79,7 @@ public class MegaHtmlFormEditor {
             } else {
                 if (userSession!=null && userSession.getAccount()!=null && !userSession.getAccount().isPro()){
                     mb.append("<div style=\"float: right;\">");
-                    mb.append(reger.Banner.getMediumRectangleGoogleBanner());
+                    mb.append(reger.Banner.getMediumRectangleGoogleBanner(userSession));
                     mb.append("</div>");
                 }
 

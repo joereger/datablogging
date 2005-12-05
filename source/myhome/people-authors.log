@@ -104,8 +104,8 @@ if (rstAuthors!=null && rstAuthors.length>0){
             mb.append("</td>");
             mb.append("<td valign=top align=left>");
             mb.append("<font face=arial size=-2>");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+ac.getSiteRootUrl()+"/'>");
-            mb.append(""+reger.Vars.getHttpUrlPrefix()+ac.getSiteRootUrl()+"/");
+            mb.append("<a href='"+ac.getSiteRootUrlOfPrimaryAccount(userSession)+"/'>");
+            mb.append(""+ac.getSiteRootUrlOfPrimaryAccount(userSession)+"/");
             mb.append("</a>");
             mb.append("</font>");
             mb.append("</td>");

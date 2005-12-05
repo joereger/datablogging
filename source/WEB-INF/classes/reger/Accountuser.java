@@ -50,7 +50,7 @@ public class Accountuser {
     public boolean isactive = true;
     private java.util.Calendar createdate = Calendar.getInstance();
     private boolean isHelpOn = true;
-    private String siteRootUrl = "";
+    //private String siteRootUrl = "";
 
 
 
@@ -169,7 +169,8 @@ public class Accountuser {
             this.accountuserid = -1;
         }
 
-        siteRootUrl = reger.Account.getSiteRootUrlViaAccountid(this.accountid);
+        //reger.Account acct = reger.cache.AccountCache.get(this.accountid);
+        //siteRootUrl = acct.getSiteRootUrl();
 
         //Populate permissions from the database
         populatePermissionsFromDb();
@@ -527,7 +528,6 @@ public class Accountuser {
         //-----------------------------------
         if (rstAccounts!=null && rstAccounts.length>0){
             for(int i=0; i<rstAccounts.length; i++){
-                //String rootUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAccounts[i][0]));
                 if (accountsUserHasAccessTo==null){
                     accountsUserHasAccessTo = new Hashtable();
                 }
@@ -1840,7 +1840,7 @@ public class Accountuser {
     }
 
 
-    public StringBuffer htmlShortestRelationshipToPerson(int accountuseridofperson){
+    public StringBuffer htmlShortestRelationshipToPerson(int accountuseridofperson, UserSession userSession){
         StringBuffer mb = new StringBuffer();
 
         //First, go get the path
@@ -1848,12 +1848,12 @@ public class Accountuser {
         int[] relationship = friend.getShortestRelationship(accountuserid, accountuseridofperson);
 
         //Now, get the html representing the relationship
-        mb.append(htmlFormatSingleRelationship(relationship));
+        mb.append(htmlFormatSingleRelationship(relationship, userSession));
 
         return mb;
     }
 
-    public StringBuffer htmlAllRelationshipsToPerson(int accountuseridofperson){
+    public StringBuffer htmlAllRelationshipsToPerson(int accountuseridofperson, UserSession userSession){
         StringBuffer mb = new StringBuffer();
 
         //First, go get the path
@@ -1864,7 +1864,7 @@ public class Accountuser {
         if (relationship!=null){
             for (int i = 0; i < relationship.length; i++) {
                 //Now, get the html representing the relationship
-                mb.append(htmlFormatSingleRelationship(relationship[i]));
+                mb.append(htmlFormatSingleRelationship(relationship[i], userSession));
                 //mb.append("<br>");
             }
         } else {
@@ -1876,7 +1876,7 @@ public class Accountuser {
         return mb;
     }
 
-    public StringBuffer htmlFormatSingleRelationship(int[] relationship){
+    public StringBuffer htmlFormatSingleRelationship(int[] relationship, UserSession userSession){
         StringBuffer mb = new StringBuffer();
 
         //We have an array of accountuserid's and need to convert them into a linear representation of the relationship
@@ -1913,8 +1913,8 @@ public class Accountuser {
                         if (Integer.parseInt(rstAcc[j][0])==relationship[i]){
                             mb.append("<td valign=top>");
                             mb.append("<font face=arial size=-2>");
-                            String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAcc[j][3]));
-                            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/author.log?accountuserid="+rstAcc[j][0]+"'>");
+                            reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstAcc[j][3]));
+                            mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/author.log?accountuserid="+rstAcc[j][0]+"'>");
                             if (rstAcc[j][1].equals(friendlyname)){
                                 mb.append("You");
                             } else {
@@ -1955,7 +1955,7 @@ public class Accountuser {
         return mb;
     }
 
-    public StringBuffer thingsUserCanAccessHtml(boolean isHttps){
+    public StringBuffer thingsUserCanAccessHtml(boolean isHttps, UserSession userSession){
         StringBuffer mb = new StringBuffer();
 
         mb.append("<table cellpadding=15 cellspacing=3 width=100% border=0>");
@@ -1976,14 +1976,14 @@ public class Accountuser {
                 //Site name
                 mb.append("<tr>");
                 mb.append("<td valign=top bgcolor=#cccccc colspan=2>");
-                mb.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/'>");
+                mb.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/'>");
                 mb.append("<font face=arial size=+1>");
-                mb.append(""+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/");
+                mb.append(""+ acct.getSiteRootUrl(userSession) + "/");
                 mb.append("</font>");
                 mb.append("</a>");
                 if (userCanDoAcl("ADMINHOME", accountid.intValue())){
                     mb.append(" ");
-                    mb.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/myhome/'>");
+                    mb.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/myhome/'>");
                     mb.append("<font face=arial size=-1>");
                     mb.append("(Admin)");
                     mb.append("</font>");
@@ -2019,9 +2019,9 @@ public class Accountuser {
                     //reger.core.Util.logtodb("Logid=" + log.getLogid() + "<br>userCanViewLog(log.getLogid())=" + userCanViewLog(log.getLogid()));
                     if (userCanViewLog(log.getLogid()) || userCanAuthorLog(log.getLogid())){
                         if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
-                            mb.append("<img src='"+reger.Vars.getHttpUrlPrefix()+acct.getSiteRootUrl()+"/images/icon-private.gif' border=0>");
+                            mb.append("<img src='"+acct.getSiteRootUrl(userSession)+"/images/icon-private.gif' border=0>");
                         } else {
-                            mb.append("<img src='"+reger.Vars.getHttpUrlPrefix()+acct.getSiteRootUrl()+"/images/icon-public.gif' border=0>");
+                            mb.append("<img src='"+acct.getSiteRootUrl(userSession)+"/images/icon-public.gif' border=0>");
                         }
                         mb.append(" ");
                         mb.append("<font face=arial size=-1>");
@@ -2030,12 +2030,12 @@ public class Accountuser {
                         mb.append("</b>");
                         mb.append("</font>");
                         mb.append("<font face=arial size=-2>");
-                        mb.append(" (<a href='"+reger.Vars.getHttpUrlPrefix()+acct.getSiteRootUrl()+"/logmain"+log.getLogid()+".log'>");
+                        mb.append(" (<a href='"+acct.getSiteRootUrl(userSession)+"/logmain"+log.getLogid()+".log'>");
                         mb.append("View");
                         mb.append("</a>)");
                         if (userCanAuthorLog(log.getLogid()) && userCanDoAcl("ADDEDITENTRIES", accountid.intValue())){
                             mb.append(" ");
-                            mb.append("(<a href='"+reger.Vars.getHttpUrlPrefix()+acct.getSiteRootUrl()+"/myhome/entry.log?logid="+log.getLogid()+"&action=add'>");
+                            mb.append("(<a href='"+acct.getSiteRootUrl(userSession)+"/myhome/entry.log?logid="+log.getLogid()+"&action=add'>");
                             mb.append("Add Entry");
                             mb.append("</a>)");
                         }
@@ -2073,7 +2073,7 @@ public class Accountuser {
         if (isLoggedIn){
             mb.append("<tr>");
             mb.append("<td valign=top bgcolor=#cccccc colspan=2>");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+getSiteRootUrl()+"/myhome/groups.log'>");
+            mb.append("<a href='"+getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/groups.log'>");
             mb.append("<font face=arial size=+1>");
             mb.append("Groups");
             mb.append("</font>");
@@ -2111,11 +2111,11 @@ public class Accountuser {
                         mb.append(" (<a href='"+rstGroup[i][4]+"?groupkey="+rstGroup[i][2]+"&groupadminkey="+rstGroup[i][3]+"'>");
                         mb.append("View");
                         mb.append("</a>)");
-                        mb.append(" (<a href='"+reger.Vars.getHttpUrlPrefix()+getSiteRootUrl()+"/myhome/people-friends-invite.log?groupsubscriptionid="+rstGroup[i][0]+"'>");
+                        mb.append(" (<a href='"+getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/people-friends-invite.log?groupsubscriptionid="+rstGroup[i][0]+"'>");
                             mb.append("Invite Friends");
                             mb.append("</a>)");
                         if (!rstGroup[i][3].equals("")){
-                            mb.append(" (<a href='"+reger.Vars.getHttpUrlPrefix()+getSiteRootUrl()+"/myhome/groups-administer.log?groupsubscriptionid="+rstGroup[i][0]+"'>");
+                            mb.append(" (<a href='"+getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/groups-administer.log?groupsubscriptionid="+rstGroup[i][0]+"'>");
                             mb.append("Administer");
                             mb.append("</a>)");
                         }
@@ -2162,6 +2162,17 @@ public class Accountuser {
                 saveSettings(pl);
             }
         }
+    }
+
+    public String getSiteRootUrlOfPrimaryAccount() {
+        reger.Account acct = reger.cache.AccountCache.get(this.accountid);
+        reger.core.Debug.debug(5, "Accountuser.java", "acct.getSiteRootUrl()="+acct.getSiteRootUrl());
+        return acct.getSiteRootUrl();
+    }
+
+    public String getSiteRootUrlOfPrimaryAccount(UserSession userSession){
+        reger.core.Debug.debug(5, "Accountuser.java", "sending inUrl="+getSiteRootUrlOfPrimaryAccount());
+        return userSession.getUrlWithPortSmartlyAttached(getSiteRootUrlOfPrimaryAccount());
     }
 
 
@@ -2296,9 +2307,7 @@ public class Accountuser {
         this.onelinesummary = onelinesummary;
     }
 
-    public String getSiteRootUrl() {
-        return siteRootUrl;
-    }
+
 
     public Vector getAccountUserAcls() {
         return accountUserAcls;

@@ -19,18 +19,18 @@ public class Rss {
         //Output RSS top
         String homepagetitle = userSession.getAccount().getHomepagetitle();
         if (homepagetitle.equals("")) {
-            homepagetitle="" + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+            homepagetitle="" + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         }
 
         String homepagehtml = userSession.getAccount().getHomepagehtml();
         if (homepagehtml.equals("")) {
-            homepagehtml="A web log called " + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/";
+            homepagehtml="A web log called " + userSession.getAccount().getSiteRootUrl(userSession) + "/";
         }
 
         fd.append("<rss version=\"2.0\">");
         fd.append("<channel>");
         fd.append("<title>" + reger.core.Util.xmlclean(homepagetitle) + "</title>");
-        fd.append("<link>" + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/" + "</link>");
+        fd.append("<link>" +  userSession.getAccount().getSiteRootUrl(userSession) + "/" + "</link>");
         fd.append("<description>" + reger.core.Util.xmlclean(homepagehtml) + "</description>");
         fd.append("<generator>Reger.com Activity-specific Weblogging Server Technology</generator>");
 
@@ -62,7 +62,7 @@ public class Rss {
                 //}
 
                 //Link
-                String link="" + reger.Vars.getHttpUrlPrefix() +userSession.getAccount().getSiteRootUrl() +"/entry-logid"+rstEvent[i][2]+"-eventid"+rstEvent[i][1]+".log";
+                String link="" + userSession.getAccount().getSiteRootUrl(userSession) +"/entry-logid"+rstEvent[i][2]+"-eventid"+rstEvent[i][1]+".log";
 
                 fd.append("<item>");
                 fd.append("<title>" + reger.core.Util.xmlclean(rstEvent[i][3]) + "</title>");

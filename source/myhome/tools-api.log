@@ -22,13 +22,15 @@ pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 
 
+
+
 mb.append("<br><br>");
 
 mb.append("<table cellpadding=5 width=100% cellspacing=4 border=0 bgcolor=#cccccc>");
 mb.append("<tr>");
 mb.append("<td valign=center align=center bgcolor=#ffffff>");
 mb.append("<font face=arial size=+2>");
-mb.append(""+reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + "/api.log");
+mb.append("" + userSession.getAccount().getSiteRootUrl(userSession) + "/api.log");
 mb.append("</font>");
 mb.append("<br>");
 mb.append("<font face=arial size=-2>");

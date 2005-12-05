@@ -44,7 +44,7 @@ public class TrafficHit {
         //Remote host
         String remotehost=reger.core.Util.truncateString(request.getRemoteHost(), 255);
         //Clicked url
-        String clickedurl=reger.Vars.getHttpUrlPrefix() + request.getHeader("host") + request.getRequestURI();
+        String clickedurl=request.getScheme() + "://" + request.getHeader("host") + request.getRequestURI();
         if (request.getQueryString()!=null && !request.getQueryString().equals("")){
             clickedurl=clickedurl+"?"+request.getQueryString();
         }

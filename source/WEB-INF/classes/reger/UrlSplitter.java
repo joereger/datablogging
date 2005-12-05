@@ -12,6 +12,7 @@ public class UrlSplitter implements java.io.Serializable {
     private String virtualdir = "";
     private String siterooturl = "";
     private int port = 80;
+    private String scheme = "http://";
 
     private String[] servernameAllPossibleDomains=new String[0];
 
@@ -69,6 +70,9 @@ public class UrlSplitter implements java.io.Serializable {
 
         //Set the port
         port = request.getServerPort();
+
+        //Set the protocol
+        scheme = request.getScheme();
     }
 
     public String getUrlSplitterAsString(){
@@ -82,6 +86,8 @@ public class UrlSplitter implements java.io.Serializable {
     public String getServername() {
         return servername;
     }
+
+
 
     public int getPort() {
         return port;
@@ -110,6 +116,10 @@ public class UrlSplitter implements java.io.Serializable {
 
     public String[] getServernameAllPossibleDomains() {
         return servernameAllPossibleDomains;
+    }
+
+    public String getScheme(){
+        return scheme;
     }
 
 }

@@ -70,11 +70,8 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 	response.addCookie(reger.PersistentLogin.createCookieToClearPersistentLogin(request));
 	//If this pl is in forcedlogin mode, redirect to the pl home.  Otherwise, the user won't actually be able to login from the login page.  Whoops.
 	if (userSession.getPl().getForcelogintoviewsites()){
-	    String port="";
-	    if (userSession.getUrlSplitter().getPort()!=80 && userSession.getUrlSplitter().getPort()!=443){
-            port = ":"+userSession.getUrlSplitter().getPort();
-        }
-        response.sendRedirect(reger.Vars.getHttpUrlPrefix()+userSession.getPl().getPlBaseUrl()+port+"/about/index.log");
+
+        response.sendRedirect(userSession.getPl().getPlBaseUrl(userSession)+"/about/index.log");
         return;
     }
 }
@@ -107,9 +104,9 @@ if (userSession.getAccountuser().userCanDoAcl("ADMINHOME", userSession.getAccoun
     }
     //Redirect to the accountuser's admin home page... always
     try{
-        Debug.debug(5, "", "login.log - user logged in - redirecting to:" + reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() +"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
+        Debug.debug(5, "", "login.log - user logged in - redirecting to:" + userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) +"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
 
-        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getUrlSplitter().getSiterooturlPlusPortNum()+"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
+        response.sendRedirect(userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
 
         return;
     } catch (Exception e){
@@ -276,7 +273,7 @@ mb.append("</tr>");
 mb.append("</table>");
 
 
-mb.append(userSession.getAccountuser().thingsUserCanAccessHtml(request.isSecure()));
+mb.append(userSession.getAccountuser().thingsUserCanAccessHtml(request.isSecure(), userSession));
 
 
 

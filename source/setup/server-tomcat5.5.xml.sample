@@ -1,0 +1,66 @@
+<Server port="8005" shutdown="SHUTDOWN">
+
+   <!-- Comment these entries out to disable JMX MBeans support used for the
+        administration web application -->
+   <Listener className="org.apache.catalina.core.AprLifecycleListener" />
+   <Listener className="org.apache.catalina.mbeans.ServerLifecycleListener" />
+   <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+   <Listener className="org.apache.catalina.storeconfig.StoreConfigLifecycleListener"/>
+
+   <!-- Global JNDI resources -->
+   <GlobalNamingResources>
+     <!-- Test entry for demonstration purposes -->
+     <Environment name="simpleValue" type="java.lang.Integer" value="30"/>
+     <!-- Editable user database that can also be used by
+          UserDatabaseRealm to authenticate users -->
+     <Resource name="UserDatabase" auth="Container"
+               type="org.apache.catalina.UserDatabase"
+        description="User database that can be updated and saved"
+            factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+           pathname="conf/tomcat-users.xml" />
+   </GlobalNamingResources>
+
+
+ 
+   <Service name="Catalina">
+     <Connector port="80"  address="172.16.1.37"
+      maxHttpHeaderSize="8192" maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
+      enableLookups="false" redirectPort="8443" acceptCount="100"
+      connectionTimeout="20000" disableUploadTimeout="true" />
+            <Engine name="Catalina" defaultHost="localhost">
+                <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+                <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true" xmlValidation="false" xmlNamespaceAware="false">
+            </Host>
+            </Engine>
+   </Service>
+
+
+
+   <Service name="CatalinaJoereger">
+     <Connector port="80"  address="172.16.1.22"
+      maxHttpHeaderSize="8192" maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
+      enableLookups="false" redirectPort="8443" acceptCount="100"
+      connectionTimeout="20000" disableUploadTimeout="true" />
+            <Engine name="CatalinaJoereger" defaultHost="localhost">
+                <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+                <Host name="localhost" appBase="webappsJoereger" unpackWARs="true" autoDeploy="true" xmlValidation="false" xmlNamespaceAware="false">
+            </Host>
+            </Engine>
+   </Service>
+
+
+   <Service name="CatalinaTesting">
+     <Connector port="8080"  address="172.16.1.37"
+      maxHttpHeaderSize="8192" maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
+      enableLookups="false" redirectPort="8443" acceptCount="100"
+      connectionTimeout="20000" disableUploadTimeout="true" />
+            <Engine name="CatalinaTesting" defaultHost="localhost">
+                <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+                <Host name="localhost" appBase="webappsTesting" unpackWARs="true" autoDeploy="true" xmlValidation="false" xmlNamespaceAware="false">
+            </Host>
+            </Engine>
+   </Service>
+
+
+
+ </Server>

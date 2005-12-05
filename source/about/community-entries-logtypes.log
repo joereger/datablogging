@@ -76,9 +76,9 @@ int refreshintervalinseconds = 3600;
         //-----------------------------------
         if (rstEventByType!=null && rstEventByType.length>0){
             for(int i=0; i<rstEventByType.length; i++){
+                reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstEventByType[i][2]));
                 mb.append((i+1)+") ");
-                String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstEventByType[i][2]));
-                mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/entry-logid"+rstEventByType[i][3]+"-eventid"+rstEventByType[i][0]+".log'>");
+                mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/entry-logid"+rstEventByType[i][3]+"-eventid"+rstEventByType[i][0]+".log'>");
                 mb.append(rstEventByType[i][1]);
                 mb.append("</a>");
                 mb.append("<br>");

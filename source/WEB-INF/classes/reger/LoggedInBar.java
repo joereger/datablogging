@@ -51,11 +51,11 @@ public class LoggedInBar {
             mb.append("<tr>");
             mb.append("<td class=loggedinbarsubtable>");
             mb.append("<font face=arial size=-2 class=loggedinbartext>");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/index.log' class=loggedinbarlink>");
+            mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/index.log' class=loggedinbarlink>");
             mb.append("MY SITE");
             mb.append("</a>");
             mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/myhome/index.log' class=loggedinbarlink>");
+            mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/index.log' class=loggedinbarlink>");
             mb.append("MY ADMIN TOOLS");
             mb.append("</a>");
             mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
@@ -63,7 +63,7 @@ public class LoggedInBar {
             mb.append("MY PRIVILEGES");
             mb.append("</a>");
             mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
-//            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/myhome/index.log?action=togglehelp' class=loggedinbarlink>");
+//            mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/index.log?action=togglehelp' class=loggedinbarlink>");
 //            if (userSession.getAccountuser().getIsHelpOn()){
 //                mb.append("TURN HELP OFF");
 //            } else {
@@ -71,7 +71,7 @@ public class LoggedInBar {
 //            }
 //            mb.append("</a>");
 //            mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/login.log?action=logout' class=loggedinbarlink>");
+            mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/login.log?action=logout' class=loggedinbarlink>");
             mb.append("LOG OUT");
             mb.append("</a>");
             mb.append("</font>");
@@ -139,7 +139,7 @@ public class LoggedInBar {
                 mb.append(reger.Help.helpOnEachPage(tmpHlpTxt, pageProps.pathToAppRoot));
                 mb.append("</blockquote>");
                 mb.append("<br>");
-                mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/myhome/index.log?action=togglehelp' class=loggedinbarlink>");
+                mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/index.log?action=togglehelp' class=loggedinbarlink>");
                 if (userSession.getAccountuser().getIsHelpOn()){
                     mb.append("TURN HELP OFF");
                 } else {
@@ -219,7 +219,7 @@ public class LoggedInBar {
 
             mb.append("<td bgcolor=#cccccc valign=middle align=center>");
             mb.append("<font face=arial size=-2 class=loggedinbartext>");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/index.log' class=loggedinbarlink>");
+            mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/index.log' class=loggedinbarlink>");
             mb.append("My Weblog");
             mb.append("</a>");
             mb.append("</font>");
@@ -231,7 +231,7 @@ public class LoggedInBar {
 
             mb.append("<td bgcolor=#cccccc valign=middle align=center>");
             mb.append("<font face=arial size=-2 class=loggedinbartext>");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/myhome/index.log' class=loggedinbarlink>");
+            mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/index.log' class=loggedinbarlink>");
             mb.append("My Admin Tools");
             mb.append("</a>");
             mb.append("</font>");
@@ -291,7 +291,7 @@ public class LoggedInBar {
             mb.append("<td bgcolor=#cccccc valign=middle align=center>");
 
             mb.append("<font face=arial size=-2 class=loggedinbartext>");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/myhome/index.log?action=togglehelp' class=loggedinbarlink>");
+            mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/index.log?action=togglehelp' class=loggedinbarlink>");
             if (userSession.getAccountuser().getIsHelpOn()){
                 mb.append("Turn Help Off");
             } else {
@@ -310,7 +310,7 @@ public class LoggedInBar {
 
             mb.append("<td bgcolor=#cccccc valign=middle align=right>");
             mb.append("<font face=arial size=-2 class=loggedinbartext>");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/login.log?action=logout' class=loggedinbarlink>");
+            mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/login.log?action=logout' class=loggedinbarlink>");
             mb.append("Log Out");
             mb.append("</a>");
             mb.append("&nbsp;&nbsp;&nbsp;");
@@ -318,7 +318,7 @@ public class LoggedInBar {
             mb.append("</td>");
 
             mb.append("<td bgcolor=#cccccc valign=middle width=30>");
-            mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccountuser().getSiteRootUrl()+"/login.log?action=logout' class=loggedinbarlink>");
+            mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/login.log?action=logout' class=loggedinbarlink>");
             mb.append("<img src='"+pageProps.pathToAppRoot+"images/loggedinbar/logout.gif' border=0>");
             mb.append("</a>");
             mb.append("</td>");

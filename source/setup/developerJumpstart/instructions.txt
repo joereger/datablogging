@@ -12,6 +12,15 @@ GET STARTED, INSTALL SOME APPS
 
 5) Install Ant to the C:\SuperFly\Ant\ directory.
 
+GET THE SOURCE CODE
+===================
+
+Source code is held in a Subversion repository.  You'll need to find and install a good SVN client
+(Tortoise for windows is great).  Many popular IDEs include SVN integration these days.  Then, get
+the SVN server url, username and password from Joe.
+
+Next, you'll need to check out the correct tree.  Make sure you're working on the correct tree.
+
 BUILD THE APP FROM SOURCE
 =========================
 

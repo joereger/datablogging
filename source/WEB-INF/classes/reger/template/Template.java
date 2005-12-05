@@ -88,6 +88,7 @@ public class Template {
         if (rstData!=null && rstData.length>0){
             for(int i=0; i<rstData.length; i++){
                 alreadyExists = true;
+                //templateid = Integer.parseInt(rstData[i][0]);
             }
         }
 

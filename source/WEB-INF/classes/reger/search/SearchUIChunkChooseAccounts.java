@@ -49,7 +49,7 @@ public class SearchUIChunkChooseAccounts implements SearchUIChunk{
                     } catch (Exception e ){
                         Debug.errorsave(e, "");
                     }
-                    mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=checkbox name=accountids value="+tmpAccUser.getAccountid()+" "+selectedText+"> " + tmpAccUser.getSiteRootUrl() );
+                    mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=checkbox name=accountids value="+tmpAccUser.getAccountid()+" "+selectedText+"> " + tmpAccUser.getSiteRootUrlOfPrimaryAccount() );
                     mb.append("<br>");
                 }
             } else {

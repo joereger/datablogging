@@ -142,13 +142,13 @@ String[][] rstAccounts= Db.RunSQL(sql);
 if (rstAccounts!=null && rstAccounts.length>0){
 	for(int i=0; i<rstAccounts.length; i++){
 
-	    String baseAccountUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAccounts[i][6]));
+	    reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstAccounts[i][6]));
 
 	    mb.append("<tr>");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct nowrap>"+reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.dbstringtocalendar(rstAccounts[i][2]))+"<br>"+reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstAccounts[i][2]))+"</td>");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][8]+"</td>");
-        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><a href='"+reger.Vars.getHttpUrlPrefix()+baseAccountUrl+"/entry.log?eventid="+rstAccounts[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\"><b>"+rstAccounts[i][4]+"</b></a></td>");
-        mb.append("<td valign=top align=center bgcolor=#e6e6e6 class=acct><a href='"+reger.Vars.getHttpUrlPrefix()+baseAccountUrl+"/mediaouthtml.log?logid=-1&imageid="+rstAccounts[i][12]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\"><img src='"+reger.Vars.getHttpUrlPrefix()+baseAccountUrl+"/mediaout.log?imageid="+rstAccounts[i][12]+"&isthumbnail=yes' border=0></a><br>"+rstAccounts[i][14]+"<br>Size: "+rstAccounts[i][13]+"</td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><a href='"+acctTmp.getSiteRootUrl(userSession)+"/entry.log?eventid="+rstAccounts[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\"><b>"+rstAccounts[i][4]+"</b></a></td>");
+        mb.append("<td valign=top align=center bgcolor=#e6e6e6 class=acct><a href='"+acctTmp.getSiteRootUrl(userSession)+"/mediaouthtml.log?logid=-1&imageid="+rstAccounts[i][12]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\"><img src='"+acctTmp.getSiteRootUrl(userSession)+"/mediaout.log?imageid="+rstAccounts[i][12]+"&isthumbnail=yes' border=0></a><br>"+rstAccounts[i][14]+"<br>Size: "+rstAccounts[i][13]+"</td>");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][10]+"</td>");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct><a href='accountdetail.log?accountid="+rstAccounts[i][6]+"'>"+rstAccounts[i][9]+"</a></td>");
         mb.append("</tr>");

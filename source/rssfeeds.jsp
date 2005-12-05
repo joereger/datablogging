@@ -51,8 +51,8 @@ mb.append("</td>");
 mb.append("<td valign=top bgcolor=#e6e6e6>");
 mb.append("<font face=arial size=-1>");
 mb.append("<strong>");
-mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+userSession.getAccount().getSiteRootUrl()+"/rss.xml'>");
-mb.append(""+reger.Vars.getHttpUrlPrefix()+userSession.getAccount().getSiteRootUrl()+"/rss.xml");
+mb.append("<a href='"+userSession.getAccount().getSiteRootUrl(userSession)+"/rss.xml'>");
+mb.append(""+userSession.getAccount().getSiteRootUrl(userSession)+"/rss.xml");
 mb.append("</a>");
 mb.append("</td>");
 mb.append("</tr>");
@@ -71,7 +71,7 @@ for (int j = 0; j < supportedTypes.size(); j++) {
 
     Object o = (Object) supportedTypes.get(j);
 
-    xmlUrl = ""+reger.Vars.getHttpUrlPrefix()+userSession.getAccount().getSiteRootUrl()+"/"+o.toString()+"-all.xml";
+    xmlUrl = ""+userSession.getAccount().getSiteRootUrl(userSession)+"/"+o.toString()+"-all.xml";
 
     mb.append("<font face=arial size=-2>");
     mb.append("(<a href='"+xmlUrl+"'>");
@@ -105,7 +105,7 @@ if (rstEventtype!=null){
             qs = "?qpass=" + rstEventtype[i][4];
         }
 
-        xmlUrl = ""+reger.Vars.getHttpUrlPrefix()+userSession.getAccount().getSiteRootUrl()+"/rss-logid"+rstEventtype[i][0]+".xml" + qs;
+        xmlUrl = ""+userSession.getAccount().getSiteRootUrl(userSession)+"/rss-logid"+rstEventtype[i][0]+".xml" + qs;
 
 	    //Output to the user
         mb.append("<tr>");
@@ -139,7 +139,7 @@ if (rstEventtype!=null){
 
             Object o = (Object) supportedTypes.get(j);
 
-            xmlUrl = ""+reger.Vars.getHttpUrlPrefix()+userSession.getAccount().getSiteRootUrl()+"/"+o.toString()+"-logid"+rstEventtype[i][0]+".xml";
+            xmlUrl = ""+userSession.getAccount().getSiteRootUrl(userSession)+"/"+o.toString()+"-logid"+rstEventtype[i][0]+".xml";
 
             mb.append("<font face=arial size=-2>");
             mb.append("(<a href='"+xmlUrl+"'>");

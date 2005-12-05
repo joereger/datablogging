@@ -42,7 +42,7 @@ mb.append("If you've got a WAP-capable cell phone or other device you can check 
 mb.append("<br><br>");
 mb.append("<ol>");
 mb.append("<li>");
-mb.append("Use your device to connect to "+reger.Vars.getHttpUrlPrefix()+userSession.getSiteRootUrl()+"/mobile/home.log");
+mb.append("Use your device to connect to "+userSession.getAccount().getSiteRootUrl(userSession)+"/mobile/home.log");
 mb.append("</li>");
 mb.append("<li>");
 mb.append("Enter your password.");

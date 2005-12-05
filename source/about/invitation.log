@@ -97,7 +97,8 @@ if (userSession.getAccountuser().isLoggedIn){
     if (request.getParameter("password")!=null){
         password = request.getParameter("password");
     }
-    response.sendRedirect("" + reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() + "/login.log?action=login&username="+java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(password, "UTF-8")+"&friendinvitationid=" + friendinvitationid + "&friendinvitationkey=" + java.net.URLEncoder.encode(friendinvitationkey, "UTF-8"));
+    response.sendRedirect("" + userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) + "/login.log?action=login&username="+java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(password, "UTF-8")+"&friendinvitationid=" + friendinvitationid + "&friendinvitationkey=" + java.net.URLEncoder.encode(friendinvitationkey, "UTF-8"));
+    return;
 }
 
 if (!errortext.equals("")){

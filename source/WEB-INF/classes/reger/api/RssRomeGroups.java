@@ -65,7 +65,7 @@ public class RssRomeGroups {
         rssChannel.setDescription(channelDesc);
 
         //Channel Link
-        String channelLink = "" + reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + "/groups/group"+groupid+".log";
+        String channelLink = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/groups/group"+groupid+".log";
         rssChannel.setLink(channelLink);
 
         //Channel Generator

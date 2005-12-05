@@ -35,9 +35,9 @@ if (pageProps.action.equals("login")){
     userSession.setAccountuser(new reger.Accountuser(request.getParameter("username"), request.getParameter("password")));
     if (userSession.getAccountuser().isLoggedIn){
         //With returnurl
-        response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() + "/login.log?action=login&username="+java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
+        response.sendRedirect(userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) + "/login.log?action=login&username="+java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
         //Without returnurl
-        //response.sendRedirect(reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() + "/login.log?action=login&username="+userSession.getAccountuser().getUsername()+"&password="+request.getParameter("password")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"");
+        //response.sendRedirect(userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) + "/login.log?action=login&username="+userSession.getAccountuser().getUsername()+"&password="+request.getParameter("password")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"");
     } else {
         errortext = errortext + "Username or password incorrect.  Please try again.<br>";
     }

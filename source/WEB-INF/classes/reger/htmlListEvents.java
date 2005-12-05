@@ -165,11 +165,11 @@ public class htmlListEvents {
                 String entryurladmin="entry.log?logid="+entry.logid+"&eventid="+entry.eventid+"&action=edit";
                 //Add the servername and port
                 if (request.getLocalPort()==80 || request.getLocalPort()==443){
-                    entryurl = "" + reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + "/" + entryurl;
-                    entryurladmin = "" + reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + "/myhome/" + entryurladmin;
+                    entryurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl;
+                    entryurladmin = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/myhome/" + entryurladmin;
                 } else {
-                    entryurl = "" + reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() + ":" + request.getLocalPort() + "/" + entryurl;
-                    entryurladmin = "" + reger.Vars.getHttpUrlPrefix() + userSession.getSiteRootUrl() +  ":" + request.getLocalPort() + "/myhome/" + entryurladmin;
+                    entryurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + ":" + request.getLocalPort() + "/" + entryurl;
+                    entryurladmin = "" + userSession.getAccount().getSiteRootUrl(userSession) +  ":" + request.getLocalPort() + "/myhome/" + entryurladmin;
                 }
 
 

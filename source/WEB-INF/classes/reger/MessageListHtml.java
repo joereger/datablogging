@@ -507,7 +507,7 @@ public class MessageListHtml {
                         fromaddress = rstEmailnotify[i][2];
                     }
                     String emailBody = reger.emailtext.BasicEmails.messagesEmailNotify(userSession.getAccount().getSiteRootUrl(), eventid, rstEmailnotify[i][1]).toString();
-                    reger.core.EmailSend.sendMail(fromaddress, rstEmailnotify[i][0], "New Message Posted to: " + reger.Vars.getHttpUrlPrefix() + userSession.getAccount().getSiteRootUrl() + "/", emailBody, false);
+                    reger.core.EmailSend.sendMail(fromaddress, rstEmailnotify[i][0], "New Message Posted to: " + userSession.getAccount().getSiteRootUrl(userSession)+"/" + "/", emailBody, false);
                     Debug.debug(5, "", "Sending email notification of new message to:" + rstEmailnotify[i][0]);
                 } catch (Exception e){
                     Debug.errorsave(e, "");

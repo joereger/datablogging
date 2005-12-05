@@ -1016,8 +1016,6 @@ public class Entry {
         	Account acct = reger.cache.AccountCache.get(Integer.parseInt(rstEvent[0][3]));
         	if (acct!=null){
                 baseUrl = acct.getSiteRootUrl();
-            } else {
-                baseUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstEvent[0][3]));
             }
 
             if (appendEntryKeyIfAvailable){
@@ -1026,7 +1024,7 @@ public class Entry {
                 }
             }
 
-            return reger.Vars.getHttpUrlPrefix() + baseUrl + "/" + entryFileName + entryKeyString;
+            return baseUrl + "/" + entryFileName + entryKeyString;
         }
         return "";
     }

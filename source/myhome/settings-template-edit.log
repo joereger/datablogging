@@ -25,6 +25,9 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+//Debug
+reger.core.Debug.debug(3, "settings-template-edit.log", reger.template.AllTemplatesInSystem.debugPrintHtmlListOfTemplates());
+
 //Get type
 int type = -1;
 if (request.getParameter("type")!=null && reger.core.Util.isinteger(request.getParameter("type"))){
@@ -43,11 +46,8 @@ if (template==null){
     template = reger.template.AllTemplatesInSystem.getSystemDefaultByType(type);
 }
 
-
 //Load a handler
 TemplateProcessor tp = TemplateProcessorFactory.getProcessorByType(type);
-
-
 
 //Edit
 if (pageProps.action.equals("edit")){
@@ -58,7 +58,6 @@ if (pageProps.action.equals("edit")){
     try{
         if (tp.validateTemplate(request.getParameter("template"))){
             template.save();
-
         }
     } catch (reger.template.TemplateValidationException e) {
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, e.getError()));
@@ -77,10 +76,11 @@ if (pageProps.action.equals("edit")){
 //@todo - Verify this user can edit this template . Actually, just verify that they're looking at one of their own or one of the system templates.
 
 
+
 mb.append("<form action=settings-template-edit.log method=post>");
 mb.append("<input type=hidden name=action value='edit'>");
-mb.append("<input type=hidden name=templateid value='"+request.getParameter("templateid")+"'>");
-mb.append("<input type=hidden name=type value='"+request.getParameter("type")+"'>");
+mb.append("<input type=hidden name=templateid value='"+template.getTemplateid()+"'>");
+mb.append("<input type=hidden name=type value='"+template.getType()+"'>");
 mb.append("<input type=hidden name=logid value='"+request.getParameter("logid")+"'>");
 mb.append("<input type=hidden name=returnurl value='"+request.getParameter("returnurl")+"'>");
 

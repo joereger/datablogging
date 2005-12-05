@@ -23,10 +23,6 @@ pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 
 
-
-
-
-
 mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
 
 mb.append("<img align=right src='images/tools.jpg' width=300 height=452>");

@@ -537,8 +537,8 @@ public class trafficHtmlOut {
 
 
                 sb.append("<td valign=top bgcolor=#ffffff nowrap><font face=arial size=-2>" );
-                sb.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + rstToday[i][1] + "' target=new>" );
-                sb.append("" + reger.Vars.getHttpUrlPrefix() + rstToday[i][1] );
+                sb.append("<a href='"+ userSession.getUrlSplitter().getScheme() + "://" + rstToday[i][1] + "' target=new>" );
+                sb.append("" + userSession.getUrlSplitter().getScheme() + "://" + rstToday[i][1] );
                 sb.append("</a>" );
                 sb.append("&nbsp;&nbsp;</font></td>" );
 

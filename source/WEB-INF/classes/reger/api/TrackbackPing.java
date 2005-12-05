@@ -61,7 +61,7 @@ public class TrackbackPing extends Thread {
         	    //Get Blog Name
         	    String blogname = accountOfEntry.getHomepagetitle();
         	    if (blogname.equals("")){
-                    blogname = "" + reger.Vars.getHttpUrlPrefix() + accountOfEntry.getSiteRootUrl() + "/";
+                    blogname = "" + accountOfEntry.getSiteRootUrl() + "/";
                 }
         	    //Do the pinging
         	    boolean successfulPing = false;
@@ -116,7 +116,7 @@ public class TrackbackPing extends Thread {
         Debug.debug(5, "", "Trackbackping.java - pingUrl called. urlToPing=" + urlToPing);
 
         //Build this url
-        String localUrl = "" + reger.Vars.getHttpUrlPrefix() + accountOfEntry.getSiteRootUrl() + "/entry-eventid"+eventid+".log";
+        String localUrl = "" + accountOfEntry.getSiteRootUrl() + "/entry-eventid"+eventid+".log";
 
         //Custom SSL handler
         Protocol.registerProtocol("https", new Protocol("https", new EasySSLProtocolSocketFactory(), 443));

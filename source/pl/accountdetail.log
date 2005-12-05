@@ -203,10 +203,10 @@ String[][] rstAcct= Db.RunSQL("SELECT accountid, accounturl, customservername, a
 //-----------------------------------
 //-----------------------------------
 if (rstAcct!=null && rstAcct.length>0){
-    String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstAcct[0][0]));
+    reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstAcct[0][0]));
 
     //mb.append("<center>");
-    //mb.append("<iframe src=\""+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"\" width=800 height=300 name=\"internal\"></iframe>");
+    //mb.append("<iframe src=\""+acctTmp.getSiteRootUrl(userSession)+"\" width=800 height=300 name=\"internal\"></iframe>");
     //mb.append("</center>");
 
 
@@ -230,7 +230,7 @@ if (rstAcct!=null && rstAcct.length>0){
 
     mb.append("<tr>");
     mb.append("<td valign=top bgcolor=#cccccc width=33% class=acct>Base Site Url</td>");
-    mb.append("<td valign=top bgcolor=#ffffff class=acct><a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"'>"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/</a></td>");
+    mb.append("<td valign=top bgcolor=#ffffff class=acct><a href='"+acctTmp.getSiteRootUrl(userSession)+"'>"+acctTmp.getSiteRootUrl(userSession)+"/</a></td>");
     mb.append("</tr>");
 
     mb.append("<tr>");

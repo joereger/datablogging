@@ -25,7 +25,7 @@ public class weblogGroupApi {
     public String urlToSignupForAccount(){
         String url = "";
         PrivateLabel pl = new PrivateLabel(reger.Vars.PLIDDEFAULT);
-        url = "" + reger.Vars.getHttpUrlPrefix() + pl.getPlBaseUrl() + "/about/index.log";
+        url = "" + pl.getPlBaseUrl() + "/about/index.log";
         return url;
     }
 
@@ -74,8 +74,8 @@ public class weblogGroupApi {
                 uGroup.put(String.valueOf("totalEntries"), new Integer(Integer.parseInt(rstGroups[i][5])));
                 uGroup.put(String.valueOf("viewingEntriesRequiresGroupKey"), new Boolean(viewingentriesrequiresgroupkey));
                 uGroup.put(String.valueOf("addingEntriesRequiresGroupKey"), new Boolean(addingentriesrequiresgroupkey));
-                uGroup.put(String.valueOf("feedUrlOfGroup"), ""+reger.Vars.getHttpUrlPrefix()+pl.getPlBaseUrl()+"/groups/group"+rstGroups[i][0]+".xml");
-                uGroup.put(String.valueOf("webUrlOfGroup"), ""+reger.Vars.getHttpUrlPrefix()+pl.getPlBaseUrl()+"/groups/group"+rstGroups[i][0]+".log");
+                uGroup.put(String.valueOf("feedUrlOfGroup"), ""+pl.getPlBaseUrl()+"/groups/group"+rstGroups[i][0]+".xml");
+                uGroup.put(String.valueOf("webUrlOfGroup"), ""+pl.getPlBaseUrl()+"/groups/group"+rstGroups[i][0]+".log");
                 return uGroup;
             }
         }

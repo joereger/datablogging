@@ -24,7 +24,7 @@ if (userSession.getAccount().isPro()){
     mb.append(reger.htmlListEvents.getList(userSession, pageProps.logProps.logid, reger.core.Util.getCurrentPage(request.getParameter("currentpage")),request.getParameter("viewdate"), request.getParameter("viewmonth"), "index.log", -1, false, request));
     out.println("document.write(\"" + mb.toString().replaceAll(reger.Vars.LINEBREAKCHAR,"").replaceAll("\\n","").replaceAll("\\r","").replaceAll("\"","") + "\")");
 } else {
-    out.println("document.write(\"This site is not configured for Javascript embedding.<br>Please visit <a href='"+ reger.Vars.getHttpUrlPrefix() +userSession.getSiteRootUrl()+"/'>" + reger.Vars.getHttpUrlPrefix() +userSession.getSiteRootUrl()+"/</a>\")");
+    out.println("document.write(\"This site is not configured for Javascript embedding.<br>Please visit <a href='"+ userSession.getAccount().getSiteRootUrl(userSession)+"/'>" + userSession.getAccount().getSiteRootUrl(userSession)+"/</a>\")");
 }
 
 

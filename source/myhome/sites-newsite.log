@@ -152,7 +152,7 @@ mb.append("<td bgcolor=#e6e6e6 valign=top nowrap align=left><font face=arial siz
 if (userSession.getPl().getUsedynamicdns()){
     mb.append("<b>"+request.getScheme() + ":// <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> ." + userSession.getPl().getPlbasedomain() + "/ </b>");
 } else {
-    mb.append("<b>"+reger.Vars.getHttpUrlPrefix() +userSession.getPl().getPlbasedomain()+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
+    mb.append("<b>"+userSession.getPl().getPlBaseUrl(userSession)+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
 }
 mb.append("</font>");
 mb.append("<br>");

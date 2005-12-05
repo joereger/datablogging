@@ -144,7 +144,7 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
         reger.AllPrivateLabelsInSystem.refresh();
 
         //Redirect to log the user in
-        //response.sendRedirect(reger.Vars.getHttpUrlPrefix() + baseUrlOfAccount +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=signupcomplete");
+        //response.sendRedirect(baseUrlOfAccount +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=signupcomplete");
         //return;
         response.sendRedirect("setup-04.log");
         return;
@@ -198,7 +198,7 @@ mb.append("<td bgcolor=#e6e6e6 valign=top nowrap align=left><font face=arial siz
 if (pl.getUsedynamicdns()){
     mb.append("<b>"+request.getScheme() + ":// <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> ." + pl.getPlbasedomain() + "/ </b>");
 } else {
-    mb.append("<b>"+reger.Vars.getHttpUrlPrefix() +pl.getPlbasedomain()+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
+    mb.append("<b>"+pl.getPlBaseUrl()+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
 }
 mb.append("</font>");
 mb.append("<br>");

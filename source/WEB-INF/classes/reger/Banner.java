@@ -5,7 +5,7 @@ package reger;
  */
 public class Banner {
 
-    public static String getBannerHtml(String pathToAppRoot){
+    public static String getBannerHtml(UserSession userSession){
         StringBuffer out = new StringBuffer();
 
         //Google adwords
@@ -26,13 +26,13 @@ public class Banner {
         out.append("google_color_url = \"008000\";"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("google_color_text = \"000000\";"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("//--></script>"+reger.Vars.LINEBREAKCHARFORHTML);
-        out.append("<script type=\"text/javascript\" src=\""+reger.Vars.getHttpUrlPrefix()+"pagead2.googlesyndication.com/pagead/show_ads.js\">"+reger.Vars.LINEBREAKCHARFORHTML);
+        out.append("<script type=\"text/javascript\" src=\""+userSession.getUrlSplitter().getScheme()+"://"+"pagead2.googlesyndication.com/pagead/show_ads.js\">"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("</script>"+reger.Vars.LINEBREAKCHARFORHTML);
         
         return out.toString();
     }
 
-    public static String getVerticalGoogleBanner(){
+    public static String getVerticalGoogleBanner(UserSession userSession){
         StringBuffer out = new StringBuffer();
 
         out.append(reger.Vars.LINEBREAKCHARFORHTML);
@@ -49,13 +49,13 @@ public class Banner {
         out.append("google_color_url = \"008000\";"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("google_color_text = \"000000\";"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("//--></script>"+reger.Vars.LINEBREAKCHARFORHTML);
-        out.append("<script type=\"text/javascript\" src=\""+reger.Vars.getHttpUrlPrefix()+"pagead2.googlesyndication.com/pagead/show_ads.js\">"+reger.Vars.LINEBREAKCHARFORHTML);
+        out.append("<script type=\"text/javascript\" src=\""+userSession.getUrlSplitter().getScheme()+"://"+"pagead2.googlesyndication.com/pagead/show_ads.js\">"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("</script>"+reger.Vars.LINEBREAKCHARFORHTML);
 
         return out.toString();
     }
 
-    public static String getMediumRectangleGoogleBanner(){
+    public static String getMediumRectangleGoogleBanner(UserSession userSession){
         StringBuffer out = new StringBuffer();
 
         out.append(reger.Vars.LINEBREAKCHARFORHTML);
@@ -72,7 +72,7 @@ public class Banner {
         out.append("google_color_url = \"008000\";"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("google_color_text = \"000000\";"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("//--></script>"+reger.Vars.LINEBREAKCHARFORHTML);
-        out.append("<script type=\"text/javascript\" src=\""+reger.Vars.getHttpUrlPrefix()+"pagead2.googlesyndication.com/pagead/show_ads.js\">"+reger.Vars.LINEBREAKCHARFORHTML);
+        out.append("<script type=\"text/javascript\" src=\""+userSession.getUrlSplitter().getScheme()+"://"+"pagead2.googlesyndication.com/pagead/show_ads.js\">"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("</script>"+reger.Vars.LINEBREAKCHARFORHTML);
 
         return out.toString();

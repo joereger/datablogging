@@ -232,19 +232,13 @@ public class MegaLogTypeHtmlrender {
                 //The baseurl
                 reger.Account acct = new reger.Account(Integer.parseInt(rstLog[i][2]));
 
-                //Add the servername and port
-                String siteUrl = "";
-                if (request.getLocalPort()==80 || request.getLocalPort()==443){
-                    siteUrl = "" + reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/";
-                } else {
-                    siteUrl = "" + reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + ":" + request.getLocalPort() + "/";
-                }
+
 
                 mb.append("<font face=arial size=-1>");
-                mb.append("<a href='"+siteUrl+logurl+"'>");
+                mb.append("<a href='"+acct.getSiteRootUrl(userSession)+"/"+logurl+"'>");
                 mb.append(rstLog[i][1]);
                 mb.append("</a>");
-                mb.append(" from: " + siteUrl);
+                mb.append(" from: " + acct.getSiteRootUrl(userSession)+"/");
                 mb.append("</font>");
                 mb.append("<br>");
 
@@ -406,14 +400,11 @@ public class MegaLogTypeHtmlrender {
                 String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rsEvent[i][5]), Integer.parseInt(rsEvent[i][4]), rsEvent[i][0]);
 
                 //The baseurl
-                reger.Account acct = new reger.Account(Integer.parseInt(rsEvent[i][9]));
+                reger.Account acct = reger.cache.AccountCache.get(Integer.parseInt(rsEvent[i][9]));
 
-                //Add the servername and port
-                if (request.getLocalPort()==80 || request.getLocalPort()==443){
-                    entryurl = "" + reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/" + entryurl;
-                } else {
-                    entryurl = "" + reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + ":" + request.getLocalPort() + "/" + entryurl;
-                }
+
+                entryurl = "" + acct.getSiteRootUrl(userSession) + "/" + entryurl;
+
 
 
                 //How many chars to display?

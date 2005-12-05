@@ -231,7 +231,7 @@ public class Account implements java.io.Serializable {
             googlemapsapikey = rs[0][43];
 
             //Set the site root url
-            siteRootUrl = getSiteRootUrlViaAccountid(accountid);
+            siteRootUrl = setSiteRootUrlViaAccountid(accountid);
 
 
             //Set the maxspace and maxbandwidth vars
@@ -372,10 +372,7 @@ public class Account implements java.io.Serializable {
     }
 
 
-    //Return the site's root URL
-    public String getSiteRootUrl(){
-        return siteRootUrl;
-    }
+
 
   private void loadAllLogsForAccountid(){
       //-----------------------------------
@@ -544,7 +541,7 @@ public class Account implements java.io.Serializable {
      * Gets a site's root URL. Example: bob.reger.com.
      * Note that this is a static function and has no effect on instantiated properties.
      */
-    public static String getSiteRootUrlViaAccountid(int accountid){
+    private String setSiteRootUrlViaAccountid(int accountid){
         String siteRootUrl = "";
         //@todo Use pl cache instead of database call... low priority
         //-----------------------------------
@@ -633,6 +630,15 @@ public class Account implements java.io.Serializable {
         }
         //No account found
         return 0;
+    }
+
+    public String getSiteRootUrl(){
+        return reger.Vars.getHttpUrlPrefix() + siteRootUrl;
+    }
+
+    public String getSiteRootUrl(UserSession userSession){
+        reger.core.Debug.debug(5, "Account.java", "sending inUrl="+userSession.getUrlSplitter().getScheme()+"://"+siteRootUrl);
+        return userSession.getUrlWithPortSmartlyAttached(userSession.getUrlSplitter().getScheme()+"://"+siteRootUrl);
     }
 
     public int getAccountid() {

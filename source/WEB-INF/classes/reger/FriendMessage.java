@@ -74,7 +74,7 @@ public class FriendMessage {
                 //Send an email notification of new message
                 Accountuser au = new Accountuser(recipientaccountuserids[i]);
                 if (!au.getEmail().equals("")){
-                    reger.core.EmailSend.sendMail("", au.getEmail(), "There is a New Message in Your Inbox", "There is a new message in your weblogging account inbox.  You can find it by logging in <a href='"+reger.Vars.getHttpUrlPrefix()+au.getSiteRootUrl()+"/myhome/'>"+reger.Vars.getHttpUrlPrefix()+au.getSiteRootUrl()+"/myhome/</a>.");
+                    reger.core.EmailSend.sendMail("", au.getEmail(), "There is a New Message in Your Inbox", "There is a new message in your weblogging account inbox.  You can find it by logging in <a href='"+au.getSiteRootUrlOfPrimaryAccount()+"/myhome/'>"+au.getSiteRootUrlOfPrimaryAccount()+"/myhome/</a>.");
                 }
             }
 

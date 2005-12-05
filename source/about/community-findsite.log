@@ -62,8 +62,8 @@ int refreshintervalinseconds = 3600;
         if (rstSearch!=null && rstSearch.length>0){
             for(int i=0; i<rstSearch.length; i++){
                 mb.append((i+1)+") ");
-                String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSearch[i][0]));
-                mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
+                reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstSearch[i][0]));
+                mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/'>");
                 String sitename = rstSearch[i][1];
                 if (sitename.equals("")){
                     sitename=rstSearch[i][0];
@@ -167,9 +167,9 @@ int refreshintervalinseconds = 3600;
         if (rstSearch!=null && rstSearch.length>0){
             for(int i=0; i<rstSearch.length; i++){
                 mb.append((i+1)+") ");
-                String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rstSearch[i][0]));
-                mb.append("<a href='"+reger.Vars.getHttpUrlPrefix()+baseSiteUrl+"/'>");
-                mb.append(""+ reger.Vars.getHttpUrlPrefix() + baseSiteUrl + "/");
+                reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rstSearch[i][0]));
+                mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/'>");
+                mb.append(""+ acctTmp.getSiteRootUrl(userSession) + "/");
                 mb.append("</a>");
                 if (!rstSearch[i][1].equals("")){
                     mb.append(" &nbsp;&nbsp;" + rstSearch[i][1] + "");

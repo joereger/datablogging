@@ -325,25 +325,9 @@ public class PrivateLabel {
         }
     }
 
-    public String getPlBaseUrl(){
-        return plbasedomain;
-    }
 
-    /**
-     * Accepts plid returns the plbasedomain.  Returns "" if none is found.
-     */
-    public static String getPlbasedomainFromPlid(int plid){
-        String plbasedomain="";
-        //----------------------------------
-        //-----------------------------------
-        String[][] rstGetAccountid= Db.RunSQL("SELECT plbasedomain FROM pl WHERE pl.plid='"+plid+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstGetAccountid!=null && rstGetAccountid.length>0){
-            plbasedomain=rstGetAccountid[0][0];
-        }
-        return plbasedomain;
-    }
+
+
 
 
 
@@ -931,6 +915,15 @@ public class PrivateLabel {
             return minpricepergbbandwidth;
         }
         return pricepergbbandwidth;
+    }
+
+    public String getPlBaseUrl(){
+        return reger.Vars.getHttpUrlPrefix() + "://" + plbasedomain;
+    }
+
+    public String getPlBaseUrl(UserSession userSession){
+        reger.core.Debug.debug(5, "PrivateLabel.java", "sending inUrl="+userSession.getUrlSplitter().getScheme() + "://" + plbasedomain);
+        return userSession.getUrlWithPortSmartlyAttached(userSession.getUrlSplitter().getScheme() + "://" + plbasedomain);
     }
 
 

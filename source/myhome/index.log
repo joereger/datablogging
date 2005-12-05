@@ -30,8 +30,6 @@ pageProps.helpText="This is the control center of your site.  All of the tools y
 
 <%
 
-//Joe was here
-
 //Display page performance in milliseconds
 //out.println("Top of page: " + reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
 
@@ -40,6 +38,7 @@ pageProps.helpText="This is the control center of your site.  All of the tools y
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
+
 
 //Do friendinvitationid work
 if (request.getParameter("friendinvitationid")!=null && reger.core.Util.isinteger(request.getParameter("friendinvitationid"))){
@@ -585,13 +584,13 @@ sc.append("<!-- End Alerts -->");
 //sc.append("<td>");
 //sc.append("<font face=arial size=-1 color=#000000><b>Make log entries:");
 //sc.append("</b></font><br>");
-//sc.append("<font face=arial size=-2 color=#000000><a href='"+reger.Vars.getHttpUrlPrefix()+ userSession.getSiteRootUrl() +"/myhome/'>"+reger.Vars.getHttpUrlPrefix()+ userSession.getSiteRootUrl() +"/myhome/</a></font><br>");
+//sc.append("<font face=arial size=-2 color=#000000><a href='"+userSession.getAccount().getSiteRootUrl(userSession) +"/myhome/'>"+userSession.getAccount().getSiteRootUrl(userSession) +"/myhome/</a></font><br>");
 //sc.append("</td>");
 //sc.append("</tr>");
 //
 //sc.append("<tr>");
 //sc.append("<td>");
-//sc.append("<font face=arial size=-1 color=#000000><b>Your log entries are published on your public site:</b></font><br><font face=arial size=-2 color=#000000><a href='"+reger.Vars.getHttpUrlPrefix()+ userSession.getSiteRootUrl() +"/' target=new>"+ reger.Vars.getHttpUrlPrefix() +userSession.getSiteRootUrl() +"/</a></font><br>");
+//sc.append("<font face=arial size=-1 color=#000000><b>Your log entries are published on your public site:</b></font><br><font face=arial size=-2 color=#000000><a href='"+userSession.getAccount().getSiteRootUrl(userSession) +"/' target=new>"+ userSession.getAccount().getSiteRootUrl(userSession) +"/</a></font><br>");
 //sc.append("</td></tr>");
 //
 //
@@ -649,7 +648,7 @@ if (accts!=null){
         }
 
         //reger.Account acct = new reger.Account(accountid.intValue());
-        //sc.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/'>");
+        //sc.append("<a href='"+ userSession.getAccount().getSiteRootUrl(userSession) + "/'>");
         sc.append("<tr>");
         sc.append("<td valign=top>");
         if (accountid.intValue()==userSession.getAccount().getAccountid()){
@@ -669,7 +668,7 @@ if (accts!=null){
 //        sc.append("<td valign=top>");
 //        sc.append("</td>");
         sc.append("<td valign=top nowrap>");
-        sc.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/'>");
+        sc.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/'>");
         sc.append("<font face=arial size=-2>");
         sc.append("<img src=\"../images/icon-public.gif\" alt=\"View this site.\" border=0>");
         //sc.append("View");
@@ -678,7 +677,7 @@ if (accts!=null){
         if (userSession.getAccountuser().userCanDoAcl("ADMINHOME", accountid.intValue())){
             //sc.append("&nbsp;&nbsp;|&nbsp;&nbsp;");
             sc.append(" ");
-            sc.append("<a href='"+ reger.Vars.getHttpUrlPrefix() + acct.getSiteRootUrl() + "/myhome/'>");
+            sc.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/myhome/'>");
             sc.append("<font face=arial size=-2>");
             sc.append("<img src=\"images/icon-edit.gif\" alt=\"Go to Admin.\" border=0>");
             //sc.append("Admin");

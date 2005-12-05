@@ -1,0 +1,64 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+String inUrl = "http://peter.localhost:80";
+mb.append("<br>inUrl="+inUrl);
+String outUrl = inUrl;
+try{
+    //Parse the incoming URL
+    java.net.URL urlParsed = new java.net.URL(inUrl);
+    mb.append("<br>urlParsed=" + urlParsed.toString());
+    //Now create a new version of the URL, manually controlling the port num, scheme
+    java.net.URL urlPortControlled = new java.net.URL(urlParsed.getProtocol(), urlParsed.getHost(), userSession.getUrlSplitter().getPort(), urlParsed.getFile());
+    mb.append("<br>urlPortControlled=" + urlPortControlled.toString());
+    //Now get the output
+    outUrl = urlPortControlled.toString();
+} catch (Exception ex){
+    reger.core.Debug.debug(3, "Account.java", ex);
+    mb.append("<br>Error");
+}
+mb.append("<br>outUrl="+outUrl);
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

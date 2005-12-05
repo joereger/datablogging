@@ -81,7 +81,7 @@ public class GlobalFooter {
             int bandwidth = output.length();
             //Put into cache
             try{
-                reger.TrafficHit trafficHit = new reger.TrafficHit(request, pageProps.logProps.logid, tmpAccountid, pageProps.trafficType, userSession.getPl().getPlid(), userSession.getSiteRootUrl(), bandwidth, isSuperCookieOn);
+                reger.TrafficHit trafficHit = new reger.TrafficHit(request, pageProps.logProps.logid, tmpAccountid, pageProps.trafficType, userSession.getPl().getPlid(), userSession.getAccount().getSiteRootUrl(userSession), bandwidth, isSuperCookieOn);
                 reger.cache.TrafficHitCache.addTrafficHit(trafficHit);
             } catch (Exception e){
                 Debug.errorsave(e, "", "globalfooter.jsp");

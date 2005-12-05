@@ -38,7 +38,6 @@ public class MarketingHpTemplateTagLogInBox implements MarketingHpTemplateTag{
      * The workhorse of the tag which services live requests.
      * It takes in these elements and then spits out what the
      * tag should be replaced with on the screen.
-     * @return
      */
     public String getHtml(UserSession userSession, javax.servlet.http.HttpServletRequest request, PageProps pageProps){
 
@@ -56,7 +55,7 @@ public class MarketingHpTemplateTagLogInBox implements MarketingHpTemplateTag{
         if (pageProps.action.equals("login")){
             userSession.setAccountuser(new reger.Accountuser(request.getParameter("username"), request.getParameter("password")));
             if (userSession.getAccountuser().isLoggedIn){
-                //response.sendRedirect("" + reger.Vars.getHttpUrlPrefix() + userSession.getAccountuser().getSiteRootUrl() + "/login.log?action=login&username="+userSession.getAccountuser().getUsername()+"&password="+request.getParameter("password")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
+                //response.sendRedirect("" + userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) + "/login.log?action=login&username="+userSession.getAccountuser().getUsername()+"&password="+request.getParameter("password")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
             } else {
                 loginerrortext = loginerrortext + "Username or password incorrect.  Please try again.<br>";
             }
@@ -114,9 +113,8 @@ public class MarketingHpTemplateTagLogInBox implements MarketingHpTemplateTag{
             mb.append("</table>");
         } else {
             //User is logged-in
-            String userSiteRootUrl = userSession.getAccountuser().getSiteRootUrl();
             mb.append("<table>");
-            mb.append("<form action='"+reger.Vars.getHttpUrlPrefix()+userSiteRootUrl+"/login.log' method=post>");
+            mb.append("<form action='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/login.log' method=post>");
             mb.append("<input type=hidden name=action value='logout'>");
             mb.append("<tr>");
             mb.append("<td valign=top align=left>");

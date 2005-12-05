@@ -326,17 +326,17 @@ public class SearchEntries {
                     sr.idOfObjectReturned = Integer.parseInt(rsEvent[i][3]);
                     sr.title = rsEvent[i][0];
                     sr.typeOfObjectReturned = Integer.parseInt(rsEvent[i][8]);
+                    reger.Account acctTmp = reger.cache.AccountCache.get(Integer.parseInt(rsEvent[i][5]));
                     if (linkResultsToAdmin){
                         if (userSessionOfSearcher!=null && userSessionOfSearcher.getAccountuser().userCanDoAcl("ADDEDITENTRIES", Integer.parseInt(rsEvent[i][5]))){
-                            sr.url = ""+reger.Vars.getHttpUrlPrefix() + reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rsEvent[i][5])) + "/myhome/entry.log?eventid=" + rsEvent[i][3] + "&action=edit";
+                            sr.url = ""+acctTmp.getSiteRootUrl() + "/myhome/entry.log?eventid=" + rsEvent[i][3] + "&action=edit";
                         } else {
-                            sr.url = ""+reger.Vars.getHttpUrlPrefix() + reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rsEvent[i][5])) + "/entry.log?eventid=" + rsEvent[i][3];
+                            sr.url = ""+acctTmp.getSiteRootUrl() + "/entry.log?eventid=" + rsEvent[i][3];
                         }
                     } else {
-                        sr.url = ""+reger.Vars.getHttpUrlPrefix() + reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rsEvent[i][5])) + "/entry.log?eventid=" + rsEvent[i][3];
+                        sr.url = ""+ acctTmp.getSiteRootUrl() + "/entry.log?eventid=" + rsEvent[i][3];
                     }
-                    String baseSiteUrl = reger.Account.getSiteRootUrlViaAccountid(Integer.parseInt(rsEvent[i][5]));
-                    sr.siteName = ""+reger.Vars.getHttpUrlPrefix() + baseSiteUrl + "/";
+                    sr.siteName = ""+ acctTmp.getSiteRootUrl() + "/";
                     sr.score = rsEvent[i][9];
                     //Add it to the results array
                     entrySearchResults = AddToArray.addToSearchResultArray(entrySearchResults, sr);

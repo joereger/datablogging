@@ -40,7 +40,7 @@ if (request.getParameter("message")!=null && !request.getParameter("message").eq
 }
 
 //@todo Invite a Friend email text.
-String mainMessage = "A friend wants you to see "+ reger.Vars.getHttpUrlPrefix() + request.getServerName() + ".";
+String mainMessage = "A friend wants you to see "+ userSession.getAccount().getSiteRootUrl(userSession) + ".";
 
 if (pageProps.action.equals("sendemail")) {
     //Clear up blanks
