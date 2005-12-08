@@ -1,0 +1,127 @@
+<%@ page import="reger.rssfeed.ImportBlogEntries" %>
+<%@ page import="org.apache.commons.fileupload.FileItem" %>
+<%@ page import="java.io.InputStream" %>
+<%@ page import="org.apache.commons.fileupload.DiskFileUpload"%>
+<%@ page import="java.util.Iterator"%>
+<%@ page import="java.util.List"%>
+
+<%
+    /*----------------------------------------------------*/
+/*                  Page Config                       */
+    reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+    pageProps.siteSection = pageProps.ADMINSITE;
+    pageProps.title = "Tools";
+    pageProps.isPasswordProtected = true;
+    pageProps.navButtonName = "toolsmain";
+    pageProps.aclObjectName = "CUSTOMIZE";
+    pageProps.trafficType = reger.Vars.TRAFFICTYPEADMINMISC;
+    pageProps.pathToAppRoot = "../";
+/*----------------------------------------------------*/
+%>
+<%@ include file="../globalheader.jsp" %>
+<%
+    /*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+    reger.Upload upload = new reger.Upload(request);
+    if ((String) upload.requestParams.get("submit") != null) {
+        String logid = (String) upload.requestParams.get("logid");
+        if (logid.equalsIgnoreCase("default")) {
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "<center><font color=red>You must select a log to add entries to.</font></center>"));
+        } else {
+            boolean success = true;
+            ImportBlogEntries importEntries = new ImportBlogEntries();
+            String feedUrl = (String) upload.requestParams.get("feedurl");
+            if ((feedUrl != null) && (!feedUrl.trim().equalsIgnoreCase(""))) {
+                try {
+                    importEntries.importBlogFromFeed(userSession, feedUrl, logid);
+                } catch (Exception e) {
+                    success = false;
+                    mb.append("<center><font color=Red>Sorry. The import failed.</font></center>");
+                }
+                if (success) {
+                    mb.append("<center><font color=blue>The import was successful.</font></center>");
+                }
+            }
+            FileItem[] fileItems = upload.getFileItems();
+            if ((fileItems != null) && (fileItems.length > 0)) {
+                for (int i = 0; i < fileItems.length; i++) {
+                    FileItem fileItem = fileItems[i];
+                    if ( (fileItem.getFieldName().equals("uploadFile")) && (!fileItem.getName().equals(""))) {
+                        InputStream fileStream = fileItem.getInputStream();
+                        try {
+                            importEntries.importBlogFromFile(userSession, fileStream, logid);
+                        } catch (Exception e) {
+                            success = false;
+                            mb.append("<center><font color=Red>Sorry. The import failed.</font></center>");
+                        }
+                        if (success) {
+                            mb.append("<center><font color=blue>The import was successful.</font></center>");
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    mb.append("<form action='tools-importrss.log' method=post enctype='multipart/form-data'>");
+    mb.append("<table border=0 align=center>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=right width=50% bgcolor='#eeeeee'><font face=arial size=-1><strong>Import RSS to this log:</strong></font></td>");
+    mb.append("<td bgcolor='#ffffff' valign=top align=left>");
+    mb.append("<select name=logid><option value=default>Select a log</option>");
+
+    //Retrieving logs for current user
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstSameType = reger.core.db.Db.RunSQL("SELECT logid, name FROM megalog WHERE " + userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid()));
+    //-----------------------------------
+    //-----------------------------------
+
+    if (rstSameType != null && rstSameType.length > 0) {
+        for (int i = 0; i < rstSameType.length; i++) {
+            mb.append("<option value=" + rstSameType[i][0] + ">");
+            mb.append(rstSameType[i][1]);
+            mb.append("</option>");
+        }
+    } else {
+        mb.append("No logs of the same type found.");
+    }
+    mb.append("</select</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=right width=50% bgcolor='#eeeeee'><font face=arial size=-1><strong>Feed URL:</strong></font></td>");
+    mb.append("<td bgcolor='#ffffff' valign=top align=left>");
+    mb.append("<input type=text name=feedurl></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=right width=50% bgcolor='#eeeeee'><font face=arial size=-1><strong>Upload File:</strong></font></td>");
+    mb.append("<td bgcolor='#ffffff' valign=top align=left>");
+    mb.append("<input type=file name=uploadFile></td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#ffffff colspan=2 align=center><input type='submit' name='submit' value='Import Blog Entry'></td>");
+    mb.append("</tr>");
+
+    mb.append("</table>");
+    mb.append("</form>");
+
+%>
+
+<%
+    /*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+<%@ include file="../globalfooter.jsp" %>
