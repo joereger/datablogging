@@ -17,70 +17,70 @@ public class Version153ToVersion154 implements UpgradeDatabaseOneVersion{
     public void doUpgrade(){
 
 
+         //This was a one-time production fix to account for a bug in Version149ToVersion150.java.  That bug has since been fixed so this code isn't needed.
 
 
-
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstTemplate= Db.RunSQL("SELECT templateid, template FROM templatenew WHERE type='"+ Template.TEMPLATETYPESITE+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstTemplate!=null && rstTemplate.length>0){
-            for(int i=0; i<rstTemplate.length; i++){
-                int templateid = Integer.parseInt(rstTemplate[i][0]);
-                String templateOriginal = rstTemplate[i][1];
-
-                //String templateReplaced = templateOriginal.replaceAll("\\<\\$Side.Column\\$\\>", mb.toString());
-
-
-                //This is the main page output stringbuffer
-                StringBuffer pg = new StringBuffer();
-
-                // Create a pattern to match cat
-                //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>)");
-                Pattern p = Pattern.compile("(\\<(Rss\\.Link)*?\\$\\>)");
-                // Create a matcher with an input string
-                Matcher m = p.matcher(templateOriginal);
-                // Loop through
-                while(m!=null && m.find()) {
-                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement("<$Rss.Link$>"));
-                }
-                // Add the last segment
-                try{
-                    m.appendTail(pg);
-                } catch (Exception e){
-                    //Do nothing... just null pointer... there was no tail because a tag was last char
-                }
-
-                // Create a pattern to match cat
-                //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>)");
-                Pattern p2 = Pattern.compile("(\\<(Wap\\.Link)*?\\$\\>)");
-                // Create a matcher with an input string
-                Matcher m2 = p2.matcher(templateOriginal);
-                // Loop through
-                while(m2!=null && m2.find()) {
-                    m2.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement("<Wap.Link$>"));
-                }
-                // Add the last segment
-                try{
-                    m2.appendTail(pg);
-                } catch (Exception e){
-                    //Do nothing... just null pointer... there was no tail because a tag was last char
-                }
-
-
-                String templateReplaced = pg.toString();
-
-                //-----------------------------------
-                //-----------------------------------
-                int count = Db.RunSQLUpdate("UPDATE templatenew SET template='"+reger.core.Util.cleanForSQL(templateReplaced)+"' WHERE templateid='"+templateid+"'");
-                //-----------------------------------
-                //-----------------------------------
-
-                reger.core.Debug.debug(5, "Version153ToVersion154.java", "Original:<br>" + templateOriginal.replaceAll("<", "&lt;") + "<br><br>Final:<br>" + templateReplaced.replaceAll("<", "&lt;"));
-
-            }
-        }
+//        //-----------------------------------
+//        //-----------------------------------
+//        String[][] rstTemplate= Db.RunSQL("SELECT templateid, template FROM templatenew WHERE type='"+ Template.TEMPLATETYPESITE+"'");
+//        //-----------------------------------
+//        //-----------------------------------
+//        if (rstTemplate!=null && rstTemplate.length>0){
+//            for(int i=0; i<rstTemplate.length; i++){
+//                int templateid = Integer.parseInt(rstTemplate[i][0]);
+//                String templateOriginal = rstTemplate[i][1];
+//
+//                //String templateReplaced = templateOriginal.replaceAll("\\<\\$Side.Column\\$\\>", mb.toString());
+//
+//
+//                //This is the main page output stringbuffer
+//                StringBuffer pg = new StringBuffer();
+//
+//                // Create a pattern to match cat
+//                //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>)");
+//                Pattern p = Pattern.compile("(\\<(Rss\\.Link)*?\\$\\>)");
+//                // Create a matcher with an input string
+//                Matcher m = p.matcher(templateOriginal);
+//                // Loop through
+//                while(m!=null && m.find()) {
+//                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement("<$Rss.Link$>"));
+//                }
+//                // Add the last segment
+//                try{
+//                    m.appendTail(pg);
+//                } catch (Exception e){
+//                    //Do nothing... just null pointer... there was no tail because a tag was last char
+//                }
+//
+//                // Create a pattern to match cat
+//                //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>)");
+//                Pattern p2 = Pattern.compile("(\\<(Wap\\.Link)*?\\$\\>)");
+//                // Create a matcher with an input string
+//                Matcher m2 = p2.matcher(templateOriginal);
+//                // Loop through
+//                while(m2!=null && m2.find()) {
+//                    m2.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement("<Wap.Link$>"));
+//                }
+//                // Add the last segment
+//                try{
+//                    m2.appendTail(pg);
+//                } catch (Exception e){
+//                    //Do nothing... just null pointer... there was no tail because a tag was last char
+//                }
+//
+//
+//                String templateReplaced = pg.toString();
+//
+//                //-----------------------------------
+//                //-----------------------------------
+//                int count = Db.RunSQLUpdate("UPDATE templatenew SET template='"+reger.core.Util.cleanForSQL(templateReplaced)+"' WHERE templateid='"+templateid+"'");
+//                //-----------------------------------
+//                //-----------------------------------
+//
+//                reger.core.Debug.debug(5, "Version153ToVersion154.java", "Original:<br>" + templateOriginal.replaceAll("<", "&lt;") + "<br><br>Final:<br>" + templateReplaced.replaceAll("<", "&lt;"));
+//
+//            }
+//        }
 
 
     }

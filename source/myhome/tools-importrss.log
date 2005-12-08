@@ -20,7 +20,7 @@
 %>
 <%@ include file="../globalheader.jsp" %>
 <%
-    /*----------------------------------------------------*/
+/*----------------------------------------------------*/
 /*                  Main Body                         */
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
@@ -29,7 +29,7 @@
     if ((String) upload.requestParams.get("submit") != null) {
         String logid = (String) upload.requestParams.get("logid");
         if (logid.equalsIgnoreCase("default")) {
-            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "<center><font color=red>You must select a log to add entries to.</font></center>"));
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "You must select a log to add entries to."));
         } else {
             boolean success = true;
             ImportBlogEntries importEntries = new ImportBlogEntries();
@@ -39,10 +39,10 @@
                     importEntries.importBlogFromFeed(userSession, feedUrl, logid);
                 } catch (Exception e) {
                     success = false;
-                    mb.append("<center><font color=Red>Sorry. The import failed.</font></center>");
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry. The import failed."));
                 }
                 if (success) {
-                    mb.append("<center><font color=blue>The import was successful.</font></center>");
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "The import was successful."));
                 }
             }
             FileItem[] fileItems = upload.getFileItems();
@@ -55,10 +55,10 @@
                             importEntries.importBlogFromFile(userSession, fileStream, logid);
                         } catch (Exception e) {
                             success = false;
-                            mb.append("<center><font color=Red>Sorry. The import failed.</font></center>");
+                            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry. The import failed."));
                         }
                         if (success) {
-                            mb.append("<center><font color=blue>The import was successful.</font></center>");
+                            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "The import was successful."));
                         }
                     }
                     break;
@@ -88,7 +88,7 @@
             mb.append("</option>");
         }
     } else {
-        mb.append("No logs of the same type found.");
+        mb.append("No logs found.");
     }
     mb.append("</select</td>");
     mb.append("</tr>");
@@ -106,7 +106,7 @@
     mb.append("</tr>");
 
     mb.append("<tr>");
-    mb.append("<td bgcolor=#ffffff colspan=2 align=center><input type='submit' name='submit' value='Import Blog Entry'></td>");
+    mb.append("<td bgcolor=#ffffff colspan=2 align=center><input type='submit' name='submit' value='Import Blog Entries'></td>");
     mb.append("</tr>");
 
     mb.append("</table>");

@@ -29,6 +29,9 @@ pageProps.helpText="Time Periods are an important way to give your weblog entrie
 //If off
 if (!userSession.getAccount().getIstimeperiodon()){
     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "The Time Periods feature is currently turned off.  You can turn it on in the <a href='settings-siteprops.log'>Settings tab</a>.  You can create and edit time periods, but they won't appear on your public site until this feature is turned on."));
+
+    
+
 }
 
 //Save/edit time periods

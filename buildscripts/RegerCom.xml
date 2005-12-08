@@ -69,7 +69,7 @@
         ${sourcedir}/WEB-INF/lib/omj3d.jar;
         ${sourcedir}/WEB-INF/lib/omsvg.jar;
         ${sourcedir}/WEB-INF/lib/openmap.jar;
-        ${sourcedir}/WEB-INF/lib/oscache-2.1.1.jar;
+        ${sourcedir}/WEB-INF/lib/oscache-2.2.jar;
         ${sourcedir}/WEB-INF/lib/password1_4.jar;
         ${sourcedir}/WEB-INF/lib/proxool-0.8.3.jar;
         ${sourcedir}/WEB-INF/lib/resolver.jar;

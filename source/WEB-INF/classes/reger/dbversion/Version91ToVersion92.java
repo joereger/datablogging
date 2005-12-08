@@ -18,14 +18,11 @@ public class Version91ToVersion92 implements UpgradeDatabaseOneVersion{
     public void doUpgrade(){
 
 
-
             //-----------------------------------
             //-----------------------------------
             int count = Db.RunSQLUpdate("UPDATE templatenew SET name='Template' WHERE name=''");
             //-----------------------------------
             //-----------------------------------
-
-            
 
 
     }

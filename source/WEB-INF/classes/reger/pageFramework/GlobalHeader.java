@@ -148,6 +148,7 @@ public class GlobalHeader {
                     }
                 }
             }
+            
             //If this is not a marketing page or an LOE page and we don't have a valid account, redirect to the pl
             if (pageProps.siteSection!=pageProps.API && pageProps.siteSection!=pageProps.MARKETINGSITE && pageProps.siteSection!=pageProps.MARKETINGSITEWITHUSERCONTENT && pageProps.siteSection!=pageProps.GROUPSSITE && pageProps.siteSection!=pageProps.MASTERADMINSITE && pageProps.siteSection!=pageProps.PLADMINSITE && (userSession.getAccount()==null || userSession.getAccount().getAccountid()==0)){
                 try {

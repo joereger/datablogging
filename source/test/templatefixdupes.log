@@ -1,0 +1,110 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+<%@ page import="org.w3c.tidy.Tidy"%>
+<%@ page import="reger.template.Template"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+try {
+
+
+//    //-----------------------------------
+//    //-----------------------------------
+//    String[][] rstTemplate= Db.RunSQL("SELECT templateid, template FROM templatenew WHERE type='"+ Template.TEMPLATETYPESITE+"'");
+//    //-----------------------------------
+//    //-----------------------------------
+//    if (rstTemplate!=null && rstTemplate.length>0){
+//        for(int i=0; i<rstTemplate.length; i++){
+//            int templateid = Integer.parseInt(rstTemplate[i][0]);
+//            String templateOriginal = rstTemplate[i][1];
+//            String templateFinal = templateOriginal;
+//
+//
+////            //Create the Tidy object and clean the output
+////            java.io.ByteArrayInputStream inStr = new java.io.ByteArrayInputStream(templateOriginal.getBytes());
+////            ByteArrayOutputStream outStr = new ByteArrayOutputStream();
+////            Tidy tidy = new Tidy();
+////            tidy.setXHTML(true);
+////            tidy.setIndentContent(true);
+////            tidy.setWraplen(300);
+////            tidy.parseDOM(inStr, outStr);
+////            templateFinal = outStr.toString();
+//
+//            //Find second occurrence of <html, delete everything after it
+//            mb.append("<br><br>templateid:"+templateid);
+//            mb.append("<br>templateOriginal.length(): " + templateOriginal.length());
+//
+//            int indexOfClosingLCHtmlTag = templateOriginal.indexOf("</html>");
+//            mb.append("<br>indexOfClosingLCHtmlTag: " + indexOfClosingLCHtmlTag);
+//            if (templateOriginal.length()>indexOfClosingLCHtmlTag+7 && indexOfClosingLCHtmlTag>0){
+//                templateFinal = templateOriginal.substring(0,indexOfClosingLCHtmlTag+7);
+//                mb.append("<br>found lc html and fixed.  substring(0, "+(indexOfClosingLCHtmlTag+7)+")");
+//            } else {
+//                mb.append("<br>lc html not found");
+//                int indexOfClosingUCHtmlTag = templateOriginal.indexOf("</HTML>");
+//                mb.append("<br>indexOfClosingUCHtmlTag: " + indexOfClosingUCHtmlTag);
+//                if (templateOriginal.length()>indexOfClosingUCHtmlTag+7 && indexOfClosingUCHtmlTag>0){
+//                    templateFinal = templateOriginal.substring(0,indexOfClosingUCHtmlTag+7);
+//                    mb.append("<br>found uc html and fixed.  substring(0, "+(indexOfClosingUCHtmlTag+7)+")");
+//                } else {
+//
+//                    mb.append("<br><b>UC html NOT FOUND. NO FIX DONE.</b>");
+//                }
+//            }
+//            reger.core.Debug.debug(0, "templatefixdupes.log", "Original:<br>" + templateOriginal.replaceAll("<", "&lt;") + "<br><br>Final:<br>" + templateFinal.replaceAll("<", "&lt;"));
+//        }
+//    }
+
+
+
+
+
+
+} catch (Throwable e) {
+    Debug.errorsave(e, "");
+    mb.append("There was an error: " + e.getMessage());
+}
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

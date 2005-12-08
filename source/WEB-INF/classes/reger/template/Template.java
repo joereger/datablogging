@@ -82,17 +82,14 @@ public class Template {
         boolean alreadyExists = false;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstData= Db.RunSQL("SELECT templateid FROM templatenew WHERE template='"+reger.core.Util.cleanForSQL(template)+"' AND name='"+reger.core.Util.cleanForSQL(name)+"' AND type='"+type+"' AND (accountid='"+accountid+"' OR accountid<='0')");
+        String[][] rstData= Db.RunSQL("SELECT templateid FROM templatenew WHERE template='"+reger.core.Util.cleanForSQL(template)+"' AND name='"+reger.core.Util.cleanForSQL(name)+"' AND type='"+type+"' AND (accountid='"+accountid+"' OR accountid<='0') ORDER BY accountid DESC");
         //-----------------------------------
         //-----------------------------------
         if (rstData!=null && rstData.length>0){
-            for(int i=0; i<rstData.length; i++){
-                alreadyExists = true;
-                //templateid = Integer.parseInt(rstData[i][0]);
-            }
-        }
-
-        if (!alreadyExists){
+            //It exists
+            this.templateid = Integer.parseInt(rstData[0][0]);
+        } else {
+            //It doesn't exist
             //Try to update
             //-----------------------------------
             //-----------------------------------
@@ -111,6 +108,8 @@ public class Template {
                 reger.template.AllTemplatesInSystem.refresh(identity);
             }
         }
+
+
 
     }
 

@@ -918,7 +918,7 @@ public class PrivateLabel {
     }
 
     public String getPlBaseUrl(){
-        return reger.Vars.getHttpUrlPrefix() + "://" + plbasedomain;
+        return reger.Vars.getHttpUrlPrefix() + plbasedomain;
     }
 
     public String getPlBaseUrl(UserSession userSession){

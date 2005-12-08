@@ -89,6 +89,7 @@ public class ImportBlogEntries {
                     entry.dateGmt = calendar;
                     //Set the author in the posts.
                     entry.accountuserid = au.getAccountuserid();
+                    
                     try {
                         //Save the entry to the database
                         entry.newEntryTemporary(account, au);
@@ -98,10 +99,9 @@ public class ImportBlogEntries {
                     }
                 }
             } else {
-                Debug.debug(3, "storeInDB method in ImportBlogEntries", "Invalid servername or password.");
+                Debug.debug(3, "storeInDB method in ImportBlogEntries", "User importing blog entries was not logged in.");
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw ex;
         }
     }
