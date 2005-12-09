@@ -4,6 +4,8 @@
 <%@ page import="org.apache.commons.fileupload.DiskFileUpload"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import="java.util.List"%>
+<%@ page import="java.util.TreeSet"%>
+<%@ page import="java.util.TimeZone"%>
 
 <%
     /*----------------------------------------------------*/
@@ -34,9 +36,10 @@
             boolean success = true;
             ImportBlogEntries importEntries = new ImportBlogEntries();
             String feedUrl = (String) upload.requestParams.get("feedurl");
+            String timezoneid = (String) upload.requestParams.get("timezoneid");
             if ((feedUrl != null) && (!feedUrl.trim().equalsIgnoreCase(""))) {
                 try {
-                    importEntries.importBlogFromFeed(userSession, feedUrl, logid);
+                    importEntries.importBlogFromFeed(userSession, feedUrl, logid, timezoneid);
                 } catch (Exception e) {
                     success = false;
                     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry. The import failed."));
@@ -52,7 +55,7 @@
                     if ( (fileItem.getFieldName().equals("uploadFile")) && (!fileItem.getName().equals(""))) {
                         InputStream fileStream = fileItem.getInputStream();
                         try {
-                            importEntries.importBlogFromFile(userSession, fileStream, logid);
+                            importEntries.importBlogFromFile(userSession, fileStream, logid, timezoneid);
                         } catch (Exception e) {
                             success = false;
                             mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry. The import failed."));
@@ -66,6 +69,7 @@
             }
         }
     }
+
     mb.append("<form action='tools-importrss.log' method=post enctype='multipart/form-data'>");
     mb.append("<table border=0 align=center>");
 
@@ -91,6 +95,31 @@
         mb.append("No logs found.");
     }
     mb.append("</select</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top align=right width=50% bgcolor='#eeeeee'><font face=arial size=-1><strong>Select your Timezone:</strong></font></td>");
+    mb.append("<td bgcolor='#ffffff' valign=top align=left>");
+    mb.append("<select name=timezoneid>");
+    String[] timezone = TimeZone.getAvailableIDs();
+    TreeSet timezoneids = new TreeSet();
+    //Add the timezoneid's to a treeset
+    for (int i = 0; i < timezone.length; i++) {
+        timezoneids.add(timezone[i]);
+    }
+    //Output to the screen
+    for (Iterator iterator = timezoneids.iterator(); iterator.hasNext();) {
+        String tzid = (String) iterator.next();
+        mb.append("<option value=\""+reger.core.Util.cleanForHtml(tzid)+"\" ");
+        if (tzid.equalsIgnoreCase("GMT")) {
+            mb.append("selected");
+        }
+        mb.append(">");
+        mb.append(tzid);
+        mb.append("</option>");
+    }
+    mb.append("</select>");
+    mb.append("</td>");
     mb.append("</tr>");
 
     mb.append("<tr>");
