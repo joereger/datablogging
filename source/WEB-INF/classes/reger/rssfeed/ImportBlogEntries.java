@@ -89,7 +89,8 @@ public class ImportBlogEntries {
                     entry.dateGmt = calendar;
                     //Set the author in the posts.
                     entry.accountuserid = au.getAccountuserid();
-                    
+                    //To approve the imported entries.
+                    entry.isApproved = 1;
                     try {
                         //Save the entry to the database
                         entry.newEntryTemporary(account, au);
