@@ -130,6 +130,7 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolssupercookie", "tools", "SUPERCOOKIE", "myhome/tools-supercookie.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolstaggame", "tools", "KEYWORD TAG GAME", "myhome/tools-taggame.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolslinkrot", "tools", "LINK ROT", "myhome/tools-linkrot.log", false, ""));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsimportrss", "tools", "IMPORT ENTRIES", "myhome/tools-importrss.log", false, ""));        
 
         //Tools Email/Camphone
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphoneemail", "toolsemailcamphone", "EMAIL ADDRESSES", "myhome/tools-emailapi-emailaddresses.log", false, ""));
