@@ -16,10 +16,11 @@ import reger.PrivateLabel;
 import reger.UserSession;
 import reger.core.ValidationException;
 import reger.core.Debug;
+import reger.core.TimeUtils;
 
 public class ImportBlogEntries {
 
-    public void importBlogFromFeed(UserSession userSession, String url, String logid) throws Exception {
+    public void importBlogFromFeed(UserSession userSession, String url, String logid, String timezoneid) throws Exception {
         WireFeed feed = null;
         try {
             URL feedUrl = new URL(url);
@@ -30,14 +31,14 @@ public class ImportBlogEntries {
             throw e;
         }
         try {
-            storeInDB(feed, userSession, logid);
+            storeInDB(feed, userSession, logid, timezoneid);
         } catch (Exception e) {
             Debug.errorsave(e, "importBlogFromFeed method in ImportBlogEntries", "Exception occurred while storing the data to the database");
             throw e;
         }
     }
 
-    public void importBlogFromFile(UserSession userSession, InputStream fileStream, String logid) throws Exception {
+    public void importBlogFromFile(UserSession userSession, InputStream fileStream, String logid, String timezoneid) throws Exception {
         WireFeed feed = null;
         try {
             WireFeedInput input = new WireFeedInput();
@@ -47,14 +48,14 @@ public class ImportBlogEntries {
             throw e;
         }
         try {
-            storeInDB(feed, userSession, logid);
+            storeInDB(feed, userSession, logid, timezoneid);
         } catch (Exception e) {
             Debug.errorsave(e, "importBlogFromFile method in ImportBlogEntries", "Exception occurred while storing the data to the database");
             throw e;
         }
     }
 
-    private void storeInDB(WireFeed feed, UserSession userSession, String logid) throws Exception {
+    private void storeInDB(WireFeed feed, UserSession userSession, String logid, String timezoneid) throws Exception {
 
         try {
             //Create an instance of the backend object
@@ -86,6 +87,8 @@ public class ImportBlogEntries {
                     entry.logid = Integer.parseInt(logid);
                     //Populate the date/time vars in the event object
                     calendar.setTime(item.getPubDate());
+                    //Convert from GMT timezone to user specific timezone.
+                    calendar = TimeUtils.convertFromOneTimeZoneToAnother(calendar, "GMT", timezoneid);
                     entry.dateGmt = calendar;
                     //Set the author in the posts.
                     entry.accountuserid = au.getAccountuserid();
