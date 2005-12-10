@@ -1,9 +1,7 @@
 <%@ page import="reger.rssfeed.ImportBlogEntries" %>
 <%@ page import="org.apache.commons.fileupload.FileItem" %>
 <%@ page import="java.io.InputStream" %>
-<%@ page import="org.apache.commons.fileupload.DiskFileUpload"%>
 <%@ page import="java.util.Iterator"%>
-<%@ page import="java.util.List"%>
 <%@ page import="java.util.TreeSet"%>
 <%@ page import="java.util.TimeZone"%>
 
@@ -12,9 +10,9 @@
 /*                  Page Config                       */
     reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
     pageProps.siteSection = pageProps.ADMINSITE;
-    pageProps.title = "Tools";
+    pageProps.title = "Import From RSS Feed";
     pageProps.isPasswordProtected = true;
-    pageProps.navButtonName = "toolsimportrss";
+    pageProps.navButtonName = "importrss";
     pageProps.aclObjectName = "CUSTOMIZE";
     pageProps.trafficType = reger.Vars.TRAFFICTYPEADMINMISC;
     pageProps.pathToAppRoot = "../";
