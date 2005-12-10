@@ -132,6 +132,10 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolslinkrot", "tools", "LINK ROT", "myhome/tools-linkrot.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsimportrss", "tools", "IMPORT ENTRIES", "myhome/tools-importrss.log", false, ""));        
 
+        // Import Entries
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("importrss", "toolsimportrss", "RSS", "myhome/tools-importrss.log", false, ""));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("importmovabletype", "toolsimportrss", "MOVABLE TYPE", "myhome/tools-import-movabletype.log", false, ""));
+
         //Tools Email/Camphone
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphoneemail", "toolsemailcamphone", "EMAIL ADDRESSES", "myhome/tools-emailapi-emailaddresses.log", false, ""));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphonephone", "toolsemailcamphone", "PHONE ADDRESSES", "myhome/tools-emailapi-phoneaddresses.log", false, ""));
@@ -163,7 +167,6 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfigdb", "loesystemconfig", "DATABASE SETUP", "loe/systemdb.log", false, "MASTERADMIN"));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemlicense", "loesystemconfig", "SERVER LICENSE", "loe/systemlicense.log", false, "MASTERADMIN"));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loerobotstxt", "loesystemconfig", "ROBOTS.TXT", "loe/systemrobotstxt.log", false, "MASTERADMIN"));
-
 
         //LOE Defaults
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedefaultsmain", "loedefaults", "MAIN", "loe/defaults.log", false, "MASTERADMIN"));
