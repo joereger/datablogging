@@ -1,4 +1,4 @@
-<%@ page import="reger.rssfeed.ImportBlogEntries" %>
+<%@ page import="reger.importentries.ImportRSSEntries" %>
 <%@ page import="org.apache.commons.fileupload.FileItem" %>
 <%@ page import="java.io.InputStream" %>
 <%@ page import="java.util.Iterator"%>
@@ -32,12 +32,12 @@
             mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "You must select a log to add entries to."));
         } else {
             boolean success = true;
-            ImportBlogEntries importEntries = new ImportBlogEntries();
+            ImportRSSEntries importEntries = new ImportRSSEntries();
             String feedUrl = (String) upload.requestParams.get("feedurl");
             String timezoneid = (String) upload.requestParams.get("timezoneid");
             if ((feedUrl != null) && (!feedUrl.trim().equalsIgnoreCase(""))) {
                 try {
-                    importEntries.importBlogFromFeed(userSession, feedUrl, logid, timezoneid);
+                    importEntries.importRSSFromFeed(userSession, feedUrl, logid, timezoneid);
                 } catch (Exception e) {
                     success = false;
                     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry. The import failed."));
@@ -53,7 +53,7 @@
                     if ( (fileItem.getFieldName().equals("uploadFile")) && (!fileItem.getName().equals(""))) {
                         InputStream fileStream = fileItem.getInputStream();
                         try {
-                            importEntries.importBlogFromFile(userSession, fileStream, logid, timezoneid);
+                            importEntries.importRSSFromFile(userSession, fileStream, logid, timezoneid);
                         } catch (Exception e) {
                             success = false;
                             mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry. The import failed."));
