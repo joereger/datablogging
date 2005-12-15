@@ -5,6 +5,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.title = "Community: Log Types";
+pageProps.navButtonName = "aboutcommunity-logtypes";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -28,8 +30,6 @@ String cachekey = "CommunityPageLogTypes" + " URL:" + reger.cache.HtmlCache.getK
 int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
-    String currentNavButtonName = "community-logtypes";
-    %><%@ include file="community-header.jsp" %><%
 
         mb.append("<br>");
 
@@ -40,12 +40,6 @@ int refreshintervalinseconds = 3600;
             mb.append(reger.MegaLogTypeListHtmlRenderer.getLogTypeList("signup2.log", "community-logtypes.log", "community-logtypes-detail.log", request, response, userSession, pageProps));
         }
 
-
-
-
-
-
-    %><%@ include file="community-footer.jsp" %><%
 
 //HtmlCache
 %><%@ include file="../htmlcacheend.jsp" %><%

@@ -1,0 +1,71 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Business Overview";
+pageProps.navButtonName = "aboutbiz-index";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("<img src='images/biz-hp.jpg' width=323 height=424 border=0 align=right>");
+
+mb.append("Our technology can help your business in a number of ways.  From being a customer-facing communication and community builder to being an internal knowledge management and collaboration tool, we're ready for business.");
+
+mb.append("<br>");
+mb.append("<h1>Our Blog Offering</h1>");
+mb.append("Our blog server technology helps you use blogs to your advantage, whether that means creating your own mini-blogosphere or just a single customer-facing blog.  Built on enterprise-class platforms, our technology allows you to offer blogs to your employees, customers or vendors.  With our full private labeling capability we can sit behind the scenes and nobody will know that we're involved... you'll get all the credit.  We offer installations hosted on our servers, dedicated servers in our data center and installations on your hardware.  We have consultants ready to educate your users, train your system administrators or do it all for them.");
+
+mb.append("<br>");
+mb.append("<h1>Blogs for Knowledge Management</h1>");
+mb.append("Blogs are an excellent way to capture knowledge and foster communication inside of any organization.  Read how <a href='biz-knowledge-management.log'>here</a>.");
+
+mb.append("<br>");
+mb.append("<h1>What Makes Us Unique</h1>");
+mb.append("We've got all of the blogging basics.  What makes us unique is something called datablogging.  It allows you to attach custom data fields to each blog entry and then graph, share or mine that data.  Read more about <a href='../about/what-is-datablogging.log'>datablogging</a>.");
+
+mb.append("<br>");
+mb.append("<h1>Launch Process</h1>");
+mb.append("Launching blogs into an organization isn't all fun and games.  It's serious business.  We work hard to make sure your program is a success.  See what <a href='biz-knowledge-management-launching.log'>we'll put you through</a>.");
+
+
+mb.append("<br>");
+mb.append("<h1>Get Started</h1>");
+mb.append("We offer turnkey packages and competitive pricing.  We can have your blogging offering up very quickly and can involve you as much or as little as you like.  <a href='biz-contactus.log'>Contact us</a> to get started.");
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

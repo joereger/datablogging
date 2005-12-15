@@ -5,6 +5,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.title = "Community: Search";
+pageProps.navButtonName = "about-community-search";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -28,8 +30,6 @@ int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
 
-    String currentNavButtonName = "community-search";
-    %><%@ include file="community-header.jsp" %><%
 
     mb.append("<br>");
     mb.append("<br>");
@@ -54,8 +54,6 @@ int refreshintervalinseconds = 3600;
 
     mb.append("<br><br>");
 
-
-    %><%@ include file="community-footer.jsp" %><%
 
 //HtmlCache
 %><%@ include file="../htmlcacheend.jsp" %><%

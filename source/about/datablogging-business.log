@@ -1,0 +1,139 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "business use";
+pageProps.navButtonName = "aboutdatablogging-business";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+mb.append("<a name='runningmagazine'>");
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+mb.append("<img src='images/people-you.gif' align=right>");
+mb.append("<font face=arial size=+3 color=#cccccc>Running Magazine</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("A running magazine offers running logs to its users.  It promotes the blogs in its printed pages.  It offers the service for free to anybody who visits their site.  Blogs have the magazine's logo at the top of the page to expand brand reach.");
+mb.append("<br><br>");
+mb.append("<table cellpadding=10 cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<b>How they use datablogging:</b>");
+mb.append("<ul>");
+mb.append("<li>Running Logs - No brainer here... they offer running logs to their readers.  These running logs have all of the benefits of traditional blogs.  But they also include extended running data like distance run, time, shoes worn.  Users take this data and graph it.</li>");
+mb.append("<li>Community - People are able to connect with each other based on their data.  For example, runners in Seattle who run more than 35 miles a week at a pace greater than 7mph can find each other.</li>");
+mb.append("</ul>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<b>What they get in return:</b>");
+mb.append("<ul>");
+mb.append("<li>Revenue - Their blog offering generates revenue in a number of ways.  Banner ads.  Sponsorships.  Users paying to upgrade to the Pro featureset.</li>");
+mb.append("<li>Brand Expansion - As their running bloggers share their runs with their friends and family, the running magazine's brand is visible, giving it much exposure.</li>");
+mb.append("<li>Internet Footprint - To search engines your site looks massive... a big funnel pointing traffic back to their primary media asset... or a subscription form.</li>");
+mb.append("</ul>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("<tr>");
+mb.append("<td valign=top colspan=2>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<b>How Reger.com makes it happen:</b>");
+mb.append("<ul>");
+mb.append("<li>Hosted Solution - Reger.com hosts all of the blogs for the running magazine.  This reduces setup time and maintenance cost.</li>");
+mb.append("<li>Private Label - We private label our blogging technology so that the running magazine's users don't know that we're behind the scenes.</li>");
+mb.append("<li>Log Type Development - We work with the magazine to develop the data fields and graphs that will work best for its users.</li>");
+mb.append("<li></li>");
+mb.append("</ul>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+mb.append("</font>");
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+mb.append("<a name='publisher'>");
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+mb.append("<img src='images/people-you.gif' align=right>");
+mb.append("<font face=arial size=+3 color=#cccccc>Newspaper, Radio Station, TV Station, Magazine, e-Zine, Portal</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("It's very Web 1.0 to say this, but you've got eyeballs!  Hundreds of thousands (if not millions) of people come to you daily for something... news, information, etc. And you're no dummy... you've already tried to make a community out of those eyeballs.  Maybe you tried chat rooms... or forums... or email newsletters.  You've had some success, but it's been tough... adoption rates aren't what you expected.");
+mb.append("<br><br>");
+mb.append("<b>Blogs work where other community-building technologies fail:</b>");
+mb.append("<ul>");
+mb.append("<li>Bulletin boards, chat rooms and wikis all have a critical mass problem.  Without a certain number of users these technologies look empty and actually repel users.  Blogs, on the other hand, are self-contained from a user perspective... they can create their blog and find value in it even if there are no other users on the system yet.</li>");
+mb.append("<li>Blogs are ego-based content creation mechanisms.  People who use them are creating an extension of themselves.  This means that they're more likely to continue to invest in it after they create their account, unlike, say, a bulletin board.</li>");
+mb.append("</ul>");
+mb.append("<b>How does a publisher use blogging?</b>");
+mb.append("<ul>");
+mb.append("<li>Offer blogs to readers, viewers, listeners.</li>");
+mb.append("<li>Export content to blogs: articles, podcasts, vlogging.</li>");
+mb.append("</ul>");
+mb.append("<b>What's the benefit?</b>");
+mb.append("<ul>");
+mb.append("<li>Revenue - There are many ways to monetize a blog offering.  Banner ads.  User upgrades to Pro features.  Email newsletter sponsorships.  We'll work with you to find the best plan of attack.</li>");
+mb.append("<li>Brand extension - Imagine having 1,000,000 blogs powered by your company.  All of them have your company logo at the top/side.  Every time one of your 1,000,000 bloggers shares a picture with their family they expose your brand.</li>");
+mb.append("<li>Internet footprint - Each blog entry your users creates has a link back to your site.  To search engines your site looks massive... a big funnel pointing traffic back to your primary media asset.</li>");
+mb.append("<li>Loyalty - Users are using your service to extend themselves.  In effect you're giving them the microphone.  You're showing them that you trust them.</li>");
+mb.append("<li>Media Interplay - More and more, different media types are working together to tell a richer story. Adding user-generated content is a critical step in this process.  Traditional media leads to user generated media which stimulates further traditional media... just ask Dan Rather... he knows.</li>");
+mb.append("</ul>");
+mb.append("<b>Why Reger.com's datablogging over a traditional blog technology?</b>");
+mb.append("<ul>");
+mb.append("<li>Better Offering - To attract users away from the big public blog services you need something special.  Charts and graphs show your users that you've got something unique.</li>");
+mb.append("<li>Fit Interests of Your Market - You can create custom log types that fit your market.  For example, a running magazine can create a custom running log.  A consumer magazine can create a log type for product reviews that matches the format of reviews they do in print.</li>");
+mb.append("</ul>");
+mb.append("</font>");
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

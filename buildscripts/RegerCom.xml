@@ -90,6 +90,15 @@
         ${sourcedir}/WEB-INF/lib/commons-lang-2.1.jar;
         ${sourcedir}/WEB-INF/lib/concurrent.jar;
         ${sourcedir}/WEB-INF/lib/sequoia-driver.jar;
+        ${sourcedir}/WEB-INF/lib/asm.jar;
+        ${sourcedir}/WEB-INF/lib/asm-attrs.jar;
+        ${sourcedir}/WEB-INF/lib/asm-util.jar;
+        ${sourcedir}/WEB-INF/lib/cglib-2.1.jar;
+        ${sourcedir}/WEB-INF/lib/cglib-nodep-2.1.jar;
+        ${sourcedir}/WEB-INF/lib/commons-logging-api.jar;
+        ${sourcedir}/WEB-INF/lib/dom4j-1.5.2.jar;
+        ${sourcedir}/WEB-INF/lib/hibernate3.jar;
+
   "/>
 
 

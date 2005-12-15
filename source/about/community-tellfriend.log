@@ -5,6 +5,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.title = "Community: Tell a Friend";
+pageProps.navButtonName = "aboutcommunity-tellfriend";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -28,8 +30,7 @@ int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
 
-    String currentNavButtonName = "community-tellfriend";
-    %><%@ include file="community-header.jsp" %><%
+
 
     mb.append("<br>");
     mb.append("<br>");
@@ -50,7 +51,7 @@ int refreshintervalinseconds = 3600;
     mb.append("<br><br>");
 
 
-    %><%@ include file="community-footer.jsp" %><%
+
 
 //HtmlCache
 %><%@ include file="../htmlcacheend.jsp" %><%

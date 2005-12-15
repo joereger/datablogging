@@ -15,6 +15,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Get Started";
+pageProps.navButtonName = "aboutsignup";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -345,14 +347,14 @@ if (!errortext.equals("")) {
 //
 
 
-mb.append("<br>");
-mb.append("<br>");
-mb.append("<font face=impact size=+1 color=#e6e6e6 style=\"font-family: impact, arial; font-size: 72px;\">&nbsp;Get Started</font>");
-mb.append("<br>");
+//mb.append("<br>");
+//mb.append("<br>");
+//mb.append("<font face=impact size=+1 color=#e6e6e6 style=\"font-family: impact, arial; font-size: 72px;\">&nbsp;Get Started</font>");
+//mb.append("<br>");
 
 
 //Wrapper table
-mb.append("<table cellpadding=5 align=center width=100% cellspacing=1 border=0>");
+mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
 mb.append("<tr>");
 
 mb.append("<td valign=top>");
@@ -363,7 +365,7 @@ mb.append("<td valign=top>");
 
     //Sign Up
     mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
-    mb.append("<center><font face=arial size=+2 color=#666666><b>New Users Create an Account</b></font></center><br>");
+    mb.append("<a href='#existingusers'><font face=arial size=-2 color=#666666>(<b>Existing Users Click Here to Log In</b>)</font></a>");
     mb.append("<!-- begin  permissions table -->");
     mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
 
@@ -381,7 +383,7 @@ mb.append("<td valign=top>");
     mb.append("</tr>");
 
     mb.append("</tr>");
-    mb.append("<td bgcolor=#ffffff valign=top width=50% align=right><font face=arial size=-1>");
+    mb.append("<td bgcolor=#ffffff valign=top align=right><font face=arial size=-1>");
     mb.append("<b>Choose Your Own Web Address!</b>");
     mb.append("</font>");
     mb.append("<br>");
@@ -393,7 +395,8 @@ mb.append("<td valign=top>");
     if (userSession.getPl().getUsedynamicdns()){
         mb.append("<b>"+request.getScheme() + ":// <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> ." + userSession.getPl().getPlbasedomain() + "/ </b>");
     } else {
-        mb.append("<b>"+userSession.getPl().getPlbasedomain(userSession)+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
+        mb.append("<b>"+request.getScheme()+"://"+userSession.getPl().getPlbasedomain()+"/~ <input type='text' name='siteurl' value='" + reger.core.Util.cleanForHtml(siteurl) + "' size='10' maxlength='49'> /</b>");
+
     }
     mb.append("</font>");
     mb.append("<br>");
@@ -427,7 +430,7 @@ mb.append("<td valign=top>");
     mb.append("</td>");
     mb.append("</tr>");
     mb.append("<tr>");
-    mb.append("<td valign=top nowrap align=left bgcolor=#ffffff colspan=2>");
+    mb.append("<td valign=top align=left bgcolor=#ffffff colspan=2>");
     //Output the accountuser fields
     mb.append(au.accountSettingsHtmlForm(userSession.getPl()));
     mb.append("</td>");
@@ -476,7 +479,7 @@ mb.append("<td valign=top>");
     if (rstTos!=null && rstTos.length>0){
         termsofservice = rstTos[0][0];
     }
-    mb.append("<textarea cols='35' rows='6' name='termsofservice' style=\"font-size: 12px;font-face: arial; width:100%; background: #ffffff; color: #000000;\" disabled=\"true\">"+Util.cleanForHtml(termsofservice)+"</textarea>");
+    mb.append("<textarea cols='35' rows='6' name='termsofservice' style=\"font-size: 12px;font-face: arial; background: #ffffff; color: #000000;\" disabled=\"true\">"+Util.cleanForHtml(termsofservice)+"</textarea>");
     mb.append("</td>");
     mb.append("</tr>");
 
@@ -498,15 +501,17 @@ mb.append("<td valign=top>");
 //Wrapper table
 mb.append("</td>");
 
+mb.append("</tr>");
+mb.append("<tr>");
 
-mb.append("<td width=25% valign=top>");
+mb.append("<td valign=top>");
 
 
     //Login
     mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
     if (userSession.getAccountuser().getIsLoggedIn()){
         //User is logged-in so make sure they want to add to this account
-        mb.append("<center><font face=arial size=+2 color=#666666><b>You're Logged-In Already</b></font></center><br>");
+        mb.append("<a name='existingusers'><center><font face=arial size=+2 color=#666666><b>You're Logged-In Already</b></font></center><br>");
         mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
         mb.append("<form action=signup2.log method=post>");
         mb.append("<input type=hidden name=action value=alreadyloggedin>");
@@ -550,7 +555,7 @@ mb.append("<td width=25% valign=top>");
         mb.append("</table>");
     } else {
         //Allow user to log in
-        mb.append("<center><font face=arial size=+2 color=#666666><b>Existing Users Log In</b></font></center><br>");
+        mb.append("<a name='existingusers'><center><font face=arial size=+2 color=#666666><b>Existing Users Log In</b></font></center><br>");
         mb.append("<table cellpadding=5 align=center cellspacing=1 border=0>");
         mb.append("<form action=signup2.log method=post>");
         mb.append("<input type=hidden name=action value=login>");

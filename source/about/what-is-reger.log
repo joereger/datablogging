@@ -1,0 +1,72 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "What is Reger.com?";
+pageProps.navButtonName = "aboutwhat-is-reger";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+mb.append("<br>");
+mb.append("<img src='images/number-01.gif' align=left>");
+mb.append("<h1>A Hosted Blogging Service</h1>");
+mb.append("A datablogging service, to be precise.  Anybody in the world can sign up for a free account and start blogging in minutes.  We host the blogs so you don't have to. Join the thousands of people already datablogging!");
+mb.append("<ul>");
+mb.append("<li><a href='signup2.log'>Get Started Here</a> - Free account with 10Mb storage and 1Gb of bandwidth per month.  You also get a free trial of the Pro features for 15 days.  Continue using your blog for free as long as you like.</li>");
+mb.append("<li><a href='community.log'>Our Community</a> - Lists of new blog sites, recently updated blogs, most read entries, etc. appear in our community aggregator.</li>");
+mb.append("<li><a href='community-logtypes.log'>Log Types</a> - See what datablog types we offer and users have contributed.  Of course, you can always create your own datablog type with drag-and-drop ease.</li>");
+mb.append("<li><a href='features.log'>Feature List</a> - A big, hairy list of features... let us know if you fall in and get lost... there's a lot of stuff there.</li>");
+mb.append("<li><a href='http://www.reger.com/demos/uniqueelementsofregercom.html' onclick=\"javascript:NewWindow(this.href,'screencast','0','0','yes');return false;\">Unique Features Screencast</a> - See an audio and video tour of some of the things that are unique to datablogging.</li>");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<img src='images/number-02.gif' align=left>");
+mb.append("<h1>A Downloadable Blogging Technology</h1>");
+mb.append("If you have your own web or intranet server you can deploy the same code that we use to run our commercial hosted service.  It's quick and easy to install.");
+mb.append("<ul>");
+mb.append("<li><a href='download.log'>Get the Downloadable Version Here</a> - Unlimited usage for 3 users.  One private label.  Unlimited logs.  Unlimited blog sites.  Ability to created unlimited datablog types with drag-and-drop ease.</li>");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<img src='images/number-03.gif' align=left>");
+mb.append("<h1>A Company</h1>");
+mb.append("We write and support the software that powers datablogging.  We also engage business clients to power their blog offerings, intranets or whatever else they have in mind.  We're flexible and actively looking for business partnerships with consumer-oriented companies that would like to offer datablogging to their customers, users, employees or whoever else they deal with.");
+mb.append("<ul>");
+mb.append("<li><a href='biz-contactus.log'>Our Team/Contact Us</a> - The wonderful people behind all this great stuff.</li>");
+mb.append("<li><a href='datablogging-business.log'>Business Use</a> - Examples of how a business might use datablogging.</li>");
+mb.append("</ul>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

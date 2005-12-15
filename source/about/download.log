@@ -5,6 +5,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Download";
+pageProps.navButtonName = "aboutdownload";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -22,7 +24,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-    mb.append("<font face=impact size=+1 color=#e6e6e6 style=\"font-family: impact, arial; font-size: 72px;\">&nbsp;Downloadable BETA datablogging Server</font>");
+    //mb.append("<font face=impact size=+1 color=#e6e6e6 style=\"font-family: impact, arial; font-size: 72px;\">&nbsp;Downloadable BETA datablogging Server</font>");
 
     mb.append("<blockquote>");
 

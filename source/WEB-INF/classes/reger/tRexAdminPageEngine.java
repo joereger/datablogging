@@ -53,7 +53,7 @@ public class tRexAdminPageEngine {
 
 
         //NestedNavPanels Object Creation
-        NestedNavPanels nnp = new NestedNavPanels(pageProps, userSession);
+        NestedNavPanels nnp = new NestedNavPanels(pageProps, userSession, request);
         //NestedNavPanels Open
         ap.append(nnp.getTopHtml());
 

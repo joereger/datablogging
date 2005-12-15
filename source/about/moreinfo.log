@@ -3,6 +3,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "More Info";
+pageProps.navButtonName = "aboutmoreinfo";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -22,8 +24,6 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 
 
-String currentNavButtonName = "moreinfo-main";
-%><%@ include file="moreinfo-header.jsp" %><%
 
 mb.append("<br>");
 
@@ -131,7 +131,6 @@ mb.append("</table>");
 
 mb.append("<br>");
 
-%><%@ include file="moreinfo-footer.jsp" %><%
 
 %>
 

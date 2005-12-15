@@ -12,7 +12,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.title = "Files";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "plfiles";
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
@@ -25,13 +26,9 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-//Start PLID-choosing SQL
-String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
-    plidSql = " (pl.plid>'-1') ";
-}
-//End PLID-choosing SQL
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
 
 mb.append("<style type=text/css>");
 mb.append("<--");
@@ -60,6 +57,7 @@ mb.append(reger.core.Util.popup());
 
 //Dropdown
 mb.append("<form action=files.log method=get>");
+mb.append("<input type=hidden name='plid' value='"+plid+"'>");
 mb.append("<select name=eventtypeid>");
 //-----------------------------------
 //-----------------------------------
@@ -150,7 +148,7 @@ if (rstAccounts!=null && rstAccounts.length>0){
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><a href='"+acctTmp.getSiteRootUrl(userSession)+"/entry.log?eventid="+rstAccounts[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\"><b>"+rstAccounts[i][4]+"</b></a></td>");
         mb.append("<td valign=top align=center bgcolor=#e6e6e6 class=acct><a href='"+acctTmp.getSiteRootUrl(userSession)+"/mediaouthtml.log?logid=-1&imageid="+rstAccounts[i][12]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\"><img src='"+acctTmp.getSiteRootUrl(userSession)+"/mediaout.log?imageid="+rstAccounts[i][12]+"&isthumbnail=yes' border=0></a><br>"+rstAccounts[i][14]+"<br>Size: "+rstAccounts[i][13]+"</td>");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][10]+"</td>");
-        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct><a href='accountdetail.log?accountid="+rstAccounts[i][6]+"'>"+rstAccounts[i][9]+"</a></td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct><a href='accountdetail.log?accountid="+rstAccounts[i][6]+"&plid="+plid+"'>"+rstAccounts[i][9]+"</a></td>");
         mb.append("</tr>");
 
 	}

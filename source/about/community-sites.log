@@ -5,6 +5,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
+pageProps.title = "Community: Blogs";
+pageProps.navButtonName = "aboutcommunity-sites";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -27,9 +29,6 @@ String cachekey = "CommunitySitesPage" + " URL:" + reger.cache.HtmlCache.getKeyF
 int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
-
-    String currentNavButtonName = "community-sites";
-    %><%@ include file="community-header.jsp" %><%
 
     mb.append("<br>");
     mb.append("<br>");
@@ -175,7 +174,6 @@ int refreshintervalinseconds = 3600;
     mb.append("<br><br>");
 
 
-    %><%@ include file="community-footer.jsp" %><%
 
 //HtmlCache
 %><%@ include file="../htmlcacheend.jsp" %><%

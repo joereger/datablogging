@@ -3,6 +3,8 @@ package reger.nav;
 import reger.Accountuser;
 import reger.UserSession;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * A NavPanel displays a tier of navigation
  */
@@ -10,8 +12,9 @@ public class NavPanelLevelZero {
 
 
 
-    public static String getHtmlStart(String pathToAppRoot, UserSession userSession, NavButton[] navButtons, String currentNavButtonName){
+    public static String getHtmlStart(String pathToAppRoot, UserSession userSession, NavButton[] navButtons, String currentNavButtonName, HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
+
 
 
         //mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 background='"+pathToAppRoot+"images/pattern-yellowsquigglies.gif'>");
@@ -45,7 +48,7 @@ public class NavPanelLevelZero {
                     mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=6 height=1>");
                     mb.append("</td>");
 
-                    url = pathToAppRoot + navButtons[i].buttonUrlFromSiteRoot;
+                    url = pathToAppRoot + navButtons[i].buttonUrlFromSiteRoot + navButtons[i].getQueryStringIncludingRequestVars(request);
                     text = navButtons[i].buttonTitle;
                     if (navButtons[i].navButtonName.equals(currentNavButtonName)){
                         //mb.append("<div class=\"tab\" id=\"navlevel-one-here\"><a href=\""+url+"\">"+text+"</a></div>");
@@ -80,7 +83,7 @@ public class NavPanelLevelZero {
         return mb.toString();
     }
 
-    public static String getHtmlEnd(String pathToAppRoot, NavButton[] navButtons, String currentNavButtonName){
+    public static String getHtmlEnd(String pathToAppRoot, NavButton[] navButtons, String currentNavButtonName, HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
         mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");

@@ -11,7 +11,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.title = "Accounts";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "placcounts";
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
@@ -24,13 +25,12 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-//Start PLID-choosing SQL
-String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
-    plidSql = " (pl.plid>'-1') ";
-}
-//End PLID-choosing SQL
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
+
+
+
 
 mb.append("<style type=text/css>");
 mb.append("<--");
@@ -121,7 +121,7 @@ if (rstAccounts!=null && rstAccounts.length>0){
 	    Calendar tmpCal = reger.core.TimeUtils.dbstringtocalendar(rstAccounts[i][2]);
 	    //Calendar tmpCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(tmp1Cal, tmp1Cal.getTimeZone().getID(), "GMT");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][2]+"<br>"+reger.core.TimeUtils.agoText(tmpCal)+"</td>");
-        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><a href='accountdetail.log?accountid="+rstAccounts[i][0]+"'>"+rstAccounts[i][1]+"</a></td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><a href='accountdetail.log?accountid="+rstAccounts[i][0]+"&plid="+plid+"'>"+rstAccounts[i][1]+"</a></td>");
         //mb.append("<td valign=top align=center bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][6]+"</td>");
         //mb.append("<td valign=top align=center bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][5]+"</td>");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctsmall>"+rstAccounts[i][4]+"</td>");
@@ -142,6 +142,7 @@ sc.append("Search Accounts");
 sc.append("</font>");
 sc.append("<form action=accounts.log method=post>");
 sc.append("<input type=hidden name=action value=search>");
+sc.append("<input type=hidden name=plid value="+plid+">");
 sc.append("<font face=arial size=-2>");
 sc.append("Account Url:");
 sc.append("<br>");
@@ -151,7 +152,5 @@ sc.append("<input type=submit value='Search' style=\"font-size: 9px;\">");
 sc.append("</font>");
 sc.append("</form>");
 %>
-
-
 
 <%@ include file="../globalfooter.jsp" %>

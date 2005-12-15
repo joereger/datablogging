@@ -3,6 +3,8 @@ package reger.nav;
 import reger.UserSession;
 import reger.core.Debug;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * A NavPanel displays a tier of navigation
  */
@@ -43,180 +45,30 @@ public class NavPanel {
 
     }
 
-    public String getHtmlStart(String pathToAppRoot, UserSession userSession){
+    public String getHtmlStart(String pathToAppRoot, UserSession userSession, HttpServletRequest request){
         if (navLevel==0){
-            return NavPanelLevelZero.getHtmlStart(pathToAppRoot, userSession, navButtons, currentNavButtonName);
+            return NavPanelLevelZero.getHtmlStart(pathToAppRoot, userSession, navButtons, currentNavButtonName, request);
         } else if (navLevel==1){
-            return NavPanelLevelOne.getHtmlStart(pathToAppRoot, userSession, navButtons, currentNavButtonName);
+            return NavPanelLevelOne.getHtmlStart(pathToAppRoot, userSession, navButtons, currentNavButtonName, request);
         } else if (navLevel==2){
-            return NavPanelLevelTwo.getHtmlStart(pathToAppRoot, userSession, navButtons, currentNavButtonName);
+            return NavPanelLevelTwo.getHtmlStart(pathToAppRoot, userSession, navButtons, currentNavButtonName, request);
         } else {
-            return NavPanelLevelTwo.getHtmlStart(pathToAppRoot, userSession, navButtons, currentNavButtonName);
+            return NavPanelLevelTwo.getHtmlStart(pathToAppRoot, userSession, navButtons, currentNavButtonName, request);
         }
     }
 
-    public String getHtmlEnd(String pathToAppRoot){
+    public String getHtmlEnd(String pathToAppRoot, HttpServletRequest request){
         if (navLevel==0){
-            return NavPanelLevelZero.getHtmlEnd(pathToAppRoot, navButtons, currentNavButtonName);
+            return NavPanelLevelZero.getHtmlEnd(pathToAppRoot, navButtons, currentNavButtonName, request);
         } else if (navLevel==1){
-            return NavPanelLevelOne.getHtmlEnd(pathToAppRoot, navButtons, currentNavButtonName);
+            return NavPanelLevelOne.getHtmlEnd(pathToAppRoot, navButtons, currentNavButtonName, request);
         } else if (navLevel==2){
-            return NavPanelLevelTwo.getHtmlEnd(pathToAppRoot, navButtons, currentNavButtonName);
+            return NavPanelLevelTwo.getHtmlEnd(pathToAppRoot, navButtons, currentNavButtonName, request);
         } else {
-            return NavPanelLevelTwo.getHtmlEnd(pathToAppRoot, navButtons, currentNavButtonName);
+            return NavPanelLevelTwo.getHtmlEnd(pathToAppRoot, navButtons, currentNavButtonName, request);
         }
     }
 
-//    public String getHtmlStartOLD(String pathToAppRoot){
-//        StringBuffer mb = new StringBuffer();
-//
-//        mb.append("<style>");
-//        mb.append("\n");
-//        mb.append("a:link	{ text-decoration: underline }");
-//        mb.append("\n");
-//        mb.append("a:visited { text-decoration: underline }");
-//        mb.append("\n");
-//        mb.append("a:hover { text-decoration: underline; }");
-//        mb.append("\n");
-//        mb.append(".adminbutton { color: "+navPanelConfig.fontcolor+"; font-size: 12px; font-family: Arial, Geneva, Helvetica, Swiss, SunSans-Regular;  text-decoration: none; letter-spacing: 0px; font-weight : bold;}");
-//        mb.append("\n");
-//        mb.append(".admintab{}");
-//        mb.append("\n");
-//        mb.append("td.admintab:hover { background: #ffffff; }");
-//        mb.append("\n");
-//        mb.append("</style>");
-//        mb.append("\n");
-//
-//        //Need to create a count of buttons to display
-//        //int numberofbuttons = navButtons.length;
-//
-//        mb.append("<table width=100% cellspacing=0 cellpadding=0 border=0>");
-//        mb.append("<tr>");
-//        //Inset from left col
-//        mb.append("<td nowrap align=center width="+navPanelConfig.insetFromMargins+">");
-//        mb.append("<img src="+pathToAppRoot+"images/clear.gif border=0 width="+navPanelConfig.insetFromMargins+" height=1>");
-//        mb.append("</td>");
-//        mb.append("<td nowrap align=center width=1>");
-//        mb.append("<img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=0>");
-//        mb.append("</td>");
-//        mb.append("<td nowrap align=center width="+navPanelConfig.insetFromMargins+">");
-//        mb.append("<img src="+pathToAppRoot+"images/clear.gif border=0 width="+navPanelConfig.insetFromMargins+" height=55>");
-//        mb.append("</td>");
-//        mb.append("<td rowspan=2 valign=bottom>");
-//
-//
-//        mb.append("<!-- Start Navbar -->");
-//        mb.append("<table cellspacing=0 cellpadding=0 border=0>");
-//        mb.append("<tr>");
-//        //Need one for each button
-//        for(int i=0; i<navButtons.length; i++){
-//            mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" width=1><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//            mb.append("<td bgcolor="+navPanelConfig.outlinecolor+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//            mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" width=1><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//            mb.append("<td width="+navPanelConfig.spaceBetweenTabs+"><img src="+pathToAppRoot+"images/clear.gif border=0 width="+navPanelConfig.spaceBetweenTabs+" height=1></td>");
-//        }
-//        mb.append("</tr>");
-//        mb.append("<tr>");
-//        //Need one for each button
-//        String url = "";
-//        String text = "";
-//        String thisTabColor = "";
-//        for(int i=0; i<navButtons.length; i++){
-//            url = navButtons[i].buttonUrlFromSiteRoot;
-//            text = navButtons[i].buttonTitle;
-//            if (navButtons[i].navButtonName.equals(currentNavButtonName)){
-//                thisTabColor = navPanelConfig.tabbgoncolor;
-//            } else {
-//                thisTabColor = navPanelConfig.tabbgoffcolor;
-//            }
-//            mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" width=1><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//            mb.append("<td bgcolor="+thisTabColor+" class=admintab align=center height=21 onclick=\"document.location.href='"+pathToAppRoot+url+"'\">");
-//            mb.append("<font face=arial size=-2><a href='"+pathToAppRoot+url+"' class=adminbutton>"+text+"</a></font>");
-//            mb.append("</td>");
-//            mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" width=1><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//            mb.append("<td width="+navPanelConfig.spaceBetweenTabs+"><img src="+pathToAppRoot+"images/clear.gif border=0 width="+navPanelConfig.spaceBetweenTabs+" height=1></td>");
-//        }
-//        mb.append("</tr>");
-//        mb.append("<tr>");
-//        //Need one for each button
-//        String linebgcolor = "";
-//        for(int i=0; i<navButtons.length; i++){
-//            linebgcolor = navPanelConfig.outlinecolor;
-//            if (navButtons[i].navButtonName.equals(currentNavButtonName)){
-//                linebgcolor = navPanelConfig.tabbgoncolor;
-//            }
-//            mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" width=1><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//            mb.append("<td bgcolor="+linebgcolor+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//            mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" width=1><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//            mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" width="+navPanelConfig.spaceBetweenTabs+"><img src="+pathToAppRoot+"images/clear.gif border=0 width="+navPanelConfig.spaceBetweenTabs+" height=1></td>");
-//        }
-//        mb.append("</tr>");
-//        mb.append("</table>");
-//        mb.append("<!-- End Navbar -->");
-//
-//
-//        mb.append("</td>");
-//        mb.append("<td>");
-//        mb.append("<img src="+pathToAppRoot+"images/clear.gif border=0 width="+navPanelConfig.insetFromMargins+" height=55>");
-//        mb.append("</td>");
-//        mb.append("<td nowrap align=center width=1>");
-//        mb.append("<img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=0>");
-//        mb.append("</td>");
-//        //Inset from right col
-//        mb.append("<td nowrap align=center width="+navPanelConfig.insetFromMargins+">");
-//        mb.append("<img src="+pathToAppRoot+"images/clear.gif border=0 width="+navPanelConfig.insetFromMargins+" height=1>");
-//        mb.append("</td>");
-//        mb.append("</tr>");
-//
-//        //Line under buttons
-//        mb.append("<tr>");
-//        mb.append("<td><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.outlinecolor+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.outlinecolor+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.outlinecolor+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.outlinecolor+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("</tr>");
-//
-//        //Build side margins
-//        mb.append("<tr>");
-//        mb.append("<td width="+navPanelConfig.insetFromMargins+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" width=1><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.tabbgoncolor+" colspan='3'>");
-//
-//        //Body of page goes here
-//
-//        return mb.toString();
-//    }
-
-
-//    public String getHtmlEndOLD(String pathToAppRoot){
-//        StringBuffer mb = new StringBuffer();
-//
-//        mb.append("</td>");
-//        mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" width=1><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td width="+navPanelConfig.insetFromMargins+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("</tr>");
-//
-//        //Line at bottom of NavPanel
-//        mb.append("<tr>");
-//        mb.append("<td><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.outlinecolor+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.tabbgoncolor+" colspan=3><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height="+navPanelConfig.insetFromMargins+"></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.outlinecolor+"><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("</tr>");
-//
-//        //Line at bottom of NavPanel
-//        mb.append("<tr>");
-//        mb.append("<td><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td bgcolor="+navPanelConfig.outlinecolor+" colspan=5><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("<td><img src="+pathToAppRoot+"images/clear.gif border=0 width=1 height=1></td>");
-//        mb.append("</tr>");
-//
-//        mb.append("</table>");
-//        return mb.toString();
-//    }
 
 
     public int levelsNested(){

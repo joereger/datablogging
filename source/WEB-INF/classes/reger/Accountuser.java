@@ -27,6 +27,7 @@ public class Accountuser {
     private Vector accountUserAclGroups=null;
     private int[] logsUserHasExlicitPermissionToAccess=null;
     private int[] logsUserHasExlicitPermissionToAuthor=null;
+    private int[] plidsUserCanAdminister=null;
 
     private Hashtable accountsUserHasAccessTo = null;
 
@@ -177,6 +178,9 @@ public class Accountuser {
 
         //Populate the accountsUserHasAccessTo
         populateAccountsUserHasAccessTo();
+
+        //Populate the private labels this user can administer
+        populatePlsUserCanAdmin();
 
         //Get the fields and store them in the Vector accountuserfields
         if (this.accountuserid>0){
@@ -505,6 +509,72 @@ public class Accountuser {
 
 
 
+    }
+
+    private void populatePlsUserCanAdmin(){
+        plidsUserCanAdminister = new int[0];
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstData= Db.RunSQL("SELECT accountuserpladminid, plid, accountuserid FROM accountuserpladmin WHERE accountuserid='"+accountuserid+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstData!=null && rstData.length>0){
+            for(int i=0; i<rstData.length; i++){
+                plidsUserCanAdminister = reger.core.Util.addToIntArray(plidsUserCanAdminister, Integer.parseInt(rstData[i][1]));
+            }
+        }
+    }
+
+    public boolean userCanAdministerPl(int plid){
+        if(userCanDoAcl("MASTERADMIN", accountid)){
+            return true;
+        }
+        if (plidsUserCanAdminister!=null){
+            if (userCanDoAcl("PLADMIN", accountid)){
+                //User can do pladmin for their home account
+                //And account is tied to a pl
+                //So this is a bit of a hack
+                //A user with PLADMIN permission can, by default,
+                //admin their own pl (the pl of their account)
+                reger.Account acct = reger.cache.AccountCache.get(accountid);
+                if (acct.getPlid()==plid){
+                    return true;
+                }
+                //But if this is another pl, then we need to see if they have explicit permission
+                for (int i = 0; i < plidsUserCanAdminister.length; i++) {
+                    if(plidsUserCanAdminister[i]==plid){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public void grantPlAdminpermissionToPl(int plid){
+        //Make sure they have pladmin permission
+        grantAcl("PLADMIN", accountid);
+        //Create a record in db
+        AccountuserPlAdmin acctUserPlAdm = new AccountuserPlAdmin(plid, accountuserid);
+        acctUserPlAdm.save();
+        //Refresh the permissions
+        populate();
+    }
+
+    public void revokePlAdminpermissionToPl(int plid){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstData= Db.RunSQL("SELECT accountuserpladminid FROM accountuserpladmin WHERE plid='"+plid+"' AND accountuserid='"+accountuserid+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstData!=null && rstData.length>0){
+            for(int i=0; i<rstData.length; i++){
+                AccountuserPlAdmin acctUserPlAdm = new AccountuserPlAdmin(Integer.parseInt(rstData[i][0]));
+                acctUserPlAdm.delete();
+            }
+        }
+        //Refresh the permissions
+        populate();
     }
 
     /**
@@ -1539,11 +1609,11 @@ public class Accountuser {
         StringBuffer mb = new StringBuffer();
 
         //Display the data in a form.  Yummy form.  Yummy.
-        mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
+        mb.append("<table cellpadding=3 cellspacing=1 border=0>");
 
         //Friendlyname
         mb.append("<tr>");
-        mb.append("<td valign=top align=right bgcolor=#ffffff width=50% >");
+        mb.append("<td valign=top align=right bgcolor=#ffffff>");
         mb.append("<font face=arial size=-1>");
         mb.append("<b>Friendly Name:</b>");
         mb.append("</font>");
@@ -1707,7 +1777,7 @@ public class Accountuser {
         mb.append("</font>");
         mb.append("</td>");
         mb.append("<td valign=top align=left bgcolor=#ffffff>");
-        mb.append("<select name=usertimezoneid>");
+        mb.append("<select name=usertimezoneid style=\"font-size: 10px;\">");
         String[] timezone = TimeZone.getAvailableIDs();
         TreeSet timezoneids = new TreeSet();
         //Add the timezoneid's to a treeset

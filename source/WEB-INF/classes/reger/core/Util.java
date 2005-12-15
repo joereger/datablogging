@@ -126,7 +126,7 @@ public class Util {
 		try{
 			Integer.parseInt(str);
 			return true;
-		}catch(NumberFormatException e){
+		}catch(Exception e){
 			return false;
 		}
 	}
@@ -904,20 +904,20 @@ public class Util {
     public static StringBuffer pageFooter(String pathToAppRoot, reger.PrivateLabel pl){
         StringBuffer f = new StringBuffer();
 
-        f.append("<br>");
-
-        f.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
-        f.append("<tr>");
-        f.append("<td valign='top' align=right bgcolor=#ffffff>");
-        if (!pl.getHideregercomlogo()){
-            f.append("<a href='http://www.reger.com/'><img src="+pathToAppRoot+"images/reger-poweredby.gif border=0 align=right></a>");
-        }
-        f.append("<font face=arial size=-2><a href='"+pathToAppRoot+"about/terms-of-service.log'>"+pl.getTermsofuselinktext()+"</a>  &nbsp;&nbsp;  <a href='"+pathToAppRoot+"about/feedback.log' target=feedbackform>"+pl.getFeedbacklinktext()+"</a></font>");
-        f.append("</td>");
-        f.append("</tr>");
-        f.append("</table>");
-
-        f.append("<br><br><br>");
+//        f.append("<br>");
+//
+//        f.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
+//        f.append("<tr>");
+//        f.append("<td valign='top' align=right bgcolor=#ffffff>");
+//        if (!pl.getHideregercomlogo()){
+//            f.append("<a href='http://www.reger.com/'><img src="+pathToAppRoot+"images/reger-poweredby.gif border=0 align=right></a>");
+//        }
+//        f.append("<font face=arial size=-2><a href='"+pathToAppRoot+"about/terms-of-service.log'>"+pl.getTermsofuselinktext()+"</a>  &nbsp;&nbsp;  <a href='"+pathToAppRoot+"about/feedback.log' target=feedbackform>"+pl.getFeedbacklinktext()+"</a></font>");
+//        f.append("</td>");
+//        f.append("</tr>");
+//        f.append("</table>");
+//
+//        f.append("<br><br><br>");
 
         return f;
     }
@@ -930,7 +930,7 @@ public class Util {
         //f.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
         //f.append("<tr>");
         //f.append("<td align=right>");
-        f.append("<a href='http://www.reger.com/'><img src=images/reger-poweredby.gif border=0 align=right></a>");
+        //f.append("<a href='http://www.reger.com/'><img src=images/reger-poweredby.gif border=0 align=right></a>");
         //f.append("</td>");
         //f.append("</tr>");
         //f.append("</table>");

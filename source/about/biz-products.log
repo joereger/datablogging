@@ -1,0 +1,295 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Products";
+pageProps.navButtonName = "aboutproducts";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+mb.append("Our products are built with business in mind.  Our goal is to give you as much flexibility in your business as possible.");
+
+mb.append("<br>");
+mb.append("<h1>Enterprise Class</h1>");
+mb.append("Our solutions are build on enterprise quality platforms.  We employ enterprise quality processes.  We can scale from thousands to millions in support of your business goals.");
+
+mb.append("<br>");
+mb.append("<h1>Mature Software</h1>");
+mb.append("Our solutions have been deployed in production environments for years.  Thousands of users have fire-tested them.  Underlying software architectures have been refactored as needed.");
+
+mb.append("<br>");
+mb.append("<h1>State of the Art Features</h1>");
+mb.append("Our web logging features are state of the art.  No other company offers the same number of features in a single product.");
+
+//Enterprise datablogging Server
+mb.append("The Enterprise Web Logging Service includes everything you need to be in the web logging business.");
+mb.append("It is a complete solution that allows you to offer web logs to your customers.");
+
+mb.append("<br>");
+mb.append("<h1>Requirements Analysis</h1>");
+mb.append("We will work with you to understand your web logging needs before implementing a solution.  This requirements analysis includes the following:");
+mb.append("<ul>");
+mb.append("<li>Traffic analysis to determine server needs");
+mb.append("<li>DNS analysis to determine domain names and hosting options");
+mb.append("<li>Legal review with your counsel to uncover any special privacy concerns/issues");
+mb.append("<li>Branding guidelines");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Private Label Design</h1>");
+mb.append("Your private label template is important because it is displayed on all pages served by your users.  Your template needs to be both high impact and low bandwidth.  It must allow ample room for your user's web logs but also incorporate your brand.");
+mb.append("We can design your template for you or work with your internal design/marketing group.");
+
+mb.append("<br>");
+mb.append("<h1>Server Setup</h1>");
+mb.append("Whether hosted by you or by us, we set up the servers with the proper operating system, application server, database and security options.");
+
+mb.append("<br>");
+mb.append("<h1>Service Configuration</h1>");
+mb.append("There are numerous ways to configure the web logging service to suit your needs.");
+mb.append("<ul>");
+mb.append("<li>Choose log types - You can include as many or as few log types as you like.  Most corporations don't include the Sex Log, for example.  Once a log type is removed, your users will never know that it even exists.  This allows you to create a focus on, say, fitness logs or business logs.");
+mb.append("<li>Base URL - Determines what users will use as their site name (i.e. http://username.yourdomain.com)");
+mb.append("<li>Pricing options - How much your users pay if they choose to upgrade.");
+mb.append("<li>Advertising options - Whether or not banners will be displayed on your free users' sites.  You can subsidize them to remove the banners.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Quality Assurance / Compliance Testing</h1>");
+mb.append("Testing prior to launch guarantees that you put your best foot forward.  We will work with your internal teams to define and implement a testing checklist.");
+mb.append("<ul>");
+mb.append("<li>Legal compliance check");
+mb.append("<li>Corporate branding compliance check");
+mb.append("<li>Technology/server setup check - (http, smtp, dns, xml, wap)");
+mb.append("<li>Limited launch with users of your choice");
+mb.append("</ul>");
+
+
+mb.append("<br>");
+mb.append("<h1>Launch Planning</h1>");
+mb.append("Launching your new web logging portal properly is critical.  This may include communications to your user base, public relations announcements, bill stuffing, web site announcements, telemarketing, email marketing and other forms of marketing.  Launch planning delivers:");
+mb.append("<ul>");
+mb.append("<li>One day moderated executive marketing session");
+mb.append("<li>One day focus group with your target market");
+mb.append("<li>Written launch and marketing plan");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Customer Service</h1>");
+mb.append("It's important to support your users once they jump into the world of web logging.  We provide email customer support for your web logs on your behalf.  Phone packages are available upon request.");
+
+mb.append("<br>");
+mb.append("<h1>Server Maintenance</h1>");
+mb.append("Servers will be maintained and patched to keep your site running.");
+
+mb.append("<br>");
+mb.append("<h1>Feature Updates</h1>");
+mb.append("Depending on licensing arrangements and deployment options you can choose to recieve new features as they become available.");
+
+//Private Labeling
+mb.append("A private label is a good way to dip your toes in the web logging space.  It allows you to offer web logs to your customers with a small initial investment.");
+
+mb.append("<br>");
+mb.append("<h1>Features</h1>");
+mb.append("<ul>");
+mb.append("<li>A marketing and signup site with your corporate branding");
+mb.append("<li>Your customers will create web log entries with a site that has your branding");
+mb.append("<li>People who read your customers' sites will see your corporate branding");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Benefits</h1>");
+mb.append("<ul>");
+mb.append("<li>Short time-to-market");
+mb.append("<li>Brand affinity and reach");
+mb.append("<li>Offering for your customers");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Notes</h1>");
+mb.append("<ul>");
+mb.append("<li>No control over the price of the service for your customers");
+mb.append("<li>No control over the advertising on the site (all advertising is tasteful... but the base private label doesn't include the ability to turn it off)");
+mb.append("<li>Powered by reger.com logo will be present");
+mb.append("</ul>");
+
+//VIP Blogs
+mb.append("We provide VIP web logs for any high-volume high-profile authors.  These include columnists, authors, celebrities, athletes, musicians and politicians.  Our package is a turnkey solution that gets your VIP's web log site up and running quickly and with a high level of quality.");
+
+mb.append("<br>");
+mb.append("<h1>What's Included</h1>");
+mb.append("<ul>");
+mb.append("<li>Site design so that your VIP web log reflects the quality of its author");
+mb.append("<li>Account setup with passwords and URLs");
+mb.append("<li>Server hosting");
+mb.append("<li>VIP training on the world of web logging and how to have the most impact");
+mb.append("<li>Moderated executive session to discuss the launch, pr, marketing and branding side of the VIP web log");
+mb.append("</ul>");
+
+//Custom Log Types
+mb.append("No matter what your company does we can build a custom log type for you.  We already have Running Logs, Swimming Logs, Restaurant Logs, etc.  But what about a Reality TV Show Log that includes the intricacies of the game?  Or a Woodworking Log?  You know your business.");
+
+mb.append("<br>");
+mb.append("<h1>Advantages</h1>");
+mb.append("<ul>");
+mb.append("<li>Creates a highly relevant web offering for your customers");
+mb.append("<li>You leverage the rest of the reger.com web logging infrastructure.  The Admin interface.  The syndication features.  You get it all.  But you add your own log type.");
+mb.append("<li>New advertising revenue opportunities");
+mb.append("<li>Keep your log type exclusive to your company or share it with the world");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>How It Works</h1>");
+mb.append("<ul>");
+mb.append("<li>We'll work with you to understand how great log types are built");
+mb.append("<li>We document the fields, charts, graphs and options that you need for your new log");
+mb.append("<li>We'll build a test version of the log and launch it on a password-protected site for your review");
+mb.append("<li>We'll incorporate any comments or changes you request and re-launch");
+mb.append("<li>Your new log will be available in your web logging web site");
+mb.append("</ul>");
+
+//API Service
+mb.append("If you're developing a device that collects data you'll want to derive a revenue stream from the data.  But you'll have to somehow manage the difference in release cycles between physical devices (once you go to manufacturing, it's set) and software (release early and often).  You need a contractual relationship that defines and guarantees that a certain API will be available for a given time period.  This allows you to go to manufacture with peace of mind.");
+
+mb.append("<br>");
+mb.append("<h1>Documentation</h1>");
+mb.append("We'll document the API that we agree to.  This helps your internal development teams to finish their job.");
+
+mb.append("<br>");
+mb.append("<h1>Frozen API</h1>");
+mb.append("We'll freeze the API and support it for the lifetime of your product.  You're no longer subject to the whims of the standards bodies or the fickleness of some open source communities.");
+
+mb.append("<br>");
+mb.append("<h1>API Service</h1>");
+mb.append("The API can be serviced from our servers or from our software on your servers.");
+
+
+//Intranet Servers
+mb.append("<table cellpadding=3 width=80% cellspacing=0 border=0 align=center>");
+mb.append("<tr><td bgcolor=#e6e6e6>");
+mb.append("\"Intranets naturally tend to route around boredom.  The best are built bottom-up by engaged individuals cooperating to construct something far more valuable: an intranetworked corporate conversation. While this scares companies witless, they also depend heavily on open intranets to generate and share critical knowledge. They need to resist the urge to \"improve\" or control these networked conversations.   When corporate intranets are not constrained by fear and legalistic rules, the type of conversation they encourage sounds remarkably like the conversation of the networked marketplace.\"");
+mb.append("<br><br>-- The Cluetrain Manifesto: The End of Business as Usual, 2000 ");
+mb.append("</td></tr>");
+mb.append("</table>");
+
+mb.append("<br><br>Web logging technology makes sense for corporate intranets for many reasons.  We can install a custom intranet server with web logging software so that your data stays within your organization.  This sort of logging is called kLogging or Knowledge Logging. Unlike more expensive knowledge management solutions, kLogs are cost-effective and easy to use.  They mimic people's natural communication methods.");
+
+mb.append("<br>");
+mb.append("<h1>Types of kLogs (Knowledge Logs)</h1>");
+mb.append("<ol>");
+mb.append("<li>General news weblogs. News from general news sources that are applicable to internal audiences. With or without editorial comment by the author. These may be automated (via search terms -- it is possible to build a RSS news feed from Google News and republish it as a weblog).");
+mb.append("<li>Organization specific news weblogs. Internal initiatives (HR, Sales, etc.). Press releases. Competitor information. Product updates. etc.");
+mb.append("<li>Joblogs. Weblogs that detail what an employee/member has accomplished during the day. This is an easy way to start weblogging in an organization. It can be used to keep track of consultants, geographically dispersed employees, work at home employees, etc. If you have people like that in your organization that you manage and your aren't using a weblog to track their progress, you are missing out.");
+mb.append("<li>Projectlogs. This is a varient on the Joblog but is authored by multiple project team participants. It is a great way to track a project's progress. It allows people that are infrequently attached to a project to keep tabs on progress. It can be used to spool a new team member up to speed quickly. It is also a great archive to project documents/files (with context as to why they are important).");
+mb.append("<li>Research weblogs. This is a more formal use of weblogs to publish research. It allows the analyst to publish finished work-product and supporting documents/sources. It allows the analyst to interact with the readers in a way that improves the quality of the research. This is a good way to publish original content.");
+mb.append("<li>Areas-of-practice weblogs. Logs devoted to a particular topic and area of interest. Examples: lawyer and client, psychologist and patient.");
+mb.append("<li>Training logs. Student gives updates to the web and teacher checks over entire class quickly and easily using an RSS aggregator.");
+mb.append("</ol>");
+
+
+//http://www.fastcompany.com/magazine/81/blog.html
+mb.append("<table cellpadding=3 width=80% cellspacing=0 border=0 align=center>");
+mb.append("<tr><td bgcolor=#e6e6e6>");
+mb.append("\"Dynamite, indeed. The burgeoning blog world--1.6 million keyboard tappers at last count--is making big inroads into corporate culture. From tech companies like Microsoft (which says it \"respects and supports\" blogs like Scoble's) and IBM to decidedly nontech outfits like Dr. Pepper, companies are starting to use blogging both as a medium to market products and monitor brands and as an internal knowledge-management tool.  Corporate America is jumping onto the blogwagon for many of the same reasons all those journalists, brooding teenagers, and presidential campaigners are already on board. Unlike email and instant messaging, blogs let employees post comments that can be seen by many and mined for information at a later date, and internal blogs aren't overwhelmed by spam. And unlike most corporate intranets, they're a bottoms-up approach to communication. \"With blogs, you gain more, you hear more, you understand where things are going more,\" says Halley Suitt, who wrote a fictional case study on corporations and blogging for the Harvard Business Review . \"Even better, you understand them faster.\"\"");
+mb.append("<br><br>-- Fast Company, Issue 81, It's A Blog World After All, April 2004 ");
+mb.append("</td></tr>");
+mb.append("</table>");
+
+
+
+mb.append("<br>");
+mb.append("<h1>Application of Web Logging to Intranets</h1>");
+mb.append("<ul>");
+mb.append("<li>A bottom-up complement to more formal corporate knowledge sharing infrastructures");
+mb.append("<li>A great way for department heads to distribute information.  The communication of an organizational mission is more effective when done with frequent updates having high relevance to the day's events.");
+mb.append("<li>Individuals publish their thoughts, meetins notes and brainstorms.");
+mb.append("<li>Information is stored, not lost.");
+mb.append("<li>Information is searchable, date-stamped and categorically organized.");
+mb.append("<li>RSS feeds allow employees to subscribe to each other's feeds... or to designated corporate feeds like HR, legal, etc.");
+mb.append("<li>Comments allow the a community to evolve around an idea or concept.");
+mb.append("<li>The system can accept data via XML from other corporate systems to keep employees up to date.");
+mb.append("<li>Individuals or departments can quickly and easily set up email newsletters to distribute information.");
+mb.append("</ul>");
+
+
+mb.append("<table cellpadding=3 width=80% cellspacing=0 border=0 align=center>");
+mb.append("<tr><td bgcolor=#e6e6e6>");
+mb.append("\"At Verizon, Paul Perry, a director in the company's eServices division, started a blog to keep up with news about competitors. Using a news aggregator, a popular blog-world tool that grabs and assembles syndicated \"feeds\" of content from Web sites and other blogs, people in his group can quickly post news they find on those feeds to the internal blog.\"");
+mb.append("<br><br>-- Fast Company, Issue 81, It's A Blog World After All, April 2004 ");
+mb.append("</td></tr>");
+mb.append("</table>");
+
+
+mb.append("<br>");
+mb.append("<h1>Moderated or Not</h1>");
+mb.append("<ul>");
+mb.append("<li>Employees can post to unmoderated sites or they can have all of their posts reviewed.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Activity-specific Log Types</h1>");
+mb.append("<ul>");
+mb.append("<li>No matter what business you're in, you're likely tracking some sort of data.  We can built custom log types that help you collect and track this information.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>The Corporate Intranet Solution Includes</h1>");
+mb.append("<ul>");
+mb.append("<li>A physical server, located at your location or in our colocation facility");
+mb.append("<li>Installation of the web logging software on the server");
+mb.append("<li>Creation of a corporate template");
+mb.append("<li>Batch-loading of accounts and passwords");
+mb.append("<li>Train-the-Trainer or Train-the-Troops training sessions");
+mb.append("<li>User support");
+mb.append("</ul>");
+
+mb.append("<table cellpadding=3 width=80% cellspacing=0 border=0 align=center>");
+mb.append("<tr><td bgcolor=#e6e6e6>");
+mb.append("\"DaimlerChrysler employs Web log software at a few of its U.S. plants; managers discuss problems and keep a record of their solutions. And American Airlines, where only 20% of the company's highly mobile workforce has corporate email, is considering blogs as a way to give employees more channels to management.\"");
+mb.append("<br><br>-- Fast Company, Issue 81, It's A Blog World After All, April 2004 ");
+mb.append("</td></tr>");
+mb.append("</table>");
+
+mb.append("<table cellpadding=3 width=80% cellspacing=0 border=0 align=center>");
+mb.append("<tr><td bgcolor=#e6e6e6>");
+mb.append("\"Web log software is cheaper to install and maintain than many knowledge-sharing programs, and it's extremely simple to use. Knowledge software often requires employees to take both an extra step and extra time to record what they know, and to fit their knowledge into a database of inflexible categories. Internal blogs are more integrated into a worker's regular daily communications. IBM began blogging in December, and by February, some 500 employees in more than 30 countries were using it to discuss software development projects and business strategies.\"");
+mb.append("<br><br>-- Fast Company, Issue 81, It's A Blog World After All, April 2004 ");
+mb.append("</td></tr>");
+mb.append("</table>");
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

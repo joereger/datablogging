@@ -3,6 +3,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Versions";
+pageProps.navButtonName = "aboutversions";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -22,8 +24,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 
 
-String currentNavButtonName = "moreinfo-versions";
-%><%@ include file="moreinfo-header.jsp" %><%
+
 
 mb.append("<br><br>");
 mb.append("<blockquote>");
@@ -48,7 +49,7 @@ mb.append("</blockquote>");
 mb.append("<br><br><br>");
 
 
-%><%@ include file="moreinfo-footer.jsp" %><%
+
 
 %>
 

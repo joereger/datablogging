@@ -3,6 +3,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Features";
+pageProps.navButtonName = "aboutfeatures";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -12,9 +14,6 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 <%@ include file="../globalheader.jsp" %>
 
-
-
-
 <%
 /*----------------------------------------------------*/
 /*                  Main Body                         */
@@ -23,8 +22,6 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
-String currentNavButtonName = "moreinfo-features";
-%><%@ include file="moreinfo-header.jsp" %><%
 
 mb.append(reger.core.Util.popup());
 
@@ -113,7 +110,6 @@ if (request.getParameter("feature")!=null && !request.getParameter("feature").eq
 
 
 
-%><%@ include file="moreinfo-footer.jsp" %><%
 
 %>
 

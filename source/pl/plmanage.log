@@ -1,0 +1,695 @@
+
+<%@ page import="java.util.*,
+                 reger.template.Template,
+                 reger.core.db.Db,
+                 reger.PrivateLabel,
+                 reger.core.Util,
+                 reger.core.ValidationException,
+                 reger.core.licensing.License" %>
+<%@ page import="reger.core.*"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.title = "Private Label";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "plmanage";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//NOTE: pladminheader.jsp is NOT included here because this page must handle existing and new pls
+
+//We must start with a plid
+int plid = 0;
+if (reger.core.Util.isinteger(request.getParameter("plid"))){
+    plid = Integer.parseInt(request.getParameter("plid"));
+}
+
+
+
+//Change title
+reger.PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(plid);
+
+
+mb.append(reger.core.Util.popup());
+
+//Permissions control for either an add or an edit
+if (plid<=0){
+    //No plid is selected so this page will allow user to create a new one...
+    //but we need to make sure this user is a masteradmin to add a private label
+    if (!userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+        response.sendRedirect("index.log?msg=cantaddpl");
+        return;
+    }
+    //Message telling user
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "You are adding a new Private Label."));
+    pageProps.title = "PrivateLabel: " + "New";
+} else {
+    //If the user can't access this plid, send them away
+    if (!userSession.getAccountuser().userCanAdministerPl(plid)){
+        response.sendRedirect("index.log");
+        return;
+    }
+    //Change title
+    pageProps.title = "PrivateLabel: " + pl.getPlname();
+}
+
+
+
+
+//Action=add or Action=edit -----------------------
+if (pageProps.action.equals("edit") || pageProps.action.equals("add")) {
+    pl.populateFromRequest(request);
+    try{
+        pl.save();
+        userSession.getPl().refresh();
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Private Label Saved Successfully."));
+    } catch (ValidationException valError){
+        Debug.debug(5, "plmanage.log", "plmanage.log - Error caught.");
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, valError.getErrorsAsSingleString()));
+    } catch (Exception e){
+        reger.core.Debug.errorsave(e, "plmanage.log");
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, the Private Label was not saved.  System error."));
+    }
+//Action=delete ------------------------------------
+} else if (pageProps.action.equals("delete")) {
+    int newplid = 0;
+    if (reger.core.Util.isinteger(request.getParameter("newplid"))){
+        newplid = Integer.parseInt(request.getParameter("newplid"));
+    }
+    pl.delete(newplid);
+    userSession.getPl().refresh();
+    response.sendRedirect("index.log");
+    return;
+}
+
+
+
+mb.append("<table cellpadding=5 cellspacing=0 width=100% border=0><tr>");
+
+mb.append("<td width=100% valign=top>");
+
+
+mb.append("<!-- Begin Main PL update/create -->");
+mb.append("<form action='plmanage.log' method=post>");
+
+if (pageProps.action.equals("addstart") || plid<=0) {
+    mb.append("<input type=hidden name=action value=add>");
+    mb.append("<input type=hidden name=plid value=-1>");
+} else if (pageProps.action.equals("editstart")) {
+    mb.append("<input type=hidden name=action value=edit>");
+    mb.append("<input type=hidden name=plid value="+ pl.getPlid() +">");
+} else if (pageProps.action.equals("deletestart")) {
+    mb.append("<input type=hidden name=action value=delete>");
+    mb.append("<input type=hidden name=plid value="+ pl.getPlid() +">");
+} else {
+    mb.append("<input type=hidden name=action value=edit>");
+    mb.append("<input type=hidden name=plid value="+ pl.getPlid() +">");
+}
+
+
+
+//If we need to display the fields, do it---------------------------------------
+if (!pageProps.action.equals("deletestart")) {
+
+    mb.append("<br>");
+    mb.append("<br>");
+
+    mb.append("<DIV class=yellowbox>");
+    mb.append("<font face=arial size=-1><strong>PL Name:</strong></font><br>");
+    mb.append("<input type='text' name='plname' value=\""+Util.cleanForHtml(pl.getPlname())+"\" size='30' maxlength='49'>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>PL Base Domain</strong> (i.e. 'myblogssite.com') (do not start a url with www because www is automatically stripped from incoming requests and essentially ignored):</font><br>");
+    mb.append("<input type='text' name='plbasedomain' value=\""+Util.cleanForHtml(pl.getPlbasedomain())+"\" size='35' maxlength='49'>");
+    mb.append("<br><font face=arial size=-2>This box determines the base domain that users will have their accounts appended to.  Note that changing this value after users have signed up can be disasterous because their sites will have been moved... you'll have to tell them where they're located now.</font>");
+
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Use DNS Naming Scheme?</strong>");
+
+    mb.append("<br><input type='radio' name='usedynamicdns' value='1' ");
+    if (pl.getUsedynamicdns()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Yes</b> (http://user.plbasedomain/)");
+
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2><strong>When a DNS naming scheme is used, two things need to happen:  a DNS A record for the <br>domain needs to point to the IP of the web logging server; and a wild card CNAME<br> entry needs to be made to point *.plbasedomain to the same IP.).</font><br>");
+    mb.append("<font face=arial size=-1><input type='radio' name='usedynamicdns' value='0' ");
+    if (!pl.getUsedynamicdns()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>No</b> (http://plbasedomain/~user/)");
+    mb.append("</font><font face=arial size=-2><br><strong>If you choose no, accounts will be of the form http://plbasedomain/~username/</strong></font><br>");
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+    mb.append("<font face=arial size=-1><strong>License:</strong></font><br>");
+    mb.append("<textarea rows='5' name=encryptedlicense cols='50' wrap='virtual'>"+reger.core.Util.cleanForHtml(pl.getLicense().getEncryptedLicense())+"</textarea>");
+    if (pl.getLicense()!=null && pl.getLicense().getProps()!=null && pl.getLicense().getProps().size()>0){
+        Enumeration keys = pl.getLicense().getProps().keys();
+        while ( keys.hasMoreElements() ){
+            String key = (String)keys.nextElement();
+            String value = (String)pl.getLicense().getProps().get(key);
+            mb.append("<br>");
+            mb.append(key);
+            mb.append(" = ");
+            mb.append(value);
+        }
+    }
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+    mb.append("<font face=arial size=-1><strong>Titlebar:</strong></font><br>");
+    mb.append("<input type='text' name='titlebar' value=\""+Util.cleanForHtml(pl.getTitlebar())+"\" size='30' maxlength='49'>");
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+//    mb.append("<font face=arial size=-1><strong>Plmarketingtemplate:</strong></font><br>");
+//    mb.append("<textarea cols='70' rows='10' name='plmarketingtemplate'>"+Util.cleanForHtml(pl.getPlmarketingtemplate())+"</textarea>");
+//    mb.append("<br><br>");
+    mb.append("<DIV class=yellowbox>");
+    mb.append("<font face=arial size=-1><strong>Plusertemplate:</strong></font><br>");
+    mb.append("<textarea cols='70' rows='10' name='plusertemplate'>"+Util.cleanForHtml(pl.getPlusertemplate())+"</textarea>");
+
+    mb.append("<br><br>");
+
+    //apply plusertemplate to pro
+    mb.append("<font face=arial size=-1><strong>Apply Plusertemplate to Pro Accounts Too?</strong><br>");
+    mb.append("<input type='radio' name='doapplyplusertemplatetopro' value='0' ");
+    if (!pl.getDoapplyplusertemplatetopro()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>No</b>");
+    mb.append("<br><input type='radio' name='doapplyplusertemplatetopro' value='1' ");
+    if (pl.getDoapplyplusertemplatetopro()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Yes</b> ");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2><strong>");
+    mb.append("When users upgrade to Pro... or if they're automatically upgraded to Pro at account creation... you have to decide whether to apply the template above to their public web pages.  Sometimes you want your brand to be prevalent no matter whether they're Pro or not.  By choosing Yes, you say that you want the template above to apply to their sites no matter what.");
+    mb.append("</strong></font><br>");
+    //apply plusertemplatetopro
+
+
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+
+
+
+
+
+    mb.append("<DIV class=yellowbox>");
+    mb.append("<font face=arial size=-1><strong>Show Ads?</strong></font><br>");
+    mb.append("<input type='radio' name='showadsmarketing' value='1' ");
+    if (pl.getShowadsmarketing()==1) {
+        mb.append(" checked");
+    }
+    mb.append(">Yes");
+    mb.append("<input type='radio' name='showadsmarketing' value='0' ");
+    if (pl.getShowadsmarketing()==0) {
+        mb.append(" checked");
+    }
+    mb.append(">No");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Hide Reger.com Logo on page footer?</strong></font><br>");
+    mb.append("<input type='radio' name='hideregercomlogo' value='1' ");
+    if (pl.getHideregercomlogo()) {
+        mb.append(" checked");
+    }
+    mb.append(">Yes");
+    mb.append("<input type='radio' name='hideregercomlogo' value='0' ");
+    if (!pl.getHideregercomlogo()) {
+        mb.append(" checked");
+    }
+    mb.append(">No");
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+    mb.append("<font face=arial size=-1><strong>Is Signup Enabled?</strong></font><br>");
+    mb.append("<input type='radio' name='issignupenabled' value='1' ");
+    if (pl.getIssignupenabled()) {
+        mb.append(" checked");
+    }
+    mb.append(">Yes");
+    mb.append("<input type='radio' name='issignupenabled' value='0' ");
+    if (!pl.getIssignupenabled()) {
+        mb.append(" checked");
+    }
+    mb.append(">No");
+    mb.append("<br><br>");
+
+//    mb.append("<font face=arial size=-1><strong>Default Account Type After Signup</strong></font><br>");
+//    mb.append("<font face=arial size=-2>This determines whether users are signed up into a Pro account or into a Trial account.</font>");
+//    mb.append("<br><input type='radio' name='defaultaccounttypeidatsignup' value='"+reger.Vars.ACCTYPETRIAL+"' ");
+//    if (pl.getDefaultaccounttypeidatsignup()==reger.Vars.ACCTYPETRIAL) {
+//        mb.append(" checked");
+//    }
+//    mb.append(">Trial");
+//    mb.append("<input type='radio' name='defaultaccounttypeidatsignup' value='"+reger.Vars.ACCTYPEPRO+"' ");
+//    if (pl.getDefaultaccounttypeidatsignup()==reger.Vars.ACCTYPEPRO) {
+//        mb.append(" checked");
+//    }
+//    mb.append(">Pro");
+//    mb.append("<br><br>");
+//
+//    mb.append("<font face=arial size=-1><strong>Is User Credit Card Upgrade On</strong></font><br>");
+//    mb.append("<font face=arial size=-2>This determines whether users must pay to upgrade their accounts from free/trial to Pro.</font>");
+//    mb.append("<br><input type='radio' name='iscreditcarduserupgradeon' value='1' ");
+//    if (pl.getIscreditcarduserupgradeon()) {
+//        mb.append(" checked");
+//    }
+//    mb.append(">Yes");
+//    mb.append("<input type='radio' name='iscreditcarduserupgradeon' value='0' ");
+//    if (!pl.getIscreditcarduserupgradeon()) {
+//        mb.append(" checked");
+//    }
+//    mb.append(">No");
+//    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Do New Accounts Require Admin Approval?</strong></font><br>");
+    mb.append("<font face=arial size=-2>This determines whether new accounts must be approved by an admin.  If so, users will be free to signup but then won't be able to login until an admin approves the account.</font>");
+    mb.append("<br><input type='radio' name='newaccountsrequireadminapproval' value='1' ");
+    if (pl.getNewaccountsrequireadminapproval()) {
+        mb.append(" checked");
+    }
+    mb.append(">Yes");
+    mb.append("<input type='radio' name='newaccountsrequireadminapproval' value='0' ");
+    if (!pl.getNewaccountsrequireadminapproval()) {
+        mb.append(" checked");
+    }
+    mb.append(">No");
+    mb.append("<br><br>");
+
+    //Email to notify of new accounts
+    mb.append("<font face=arial size=-1><strong>Sysadmin email (to notify of new accounts and accept incoming comments/questions):</strong></font><br>");
+    mb.append("<input type=text name=emailtonotifyofnewaccounts value=\""+reger.core.Util.cleanForHtml(pl.getEmailtonotifyofnewaccounts())+"\" size=25 maxlength=255>");
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+
+    mb.append("<font face=arial size=-1><strong>Default User Storage Quota</strong></font><br>");
+    mb.append("<font face=arial size=-2>How much space each user can use.  This includes text posts, uploaded files and comments.  A good starting place is 1Mb which is entered as 1000000.  Set to 0 to use the default system value.</font>");
+    mb.append("<br><input type='text' name='defaultmaxspaceinbytes' value=\""+pl.getDefaultmaxspaceinbytes()+"\">");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Default User Max Bandwidth</strong></font><br>");
+    mb.append("<font face=arial size=-2>How many bytes of bandwidth a user is allowed to use on their site per month before it is throttled back. A good starting place is 100Mb which is entered as 100000000. Set to 0 to use the default system value.</font>");
+    mb.append("<br><input type='text' name='defaultmaxbandwidth' value=\""+pl.getDefaultmaxbandwidth()+"\">");
+
+    mb.append("</DIV>");
+
+
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+    mb.append("<font face=arial size=-1><strong>Base Account Price</strong></font><br>");
+    mb.append("<font face=arial size=-2>The base price that a user pays for an account.  Entered as '3.95'.  Minimum value for your license is: "+pl.getLicense().getProperty(License.PROPSTRINGMINBASEACCOUNTPRICE)+"</font>");
+    mb.append("<br><input type='text' name='baseaccountprice' value=\""+pl.getBaseaccountprice()+"\">");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Price per 100mb Storage</strong></font><br>");
+    mb.append("<font face=arial size=-2>The price that a user pays for 100mb storage.  Entered as '3.95'.  Minimum value for your license is: "+pl.getLicense().getProperty(License.PROPSTRINGMINPRICEPER100MBSTORAGE)+"</font>");
+    mb.append("<br><input type='text' name='priceper100mbstorage' value=\""+pl.getPriceper100mbstorage()+"\">");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Price per Gb Bandwidth</strong></font><br>");
+    mb.append("<font face=arial size=-2>The price that a user pays for 1 Gb bandwidth.  Entered as '3.95'.  Minimum value for your license is: "+pl.getLicense().getProperty(License.PROPSTRINGMINPRICEPERGBBANDWIDTH)+"</font>");
+    mb.append("<br><input type='text' name='pricepergbbandwidth' value=\""+pl.getPricepergbbandwidth()+"\">");
+    mb.append("<br><br>");
+
+
+    mb.append("</DIV>");
+
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+
+    mb.append("<font face=arial size=-1><strong>Home Link URL:</strong></font><br>");
+    mb.append("<input type='text' name='homelink' value=\""+Util.cleanForHtml(pl.getHomelink())+"\" size='30' maxlength='49'>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Section Home Page Header Text:</strong></font><br>");
+    mb.append("<input type='text' name='sectionhome' value=\""+Util.cleanForHtml(pl.getSectionhome())+"\" size='30'' maxlength='49'>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Section Features Page Header Text:</strong></font><br>");
+    mb.append("<input type='text' name='sectionfeatures' value=\""+Util.cleanForHtml(pl.getSectionfeatures())+"\" size='30' maxlength='49'>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Section Signup Page Header Text:</strong></font><br>");
+    mb.append("<input type='text' name='sectionsignup'' value=\""+Util.cleanForHtml(pl.getSectionsignup())+"\" size='30' maxlength='49'>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Section Tour Page Header Text:</strong></font><br>");
+    mb.append("<input type='text' name='sectiontour' value=\""+Util.cleanForHtml(pl.getSectiontour())+"\" size='30' maxlength='49'>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Show Business Tab on Marketing Site?</strong></font><br>");
+    mb.append("<font face=arial size=-2>The business tab shows content demonstrating how businesses can use the weblog server.</font>");
+    mb.append("<br><input type='radio' name='showbusinesstab' value='1' ");
+    if (pl.getShowbusinesstab()) {
+        mb.append(" checked");
+    }
+    mb.append(">Yes");
+    mb.append("<input type='radio' name='showbusinesstab' value='0' ");
+    if (!pl.getShowbusinesstab()) {
+        mb.append(" checked");
+    }
+    mb.append(">No");
+    mb.append("<br><br>");
+
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+
+    //Start passwords
+    mb.append("<font face=arial size=-1><strong>Account Passwords:</strong></font><br>");
+
+
+
+    //pw sent via email start
+    mb.append("<font face=arial size=-1><strong>Passwords Sent Via Email?</strong><br>");
+    mb.append("<input type='radio' name='ispasswordsentviaemail' value='0' ");
+    if (!pl.getIsPasswordSentViaEmail()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>No</b>");
+    mb.append("<br><input type='radio' name='ispasswordsentviaemail' value='1' ");
+    if (pl.getIsPasswordSentViaEmail()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Yes</b> ");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2><strong>");
+    mb.append("");
+    mb.append("</strong></font><br>");
+    mb.append("<br><br>");
+    //pw sent via email end
+
+    mb.append("<font face=arial size=-1><strong>Min Password Characters</strong></font>");
+    mb.append("<br><input type='text' name='minpasswordchars' value=\""+pl.getMinPasswordChars()+"\">");
+    mb.append("<font face=arial size=-2></font>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Min Password Upper Case Chars</strong></font>");
+    mb.append("<br><input type='text' name='minpassworduppercasechars' value=\""+pl.getMinPasswordUpperCaseChars()+"\">");
+    mb.append("<font face=arial size=-2></font>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Min Password Lower Case Chars</strong></font>");
+    mb.append("<br><input type='text' name='minpasswordlowercasechars' value=\""+pl.getMinPasswordLowerCaseChars()+"\">");
+    mb.append("<font face=arial size=-2></font>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Min Password Special Chars</strong></font>");
+    mb.append("<br><input type='text' name='minpasswordspecialchars' value=\""+pl.getMinPasswordSpecialChars()+"\">");
+    mb.append("<font face=arial size=-2></font>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Min Password Numeric Chars</strong></font>");
+    mb.append("<br><input type='text' name='minpasswordnumericchars' value=\""+pl.getMinPasswordNumericChars()+"\">");
+    mb.append("<font face=arial size=-2></font>");
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+
+    //End passwords
+
+    mb.append("<DIV class=yellowbox>");
+
+
+    //Start content approval
+
+    //Set the contentapproval var appropriately
+    String contentapproval = "";
+     if (pl.getDoallpostsneedtobeapproved()){
+        contentapproval = "moderated";
+     } else if (pl.getIscontentflaggingon() && pl.getDoesflaggedcontentneedtobeapproved() && !pl.getDoallpostsneedtobeapproved()){
+        contentapproval = "flaggedforapproval";
+     } else if (pl.getIscontentflaggingon() && !pl.getDoesflaggedcontentneedtobeapproved() && !pl.getDoallpostsneedtobeapproved()){
+        contentapproval = "flaggedforreview";
+     } else {
+         contentapproval = "unmoderated";
+     }
+
+    mb.append("<font face=arial size=-1><strong>Content Approval:</strong></font><br>");
+    mb.append("<table cellpadding=5 width=100% border=0 cellspacing=3>");
+
+    //
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<input type='radio' name='contentapproval' value='unmoderated' ");
+    if (contentapproval.equals("unmoderated")) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Unmoderated</b><br>Users are free to post whatever they like in real time.");
+    mb.append("</td>");
+    mb.append("</tr>");
+    //
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<input type='radio' name='contentapproval' value='flaggedforreview' ");
+    if (contentapproval.equals("flaggedforreview")) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Content Flagged for Review</b><br>User are free to post whatever they like in real time, but content passes through a flagging mechanism.  Bad words, hate phrases and other content is flagged for review.  This gives visibility of potential issues without inhibiting the open nature of blogging.");
+    mb.append("</td>");
+    mb.append("</tr>");
+    //
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<input type='radio' name='contentapproval' value='flaggedforapproval' ");
+    if (contentapproval.equals("flaggedforapproval")) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Content Flagged for Approval</b><br>User posts that pass the content flagging filter are automatically posted to their sites.  But flagged content is prevented from going public until a moderator reviews and approves.");
+    mb.append("</td>");
+    mb.append("</tr>");
+    //
+    mb.append("<tr>");
+    mb.append("<td bgcolor=#e6e6e6>");
+    mb.append("<input type='radio' name='contentapproval' value='moderated' ");
+    if (contentapproval.equals("moderated")) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Moderated</b><br>All user posts must be approved by a moderator.");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("</table>");
+
+    mb.append("</DIV>");
+
+
+    mb.append("<br><br>");
+
+    //End content approval
+
+    mb.append("<DIV class=yellowbox>");
+
+    //Force user login start
+    mb.append("<font face=arial size=-1><strong>Force Users to Be Logged-In To View Weblogs?</strong><br>");
+    mb.append("<input type='radio' name='forcelogintoviewsites' value='0' ");
+    if (!pl.getForcelogintoviewsites()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>No</b>");
+    mb.append("<br><input type='radio' name='forcelogintoviewsites' value='1' ");
+    if (pl.getForcelogintoviewsites()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Yes</b> ");
+
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2><strong>");
+    mb.append("Choosing Yes will make all users who want to view weblogs create an account or login.  If unsure, choose no.");
+    mb.append("</strong></font><br>");
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+    //Force user login end
+
+
+    mb.append("<DIV class=yellowbox>");
+
+    //Trackback on start
+    mb.append("<font face=arial size=-1><strong>Enable trackback?</strong><br>");
+    mb.append("<input type='radio' name='istrackbackenabled' value='0' ");
+    if (!pl.getIstrackbackenabled()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>No</b>");
+    mb.append("<br><input type='radio' name='istrackbackenabled' value='1' ");
+    if (pl.getIstrackbackenabled()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Yes</b> ");
+
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2><strong>");
+    mb.append("Whether or not trackback is an option that users can enable.  Trackback is a possible source of spam postings that annoy and frustrate users.");
+    mb.append("</strong></font><br>");
+    mb.append("<br><br>");
+    //Trackback on end
+
+
+    //Weblogscom start
+    mb.append("<font face=arial size=-1><strong>Enable weblogs.com ping calls?</strong><br>");
+    mb.append("<input type='radio' name='isweblogscompingon' value='0' ");
+    if (!pl.getIsweblogscompingon()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>No</b>");
+    mb.append("<br><input type='radio' name='isweblogscompingon' value='1' ");
+    if (pl.getIsweblogscompingon()) {
+        mb.append(" checked");
+    }
+    mb.append("><b>Yes</b> ");
+
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2><strong>");
+    mb.append("Weblogs.com keeps a directory of recently-updated weblogs.  Enabling this feature means that an entry's title and url will be sent to weblogs.com.  This may not be desired in closed corporate settings.");
+    mb.append("</strong></font><br>");
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+    //Weblogscom end
+
+    mb.append("<DIV class=yellowbox>");
+
+
+    mb.append("<font face=arial size=-1><strong>Email API Unique identifier</strong></font><br>");
+    mb.append("<font face=arial size=-2>Anything in this box will be appended directly to the left of emailAPI addresses.  For example, putting abc123 into the box will cause email addresses to be of the form username.emailkey.1.email.abc123@plbasedomain.com.  This is useful if you would like to create a rule on your email servers to filter and then forward all emails with this unique identifier to the emailAPI socket.</font>");
+    mb.append("<br><input type='text' name='emailapiuniqueidentifier' value=\""+reger.core.Util.cleanForHtml(pl.getEmailapiuniqueidentifier())+"\">");
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+
+    //Terms of service
+    mb.append("<font face=arial size=-1><strong>Terms of Service:</strong></font><br>");
+    mb.append("<textarea cols='70' rows='10' name='termsofservice'>"+Util.cleanForHtml(pl.getTermsofservice())+"</textarea>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Terms of Use Link Text:</strong></font><br>");
+    mb.append("<input type='text' name='termsofuselinktext' value=\""+Util.cleanForHtml(pl.getTermsofuselinktext())+"\" size='30'' maxlength='49'>");
+    mb.append("<br><font face=arial size=-2>Terms of Use Link text controls the little link at the bottom of the page that links to the content in the above box.  Some people like to call it an Acceptable Use Policy, etc.  To remove the link, make this field blank.</font>");
+    mb.append("<br><br>");
+
+    mb.append("<font face=arial size=-1><strong>Feedback Link Text:</strong></font><br>");
+    mb.append("<input type='text' name='feedbacklinktext' value=\""+Util.cleanForHtml(pl.getFeedbacklinktext())+"\" size='30'' maxlength='49'>");
+    mb.append("<br><font face=arial size=-2>Feedback Link text controls the little link at the bottom of the page that links to a page where users can send administrators comments and questions.  To remove the link, make this field blank.</font>");
+    mb.append("<br><br>");
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+
+
+    mb.append("<font face=arial size=-1><strong>Comments: (for admin use only)</strong></font><br>");
+    mb.append("<textarea cols='70' rows='10' name='comments'>"+Util.cleanForHtml(pl.getComments())+"</textarea>");
+
+    mb.append("</DIV>");
+
+    mb.append("<br><br>");
+
+    mb.append("<input type='submit' value='Save This Private Label'>");
+
+    mb.append("</form>");
+
+
+
+
+//Otherwise it must be a delete---------------------------------------
+} else if (pageProps.action.equals("deletestart")) {
+    if(userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+        if (pl.getPlid()!=reger.Vars.PLIDDEFAULT){
+            mb.append("<font face=arial size=+2>Move users from this private label to:</font>");
+            mb.append("<br><br>");
+            mb.append("<table cellpadding=5 cellspacing=0 border=0>");
+
+            //Get the list of PL's that users can be moved to
+            //-----------------------------------
+            //-----------------------------------
+            String[][] rstDataDeletestart= Db.RunSQL("SELECT plid, plname FROM pl WHERE plid<>'"+ pl.getPlid() +"' AND islive='1'");
+            //-----------------------------------
+            //-----------------------------------
+            if (rstDataDeletestart!=null && rstDataDeletestart.length>0){
+                for(int i=0; i<rstDataDeletestart.length; i++){
+                    mb.append("<tr><td valign=top bgcolor=#ffffcc nowrap>");
+                    mb.append("<font face=arial size=-1><strong>"+rstDataDeletestart[i][0]+") <a href=\"plmanage.log?action=delete&newplid="+rstDataDeletestart[i][0]+"&plid="+pl.getPlid()+"\">"+rstDataDeletestart[i][1]+"</strong></font></a><br>");
+                    mb.append("</td></tr>");
+                }
+            }
+        } else {
+            mb.append("Sorry, the Default Private Label can't be deleted.");
+        }
+    } else {
+        mb.append("Sorry, you don't have permission to delete a private label.");
+    }
+}
+
+mb.append("</table>");
+
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>

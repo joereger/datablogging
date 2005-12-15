@@ -1403,28 +1403,31 @@ public class TourHtml {
     public static String screenShotBizWithDescription(String fileNameOfScreenshot, String align, String title, String desc){
         StringBuffer mb = new StringBuffer();
 
-        mb.append("<table cellpadding=5 align="+align+" cellspacing=5 width=350 border=0 bgcolor=#cccccc>");
+        mb.append("<table cellpadding=5 align="+align+" cellspacing=5 border=0 bgcolor=#cccccc>");
 
         mb.append("<tr>");
         mb.append("<td valign=top bgcolor=#ffffff>");
 
         mb.append("<center>");
+        if (!title.equals("")){
+            mb.append("<font face=arial size=-1 color=#666666>");
+            mb.append("<strong>");
+            mb.append(title);
+            mb.append("</strong>");
+            mb.append("</font>");
+            mb.append("<br>");
+        }
+        if(!desc.equals("")){
+            mb.append("<font face=arial size=-2 color=#999999>");
+            mb.append("<strong>");
+            mb.append(desc);
+            mb.append("</strong>");
+            mb.append("</font>");
+            mb.append("<br>");
+        }
 
-        mb.append("<font face=arial size=-1 color=#666666>");
-        mb.append("<strong>");
-        mb.append(title);
-        mb.append("</strong>");
-        mb.append("</font>");
-        mb.append("<br>");
-        mb.append("<font face=arial size=-2 color=#999999>");
-        mb.append("<strong>");
-        mb.append(desc);
-        mb.append("</strong>");
-        mb.append("</font>");
-        mb.append("<br>");
-
-        mb.append("<a href='../biz/imagedisplay.log?imagename="+fileNameOfScreenshot+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
-        mb.append("<img src='../biz/images/databloggingscreens/thumbs/"+fileNameOfScreenshot+"' alt='' border='0'>");
+        mb.append("<a href='../about/imagedisplay.log?imagename="+fileNameOfScreenshot+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
+        mb.append("<img src='../about/images/logscreenshots/thumbnails/"+fileNameOfScreenshot+"' alt='' border='0'>");
         mb.append("<br>");
         mb.append("<font face=arial size=-2 style=\"font-size: 11px; font-weight:900;\">");
         mb.append("+ ZOOM SCREENSHOT");

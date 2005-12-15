@@ -24,7 +24,7 @@ public class ShadowBox {
         mb.append("</tr>");
         mb.append("<tr>");
         mb.append("<td background='"+pathtoapproot+"myhome/images/shadowbox/border-left.gif'></td>");
-        mb.append("<td valign=top>");
+        mb.append("<td valign=top bgcolor=#ffffff>");
         mb.append("<font face=arial size=-2>");
 
         return mb;

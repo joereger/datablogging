@@ -16,7 +16,6 @@ public interface MarketingSiteTemplateTag extends TemplateTag{
      * @param mb
      * @param pageProps
      * @param userSession
-     * @return
      */
     public String getHtml(StringBuffer mb, PageProps pageProps, UserSession userSession, javax.servlet.http.HttpServletRequest request);
 

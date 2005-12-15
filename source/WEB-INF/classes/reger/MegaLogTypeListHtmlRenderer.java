@@ -54,7 +54,7 @@ public class MegaLogTypeListHtmlRenderer {
             mb.append("<form action="+urlforAddLogForm+" method=post>");
             mb.append("<input type=hidden name=action value=addlogtype>");
             mb.append("<input type=hidden name=eventtypeid value="+basicLogType.getEventtypeid()+">");
-            mb.append("<input type='submit' value='+ Create a Log of this Type' style=\"font-size: 10px;\">");
+            mb.append("<input type='submit' value='+ Create a Log' style=\"font-size: 10px;\">");
             mb.append("</form>");
             mb.append("</td>");
             mb.append("<td bgcolor='#ffffff' align=left valign=top>");
@@ -442,7 +442,7 @@ public class MegaLogTypeListHtmlRenderer {
         mb.append("<form action="+urlforAddLogForm+" method=post>");
         mb.append("<input type=hidden name=action value=addlogtype>");
         mb.append("<input type=hidden name=eventtypeid value="+eventtypeid+">");
-        mb.append("<input type='submit' value='+ Create a Log of this Type' style=\"font-size: 10px;\">");
+        mb.append("<input type='submit' value='+ Create a Log' style=\"font-size: 10px;\">");
         mb.append("</form>");
         mb.append("</td>");
         mb.append("<td bgcolor='#ffffff' align=left valign=top>");

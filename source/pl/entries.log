@@ -12,7 +12,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.title = "Entries";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "plentries";
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
@@ -25,13 +26,9 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-//Start PLID-choosing SQL
-String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
-    plidSql = " (pl.plid>'-1') ";
-}
-//End PLID-choosing SQL
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
 
 mb.append("<style type=text/css>");
 mb.append("<--");
@@ -60,6 +57,7 @@ mb.append("<style></style>");
 
 //Dropdown
 mb.append("<form action=entries.log method=get>");
+mb.append("<input type=hidden name=plid value='"+plid+"'>");
 mb.append("<select name=eventtypeid>");
 //-----------------------------------
 //-----------------------------------
@@ -148,7 +146,7 @@ if (rstAccounts!=null && rstAccounts.length>0){
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][8]+"</td>");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><b>"+rstAccounts[i][4]+"</b></td>");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct>"+rstAccounts[i][5]+"</td>");
-        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct><a href='accountdetail.log?accountid="+rstAccounts[i][6]+"'>"+rstAccounts[i][9]+"</a></td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acct><a href='accountdetail.log?accountid="+rstAccounts[i][6]+"&plid="+plid+"'>"+rstAccounts[i][9]+"</a></td>");
         mb.append("</tr>");
 
 	}

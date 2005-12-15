@@ -4,6 +4,7 @@
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
 pageProps.title = "Query Custom Data";
+pageProps.navButtonName = "aboutwhatisdatablogging-search";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -26,8 +27,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 mb.append(reger.core.Util.popup());
 mb.append(reger.marketingSite.Biz.getCss());
 
-String currentNavButtonName = "moreinfo-whatisdatablogging";
-%><%@ include file="moreinfo-header.jsp" %><%
+
 
 mb.append("<br><br>");
 mb.append("<blockquote>");
@@ -45,7 +45,6 @@ mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("advsearch.g
 mb.append("</blockquote>");
 
 
-%><%@ include file="moreinfo-footer.jsp" %><%
 
 %>
 
@@ -55,8 +54,6 @@ mb.append("</blockquote>");
         StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
 
-
-sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
 
 %>
 

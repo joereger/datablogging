@@ -4,6 +4,7 @@
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
 pageProps.title = "Adv Search + Graph";
+pageProps.navButtonName = "aboutwhatisdatablogging-graphandsearch";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -12,9 +13,6 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 %>
 
 <%@ include file="../globalheader.jsp" %>
-
-
-
 
 <%
 /*----------------------------------------------------*/
@@ -26,8 +24,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 mb.append(reger.core.Util.popup());
 mb.append(reger.marketingSite.Biz.getCss());
 
-String currentNavButtonName = "moreinfo-whatisdatablogging";
-%><%@ include file="moreinfo-header.jsp" %><%
+
 
 mb.append("<br><br>");
 mb.append("<blockquote>");
@@ -44,7 +41,6 @@ mb.append("<img src='images/advsrchflow.gif'>");
 
 mb.append("</blockquote>");
 
-%><%@ include file="moreinfo-footer.jsp" %><%
 
 %>
 
@@ -54,8 +50,6 @@ mb.append("</blockquote>");
         StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
 
-
-sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
 
 %>
 

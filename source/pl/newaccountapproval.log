@@ -13,7 +13,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.navButtonName = "plnewaccountapproval";
 pageProps.title = "New Accounts Requiring Approval";
 pageProps.isPasswordProtected = true;
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
@@ -26,13 +27,9 @@ pageProps.pathToAppRoot="../";
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-//Start PLID-choosing SQL
-String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
-    plidSql = " (pl.plid>'-1') ";
-}
-//End PLID-choosing SQL
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
 
 
 
@@ -57,7 +54,7 @@ if (rstApprovals!=null && rstApprovals.length>0){
     for(int i=0; i<rstApprovals.length; i++){
         mb.append("<tr>");
         mb.append("<td bgcolor=#ffffff valign=top align=left>");
-        mb.append("<a href='accountdetail.log?accountid="+rstApprovals[i][0]+"'><font face=arial size=-2>" + reger.core.Util.cleanForHtml(rstApprovals[i][1]) + "</font></a></td>");
+        mb.append("<a href='accountdetail.log?accountid="+rstApprovals[i][0]+"&plid="+plid+"'><font face=arial size=-2>" + reger.core.Util.cleanForHtml(rstApprovals[i][1]) + "</font></a></td>");
         mb.append("<td bgcolor=#ffffff valign=top align=left>");
         mb.append("<font face=arial size=-2>");
         mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstApprovals[i][2])));

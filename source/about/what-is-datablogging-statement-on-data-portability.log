@@ -4,6 +4,7 @@
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
 pageProps.title = "Data Portability";
+pageProps.navButtonName = "aboutwhatisdatablogging-statement-on-data-portability";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -26,8 +27,6 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 mb.append(reger.core.Util.popup());
 mb.append(reger.marketingSite.Biz.getCss());
 
-String currentNavButtonName = "moreinfo-whatisdatablogging";
-%><%@ include file="moreinfo-header.jsp" %><%
 
 mb.append("<br><br>");
 mb.append("<blockquote>");
@@ -43,7 +42,6 @@ mb.append("In addition to the publishing of extended log data we are working on 
 
 mb.append("</blockquote>");
 
-%><%@ include file="moreinfo-footer.jsp" %><%
 
 %>
 
@@ -54,7 +52,6 @@ mb.append("</blockquote>");
 /*----------------------------------------------------*/
 
 
-sc.append(reger.marketingSite.Biz.leftNav(pageProps.pathToAppRoot));
 
 %>
 

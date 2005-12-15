@@ -5,6 +5,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Tour";
+pageProps.navButtonName = "abouttour";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -22,8 +24,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 
 
-String currentNavButtonName = "moreinfo-tour";
-%><%@ include file="moreinfo-header.jsp" %><%
+
 
 
 mb.append("<font face=arial size=-2>");
@@ -89,7 +90,7 @@ reger.demos.DemoCategory[] demoCategories = reger.demos.AllDemos.getAllDemoCateg
 
         reger.demos.Demo[] demos = demoCategories[j].getDemos();
         if (demos.length>0){
-            int numofcols = 3;
+            int numofcols = 2;
             int currentcol = 0;
             int width = 100/numofcols;
             mb.append("<center>");
@@ -126,7 +127,7 @@ reger.demos.DemoCategory[] demoCategories = reger.demos.AllDemos.getAllDemoCateg
 
 
 
-%><%@ include file="moreinfo-footer.jsp" %><%
+
 
 
 mb.append("<br><br><br><br>");

@@ -1,6 +1,6 @@
 <%@ page import="reger.SideColumn,
                  java.util.*,
-                 org.hibernate.Session,
+                 org.hibernate.*,
                  reger.entities.HibernateUtil,
                  org.hibernate.Transaction,
                  reger.entities.Cat"%>
@@ -38,6 +38,7 @@ princess.setWeight(Float.parseFloat(String.valueOf(reger.core.Util.randomInt(30)
 hsession.save(princess);
 tx.commit();
 HibernateUtil.closeSession();
+
 
 
 mb.append("<br>Cat saved. catid=" + princess.getCatid());

@@ -12,7 +12,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.title = "Bandwidth Usage";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "plbandwidth";
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
@@ -25,13 +26,9 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-//Start PLID-choosing SQL
-String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
-    plidSql = " (pl.plid>'-1') ";
-}
-//End PLID-choosing SQL
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
 
 
 
@@ -178,7 +175,7 @@ if (rstAccounts!=null && rstAccounts.length>0){
 
 	    mb.append("<tr>");
 	    mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig>"+(Double.parseDouble(rstAccounts[i][7])/(double)1000000)+" Mb</td>");
-        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><a href='accountdetail.log?accountid="+rstAccounts[i][0]+"'>"+rstAccounts[i][1]+"</a></td>");
+        mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctbig><a href='accountdetail.log?accountid="+rstAccounts[i][0]+"&plid="+plid+"'>"+rstAccounts[i][1]+"</a></td>");
         mb.append("<td valign=top align=left bgcolor=#e6e6e6 class=acctsmall>"+rstAccounts[i][4]+"</td>");
         mb.append("</tr>");
 

@@ -41,7 +41,7 @@ public class MegaLogTypeHtmlrender {
                 mb.append("<form action="+urlforAddLogForm+" method=post>");
                 mb.append("<input type=hidden name=action value=addlogtype>");
                 mb.append("<input type=hidden name=eventtypeid value="+logType.getEventtypeid()+">");
-                mb.append("<input type='submit' value='+ Create a Log of this Type' style=\"font-size: 10px;\">");
+                mb.append("<input type='submit' value='+ Create a Log' style=\"font-size: 10px;\">");
                 mb.append("</td>");
                 mb.append("</form>");
                 mb.append("</center>");
@@ -83,11 +83,11 @@ public class MegaLogTypeHtmlrender {
                     mb.append("<font face=arial size=-2 color=#0000ff><b>Owner of this Type</b></font>");
                     mb.append("</a>");
                 }
-                mb.append("<br>");
-                mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
-                mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEXMLSCHEMA+"'>");
-                mb.append("<font face=arial size=-2 color=#0000ff><b>XML Schema</b></font>");
-                mb.append("</a>");
+//                mb.append("<br>");
+//                mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
+//                mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEXMLSCHEMA+"'>");
+//                mb.append("<font face=arial size=-2 color=#0000ff><b>XML Schema</b></font>");
+//                mb.append("</a>");
                 mb.append("<br>");
                 //@todo List APIs for this log type
 
@@ -104,6 +104,8 @@ public class MegaLogTypeHtmlrender {
 
             //Wrapper table
             mb.append("</td>");
+            mb.append("</tr>");
+            mb.append("<tr>");
             mb.append("<td valign=top>");
 
 

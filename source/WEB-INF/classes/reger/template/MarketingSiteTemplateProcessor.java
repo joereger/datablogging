@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 public class MarketingSiteTemplateProcessor implements TemplateProcessor {
 
     private static MarketingSiteTemplateTag[] tags;
+    private static String defaultTemplate;
 
     public int getType(){
         return Template.TEMPLATETYPEMARKETINGSITE;
@@ -160,9 +161,16 @@ public class MarketingSiteTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new MarketingSiteTemplateTag[2];
+        tags = new MarketingSiteTemplateTag[9];
         tags[0] = new MarketingSiteTemplateTagMainBody();
-        tags[1] = new MarketingSiteTemplateTagNavBarHorizontal();
+        tags[1] = new MarketingSiteTemplateTagNavBar();
+        tags[2] = new MarketingSiteTemplateTagPageTitle();
+        tags[3] = new MarketingSiteTemplateTagEntriesMostRead();
+        tags[4] = new MarketingSiteTemplateTagEntriesMostReadAllTime();
+        tags[5] = new MarketingSiteTemplateTagNewestSites();
+        tags[6] = new MarketingSiteTemplateTagRecentEntries();
+        tags[7] = new MarketingSiteTemplateTagSitesMostRead();
+        tags[8] = new MarketingSiteTemplateTagSitesMostReadAllTime();
     }
 
 
@@ -224,48 +232,138 @@ public class MarketingSiteTemplateProcessor implements TemplateProcessor {
     }
 
     public String getDefaultTemplate(){
-        StringBuffer mb = new StringBuffer();
-
-
-        mb.append("<html>");
-        mb.append("<head>");
-        mb.append("</head>");
-        mb.append("<body  bgcolor=#ffffff link='#0000ff' vlink='#000000' text='#000000' LEFTMARGIN='0' TOPMARGIN='0' MARGINWIDTH='0' MARGINHEIGHT='0'>");
-
-
-        mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
-        mb.append("<tr>");
-        mb.append("<td rowspan='2' width=275 align=center><img src='../privatelabel/reger/images/reger-logo.gif'></td>");
-        mb.append("<td><img src=../images/clear.gif width=1 height=25></td>");
-        mb.append("</tr>");
-        mb.append("<tr>");
-        mb.append("<td valign=bottom><$NavBar.Horizontal$></td>");
-
-        mb.append("</tr>");
-        mb.append("</table>");
-
-        mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
-        mb.append("<tr>");
-        mb.append("<td valign='top' bgcolor=#000000><img src=../images/clear.gif width=1 height=8></td>");
-        mb.append("</tr>");
-        mb.append("</table>");
-
-        mb.append("<$Main.Body$>");
-
-        mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
-        mb.append("<tr>");
-        mb.append("<td valign='top' bgcolor=#000000><img src=../images/clear.gif width=1 height=8></td>");
-        mb.append("</tr>");
-        mb.append("</table>");
-
-        mb.append("</body>");
-        mb.append("</html>");
-
-
-
-
-        return mb.toString();
+        if (defaultTemplate==null){
+            loadDefaultTemplate();
+        }
+        return defaultTemplate;
     }
+
+    private void loadDefaultTemplate(){
+        defaultTemplate = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "templates\\marketingsite\\default\\template.html").toString();
+    }
+
+//    public String getDefaultTemplate(){
+//        StringBuffer mb = new StringBuffer();
+//
+//
+//        mb.append("<html>");
+//        mb.append("<head>");
+//
+//
+//
+//        mb.append("<style>");
+//        mb.append(".navcelloff{");
+//        mb.append("background: #ffffff;");
+//        mb.append("padding: 3px;");
+//        mb.append("}");
+//        mb.append(".navfontoff{");
+//        mb.append("font-family: arial;");
+//        mb.append("font-size: 10px;");
+//        mb.append("}");
+//
+//
+//        mb.append("blockquote");
+//        mb.append("{");
+//            mb.append("color:#000000;");
+//            mb.append("font-family: Geneva, Arial, Helvetica, Swiss, SunSans-Regular;");
+//            mb.append("font-size:12px;");
+//        mb.append("}");
+//
+//        mb.append("a");
+//        mb.append("{");
+//            mb.append("color:#0000ff;");
+//            mb.append("font-size:10px;");
+//        mb.append("}");
+//
+//        mb.append("a:hover");
+//        mb.append("{");
+//            mb.append("background-color:#e6e6e6;");
+//            mb.append("color:#000000;");
+//            mb.append("font-size:10px;");
+//        mb.append("}");
+//
+//        mb.append(".headertitle");
+//        mb.append("{");
+//            mb.append("color:#ffffcc;");
+//            mb.append("font-weight:bold;");
+//            mb.append("font-family: Geneva, Arial, Helvetica, Swiss, SunSans-Regular;");
+//            mb.append("font-size:45px;");
+//        mb.append("}");
+//
+//        mb.append(".pagetitle");
+//        mb.append("{");
+//            mb.append("color:#999999;");
+//            mb.append("font-weight:bold;");
+//            mb.append("font-family: Geneva, Arial, Helvetica, Swiss, SunSans-Regular;");
+//            mb.append("font-size:35px;");
+//        mb.append("}");
+//
+//        mb.append("h1");
+//        mb.append("{");
+//            mb.append("color:#999999;");
+//            mb.append("font-weight:bold;");
+//            mb.append("font-family: Geneva, Arial, Helvetica, Swiss, SunSans-Regular;");
+//            mb.append("font-size:20px;");
+//        mb.append("}");
+//
+//        mb.append(".mainbutton");
+//        mb.append("{");
+//            mb.append("font-weight:bold;");
+//            mb.append("font-family: Geneva, Arial, Helvetica, Swiss, SunSans-Regular;");
+//            mb.append("font-size:15px;");
+//        mb.append("}");
+//
+//        mb.append(".smallbutton");
+//        mb.append("{");
+//            mb.append("font-weight:bold;");
+//            mb.append("font-family: Geneva, Arial, Helvetica, Swiss, SunSans-Regular;");
+//            mb.append("font-size:10px;");
+//        mb.append("}");
+//
+//
+//        mb.append("</style>");
+//
+//        mb.append("</head>");
+//        mb.append("<body  bgcolor=#ffffff link='#0000ff' vlink='#000000' text='#000000' LEFTMARGIN='0' TOPMARGIN='0' MARGINWIDTH='0' MARGINHEIGHT='0'>");
+//
+//
+//        mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
+//        mb.append("<tr>");
+//        mb.append("<td rowspan='2' width=275 align=center><img src='../privatelabel/reger/images/reger-logo.gif'></td>");
+//        mb.append("<td><img src=../images/clear.gif width=1 height=25></td>");
+//        mb.append("</tr>");
+//        mb.append("</table>");
+//
+//        mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
+//        mb.append("<tr>");
+//        mb.append("<td valign='top' bgcolor=#000000><img src=../images/clear.gif width=1 height=8></td>");
+//        mb.append("</tr>");
+//        mb.append("</table>");
+//
+//        mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
+//        mb.append("<tr>");
+//        mb.append("<td valign='top' width=200 bgcolor=#ffffff nowrap><$Navigation.Bar$></td>");
+//        mb.append("<td valign='top' bgcolor=#ffffff><font face=arial size=+3 style=\"font-family: impact, arial; font-size: 64px;\" color=#cccccc><$Page.Title$></font><br><$Main.Body$></td>");
+//        mb.append("</tr>");
+//        mb.append("</table>");
+//
+//
+//        mb.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
+//        mb.append("<tr>");
+//        mb.append("<td valign='top' bgcolor=#000000><img src=../images/clear.gif width=1 height=8></td>");
+//        mb.append("</tr>");
+//        mb.append("</table>");
+//
+//        mb.append("</body>");
+//        mb.append("</html>");
+//
+//
+//
+//
+//        return mb.toString();
+//    }
+
+
 
 
 }

@@ -4,6 +4,8 @@ import reger.pageFramework.PageProps;
 import reger.UserSession;
 import reger.core.Debug;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Nests NavPanels
  */
@@ -12,7 +14,7 @@ public class NestedNavPanels {
     String topHtml;
     String bottomHtml;
 
-    public NestedNavPanels(PageProps pageProps, UserSession userSession){
+    public NestedNavPanels(PageProps pageProps, UserSession userSession, HttpServletRequest request){
 
         Debug.debug(5, "", "NestedNavPanels Created.  <br>pageProps.navButtonName = " + pageProps.navButtonName);
 
@@ -62,21 +64,14 @@ public class NestedNavPanels {
             //Create the navpanel
             NavPanel np = new NavPanel(currentNavButton.parentNavButton, currentNavButton.navButtonName);
             //Append the top and bottom. Note the order in which things are appended and prepended.
-            topHtml = topHtml + np.getHtmlStart(pageProps.pathToAppRoot, userSession);
-            bottomHtml =  np.getHtmlEnd(pageProps.pathToAppRoot) + bottomHtml;
+            topHtml = topHtml + np.getHtmlStart(pageProps.pathToAppRoot, userSession, request);
+            bottomHtml =  np.getHtmlEnd(pageProps.pathToAppRoot, request) + bottomHtml;
         }
-
-
-
-
-
-
 
 
     }
 
     public String getTopHtml(){
-        Debug.debug(5, "", "NestedNavPanelt.getTopHtml()<br>" + topHtml);
         return topHtml;
     }
 

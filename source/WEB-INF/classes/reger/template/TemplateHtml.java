@@ -88,7 +88,7 @@ public class TemplateHtml {
         if (showCreateNewTemplateLink){
             topRight.append("<br>");
             topRight.append("<font face=arial size=-2>");
-            topRight.append("<a href='"+editPageName+"?type="+type+"&logid="+logid+"&action=new&returnurl="+thisPageName+"'>");
+            topRight.append("<a href='"+editPageName+"?type="+type+"&logid="+logid+"&plid="+plid+"&action=new&returnurl="+thisPageName+"'>");
             topRight.append("Create a New Template");
             topRight.append("</a>");
             topRight.append("</font>");

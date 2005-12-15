@@ -4,6 +4,13 @@ import reger.core.db.Db;
 import reger.core.ValidationException;
 import reger.core.Debug;
 import reger.core.licensing.License;
+import reger.nestednav.NestedNavCollection;
+import reger.nestednav.NestedNavItem;
+import reger.plcontentmanagement.PlJspPage;
+import reger.plcontentmanagement.AllPlJspPages;
+import reger.plcontentmanagement.PlContentPage;
+
+import java.util.HashMap;
 
 /**
  * This class represents a private label.
@@ -69,6 +76,9 @@ public class PrivateLabel {
     private int minPasswordSpecialChars = 0;
     private int minPasswordNumericChars = 0;
     private boolean isPasswordSentViaEmail = true;
+
+    //The NestedNavItems for this account. Note that this is ALL of them.
+    private NestedNavCollection nestedNavCollection;
 
     //Peers of this pl
     PrivateLabelPeerRelationship[] peers = new PrivateLabelPeerRelationship[0];
@@ -216,6 +226,9 @@ public class PrivateLabel {
             //Load up the megalogtypes
             loadMegalogtypes();
 
+            //Load the NestedNavItems
+            loadNestedNavItems();
+
             //Load peers
             loadPeers();
 
@@ -237,6 +250,45 @@ public class PrivateLabel {
                 megaLogTypes = reger.core.Util.addToIntArray(megaLogTypes, Integer.parseInt(rstPlEv[i][0]));
             }
         }
+    }
+
+    private void loadNestedNavItems(){
+
+        //Get nav items from system
+        NestedNavItem[] staticJspPages = AllPlJspPages.getNestedNavItems();
+        //Get list of those that are hidden by this pl
+        HashMap hiddenByPl = new HashMap();
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstHidden= Db.RunSQL("SELECT pljspidtohide FROM plnavhide WHERE plid='"+plid+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstHidden!=null && rstHidden.length>0){
+            for(int i=0; i<rstHidden.length; i++){
+                hiddenByPl.put(Integer.parseInt(rstHidden[i][0]), true);
+            }
+        }
+        //Create a new list of staticJspPages without those that are hidden by the pl
+        NestedNavItem[] staticJspPagesMinusHiddenOnes = new NestedNavItem[0];
+        for (int i = 0; i < staticJspPages.length; i++) {
+            if (!hiddenByPl.containsKey(staticJspPages[i].getThisNestedNavId())){
+                staticJspPagesMinusHiddenOnes = AddToArray.addToNestedNavItemArray(staticJspPagesMinusHiddenOnes, staticJspPages[i]);
+            }
+        }
+        //Get nav items from private label
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstPlContPage= Db.RunSQL("SELECT plcontentpageid FROM plcontentpage WHERE plid='"+plid+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstPlContPage!=null && rstPlContPage.length>0){
+            for(int i=0; i<rstPlContPage.length; i++){
+                PlContentPage plContPage = new PlContentPage(Integer.parseInt(rstPlContPage[i][0]));
+                staticJspPagesMinusHiddenOnes = AddToArray.addToNestedNavItemArray(staticJspPagesMinusHiddenOnes, (NestedNavItem)plContPage);
+            }
+        }
+
+        nestedNavCollection = new NestedNavCollection(staticJspPagesMinusHiddenOnes);
     }
 
 
@@ -486,10 +538,14 @@ public class PrivateLabel {
     }
 
     public void delete(){
+        delete(reger.Vars.PLIDDEFAULT);
+    }
+
+    public void delete(int moveuserstothisplid){
+        if (moveuserstothisplid<=0){
+            moveuserstothisplid = reger.Vars.PLIDDEFAULT;
+        }
         if (plid!=reger.Vars.PLIDDEFAULT){
-
-
-
 
             //Record where all users are being moved with pldeletearchive table for a record
             //-----------------------------------
@@ -501,7 +557,7 @@ public class PrivateLabel {
                 for(int i=0; i<rstCur.length; i++){
                     //-----------------------------------
                     //-----------------------------------
-                    int identity = Db.RunSQLInsert("INSERT INTO pldeletearchive(accountid, oldplid, newplid, date) VALUES('"+ rstCur[i][0] +"','"+ plid +"','"+ reger.Vars.PLIDDEFAULT +"', '"+reger.core.TimeUtils.nowInGmtString()+"')");
+                    int identity = Db.RunSQLInsert("INSERT INTO pldeletearchive(accountid, oldplid, newplid, date) VALUES('"+ rstCur[i][0] +"','"+ plid +"','"+moveuserstothisplid+"', '"+reger.core.TimeUtils.nowInGmtString()+"')");
                     //-----------------------------------
                     //-----------------------------------
                 }
@@ -510,7 +566,7 @@ public class PrivateLabel {
             //Move all users
             //-----------------------------------
             //-----------------------------------
-            int count2 = Db.RunSQLUpdate("UPDATE account SET plid='"+ reger.Vars.PLIDDEFAULT +"' WHERE plid='"+ plid +"'");
+            int count2 = Db.RunSQLUpdate("UPDATE account SET plid='"+ moveuserstothisplid +"' WHERE plid='"+ plid +"'");
             //-----------------------------------
             //-----------------------------------
 
@@ -926,5 +982,7 @@ public class PrivateLabel {
         return userSession.getUrlWithPortSmartlyAttached(userSession.getUrlSplitter().getScheme() + "://" + plbasedomain);
     }
 
-
+    public NestedNavCollection getNestedNavCollection() {
+        return nestedNavCollection;
+    }
 }

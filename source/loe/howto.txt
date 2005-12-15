@@ -402,7 +402,7 @@ This is a reference showing the jar file to module relationship:
 8) Password (http://www.opensource.isc.vt.edu/products/password/)
     - password1_4.jar
 
-9) Hibernate (Currently not installed)
+9) Hibernate 
     - cglib-2.1.jar
     - dom4j-1.5.2.jar
     - commons-logging.jar

@@ -163,6 +163,18 @@ DIV.yellowbox {
     padding: 5px;
 }
 
+DIV.greenbox {
+    border: 1px dotted #999;
+    background: #00ff00;
+    padding: 5px;
+}
+
+DIV.redbox {
+    border: 1px dotted #999;
+    background: #ff0000;
+    padding: 5px;
+}
+
 DIV.bluebox {
     border: 1px dotted #999;
     background: #99ccff;

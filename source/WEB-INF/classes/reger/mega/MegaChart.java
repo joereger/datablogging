@@ -80,7 +80,9 @@ public class MegaChart {
             daterangetoyyyy=Integer.parseInt(rstChartget[0][15]);
             daterangetomm=Integer.parseInt(rstChartget[0][16]);
             daterangetodd=Integer.parseInt(rstChartget[0][17]);
-            daterangesavedsearchid=Integer.parseInt(rstChartget[0][18]);
+            if (reger.core.Util.isinteger(rstChartget[0][18])){
+                daterangesavedsearchid=Integer.parseInt(rstChartget[0][18]);
+            }
             accountid=Integer.parseInt(rstChartget[0][19]);
 
             //Go and get the yaxis
@@ -94,9 +96,15 @@ public class MegaChart {
             yEventtypeid = new int[rstGetyaxis.length];
             if (rstGetyaxis!=null && rstGetyaxis.length>0){
                 for(int i=0; i<rstGetyaxis.length; i++){
-                    yMegafieldid[i]=Integer.parseInt(rstGetyaxis[i][0]);
-                    yLogid[i]=Integer.parseInt(rstGetyaxis[i][1]);
-                    yEventtypeid[i]=Integer.parseInt(rstGetyaxis[i][2]);
+                    if (reger.core.Util.isinteger(rstGetyaxis[i][0])){
+                        yMegafieldid[i]=Integer.parseInt(rstGetyaxis[i][0]);
+                    }
+                    if (reger.core.Util.isinteger(rstGetyaxis[i][1])){
+                        yLogid[i]=Integer.parseInt(rstGetyaxis[i][1]);
+                    }
+                    if (reger.core.Util.isinteger(rstGetyaxis[i][2])){
+                        yEventtypeid[i]=Integer.parseInt(rstGetyaxis[i][2]);
+                    }
                 }
             }
         }

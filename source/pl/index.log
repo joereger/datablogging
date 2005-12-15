@@ -2,6 +2,7 @@
 <%@ page import="java.util.*,
                  javax.naming.Context,
                  javax.naming.InitialContext" %>
+<%@ page import="reger.core.db.Db"%>
 
 <%
 /*----------------------------------------------------*/
@@ -11,7 +12,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.title = "Private Label Home";
 pageProps.navButtonName = "plmain";
 pageProps.isPasswordProtected = true;
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
@@ -24,18 +26,101 @@ pageProps.pathToAppRoot="../";
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+if(!userSession.getAccountuser().userCanDoAcl("PLADMIN", userSession.getAccount().getAccountid()) && !userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "I'm sorry.  You do not have permission to administer private labels.  Please contact your system administrator if you believe this message is in error."));
+} else {
 
-mb.append("<br>");
-mb.append("<center>");
-mb.append("<img src='../images/yellow-alert.gif' border=0>");
-mb.append("<br>");
-mb.append("<font face=arial size=+1>");
-mb.append("Caution: You are in a very powerful administration tool that most users do not have access to.  This tool is called the Private Label Admin and it manages the Private Label section of the chart below.  Please be careful.");
-mb.append("</font>");
-mb.append("<br><br>");
-mb.append("<img src='../images/object-heirarchy.gif' width=600 border=0>");
-mb.append("</center>");
-mb.append("<br>");
+    //We must start with a plid
+    int plid = 0;
+    if (reger.core.Util.isinteger(request.getParameter("plid"))){
+        plid = Integer.parseInt(request.getParameter("plid"));
+    }
+
+    //If there's no plid, send the user to the page where they can select one
+    if (plid<=0){
+        pageProps.title = "";
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Please choose a Private Label so that we can get the party started!"));
+    } else {
+        //Change title
+        reger.PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(plid);
+        pageProps.title = "PrivateLabel: " + pl.getPlname();
+    }
+
+
+
+
+    mb.append("<br>");
+
+
+
+    mb.append("<table cellpadding=5 cellspacing=1 border=0>");
+
+
+
+
+    mb.append("<tr><td valign=top nowrap>");
+    mb.append("<font face=arial size=+2 color=#cccccc><strong>");
+    mb.append("Private Labels you have access to:</strong>");
+    mb.append("</font>");
+    mb.append("</td></tr>");
+
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstData= Db.RunSQL("SELECT plid, plname FROM pl WHERE islive='1'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstData!=null && rstData.length>0){
+        for(int i=0; i<rstData.length; i++){
+            if (userSession.getAccountuser().userCanAdministerPl(Integer.parseInt(rstData[i][0]))){
+                mb.append("<tr><td valign=top nowrap>");
+                if (plid==Integer.parseInt(rstData[i][0])){
+                    mb.append("<DIV class=greenbox>");
+                } else {
+                    mb.append("<DIV class=yellowbox>");
+                }
+                mb.append("<font face=arial size=-1><strong><a href='index.log?plid="+rstData[i][0]+"'>"+rstData[i][1]+"</strong></font></a>");
+
+                if(userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+                    mb.append("<br><br>");
+                    mb.append("<DIV class=greybox>");
+                    mb.append("<a href='plmanage.log?action=deletestart&plid="+plid+"'>");
+                    mb.append("<font face=arial size=-2 color=#666666>");
+                    mb.append("Delete");
+                    mb.append("</font>");
+                    mb.append("</a>");
+                    mb.append("</DIV>");
+                }
+
+                mb.append("</DIV>");
+                mb.append("</td></tr>");
+            }
+        }
+    }
+
+
+
+    //Link to add a new pl
+    if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
+        mb.append("<tr><td valign=top nowrap>");
+        mb.append("<font face=arial size=-1><strong>");
+        mb.append("<a href='plmanage.log?action=addstart'>");
+        mb.append("<img src='../images/plus-icon.gif' width='15' height='15' alt='' border='0'>");
+        mb.append("Add New PL</strong>");
+        mb.append("</font>");
+        mb.append("</a><br>");
+        mb.append("</td></tr>");
+    }
+
+    mb.append("</table>");
+
+
+
+    mb.append("<br><br>");
+
+
+
+}
+
 
 %>
 

@@ -20,8 +20,6 @@ public class NestedNavCollection implements java.io.Serializable {
         Debug.debug(5, "", "NestedNavCollection.getChildrenUserCanView() - this.allNestedNavItems.length=" + this.allNestedNavItems.length);
     }
 
-
-
     public static NestedNavItem[] getNavItemsUserCanView(NestedNavItem[] inNestedNavItems, Accountuser accountuser){
         NestedNavItem[] outItems = new NestedNavItem[0];
         //Find those that the user can view

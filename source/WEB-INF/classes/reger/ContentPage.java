@@ -64,10 +64,16 @@ public class ContentPage implements NestedNavItem{
 
         //-----------------------------------
         //-----------------------------------
-        int count = Db.RunSQLUpdate("UPDATE contentpage SET accountid='"+accountid+"', name='"+reger.core.Util.cleanForSQL(name)+"', content='"+reger.core.Util.cleanForSQL(content)+"', nestednavparenttype='"+nestednavparenttype+"', nestednavparentid='"+nestednavparentid+"', nestednavorder='"+nestednavorder+"', sizeinbytes='"+sizeinbytes+"' WHERE contentpageid='"+contentpageid+"'");
+        String[][] rstCont = Db.RunSQL("SELECT contentpageid FROM contentpage WHERE contentpageid='"+contentpageid +"'");
         //-----------------------------------
         //-----------------------------------
-        if (count<1){
+        if (rstCont !=null && rstCont.length>0){
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE contentpage SET accountid='"+accountid+"', name='"+reger.core.Util.cleanForSQL(name)+"', content='"+reger.core.Util.cleanForSQL(content)+"', nestednavparenttype='"+nestednavparenttype+"', nestednavparentid='"+nestednavparentid+"', nestednavorder='"+nestednavorder+"', sizeinbytes='"+sizeinbytes+"' WHERE contentpageid='"+contentpageid+"'");
+            //-----------------------------------
+            //-----------------------------------
+        } else {
             //Set ordering info by finding all on first level and getting highest
             reger.Account account = new Account(accountid);
             reger.nestednav.NestedNavCollection collection = account.getNestedNavCollection();
@@ -84,6 +90,8 @@ public class ContentPage implements NestedNavItem{
             //-----------------------------------
             //-----------------------------------
         }
+
+       
     }
 
 

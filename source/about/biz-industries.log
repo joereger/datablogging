@@ -1,0 +1,381 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Industries";
+pageProps.navButtonName = "aboutbiz-industries";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+
+
+mb.append("Reger.com's unique datablogging technology applies to many industries.  In general, it acts as a knowledge management tool inside the organization and a community building tool outside the organization.  To the left are listed some distinct industries, but the technology can be applied to most any organization, large or small.  Please give us a call to discuss your interest in blogging.");
+mb.append("<br>");
+mb.append("<br>");
+
+
+
+//Corporate IT
+mb.append("As a CIO, your users are frequently requesting new applications.  Many of these applications do little more than collect and collate simple row-based data.  You have to decide whether to hand users a tool like Microsoft Access or build a custom web application.  The Microsoft Access solution grants your users expediency and flexibility at the cost of ease-of-use.  The custom application grants your users exactly what they want at a high development cost.");
+
+mb.append("<br>");
+mb.append("<h1>The Solution</h1>");
+mb.append("Our datablogging concept fits somewhere between a Microsoft Access database and a full custom web application.  Here's how it works:");
+mb.append("<ul>");
+mb.append("<li>Corporate IT sets up a datablogging server one time");
+mb.append("<li>From there forward, users are able to create their own custom log types.  Instead of coming to you for custom applications, they can create their own quickly and easily.");
+mb.append("<li>Data is centralized so that you can maintain quality of service and backup/recovery");
+mb.append("<li>APIs allow you to get data into/out of the datablogging system and into/out of legacy or other corporate systems");
+mb.append("</ul>");
+
+
+//Education
+mb.append("<br>");
+mb.append("<h1>Why Web Logs Make Sense</h1>");
+mb.append("<ul>");
+mb.append("<li>Give students a voice");
+mb.append("<li>Give faculty a voice");
+mb.append("<li>Allow faculty to use blogs in class");
+mb.append("<li>Use datablogging capability to create custom programs for students");
+mb.append("</ul>");
+
+//Marketers
+mb.append("Our activity-specific web logging concept instantly segments users into defined markets.  People using or reading a Running Log, for example are clearly interested in running.  We have over thirty distinct web log types and are adding more all the time.  This creates great targeted marketing opportunities.");
+
+mb.append("<br>");
+mb.append("<h1>Targeted Marketing Programs</h1>");
+mb.append("Because users sign up for specific log types you have a good idea what interests them.  Next, they invite their friends and family to read their web log.  This means that your advertising will be viewed by people very interested in the content at hand.");
+
+
+mb.append("<br>");
+mb.append("<h1>Special Promotions</h1>");
+mb.append("We're interested in working with you to develop smart marketing programs.  From basic log sponsorships to site-wide banner campaigns.");
+
+
+mb.append("<br>");
+mb.append("<h1>Data-driven Programs</h1>");
+mb.append("Unlike in other web logging tools, users on our network capture quantifuable data about their activity.  For example, a runner may keep track of the numbre of miles run and the pair of shoes worn on each run.  With this data we can target an ad saying \"Running shoes are less effective after 450 miles.\" to all Running Log users with shoes that have over 400 miles on them.");
+
+mb.append("<br>");
+mb.append("<h1>Email Programs</h1>");
+mb.append("Each of the thousands of web loggers in our network has the opportunity to create their own email newsletter.  Combined with their activity-specific log types this gives you a potent email marketing channel.  For example, you can buy space on \"All email newsletters from users with a Running Log\".");
+
+
+mb.append("<br>");
+mb.append("<h1>Custom Log Types</h1>");
+mb.append("We can work with you to develop a special log type that tracks exactly what your market is interested in.");
+
+//Military
+mb.append("<br>");
+mb.append("<h1>Knowledge Management</h1>");
+
+mb.append("We currently provide one military service with a blogging tool installation on their network.  We're in the process of getting our SSAA and other security certifications.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("What's unique about our product is that, along with all of the traditional blogging features, users can create custom log types.  For example, a user could create a gate guard log, a mission log or a training log.  Each log has custom data fields:  dropdowns, numeric fields, text fields, etc.  Ad-hoc graphs can be created and saved by users based on their own custom data fields.  RSS feeds include their custom data.  APIs include their data.  in essence, the system is a combination of blogs, databases and data mining.  We also include a number of social networking features.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("We'd like to be a log-based knowledge management tool for the military.  We were involved in a research bid for DARPA's LifeLog project, before that project was shut down for funding and political reasons.  The goal of the research we proposed was to annotate and extract wisdom from many rich and different data streams.  Generals and unit commanders both need the ability to better organize small bits of information to gain a high level perspective. We'd be glad to share that proposal with you, upon your request.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("On our team includes a retired LTC and a current Army reservist.  Our technology is built on enterprise class java platforms, similar to AKO.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("We're interested in talking to you about applying activity-specific datablogging to military applications.  With our datablogging feature the possibilities are endless. Please let us know what we can do to help you.");
+
+//Music
+mb.append("The music industry can leverage web logging technology to increase record sales.");
+
+mb.append("<br>");
+mb.append("<h1>Why Web Logs Make Sense</h1>");
+mb.append("<ul>");
+mb.append("<li>Fans are voracious consumers of information.  In fact, it's often difficult for music companies to keep up with that demand.  By putting bands and artists on web logs you streamline your communication channel.");
+mb.append("<li>PR department approval.  It's easy to set up artist and band web sites that allow the artists to create content without that content going public until reviewed by somebody in the PR, legal or marketing department.");
+mb.append("<li>Online communities are developed around your artist sites");
+mb.append("<li>Decrease the per-artist cost for web presences by standardizing the technology but still allowing the same richness and flexibility in how sites look.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>ROI</h1>");
+mb.append("<ul>");
+mb.append("<li>Lowered cost per-artist for web presence");
+mb.append("<li>Brand reach - Your brand will be extended in a user-friendly manner.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Recommended Products</h1>");
+mb.append("<ul>");
+mb.append("<li><a href='productsvipweblog.log'>VIP Web Logs</a>");
+mb.append("<li><a href='productsenterpriseweblogging.log'>Enterprise Web Logging Service</a>");
+mb.append("<li><a href='productsprivatelabel.log'>Private Label</a>");
+mb.append("</ul>");
+
+//OEM
+mb.append("What if you could turn a common household scale into an ongoing revenue stream?  By connecting devices to the web with our web logging solution you can do so.  Unlike other web loggins services we have activity-specific logs that can truly leverage that data that your products collect.");
+
+mb.append("<br>");
+mb.append("<h1>Why Web Logs Make Sense</h1>");
+mb.append("<ul>");
+mb.append("<li>By allowing your data to collect data and send it to web logs you create an ongoing revenue stream from an otherwise single-sale product.");
+mb.append("<li>Product differentiation. Users are increasingly demanding networked products.");
+mb.append("<li>Brand reach.  Your branding is present on all of your users' sites.  Your users invite their friends and families to their sites where your brand is present.  This halo effect creates high brand awareness.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>How It Works</h1>");
+mb.append("<ul>");
+mb.append("<li>You develop smart products that collect data.  It doesn't matter what product or what data collected.  We can create custom log types to accomodate them.");
+mb.append("<li>We work with you to develop the software and hardware that takes data off of the device and sends it to the web.");
+mb.append("<li>Data is sent to your users' web sites via defined Data APIs where they can annotate it, organize it and analyze it.");
+mb.append("<li>Users pay for upgraded premium services and you share in the ongoing monthly revenue.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>What We Provide</h1>");
+mb.append("We provide complete turkey solutions that allow you to focus on your core product business.  You don't likely want to be in the network maintenance, server setup, software development and security management businesses.  We do.  Let's form a partnership.");
+
+mb.append("<br>");
+mb.append("<h1>New Product Partnerships/Newcos</h1>");
+mb.append("We're open to new product development opportunities.  We will work with you to refine a concept with tight web logging integration, help you raise money and develop the product with you.");
+
+mb.append("<br>");
+mb.append("<h1>Industrial Designers</h1>");
+mb.append("By adding web logging and its recurring revenue streams to your product pitches you can get more accounts.  We will work with you to develop your product pitches and sales materials.");
+
+
+mb.append("<br>");
+mb.append("<h1>ROI</h1>");
+mb.append("<ul>");
+mb.append("<li>Increased product sales");
+mb.append("<li>User upgrade revenue - Users choose between a free offering and a premium offering with more features.  Reger.com charges a base price for those features.  You can markup above that price and keep the difference.");
+mb.append("<li>Traffic and storage revenue - Users pay for what they use.  They pay for traffic and storage.  Reger.com charges a base fee per unit of traffic and storage.  You can markup and keep the difference.  This means that high volume users make you more money.");
+mb.append("<li>Free users' sites are paid for by advertising revenue.  While the margins are short on this side of the business, there is some room to share this revenue stream with you.");
+mb.append("<li>Special promotions - Once you have a user base using activity-specific web logs you can work with us to develop special promotions that take advantage of this marketing segmentation and share in the revenue.");
+mb.append("<li>Brand reach - Your brand will be extended in a user-friendly manner.");
+mb.append("<li>Search engine results - The URL of your homepage will be added to the template that appears on all of yoru free users' sites.  This means that search engines will see thousands of inbound links... a criteria that tell them your site has something of value.  This translates into higher search engine listings for you.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Recommended Products</h1>");
+mb.append("<ul>");
+mb.append("<li><a href='productsapiservice.log'>Data API Service</a>");
+mb.append("<li><a href='productscustomlogtype.log'>Custom Log Type Development</a>");
+mb.append("<li><a href='productsenterpriseweblogging.log'>Enterprise Web Logging Service</a>");
+mb.append("<li><a href='productsprivatelabel.log'>Private Label</a>");
+mb.append("</ul>");
+
+//Politicians
+mb.append("<br>");
+mb.append("<h1>Blogs Deliver Grassroots Involvement</h1>");
+mb.append("As evidenced in the 2004 presidential election, blogs can play a major role in generating grassroots involvement.  Using our technology you are able to offer your constituents a private label blog with your campaign logos/colors on it.  In doing this, every time a constituent writes about your campaign they expand your internet footprint.");
+mb.append("<ul>");
+mb.append("<li>All major political campaigns now have a web log component.");
+mb.append("<li>Howard Dean used his web log to organize events, raise money and explain his platform.");
+mb.append("<li>Allows candidates to get feedback via mechanisms like Trackback, comments and link exchanges.");
+mb.append("<li>Some are more open and successful, some still hold on to a one-way vision of communication.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Not for the Faint of Heart</h1>");
+mb.append("Blogs work for campaigns because they are a communication format based on honesty and openness. We strongly feel that while blogs have already shown value, they have not shown all they're capable of.  In many cases candidates still edited content for their blogs through public relations experts.  This editing has a general effect of sanitizing the communications. Blogs work because they are raw.  They prove that the author, in your case a candidate, is a person.  People identify with other people who share common interests, faults and beliefs.  By full embracing a blog program that includes open, unedited content straight from the candidate's keyboard, we are convinced that they can have more impact.  Please allow us to convince you to take the jump of faith.");
+
+//Portals
+mb.append("Offering your portal site users a web logging offering is easy with our turnkey solutions. ");
+mb.append("Portal sites need to attract users based on content and features.  They need to build loyalty so that users come back.");
+
+mb.append("<br>");
+mb.append("<h1>Why Web Logs Make Sense</h1>");
+mb.append("<ul>");
+mb.append("<li>Users want web logs.  With millions of web logs already built and over five thousand new web logs each day, users have clearly voted in favor of the concept.");
+mb.append("<li>Brand reach.  Your branding is present on all of your users' sites.  Your users invite their friends and families to their sites where your brand is present.  This halo effect creates high brand awareness.");
+mb.append("<li>Increased revenue per user");
+mb.append("<li>Increased user loyalty. The spirit of web logging includes daily updates.  This means that your users will be coming back daily to your site where they are exposed to your offerings and brand.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>ROI</h1>");
+mb.append("<ul>");
+mb.append("<li>User upgrade revenue - Users choose between a free offering and a premium offering with more features.  Reger.com charges a base price for those features.  You can markup above that price and keep the difference.");
+mb.append("<li>Traffic and storage revenue - Users pay for what they use.  They pay for traffic and storage.  Reger.com charges a base fee per unit of traffic and storage.  You can markup and keep the difference.  This means that high volume users make you more money.");
+mb.append("<li>Free users' sites are paid for by advertising revenue.  While the margins are short on this side of the business, there is some room to share this revenue stream with you.");
+mb.append("<li>Special promotions - Once you have a user base using activity-specific web logs you can work with us to develop special promotions that take advantage of this marketing segmentation and share in the revenue.");
+mb.append("<li>Brand reach - Your brand will be extended in a user-friendly manner.");
+mb.append("<li>Search engine results - The URL of your homepage will be added to the template that appears on all of your free users' sites. This means that search engines will see thousands of inbound links... a criterion that tell them your site has something of value. This translates into higher search engine listings for you.");
+mb.append("<li>Increased portal traffic - Web loggers are an active bunch.  They make log entries many times per day.  This gives you many more user-initiated touches and traffic opportunities within your existing portal.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Recommended Products</h1>");
+mb.append("<ul>");
+mb.append("<li><a href='productsenterpriseweblogging.log'>Enterprise Web Logging Service</a>");
+mb.append("<li><a href='productsprivatelabel.log'>Private Label</a>");
+mb.append("<li><a href='productscustomlogtype.log'>Custom Log Type Development</a>");
+mb.append("</ul>");
+
+//Publishers
+mb.append("Newspapers and publishers already have most of the ingredients required to take advantage of the web logging revolution.   They have world class content creators.  They have editors.  They have an existing web presence.  They have an existing reader base.");
+
+mb.append("<br>");
+mb.append("<h1>Why Web Logs Make Sense</h1>");
+mb.append("<ul>");
+mb.append("<li>Give VIP authors an online column quickly and easily");
+mb.append("<li>Connect with your readership online");
+mb.append("<li>Leverage existing content management systems");
+mb.append("<li>Create a common framework for multiple authors");
+mb.append("<li>Approval/review is built-in");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Integration</h1>");
+mb.append("Via our XML and other APIs we can integrate with your existing content management systems so that your web logs are powered within your existing framework.");
+
+mb.append("<br>");
+mb.append("<h1>Options</h1>");
+mb.append("You can use the web logging technology to publish your own web logs with your own content and/or you can allow your readership to publish their own web logs.  When your readers publish their own content you can develop a new revenue stream.");
+
+
+mb.append("<br>");
+mb.append("<h1>ROI</h1>");
+mb.append("<ul>");
+mb.append("<li>Brand reach - Your brand will be extended in a user-friendly manner.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Recommended Products</h1>");
+mb.append("<ul>");
+mb.append("<li><a href='productsenterpriseweblogging.log'>Enterprise Web Logging Service</a>");
+mb.append("<li><a href='productsprivatelabel.log'>Private Label</a>");
+mb.append("<li><a href='productsvipweblog.log'>VIP Web Logs</a>");
+mb.append("</ul>");
+
+//Radio
+mb.append("<br>");
+mb.append("<h1>Blogs Make Sense for Radio Stations</h1>");
+mb.append("<ul>");
+mb.append("<li>You have a large listener base, they all have opinions");
+mb.append("<li>Increased brand footprint");
+mb.append("<li>Radio station is the host of an active online community");
+mb.append("<li>New source of revenue");
+mb.append("<li>Quick and easy to setup, we can host everything");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>How it Works</h1>");
+mb.append("<ul>");
+mb.append("<li>Listeners go to your station site to sign up for a blog");
+mb.append("<li>They make blog (journal) entries");
+mb.append("<li>They share their site with their friends");
+mb.append("<li>When their friends read their blog, your brand name is at the top of all of their pages");
+mb.append("<li>If they pay to remove your brand, you share in the revenue");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Content Approval</h1>");
+mb.append("One of the biggest concerns for radio stations is content approval.  Radio stations don't want hate blogs, porn blogs or other illicit blogs under their brand name.  We offer a number of features including content approval/moderation, word/phrase flagging and account disabling to help you police your blogosphere community.  We can also provide personnel to monitor and approve content 24/7 so that nothing gets posted to your community without being checked against the guidelines of your community, which you create.");
+
+
+//Telco
+mb.append("Reger.com offers a complete software system that <b>allows mobile network operators give their customers easy-to-use online journal websites called web logs</b>.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Web logging is personal publishing. It gives mobile users the ability to create a unique, interesting and personal website from a mobile phone - including text, pictures and sounds.  Users are able to run their own web sites without technical knowledge, web experience or special software.  All they need is a camera phone or a web browser.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("It transforms mobile phones into powerful internet publishing tools that will inspire people to communicate with each other.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Giving your wireless phone customers a web logging offering is easy with our turnkey solutions. ");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("The adoption of smart camera phones creates a <b>potent revenue opportunity for carriers</b> in the form of SMS and MMS sales. Users want applications that provide value and carriers want applications that drive data network traffic.  Web logging is a powerful application that fulfills both of these requirements.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<b>Mobile operators are in a unique position</b> to take advantage of the power hidden in camera phones, internet and messaging technology.  Just like in the early days of text messaging, operators are waiting for the killer application to engage users in addictive and revenue-generating behavior.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Reger.com offers a killer application that combines camera phones and text messaging with the now-mature internet technologies called web logging and social networking.  By combining them together users get a unique and addictive publishing tool that encourages them to use their phone's camera feature.  Social networks reinforce the addiction and encourage further usage.");
+
+
+mb.append("<br>");
+mb.append("<h1>How It Works</h1>");
+mb.append("When a mobile user signs up with a carrier they are <b>given a web log</b>... essentially a personal web site where they can store their pictures, sounds and text... a journal.  <b>They take pictures with their camera phone</b> and automatically have them posted to their web log (<b>which generates MMS revenue</b>) where their friends and family can view them.  When their <b>friends and family view the images</b> they are encased in your brand name (called a private label) which <b>extends your brand reach</b> and helps to increase sales.  Your users become invested in their personalized sites which <b>increases their loyalty to you</b>.  They may even pay for additional premium services which generates <b>more revenue</b> for you.");
+
+mb.append("<br>");
+mb.append("<h1>Why Web Logs Make Sense for Carriers</h1>");
+mb.append("<ul>");
+mb.append("<li>Increase SMS and MMS traffic.  As users enjoy their online web log and develop a readership they feel more prideful in their updating.  This increases their MMS and SMS usage.  Web logging drives this compulsion to update because unlike other solutions it doesn't just give a way to store camera photos... it provides the publishing and syndication tools to develop a readership for each site.");
+mb.append("<li>Premium service offerings with rich feature sets help to differentiate your offering from your competitors.");
+mb.append("<li>Lower churn rates because users' investment in their web log site is tied to you as a carrier");
+mb.append("<li>An easy-to-use way to get users into data services for the first time");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Why Mobile Users Love Web Logs</h1>");
+mb.append("<ul>");
+mb.append("<li>Instant publishing capability");
+mb.append("<li>Sharing pictures with friends and family");
+mb.append("<li>Personalized look and feel for their web site");
+mb.append("<li>Site traffic reports show users how many people are reading their site");
+mb.append("<li>The ability to post from their WAP-enabled device");
+mb.append("<li>Feedback from their friends and family in the form of site comments");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Market</h1>");
+mb.append("Early adopters will be the lucrative youth market demographic.  Sharing pictures with friends and creating online communities comes naturally to this demographic.  As they share the tool with their friends and family more mature demographics will adopt the value proposition.");
+
+mb.append("<br>");
+mb.append("<h1>ROI</h1>");
+mb.append("<ul>");
+mb.append("<li><b>Increased SMS and MMS traffic</b>");
+mb.append("<li><b>Increased camera phone sales</b>");
+mb.append("<li><b>User upgrade revenue</b> - Users choose between a free offering and a premium offering with more features.  Reger.com charges a base price for those features.  You can markup above that price and keep the difference.");
+mb.append("<li><b>Traffic and storage revenue</b> - Users pay for what they use.  They pay for traffic and storage.  Reger.com charges a base fee per unit of traffic and storage.  You can markup and keep the difference.  This means that high volume users make you more money.");
+mb.append("<li>Free users' sites are paid for by advertising revenue.  While the margins are short on this side of the business, there is some room to share this revenue stream with you.");
+mb.append("<li><b>Special promotions</b> - Once you have a user base using activity-specific web logs you can work with us to develop special promotions that take advantage of this marketing segmentation and share in the revenue.");
+mb.append("<li><b>Brand reach</b> - Your brand will be extended in a user-friendly manner.");
+mb.append("</ul>");
+
+mb.append("<br>");
+mb.append("<h1>Recommended Products</h1>");
+mb.append("<ul>");
+mb.append("<li><a href='productscamphone.log'>Camera Phone Service</a>");
+mb.append("<li><a href='productsenterpriseweblogging.log'>Enterprise Web Logging Service</a>");
+mb.append("<li><a href='productsprivatelabel.log'>Private Label</a>");
+mb.append("</ul>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

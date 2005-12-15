@@ -10,7 +10,8 @@ public interface NestedNavItem {
     public static final int NESTEDNAVITEMBASE = 0;
     public static final int NESTEDNAVTYPEMEGALOG = 1;
     public static final int NESTEDNAVTYPECONTENTPAGE = 2;
-
+    public static final int NESTEDNAVTYPEPLCONTENTPAGE = 3;
+    public static final int NESTEDNAVTYPEPLJSPPAGE = 4;
 
     /**
      * The text that should appear in the navigation bar

@@ -4,6 +4,8 @@
                  reger.core.db.Db,
                  reger.core.db.Db,
                  reger.core.Util" %>
+<%@ page import="reger.PrivateLabel"%>
+<%@ page import="reger.Account"%>
 
 <%
 /*----------------------------------------------------*/
@@ -13,7 +15,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.title = "Account Detail";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "placcounts";
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
@@ -27,43 +30,59 @@ pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 
 
-//Start PLID-choosing SQL
-String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
-    plidSql = " (pl.plid>'-1') ";
-}
-//End PLID-choosing SQL
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
 
 
 
-//Start make sure this user can view this accountuserid
-int accountidOfAu=-1;
-//-----------------------------------
-//-----------------------------------
-String[][] rstCheck= Db.RunSQL("SELECT account.accountid FROM accountuser, account, pl WHERE accountuser.accountid=account.accountid AND account.plid=pl.plid AND " + plidSql + " AND accountuser.accountuserid='"+reger.core.Util.cleanForSQL(request.getParameter("accountuserid"))+"'");
-//-----------------------------------
-//-----------------------------------
-if (rstCheck!=null && rstCheck.length>0){
-    //Do nothing
-    accountidOfAu=Integer.parseInt(rstCheck[0][0]);
-} else {
-    out.print("Sorry.  You don't have permission to view this account user.");
+//Make sure we have an integer accountuserid
+if (request.getParameter("accountuserid")==null || !reger.core.Util.isinteger(request.getParameter("accountuserid"))){
+    response.sendRedirect("accounts.log&plid="+plid);
     return;
 }
-//End make sure this user can view this accountuserid
-
 
 //Now, create the accountuser as an object
 reger.Accountuser au = new reger.Accountuser(Integer.parseInt(request.getParameter("accountuserid")), true);
+
+
+//This account must be in the pl that's being managed
+//to protect permission and privacy
+Account tmpAcct = reger.cache.AccountCache.get(au.getAccountid());
+if (tmpAcct.getPlid()!=pl.getPlid()){
+    response.sendRedirect("accounts.log&plid="+plid);
+    return;
+}
+
 
 //Set up errortext
 String errortext = "";
 
 //Grant pladmin permission
 if (pageProps.action.equals("grantpladmin")) {
-    //au.grantAcl("PLADMIN", au.getAccountid());
     au.addUserToAclGroup("PLAdmin", au.getAccountid());
+}
+
+//Grant pladmin permission
+if (pageProps.action.equals("grantpladmintoplid")) {
+    if(reger.core.Util.isinteger(request.getParameter("plidtograntto"))){
+        int plidtograntto = Integer.parseInt(request.getParameter("plidtograntto"));
+        //Make sure user making change is allowed to grant this permission
+        if (userSession.getAccountuser().userCanAdministerPl(plidtograntto)){
+            au.grantPlAdminpermissionToPl(plidtograntto);
+        }
+    }
+}
+
+//Grant pladmin permission
+if (pageProps.action.equals("revokepladmintoplid")) {
+    if(reger.core.Util.isinteger(request.getParameter("plidtorevoke"))){
+        int plidtorevoke = Integer.parseInt(request.getParameter("plidtorevoke"));
+        //Make sure user making change is allowed to grant this permission
+        if (userSession.getAccountuser().userCanAdministerPl(plidtorevoke)){
+            au.revokePlAdminpermissionToPl(plidtorevoke);
+        }
+    }
 }
 
 //Revoke pladmin permission
@@ -74,7 +93,6 @@ if (pageProps.action.equals("revokepladmin")) {
 
 //Grant pladmin permission
 if (pageProps.action.equals("grantloeadmin")) {
-    //au.grantAcl("MASTERADMIN", au.getAccountid());
     au.addUserToAclGroup("LOEAdmin", au.getAccountid());
 }
 
@@ -146,6 +164,26 @@ if (!au.userCanDoAcl("PLADMIN", au.getAccountid())){
     mb.append("<br>");
     mb.append("Revokes permission to manage the private label.");
 }
+//Display individual pls
+PrivateLabel[] allPls = reger.AllPrivateLabelsInSystem.getAllPrivateLabels();
+for (int i = 0; i < allPls.length; i++) {
+    reger.PrivateLabel plTmp = allPls[i];
+    if(userSession.getAccountuser().userCanAdministerPl(plTmp.getPlid())){
+        mb.append("<br>");
+        mb.append("<br>");
+        mb.append("<b>"+plTmp.getPlname()+"</b>");
+        mb.append(" ");
+        if(au.userCanAdministerPl(plTmp.getPlid())){
+            mb.append("<a href='accountuserdetail.log?action=revokepladmintoplid&accountuserid="+au.getAccountuserid()+"&plidtorevoke="+plTmp.getPlid()+"&plid="+plid+"'>");
+            mb.append("Allowed");
+            mb.append("</a>");
+        } else {
+            mb.append("<a href='accountuserdetail.log?action=grantpladmintoplid&accountuserid="+au.getAccountuserid()+"&plidtograntto="+plTmp.getPlid()+"&plid="+plid+"'>");
+            mb.append("Denied");
+            mb.append("</a>");
+        }
+    }
+}
 mb.append("</td>");
 
 mb.append("<td valign=top bgcolor=#ffffff class=acct>");
@@ -156,7 +194,7 @@ if (!au.userCanDoAcl("MASTERADMIN", au.getAccountid())){
     mb.append("<br>");
     mb.append("Grants this user overall admin permission.  Caution: this is the highest amount of power available in the system.");
 } else {
-    mb.append("<a href='accountuserdetail.log?action=revokeloeadmin&accountuserid="+au.accountuserid+"'>");
+    mb.append("<a href='accountuserdetail.log?action=revokeloeadmin&accountuserid="+au.accountuserid+"&plid="+plid+"'>");
     mb.append("Revoke LOEAdmin Permission");
     mb.append("</a>");
     mb.append("<br>");
@@ -167,6 +205,8 @@ mb.append("</td>");
 
 mb.append("</tr>");
 
+
+
 mb.append("</table>");
 
 
@@ -175,6 +215,7 @@ mb.append("</table>");
 
 mb.append("<form action=accountuserdetail.log method=post>");
 mb.append("<input type=hidden name=action value=editaccountuser>");
+mb.append("<input type=hidden name=plid value="+plid+">");
 mb.append("<input type=hidden name=accountuserid value=\""+au.accountuserid+"\">");
 mb.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
 mb.append("<tr>");

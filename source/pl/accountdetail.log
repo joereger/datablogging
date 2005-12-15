@@ -12,7 +12,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.title = "Account Detail";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "placcounts";
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
@@ -26,28 +27,22 @@ pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 
 
-//Start PLID-choosing SQL
-String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
-    plidSql = " (pl.plid>'-1') ";
-}
-//End PLID-choosing SQL
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
 
-//Make sure user has permission
-if (!userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    if (request.getParameter("accountid")!=null && reger.core.Util.isinteger(request.getParameter("accountid"))){
-        Account tmpAcct = reger.cache.AccountCache.get(Integer.parseInt(request.getParameter("accountid")));
-        if (tmpAcct.getPlid()!=userSession.getPl().getPlid()){
-            response.sendRedirect("accounts.log");
-            return;
-        }
+//This account must be in the pl that's being managed
+//to protect permission and privacy
+if (request.getParameter("accountid")!=null && reger.core.Util.isinteger(request.getParameter("accountid"))){
+    Account tmpAcct = reger.cache.AccountCache.get(Integer.parseInt(request.getParameter("accountid")));
+    if (tmpAcct.getPlid()!=pl.getPlid()){
+        response.sendRedirect("accounts.log&plid="+plid);
+        return;
     }
+} else {
+    response.sendRedirect("accounts.log?plid="+plid);
+    return;
 }
-//End make sure user has permission
-
-
-
 
 
 //Start edit
@@ -222,6 +217,7 @@ if (rstAcct!=null && rstAcct.length>0){
     }
     mb.append("<form action=accountdetail.log method=post>");
     mb.append("<input type=hidden name=action value=editaccount>");
+    mb.append("<input type=hidden name=plid value="+plid+">");
     mb.append("<input type=hidden name=accountid value=\""+reger.core.Util.cleanForHtml(request.getParameter("accountid"))+"\">");
     mb.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
     mb.append("<tr>");
@@ -332,7 +328,7 @@ if (rstAcct!=null && rstAcct.length>0){
     } else {
         mb.append("Never");
     }
-    mb.append("<br><a href='accountdetail.log?accountid="+rstAcct[0][0]+"&action=dobilling'>Update Billing Now</a>");
+    mb.append("<br><a href='accountdetail.log?accountid="+rstAcct[0][0]+"&action=dobilling&plid="+plid+"'>Update Billing Now</a>");
     mb.append("</td>");
     mb.append("</tr>");
 
@@ -372,7 +368,7 @@ if (rstAcct!=null && rstAcct.length>0){
         for(int i=0; i<rstUsers.length; i++){
             mb.append("<tr>");
             mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][7]+"</td>");
-            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct><a href='accountuserdetail.log?accountuserid="+rstUsers[i][0]+"'>"+rstUsers[i][8]+" </a></td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct><a href='accountuserdetail.log?accountuserid="+rstUsers[i][0]+"&plid="+plid+"'>"+rstUsers[i][8]+" </a></td>");
             mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][2]+"</td>");
             mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][0]+"</td>");
             mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][1]+"</td>");

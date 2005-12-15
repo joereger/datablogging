@@ -14,7 +14,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.navButtonName = "plentryapproval";
 pageProps.title = "Entry Approval - Detail";
 pageProps.isPasswordProtected = true;
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 pageProps.isLogidRequired=true;
 pageProps.isEventidRequired=true;
@@ -29,17 +30,16 @@ pageProps.isEventidRequired=true;
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
+
 //Instantiate the entry object
 pageProps.entry.populate(pageProps.logProps.logid, request, userSession.getAccountuser().getUsertimezoneid());
 
 
-//Start PLID-choosing SQL
-String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
-    plidSql = " (pl.plid>'-1') ";
-}
-//End PLID-choosing SQL
+
 
 //Start make sure this user can view this eventid
 //-----------------------------------
@@ -105,6 +105,7 @@ mb.append("<td>");
 
 mb.append("<form action=entryapproval-viewentry.log method=post>");
 mb.append("<input type=hidden name='action' value='approve'>");
+mb.append("<input type=hidden name='plid' value='"+plid+"'>");
 mb.append("<input type=hidden name='returnto' value=\""+request.getParameter("returnto")+"\">");
 mb.append("<input type=hidden name='eventid' value='"+pageProps.entry.eventid+"'>");
 mb.append("<input type=submit value=\"Approve\">");
@@ -115,6 +116,7 @@ mb.append("<td>");
 
 mb.append("<form action=entryapproval-viewentry.log method=post>");
 mb.append("<input type=hidden name='action' value='decline'>");
+mb.append("<input type=hidden name='plid' value='"+plid+"'>");
 mb.append("<input type=hidden name='returnto' value=\""+request.getParameter("returnto")+"\">");
 mb.append("<input type=hidden name='eventid' value='"+pageProps.entry.eventid+"'>");
 mb.append("<input type=submit value=\"Decline\">");

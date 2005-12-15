@@ -1,0 +1,266 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "personal use";
+pageProps.navButtonName = "aboutdatablogging-people";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+mb.append("<font face=arial size=-2 color=#333333>");
+mb.append("People use datablogging just like they use any blog software... to publish journal entries (or keep them private)... to share photos... to podcast... to network with friends and family.  But the exciting part of datablogging is the data that can be collected with each entry.  And who defines the type of data that's collected?  You do!  With drag-and-drop ease you can add data fields to your blog entries and then later build graphs and saved searches using that data.  No matter what you're interested in, there's data to track.");
+mb.append("</font>");
+
+mb.append("<br><br><b>A few (of the thousands of) ways that people are using datablogging:</b>");
+mb.append("<ul>");
+mb.append("<li><a href='#ronny'>Ronny the Runner</a></li>");
+mb.append("<li><a href='#molly'>Molly the Moviegoer</a></li>");
+mb.append("<li><a href='#frank'>Fat Frank the Weightwatcher</a></li>");
+mb.append("<li><a href='#you'>You, datablogger</a> - Yes, you're a datablogger!</li>");
+mb.append("</ul>");
+
+
+mb.append("<a name='ronny'>");
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+mb.append("<img src='images/people-ronny.gif' align=right>");
+mb.append("<font face=arial size=+3 color=#cccccc>Ronny the Runner</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2 color=#333333>");
+mb.append("Ronny is a runner, as his name implies.  He uses datablogging to keep track of his runs.  After each run he logs in to his datablog and records how far he went.  Over time he can see trends, chart progress and get a sense of what his performance is.");
+mb.append("</font>");
+mb.append("<br clear=all><br>");
+mb.append("<table cellpadding=10 cellspacing=2 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top nowrap>");
+mb.append("<font face=arial size=+1 color=#cccccc>");
+mb.append("<b>");
+mb.append("Ronny's data:");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<b>");
+mb.append("<ul>");
+mb.append("<li>Run Distance</li>");
+mb.append("<li>Run Time</li>");
+mb.append("<li>Terrain</li>");
+mb.append("<li>Shoes Worn</li>");
+mb.append("<li>Exertion Level</li>");
+mb.append("</ul>");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=+1 color=#cccccc>");
+mb.append("<b>");
+mb.append("Ronny's favorite graphs:");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<br>");
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("peopleusegraph-rundistance.png", "left", "", ""));
+mb.append("<b>Weekly Run Distance</b><br>Gives him a sense of whether this is a good week or a rough one.");
+mb.append("<br clear=all><br>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("peopleusegraph-shoedistance.png", "left", "", ""));
+mb.append("<b>Miles per Shoe</b><br>Ronny knows that the foam in running shoes wears out between 300 and 500 miles.  He keeps tabs on all of his shoes to make sure he doesn't run too far on any one pair and damage his knees.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+
+
+
+
+mb.append("<a name='frank'>");
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+mb.append("<img src='images/people-frank.gif' align=left>");
+mb.append("<font face=arial size=+3 color=#cccccc>Fat Frank the Weightwatcher</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2 color=#333333>");
+mb.append("Frank is fat.  Not phat... fat.  He wants to lose some weight so he decides to use datablogging to keep track of his daily weigh-ins.  His data needs are fairly simple, but they have a fundamental effect on his life.");
+mb.append("</font>");
+mb.append("<br clear=all><br>");
+mb.append("<table cellpadding=10 cellspacing=2 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top nowrap>");
+mb.append("<font face=arial size=+1 color=#cccccc>");
+mb.append("<b>");
+mb.append("Frank's data:");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<b>");
+mb.append("<ul>");
+mb.append("<li>Weight</li>");
+mb.append("</ul>");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=+1 color=#cccccc>");
+mb.append("<b>");
+mb.append("Frank's favorite graphs:");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<br>");
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("peopleusegraph-bodyweight.png", "left", "", ""));
+mb.append("<b>Weight vs. Time</b><br>A simple body weight chart tells Frank where he's at.  That's all he needs to stay motivated.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+
+
+
+
+
+
+mb.append("<a name='molly'>");
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+mb.append("<img src='images/people-molly.gif' align=right>");
+mb.append("<font face=arial size=+3 color=#cccccc>Molly the Moviegoer</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2 color=#333333>");
+mb.append("Molly loves movies.  She always knows what's out at theatres each weekend.  She usually sees one or two new releases on the weekend.  During the week she rents DVDs and watches them.  Molly loves sharing her moviegoing experiences.  Whenever you talk to her, movies will come up.  Molly uses datablogging to keep track of her vast viewing history and share it with others.  She rates movies on various axes.  Her friends have learned to trust her feedback and this has led to increased readership of her blog.");
+mb.append("</font>");
+mb.append("<br clear=all><br>");
+mb.append("<table cellpadding=10 cellspacing=2 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top nowrap>");
+mb.append("<font face=arial size=+1 color=#cccccc>");
+mb.append("<b>");
+mb.append("Molly's data:");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<b>");
+mb.append("<ul>");
+mb.append("<li>Movie Title</li>");
+mb.append("<li>Director</li>");
+mb.append("<li>Genre</li>");
+mb.append("<li>Overall Ranking</li>");
+mb.append("<li>Plot Quality</li>");
+mb.append("<li>Leading Actor Rating</li>");
+mb.append("</ul>");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=+1 color=#cccccc>");
+mb.append("<b>");
+mb.append("Molly's favorite graphs:");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<br>");
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("peopleusegraph-directorrating.png", "left", "", ""));
+mb.append("<b>Director vs. Overall Ranking</b><br>Gives Molly a quantifiable sense of who her favorite directors are.");
+mb.append("<br clear=all><br>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("peopleusegraph-genre.png", "left", "", ""));
+mb.append("<b>Genre vs. Overall Ranking</b><br>Molly can see which genre of movie she ranks highest in overall quality... drama, comedy... or maybe horror!");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+
+mb.append("<a name='you'>");
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+mb.append("<img src='images/people-you.gif' align=left>");
+mb.append("<font face=arial size=+3 color=#cccccc>You, datablogger</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2 color=#333333>");
+mb.append("Yes, you!  With datablogging you can define your own set of data and your own graphs.  You can track anything.  But what to track?");
+mb.append("<br><br>You've got hobbies... interests... things you do.  Think about those things.  What sort of data relates to those things?  Do you keep a paper log book for anything?  No matter what sort of data's involved, you can create a custom datablog with drag-and-drop ease... no programming.");
+mb.append("<br><br>Of course, we've got quite a few pre-built datablog types for you to choose from.  And you can see datablog types that other users have chosen to share with the community.");
+mb.append("<br><br>Within each blog site you can track as many different things as you like... running logs and swimming logs... movie logs and restaurant logs... you name it.");
+mb.append("</font>");
+mb.append("<br clear=all><br>");
+mb.append("<table cellpadding=10 cellspacing=2 border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top nowrap>");
+mb.append("<font face=arial size=+1 color=#cccccc>");
+mb.append("<b>");
+mb.append("Your data:");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<b>");
+mb.append("<ul>");
+mb.append("<li>Anything you like!</li>");
+mb.append("</ul>");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=+1 color=#cccccc>");
+mb.append("<b>");
+mb.append("Your favorite graphs:");
+mb.append("</b>");
+mb.append("</font>");
+mb.append("<font face=arial size=-1 color=#333333>");
+mb.append("<br>");
+mb.append("<br clear=all>");
+mb.append(reger.marketingSite.TourHtml.screenShotBizWithDescription("peopleusegraph-customgraph.png", "left", "", ""));
+mb.append("<b>You Build Custom Graphs</b><br>It's easy for you to build and save your own custom graphs so that you can get the most out of the data that you collect with datablogging.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+mb.append("<ul>");
+mb.append("<li><a href='signup2.log'><font face=arial size=+1>Start datablogging now!</font></a>");
+mb.append("<li><a href='tour.log'><font face=arial size=+1>Screencast tours.</font></a>");
+mb.append("</ul>");
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

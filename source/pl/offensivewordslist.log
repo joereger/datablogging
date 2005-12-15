@@ -13,7 +13,8 @@ pageProps.siteSection=pageProps.PLADMINSITE;
 pageProps.navButtonName = "ploffensivewords";
 pageProps.title = "Offensive Words List";
 pageProps.isPasswordProtected = true;
-pageProps.aclObjectName = "PLADMIN";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
 pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 %>
@@ -26,35 +27,24 @@ pageProps.pathToAppRoot="../";
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-//Start PLID-choosing SQL
-String plidSql = " (pl.plid='"+userSession.getPl().getPlid()+"') ";
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //Essentially this is saying that if you can do masteradmin stuff then you can view all PLs
-    plidSql = " (pl.plid>'-1') ";
-}
-//End PLID-choosing SQL
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
 
 
 //Do work of adding
 if (pageProps.action.equals("addword")){
-    int plid = -1;
-    if (request.getParameter("plid")!=null && reger.core.Util.isinteger(request.getParameter("plid"))){
-        plid = Integer.parseInt(request.getParameter("plid"));
-    }
     String word = "";
     if (request.getParameter("word")!=null && !request.getParameter("word").equals("")){
         word = request.getParameter("word");
     }
     //Validate incoming data
     if (!word.equals("") && plid>0){
-        //Make sure the user has permission to work with this plid
-        if (userSession.getPl().getPlid()==plid || userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-            //-----------------------------------
-            //-----------------------------------
-            int identity = Db.RunSQLInsert("INSERT INTO offensivecontentpl(content, plid) VALUES('"+reger.core.Util.cleanForSQL(word)+"', '"+plid+"')");
-            //-----------------------------------
-            //-----------------------------------
-        }
+        //-----------------------------------
+        //-----------------------------------
+        int identity = Db.RunSQLInsert("INSERT INTO offensivecontentpl(content, plid) VALUES('"+reger.core.Util.cleanForSQL(word)+"', '"+plid+"')");
+        //-----------------------------------
+        //-----------------------------------
     }
 }
 
@@ -65,25 +55,22 @@ if (pageProps.action.equals("deleteword")){
         offensivecontentplid = Integer.parseInt(request.getParameter("offensivecontentplid"));
     }
     //Need to go to the database to make sure we have an acceptable plid for this user to edit
-    int plid = -1;
+    int plidTmp = -1;
     //-----------------------------------
     //-----------------------------------
     String[][] rstCheckPl= Db.RunSQL("SELECT plid FROM offensivecontentpl WHERE offensivecontentplid='"+offensivecontentplid+"'");
     //-----------------------------------
     //-----------------------------------
     if (rstCheckPl!=null && rstCheckPl.length>0){
-        plid = Integer.parseInt(rstCheckPl[0][0]);
+        plidTmp = Integer.parseInt(rstCheckPl[0][0]);
     }
-    //Validate incoming data
-    if (offensivecontentplid>0 && plid>0){
-        //Make sure the user has permission to work with this plid
-        if (userSession.getPl().getPlid()==plid || userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-            //-----------------------------------
-            //-----------------------------------
-            int identity = Db.RunSQLInsert("DELETE FROM offensivecontentpl WHERE offensivecontentplid='"+offensivecontentplid+"'");
-            //-----------------------------------
-            //-----------------------------------
-        }
+    //Validate incoming data, make sure we're working with an offensive word from this pl
+    if (offensivecontentplid>0 && plidTmp==plid){
+        //-----------------------------------
+        //-----------------------------------
+        int identity = Db.RunSQLInsert("DELETE FROM offensivecontentpl WHERE offensivecontentplid='"+offensivecontentplid+"'");
+        //-----------------------------------
+        //-----------------------------------
     }
 }
 
@@ -93,25 +80,10 @@ mb.append("<!-- Start List -->");
 mb.append(reger.ui.BubbleBox.start("Add a New Offensive Word or Phrase", pageProps.pathToAppRoot));
 mb.append("<form action=offensivewordslist.log method=post>");
 mb.append("<input type=hidden name=action value='addword'>");
+mb.append("<input type=hidden name=plid value='"+plid+"'>");
 mb.append("<table cellpadding=3 cellspacing=0 border=0>");
 mb.append("<tr>");
 mb.append("<td valign=top>");
-mb.append("<select name=plid>");
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
-    //-----------------------------------
-    //-----------------------------------
-    String[][] rstPl= Db.RunSQL("SELECT plid, plname FROM pl ORDER BY plname ASC");
-    //-----------------------------------
-    //-----------------------------------
-    if (rstPl!=null && rstPl.length>0){
-    	for(int i=0; i<rstPl.length; i++){
-    	    mb.append("<option value='"+rstPl[i][0]+"'>"+rstPl[i][1]+"</option>");
-    	}
-    }
-} else {
-    mb.append("<option value='"+userSession.getPl().getPlid()+"'>"+userSession.getPl().getPlname()+"</option>");
-}
-mb.append("</select>");
 mb.append("</td>");
 mb.append("<td valign=top>");
 mb.append("<input type=text name=word value=''>");
@@ -162,7 +134,7 @@ if (rstApprovals!=null && rstApprovals.length>0){
         mb.append("</td>");
         mb.append("<td bgcolor=#ffffff valign=top align=left>");
         mb.append("<font face=arial size=-2>");
-        mb.append("<a href='offensivewordslist.log?action=deleteword&offensivecontentplid="+rstApprovals[i][0]+"'>");
+        mb.append("<a href='offensivewordslist.log?action=deleteword&offensivecontentplid="+rstApprovals[i][0]+"&plid="+plid+"'>");
         mb.append("Delete");
         mb.append("</a>");
         mb.append("</font>");
