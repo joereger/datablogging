@@ -77,7 +77,7 @@ if (navItem==null){
 
 
     reger.nestednav.NestedNavDisplayLayoutManagerMoveTo navMgrDisplay = new reger.nestednav.NestedNavDisplayLayoutManagerMoveTo();
-    mb.append(navMgrDisplay.outputNavBarHtml(userSession, request));
+    mb.append(navMgrDisplay.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request));
 
 
     mb.append("<br>");

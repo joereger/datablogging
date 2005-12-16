@@ -1,0 +1,55 @@
+<%@ page import="reger.template.MarketingHpTemplateProcessor"%>
+<%@ page import="reger.plcontentmanagement.PlContentPage"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "";
+pageProps.navButtonName = "aboutplcontentpage";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+//We must start with a plid
+int plcontentpageid = 0;
+if (reger.core.Util.isinteger(request.getParameter("plcontentpageid"))){
+    plcontentpageid = Integer.parseInt(request.getParameter("plcontentpageid"));
+}
+
+//Load the plContentPage
+PlContentPage plContentPage = new PlContentPage(plcontentpageid);
+String bodyToTreatAsTemplate = plContentPage.getContent();
+pageProps.title = plContentPage.getName();
+
+//Send it through the marketingHpTemplateProcessor
+mb.append(reger.template.MarketingHpTemplateProcessor.getHtml(userSession, request, pageProps, bodyToTreatAsTemplate));
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

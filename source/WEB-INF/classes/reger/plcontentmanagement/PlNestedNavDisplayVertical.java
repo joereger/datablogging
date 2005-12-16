@@ -12,7 +12,7 @@ import reger.core.Debug;
  */
 public class PlNestedNavDisplayVertical implements NestedNavDisplay {
 
-    public String outputNavBarHtml(UserSession userSession, javax.servlet.http.HttpServletRequest request){
+    public String outputNavBarHtml(NestedNavCollection nestedNavCollection, UserSession userSession, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
         //Start the table
@@ -21,7 +21,7 @@ public class PlNestedNavDisplayVertical implements NestedNavDisplay {
 
 
         //Do the nested items
-        mb.append(outputItemHtml(new NestedNavItemBase(), userSession.getPl().getNestedNavCollection(), 0, userSession, request));
+        mb.append(outputItemHtml(new NestedNavItemBase(), nestedNavCollection, 0, userSession, request));
 
 
 
@@ -42,6 +42,7 @@ public class PlNestedNavDisplayVertical implements NestedNavDisplay {
         if (navItem.isActive(request)){
             isOnText = "on";
         }
+        isOnText = "off";
 
         String nestingNbsp = "";
         for(int i=2; i<=currentNestedLevel; i++){
@@ -86,54 +87,6 @@ public class PlNestedNavDisplayVertical implements NestedNavDisplay {
         return mb.toString();
     }
 
-    private String homeTab(UserSession userSession, javax.servlet.http.HttpServletRequest request){
-        StringBuffer mb = new StringBuffer();
 
-        String isOnText = "off";
-        if (reger.core.Util.getJspName(request.getRequestURI()).equals("index.log")){
-            isOnText = "on";
-        }
-
-        if (userSession.getAccount().getShowhometab()){
-            String hometabtext = userSession.getAccount().getHometabtext();
-            if (hometabtext.equals("")){
-                hometabtext="Home";
-            }
-            mb.append("<!-- Begin Tab -->");
-            mb.append("<tr>");
-            mb.append("<td class=navcell"+ isOnText +" align=left valign=top>");
-            mb.append("<a class=navfont" + isOnText + " href='index.log'>" + hometabtext + "</a>");
-            mb.append("</td>");
-            mb.append("</tr>");
-            mb.append("<!-- End Tab -->");
-        }
-
-        return mb.toString();
-    }
-
-    private String loginTab(UserSession userSession, javax.servlet.http.HttpServletRequest request){
-        StringBuffer mb = new StringBuffer();
-
-        String isOnText = "off";
-        if (reger.core.Util.getJspName(request.getRequestURI()).equals("login.log")){
-            isOnText = "on";
-        }
-
-        if (userSession.getAccount().getShowlogintab()){
-            mb.append("<!-- Begin Tab -->");
-            mb.append("<tr>");
-            mb.append("<td class=navcell"+ isOnText +" align=left valign=top>");
-            if (userSession.getAccountuser().getIsLoggedIn()){
-                mb.append("<a class=navfont" + isOnText + " href='login.log?action=logout'>Logout</a>");
-            } else {
-                mb.append("<a class=navfont" + isOnText + " href='login.log'>Login</a>");
-            }
-            mb.append("</td>");
-            mb.append("</tr>");
-            mb.append("<!-- End Tab -->");
-        }
-
-        return mb.toString();
-    }
 
 }

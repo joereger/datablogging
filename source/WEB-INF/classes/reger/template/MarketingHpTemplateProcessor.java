@@ -36,14 +36,13 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
     * tRex is the template engine.  It's robust but fast... like tRex.
     * This version of tRex builds events from templates.
     */
-    public static StringBuffer getHtml(reger.UserSession userSession, javax.servlet.http.HttpServletRequest request, PageProps pageProps){
-        String template = "";
+    public static StringBuffer getHtml(reger.UserSession userSession, javax.servlet.http.HttpServletRequest request, PageProps pageProps, String template){
 
         //Get the template
-        Template tmpl = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(userSession.getPl().getMarketingsitehptemplateid(), Template.TEMPLATETYPEMARKETINGHOMEPAGE);
-        if (tmpl!=null){
-            template = tmpl.getTemplate();
-        }
+        //Template tmpl = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(userSession.getPl().getMarketingsitehptemplateid(), Template.TEMPLATETYPEMARKETINGHOMEPAGE);
+        //if (tmpl!=null){
+            //template = tmpl.getTemplate();
+        //}
 
 
         //Make sure we have a template

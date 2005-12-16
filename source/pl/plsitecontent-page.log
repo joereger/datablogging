@@ -1,0 +1,159 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.template.Template,
+                 reger.PrivateLabel,
+                 reger.core.db.Db" %>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.InfoBox"%>
+<%@ page import="reger.plcontentmanagement.PlContentPage"%>
+<%@ page import="reger.template.TemplateTag"%>
+<%@ page import="reger.template.MarketingHpTemplateProcessor"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "plsitecontent";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
+
+
+PlContentPage contentPage = new PlContentPage();
+if (request.getParameter("plcontentpageid")!=null && reger.core.Util.isinteger(request.getParameter("plcontentpageid"))){
+    contentPage = new PlContentPage(Integer.parseInt(request.getParameter("plcontentpageid")));
+}
+
+
+if (pageProps.action.equals("save")){
+    //Name
+    if (request.getParameter("name")!=null && !request.getParameter("name").equals("")){
+        contentPage.setName(request.getParameter("name"));
+    } else {
+        contentPage.setName("");
+    }
+
+    //Content
+    if (request.getParameter("content")!=null && !request.getParameter("content").equals("")){
+        contentPage.setContent(request.getParameter("content"));
+    } else {
+        contentPage.setContent("");
+    }
+
+    //Accountid
+    contentPage.setPlid(plid);
+
+    //Do the save
+    contentPage.save();
+
+    //PL Refresh;
+    pl.refresh();
+
+    //Success
+    //mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "The static content page has been saved."));
+    response.sendRedirect("plsitecontent.log?plid="+plid);
+    return;
+}
+
+
+
+
+mb.append("<form action=plsitecontent-page.log method=post>");
+mb.append("<input type=hidden name=action value=save>");
+mb.append("<input type=hidden name=plid value="+plid+">");
+mb.append("<input type=hidden name=plcontentpageid value="+contentPage.getPlcontentpageid()+">");
+
+mb.append("<table cellpadding=10 cellspacing=0 width=100% border=0>");
+
+mb.append("<tr>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=-1><b>");
+mb.append("Content Page Name:");
+mb.append("</b></font>");
+mb.append("<br>");
+mb.append("<input type=text name=name size=25 maxlength='50' value=\""+reger.core.Util.cleanForHtml(contentPage.getName())+"\"");
+mb.append("<input type=submit value='Save the Page'>");
+mb.append("<br><br>");
+mb.append("<font face=arial size=-1><b>");
+mb.append("Page Content:");
+mb.append("</b></font>");
+mb.append("<br>");
+mb.append("<textarea name=content cols=45 rows=75 style=\"width: 100%;\">"+contentPage.getContent()+"</textarea>");
+mb.append("</td>");
+
+
+
+
+mb.append("<td valign=top width=30% >");
+mb.append("<div class=greybox>");
+mb.append("<font face=arial size=-1>");
+
+//Display the tags available
+MarketingHpTemplateProcessor proc = new MarketingHpTemplateProcessor();
+TemplateTag[] tags = proc.getTagsThisProcessorCanHandle();
+for (int i = 0; i < tags.length; i++) {
+    mb.append("<font face=arial size=-1>");
+    mb.append("<b>");
+    mb.append("<$"+tags[i].getSyntax()+"$>");
+    mb.append("</b>");
+    mb.append("</font>");
+    mb.append("<br>");
+    if (tags[i].isRequired()){
+        mb.append("<font face=arial size=-1 color=#ff0000>");
+        mb.append("<b>");
+        mb.append("Required");
+        mb.append("</b>");
+        mb.append("</font>");
+        mb.append("<br>");
+    }
+    mb.append("<font face=arial size=-2>");
+    mb.append(tags[i].getDescription());
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<br>");
+}
+
+
+
+mb.append("</font>");
+mb.append("</div>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("</table>");
+mb.append("</form>");
+
+
+mb.append("<br><br><br><br><br>");
+
+
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>

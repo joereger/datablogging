@@ -1,0 +1,69 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.template.Template,
+                 reger.PrivateLabel,
+                 reger.core.db.Db" %>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.InfoBox"%>
+<%@ page import="reger.nestednav.NestedNavItem"%>
+<%@ page import="reger.nestednav.NestedNavCollection"%>
+<%@ page import="reger.plcontentmanagement.PlContentPage"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "plsitecontent";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
+
+
+if (request.getParameter("plcontentpageid")!=null && Util.isinteger(request.getParameter("plcontentpageid"))){
+    PlContentPage plContentPage = new PlContentPage(Integer.parseInt(request.getParameter("plcontentpageid")));
+    if (plContentPage !=null){
+            if (pageProps.action.equals("deletestart")){
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Are you sure you want to delete the content page called \""+plContentPage.getName()+"\"?<br><a href='plsitecontent-delete.log?action=deletefinish&plcontentpageid="+plContentPage.getPlcontentpageid()+"&plid="+plid+"'>Yes, Delete It</a> &nbsp;&nbsp;&nbsp;<a href='plsitecontent.log?plid="+plid+"'>No.</a>"));
+            } else if (pageProps.action.equals("deletefinish")){
+                plContentPage.delete();
+                pl.refresh();
+                response.sendRedirect("plsitecontent.log?plid="+plid);
+                return;
+            } else {
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, improper action found."));
+            }
+    }
+
+} else {
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, that content page wasn't found."));
+}
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>

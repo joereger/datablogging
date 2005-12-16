@@ -41,12 +41,11 @@ public class SiteTemplateTagNavbarHorizontal implements SiteTemplateTag{
      * @param sc
      * @param pageProps
      * @param userSession
-     * @return
      */
     public String getValue(StringBuffer mb, StringBuffer sc, PageProps pageProps, UserSession userSession, javax.servlet.http.HttpServletRequest request) {
         //return reger.navBars.generateNavbar(0, userSession.getAccountuser(), userSession.getAccount().getAccountid(), pageProps.logProps.logid, userSession.getAccount().getShowhometab(), userSession.getAccount().getHometabtext(), userSession.getAccount().getShowlogintab(), request.getRequestURI()).toString();
         reger.nestednav.NestedNavDisplayHorizontal horiz = new reger.nestednav.NestedNavDisplayHorizontal();
-        return horiz.outputNavBarHtml(userSession, request);
+        return horiz.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request);
     }
 
 

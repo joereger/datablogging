@@ -9,7 +9,7 @@ import reger.core.Debug;
 public class NestedNavDisplayHorizontal implements NestedNavDisplay{
 
 
-    public String outputNavBarHtml(UserSession userSession, javax.servlet.http.HttpServletRequest request){
+    public String outputNavBarHtml(NestedNavCollection nestedNavCollection, UserSession userSession, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
         //Start

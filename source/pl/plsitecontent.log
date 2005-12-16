@@ -1,0 +1,108 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.template.Template,
+                 reger.PrivateLabel,
+                 reger.core.db.Db" %>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.InfoBox"%>
+<%@ page import="reger.nestednav.NestedNavItem"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "plsitecontent";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
+
+//We must start with a nestednavid
+int nestednavid = 0;
+if (reger.core.Util.isinteger(request.getParameter("nestednavid"))){
+    nestednavid = Integer.parseInt(request.getParameter("nestednavid"));
+}
+
+
+if (pageProps.action.equals("hide")){
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstPlCont= Db.RunSQL("SELECT plnavhideid FROM plnavhide WHERE plid='"+plid +"' AND nestednavid='"+nestednavid+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstPlCont!=null && rstPlCont.length>0){
+        //Already hidden
+    } else {
+        //-----------------------------------
+        //-----------------------------------
+        int id = Db.RunSQLInsert("INSERT INTO plnavhide(plid, nestednavid) VALUES('"+plid+"', '"+nestednavid+"')");
+        //-----------------------------------
+        //-----------------------------------
+    }
+
+    pl.refresh();
+}
+
+
+if (pageProps.action.equals("show")){
+
+    //-----------------------------------
+    //-----------------------------------
+    int id = Db.RunSQLInsert("DELETE FROM plnavhide WHERE plid='"+plid+"' AND nestednavid='"+nestednavid+"'");
+    //-----------------------------------
+    //-----------------------------------
+
+    pl.refresh();
+}
+
+if (pageProps.action.equals("showall")){
+
+    //-----------------------------------
+    //-----------------------------------
+    int id = Db.RunSQLInsert("DELETE FROM plnavhide WHERE plid='"+plid+"'");
+    //-----------------------------------
+    //-----------------------------------
+
+    pl.refresh();
+}
+
+
+
+
+mb.append("<br><br>");
+
+reger.plcontentmanagement.PlNestedNavDisplayLayoutManager navMgrDisplay = new reger.plcontentmanagement.PlNestedNavDisplayLayoutManager();
+mb.append(navMgrDisplay.outputNavBarHtml(pl.getNestedNavCollection(), userSession, request));
+
+mb.append("<br><br><br><br><br>");
+
+
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>

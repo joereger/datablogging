@@ -1,0 +1,106 @@
+
+<%@ page import="java.util.*,
+                 reger.core.Util,
+                 reger.template.Template,
+                 reger.PrivateLabel,
+                 reger.core.db.Db" %>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.InfoBox"%>
+<%@ page import="reger.nestednav.NestedNavItem"%>
+<%@ page import="reger.nestednav.NestedNavCollection"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PLADMINSITE;
+pageProps.title = "";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "plsitecontent";
+//Note: see pladminheader.jsp for explanation on why aclObjectName="ADMINHOME" and not "PLADMIN"
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+<%@ include file="pladminheader.jsp" %>
+<%
+
+
+//Create the log object
+NestedNavItem navItem = reger.nestednav.NestedNavItemFactory.getItem(Integer.parseInt(request.getParameter("nestednavtype")), Integer.parseInt(request.getParameter("nestednavid")));
+
+//Do the work
+if (pageProps.action.equals("movefinish")){
+    NestedNavCollection navCollection = pl.getNestedNavCollection();
+    navCollection.moveItem(Integer.parseInt(request.getParameter("nestednavtype")), Integer.parseInt(request.getParameter("nestednavid")), Integer.parseInt(request.getParameter("parenttype")), Integer.parseInt(request.getParameter("parentid")), Integer.parseInt(request.getParameter("order")));
+    pl.refresh();
+    response.sendRedirect("plsitecontent.log?plid="+plid);
+    return;
+}
+
+if (pageProps.action.equals("resetlayout")){
+    NestedNavCollection navCollection = pl.getNestedNavCollection();
+    navCollection.resetEntireLayout();
+    pl.refresh();
+}
+
+
+
+
+
+
+//Display the screen
+if (navItem==null){
+
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry.  Item not found."));
+
+} else {
+
+    mb.append("<div class=greybox>");
+    mb.append("<font face=arial size=+1>");
+    mb.append("Where would you like to move \""+navItem.getNestedNavLinkText()+"\"?");
+    mb.append("</font>");
+    mb.append("</div>");
+    mb.append("<br>");
+
+
+    reger.plcontentmanagement.PlNestedNavDisplayLayoutManagerMoveTo navMgrDisplay = new reger.plcontentmanagement.PlNestedNavDisplayLayoutManagerMoveTo();
+    mb.append(navMgrDisplay.outputNavBarHtml(pl.getNestedNavCollection(), userSession, request));
+
+
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2>");
+    mb.append("<a href='plsitecontent-move.log?action=resetlayout'>");
+    mb.append("Flatten/Fix/Reset Layout (Caution, Permanent)");
+    mb.append("</a>");
+    mb.append("</font>");
+
+}
+
+
+
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+
+<%@ include file="../globalfooter.jsp" %>

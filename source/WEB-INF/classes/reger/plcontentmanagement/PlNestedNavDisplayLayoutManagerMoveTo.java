@@ -1,17 +1,27 @@
-package reger.nestednav;
+package reger.plcontentmanagement;
 
 import reger.UserSession;
+import reger.nestednav.NestedNavDisplay;
+import reger.nestednav.NestedNavItemBase;
+import reger.nestednav.NestedNavItem;
+import reger.nestednav.NestedNavCollection;
 import reger.core.Debug;
 
 /**
  * Creates the screen to manage nav item layout
  */
-public class NestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay{
+public class PlNestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay {
 
     private String cellbgcolor="#ffffff";
 
     public String outputNavBarHtml(NestedNavCollection nestedNavCollection, UserSession userSession, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
+
+        //We must start with a plid
+        int plid = 0;
+        if (reger.core.Util.isinteger(request.getParameter("plid"))){
+            plid = Integer.parseInt(request.getParameter("plid"));
+        }
 
         Debug.debug(5, "", "NestedNavLayoutManager.java - Navbar start.");
         //mb.append("<!-- Start navigation--><table class=navigation cellpadding=0 cellspacing=0 width=100% border=0>");
@@ -25,7 +35,7 @@ public class NestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay{
 //        mb.append("</font>");
 //        mb.append("</tr>");
 
-        mb.append(outputItemHtml(new NestedNavItemBase(), userSession.getAccount().getNestedNavCollection(), 0, userSession, request));
+        mb.append(outputItemHtml(new NestedNavItemBase(), nestedNavCollection, 0, userSession, request));
 
         mb.append("</table><!-- End navigation -->");
         Debug.debug(5, "", "NestedNavLayoutManager.java - Navbar end.");
@@ -37,6 +47,13 @@ public class NestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay{
         StringBuffer mb = new StringBuffer();
 
         String thisPageName = reger.core.Util.getJspName(request.getRequestURI());
+
+
+        //We must start with a plid
+        int plid = 0;
+        if (reger.core.Util.isinteger(request.getParameter("plid"))){
+            plid = Integer.parseInt(request.getParameter("plid"));
+        }
 
         Debug.debug(5, "", "NestedNavLayoutManager.java - Item output called.");
 
@@ -55,12 +72,7 @@ public class NestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay{
             nestingNbspPlusOne = nestingNbspPlusOne + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         }
 
-        String appendIdToUrl = "";
-        if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPEMEGALOG){
-            appendIdToUrl = "&logid=" + navItem.getThisNestedNavId();
-        } else if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPECONTENTPAGE){
-            appendIdToUrl = "&contentpageid=" + navItem.getThisNestedNavId();
-        }
+
 
 
         //Output this item in html format
@@ -86,7 +98,7 @@ public class NestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay{
                 //Can't move under self
             } else {
                 mb.append("<br>");
-                mb.append(nestingNbspPlusOne+"<img src='../images/clear.gif' width='15' height='1' alt='' border='0'><img src='../about/images/arrow-sm-yellow.gif' width='9' height='9' alt='' border='0'><a href='"+thisPageName+"?action=movefinish&nestednavtype="+request.getParameter("nestednavtype")+"&nestednavid="+request.getParameter("nestednavid")+"&parenttype="+navItem.getThisNestedNavType()+"&parentid="+navItem.getThisNestedNavId()+"&order=1"+appendIdToUrl+"'><font face=arial size=-2><b>Here</b></a>");
+                mb.append(nestingNbspPlusOne+"<img src='../images/clear.gif' width='15' height='1' alt='' border='0'><img src='../about/images/arrow-sm-yellow.gif' width='9' height='9' alt='' border='0'><a href='"+thisPageName+"?action=movefinish&nestednavtype="+request.getParameter("nestednavtype")+"&nestednavid="+request.getParameter("nestednavid")+"&parenttype="+navItem.getThisNestedNavType()+"&parentid="+navItem.getThisNestedNavId()+"&order=1&plid="+plid+"'><font face=arial size=-2><b>Here</b></a>");
             }
             mb.append("</td>");
             mb.append("</tr>");
@@ -119,7 +131,7 @@ public class NestedNavDisplayLayoutManagerMoveTo implements NestedNavDisplay{
             mb.append("<!-- Begin NavItem -->");
             mb.append("<tr>");
             mb.append("<td valign=top align=left bgcolor="+ cellbgcolor +" nowrap>");
-            mb.append(nestingNbsp+"<img src='../about/images/arrow-sm-yellow.gif' width='9' height='9' alt='' border='0'><a href='"+thisPageName+"?action=movefinish&nestednavtype="+request.getParameter("nestednavtype")+"&nestednavid="+request.getParameter("nestednavid")+"&parenttype="+navItem.getNestedNavParentType()+"&parentid="+navItem.getNestedNavParentId()+"&order="+(navItem.getNestedNavOrder()+1)+""+appendIdToUrl+"'><font face=arial size=-2><b>Here</b></a>");
+            mb.append(nestingNbsp+"<img src='../about/images/arrow-sm-yellow.gif' width='9' height='9' alt='' border='0'><a href='"+thisPageName+"?action=movefinish&nestednavtype="+request.getParameter("nestednavtype")+"&nestednavid="+request.getParameter("nestednavid")+"&parenttype="+navItem.getNestedNavParentType()+"&parentid="+navItem.getNestedNavParentId()+"&order="+(navItem.getNestedNavOrder()+1)+"&plid="+plid+"'><font face=arial size=-2><b>Here</b></a>");
             mb.append("</td>");
             mb.append("</tr>");
             mb.append("<!-- End NavItem -->");

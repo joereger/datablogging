@@ -17,7 +17,7 @@ public class NestedNavCollection implements java.io.Serializable {
 
     public NestedNavCollection(NestedNavItem[] allNestedNavItems){
         this.allNestedNavItems = orderNavItems(allNestedNavItems);
-        Debug.debug(5, "", "NestedNavCollection.getChildrenUserCanView() - this.allNestedNavItems.length=" + this.allNestedNavItems.length);
+        Debug.debug(5, "NestedNavCollection", "NestedNavCollection.getChildrenUserCanView() - this.allNestedNavItems.length=" + this.allNestedNavItems.length);
     }
 
     public static NestedNavItem[] getNavItemsUserCanView(NestedNavItem[] inNestedNavItems, Accountuser accountuser){

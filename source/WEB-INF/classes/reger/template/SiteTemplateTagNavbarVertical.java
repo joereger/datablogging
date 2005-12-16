@@ -45,7 +45,7 @@ public class SiteTemplateTagNavbarVertical implements SiteTemplateTag{
     public String getValue(StringBuffer mb, StringBuffer sc, PageProps pageProps, UserSession userSession, javax.servlet.http.HttpServletRequest request) {
         //return reger.navBars.generateNavbar(1, userSession.getAccountuser(), userSession.getAccount().getAccountid(), pageProps.logProps.logid, userSession.getAccount().getShowhometab(), userSession.getAccount().getHometabtext(), userSession.getAccount().getShowlogintab(), request.getRequestURI()).toString();
         reger.nestednav.NestedNavDisplayVertical vert = new reger.nestednav.NestedNavDisplayVertical();
-        return vert.outputNavBarHtml(userSession, request);
+        return vert.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request);
     }
 
 

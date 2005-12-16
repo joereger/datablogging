@@ -144,6 +144,7 @@ public class AllNavButtons {
         //Private Label
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmain", "pl", "MAIN", "pl/index.log", false, "PLADMIN", new String[]{"plid"}));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmanage", "pl", "SETTINGS", "pl/plmanage.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plsitecontent", "pl", "SITE CONTENT", "pl/plsitecontent.log", false, "PLADMIN", new String[]{"plid"}));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pltemplates", "pl", "TEMPLATES", "pl/pltemplates.log", false, "PLADMIN", new String[]{"plid"}));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pleventtype", "pl", "LOG TYPES", "pl/pleventtype.log", false, "PLADMIN", new String[]{"plid"}));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plpeers", "pl", "PEERS", "pl/plpeers.log", false, "PLADMIN", new String[]{"plid"}));

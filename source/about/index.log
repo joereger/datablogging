@@ -1,4 +1,5 @@
 <%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.template.Template"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -23,8 +24,8 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-
-mb.append(reger.template.MarketingHpTemplateProcessor.getHtml(userSession, request, pageProps));
+Template tmpl = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(userSession.getPl().getMarketingsitehptemplateid(), Template.TEMPLATETYPEMARKETINGHOMEPAGE);
+mb.append(reger.template.MarketingHpTemplateProcessor.getHtml(userSession, request, pageProps, tmpl.getTemplate()));
 
 
 //Get any returnurl

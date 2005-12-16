@@ -10,6 +10,6 @@ import reger.UserSession;
  */
 public interface NestedNavDisplay {
 
-    public String outputNavBarHtml(UserSession userSession, javax.servlet.http.HttpServletRequest request);
+    public String outputNavBarHtml(NestedNavCollection nestedNavCollection, UserSession userSession, javax.servlet.http.HttpServletRequest request);
 
 }

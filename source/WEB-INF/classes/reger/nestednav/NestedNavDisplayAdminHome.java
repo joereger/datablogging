@@ -12,7 +12,7 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
 
     private String cellbgcolor="#ffffff";
 
-    public String outputNavBarHtml(UserSession userSession, javax.servlet.http.HttpServletRequest request){
+    public String outputNavBarHtml(NestedNavCollection nestedNavCollection, UserSession userSession, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
         Debug.debug(5, "", "NestedNavDisplayAdminHome.java - Navbar start.");

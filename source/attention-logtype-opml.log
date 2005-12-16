@@ -1,0 +1,114 @@
+<%@ page import="reger.core.Debug"%><%@ page import="org.jdom.Document"%><%@ page import="org.jdom.Element"%><%@ page import="org.jdom.output.XMLOutputter"%><%@ page import="reger.Log"%><%
+//Set the content type.
+response.setContentType("text/xml");
+%><%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPERSSFEED;
+/*----------------------------------------------------*/
+%><%@ include file="globalheader.jsp" %><%
+
+
+
+Document doc = new Document();
+
+//Whole schema doc
+Element opml = new Element("opml");
+opml.setAttribute("version", "1.0");
+doc.addContent(opml);
+
+    //Head
+    Element head = new Element("head");
+    opml.addContent(head);
+
+        //title
+        Element title = new Element("title");
+        title.addContent("attention-logtype-opml.opml");
+        head.addContent(title);
+
+        //date created
+        Element dateCreated = new Element("dateCreated");
+        dateCreated.addContent(reger.core.TimeUtils.nowInGmtString());
+        head.addContent(dateCreated);
+
+        //date modified
+        Element dateModified = new Element("dateModified");
+        dateModified.addContent(reger.core.TimeUtils.nowInGmtString());
+        head.addContent(dateModified);
+
+
+    //body
+    Element body = new Element("body");
+    opml.addContent(body);
+
+        //Iterate on logs
+        int[] allLogids = userSession.getAccount().getAllLogids();
+
+        for (int i = 0; i < allLogids.length; i++) {
+            //Permissions
+            if (userSession.getAccountuser().userCanViewLog(allLogids[i])){
+                //Create Log object
+                Log log = reger.cache.LogCache.get(allLogids[i]);
+                //outline
+                Element outline = new Element("outline");
+                outline.setAttribute("text", log.getName());
+                outline.setAttribute("url", userSession.getAccount().getSiteRootUrl(userSession)+"/"+"logmain"+log.getEventtypeid()+".log");
+                outline.setAttribute("schema", userSession.getAccount().getSiteRootUrl(userSession)+"/"+"logtype-schema-"+log.getEventtypeid()+".xsd");
+                body.addContent(outline);
+            }
+
+        }
+
+
+
+
+
+//Output to the screen
+XMLOutputter outp = new XMLOutputter();
+String output = outp.outputString(doc);
+out.print(output);
+
+
+
+//---------------------------------------------------------------
+//Record traffic.  Use pageProps.trafficType
+boolean isSuperCookieOn = false;
+if (userSession.getAccount()!=null){
+    isSuperCookieOn=reger.core.Util.isSupercookieOn(request, userSession.getAccount().getAccountid());
+}
+//Get logid
+int thisLogid = pageProps.logProps.logid;
+//Accountid
+int tmpAccountid=0;
+if (userSession.getAccount()!=null){
+    tmpAccountid = userSession.getAccount().getAccountid();
+}
+//Bandwidth
+int bandwidth = output.length();
+//Put into cache
+try{
+    reger.TrafficHit trafficHit = new reger.TrafficHit(request, pageProps.logProps.logid, tmpAccountid, pageProps.trafficType, userSession.getPl().getPlid(), userSession.getAccount().getSiteRootUrl(userSession), bandwidth, isSuperCookieOn);
+    reger.cache.TrafficHitCache.addTrafficHit(trafficHit);
+} catch (Exception e){
+    Debug.errorsave(e, "", "globalfooter.jsp");
+}
+//End record traffic
+//----------------------------------------------------------------
+
+%><%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%><%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%><%//@ include file="globalfooter.jsp" %>

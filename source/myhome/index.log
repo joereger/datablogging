@@ -113,7 +113,7 @@ if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl"
 
 //Put up the main table
 reger.nestednav.NestedNavDisplayAdminHome navMgrDisplay = new reger.nestednav.NestedNavDisplayAdminHome();
-mb.append(navMgrDisplay.outputNavBarHtml(userSession, request));
+mb.append(navMgrDisplay.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request));
 
 
 

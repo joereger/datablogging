@@ -43,7 +43,7 @@ public class MarketingSiteTemplateTagNavBar implements MarketingSiteTemplateTag{
     public String getHtml(StringBuffer mb, PageProps pageProps, UserSession userSession, javax.servlet.http.HttpServletRequest request){
 
         PlNestedNavDisplayVertical plNestedNavDisplayVertical = new PlNestedNavDisplayVertical();
-        return plNestedNavDisplayVertical.outputNavBarHtml(userSession, request);
+        return plNestedNavDisplayVertical.outputNavBarHtml(userSession.getPl().getNestedNavCollection(), userSession, request);
 
         //return reger.navbarMarketing.htmlOut(pageProps.marketingSiteSection, userSession.getPl(), pageProps).toString();
 

@@ -19,7 +19,6 @@ public class PlContentPage implements NestedNavItem{
     private int nestednavparenttype=NestedNavItem.NESTEDNAVITEMBASE;
     private int nestednavparentid=0;
     private int nestednavorder=0;
-    private int sizeinbytes = 0;
 
     public PlContentPage(int plcontentpageid){
         this.plcontentpageid = plcontentpageid;
@@ -42,7 +41,7 @@ public class PlContentPage implements NestedNavItem{
     public void load(){
         //-----------------------------------
         //-----------------------------------
-        String[][] rstCp= Db.RunSQL("SELECT plcontentpageid, plid, name, content, nestednavparenttype, nestednavparentid, nestednavorder, sizeinbytes FROM plcontentpage WHERE plcontentpageid='"+this.plcontentpageid +"'");
+        String[][] rstCp= Db.RunSQL("SELECT plcontentpageid, plid, name, content, nestednavparenttype, nestednavparentid, nestednavorder FROM plcontentpage WHERE plcontentpageid='"+this.plcontentpageid +"'");
         //-----------------------------------
         //-----------------------------------
         if (rstCp!=null && rstCp.length>0){
@@ -53,7 +52,6 @@ public class PlContentPage implements NestedNavItem{
                 this.nestednavparenttype=Integer.parseInt(rstCp[i][4]);
                 this.nestednavparentid=Integer.parseInt(rstCp[i][5]);
                 this.nestednavorder=Integer.parseInt(rstCp[i][6]);
-                this.sizeinbytes=Integer.parseInt(rstCp[i][7]);
             }
         }
     }
@@ -72,7 +70,7 @@ public class PlContentPage implements NestedNavItem{
         if (rstPlCont!=null && rstPlCont.length>0){
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE plcontentpage SET plid='"+plid+"', name='"+reger.core.Util.cleanForSQL(name)+"', content='"+reger.core.Util.cleanForSQL(content)+"', nestednavparenttype='"+nestednavparenttype+"', nestednavparentid='"+nestednavparentid+"', nestednavorder='"+nestednavorder+"', sizeinbytes='"+sizeinbytes+"' WHERE plcontentpageid='"+plcontentpageid +"'");
+            int count = Db.RunSQLUpdate("UPDATE plcontentpage SET plid='"+plid+"', name='"+reger.core.Util.cleanForSQL(name)+"', content='"+reger.core.Util.cleanForSQL(content)+"', nestednavparenttype='"+nestednavparenttype+"', nestednavparentid='"+nestednavparentid+"', nestednavorder='"+nestednavorder+"' WHERE plcontentpageid='"+plcontentpageid +"'");
             //-----------------------------------
             //-----------------------------------
         } else {
@@ -83,12 +81,9 @@ public class PlContentPage implements NestedNavItem{
             int currentMaxOrder = reger.nestednav.NestedNavCollection.getMaxOrder(topLevelNavItems);
             this.nestednavorder = currentMaxOrder + 1;
 
-            //Measure the size in bytes
-            this.sizeinbytes = reger.core.Util.sizeInBytes(content);
-
             //-----------------------------------
             //-----------------------------------
-            plcontentpageid = Db.RunSQLInsert("INSERT INTO plcontentpage(plid, name, content, nestednavparenttype, nestednavparentid, nestednavorder, sizeinbytes) VALUES('"+plid+"', '"+reger.core.Util.cleanForSQL(name)+"', '"+reger.core.Util.cleanForSQL(content)+"', '"+nestednavparenttype+"', '"+nestednavparentid+"', '"+nestednavorder+"', '"+sizeinbytes+"')");
+            plcontentpageid = Db.RunSQLInsert("INSERT INTO plcontentpage(plid, name, content, nestednavparenttype, nestednavparentid, nestednavorder) VALUES('"+plid+"', '"+reger.core.Util.cleanForSQL(name)+"', '"+reger.core.Util.cleanForSQL(content)+"', '"+nestednavparenttype+"', '"+nestednavparentid+"', '"+nestednavorder+"')");
             //-----------------------------------
             //-----------------------------------
 
@@ -101,7 +96,7 @@ public class PlContentPage implements NestedNavItem{
     public void delete(){
         //Shift order of nav items appropriately
         PrivateLabel pl = new PrivateLabel(plid);
-        pl.getNestedNavCollection().adjustAfterRemovalOfItem(NESTEDNAVTYPECONTENTPAGE, plcontentpageid);
+        pl.getNestedNavCollection().adjustAfterRemovalOfItem(NESTEDNAVTYPEPLCONTENTPAGE, plcontentpageid);
 
         //Delete the record
         //-----------------------------------
@@ -124,14 +119,14 @@ public class PlContentPage implements NestedNavItem{
      * The url that this item should link to
      */
     public String getNestedNavLinkUrl() {
-        return "plcontentpage"+plcontentpageid +".log";
+        return "plcontentpage.log?plcontentpageid="+plcontentpageid;
     }
 
     /**
      * This type.  Either NestedNavItem.NESTEDNAVTYPEMEGALOG or NestedNavItem.NESTEDNAVTYPECONTENTPAGE
      */
     public int getThisNestedNavType() {
-        return NestedNavItem.NESTEDNAVTYPECONTENTPAGE;
+        return NestedNavItem.NESTEDNAVTYPEPLCONTENTPAGE;
     }
 
     /**
@@ -212,7 +207,7 @@ public class PlContentPage implements NestedNavItem{
      */
     public boolean userCanAdministerNavItem(Accountuser accountUser){
         
-        return false;
+        return true;
     }
 
 
@@ -228,8 +223,8 @@ public class PlContentPage implements NestedNavItem{
         return plid;
     }
 
-    public void setPlid(int accountid) {
-        this.plid = accountid;
+    public void setPlid(int plid) {
+        this.plid = plid;
     }
 
     public String getName() {
@@ -248,9 +243,6 @@ public class PlContentPage implements NestedNavItem{
         this.content = content;
     }
 
-    public int getSizeinbytes() {
-        return sizeinbytes;
-    }
 
 
 }

@@ -281,6 +281,24 @@
         <to>/robots.log</to>
     </rule>
 
+
+
+    <rule>
+        <name>OPML Log Type List</name>
+        <note>OPML formatted list of log types</note>
+        <from>/attention-logtypes.opml(\?)*(.*)</from>
+        <to>/attention-logtype-opml.log?$2</to>
+    </rule>
+
+    <rule>
+        <name>Log Type as schema</name>
+        <note>The schema url.</note>
+        <from>/logtype-schema-([0-9]+).xsd(\?)*(.*)</from>
+        <to>/logtype-as-schema.log?eventtypeid=$1&amp;$3</to>
+    </rule>
+
+
+
     <!--
 
      EXAMPLES

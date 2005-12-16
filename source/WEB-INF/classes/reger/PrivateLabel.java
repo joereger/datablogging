@@ -260,12 +260,12 @@ public class PrivateLabel {
         HashMap hiddenByPl = new HashMap();
         //-----------------------------------
         //-----------------------------------
-        String[][] rstHidden= Db.RunSQL("SELECT pljspidtohide FROM plnavhide WHERE plid='"+plid+"'");
+        String[][] rstHidden= Db.RunSQL("SELECT nestednavid FROM plnavhide WHERE plid='"+plid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstHidden!=null && rstHidden.length>0){
             for(int i=0; i<rstHidden.length; i++){
-                hiddenByPl.put(Integer.parseInt(rstHidden[i][0]), true);
+                hiddenByPl.put(new Integer(Integer.parseInt(rstHidden[i][0])), true);
             }
         }
         //Create a new list of staticJspPages without those that are hidden by the pl
@@ -284,6 +284,7 @@ public class PrivateLabel {
         if (rstPlContPage!=null && rstPlContPage.length>0){
             for(int i=0; i<rstPlContPage.length; i++){
                 PlContentPage plContPage = new PlContentPage(Integer.parseInt(rstPlContPage[i][0]));
+                reger.core.Debug.debug(5, "PrivateLabel.java", "Found a plcontentpageid: "+plContPage.getPlcontentpageid() + " " + plContPage.getName());
                 staticJspPagesMinusHiddenOnes = AddToArray.addToNestedNavItemArray(staticJspPagesMinusHiddenOnes, (NestedNavItem)plContPage);
             }
         }
