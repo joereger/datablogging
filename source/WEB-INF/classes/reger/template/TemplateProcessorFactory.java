@@ -10,12 +10,13 @@ public class TemplateProcessorFactory {
 
 
     public static TemplateProcessor[] getAllProcessors(){
-        TemplateProcessor[] tmp = new TemplateProcessor[5];
+        TemplateProcessor[] tmp = new TemplateProcessor[6];
         tmp[0] = new SiteTemplateProcessor();
         tmp[1] = new EntryListTemplateProcessor();
         tmp[2] = new HpTemplateProcessor();
         tmp[3] = new MarketingHpTemplateProcessor();
         tmp[4] = new MarketingSiteTemplateProcessor();
+        tmp[5] = new PlUserTemplateProcessor();
         return tmp;
     }
 

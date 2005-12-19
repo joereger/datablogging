@@ -202,12 +202,12 @@ public class ImportMovableEntries {
                     Debug.errorsave(error, "ValidationException while storing in database");
                 }
                 eventid = entryDAO.eventid;
-                System.out.println(entry.getTitle());
-                System.out.println(entry.getAuthor());
-                System.out.println(entry.getDate());
-                System.out.println(entry.getPrimaryCategory());
-                System.out.println(entry.getCategory());
-                System.out.println(entry.getBodies());
+//                System.out.println(entry.getTitle());
+//                System.out.println(entry.getAuthor());
+//                System.out.println(entry.getDate());
+//                System.out.println(entry.getPrimaryCategory());
+//                System.out.println(entry.getCategory());
+//                System.out.println(entry.getBodies());
                 list = entry.getComments();
                 iter = list.iterator();
                 while (iter.hasNext()) {

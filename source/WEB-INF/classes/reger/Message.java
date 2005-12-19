@@ -38,9 +38,7 @@ public class Message {
         if (rstMessage != null && rstMessage.length > 0) {
             try {
                 this.eventid = Integer.parseInt(rstMessage[0][0]);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(DateFormat.getInstance().parse(rstMessage[0][1]));
-                this.messagedate = cal;
+                this.messagedate = reger.core.TimeUtils.dbstringtocalendar(rstMessage[0][1]);
                 this.messagefrom = rstMessage[0][2];
                 this.message = rstMessage[0][3];
                 this.isapproved = Integer.parseInt(rstMessage[0][4]);
@@ -66,7 +64,7 @@ public class Message {
             //Update
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE message set eventid='" + eventid + "', messagedate='" + TimeUtils.dateformatfordb(messagedate) + "', messagefrom='" + reger.core.Util.cleanForSQL(messagefrom) + "', message='" + reger.core.Util.cleanForSQL(message) + "', isapproved='" + isapproved + "', sizeinbytes='" + sizeinbytes + "', email='" + reger.core.Util.cleanForSQL(email) + "', ipaddress='" + reger.core.Util.cleanForSQL(ipaddress) + "', url='" + reger.core.Util.cleanForSQL(url) + "', emailnotify='" + emailnotify + "' WHERE messageid='" + messageid + "'");
+            int count = Db.RunSQLUpdate("UPDATE message SET eventid='" + eventid + "', messagedate='" + TimeUtils.dateformatfordb(messagedate) + "', messagefrom='" + reger.core.Util.cleanForSQL(messagefrom) + "', message='" + reger.core.Util.cleanForSQL(message) + "', isapproved='" + isapproved + "', sizeinbytes='" + sizeinbytes + "', email='" + reger.core.Util.cleanForSQL(email) + "', ipaddress='" + reger.core.Util.cleanForSQL(ipaddress) + "', url='" + reger.core.Util.cleanForSQL(url) + "', emailnotify='" + emailnotify + "' WHERE messageid='" + messageid + "'");
             //-----------------------------------
             //-----------------------------------
         } else {
@@ -77,8 +75,6 @@ public class Message {
             //-----------------------------------
             //-----------------------------------
         }
-        //Refresh the memory object
-        reger.AllLiveSystemMessagesInSystem.refresh();
     }
 
     public void delete() {
@@ -87,8 +83,6 @@ public class Message {
         int count = Db.RunSQLUpdate("DELETE FROM message WHERE messageid='" + this.messageid + "'");
         //-----------------------------------
         //-----------------------------------
-        //Refresh the memory object
-        reger.AllLiveSystemMessagesInSystem.refresh();
     }
 
     public void setMessageid(int messageid) {

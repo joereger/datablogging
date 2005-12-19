@@ -19,21 +19,10 @@ public class PrivateLabel {
 
     private int plid;
     private boolean usedynamicdns = false;
-    private String plusertemplate;
     private String titlebar;
-    private int showadsmarketing;
-    private String homelink;
-    private String sectionhome;
-    private String sectionhelp;
-    private String sectionsignup;
-    private String sectiontour;
-    private String sectionfeatures;
     private String plname;
     private int islive;
     private String plbasedomain;
-    private int showhometab;
-    private String hometabtext;
-    private int showlogintab;
     public boolean issignupenabled = true;
     private boolean iscontentflaggingon = false;
     private boolean doesflaggedcontentneedtobeapproved = false;
@@ -46,7 +35,6 @@ public class PrivateLabel {
     private String emailtonotifyofnewaccounts = reger.Vars.EMAILDEFAULTTO;
     private boolean newaccountsrequireadminapproval = false;
     private String emailapiuniqueidentifier = "";
-    private boolean hideregercomlogo = false;
     private String termsofservice = "";
     private String comments = "";
     private String termsofuselinktext = "";
@@ -57,12 +45,17 @@ public class PrivateLabel {
     private int hptemplateid = 0;
     private int marketingsitetemplateid = 0;
     private int marketingsitehptemplateid = 0;
-    private boolean showbusinesstab = true;
     private int defaulteventtypeid = reger.Vars.DEFAULTLOGEVENTTYPEID;
     private String encryptedlicense;
     private double baseaccountprice;
     private double priceper100mbstorage;
     private double pricepergbbandwidth;
+    private int plusertemplateid = 0;
+    private String bannerone = "";
+    private String bannertwo = "";
+    private String bannerthree = "";
+    private boolean showbannertagsonpro = false;
+
 
     private License plLicense;
 
@@ -82,6 +75,7 @@ public class PrivateLabel {
 
     //Peers of this pl
     PrivateLabelPeerRelationship[] peers = new PrivateLabelPeerRelationship[0];
+
 
     /**
      * Loads a private label.
@@ -103,117 +97,104 @@ public class PrivateLabel {
         //Check for private label using this url
         //-----------------------------------
         //-----------------------------------
-        String[][] getPl= Db.RunSQL("SELECT plusertemplate, titlebar, showadsmarketing, homelink, sectionhome, sectionhelp, sectionsignup, sectiontour, plname, islive, plbasedomain, plid, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, forcelogintoviewsites, istrackbackenabled, isweblogscompingon, emailtonotifyofnewaccounts, newaccountsrequireadminapproval, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, hideregercomlogo, termsofservice, comments, sectionfeatures, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, issignupenabled, showbusinesstab, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth FROM pl WHERE plid='"+plid+"'");
+        String[][] getPl= Db.RunSQL("SELECT plid, titlebar, plname, islive, plbasedomain, plid, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, forcelogintoviewsites, istrackbackenabled, isweblogscompingon, emailtonotifyofnewaccounts, newaccountsrequireadminapproval, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, termsofservice, comments, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, issignupenabled, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth, plusertemplateid, bannerone, bannertwo, bannerthree, showbannertagsonpro FROM pl WHERE plid='"+plid+"'");
         //-----------------------------------
         //-----------------------------------
         if (getPl!=null && getPl.length>0){
-            plusertemplate = getPl[0][0];
             titlebar = getPl[0][1];
-            showadsmarketing = Integer.parseInt(getPl[0][2]);
-            homelink = getPl[0][3];
-            sectionhome = getPl[0][4];
-            sectionhelp = getPl[0][5];
-            sectionsignup = getPl[0][6];
-            sectiontour = getPl[0][7];
-            plname = getPl[0][8];
-            islive = Integer.parseInt(getPl[0][9]);
-            plbasedomain = getPl[0][10];
-            this.plid = Integer.parseInt(getPl[0][11]);
-            if (getPl[0][12].equals("1")){
+            plname = getPl[0][2];
+            islive = Integer.parseInt(getPl[0][3]);
+            plbasedomain = getPl[0][4];
+            this.plid = Integer.parseInt(getPl[0][5]);
+            if (getPl[0][6].equals("1")){
                 usedynamicdns = true;
             } else {
                 usedynamicdns = false;
             }
-            defaultmaxspaceinbytes=Long.parseLong(getPl[0][13]);
-            defaultmaxbandwidth=Long.parseLong(getPl[0][14]);
-            if (getPl[0][15].equals("1")){
+            defaultmaxspaceinbytes=Long.parseLong(getPl[0][7]);
+            defaultmaxbandwidth=Long.parseLong(getPl[0][8]);
+            if (getPl[0][9].equals("1")){
                 forcelogintoviewsites = true;
             } else {
                 forcelogintoviewsites = false;
             }
-            if (getPl[0][16].equals("1")){
+            if (getPl[0][10].equals("1")){
                 istrackbackenabled = true;
             } else {
                 istrackbackenabled = false;
             }
-            if (getPl[0][17].equals("1")){
+            if (getPl[0][11].equals("1")){
                 isweblogscompingon = true;
             } else {
                 isweblogscompingon = false;
             }
-            emailtonotifyofnewaccounts = getPl[0][18];
-            if (getPl[0][19].equals("1")){
+            emailtonotifyofnewaccounts = getPl[0][12];
+            if (getPl[0][13].equals("1")){
                 newaccountsrequireadminapproval = true;
             } else {
                 newaccountsrequireadminapproval = false;
             }
-            emailapiuniqueidentifier = getPl[0][20];
-            minPasswordChars = Integer.parseInt(getPl[0][21]);
-            minPasswordUpperCaseChars = Integer.parseInt(getPl[0][22]);
-            minPasswordLowerCaseChars = Integer.parseInt(getPl[0][23]);
-            minPasswordSpecialChars = Integer.parseInt(getPl[0][24]);
-            minPasswordNumericChars = Integer.parseInt(getPl[0][25]);
-            if (getPl[0][26].equals("1")){
+            emailapiuniqueidentifier = getPl[0][14];
+            minPasswordChars = Integer.parseInt(getPl[0][15]);
+            minPasswordUpperCaseChars = Integer.parseInt(getPl[0][16]);
+            minPasswordLowerCaseChars = Integer.parseInt(getPl[0][17]);
+            minPasswordSpecialChars = Integer.parseInt(getPl[0][18]);
+            minPasswordNumericChars = Integer.parseInt(getPl[0][19]);
+            if (getPl[0][20].equals("1")){
                 isPasswordSentViaEmail = true;
             } else {
                 isPasswordSentViaEmail = false;
             }
-            if (getPl[0][27].equals("1")){
-                hideregercomlogo = true;
-            } else {
-                hideregercomlogo = false;
-            }
-            termsofservice = getPl[0][28];
-            comments = getPl[0][29];
-            sectionfeatures = getPl[0][30];
-            termsofuselinktext = getPl[0][31];
-            feedbacklinktext = getPl[0][32];
-            if (getPl[0][33].equals("1")){
+            termsofservice = getPl[0][21];
+            comments = getPl[0][22];
+            termsofuselinktext = getPl[0][23];
+            feedbacklinktext = getPl[0][24];
+            if (getPl[0][25].equals("1")){
                 doapplyplusertemplatetopro = true;
             } else {
                 doapplyplusertemplatetopro = false;
             }
-            publicsitetemplateid = Integer.parseInt(getPl[0][34]);
-            entlisttemplateid = Integer.parseInt(getPl[0][35]);
-            hptemplateid = Integer.parseInt(getPl[0][36]);
-            marketingsitetemplateid = Integer.parseInt(getPl[0][37]);
-            marketingsitehptemplateid = Integer.parseInt(getPl[0][38]);
-            if (getPl[0][39].equals("1")){
+            publicsitetemplateid = Integer.parseInt(getPl[0][26]);
+            entlisttemplateid = Integer.parseInt(getPl[0][27]);
+            hptemplateid = Integer.parseInt(getPl[0][28]);
+            marketingsitetemplateid = Integer.parseInt(getPl[0][29]);
+            marketingsitehptemplateid = Integer.parseInt(getPl[0][30]);
+            if (getPl[0][31].equals("1")){
                 iscontentflaggingon = true;
             } else {
                 iscontentflaggingon = false;
             }
-            if (getPl[0][40].equals("1")){
+            if (getPl[0][32].equals("1")){
                 doesflaggedcontentneedtobeapproved = true;
             } else {
                 doesflaggedcontentneedtobeapproved = false;
             }
-            if (getPl[0][41].equals("1")){
+            if (getPl[0][33].equals("1")){
                 doallpostsneedtobeapproved = true;
             } else {
                 doallpostsneedtobeapproved = false;
             }
-            if (getPl[0][42].equals("1")){
+            if (getPl[0][34].equals("1")){
                 issignupenabled = true;
             } else {
                 issignupenabled = false;
             }
-            if (getPl[0][43].equals("1")){
-                showbusinesstab = true;
-            } else {
-                showbusinesstab = false;
+            defaulteventtypeid = Integer.parseInt(getPl[0][35]);
+            plLicense = new License(reger.licensing.ServerLicense.getLicense(), getPl[0][36]);
+            if (reger.core.Util.isnumeric(getPl[0][37])){
+                baseaccountprice = Double.parseDouble(getPl[0][37]);
             }
-            defaulteventtypeid = Integer.parseInt(getPl[0][44]);
-            plLicense = new License(reger.licensing.ServerLicense.getLicense(), getPl[0][45]);
-            if (reger.core.Util.isnumeric(getPl[0][46])){
-                baseaccountprice = Double.parseDouble(getPl[0][46]);
+            if (reger.core.Util.isnumeric(getPl[0][38])){
+                priceper100mbstorage = Double.parseDouble(getPl[0][38]);
             }
-            if (reger.core.Util.isnumeric(getPl[0][47])){
-                priceper100mbstorage = Double.parseDouble(getPl[0][47]);
+            if (reger.core.Util.isnumeric(getPl[0][39])){
+                pricepergbbandwidth = Double.parseDouble(getPl[0][39]);
             }
-            if (reger.core.Util.isnumeric(getPl[0][48])){
-                pricepergbbandwidth = Double.parseDouble(getPl[0][48]);
-            }
+            plusertemplateid = Integer.parseInt(getPl[0][40]);
+            bannerone = getPl[0][41];
+            bannertwo = getPl[0][42];
+            bannerthree = getPl[0][43];
+            showbannertagsonpro = reger.core.Util.booleanFromSQLText(getPl[0][44]);
 
             //Override license values
             if (defaultmaxspaceinbytes<=0){
@@ -368,15 +349,7 @@ public class PrivateLabel {
         return -1;
     }
 
-    public String getPlusertemplate(reger.Account account){
-        //Append plusertemplate if the accounttype is not pro
-        if (!account.isPro()){
-            return plusertemplate;
-            //Otherwise just return blank string
-        } else {
-            return "";
-        }
-    }
+
 
 
 
@@ -404,14 +377,14 @@ public class PrivateLabel {
         if (rstPlCt!=null && rstPlCt.length>0){
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE pl SET plname='"+ reger.core.Util.cleanForSQL(plname)+"',  titlebar='"+ reger.core.Util.cleanForSQL(titlebar)+"', plusertemplate='"+ reger.core.Util.cleanForSQL(plusertemplate)+"', showadsmarketing='"+ showadsmarketing+"', homelink='"+ reger.core.Util.cleanForSQL(homelink)+"', sectionhome='"+ reger.core.Util.cleanForSQL(sectionhome)+"', sectionhelp='"+ reger.core.Util.cleanForSQL(sectionhelp)+"', sectionsignup='"+ reger.core.Util.cleanForSQL(sectionsignup)+"',  sectiontour='"+ reger.core.Util.cleanForSQL(sectiontour)+"', comments='"+ reger.core.Util.cleanForSQL(comments)+"', plbasedomain='"+ reger.core.Util.cleanForSQL(plbasedomain)+"', issignupenabled='"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', iscontentflaggingon='"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', doesflaggedcontentneedtobeapproved='"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', doallpostsneedtobeapproved='"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', usedynamicdns='"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', defaultmaxspaceinbytes='"+ defaultmaxspaceinbytes+"', defaultmaxbandwidth='"+ defaultmaxbandwidth+"', termsofservice='"+ reger.core.Util.cleanForSQL(termsofservice)+"', newaccountsrequireadminapproval='"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', forcelogintoviewsites='"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"', istrackbackenabled='"+reger.core.Util.booleanAsSQLText(istrackbackenabled)+"', isweblogscompingon='"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', emailtonotifyofnewaccounts='"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', emailapiuniqueidentifier='"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', minpasswordchars='"+minPasswordChars+"', minpassworduppercasechars='"+minPasswordUpperCaseChars+"', minpasswordlowercasechars='"+minPasswordLowerCaseChars+"', minpasswordspecialchars='"+minPasswordSpecialChars+"', minpasswordnumericchars='"+minPasswordNumericChars+"', ispasswordsentviaemail='"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', hideregercomlogo='"+reger.core.Util.booleanAsSQLText(hideregercomlogo)+"', sectionfeatures='"+ reger.core.Util.cleanForSQL(sectionfeatures)+"', termsofuselinktext='"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', feedbacklinktext='"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', doapplyplusertemplatetopro='"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', publicsitetemplateid='"+ publicsitetemplateid+"', entlisttemplateid='"+ entlisttemplateid+"', hptemplateid='"+ hptemplateid+"', marketingsitetemplateid='"+ marketingsitetemplateid+"', marketingsitehptemplateid='"+ marketingsitehptemplateid+"', showbusinesstab='"+ reger.core.Util.booleanAsSQLText(showbusinesstab)+"', defaulteventtypeid='"+defaulteventtypeid+"', encryptedlicense='"+reger.core.Util.cleanForSQL(encryptedlicense)+"', baseaccountprice='"+baseaccountprice+"', priceper100mbstorage='"+priceper100mbstorage+"', pricepergbbandwidth='"+pricepergbbandwidth+"' WHERE plid='"+ plid +"'");
+            int count = Db.RunSQLUpdate("UPDATE pl SET plname='"+ reger.core.Util.cleanForSQL(plname)+"',  titlebar='"+ reger.core.Util.cleanForSQL(titlebar)+"', comments='"+ reger.core.Util.cleanForSQL(comments)+"', plbasedomain='"+ reger.core.Util.cleanForSQL(plbasedomain)+"', issignupenabled='"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', iscontentflaggingon='"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', doesflaggedcontentneedtobeapproved='"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', doallpostsneedtobeapproved='"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', usedynamicdns='"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', defaultmaxspaceinbytes='"+ defaultmaxspaceinbytes+"', defaultmaxbandwidth='"+ defaultmaxbandwidth+"', termsofservice='"+ reger.core.Util.cleanForSQL(termsofservice)+"', newaccountsrequireadminapproval='"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', forcelogintoviewsites='"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"', istrackbackenabled='"+reger.core.Util.booleanAsSQLText(istrackbackenabled)+"', isweblogscompingon='"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', emailtonotifyofnewaccounts='"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', emailapiuniqueidentifier='"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', minpasswordchars='"+minPasswordChars+"', minpassworduppercasechars='"+minPasswordUpperCaseChars+"', minpasswordlowercasechars='"+minPasswordLowerCaseChars+"', minpasswordspecialchars='"+minPasswordSpecialChars+"', minpasswordnumericchars='"+minPasswordNumericChars+"', ispasswordsentviaemail='"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', termsofuselinktext='"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', feedbacklinktext='"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', doapplyplusertemplatetopro='"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', publicsitetemplateid='"+ publicsitetemplateid+"', entlisttemplateid='"+ entlisttemplateid+"', hptemplateid='"+ hptemplateid+"', marketingsitetemplateid='"+ marketingsitetemplateid+"', marketingsitehptemplateid='"+ marketingsitehptemplateid+"', defaulteventtypeid='"+defaulteventtypeid+"', encryptedlicense='"+reger.core.Util.cleanForSQL(encryptedlicense)+"', baseaccountprice='"+baseaccountprice+"', priceper100mbstorage='"+priceper100mbstorage+"', pricepergbbandwidth='"+pricepergbbandwidth+"', plusertemplateid='"+plusertemplateid+"', bannerone='"+reger.core.Util.cleanForSQL(bannerone)+"', bannertwo='"+reger.core.Util.cleanForSQL(bannertwo)+"', bannerthree='"+reger.core.Util.cleanForSQL(bannerthree)+"', showbannertagsonpro='"+reger.core.Util.booleanAsSQLText(showbannertagsonpro)+"' WHERE plid='"+ plid +"'");
             //-----------------------------------
             //-----------------------------------
         } else {
             Debug.debug(5, "", "PrivateLabel.java - save() called. Validation passed. Couldn't update so adding new.");
             //-----------------------------------
             //-----------------------------------
-            plid = Db.RunSQLInsert("INSERT INTO pl(plname, titlebar, plusertemplate, showadsmarketing, homelink, sectionhome, sectionhelp, sectionsignup, sectiontour, comments, plbasedomain, issignupenabled, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, termsofservice, newaccountsrequireadminapproval, forcelogintoviewsites, istrackbackenabled, isweblogscompingon, emailtonotifyofnewaccounts, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, hideregercomlogo, sectionfeatures, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, showbusinesstab, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth) VALUES('"+ reger.core.Util.cleanForSQL(plname)+"','"+ reger.core.Util.cleanForSQL(titlebar)+"','"+ reger.core.Util.cleanForSQL(plusertemplate)+"','"+ showadsmarketing+"','"+ reger.core.Util.cleanForSQL(homelink)+"','"+ reger.core.Util.cleanForSQL(sectionhome)+"','"+ reger.core.Util.cleanForSQL(sectionhelp)+"','"+ reger.core.Util.cleanForSQL(sectionsignup)+"','"+ reger.core.Util.cleanForSQL(sectiontour)+"','"+ reger.core.Util.cleanForSQL(comments)+"','"+ reger.core.Util.cleanForSQL(plbasedomain)+"','"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', '"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', '"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', '"+ defaultmaxspaceinbytes+"', '"+ defaultmaxbandwidth+"', '"+ reger.core.Util.cleanForSQL(termsofservice)+"', '"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', '"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"',  '"+reger.core.Util.booleanAsSQLText(istrackbackenabled)+"', '"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', '"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', '"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', '"+minPasswordChars+"', '"+minPasswordUpperCaseChars+"', '"+minPasswordLowerCaseChars+"', '"+minPasswordSpecialChars+"', '"+ minPasswordNumericChars +"', '"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', '"+reger.core.Util.booleanAsSQLText(hideregercomlogo)+"', '"+ reger.core.Util.cleanForSQL(sectionfeatures)+"', '"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', '"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', '"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', '"+publicsitetemplateid+"', '"+entlisttemplateid+"', '"+hptemplateid+"', '"+marketingsitetemplateid+"', '"+marketingsitehptemplateid+"', '"+reger.core.Util.booleanAsSQLText(showbusinesstab)+"', '"+defaulteventtypeid+"', '"+reger.core.Util.cleanForSQL(encryptedlicense)+"', '"+baseaccountprice+"', '"+priceper100mbstorage+"', '"+pricepergbbandwidth+"')");
+            plid = Db.RunSQLInsert("INSERT INTO pl(plname, titlebar, plusertemplate, comments, plbasedomain, issignupenabled, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, termsofservice, newaccountsrequireadminapproval, forcelogintoviewsites, istrackbackenabled, isweblogscompingon, emailtonotifyofnewaccounts, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth, plusertemplateid, bannerone, bannertwo, bannerthree, showbannertagsonpro) VALUES('"+ reger.core.Util.cleanForSQL(plname)+"','"+ reger.core.Util.cleanForSQL(titlebar)+"','"+ reger.core.Util.cleanForSQL(comments)+"','"+ reger.core.Util.cleanForSQL(plbasedomain)+"','"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', '"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', '"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', '"+ defaultmaxspaceinbytes+"', '"+ defaultmaxbandwidth+"', '"+ reger.core.Util.cleanForSQL(termsofservice)+"', '"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', '"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"',  '"+reger.core.Util.booleanAsSQLText(istrackbackenabled)+"', '"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', '"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', '"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', '"+minPasswordChars+"', '"+minPasswordUpperCaseChars+"', '"+minPasswordLowerCaseChars+"', '"+minPasswordSpecialChars+"', '"+ minPasswordNumericChars +"', '"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', '"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', '"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', '"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', '"+publicsitetemplateid+"', '"+entlisttemplateid+"', '"+hptemplateid+"', '"+marketingsitetemplateid+"', '"+marketingsitehptemplateid+"', '"+defaulteventtypeid+"', '"+reger.core.Util.cleanForSQL(encryptedlicense)+"', '"+baseaccountprice+"', '"+priceper100mbstorage+"', '"+pricepergbbandwidth+"', '"+plusertemplateid+"', '"+reger.core.Util.cleanForSQL(bannerone)+"', '"+reger.core.Util.cleanForSQL(bannertwo)+"', '"+reger.core.Util.cleanForSQL(bannerthree)+"', '"+reger.core.Util.booleanAsSQLText(showbannertagsonpro)+"')");
             //-----------------------------------
             //-----------------------------------
         }
@@ -592,21 +565,11 @@ public class PrivateLabel {
     public void populateFromRequest(javax.servlet.http.HttpServletRequest request){
         plid = reger.core.RequestParam.getInt(request, "plid", 0);
         usedynamicdns = reger.core.RequestParam.getBoolean(request, "usedynamicdns", false);
-        plusertemplate = reger.core.RequestParam.getString(request, "plusertemplate", "");
         titlebar = reger.core.RequestParam.getString(request, "titlebar", "");
-        showadsmarketing = reger.core.RequestParam.getInt(request, "showadsmarketing", 0);
         issignupenabled = reger.core.RequestParam.getBoolean(request, "issignupenabled", true);
-        homelink = reger.core.RequestParam.getString(request, "homelink", "");
-        sectionhome = reger.core.RequestParam.getString(request, "sectionhome", "");
-        sectionhelp = reger.core.RequestParam.getString(request, "sectionhelp", "");
-        sectionsignup = reger.core.RequestParam.getString(request, "sectionsignup", "");
-        sectiontour = reger.core.RequestParam.getString(request, "sectiontour", "");
         plname = reger.core.RequestParam.getString(request, "plname", "Private Label");
         islive = reger.core.RequestParam.getInt(request, "islive", 1);
         plbasedomain = reger.core.RequestParam.getString(request, "plbasedomain", "");
-        showhometab = reger.core.RequestParam.getInt(request, "showhometab", 1);
-        hometabtext = reger.core.RequestParam.getString(request, "hometabtext", "");
-        showlogintab = reger.core.RequestParam.getInt(request, "showlogintab", 1);
         defaultmaxspaceinbytes = reger.core.RequestParam.getLong(request, "defaultmaxspaceinbytes", defaultmaxspaceinbytes);
         defaultmaxbandwidth = reger.core.RequestParam.getLong(request, "defaultmaxbandwidth", defaultmaxbandwidth);
         forcelogintoviewsites = reger.core.RequestParam.getBoolean(request, "forcelogintoviewsites", false);
@@ -615,7 +578,6 @@ public class PrivateLabel {
         emailtonotifyofnewaccounts = reger.core.RequestParam.getString(request, "emailtonotifyofnewaccounts", "");
         newaccountsrequireadminapproval = reger.core.RequestParam.getBoolean(request, "newaccountsrequireadminapproval", false);
         emailapiuniqueidentifier = reger.core.RequestParam.getString(request, "emailapiuniqueidentifier", "");
-        hideregercomlogo = reger.core.RequestParam.getBoolean(request, "hideregercomlogo", false);
         termsofservice = reger.core.RequestParam.getString(request, "termsofservice", "");
         comments = reger.core.RequestParam.getString(request, "comments", "");
         minPasswordChars = reger.core.RequestParam.getInt(request, "minpasswordchars", minPasswordChars);
@@ -624,7 +586,6 @@ public class PrivateLabel {
         minPasswordSpecialChars = reger.core.RequestParam.getInt(request, "minpasswordspecialchars", minPasswordSpecialChars);
         minPasswordNumericChars = reger.core.RequestParam.getInt(request, "minpasswordnumericchars", minPasswordNumericChars);
         isPasswordSentViaEmail = reger.core.RequestParam.getBoolean(request, "ispasswordsentviaemail", true);
-        sectionfeatures = reger.core.RequestParam.getString(request, "sectionfeatures", "");
         termsofuselinktext = reger.core.RequestParam.getString(request, "termsofuselinktext", "");
         feedbacklinktext = reger.core.RequestParam.getString(request, "feedbacklinktext", "");
         doapplyplusertemplatetopro = reger.core.RequestParam.getBoolean(request, "doapplyplusertemplatetopro", false);
@@ -633,14 +594,16 @@ public class PrivateLabel {
         hptemplateid = reger.core.RequestParam.getInt(request, "hptemplateid", hptemplateid);
         marketingsitetemplateid = reger.core.RequestParam.getInt(request, "marketingsitetemplateid", marketingsitetemplateid);
         marketingsitehptemplateid = reger.core.RequestParam.getInt(request, "marketingsitehptemplateid", marketingsitehptemplateid);
-        showbusinesstab = reger.core.RequestParam.getBoolean(request, "showbusinesstab", true);
         defaulteventtypeid = reger.core.RequestParam.getInt(request, "defaulteventtypeid", defaulteventtypeid);
         encryptedlicense = reger.core.RequestParam.getString(request, "encryptedlicense", "");
         plLicense = plLicense = new License(reger.licensing.ServerLicense.getLicense(), encryptedlicense);
         baseaccountprice = reger.core.RequestParam.getDouble(request, "baseaccountprice", baseaccountprice);
         priceper100mbstorage = reger.core.RequestParam.getDouble(request, "priceper100mbstorage", priceper100mbstorage);
         pricepergbbandwidth = reger.core.RequestParam.getDouble(request, "pricepergbbandwidth", priceper100mbstorage);
-
+        bannerone = reger.core.RequestParam.getString(request, "bannerone", "");
+        bannertwo = reger.core.RequestParam.getString(request, "bannertwo", "");
+        bannerthree = reger.core.RequestParam.getString(request, "bannerthree", "");
+        showbannertagsonpro = reger.core.RequestParam.getBoolean(request, "showbannertagsonpro", false);
 
         String contentapproval=reger.core.RequestParam.getString(request, "contentapproval", "unmoderated");;
         if (contentapproval.equals("unmoderated")){
@@ -717,36 +680,8 @@ public class PrivateLabel {
         return usedynamicdns;
     }
 
-    public String getPlusertemplate() {
-        return plusertemplate;
-    }
-
     public String getTitlebar() {
         return titlebar;
-    }
-
-    public int getShowadsmarketing() {
-        return showadsmarketing;
-    }
-
-    public String getHomelink() {
-        return homelink;
-    }
-
-    public String getSectionhome() {
-        return sectionhome;
-    }
-
-    public String getSectionhelp() {
-        return sectionhelp;
-    }
-
-    public String getSectionsignup() {
-        return sectionsignup;
-    }
-
-    public String getSectiontour() {
-        return sectiontour;
     }
 
     public String getPlname() {
@@ -760,19 +695,6 @@ public class PrivateLabel {
     public String getPlbasedomain() {
         return plbasedomain;
     }
-
-    public int getShowhometab() {
-        return showhometab;
-    }
-
-    public String getHometabtext() {
-        return hometabtext;
-    }
-
-    public int getShowlogintab() {
-        return showlogintab;
-    }
-
 
 
     public boolean getIssignupenabled() {
@@ -802,10 +724,6 @@ public class PrivateLabel {
     public boolean getForcelogintoviewsites() {
         return forcelogintoviewsites;
     }
-
-//    public boolean getIsgoogleapion() {
-//        return isgooglaapion;
-//    }
 
     public boolean getIstrackbackenabled() {
         return istrackbackenabled;
@@ -855,20 +773,12 @@ public class PrivateLabel {
         return isPasswordSentViaEmail;
     }
 
-    public boolean getHideregercomlogo() {
-        return hideregercomlogo;
-    }
-
     public String getTermsofservice() {
         return termsofservice;
     }
 
     public String getComments() {
         return comments;
-    }
-
-    public String getSectionfeatures() {
-        return sectionfeatures;
     }
 
     public int getMarketingsitehptemplateid() {
@@ -927,14 +837,6 @@ public class PrivateLabel {
         this.publicsitetemplateid = publicsitetemplateid;
     }
 
-    public boolean getShowbusinesstab() {
-        return showbusinesstab;
-    }
-
-    public void setShowbusinesstab(boolean showbusinesstab) {
-        this.showbusinesstab = showbusinesstab;
-    }
-
     public int getDefaulteventtypeid() {
         return defaulteventtypeid;
     }
@@ -943,8 +845,48 @@ public class PrivateLabel {
         this.defaulteventtypeid = defaulteventtypeid;
     }
 
+    public int getPlusertemplateid() {
+        return plusertemplateid;
+    }
+
+    public void setPlusertemplateid(int plusertemplateid) {
+        this.plusertemplateid = plusertemplateid;
+    }
+
     public License getLicense() {
         return plLicense;
+    }
+
+    public String getBannerone() {
+        return bannerone;
+    }
+
+    public void setBannerone(String bannerone) {
+        this.bannerone = bannerone;
+    }
+
+    public String getBannertwo() {
+        return bannertwo;
+    }
+
+    public void setBannertwo(String bannertwo) {
+        this.bannertwo = bannertwo;
+    }
+
+    public String getBannerthree() {
+        return bannerthree;
+    }
+
+    public void setBannerthree(String bannerthree) {
+        this.bannerthree = bannerthree;
+    }
+
+    public boolean getShowbannertagsonpro() {
+        return showbannertagsonpro;
+    }
+
+    public void setShowbannertagsonpro(boolean showbannertagsonpro) {
+        this.showbannertagsonpro = showbannertagsonpro;
     }
 
     public double getBaseaccountprice() {

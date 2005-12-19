@@ -4,6 +4,7 @@ import reger.pageFramework.PageProps;
 import reger.UserSession;
 import reger.core.Debug;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -128,7 +129,7 @@ public class SiteTemplateProcessor implements TemplateProcessor {
 
 
         //Wrap in a plusertemplate
-        pg = wrapInPlUserTemplate(pg, pageProps, userSession);
+        pg = wrapInPlUserTemplate(pg, pageProps, userSession, request);
 
         //Return the page
 	    return pg;
@@ -221,36 +222,41 @@ public class SiteTemplateProcessor implements TemplateProcessor {
     /**
      * Wrap in a plusertemplate
      */
-    public static StringBuffer wrapInPlUserTemplate(StringBuffer pageHtml, reger.pageFramework.PageProps pageProps, reger.UserSession userSession){
-        if ((!userSession.getAccount().isPro() || userSession.getPl().getDoapplyplusertemplatetopro()) && userSession.getPl().getPlusertemplate()!=null && !userSession.getPl().getPlusertemplate().equals("")){
-            //Create the output buffer
-            StringBuffer out = new StringBuffer();
-            // Create a pattern to match cat
-            Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
-            // Create a matcher with an input string
-            Matcher m = p.matcher(userSession.getPl().getPlusertemplate());
-            // Loop through
-            while(m!=null && m.find()) {
-                if (m.group().equalsIgnoreCase("<$Body$>")){
-                    m.appendReplacement(out, reger.core.Util.cleanForAppendreplacement(pageHtml.toString()));
-                } else if (m.group().equalsIgnoreCase("<$Banner$>")){
-                    //Only show banners if it's a free account
-                    if (!userSession.getAccount().isPro()){
-                        m.appendReplacement(out, reger.core.Util.cleanForAppendreplacement(reger.Banner.getBannerHtml(userSession)));
-                    } else {
-                        m.appendReplacement(out, reger.core.Util.cleanForAppendreplacement(""));
-                    }
-                }
-            }
-            // Add the last segment
-            m.appendTail(out);
-            //Return the page, now wrapped in a plusertemplate
-            return out;
-        } else {
-            //There's no plusertemplate so just return the page.
-            //This happens when the user has upgraded their account.
-            return pageHtml;
-        }
+    public static StringBuffer wrapInPlUserTemplate(StringBuffer pageHtml, reger.pageFramework.PageProps pageProps, reger.UserSession userSession, HttpServletRequest request){
+
+        PlUserTemplateProcessor proc = new PlUserTemplateProcessor();
+        return proc.getValue(pageHtml, userSession, pageProps, request);
+
+
+//        if ((!userSession.getAccount().isPro() || userSession.getPl().getDoapplyplusertemplatetopro()) && userSession.getPl().getPlusertemplate()!=null && !userSession.getPl().getPlusertemplate().equals("")){
+//            //Create the output buffer
+//            StringBuffer out = new StringBuffer();
+//            // Create a pattern to match cat
+//            Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
+//            // Create a matcher with an input string
+//            Matcher m = p.matcher(userSession.getPl().getPlusertemplate());
+//            // Loop through
+//            while(m!=null && m.find()) {
+//                if (m.group().equalsIgnoreCase("<$Body$>")){
+//                    m.appendReplacement(out, reger.core.Util.cleanForAppendreplacement(pageHtml.toString()));
+//                } else if (m.group().equalsIgnoreCase("<$Banner$>")){
+//                    //Only show banners if it's a free account
+//                    if (!userSession.getAccount().isPro()){
+//                        m.appendReplacement(out, reger.core.Util.cleanForAppendreplacement(reger.Banner.getBannerHtml(userSession)));
+//                    } else {
+//                        m.appendReplacement(out, reger.core.Util.cleanForAppendreplacement(""));
+//                    }
+//                }
+//            }
+//            // Add the last segment
+//            m.appendTail(out);
+//            //Return the page, now wrapped in a plusertemplate
+//            return out;
+//        } else {
+//            //There's no plusertemplate so just return the page.
+//            //This happens when the user has upgraded their account.
+//            return pageHtml;
+//        }
     }
 
     public boolean validateTemplate(String template) throws TemplateValidationException{

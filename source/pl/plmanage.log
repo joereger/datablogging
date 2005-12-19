@@ -190,10 +190,6 @@ if (!pageProps.action.equals("deletestart")) {
 //    mb.append("<textarea cols='70' rows='10' name='plmarketingtemplate'>"+Util.cleanForHtml(pl.getPlmarketingtemplate())+"</textarea>");
 //    mb.append("<br><br>");
     mb.append("<DIV class=yellowbox>");
-    mb.append("<font face=arial size=-1><strong>Plusertemplate:</strong></font><br>");
-    mb.append("<textarea cols='70' rows='10' name='plusertemplate'>"+Util.cleanForHtml(pl.getPlusertemplate())+"</textarea>");
-
-    mb.append("<br><br>");
 
     //apply plusertemplate to pro
     mb.append("<font face=arial size=-1><strong>Apply Plusertemplate to Pro Accounts Too?</strong><br>");
@@ -213,44 +209,48 @@ if (!pageProps.action.equals("deletestart")) {
     mb.append("When users upgrade to Pro... or if they're automatically upgraded to Pro at account creation... you have to decide whether to apply the template above to their public web pages.  Sometimes you want your brand to be prevalent no matter whether they're Pro or not.  By choosing Yes, you say that you want the template above to apply to their sites no matter what.");
     mb.append("</strong></font><br>");
     //apply plusertemplatetopro
-
-
-
     mb.append("</DIV>");
 
+
+
+
+
+
     mb.append("<br><br>");
-
-
-
-
-
 
     mb.append("<DIV class=yellowbox>");
-    mb.append("<font face=arial size=-1><strong>Show Ads?</strong></font><br>");
-    mb.append("<input type='radio' name='showadsmarketing' value='1' ");
-    if (pl.getShowadsmarketing()==1) {
+    mb.append("<font face=arial size=-1><strong>BannerOne:</strong></font><br>");
+    mb.append("<textarea rows='5' name=bannerone cols='50' wrap='virtual'>"+reger.core.Util.cleanForHtml(pl.getBannerone())+"</textarea>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-1><strong>BannerTwo:</strong></font><br>");
+    mb.append("<textarea rows='5' name=bannertwo cols='50' wrap='virtual'>"+reger.core.Util.cleanForHtml(pl.getBannertwo())+"</textarea>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-1><strong>BannerThree:</strong></font><br>");
+    mb.append("<textarea rows='5' name=bannerthree cols='50' wrap='virtual'>"+reger.core.Util.cleanForHtml(pl.getBannerthree())+"</textarea>");
+    mb.append("<br>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-2><strong>");
+    mb.append("These three boxes allow you to create an optional three banner ads.  To insert them into your private label you edit the Pl User Wrapper template and add <$Banner.One$>, <$Banner.Two$> or <$Banner.Three$>.");
+    mb.append("</strong></font><br>");
+    mb.append("<font face=arial size=-1><strong>Do these banners appear on Pro accounts?</strong></font><br>");
+    mb.append("<input type='radio' name='showbannertagsonpro' value='1' ");
+    if (pl.getShowbannertagsonpro()) {
         mb.append(" checked");
     }
-    mb.append(">Yes");
-    mb.append("<input type='radio' name='showadsmarketing' value='0' ");
-    if (pl.getShowadsmarketing()==0) {
+    mb.append(">Yes, show banners on Pro accounts");
+    mb.append("<br><input type='radio' name='showbannertagsonpro' value='0' ");
+    if (!pl.getShowbannertagsonpro()) {
         mb.append(" checked");
     }
-    mb.append(">No");
-    mb.append("<br><br>");
-
-    mb.append("<font face=arial size=-1><strong>Hide Reger.com Logo on page footer?</strong></font><br>");
-    mb.append("<input type='radio' name='hideregercomlogo' value='1' ");
-    if (pl.getHideregercomlogo()) {
-        mb.append(" checked");
-    }
-    mb.append(">Yes");
-    mb.append("<input type='radio' name='hideregercomlogo' value='0' ");
-    if (!pl.getHideregercomlogo()) {
-        mb.append(" checked");
-    }
-    mb.append(">No");
+    mb.append(">No, hide banners on Pro accounts");
     mb.append("</DIV>");
+
+
+
+
+
+
+
 
     mb.append("<br><br>");
 
@@ -354,47 +354,6 @@ if (!pageProps.action.equals("deletestart")) {
 
     mb.append("</DIV>");
 
-
-    mb.append("<br><br>");
-
-    mb.append("<DIV class=yellowbox>");
-
-    mb.append("<font face=arial size=-1><strong>Home Link URL:</strong></font><br>");
-    mb.append("<input type='text' name='homelink' value=\""+Util.cleanForHtml(pl.getHomelink())+"\" size='30' maxlength='49'>");
-    mb.append("<br><br>");
-
-    mb.append("<font face=arial size=-1><strong>Section Home Page Header Text:</strong></font><br>");
-    mb.append("<input type='text' name='sectionhome' value=\""+Util.cleanForHtml(pl.getSectionhome())+"\" size='30'' maxlength='49'>");
-    mb.append("<br><br>");
-
-    mb.append("<font face=arial size=-1><strong>Section Features Page Header Text:</strong></font><br>");
-    mb.append("<input type='text' name='sectionfeatures' value=\""+Util.cleanForHtml(pl.getSectionfeatures())+"\" size='30' maxlength='49'>");
-    mb.append("<br><br>");
-
-    mb.append("<font face=arial size=-1><strong>Section Signup Page Header Text:</strong></font><br>");
-    mb.append("<input type='text' name='sectionsignup'' value=\""+Util.cleanForHtml(pl.getSectionsignup())+"\" size='30' maxlength='49'>");
-    mb.append("<br><br>");
-
-    mb.append("<font face=arial size=-1><strong>Section Tour Page Header Text:</strong></font><br>");
-    mb.append("<input type='text' name='sectiontour' value=\""+Util.cleanForHtml(pl.getSectiontour())+"\" size='30' maxlength='49'>");
-    mb.append("<br><br>");
-
-    mb.append("<font face=arial size=-1><strong>Show Business Tab on Marketing Site?</strong></font><br>");
-    mb.append("<font face=arial size=-2>The business tab shows content demonstrating how businesses can use the weblog server.</font>");
-    mb.append("<br><input type='radio' name='showbusinesstab' value='1' ");
-    if (pl.getShowbusinesstab()) {
-        mb.append(" checked");
-    }
-    mb.append(">Yes");
-    mb.append("<input type='radio' name='showbusinesstab' value='0' ");
-    if (!pl.getShowbusinesstab()) {
-        mb.append(" checked");
-    }
-    mb.append(">No");
-    mb.append("<br><br>");
-
-
-    mb.append("</DIV>");
 
     mb.append("<br><br>");
 

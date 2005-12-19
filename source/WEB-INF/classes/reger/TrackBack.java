@@ -43,9 +43,7 @@ public class TrackBack {
                 this.blogname = rstTrackBack[0][4];
                 this.posttitle = rstTrackBack[0][5];
                 this.excerpt = rstTrackBack[0][6];
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(DateFormat.getInstance().parse(rstTrackBack[0][7]));
-                this.datetime = cal;
+                this.datetime = reger.core.TimeUtils.dbstringtocalendar(rstTrackBack[0][7]);
                 this.isapproved = Integer.parseInt(rstTrackBack[0][8]);
             } catch (Exception e) {
                 Debug.errorsave(e, "load method in TrackBack", "Exception occurred while retrieving the data from TrackBack table");
@@ -64,7 +62,7 @@ public class TrackBack {
             //Update
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE trackback set eventid='" + eventid + "', isoutbound='" + isoutbound + "', ispingedalready='" + ispingedalready + "', url='" + reger.core.Util.cleanForSQL(url) + "', blogname='" + reger.core.Util.cleanForSQL(blogname) + "', posttitle='" + reger.core.Util.cleanForSQL(posttitle) + "', excerpt='" + reger.core.Util.cleanForSQL(excerpt) + "', datetime='" + TimeUtils.dateformatfordb(datetime) + "', isapproved='" + isapproved + "' WHERE trackbackid='" + trackbackid + "'");
+            int count = Db.RunSQLUpdate("UPDATE trackback SET eventid='" + eventid + "', isoutbound='" + isoutbound + "', ispingedalready='" + ispingedalready + "', url='" + reger.core.Util.cleanForSQL(url) + "', blogname='" + reger.core.Util.cleanForSQL(blogname) + "', posttitle='" + reger.core.Util.cleanForSQL(posttitle) + "', excerpt='" + reger.core.Util.cleanForSQL(excerpt) + "', datetime='" + TimeUtils.dateformatfordb(datetime) + "', isapproved='" + isapproved + "' WHERE trackbackid='" + trackbackid + "'");
             //-----------------------------------
             //-----------------------------------
         } else {
@@ -75,8 +73,7 @@ public class TrackBack {
             //-----------------------------------
             //-----------------------------------
         }
-        //Refresh the memory object
-        reger.AllLiveSystemMessagesInSystem.refresh();
+
     }
 
     public void delete() {
@@ -85,8 +82,6 @@ public class TrackBack {
         int count = Db.RunSQLUpdate("DELETE FROM trackback WHERE trackbackid='" + this.trackbackid + "'");
         //-----------------------------------
         //-----------------------------------
-        //Refresh the memory object
-        reger.AllLiveSystemMessagesInSystem.refresh();
     }
 
     public int getTrackbackid() {

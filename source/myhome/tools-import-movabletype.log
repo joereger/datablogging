@@ -76,7 +76,7 @@
     } else {
         mb.append("No logs found.");
     }
-    mb.append("</select</td>");
+    mb.append("</select></td>");
     mb.append("</tr>");
 
     mb.append("<tr>");

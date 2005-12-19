@@ -151,7 +151,7 @@ public class tRexAdminPageEngine {
         ap.append("</html>");
 
         //Wrap in a plusertemplate
-        ap = SiteTemplateProcessor.wrapInPlUserTemplate(ap, pageProps, userSession);
+        ap = SiteTemplateProcessor.wrapInPlUserTemplate(ap, pageProps, userSession, request);
 
 
         return ap;

@@ -67,10 +67,15 @@ if (pageProps.action.equals("usethisone")){
             pl.setMarketingsitetemplateid(template.getTemplateid());
         } else if (template.getType()==Template.TEMPLATETYPEMARKETINGHOMEPAGE){
             pl.setMarketingsitehptemplateid(template.getTemplateid());
+        }  else if (template.getType()==Template.TEMPLATETYPEPLUSER){
+            pl.setPlusertemplateid(template.getTemplateid());
         }
         try{
             pl.save();
+            reger.template.AllTemplatesInSystem.refresh(template.getTemplateid());
+            pl.refresh();
             userSession.getAccount().refresh();
+
         } catch (ValidationException vex){
             errortext = vex.getErrorsAsSingleString();
         }
@@ -119,7 +124,7 @@ mb.append("<br>");
 Template activeTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(pl.getPublicsitetemplateid(), Template.TEMPLATETYPESITE);
 Template[] siteUserTemplates = null;
 Template[] siteSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPESITE);
-mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "PL Default Site Template", "This is the overall template that determines the general look of your site.", pl.getPlid(), -1, Template.TEMPLATETYPESITE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeTemplate, siteUserTemplates, siteSystemTemplates, "PL Default Site Template", "This allows you to define the defauls template that users will have when they sign up for an account.", pl.getPlid(), -1, Template.TEMPLATETYPESITE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
 
 //Spacer
 mb.append("<br>");
@@ -131,7 +136,7 @@ mb.append("<br>");
 Template activeEntryListTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(pl.getEntlisttemplateid(), Template.TEMPLATETYPEENTRYLIST);
 Template[] entUserTemplates = null;
 Template[] entSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEENTRYLIST);
-mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "PL Default Entry List Templates", "This template governs entries as they appear in a list on the homepage. This template can be overridden for each log on your site.", pl.getPlid(), -1, Template.TEMPLATETYPEENTRYLIST, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeEntryListTemplate, entUserTemplates, entSystemTemplates, "PL Default Entry List Templates", "This template governs entries on user sites as they appear in a list on the homepage.", pl.getPlid(), -1, Template.TEMPLATETYPEENTRYLIST, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
 
 //Spacer
 mb.append("<br>");
@@ -143,7 +148,23 @@ mb.append("<br>");
 Template activeHpTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(pl.getHptemplateid(), Template.TEMPLATETYPEHOMEPAGE);
 Template[] hpUserTemplates = null;
 Template[] hpSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEHOMEPAGE);
-mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "PL Default Site Homepage Templates", "This template controls how the homepage of your site operates.", pl.getPlid(), -1, Template.TEMPLATETYPEHOMEPAGE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+mb.append(reger.template.TemplateHtml.getBox(activeHpTemplate, hpUserTemplates, hpSystemTemplates, "PL Default Site Homepage Templates", "This template controls how the homepage of your users' sites operates.", pl.getPlid(), -1, Template.TEMPLATETYPEHOMEPAGE, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+
+
+
+//Spacer
+mb.append("<br>");
+mb.append("<img src=images/clear.gif width=1 height=1>");
+mb.append("<br>");
+
+//PL User Template
+//reger.UserSession userSession;
+Template activePlUserTemplate = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(pl.getPlusertemplateid(), Template.TEMPLATETYPEPLUSER);
+Template[] plUserTemplates = null;
+Template[] plUserSystemTemplates = reger.template.AllTemplatesInSystem.getSystemTemplatesByType(Template.TEMPLATETYPEPLUSER);
+mb.append(reger.template.TemplateHtml.getBox(activePlUserTemplate, plUserTemplates, plUserSystemTemplates, "PL User Wrapper Template", "This template wraps around all user sites so that you can put your logo/look&feel around all of their sites.  You then determine whether this is applied to Pro accounts in the Settings tab.", pl.getPlid(), -1, Template.TEMPLATETYPEPLUSER, "pltemplates.log", "settings-template-edit.log", true, true, true, true, "templateid", false));
+
+
 
 //Spacer
 mb.append("<br>");

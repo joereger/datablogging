@@ -78,6 +78,8 @@ if (cache!=null){
         String key = (String)e.getKey();
         String value = (String)e.getValue();
 
+        
+
         int sizeinbytes = reger.core.Util.sizeInBytes(value);
         totalbytes = totalbytes + sizeinbytes;
 
