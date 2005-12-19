@@ -122,6 +122,7 @@ public class AllNavButtons {
 
         //Tools
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsmain", "tools", "MAIN", "myhome/tools.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsimport", "tools", "IMPORT ENTRIES", "myhome/tools-import.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphone", "tools", "EMAIL/CAMPHONE", "myhome/tools-emailapi-emailaddresses.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsapi", "tools", "OPEN APIs", "myhome/tools-api.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsrss", "tools", "RSS XML FEEDS", "myhome/tools-rssfeeds.log", false, "", null));
@@ -130,11 +131,12 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolssupercookie", "tools", "SUPERCOOKIE", "myhome/tools-supercookie.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolstaggame", "tools", "KEYWORD TAG GAME", "myhome/tools-taggame.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolslinkrot", "tools", "LINK ROT", "myhome/tools-linkrot.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsimportrss", "tools", "IMPORT ENTRIES", "myhome/tools-importrss.log", false, "", null));
+
 
         // Import Entries
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("importrss", "toolsimportrss", "RSS", "myhome/tools-importrss.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("importmovabletype", "toolsimportrss", "MOVABLE TYPE", "myhome/tools-import-movabletype.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsimportmain", "toolsimport", "MAIN", "myhome/tools-import.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("importrss", "toolsimport", "RSS", "myhome/tools-importrss.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("importmovabletype", "toolsimport", "MOVABLE TYPE", "myhome/tools-import-movabletype.log", false, "", null));
 
         //Tools Email/Camphone
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphoneemail", "toolsemailcamphone", "EMAIL ADDRESSES", "myhome/tools-emailapi-emailaddresses.log", false, "", null));

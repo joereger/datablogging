@@ -32,6 +32,14 @@ mb.append("<table cellpadding=10 cellspacing=1 border=0 bgcolor=#ffffff>");
 
 mb.append("<tr>");
 mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
+mb.append("<a href=tools-import.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Import Blog Entries from Other Systems</b></font></a>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Use this to migrate blog entries from another blog tool.");
+mb.append("</font></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
 mb.append("<a href=tools-emailapi-emailaddresses.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Post By Email and Camera Phone</b></font></a>");
 mb.append("<br>");
 mb.append("<font face=arial size=-2>Post to your web log via email.  Use a camera phone to send pictures directly to your web log.  You can target individual web logs.");
@@ -106,13 +114,7 @@ mb.append("<font face=arial size=-2>It's not much of a game, really.  But it'll 
 mb.append("</font></td>");
 mb.append("</tr>");
 
-mb.append("<tr>");
-mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
-mb.append("<a href=tools-importrss.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Import Blog Entries via RSS</b></font></a>");
-mb.append("<br>");
-mb.append("<font face=arial size=-2>Use this to migrate blog entries from another blog tool.");
-mb.append("</font></td>");
-mb.append("</tr>");
+
 
 mb.append("</table>");
 

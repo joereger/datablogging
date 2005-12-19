@@ -117,6 +117,50 @@
     mb.append("</table>");
     mb.append("</form>");
 
+
+
+
+
+
+    //Instructions
+    mb.append("<font face=arial size=+3 color=#cccccc>");
+    mb.append("Instructions:");
+    mb.append("</font>");
+
+    mb.append("<br>");
+    mb.append("<font face=arial size=+1>");
+    mb.append("Step 1: Export entries from your MovableType/TypePad blog");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<ol>");
+    mb.append("<li>Log in to your MovableType blog.</li>");
+    mb.append("<li> From the main menu, click on the \"Manage Weblog\" link for the blog whose entries you want to export.</li>");
+    mb.append("<li> Click the \"Import/Export\" button on the left menu.</li>");
+    mb.append("<li> Click the \"Export Entries from ...\" link at the bottom of page.</li>");
+    mb.append("<li> Now you should see readable text, split over several lines, in your browser. If the text in one long, running line, and if you are using any version of Internet Explorer, then you have a problem. Internet Explorer sometimes treats plaintext as html. To avoid this problem, use a Gecko-based browser, such as Netscape, Mozilla, or FireFox.</li>");
+    mb.append("<li> Save the page you see in your browser, with all the entries in text, as a text file with the name \"import.txt\", on your computer.</li>");
+    mb.append("</ol>");
+    mb.append("</font>");
+
+    mb.append("<br>");
+    mb.append("<font face=arial size=+1>");
+    mb.append("Step 2: Import entries into this blog");
+    mb.append("</font>");
+    mb.append("<br>");
+    mb.append("<font face=arial size=-1>");
+    mb.append("<ol>");
+    mb.append("<li>On this page, select the log that you want to import your MovableType entries into</li>");
+    mb.append("<li>Select the timezone that is stored in the MovableType file... if unsure, leave as GMT.</li>");
+    mb.append("<li>Click the Browse button, locate the import.txt file on your computer</li>");
+    mb.append("<li>Click Import Blog Entries</li>");
+    mb.append("</ol>");
+    mb.append("</font>");
+
+    mb.append("<br>");
+    mb.append("<font face=arial size=+1>");
+    mb.append("You're done!");
+    mb.append("</font>");
 %>
 
 <%
