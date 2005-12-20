@@ -12,7 +12,6 @@ import reger.UserSession;
 import reger.core.Debug;
 import reger.core.TimeUtils;
 import reger.core.ValidationException;
-
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Calendar;
@@ -100,7 +99,8 @@ public class ImportRSSEntries {
                         entry.newEntryTemporary(account, au);
                         entry.editEntryAll(account, au, pl);
                     } catch (ValidationException error) {
-                        System.out.println(error);
+                        Debug.errorsave(error, "ValidationException while storing in database");
+                        throw new Exception(error);
                     }
                 }
             } else {
