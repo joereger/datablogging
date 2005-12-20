@@ -1,9 +1,9 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.TreeSet" %>
 <%@ page import="java.util.TimeZone" %>
-<%@ page import="reger.importentries.ImportMovableEntries"%>
-<%@ page import="org.apache.commons.fileupload.FileItem"%>
-<%@ page import="java.io.InputStream"%>
+<%@ page import="reger.importentries.ImportMovableEntries" %>
+<%@ page import="org.apache.commons.fileupload.FileItem" %>
+<%@ page import="java.io.InputStream" %>
 
 <%
     /*----------------------------------------------------*/
@@ -28,26 +28,31 @@
     reger.Upload upload = new reger.Upload(request);
     if ((String) upload.requestParams.get("submit") != null) {
         String logid = (String) upload.requestParams.get("logid");
-        FileItem[] fileItems = upload.getFileItems();
-        if ((fileItems != null) && (fileItems.length > 0)) {
-            for (int i = 0; i < fileItems.length; i++) {
-                FileItem fileItem = fileItems[i];
-                if ( (fileItem.getFieldName().equals("uploadFile")) && (!fileItem.getName().equals(""))) {
-                    boolean success = true;
-                    String timezoneid = (String) upload.requestParams.get("timezoneid");
-                    InputStream fileStream = fileItem.getInputStream();
-                    ImportMovableEntries importEntries = new ImportMovableEntries();
-                    try {
-                        importEntries.importMovableFromFile(userSession, fileStream, logid, timezoneid);
-                    } catch (Exception e) {
-                        success = false;
-                        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry. The import failed."));
+        if (logid.equalsIgnoreCase("default")) {
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "You must select a log to add entries to."));
+        } else {
+
+            FileItem[] fileItems = upload.getFileItems();
+            if ((fileItems != null) && (fileItems.length > 0)) {
+                for (int i = 0; i < fileItems.length; i++) {
+                    FileItem fileItem = fileItems[i];
+                    if ((fileItem.getFieldName().equals("uploadFile")) && (!fileItem.getName().equals(""))) {
+                        boolean success = true;
+                        String timezoneid = (String) upload.requestParams.get("timezoneid");
+                        InputStream fileStream = fileItem.getInputStream();
+                        ImportMovableEntries importEntries = new ImportMovableEntries();
+                        try {
+                            importEntries.importMovableFromFile(userSession, fileStream, logid, timezoneid);
+                        } catch (Exception e) {
+                            success = false;
+                            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry. The import failed."));
+                        }
+                        if (success) {
+                            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "The import was successful."));
+                        }
                     }
-                    if (success) {
-                        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "The import was successful."));
-                    }
+                    break;
                 }
-                break;
             }
         }
     }
@@ -116,11 +121,6 @@
 
     mb.append("</table>");
     mb.append("</form>");
-
-
-
-
-
 
     //Instructions
     mb.append("<font face=arial size=+3 color=#cccccc>");
