@@ -171,7 +171,7 @@ public class ImportMovableEntries {
                     line = br.readLine();
                 }
             }
-            storeInDB(entryList, userSession);
+            storeInDB(entryList, userSession, logid);
         } catch (Exception e) {
             Debug.errorsave(e, "Exception occurred in importMovableFromFile method of ImportMovableEntries class while parsing the file");
             throw e;
@@ -187,7 +187,7 @@ public class ImportMovableEntries {
         }
     }
 
-    private void storeInDB (ArrayList entryList, UserSession userSession) throws Exception {
+    private void storeInDB (ArrayList entryList, UserSession userSession, String logid) throws Exception {
         try {
             ArrayList list = null;
             Iterator iter = null;
@@ -206,6 +206,7 @@ public class ImportMovableEntries {
             while (entryIter.hasNext()) {
                 entry = (MovableEntry) entryIter.next();
                 entryDAO = new Entry();
+                entryDAO.logid = Integer.parseInt(logid);
                 entryDAO.title = entry.getTitle();
                 entryDAO.dateGmt = entry.getDate();
                 entryDAO.isDraft = 0;
