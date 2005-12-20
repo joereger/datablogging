@@ -1,9 +1,14 @@
 package reger.importentries;
 
-import reger.*;
+import reger.Message;
+import reger.TrackBack;
+import reger.UserSession;
+import reger.Entry;
+import reger.Accountuser;
+import reger.Account;
+import reger.PrivateLabel;
 import reger.core.Debug;
 import reger.core.ValidationException;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,9 +20,11 @@ import java.util.Iterator;
 public class ImportMovableEntries {
 
     public void importMovableFromFile(UserSession userSession, InputStream inputStream, String logid, String timezoneid) throws Exception {
+        InputStreamReader isr = null;
+        BufferedReader br = null;
         try {
-            InputStreamReader isr = new InputStreamReader(inputStream);
-            BufferedReader br = new BufferedReader(isr);
+            isr = new InputStreamReader(inputStream);
+            br = new BufferedReader(isr);
             String line = null;
             MovableEntry entry = null;
             Comment comment = null;
@@ -168,6 +175,15 @@ public class ImportMovableEntries {
         } catch (Exception e) {
             Debug.errorsave(e, "Exception occurred in importMovableFromFile method of ImportMovableEntries class while parsing the file");
             throw e;
+        } finally {
+            try {
+               if (br != null) {
+                    br.close();
+               } if (isr != null) {
+                    isr.close();
+               }
+            } catch  (Exception e) {
+            }
         }
     }
 
@@ -202,12 +218,6 @@ public class ImportMovableEntries {
                     Debug.errorsave(error, "ValidationException while storing in database");
                 }
                 eventid = entryDAO.eventid;
-//                System.out.println(entry.getTitle());
-//                System.out.println(entry.getAuthor());
-//                System.out.println(entry.getDate());
-//                System.out.println(entry.getPrimaryCategory());
-//                System.out.println(entry.getCategory());
-//                System.out.println(entry.getBodies());
                 list = entry.getComments();
                 iter = list.iterator();
                 while (iter.hasNext()) {
