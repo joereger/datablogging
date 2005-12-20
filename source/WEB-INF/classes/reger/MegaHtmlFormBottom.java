@@ -205,11 +205,45 @@ public class MegaHtmlFormBottom {
 
 
 
+
+
+
+            
+//            //Smart Entry Tags
+//            mb.append("<tr>");
+//            mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
+//            if (displayasadmin) {
+//                mb.append("Keyword Tags</b></font><br><font face=arial size=-2><b>Enter keyword tags to help organize and find your entries.");
+//            } else {
+//                mb.append("Keyword Tags");
+//            }
+//            mb.append("</b></font><br>");
+//            mb.append("</td>");
+//            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
+//            if (displayasadmin) {
+//                //This is where the admin side is shown.
+//                //Users can enter and edit tag information here as a single input text field
+//
+//            } else {
+//                //This is where the public side is shown.
+//                //Readers view keyword tags as links to the keyword tag page.
+//            }
+//            mb.append("</td>");
+//            mb.append("</tr>");
+
+
+
+
+
+
+
+
+
+
             //Location
             if (pageProps.entry.location!=null){
                 Debug.debug(5, "", "Megahtmlformbottom.java calling location locationid=" + pageProps.entry.location.getLocationid() + "<br>getLongitude()=" + pageProps.entry.location.getLongitude());
             }
-
             mb.append(LocationRenderHtml.getHtmlForEntryPageTable(pageProps.entry.location, displayasadmin, disabledFormText, userSession));
 
 
