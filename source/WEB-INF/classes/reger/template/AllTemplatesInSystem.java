@@ -3,11 +3,13 @@ package reger.template;
 import reger.core.db.Db;
 import reger.AddToArray;
 import reger.core.Debug;
+import reger.core.WebAppRootDir;
 
 
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
+import java.io.File;
 
 
 /**
@@ -50,7 +52,7 @@ public class AllTemplatesInSystem {
         //-----------------------------------
         //-----------------------------------
         if (rstCount!=null && rstCount.length>0){
-        	numberInSystem = Integer.parseInt(rstCount[0][0]);
+            numberInSystem = Integer.parseInt(rstCount[0][0]);
         }
 
         //-----------------------------------
@@ -59,10 +61,36 @@ public class AllTemplatesInSystem {
         //-----------------------------------
         //-----------------------------------
         if (rstTemplates!=null && rstTemplates.length>0){
-        	for(int i=0; i<rstTemplates.length; i++){
-        	    Template template = new Template(Integer.parseInt(rstTemplates[i][0]));
-        	    allTemplates.put(new Integer(Integer.parseInt(rstTemplates[i][0])), template);
-        	}
+            for(int i=0; i<rstTemplates.length; i++){
+                Template template = new Template(Integer.parseInt(rstTemplates[i][0]));
+                allTemplates.put(new Integer(Integer.parseInt(rstTemplates[i][0])), template);
+            }
+        }
+
+
+        try{
+
+            //Append the static templates from the filesystem.
+            //MY GOSH MAN... WHAT WERE YOU THINKING?
+            //DO NOT CHANGE THE HASHTABLE INDEXES OR THE TEMPLATEIDS
+            //because they're stored in the database to reference the template.
+
+            //Site Templates
+            allTemplates.put(-1, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/beautiful/template.html"), -1, Template.TEMPLATETYPESITE, "Beautiful"));
+            allTemplates.put(-2, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/branches/template.html"), -2, Template.TEMPLATETYPESITE, "Branches"));
+            allTemplates.put(-3, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/gothictrees/template.html"), -3, Template.TEMPLATETYPESITE, "Gothic Trees"));
+            allTemplates.put(-4, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/nigglish/template.html"), -4, Template.TEMPLATETYPESITE, "Nigglish"));
+            allTemplates.put(-5, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/spanishvacation/template.html"), -5, Template.TEMPLATETYPESITE, "Spanish Vacation"));
+
+            //Entry Templates
+            allTemplates.put(-101, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/beautiful/template.html"), -101, Template.TEMPLATETYPEENTRYLIST, "Beautiful"));
+            allTemplates.put(-102, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/branches/template.html"), -102, Template.TEMPLATETYPEENTRYLIST, "Branches"));
+            allTemplates.put(-103, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/gothictrees/template.html"), -103, Template.TEMPLATETYPEENTRYLIST, "Gothic Trees"));
+            allTemplates.put(-104, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/nigglish/template.html"), -104, Template.TEMPLATETYPEENTRYLIST, "Nigglish"));
+            allTemplates.put(-105, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/spanishvacation/template.html"), -105, Template.TEMPLATETYPEENTRYLIST, "Spanish Vacation"));
+
+        } catch (Exception e){
+            reger.core.Debug.errorsave(e, "Failed to load a template from the filesystem: AllTemplatesInSystem.");
         }
     }
 
@@ -81,10 +109,10 @@ public class AllTemplatesInSystem {
         //-----------------------------------
         //-----------------------------------
         if (rstTemplates!=null && rstTemplates.length>0){
-        	for(int i=0; i<rstTemplates.length; i++){
-        	    Template template = new Template(Integer.parseInt(rstTemplates[i][0]));
-        	    allTemplates.put(new Integer(Integer.parseInt(rstTemplates[i][0])), template);
-        	}
+            for(int i=0; i<rstTemplates.length; i++){
+                Template template = new Template(Integer.parseInt(rstTemplates[i][0]));
+                allTemplates.put(new Integer(Integer.parseInt(rstTemplates[i][0])), template);
+            }
         }
     }
 

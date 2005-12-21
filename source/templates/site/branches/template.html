@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<style>
+/*
+Client:
+Website:
+Written By:
+Last Updated:
+
+All contents C The Blog Studio and/or the owner of the site. www.blogstudio.com
+----
+
+Styles should be written as follows (but use your brain - this isn't a hard and fast rule. It's designed so that we can all work on the same document with some degree of familiarity:
+
+position/float
+display
+width
+height
+margin
+padding
+color
+background
+
+*/
+
+/* --------------------------------- =general -------- */
+
+* {
+	padding:0;
+	margin:0;
+}
+
+img {border: 0;}
+
+p {margin: 0.8em 0;}
+
+/* we're going to set the font-size on the body to 76%. This means that when we set a font to 1em, it will be prety close to the user's default font size. NO USING PX FOR FONTS - ems or % only please */
+
+body {
+	background-color: #FFFFFF;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/branches/images/treeTop.png);
+	background-repeat: no-repeat;
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 76%;
+}
+
+/* --------------------------------- =layout -------- */
+
+#wrapper {
+	width: 770px;
+}
+
+#leftCol {
+	margin-top: 290px;
+	float:left;
+	width: 280px;
+}
+
+#contentCol {
+	float: right;
+	width: 470px;
+}
+
+.titleBox {
+	margin: 58px 0 80px 130px;
+	padding: 0 0 10px;
+	border-bottom: 1px #a7512e solid;
+	color: #a7512e;
+	text-align: left;
+}
+
+#footer {
+	display: block;
+	width: 770px;
+	clear: both;
+	float: left;
+}
+
+#footerBranch {
+	display: block;
+	width: 770px;
+	padding-top: 10px;
+	height: 182px;
+	background: url(http://www.blatantlie.com/client/reger/images/template/branches/images/footerbranch.png) no-repeat top right;
+	border-top: 1px solid #a7512e;
+}
+
+/* --------------------------------- =typography -------- */
+
+.titleBox h1 {
+	font-size: 1.7em;
+	font-weight:lighter;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.entry {
+	margin: 0 0 0 25px;
+}
+
+.entry .h2 {
+	color: #8f8f8f;
+	font-size: 2em;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight: lighter;
+}
+
+.entry .entryDate {
+	color: #444;
+}
+
+.entry p {
+	color: #7a7b7b;
+	line-height: 1.8em;
+}
+
+.entryDate {
+	margin-top: 4px;
+}
+
+blockquote {
+	width: 360px;
+	margin: 20px 0 20px 25px;
+	padding: 1px 3px 7px 0px;
+	background-color: #e4e2c8;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/branches/images/blockQuoteFooter.gif);
+	background-position:bottom;
+	background-repeat: no-repeat;
+}
+
+.entry blockquote p {
+	padding-left: 50px;
+	color: #a7512e;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/branches/images/blockquoteQuote.gif);
+	background-repeat: no-repeat;
+	font-size: 1em;
+	line-height: 1.7em;
+}
+
+.comments {
+	height: 92px;
+	margin: 0 0 0px 0;
+	padding: 20px 0 0 5px;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/branches/images/commentsBackground.gif);
+	background-repeat: no-repeat;
+}
+
+.comments p {
+	color: #a7512e;
+	font-size: 1.2em;
+}
+
+.verticalNavigation {
+	margin: 15px 0 40px 20px;
+}
+
+.box {
+	margin: 15px 0 40px 20px;
+}
+
+.box p {
+	padding: 0 0 3px 22px;
+	color: #4f4e3a;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/branches/images/lineImage.gif);
+	font-size: .9em;
+	line-height: 2.15em;
+}
+
+.sideBarTitle {
+	margin-bottom: 3px;
+	padding: 0 20px 3px 0;
+	color: #a29d43;
+	border-bottom: 1px #e6e0d0 solid;
+	text-align: right;
+	font-size:1.6em;
+}
+
+.sideBarTitle-mp {
+	margin-bottom: 3px;
+	padding: 0 20px 3px 0;
+	color: #a29d43;
+	border-bottom: 1px #c8bfa1 solid;
+	text-align: right;
+	font-size:1.6em;
+}
+
+.mostPopular {
+	margin: 15px 0 40px 20px;
+	background: url(http://www.blatantlie.com/client/reger/images/template/branches/images/mostpopular.jpg) repeat-x bottom left;
+}
+
+#footer p {
+	padding-left: 45px;
+	font-size: .8em;
+}
+
+/* --------------------------------- =links -------- */
+
+a {
+	color: #b3684a;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.box a:link {
+	display:block;
+	height: 16px;
+	padding-top: 3px;
+	padding-left: 22px;
+	color: #4f4e3a;
+	font-size: 1em;
+	text-decoration: none;
+}
+
+.box a:hover {
+	display: block;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/branches/images/sideBarHover.gif);
+	background-repeat:repeat-x;
+	text-decoration: none;
+	font-size: 1em;
+}
+
+.mostPopular a:link {
+	display:block;
+	height: 16px;
+	padding-top: 3px;
+	padding-left: 22px;
+	color: #4f4e3a;
+	font-size: 1em;
+	text-decoration: none;
+}
+
+.mostPopular a:hover {
+	display: block;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/branches/images/sideBarHover.gif);
+	background-repeat:repeat-x;
+	text-decoration: none;
+	font-size: 1em;
+}
+
+/* --------------------------------- =lists -------- */
+
+.box ul {
+	/* border-bottom: 1px #e6e0d0 solid; */
+	list-style: none;
+}
+
+.box li {
+	display: block;
+	height: 19px;
+	color: #4f4e3a;
+	border-bottom: 1px #e6e0d0 solid;
+	font-size: 1em;
+}
+
+.mostPopular ul {
+	list-style: none;
+	padding-bottom: 25px;
+}
+
+.mostPopular li {
+	display: block;
+	height: 19px;
+	color: #4f4e3a;
+	border-bottom: 1px #c8bfa1 solid;
+	font-size: 1em;
+}
+
+
+/* --------------------------------- =verticalNavigationigation -------- */
+
+.verticalNavigation ul {
+	/* border-bottom: 1px #e6e0d0 solid; */
+	padding-top: 5px;
+	list-style: none;
+}
+
+.verticalNavigation li {
+	padding: 3px 0 3px 22px;
+	color: #4f4e3a;
+	border-bottom: 1px #e6e0d0 solid;
+	font-size: 1em;
+}
+
+.verticalNavigation a {
+	color: #4f4e3a;
+	text-decoration: none;
+	display: block;
+	margin-right: 10px;
+}
+
+.verticalNavigation a:hover {
+	background: url(http://www.blatantlie.com/client/reger/images/template/branches/images/commentArrow.gif) no-repeat top right;
+}
+
+.startNav {
+	border-top: 1px #e6e0d0 solid;
+}
+/* --------------------------------- =forms -------- */
+
+
+/* --------------------------------- =tables -------- */
+
+
+/* --------------------------------- =ie hackery -------- */
+
+</style>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title><$Site.Name$> <$Entry.Title$></title>
+</head>
+<body>
+<div id="wrapper">
+  <div id="contentCol">
+    <div class="titleBox">
+      <h1><$Site.Name$> | <$Site.Description$></h1>
+    </div>
+	 <$Main.Body$>
+  </div>
+  <div id="leftCol">
+    <div class="sideBarTitle">Nav</div>
+    <div class="verticalNavigation"> <$Navbar.Vertical$> </div>
+    <div class="sideBarTitle">Bio</div>
+    <div class="box">
+      <p>A blog about our business, our industry, and our lives. You’ll find posts about this topic, and posts about that topic. All told, there are a number of posts that we hope you’ll enjoy. </p>
+    </div>
+    <div class="sideBarTitle">Recent Posts</div>
+    <div class="box"> <$Titles.Most.Recent.Entries$> </div>
+    <div class="mostPopular">
+      <div class="sideBarTitle-mp">Most Popular Posts</div>
+      <$Titles.Most.Read.Entries.7.Days$> </div>
+    <div class="sideBarTitle">Recent Comments</div>
+    <div class="verticalNavigation"> <$Comments$> </div>
+  </div>
+  <div id="footer">
+    <p id="footerBranch"></p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<style>
+/*
+Client: reger
+Website:
+Written By: Mike
+Last Updated: Mike - Nov 16 2005
+
+All contents C The Blog Studio and/or the owner of the site. www.blogstudio.com
+----
+
+Styles should be written as follows (but use your brain - this isn't a hard and fast rule. It's designed so that we can all work on the same document with some degree of familiarity:
+
+position/float
+display
+width
+height
+margin
+padding
+color
+background
+
+*/
+
+/* --------------------------------- =general -------- */
+
+* {
+	padding:0;
+	margin:0;
+}
+
+img {border: 0;}
+
+p {margin: 0.8em 0;}
+
+/* we're going to set the font-size on the body to 76%. This means that when we set a font to 1em, it will be prety close to the user's default font size. NO USING PX FOR FONTS - ems or % only please */
+
+body {
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 76%;
+	background-color: #3C3F58;
+}
+
+/* --------------------------------- =layout -------- */
+
+#wrapper {
+	width: 763px;
+	margin: 0px auto;
+	text-align: center;
+}
+
+#header {
+	height: 144px;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/beautiful/images/header.png);
+	background-repeat: no-repeat;
+}
+
+#horizontalNavigation {
+	height: 18px;
+	padding: 0 20px 0 0;
+	margin:0;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/beautiful/images/menuBackground.png);
+	background-repeat: no-repeat;
+	color:#fff;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	white-space:nowrap;
+	list-style-type:none;
+}
+
+#footer {
+	clear:both;
+	display: block;
+	height: 20px;
+}
+
+#bodyHolder {
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/beautiful/images/repeatingBackground.png);
+}
+
+#sidebar {
+	float: left;
+	width: 186px;
+	padding: 430px 40px 0 30px;
+	background:url(http://www.blatantlie.com/client/reger/images/template/beautiful/images/pearImage.png) no-repeat top left;
+	text-align:left;
+}
+
+#content {
+	float: right;
+	width: 507px;
+	padding: 40px 0 0 0;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/beautiful/images/contentShade.png);
+	background-repeat: no-repeat;
+	text-align:left;
+}
+
+.box {
+	margin: 0 0 50px 0;
+	padding: 7px 0 0 0;
+	text-indent: 15px;
+}
+
+.entry {
+	margin: 0 0 50px 0;
+}
+
+.spacerPear {
+	margin: 10px 0 0 0;
+	text-align:center;
+}
+
+.spacer {
+	height: 35px;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/beautiful/images/spacerPear.gif);
+	background-position:center;
+	background-repeat: no-repeat;
+}
+
+/* --------------------------------- =navigation -------- */
+
+
+/* --------------------------------- =typography -------- */
+
+.h2 {
+	color: #E3EEB0;
+	font-weight:bold;
+	font-size: 2em;
+}
+
+.entryDate {
+	padding: 9px 0 7px 0;
+	color: #B0BAFF;
+	font-size: .8em;
+}
+
+#content p {
+	padding: 0 35px 0 0;
+	color: #C2C2C2;
+	line-height: 1.8em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1em;
+}
+
+blockquote {
+	margin: 20px 80px 20px 45px;
+	padding: 0 0 0 40px;
+	color: #E3EEB0;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/beautiful/images/quoteImage.png);
+	background-repeat: no-repeat;
+}
+.comments {
+	margin: 30px 0 0 0;
+	color: #E3EEB0;
+	font-family:"Times New Roman", Times, serif;
+}
+
+.tags {
+	margin: 5px 0 0 0;
+	font-size: .8em;
+}
+.box p {
+	padding: 15px 0 5px 0;
+	color: #fff;
+	border-top: 2px #A1A97E solid;
+	text-indent: 15px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+/* --------------------------------- =links -------- */
+.entryDate a {
+	color: #B0BAFF;
+}
+
+.entryDate a:hover {
+	color: #330000;
+	background-color: #A9AFF0;
+}
+
+.comments a:link {
+	color: #A9AFF0;
+	text-decoration: none;
+}
+.comments a:hover {
+	color: #330000;
+	background-color: #A9AFF0;
+	text-decoration: none;
+}
+
+
+/* --------------------------------- =lists -------- */
+
+.box ul {
+	list-style: none;
+}
+
+.box a {
+	display: block;
+	margin: 0 0 7px 0;
+	list-style: none;
+	color: #8F9BEE;
+	text-decoration: none;
+	font-size: .9em;
+}
+
+.box a:link {
+	display: block;
+	margin: 0 0 7px 0;
+	color: #8F9BEE;
+	font-size: .9em;
+	list-style: none;
+}
+
+.box a:hover {
+	display: block;
+	margin: 0 0 7px 0;
+	color: #330000;
+	background-color: #A9AFF0;
+	font-size: .9em;
+	list-style: none;
+}
+
+
+#horizontalNavigation li {
+	display:inline;
+}
+
+#horizontalNavigation li a {
+	float:right;
+	display: block;
+	width: 60px;
+	height: 16px;
+	margin: 0 8px 0 0;
+	padding-top: 2px;
+	color:#000000;
+	text-decoration:none;
+}
+
+#horizontalNavigation li a:hover {
+	color:#fff;
+	background:#A1A97E;
+}
+
+/* --------------------------------- =forms -------- */
+
+
+/* --------------------------------- =tables -------- */
+
+
+/* --------------------------------- =ie hackery -------- */
+
+</style>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title><$Site.Name$> - <$Entry.Title$></title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="wrapper">
+  <div id="header"></div>
+  <div id="horizontalNavigation">
+    <$Navbar.Horizontal$>
+  </div>
+  <div id="bodyHolder">
+    <div id="content">
+      <div class="entry">
+		<$Main.Body$>
+      </div>
+    </div>
+    <div id="sidebar">
+      <div class="box">
+	  <p>Recent Posts</p>
+        <$Titles.Most.Recent.Entries$>
+      </div>
+      <div class="box">
+	  <p>Recent Remarks</p>
+       <$Comments$>
+      </div>
+    </div>
+    <div id="footer"></div>
+  </div>
+</div>
+</body>
+</html>

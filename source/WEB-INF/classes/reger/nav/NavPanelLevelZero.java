@@ -18,7 +18,8 @@ public class NavPanelLevelZero {
 
 
         //mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 background='"+pathToAppRoot+"images/pattern-yellowsquigglies.gif'>");
-        mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 background='"+pathToAppRoot+"images/navlevel0bg2.gif'>");
+        //mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 background='"+pathToAppRoot+"images/navlevel0bg2.gif'>");
+        mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 style=\"background-image: url(images/top-bar-rightbg.gif); background-position: top right; background-repeat: no-repeat;\">");
         mb.append("<tr>");
         mb.append("<td class=navlevel0topbar colspan=10><img src='images/clear.gif' width=1 height=85 align=right>");
 //        mb.append("<font face=impact size=+2 style=\"font-size: 30px; color: ffffcc;\">");

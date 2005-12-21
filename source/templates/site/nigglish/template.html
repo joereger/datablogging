@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<style>
+/*
+Client: Reger
+Website:
+Written By: Mike
+Last Updated: Mike - Nov 16 2005
+
+All contents C The Blog Studio and/or the owner of the site. www.blogstudio.com
+----
+
+Styles should be written as follows (but use your brain - this isn't a hard and fast rule. It's designed so that we can all work on the same document with some degree of familiarity:
+
+position/float
+display
+width
+height
+margin
+padding
+color
+background
+
+*/
+
+/* --------------------------------- =general -------- */
+
+* {
+	padding:0;
+	margin:0;
+}
+
+img {border: 0;}
+
+p {margin: 0.8em 0; font-family: "Lucida Grande", Arial, Helvetica, sans-serif;}
+
+/* we're going to set the font-size on the body to 76%. This means that when we set a font to 1em, it will be prety close to the user's default font size. NO USING PX FOR FONTS - ems or % only please */
+
+body {
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 76%;
+	background-color: #DAF2F2;
+}
+
+/* --------------------------------- =layout -------- */
+
+#wrapper {
+	width: 800px;
+	margin: 0px auto;
+	text-align: center;
+}
+
+#contentContainer {
+	width: 800px;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/Nigglish/images/repeatingBackground.gif);
+}
+
+#header {
+	width: 800px;
+}
+
+#layoutLeft {
+	float: left;
+	display: block;
+	width: 302px;
+	text-align: left;
+	vertical-align: top;
+}
+
+#layoutRight {
+	float: right;
+	display:block;
+	width: 498px;
+	color: blue;
+}
+
+#layoutMainHeaderBox {
+	float: left;
+	display:block;
+	height: 108px;
+	width: 302px;
+	background-color: #DAF2F2;
+	border-top: #F0DF7C 6px solid;
+}
+
+#horizontalNavigation {
+	float: right;
+	display:block;
+	height:108px;
+	width: 498px;
+	background-color: #DAF2F2;
+	border-top: #F0DF7C 6px solid;
+}
+
+#footer {
+	clear: both;
+	display:block;
+	width: 800px;
+	height: 33px;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/Nigglish/images/footer.gif);
+}
+
+#searchBox {
+	clear: left;
+	display: block;
+	width: 302px;
+	height: 91px;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/Nigglish/images/searchBackground.gif);
+}
+
+.box {
+	display:block;
+	margin: 0 0px 15px 0px;
+	padding: 0 0px 20px 0px;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/Nigglish/images/leftBarContentBG.gif);
+}
+
+.entry {
+	display: block;
+	margin: 0px auto;
+	padding-right: 1px;
+}
+
+.blogEntry {
+	width: 429px;
+	margin:0px 20px 10px 22px;
+	padding: 15px 14px 15px 14px;
+	color: #333;
+	background-color: #FFF;
+}
+
+/* --------------------------------- =navigation -------- */
+
+#horizontalNavigation {
+}
+
+#horizontalNavigation ul {
+	diaplay: inline;
+	margin: 82px 0px 0px 40px;
+}
+
+#horizontalNavigation ul li {
+	float: left;
+	display: block;
+	width: 100px;
+	height: 25px;
+	margin-left: 2px;
+	background-color:#A19560;
+	border: 1px solid #6F6641;
+	border-bottom: 1px solid #9D915E;
+	text-transform:uppercase;
+}
+
+#horizontalNavigation a {
+	display: block;
+	height: 20px;
+	padding-top: 5px;
+	color: #fff;
+	text-decoration:none;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+#horizontalNavigation a:hover {
+	color: #FF424D;
+	background-color:#ffed84;
+
+}
+
+/* --------------------------------- =typography -------- */
+
+#layoutMainHeaderBox h1 {
+	width: 225px;
+	padding-top: 25px;
+	padding-right: 30px;
+	color: #FF424D;
+	float: right;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 2.3em;
+	font-weight: normal;
+	text-align: right;
+}
+
+.sideTitle {
+	margin: 20px 0 0 0;
+	padding: 5px 24px 4px 24px;
+	padding-bottom: 3px;
+	border-bottom: #728063 1px solid;
+	color: #E3EEB0;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/Nigglish/images/leftBarContentBG.gif);
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 1.4em;
+	font-weight: normal;
+	font-weight:bold;
+	letter-spacing: -.05em;
+}
+.box p {
+	padding: 0px 24px 0px 24px;
+	color: #B5C4A9;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/Nigglish/images/leftBarContentBG.gif);
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+}
+
+.entry .h2 {
+	width: 457px;
+	margin:0px auto 10px auto;
+	padding: 15px 0px 15px 0px;
+	color: #2383C0;
+	background-color: #FFFFFF;
+	font-size: 1.8em;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	text-align: left;
+	text-indent: 20px;
+}
+
+.entryDate {
+	width: 437px;
+	margin:0px auto 10px auto;
+	padding: 15px 0px 15px 20px;
+	color: #59440F;
+	background-color: #FFED84;
+	font-size: .9em;
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	text-align: left;
+}
+
+.blogEntry {
+	margin: 0px auto;
+}
+
+.blogEntry p {
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 1em;
+	text-align: left;
+	line-height: 1.5em;
+}
+
+/* --------------------------------- =links -------- */
+
+a {
+	color: #FF424D;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/* --------------------------------- =lists -------- */
+
+.box li {
+	display:block;
+	padding: 2px 0px;
+	color: #B5C4A9;
+	border-bottom: #728063 1px solid;
+	list-style:none;
+}
+
+.box li a {
+	display:block;
+	padding: 2px 20px 2px 24px;
+	color: #B5C4A9;
+	text-decoration: none;
+	list-style:none;
+}
+
+.box li a:hover {
+	display:block;
+	color: #B5C4A9;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/Nigglish/images/leftBarBackground.gif);
+	text-decoration: none;
+	list-style:none;
+}
+
+.box li a:visited {
+	display:block;
+	padding: 2px 0px;
+	color: #B5C4A9;
+	list-style:none;
+	text-decoration: none;
+}
+
+/* --------------------------------- =forms -------- */
+
+
+/* --------------------------------- =tables -------- */
+
+
+/* --------------------------------- =ie hackery -------- */
+
+</style>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title><$Site.Name$> <$Entry.Title$></title>
+</head>
+<body>
+<div id="wrapper">
+  <div id="header">
+    <div id="layoutMainHeaderBox">
+      <h1><$Site.Name$></h1>
+    </div>
+    <div id="horizontalNavigation"> <$Navbar.Horizontal$> </div>
+  </div>
+  <div id="contentContainer">
+    <div id="layoutRight"> <img src="http://www.blatantlie.com/client/reger/images/template/Nigglish/images/rightBarTopper.gif" alt="topper" width="498" height="21" />
+		<$Main.Body$>
+      <img src="http://www.blatantlie.com/client/reger/images/template/Nigglish/images/entryBreak.gif" alt="Entry Break" /><img src="http://www.blatantlie.com/client/reger/images/template/Nigglish/images/rightBarTopper.gif" alt="topper" width="498" height="21" /></div>
+    <div id="layoutLeft"> <img src="http://www.blatantlie.com/client/reger/images/template/Nigglish/images/leftBarEmptySpace.gif" alt="topper" />
+      <div id="searchBox"></div>
+      <div class="sideTitle"><$Log.Name$></div>
+      <div class="box">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam nec metus ac dui elementum tristique. Phasellus orci. Mauris quis risus.</p>
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam nec metus ac dui elementum tristique. Phasellus orci. Mauris quis risus.</p>
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam nec metus ac dui elementum tristique. Phasellus orci. Mauris quis risus.</p>
+      </div>
+      <div class="sideTitle">Recent Posts</div>
+      <div class="box"> <$Titles.Most.Recent.Entries$> </div>
+      <div class="sideTitle">Recent Comments</div>
+      <div class="box"> <$Comments$> </div>
+      <div class="sideTitle">Blogroll</div>
+      <div class="box"> <$Blogroll$> </div>
+    </div>
+    <div id="footer"> </div>
+  </div>
+</div>
+</body>
+</html>

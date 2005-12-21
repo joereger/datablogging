@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<style>
+/*
+Client: Reger
+Website:
+Written By: Mike
+Last Updated: Mike | Nov 16th 2005
+
+All contents C The Blog Studio and/or the owner of the site. www.blogstudio.com
+----
+
+Styles should be written as follows (but use your brain - this isn't a hard and fast rule. It's designed so that we can all work on the same document with some degree of familiarity:
+
+position/float
+display
+width
+height
+margin
+padding
+color
+background
+
+*/
+
+/* --------------------------------- =general -------- */
+
+* {
+	padding:0;
+	margin:0;
+}
+
+img {border: 0;}
+
+p {margin: 0.8em 0;}
+
+/* we're going to set the font-size on the body to 76%. This means that when we set a font to 1em, it will be prety close to the user's default font size. NO USING PX FOR FONTS - ems or % only please */
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 76%;
+	background-color: #0F0F0F;
+}
+
+/* --------------------------------- =layout -------- */
+
+#wrapper {
+	width: 708px;
+	margin: 0px auto;
+	text-align: center;
+}
+
+#header {
+	width: 708px;
+	height: 252px;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/gothicTreesHeader.jpg);
+	background-repeat: no-repeat;
+}
+
+#contentContainer {
+	width: 693px;
+	padding: 0px 8px 0px 7px;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/siteBackground.gif);
+}
+
+#leftColumn {
+	float:left;
+	width: 386px;
+	padding: 0 20px 0 30px;
+	text-align:left;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/contentGradient.gif);
+	background-repeat:repeat-x;
+}
+
+#rightColumn {
+	float: right;
+	width: 257px;
+	text-align:left;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/rightColumnTop.gif);
+	background-repeat:repeat-x;
+}
+
+#footer {
+	clear:both;
+	display: block;
+	height: 30px;
+}
+
+.entry {
+	padding: 30px 0 15px 0;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/dot.gif);
+	background-position:bottom;
+	background-repeat:no-repeat;
+}
+
+.recentPostsBox {
+	width: 210px;
+	padding: 35px 0 0 0;
+	margin: 40px 0 0 22px;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/sideBarBackgroundImage.gif);
+	background-repeat: no-repeat;
+	background-color: #dbe4e6;
+	border: 1px solid #ffffff;
+}
+.popularPostsBox {
+	width: 210px;
+	margin: 40px 0 0 22px;
+	padding: 35px 0 0px 0;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/sideBarBackgroundImage.gif);
+	background-repeat: no-repeat;
+	background-color: #f0e3bf;
+	border: 1px solid #fff;
+}
+
+/* --------------------------------- =navigation -------- */
+
+#horizontalNavigation {
+	width: 678px;
+	height: 43px;
+	margin: 0px 8px 0px 7px;
+	padding: 0px 8px 0px 7px;
+	background-color: #fff;
+	border-top: 2px #A91000 solid;
+	border-bottom: 1px #333333 solid;
+}
+
+#horizontalNavigation ul {
+	display: inline;
+}
+
+#horizontalNavigation li {
+	float: left;
+	display: block;
+}
+
+#horizontalNavigation a {
+	display: block;
+	margin-top: 12px;
+	padding: 0px 20px;
+	color: #000000;
+	font: 1.6em Georgia, "Times New Roman", Times, serif;
+	text-decoration: none;
+}
+
+#horizontalNavigation a:hover {
+	color: #a91000;
+
+}
+
+/* --------------------------------- =typography -------- */
+
+#header h1 {
+	float: right;
+	margin-top: 125px;
+	margin-right: 75px;
+	padding: 5px 10px;
+	color: #fff;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/red.png);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.4em;
+	font-weight: lighter;
+	text-align: right;
+}
+
+#header h1 span {
+	font-family: "Times New Roman", Times, serif;
+}
+
+.entry .h2 {
+	padding: 2px 15px 1px 10px;
+	border-bottom: 2px #A91000 solid;
+	background-color: #E7E7E7;
+	color: #121212;
+	font-size: 2.1em;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+#leftColumn p {
+	margin: 15px 0px 15px 0px;
+	line-height: 1.7em;
+}
+
+blockquote {
+	width: 360px;
+	margin-left: 10px;
+	padding: 1px 3px 7px 0px;
+	background-color: #F4EACF;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/blockQuoteFooter.png);
+	background-position:bottom;
+	background-repeat: repeat-x;
+}
+
+blockquote p {
+	padding-left: 50px;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/blockquoteQuote.gif);
+	background-repeat: no-repeat;
+	font-size: 1.15em;
+	line-height: 1.2em;
+	color: #A7512E;
+}
+
+.comments {
+	margin-bottom: 40px;
+	color: #A7512E;
+	font-family:"Times New Roman", Times, serif;
+	text-align: center;
+}
+
+.entryDate {
+	margin: 10px 0 0 10px;
+	color: #a29d43;
+	font-size:.8em;
+}
+
+.recentPostsHeader {
+	padding: 7px 10px 7px 10px;
+	color: #6C4444;
+	background-color: #dbe4e6;
+	font-family:"Times New Roman", Times, serif;
+	font-weight:bold;
+	font-size:1.8em;
+	text-align:left;
+}
+
+.popularPostsHeader {
+	padding: 7px 10px;
+	background-color: #f0e3bf;
+	color: #6C4444;
+	text-align:left;
+	font-family:"Times New Roman", Times, serif;
+	font-weight:bold;
+	font-size:1.8em;
+}
+
+/* --------------------------------- =links -------- */
+
+.comments a:link {
+	color: #7D792F;
+	text-decoration:none;
+}
+
+.comments a:visited {
+	color: #7D792F;
+	text-decoration:none;
+}
+
+.comments a:hover {
+	color: #7D792F;
+	background-color: #570D04;
+	text-decoration:none;
+}
+
+.entryDate a:link {
+	color: #a7512e;
+	text-decoration: none;
+}
+
+.entryDate a:hover {
+	background-color: #CCCCCC;
+}
+
+.recentPostsBox li {
+	display:block;
+	color: #4F4E3A;
+	border-top: 1px #DCD8CA solid;
+	text-indent: 10px;
+	list-style:none;
+}
+.recentPostsBox li a:link {
+	display:block;
+	padding: 4px 0 4px 0;
+	color: #4F4E3A;
+	text-decoration: none;
+}
+.recentPostsBox li a:hover {
+	display:block;
+	padding: 4px 0 4px 0;
+	color: #4F4E3A;
+	background-color: #F3F6F7;
+	text-decoration: none;
+}
+
+.popularPostsBox li {
+	display:block;
+	border-top: 1px #DCD8CA solid;
+	color: #4F4E3A;
+	list-style:none;
+	text-indent: 10px;
+}
+.popularPostsBox li a:link {
+	display:block;
+	padding: 4px 0 4px 0;
+	color: #4F4E3A;
+	text-decoration: none;
+}
+.popularPostsBox li a:hover {
+	display:block;
+	padding: 4px 0 4px 0;
+	background-color: #FAF6EA;
+	color: #4F4E3A;
+	text-decoration: none;
+}
+
+#tbsPromo {
+	margin: 200px 0 0 25px;
+	color: #646363;
+	font-size:.7em;
+}
+
+a.permalink {
+	padding-right: 13px;
+	background: url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/permalinkArrow.gif) no-repeat;
+	background-position: center right;
+}
+
+a.permalink:hover {
+	background: url(http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/permalinkArrowHover.gif) no-repeat;
+	background-position: center right;
+	background-color: #570d04;
+}
+
+
+/* --------------------------------- =lists -------- */
+
+
+/* --------------------------------- =forms -------- */
+
+
+/* --------------------------------- =tables -------- */
+
+
+/* --------------------------------- =ie hackery -------- */
+
+</style>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title><$Site.Name$> <$Entry.Title$></title>
+</head>
+<body>
+<div id="wrapper">
+  <!-- Holds the page together -->
+  <div id="header">
+    <h1><$Site.Name$> | <$Site.Description$></h1>
+  </div>
+  <div id="horizontalNavigation">
+    <!-- Navigation for the site -->
+    <$Navbar.Horizontal$>
+  </div>
+  <div id="contentContainer">
+    <!-- Main Container for the page -->
+    <div id="rightColumn">
+      <div class="recentPostsBox">
+        <div class="recentPostsHeader">
+          <h3>Recent Posts</h3>
+        </div>
+        <div class="box">
+          <$Titles.Most.Recent.Entries$>
+        </div>
+        <img src="http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/recentPostsFooter.gif" alt="d" /> </div>
+      <div class="popularPostsBox">
+        <div class="popularPostsHeader">
+          <h3>Popular Posts</h3>
+        </div>
+        <div class="box">
+          <$Titles.Most.Read.Entries.7.Days$>
+        </div>
+        <img src="http://www.blatantlie.com/client/reger/images/template/Gothic_Trees/images/popularPostsFooter.gif" alt="d" /> </div>
+      <div id="tbsPromo">
+      </div>
+    </div>
+    <div id="leftColumn">
+	 <$Main.Body$>
+    </div>
+    <div id="footer"></div>
+  </div>
+</div>
+</body>
+</html>

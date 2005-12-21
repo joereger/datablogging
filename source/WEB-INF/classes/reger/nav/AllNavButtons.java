@@ -105,11 +105,14 @@ public class AllNavButtons {
         //Settings
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingssiteprops", "settings", "SITE SETTINGS", "myhome/settings-siteprops.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingssettings", "settings", "USER SETTINGS", "myhome/settings-accountuser.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplate", "settings", "SITE LOOK & FEEL TEMPLATES", "myhome/settings-template-main.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplatetab", "settings", "SITE LOOK & FEEL TEMPLATES", "myhome/settings-template-oneclick.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsprofile", "settings", "YOUR PROFILE", "myhome/settings-profile.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsfavesites", "settings", "FAVORITE SITES", "myhome/settings-favesites.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsacctstatus", "settings", "LICENSE STATUS", "myhome/accountstatus.log", false, "", null));
 
+        //Look & Feel
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplateoneclick", "settingstemplatetab", "SIMPLE ONE-CLICK TEMPLATES", "myhome/settings-template-oneclick.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplate", "settingstemplatetab", "ADVANCED/MANUAL EDITING", "myhome/settings-template-main.log", false, "", null));
 
 
         //Profile

@@ -4,6 +4,8 @@ import reger.core.db.Db;
 import reger.PrivateLabel;
 import reger.core.db.Db;
 
+import java.io.File;
+
 /**
  * Represents a template.
  */
@@ -27,6 +29,18 @@ public class Template {
         load(templateid);
     }
 
+    /**
+     * Loads a template from a file
+     */
+    public Template(File file, int templateid, int type, String name){
+        this.templateid = templateid;
+        this.type = type;
+        this.name = name;
+        this.accountid = 0;
+        this.issystemtemplate = true;
+        this.template = reger.core.Util.textFileRead(file).toString();
+    }
+
     public Template(String template, int type, int accountid, boolean issystemtemplate, String name){
         populate(0, template, type, accountid, issystemtemplate, name);
     }
@@ -43,7 +57,7 @@ public class Template {
         this.issystemtemplate = issystemtemplate;
         this.name = name;
     }
-    
+
 
     public void load(int templateid){
         //-----------------------------------
@@ -72,7 +86,7 @@ public class Template {
         }
 
         if (accountid>0){
-            issystemtemplateText = "0";    
+            issystemtemplateText = "0";
         }
 
         if (name==null || name.equals("")){

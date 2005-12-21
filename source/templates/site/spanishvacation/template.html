@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style>
+/*
+Client: reger
+Website:
+Written By: Mike
+Last Updated: Mike - Nov 16
+
+All contents C The Blog Studio and/or the owner of the site. www.blogstudio.com
+----
+
+Styles should be written as follows (but use your brain - this isn't a hard and fast rule. It's designed so that we can all work on the same document with some degree of familiarity:
+
+position/float
+display
+width
+height
+margin
+padding
+color
+background
+
+*/
+
+/* --------------------------------- =general -------- */
+
+* {
+	padding:0;
+	margin:0;
+}
+
+img {border: 0;}
+
+p {margin: 0.8em 0;}
+
+/* we're going to set the font-size on the body to 76%. This means that when we set a font to 1em, it will be prety close to the user's default font size. NO USING PX FOR FONTS - ems or % only please */
+
+body {
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 76%;
+	background-color: #212D15;
+}
+
+/* --------------------------------- =layout -------- */
+
+#wrapper {
+	width: 699px;
+	margin: 0px auto;
+	text-align: center;
+}
+#header {
+	height: 181px;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/headerImage.png);
+	background-repeat: no-repeat;
+}
+#contentContainer {
+	padding: 0px 27px 0px 27px;
+	background-image: url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/repeatingBackground.png);
+	background-repeat:repeat-y;
+}
+#sideBarContainer {
+	float: right;
+	width: 228px;
+	padding: 22px 0 0 0;
+}
+#bodyContentContainer {
+	float: left;
+	width: 417px;
+	padding: 22px 0 0 0;
+	text-align: left;
+}
+#footer {
+	clear:both;
+	display: block;
+	height: 30px;
+}
+.box {
+	margin: 0 0 10px 0;
+	padding: 5px 0 3px 0;
+	color: #fff;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/sideBarContent.png);
+	text-align:left;
+}
+
+.blogroll {
+	background-image: none;
+}
+
+/* --------------------------------- =typography -------- */
+
+#blogTitle {
+	color: #FFFFFF;
+	padding: 85px 0 0 50px;
+	font-family:"Times New Roman", Times, serif;
+	font-size:3.2em;
+	text-align:left;
+}
+
+#blogSubTitle{
+	padding: 7px 0 0 55px;
+	color: #FFFFFF;
+	text-align:left;
+}
+
+.box p {
+	padding: 2px 15px 10px 20px;
+	color: #F7F7F7;
+	font-weight: normal;
+	font-size: .8em;
+}
+.sideBarHeader {
+	height: 25px;
+	margin: 5px 0 7px 12px;
+	padding: 2px 15px 10px 8px;
+	background: url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/sideBarOrnament.png) no-repeat;
+	background-position: top left;
+	text-indent:15px;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 1.7em;
+}
+.h2 {
+	margin: 0 10px 3px 32px;
+	color: #A29D43;
+	font-family:"Times New Roman", Times, serif;
+	font-size: 2.1em;
+}
+.entryDate {
+	margin: 0 10px 20px 32px;
+	color: #486420;
+	font-size: .8em;
+}
+.entry p {
+	margin: 0 32px 20px 32px;
+	color: #616161;
+	line-height: 1.8em;
+}
+
+.entry blockquote {
+	margin: 0 20px 20px 40px;
+	padding: 5px 5px 5px 15px;
+	border-left: 5px #C77B97 solid;
+	color: #616161;
+	background: #EFE0E6 url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/quote.gif) no-repeat top left;
+	line-height: 1.8em;
+}
+
+/* --------------------------------- =links -------- */
+.box li a:link {
+	display: block;
+	margin: 0 0 3px 0;
+	color: #ffffff;
+	text-align: left;
+	text-indent: 20px;
+	text-decoration: none;
+}
+
+.box li a:hover {
+	display: block;
+	margin: 0 0 3px 0;
+	color: #ffffff;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/otherSideMenuBg.png);
+	text-align: left;
+	text-indent: 20px;
+	text-decoration: none;
+}
+
+.box li a:visited {
+	display: block;
+	margin: 0 0 3px 0;
+	color: #ffffff;
+	text-align: left;
+	text-indent: 20px;
+	text-decoration: none;
+}
+
+/* --------------------------------- =navigation -------- */
+#menuHolder li a:link {
+	display: block;
+	margin: 0 0 12px 0;
+	padding: 6px 0 6px 0;
+	color: #d0cdce;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/menuBackground.png);
+	text-decoration: none;
+	text-align: left;
+	text-indent: 30px;
+}
+
+#menuHolder li a:hover {
+	display: block;
+	margin: 0 0 12px 0;
+	padding: 6px 0 6px 0;
+	color: #ffffff;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/menuBackgroundOver.png);
+	text-decoration: none;
+	text-align: left;
+	text-indent: 30px;
+}
+
+#menuHolder li a:visited {
+	display: block;
+	margin: 0 0 12px 0;
+	padding: 6px 0 6px 0;
+	color: #ffffff;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/menuBackground.png);
+	text-decoration: none;
+	text-align: left;
+	text-indent: 30px;
+}
+
+
+/* --------------------------------- =lists -------- */
+
+#menuHolder ul {
+	list-style: none;
+}
+
+#menuHolder li {
+	display: block;
+	color: #ffffff;
+	background-image:url(http://www.blatantlie.com/client/reger/images/template/spanish_vacation/images/menuBackground.png);
+	text-align: left;
+}
+
+.box ul {
+	margin: 0 0 20px 0;
+	list-style: none;
+}
+
+.box li {
+	display: block;
+	margin: 0 0 3px 0;
+	color: #ffffff;
+	text-align: left;
+	text-indent: 20px;
+}
+
+/* --------------------------------- =forms -------- */
+
+
+/* --------------------------------- =tables -------- */
+
+
+/* --------------------------------- =ie hackery -------- */
+
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title><$Site.Name$> <$Entry.Title$></title>
+</head>
+<body>
+<div id="wrapper">
+<div id="header">
+<div id="blogTitle"><$Site.Name$></div>
+<div id="blogSubTitle"><$Site.Description$></div></div>
+<div id="contentContainer">
+ <div id="bodyContentContainer">
+    <$Main.Body$>
+   </div>
+  <div id="sideBarContainer">
+    <div id="menuHolder">
+      <$Navbar.Vertical$>
+    </div>
+    <div class="box">
+      <div class="sideBarHeader">About</div>
+      <p>Peter Flaschner (that’s me), is a Toronto based designer, uncurable css addict, and workaholic.</p>
+      <p>If you’re wondering about the 97 up in the corner, click here to find out what’s going on.</p>
+      <p>I’m also a dad to two little girls, a completely neurotic dog and two psycho siamese cats. Wish me luck.</p>
+    </div>
+    <div class="box blogroll">
+      <div class="sideBarHeader">Blogroll</div>
+      <$Blogroll$>
+      <div class="sideBarHeader">Subscribe</div>
+    </div>
+  </div>
+
+    <div id="footer"></div>
+  </div>
+</div>
+</body>
+</html>
