@@ -56,7 +56,7 @@ for (Enumeration e = allOneClickTemplates.keys(); e.hasMoreElements();) {
 
         mb.append("<br clear=all><br>");
         if (!oneClickTemplateSet.getThumbnail().equals("")){
-            mb.append("<img src='"+oneClickTemplateSet.getThumbnail()+"' align=left>");
+            //mb.append("<img src='"+oneClickTemplateSet.getThumbnail()+"' align=left>");
         }
         mb.append("<font face=arial size=+2 color=#cccccc>");
         mb.append(oneClickTemplateSet.getName());
