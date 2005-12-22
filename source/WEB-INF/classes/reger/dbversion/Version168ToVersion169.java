@@ -16,9 +16,29 @@ public class Version168ToVersion169 implements UpgradeDatabaseOneVersion{
 
         //Pawan's first database update
 
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate("RENAME TABLE imagetag TO tag");
+        //-----------------------------------
+        //-----------------------------------
 
-     
+        //-----------------------------------
+        //-----------------------------------
+        count = Db.RunSQLUpdate("ALTER TABLE tag CHANGE imagetagid tagid int(11) NOT NULL auto_increment");
+        //-----------------------------------
+        //-----------------------------------
 
+        //-----------------------------------
+        //-----------------------------------
+        count = Db.RunSQLUpdate("ALTER TABLE imagetagimagelink CHANGE imagetagid tagid int(11) NOT NULL");
+        //-----------------------------------
+        //-----------------------------------
+
+        //-----------------------------------
+        //-----------------------------------
+        count = Db.RunSQLUpdate("CREATE TABLE `eventtaglink` (`eventtaglinkid` int(11) NOT NULL auto_increment, eventid int(11), tagid int(11), PRIMARY KEY (`eventtaglinkid`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+        //-----------------------------------
+        //-----------------------------------
 
     }
 
