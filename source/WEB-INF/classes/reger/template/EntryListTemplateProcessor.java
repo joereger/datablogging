@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 public class EntryListTemplateProcessor implements TemplateProcessor {
 
     private static EntryListTemplateTag[] tags;
+    private static String defaultTemplate;
 
 
     public int getType(){
@@ -184,20 +185,13 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
     }
 
     public String getDefaultTemplate(){
-        StringBuffer mb = new StringBuffer();
-
-        mb.append("<div class=entrywrapper>" + "");
-        mb.append("<div class=entrytitle>" + "");
-        mb.append("<div class=entryago>" + "");
-        mb.append("<font face=arial size=-2><strong><$Ago.Text$> :: <$Log.Name$></strong></font>" + "");
-        mb.append("</div>" + "");
-        mb.append("<font face=arial size=-1><a href=<$Logentry.Url$>><font face=arial size=+1><$Logentry.Title$></font></a></div>" + "");
-        mb.append("<div class=entrybody><font face=arial size=-2><$Logentry.Body$></font></div>" + "");
-        mb.append("<div class=entrydate><font face=arial size=-2><$Logentry.Datetime.Expanded$> | <$Messages.Count$> Comments | <$Images.Count$> Files</font></div>" + "");
-        mb.append("</div>" + "");
-
-        return mb.toString();
+        if (defaultTemplate==null){
+            defaultTemplate = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "templates\\entrylist\\default\\template.html").toString();
+        }
+        return defaultTemplate;
     }
+
+
 
 
 }

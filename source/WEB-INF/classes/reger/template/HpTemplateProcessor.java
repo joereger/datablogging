@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 public class HpTemplateProcessor implements TemplateProcessor {
 
     private static HpTemplateTag[] tags;
-
+    private static String defaultTemplate;
 
     public int getType(){
         return Template.TEMPLATETYPEHOMEPAGE;
@@ -170,11 +170,10 @@ public class HpTemplateProcessor implements TemplateProcessor {
     }
 
     public String getDefaultTemplate(){
-        StringBuffer mb = new StringBuffer();
-
-        mb.append("<$Entry.List$>");
-
-        return mb.toString();
+        if (defaultTemplate==null){
+            defaultTemplate = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "templates\\hp\\default\\template.html").toString();
+        }
+        return defaultTemplate;
     }
 
 

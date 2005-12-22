@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 public class PlUserTemplateProcessor implements TemplateProcessor {
 
     private static PlUserTemplateTag[] tags;
+    private static String defaultTemplate;
 
     public int getType(){
         return Template.TEMPLATETYPEPLUSER;
@@ -201,16 +202,15 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
     }
 
     public String getDefaultTemplate(){
-        StringBuffer mb = new StringBuffer();
-
-
-        mb.append("<$User.Site$>" + "");
-
-
-
-
-        return mb.toString();
+        if (defaultTemplate==null){
+            defaultTemplate = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "templates\\pluser\\default\\template.html").toString();
+        }
+        return defaultTemplate;
     }
+
+
+
+
 
 
 }
