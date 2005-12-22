@@ -1,7 +1,9 @@
-<%@ page import="reger.core.db.Db,
-                 reger.template.Template,
-                 reger.Log,
-                 reger.core.db.Db"%>
+<%@ page import="java.util.Hashtable"%>
+<%@ page import="reger.template.AllOneClickTemplateSets"%>
+<%@ page import="java.util.Enumeration"%>
+<%@ page import="reger.template.OneClickTemplateSet"%>
+<%@ page import="reger.template.Template"%>
+<%@ page import="reger.template.AllTemplatesInSystem"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -24,9 +26,49 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+if (pageProps.action.equals("apply")){
+    if (reger.core.Util.isinteger(request.getParameter("oneclicktemplatesetid"))){
+        OneClickTemplateSet oneClickTemplateSet = AllOneClickTemplateSets.get(Integer.parseInt(request.getParameter("oneclicktemplatesetid")));
+        if (oneClickTemplateSet!=null){
+            oneClickTemplateSet.setAccountToThisSet(userSession.getAccount().getAccountid());
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "With that one simple click your site template was updated!"));
+        } else {
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, that template not found."));    
+        }
+    }
+}
 
 
 
+//List available one-click templates
+Hashtable allOneClickTemplates = AllOneClickTemplateSets.getAllOneClickTemplateSets();
+
+for (Enumeration e = allOneClickTemplates.keys(); e.hasMoreElements();) {
+        // retrieve the object_key
+        Integer oneClickTemplateSetId = (Integer) e.nextElement();
+        // retrieve the object associated with the key
+        OneClickTemplateSet oneClickTemplateSet = (OneClickTemplateSet) allOneClickTemplates.get ( oneClickTemplateSetId );
+
+        //Get the templates themselves
+        Template siteTemplate = AllTemplatesInSystem.getTemplateByTemplateid(oneClickTemplateSet.getSiteTemplateid(), Template.TEMPLATETYPESITE);
+        Template entryTemplate = AllTemplatesInSystem.getTemplateByTemplateid(oneClickTemplateSet.getEntryListTemplateid(), Template.TEMPLATETYPEENTRYLIST);
+        Template hpTemplate = AllTemplatesInSystem.getTemplateByTemplateid(oneClickTemplateSet.getHpTemplateid(), Template.TEMPLATETYPEHOMEPAGE);
+
+        mb.append("<br clear=all><br>");
+        if (!oneClickTemplateSet.getThumbnail().equals("")){
+            mb.append("<img src='"+oneClickTemplateSet.getThumbnail()+"' align=left>");
+        }
+        mb.append("<font face=arial size=+2 color=#cccccc>");
+        mb.append(oneClickTemplateSet.getName());
+        mb.append("</font>");
+        mb.append("<br>");
+        mb.append("<font face=arial size=-1 color=#cccccc>");
+        mb.append("<a href='settings-template-oneclick.log?action=apply&oneclicktemplatesetid="+oneClickTemplateSet.getOneClickTemplateSetid()+"'>");
+        mb.append("Use this One");
+        mb.append("</a>");
+        mb.append("</font>");
+
+}
 
 %>
 

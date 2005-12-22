@@ -14,9 +14,9 @@ import java.util.Hashtable;
  */
 public class AllOneClickTemplateSets {
 
-    public static Hashtable allOneClickTemplateSets;
+    private static Hashtable allOneClickTemplateSets;
 
-    public void load(){
+    public static void load(){
         allOneClickTemplateSets = new Hashtable();
         int i = 0;
         allOneClickTemplateSets.put(i++, new OneClickTemplateSet(i, -1, -101, 0, "Beautiful", WebAppRootDir.getWebAppRootPath()+"templates/site/beautiful/images/thumbnail.jpg"));
@@ -27,14 +27,14 @@ public class AllOneClickTemplateSets {
 
     }
 
-    public Hashtable getAllOneClickTemplateSets(){
+    public static Hashtable getAllOneClickTemplateSets(){
         if (allOneClickTemplateSets==null){
             load();
         }
         return allOneClickTemplateSets;
     }
 
-    public OneClickTemplateSet get(int oneClickTemplateSetid){
+    public static OneClickTemplateSet get(int oneClickTemplateSetid){
         if (allOneClickTemplateSets==null){
             load();
         }

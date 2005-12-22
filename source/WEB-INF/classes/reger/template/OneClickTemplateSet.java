@@ -1,5 +1,7 @@
 package reger.template;
 
+import reger.Account;
+
 /**
  * References a number of templates into a single set that the user can one-click.
  */
@@ -20,6 +22,24 @@ public class OneClickTemplateSet {
         this.hpTemplateid = hpTemplateid;
         this.name = name;
         this.thumbnail = thumbnail;
+    }
+
+    public void setAccountToThisSet(int accountid){
+        Account acct = reger.cache.AccountCache.get(accountid);
+        if (entryListTemplateid!=0){
+            acct.setEntlisttemplateid(entryListTemplateid);
+        }
+        if (hpTemplateid!=0){
+            acct.setHptemplateid(hpTemplateid);
+        }
+        if (siteTemplateid!=0){
+            acct.setSitetemplateid(siteTemplateid);
+        }
+        try{
+            acct.save();
+        } catch (reger.core.ValidationException valEx){
+            reger.core.Debug.debug(3, "OneClickTemplateSet.java", "Problem setting oneclicktemplate on an account.");
+        }
     }
 
     public int getOneClickTemplateSetid() {

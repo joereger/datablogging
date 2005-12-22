@@ -123,6 +123,9 @@ public class Util {
 	 * Determines whether a string can be converted to an int
 	 */
 	public static boolean isinteger(String str){
+	    if (str==null){
+            return false;   
+        }
 		try{
 			Integer.parseInt(str);
 			return true;

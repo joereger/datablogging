@@ -329,7 +329,7 @@ public class Account implements java.io.Serializable {
             //Write the preferences to the database
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE account SET timezoneid='"+timezoneid+"', homepagetitle='"+ reger.core.Util.cleanForSQL(homepagetitle) +"', homepagehtml='"+ reger.core.Util.cleanForSQL(homepagehtml) +"', homepagecalendar='"+ homepagecalendar +"', messagesstatus='"+ messagesstatus +"', messagesapproval='"+ messagesapproval +"', admintools='"+ admintools +"', jspopup='"+ jspopup +"', pingweblogscom='"+ pingweblogscom +"', showhometab='"+ reger.core.Util.booleanAsSQLText(showhometab) +"', hometabtext='"+ reger.core.Util.cleanForSQL(hometabtext) +"', showlogintab='"+ reger.core.Util.booleanAsSQLText(showlogintab) +"', displaycharsinsummary='"+ displaycharsinsummary +"', displaynumberofentries='"+ displaynumberofentries +"', userelatedlinks='"+ userelatedlinks +"', favesiteon='"+ favesiteon +"', onthisday='"+ onthisday +"', customservername='"+ reger.core.Util.cleanForSQL(customservername) +"', customservername2='"+ reger.core.Util.cleanForSQL(customservername2) +"', customservername3='"+ reger.core.Util.cleanForSQL(customservername3) +"', emailnewsletter='"+ emailnewsletter +"', emailsendhour='"+ emailsendhour +"', issearchmysiteon='"+issearchmysiteon+"', istrackbackon='"+reger.core.Util.booleanAsSQLText(istrackbackon)+"', islistedindirectory='"+reger.core.Util.booleanAsSQLText(islistedindirectory)+"', trackbackrequiresapproval='"+reger.core.Util.booleanAsSQLText(trackbackrequiresapproval)+"', istimeperiodon='"+reger.core.Util.booleanAsSQLText(istimeperiodon)+"', accountemail='"+reger.core.Util.cleanForSQL(accountemail)+"', newslettersubject='"+reger.core.Util.cleanForSQL(newslettersubject)+"', googlemapsapikey='"+reger.core.Util.cleanForSQL(googlemapsapikey)+"'  WHERE accountid='"+ accountid +"'");
+            int count = Db.RunSQLUpdate("UPDATE account SET timezoneid='"+timezoneid+"', homepagetitle='"+ reger.core.Util.cleanForSQL(homepagetitle) +"', homepagehtml='"+ reger.core.Util.cleanForSQL(homepagehtml) +"', homepagecalendar='"+ homepagecalendar +"', messagesstatus='"+ messagesstatus +"', messagesapproval='"+ messagesapproval +"', admintools='"+ admintools +"', jspopup='"+ jspopup +"', pingweblogscom='"+ pingweblogscom +"', showhometab='"+ reger.core.Util.booleanAsSQLText(showhometab) +"', hometabtext='"+ reger.core.Util.cleanForSQL(hometabtext) +"', showlogintab='"+ reger.core.Util.booleanAsSQLText(showlogintab) +"', displaycharsinsummary='"+ displaycharsinsummary +"', displaynumberofentries='"+ displaynumberofentries +"', userelatedlinks='"+ userelatedlinks +"', favesiteon='"+ favesiteon +"', onthisday='"+ onthisday +"', customservername='"+ reger.core.Util.cleanForSQL(customservername) +"', customservername2='"+ reger.core.Util.cleanForSQL(customservername2) +"', customservername3='"+ reger.core.Util.cleanForSQL(customservername3) +"', emailnewsletter='"+ emailnewsletter +"', emailsendhour='"+ emailsendhour +"', issearchmysiteon='"+issearchmysiteon+"', istrackbackon='"+reger.core.Util.booleanAsSQLText(istrackbackon)+"', islistedindirectory='"+reger.core.Util.booleanAsSQLText(islistedindirectory)+"', trackbackrequiresapproval='"+reger.core.Util.booleanAsSQLText(trackbackrequiresapproval)+"', istimeperiodon='"+reger.core.Util.booleanAsSQLText(istimeperiodon)+"', accountemail='"+reger.core.Util.cleanForSQL(accountemail)+"', newslettersubject='"+reger.core.Util.cleanForSQL(newslettersubject)+"', googlemapsapikey='"+reger.core.Util.cleanForSQL(googlemapsapikey)+"', entlisttemplateid='"+entlisttemplateid+"', sitetemplateid='"+sitetemplateid+"', hptemplateid='"+hptemplateid+"'   WHERE accountid='"+ accountid +"'");
             //-----------------------------------
             //-----------------------------------
         } catch (ValidationException v) {
@@ -1256,4 +1256,15 @@ public class Account implements java.io.Serializable {
         this.googlemapsapikey = googlemapsapikey;
     }
 
+    public void setHptemplateid(int hptemplateid) {
+        this.hptemplateid = hptemplateid;
+    }
+
+    public void setEntlisttemplateid(int entlisttemplateid) {
+        this.entlisttemplateid = entlisttemplateid;
+    }
+
+    public void setSitetemplateid(int sitetemplateid) {
+        this.sitetemplateid = sitetemplateid;
+    }
 }
