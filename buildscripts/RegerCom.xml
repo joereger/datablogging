@@ -98,7 +98,6 @@
         ${sourcedir}/WEB-INF/lib/commons-logging-api.jar;
         ${sourcedir}/WEB-INF/lib/dom4j-1.5.2.jar;
         ${sourcedir}/WEB-INF/lib/hibernate3.jar;
-
   "/>
 
 
