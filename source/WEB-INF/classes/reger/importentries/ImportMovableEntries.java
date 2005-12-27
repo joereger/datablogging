@@ -168,7 +168,6 @@ public class ImportMovableEntries {
                     entry.setComments(commentsList);
                     entry.setPings(pingsList);
                     entryList.add(entry);
-                    line = br.readLine();
                 }
             }
             storeInDB(entryList, userSession, logid);
@@ -190,7 +189,11 @@ public class ImportMovableEntries {
     private void storeInDB (ArrayList entryList, UserSession userSession, String logid) throws Exception {
         try {
             ArrayList list = null;
+            ArrayList commentsList = null;
+            ArrayList pingsList = null;
             Iterator iter = null;
+            Iterator commentsIter = null;
+            Iterator pingsIter = null;
             MovableEntry entry = null;
             int eventid = 0;
             Iterator entryIter = entryList.iterator();
@@ -219,10 +222,10 @@ public class ImportMovableEntries {
                     Debug.errorsave(error, "ValidationException while storing in database");
                 }
                 eventid = entryDAO.eventid;
-                list = entry.getComments();
-                iter = list.iterator();
-                while (iter.hasNext()) {
-                    Comment c = (Comment) iter.next();
+                commentsList = entry.getComments();
+                commentsIter = commentsList.iterator();
+                while (commentsIter.hasNext()) {
+                    Comment c = (Comment) commentsIter.next();
                     msgDAO = new Message();
                     msgDAO.setEventid(eventid);
                     msgDAO.setEmailnotify(0);
@@ -235,10 +238,10 @@ public class ImportMovableEntries {
                     msgDAO.setMessage(c.getCommentText().toString());
                     msgDAO.save();
                 }
-                list = entry.getPings();
-                iter = list.iterator();
-                while (iter.hasNext()) {
-                    Ping p = (Ping) iter.next();
+                pingsList = entry.getPings();
+                pingsIter = pingsList.iterator();
+                while (pingsIter.hasNext()) {
+                    Ping p = (Ping) pingsIter.next();
                     trackBackDAO = new TrackBack();
                     trackBackDAO.setEventid(eventid);
                     trackBackDAO.setIsoutbound(0);
