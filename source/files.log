@@ -41,7 +41,7 @@ qs.append("</td>");
 qs.append("</tr>");
 qs.append("<tr>");
 qs.append("<td>");
-qs.append(reger.ImageTag.getTagsAndLinksHtml(userSession.getAccount().getAccountid(), userSession, false));
+qs.append(reger.Tag.getTagsAndLinksHtml(userSession.getAccount().getAccountid(), userSession, false));
 qs.append("</td>");
 qs.append("</tr>");
 qs.append("</table>");
@@ -62,18 +62,18 @@ int currentpage=1;
 if (request.getParameter("currentpage")!=null && reger.core.Util.isinteger(request.getParameter("currentpage"))){
     currentpage=Integer.parseInt(request.getParameter("currentpage"));
 }
-//Imagetagid
-int imagetagid=-1;
-if (request.getParameter("imagetagid")!=null && reger.core.Util.isinteger(request.getParameter("imagetagid"))){
-    imagetagid=Integer.parseInt(request.getParameter("imagetagid"));
+//tagid
+int tagid=-1;
+if (request.getParameter("tagid")!=null && reger.core.Util.isinteger(request.getParameter("tagid"))){
+    tagid=Integer.parseInt(request.getParameter("tagid"));
 }
 
-//Show the imagetag name
-if (imagetagid>0) {
+//Show the tag name
+if (tagid>0) {
     String tag = "";
     //-----------------------------------
     //-----------------------------------
-    String[][] rstTagname= Db.RunSQL("SELECT tag FROM imagetag WHERE imagetagid='"+imagetagid+"'");
+    String[][] rstTagname= Db.RunSQL("SELECT tag FROM tag WHERE tagid='"+tagid+"'");
     //-----------------------------------
     //-----------------------------------
     if (rstTagname!=null && rstTagname.length>0){
@@ -93,7 +93,7 @@ int perpage=50;
 mb.append(reger.core.Util.popup());
 boolean displayasadmin = false;
 mb.append(reger.ImageListHtml.tableStart());
-mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, imagetagid, displayasadmin, userSession, currentpage, perpage, request));
+mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, tagid, displayasadmin, userSession, currentpage, perpage, request));
 mb.append(reger.ImageListHtml.tableEnd());
 
 

@@ -19,7 +19,7 @@ public class ImageListHtml {
         return mb;
     }
 
-    public static String sqlBuilder(boolean getOnlyCountOfRecords, reger.UserSession userSessionOfViewer, int accountid, int imagetagid, int eventid, boolean displayOnlyImagesFromLiveEntries, boolean onlyDisplayImagesWithNoTag, boolean returnOnlyOneRecordAtRandom, String entrykey){
+    public static String sqlBuilder(boolean getOnlyCountOfRecords, reger.UserSession userSessionOfViewer, int accountid, int tagid, int eventid, boolean displayOnlyImagesFromLiveEntries, boolean onlyDisplayImagesWithNoTag, boolean returnOnlyOneRecordAtRandom, String entrykey){
 
         //Entrykeysql logic
         //The main goal of this logic is to grant the user access to this log's image.
@@ -44,9 +44,9 @@ public class ImageListHtml {
         String sqlSelectCount = "SELECT count(*) ";
 
         String sqlFrom = " FROM event, megalog, image ";
-        if (imagetagid>0 || onlyDisplayImagesWithNoTag){
+        if (tagid>0 || onlyDisplayImagesWithNoTag){
             sqlFrom=" FROM event, megalog, image " +
-                    " LEFT JOIN imagetagimagelink ON image.imageid=imagetagimagelink.imageid ";
+                    " LEFT JOIN tagimagelink ON image.imageid=tagimagelink.imageid ";
         }
 
         String sqlWhere = "WHERE image.eventid=event.eventid AND event.logid=megalog.logid AND (("+userSessionOfViewer.getAccountuser().LogsUserCanViewQueryend(accountid)+") "+entryKeySql+") ";
@@ -63,10 +63,10 @@ public class ImageListHtml {
 
 
         String sqlImagetagid = "";
-        if (imagetagid>0 || onlyDisplayImagesWithNoTag){
-            sqlImagetagid=" AND imagetagimagelink.imagetagid='"+imagetagid+"' ";
+        if (tagid>0 || onlyDisplayImagesWithNoTag){
+            sqlImagetagid=" AND tagimagelink.tagid='"+tagid+"' ";
             if (onlyDisplayImagesWithNoTag){
-                sqlImagetagid=" AND imagetagimagelink.imagetagimagelinkid IS NULL ";
+                sqlImagetagid=" AND tagimagelink.tagimagelinkid IS NULL ";
             }
         }
 
@@ -93,7 +93,7 @@ public class ImageListHtml {
         return out;
     }
 
-    public static StringBuffer htmlOut(int accountid, int eventid, int imagetagid, boolean displayasadmin, UserSession userSessionOfPersonViewing, int currentpage, int perpage, HttpServletRequest request){
+    public static StringBuffer htmlOut(int accountid, int eventid, int tagid, boolean displayasadmin, UserSession userSessionOfPersonViewing, int currentpage, int perpage, HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
         //Entrykey
@@ -119,7 +119,7 @@ public class ImageListHtml {
             //reger.core.Util.logtodb(sqlSelectCount+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry);
             //-----------------------------------
             //-----------------------------------
-            String[][] rstCount= Db.RunSQL(sqlBuilder(true, userSessionOfPersonViewing, accountid, imagetagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey));
+            String[][] rstCount= Db.RunSQL(sqlBuilder(true, userSessionOfPersonViewing, accountid, tagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey));
             //-----------------------------------
             //-----------------------------------
             int recordcount = 0;
@@ -166,7 +166,7 @@ public class ImageListHtml {
             //reger.core.Util.logtodb(sqlSelect+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry+sqlOrderBy);
             //-----------------------------------
             //-----------------------------------
-            String[][] rstImagelist= reger.core.db.Db.RunSQL(sqlBuilder(false, userSessionOfPersonViewing, accountid, imagetagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey)+sqlLimit);
+            String[][] rstImagelist= reger.core.db.Db.RunSQL(sqlBuilder(false, userSessionOfPersonViewing, accountid, tagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey)+sqlLimit);
             //-----------------------------------
             //-----------------------------------
             if (rstImagelist!=null){
@@ -245,13 +245,13 @@ public class ImageListHtml {
 
                     //Image Keyword Tags
                     if (displayasadmin) {
-                        String imageTags = reger.ImageTag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
+                        String imageTags = reger.Tag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
                         mb.append("<br>");
                         String helpImagetags = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.  Create multi-word tags with quotes (example: car \"blue interior\" oldsmobile.)", false, mediaoutPath);
-                        mb.append("<font face=arial size=-2>Optional Keyword Tags "+helpImagetags+":</font><br><input type='text' name='imagetag-"+rstImagelist[i][0]+"' value=\""+reger.core.Util.cleanForHtml(imageTags)+"\" size='35' maxlength='254' style=\"font-size: 10px;\"><br>");
+                        mb.append("<font face=arial size=-2>Optional Keyword Tags "+helpImagetags+":</font><br><input type='text' name='tag-"+rstImagelist[i][0]+"' value=\""+reger.core.Util.cleanForHtml(imageTags)+"\" size='35' maxlength='254' style=\"font-size: 10px;\"><br>");
                     } else {
                         //Display tag links
-                        String imageTags = reger.ImageTag.getStringOfAllTagsForImageAsLinks(Integer.parseInt(rstImagelist[i][0]), mediaoutPath);
+                        String imageTags = reger.Tag.getStringOfAllTagsForImageAsLinks(Integer.parseInt(rstImagelist[i][0]), mediaoutPath);
                         if (!imageTags.equals("")){
                             mb.append("<br>");
                             mb.append("<font face=arial size=-2 class=smallfont>Keyword Tags:<br>"+imageTags+"</font><br>");

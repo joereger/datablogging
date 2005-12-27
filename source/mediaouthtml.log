@@ -119,13 +119,13 @@ if (showimage) {
         mb.append("<!-- End dHTML Help Scripts -->");
         //End dHtml Help Scripts
         if (pageProps.action.equals("updatekeywords")){
-            reger.ImageTag.addMultipleTagsToImage(request.getParameter("imagetags"), imageid);
+            reger.Tag.addMultipleTagsToImage(request.getParameter("imagetags"), imageid);
         }
         mb.append("");
         mb.append("<form action=mediaouthtml.log method=post>");
         mb.append("<input type=hidden name=action value=updatekeywords>");
         mb.append("<input type=hidden name=imageid value='"+imageid+"'>");
-        String keywords = reger.ImageTag.getStringOfAllTagsForImage(imageid);
+        String keywords = reger.Tag.getStringOfAllTagsForImage(imageid);
         String helpImagetags = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.  Create multi-word tags with quotes (example: car \"blue interior\" oldsmobile.)", false, pageProps.pathToAppRoot);
         mb.append("<font face=arial size=-2 color=#cccccc>Update Keyword Tags "+helpImagetags+":</font><br>");
         mb.append("<input type=text name=imagetags size=35 maxlength=254 value=\""+reger.core.Util.cleanForHtml(keywords)+"\" style=\"font-size: 10px;\">");

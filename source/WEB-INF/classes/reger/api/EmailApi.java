@@ -727,7 +727,7 @@ public class EmailApi {
                     mt.saveToDatabase(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, imageid);
 
                     //Do the imagetags
-                    reger.ImageTag.addMultipleTagsToImage(camphoneimagetags, imageid);
+                    reger.Tag.addMultipleTagsToImage(camphoneimagetags, imageid);
 
                     Debug.debug(5, "EmailApi", "Imageid="+imageid);
                 //}

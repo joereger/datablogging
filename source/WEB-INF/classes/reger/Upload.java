@@ -198,7 +198,7 @@ public class Upload {
                                     mt.saveToDatabase(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, identity);
 
                                     //Do the imagetags
-                                    reger.ImageTag.addMultipleTagsToImage(manyimagetags, identity);
+                                    reger.Tag.addMultipleTagsToImage(manyimagetags, identity);
 
                                     //Update the AccountCounts cache
                                     reger.cache.AccountCountCache.flushByAccountid(userSession.getAccount().getAccountid());

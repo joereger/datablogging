@@ -34,7 +34,7 @@ pageProps.pathToAppRoot="../";
 
 //Do the work
 if (pageProps.action.equals("edittags")){
-    if (request.getParameter("imagetag")!=null && request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))){
+    if (request.getParameter("tag")!=null && request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))){
         //-----------------------------------
         //-----------------------------------
         String[][] rstImg= Db.RunSQL("SELECT imageid FROM image, event, megalog WHERE image.imageid='"+request.getParameter("imageid")+"' AND image.eventid=event.eventid AND event.logid=megalog.logid AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()));
@@ -42,7 +42,7 @@ if (pageProps.action.equals("edittags")){
         //-----------------------------------
         if (rstImg!=null && rstImg.length>0){
         	for(int i=0; i<rstImg.length; i++){
-        	    reger.ImageTag.addMultipleTagsToImage(request.getParameter("imagetag"), Integer.parseInt(request.getParameter("imageid")));
+        	    reger.Tag.addMultipleTagsToImage(request.getParameter("tag"), Integer.parseInt(request.getParameter("imageid")));
         	}
         }
     }
@@ -96,8 +96,8 @@ if (rstImagelist!=null && rstImagelist.length>0){
         mb.append("<tr>");
         mb.append("<td valign=top align=left>");
         mb.append("<font face=arial size=-2>");
-        String tags = reger.ImageTag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
-        mb.append("<input type='text' name='imagetag' value=\""+reger.core.Util.cleanForSQL(tags)+"\" size=35 maxlength=254 style=\"font-size: 10px;\">");
+        String tags = reger.Tag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
+        mb.append("<input type='text' name='tag' value=\""+reger.core.Util.cleanForSQL(tags)+"\" size=35 maxlength=254 style=\"font-size: 10px;\">");
         mb.append("</font>");
         mb.append("</td>");
         mb.append("</tr>");

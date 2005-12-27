@@ -41,7 +41,7 @@ int perpage = 50;
 
 
 //Start paging
-//reger.core.Util.logtodb(sqlSelectCount+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry);
+//reger.core.Util.logtodb(sqlSelectCount+sqlFrom+sqlWhere+sqlEventid+sqltagid+sqlLiveEntry);
 //-----------------------------------
 //-----------------------------------
 String[][] rstCount= Db.RunSQL(reger.ImageListHtml.sqlBuilder(true, userSession, userSession.getAccount().getAccountid(), -1, -1, false, true));
@@ -96,12 +96,12 @@ if (pageProps.action.equals("edittags")){
                     effectiveTag = effectiveTag + " " + request.getParameter("useoverall");
                 }
             }
-            if (request.getParameter("imagetag-"+rstImages[i][0])!=null){
-                effectiveTag = effectiveTag + " " + request.getParameter("imagetag-"+rstImages[i][0]);
-                //reger.core.Util.logtodb("request.getParameter(\"imagetag-\"+rstImages[i][0])=" + request.getParameter("imagetag-"+rstImages[i][0]));
+            if (request.getParameter("tag-"+rstImages[i][0])!=null){
+                effectiveTag = effectiveTag + " " + request.getParameter("tag-"+rstImages[i][0]);
+                //reger.core.Util.logtodb("request.getParameter(\"tag-\"+rstImages[i][0])=" + request.getParameter("tag-"+rstImages[i][0]));
             }
 
-            reger.ImageTag.addMultipleTagsToImage(effectiveTag, Integer.parseInt(rstImages[i][0]));
+            reger.Tag.addMultipleTagsToImage(effectiveTag, Integer.parseInt(rstImages[i][0]));
         }
     }
 }
@@ -179,8 +179,8 @@ if (rstImagelist!=null && rstImagelist.length>0){
         mb.append("</td>");
         mb.append("<td valign=top align=left>");
         mb.append("<font face=arial size=-2>");
-        String tags = reger.ImageTag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
-        mb.append("<input type='text' name='imagetag-"+rstImagelist[i][0]+"' value=\""+reger.core.Util.cleanForSQL(tags)+"\" size=35 maxlength=254 style=\"font-size: 10px;\">");
+        String tags = reger.Tag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
+        mb.append("<input type='text' name='tag-"+rstImagelist[i][0]+"' value=\""+reger.core.Util.cleanForSQL(tags)+"\" size=35 maxlength=254 style=\"font-size: 10px;\">");
         mb.append("</font>");
         mb.append("</td>");
         mb.append("<td valign=top align=left>");

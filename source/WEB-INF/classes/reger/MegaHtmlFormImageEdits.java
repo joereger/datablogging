@@ -26,8 +26,8 @@ public class MegaHtmlFormImageEdits {
                     if (request.getParameter("imagetag-" + rstImagelistUpdate[i][0])!=null && !request.getParameter("imagetag-" + rstImagelistUpdate[i][0]).equals("")) {
                         imagetag= request.getParameter("imagetag-" + rstImagelistUpdate[i][0]);
                     }
-                    //Save the imagetags
-                    reger.ImageTag.addMultipleTagsToImage(imagetag, Integer.parseInt(rstImagelistUpdate[i][0]));
+                    //Save the tags
+                    reger.Tag.addMultipleTagsToImage(imagetag, Integer.parseInt(rstImagelistUpdate[i][0]));
 
 //                    //Add new imagecategories if we have them
 //                    if (request.getParameter("newimagecategory-" + rstImagelistUpdate[i][0])!=null && !request.getParameter("newimagecategory-" + rstImagelistUpdate[i][0]).equals("")) {
