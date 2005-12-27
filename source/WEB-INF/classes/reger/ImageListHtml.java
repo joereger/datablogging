@@ -4,6 +4,10 @@ import reger.core.db.Db;
 import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
+import reger.core.db.Db;
+import reger.core.Debug;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -89,7 +93,6 @@ public class ImageListHtml {
         }
 
         Debug.debug(5, "", "ImageListHtml.sqlBuilder<br>" + out);
-
         return out;
     }
 
@@ -248,7 +251,7 @@ public class ImageListHtml {
                         String imageTags = reger.Tag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
                         mb.append("<br>");
                         String helpImagetags = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.  Create multi-word tags with quotes (example: car \"blue interior\" oldsmobile.)", false, mediaoutPath);
-                        mb.append("<font face=arial size=-2>Optional Keyword Tags "+helpImagetags+":</font><br><input type='text' name='tag-"+rstImagelist[i][0]+"' value=\""+reger.core.Util.cleanForHtml(imageTags)+"\" size='35' maxlength='254' style=\"font-size: 10px;\"><br>");
+                        mb.append("<font face=arial size=-2>Optional Keyword Tags "+helpImagetags+":</font><br><input type='text' name='imagetag-"+rstImagelist[i][0]+"' value=\""+reger.core.Util.cleanForHtml(imageTags)+"\" size='35' maxlength='254' style=\"font-size: 10px;\"><br>");
                     } else {
                         //Display tag links
                         String imageTags = reger.Tag.getStringOfAllTagsForImageAsLinks(Integer.parseInt(rstImagelist[i][0]), mediaoutPath);
