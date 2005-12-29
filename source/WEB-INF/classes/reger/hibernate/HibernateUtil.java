@@ -17,16 +17,23 @@ public class HibernateUtil {
             String pathToMaps = reger.core.WebAppRootDir.getWebAppRootPath() + "hibernatemaps/";
             conf.addFile(pathToMaps + "Cat.hbm.xml");
             //Set up database connection
-            conf.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+            conf.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLMyISAMDialect");
+            conf.setProperty("hibernate.current_session_context_class", "thread");
             conf.setProperty("hibernate.connection.username", DbConfig.getDbUsername());
             conf.setProperty("hibernate.connection.url", DbConfig.getDbConnectionUrl());
             conf.setProperty("hibernate.connection.password", DbConfig.getDbPassword());
             conf.setProperty("hibernate.connection.driver_class", DbConfig.getDbDriverName());
 
+            conf.setProperty("hibernate.c3p0.min_size", String.valueOf(DbConfig.getDbMinIdle()));
+            conf.setProperty("hibernate.c3p0.max_size", String.valueOf(DbConfig.getDbMaxActive()));
+            conf.setProperty("hibernate.c3p0.timeout", String.valueOf(DbConfig.getDbMaxWait()));
+            conf.setProperty("hibernate.c3p0.max_statements", "50");
+
             // Create the SessionFactory
             sessionFactory = conf.buildSessionFactory();
 
             System.out.println("Reger.com: HibernateUtil Session Initialized. Let's rock some data abstration!");
+            System.out.println("Reger.com: HibernateUtil: un:"+DbConfig.getDbUsername()+" pw:"+DbConfig.getDbPassword());
         } catch (Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Reger.com: Initial Hibernate SessionFactory creation failed." + ex);
@@ -39,26 +46,24 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
-
-
-    public static final ThreadLocal session = new ThreadLocal();
-
-    public static Session currentSession() throws HibernateException {
-        Session s = (Session) session.get();
-        if (s == null) {
-            s = sessionFactory.openSession();
-            session.set(s);
-        }
-        return s;
-    }
-
-    public static void closeSession() throws HibernateException {
-        Session s = (Session) session.get();
-        session.set(null);
-        if (s != null){
-            s.close();
-        }
-    }
+//    public static final ThreadLocal session = new ThreadLocal();
+//
+//    public static Session currentSession() throws HibernateException {
+//        Session s = (Session) session.get();
+//        if (s == null) {
+//            s = sessionFactory.openSession();
+//            session.set(s);
+//        }
+//        return s;
+//    }
+//
+//    public static void closeSession() throws HibernateException {
+//        Session s = (Session) session.get();
+//        session.set(null);
+//        if (s != null){
+//            s.close();
+//        }
+//    }
 
 
 

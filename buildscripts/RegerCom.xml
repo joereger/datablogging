@@ -96,6 +96,7 @@
         ${sourcedir}/WEB-INF/lib/dom4j-1.6.1.jar;
         ${sourcedir}/WEB-INF/lib/antlr-2.7.6rc1.jar;
         ${sourcedir}/WEB-INF/lib/cglib2.1.3.jar;
+        ${sourcedir}/WEB-INF/lib/c3p0-0.9.0.jar;
   "/>
 
 

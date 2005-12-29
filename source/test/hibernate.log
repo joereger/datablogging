@@ -27,8 +27,8 @@ pageProps.pathToAppRoot="";
 
 
 
-Session hsession = HibernateUtil.currentSession();
-Transaction tx = hsession.beginTransaction();
+Session hsession = HibernateUtil.getSessionFactory().getCurrentSession();
+hsession.beginTransaction();
 
 Cat princess = new Cat();
 princess.setName("Princess" + reger.core.RandomString.randomAlphanumeric(4));
@@ -36,8 +36,7 @@ princess.setSex('F');
 princess.setWeight(Float.parseFloat(String.valueOf(reger.core.Util.randomInt(30))));
 
 hsession.save(princess);
-tx.commit();
-hsession.close();
+hsession.getTransaction().commit();
 
 
 
@@ -47,15 +46,7 @@ mb.append("<br>Cat saved. weight=" + princess.getWeight());
 
 mb.append("<br><br>");
 
-// fetch ids
-List theseCats = hsession.createQuery("from Cat as cat where catid > ?").setInteger(0, 3).list();
-for (int i = 0; i < theseCats.size(); i++) {
-    Cat cat = (Cat) theseCats.get(i);
-    mb.append("<br>Cat retrieved. catid=" + cat.getCatid());
-    mb.append("<br>Cat retrieved. name=" + cat.getName());
-    mb.append("<br>Cat retrieved. weight=" + cat.getWeight());
-    mb.append("<br><br>");
-}
+
 
 
 

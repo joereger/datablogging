@@ -12,6 +12,7 @@ it was kept.  Here's how to re-enable Hibernate.
     - antlr-2.7.6rc1.jar
     - cglib-2.1.3.jar
     - hibernate3.jar
+    - c3p0-0.9.0.jar
 
 2)Add the following to web.xml
 <listener>
