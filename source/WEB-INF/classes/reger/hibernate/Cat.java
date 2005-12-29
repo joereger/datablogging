@@ -1,4 +1,4 @@
-package reger.entities;
+package reger.hibernate;
 
 /**
  * Test class for hibernate

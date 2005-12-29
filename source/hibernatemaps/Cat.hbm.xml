@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="reger.entities.Cat" table="cat">
+    <class name="reger.hibernate.Cat" table="cat">
         <id name="catid" type="long" column="catid" unsaved-value="0" >
             <generator class="identity"/>
         </id>

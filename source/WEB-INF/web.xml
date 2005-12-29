@@ -56,10 +56,13 @@
     <listener>
         <listener-class>reger.exist.ExistManager</listener-class>
     </listener>
+    <listener>
+        <listener-class>reger.hibernate.HibernateListener</listener-class>
+    </listener>
     <servlet>
       <servlet-name>Loader</servlet-name>
       <servlet-class>reger.scheduledtasks.Loader</servlet-class>
-      <load-on-startup>100</load-on-startup>
+      <load-on-startup>1</load-on-startup>
    </servlet>
    <servlet>
        <servlet-name>map</servlet-name>

@@ -59,7 +59,7 @@
         <!--
             Maps internal names to external file-names.
             The internal name is used by the framework to identify
-            entities and resolve these to the associated filenames.
+            hibernate and resolve these to the associated filenames.
         -->
 
         <!-- Standard stylesheet used for simple HTML 3.2 compatible Browsers without Javascript support -->

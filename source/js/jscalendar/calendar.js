@@ -753,7 +753,7 @@ Calendar.prototype.create = function (_par) {
 			cell.appendChild(document.createTextNode(text));
 		}
 		else {
-			// FIXME: dirty hack for entities
+			// FIXME: dirty hack for hibernate
 			cell.innerHTML = text;
 		}
 		return cell;

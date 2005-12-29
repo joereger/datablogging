@@ -44,12 +44,12 @@
         ${sourcedir}/WEB-INF/lib/activation.jar;
         ${sourcedir}/WEB-INF/lib/commons-beanutils.jar;
         ${sourcedir}/WEB-INF/lib/commons-codec-1.2.jar;
-        ${sourcedir}/WEB-INF/lib/commons-collections.jar;
+        ${sourcedir}/WEB-INF/lib/commons-collections-3.1.jar;
         ${sourcedir}/WEB-INF/lib/commons-dbcp-1.2.1.jar;
         ${sourcedir}/WEB-INF/lib/commons-digester.jar;
+        ${sourcedir}/WEB-INF/lib/commons-logging-1.0.4.jar;
         ${sourcedir}/WEB-INF/lib/commons-fileupload-1.0.jar;
         ${sourcedir}/WEB-INF/lib/commons-httpclient-3.0-rc1.jar;
-        ${sourcedir}/WEB-INF/lib/commons-logging.jar;
         ${sourcedir}/WEB-INF/lib/commons-pool-1.2.jar;
         ${sourcedir}/WEB-INF/lib/dwr.jar;
         ${sourcedir}/WEB-INF/lib/ehcache-1.1.jar;
@@ -61,7 +61,7 @@
         ${sourcedir}/WEB-INF/lib/jdom.jar;
         ${sourcedir}/WEB-INF/lib/jfreechart-1.0.0-pre2.jar;
         ${sourcedir}/WEB-INF/lib/jtidy-r8-SNAPSHOT.jar;
-        ${sourcedir}/WEB-INF/lib/log4j-1.2.8.jar;
+        ${sourcedir}/WEB-INF/lib/log4j-1.2.11.jar;
         ${sourcedir}/WEB-INF/lib/mail.jar;
         ${sourcedir}/WEB-INF/lib/milStd2525_png.jar;
         ${sourcedir}/WEB-INF/lib/mysql-connector-java-3.1.8-bin.jar;
@@ -90,14 +90,12 @@
         ${sourcedir}/WEB-INF/lib/commons-lang-2.1.jar;
         ${sourcedir}/WEB-INF/lib/concurrent.jar;
         ${sourcedir}/WEB-INF/lib/sequoia-driver.jar;
+        ${sourcedir}/WEB-INF/lib/hibernate3.jar;
         ${sourcedir}/WEB-INF/lib/asm.jar;
         ${sourcedir}/WEB-INF/lib/asm-attrs.jar;
-        ${sourcedir}/WEB-INF/lib/asm-util.jar;
-        ${sourcedir}/WEB-INF/lib/cglib-2.1.jar;
-        ${sourcedir}/WEB-INF/lib/cglib-nodep-2.1.jar;
-        ${sourcedir}/WEB-INF/lib/commons-logging-api.jar;
-        ${sourcedir}/WEB-INF/lib/dom4j-1.5.2.jar;
-        ${sourcedir}/WEB-INF/lib/hibernate3.jar;
+        ${sourcedir}/WEB-INF/lib/dom4j-1.6.1.jar;
+        ${sourcedir}/WEB-INF/lib/antlr-2.7.6rc1.jar;
+        ${sourcedir}/WEB-INF/lib/cglib2.1.3.jar;
   "/>
 
 

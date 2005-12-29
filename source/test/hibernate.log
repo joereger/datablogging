@@ -1,9 +1,9 @@
 <%@ page import="reger.SideColumn,
                  java.util.*,
                  org.hibernate.*,
-                 reger.entities.HibernateUtil,
+                 reger.hibernate.HibernateUtil,
                  org.hibernate.Transaction,
-                 reger.entities.Cat"%>
+                 reger.hibernate.Cat"%>
 
 
 <%
@@ -37,7 +37,7 @@ princess.setWeight(Float.parseFloat(String.valueOf(reger.core.Util.randomInt(30)
 
 hsession.save(princess);
 tx.commit();
-HibernateUtil.closeSession();
+hsession.close();
 
 
 

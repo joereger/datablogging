@@ -1,0 +1,23 @@
+
+Hibernate was once used as part of the app.  The jar files were removed
+to save space in the build, but the hard work of configuring
+it was kept.  Here's how to re-enable Hibernate.
+
+1) Obtain all of the Hibernate jars and put them into the /WEB-INF/lib directory:
+    - commons-logging-1.0.4.jar
+    - asm.jar
+    - asm-attrs.jar
+    - log4j-1.2.11.jar
+    - dom4j-1.6.1.jar
+    - antlr-2.7.6rc1.jar
+    - cglib-2.1.3.jar
+    - hibernate3.jar
+
+2)Add the following to web.xml
+<listener>
+        <listener-class>reger.hibernate.HibernateListener</listener-class>
+    </listener>
+
+3) Uncomment the reger.hibernate.HibernateUtil class.
+
+4) Run and test... appears to be broken still.
