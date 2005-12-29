@@ -1,0 +1,79 @@
+<%@ page import="reger.SideColumn,
+                 com.swabunga.spell.event.SpellCheckEvent,
+                 reger.core.db.Db,
+                 javax.crypto.spec.PBEKeySpec,
+                 javax.crypto.spec.PBEParameterSpec,
+                 java.security.InvalidKeyException,
+                 java.security.NoSuchAlgorithmException,
+                 javax.crypto.*,
+                 java.io.*,
+                 java.util.*"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+try {
+    String timezoneid = "US/Eastern";
+    mb.append("<br><br>timezoneid: " + timezoneid);
+
+    Calendar tmpCal = Calendar.getInstance();
+    tmpCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(tmpCal, tmpCal.getTimeZone().getID(), timezoneid);
+    mb.append("<br><br>reger.core.TimeUtils.dateformatfordb(tmpCal): " + reger.core.TimeUtils.dateformatfordb(tmpCal));
+
+    //So I should set that time to 00:00:00 in their timezone.
+    Calendar startOfDay = reger.core.TimeUtils.xDaysAgoStart(tmpCal, 0);
+    mb.append("<br><br>reger.core.TimeUtils.dateformatfordb(startOfDay): " + reger.core.TimeUtils.dateformatfordb(startOfDay));
+
+    //And then convert that value to GMT.
+    Calendar startOfDayGMT = reger.core.TimeUtils.usertogmttime(startOfDay, timezoneid);
+    mb.append("<br><br>reger.core.TimeUtils.dateformatfordb(startOfDayGMT): " + reger.core.TimeUtils.dateformatfordb(startOfDayGMT));
+
+    //And then do the same for the end of the day.
+    Calendar endOfDay = reger.core.TimeUtils.xDaysAgoEnd(tmpCal, 0);
+    mb.append("<br><br>reger.core.TimeUtils.dateformatfordb(endOfDay): " + reger.core.TimeUtils.dateformatfordb(endOfDay));
+
+    //And then convert that value to GMT.
+    Calendar endOfDayGMT = reger.core.TimeUtils.usertogmttime(endOfDay, timezoneid);
+    mb.append("<br><br>reger.core.TimeUtils.dateformatfordb(endOfDayGMT): " + reger.core.TimeUtils.dateformatfordb(endOfDayGMT));
+
+
+
+
+} catch (Throwable e) {
+    Debug.errorsave(e, "");
+}
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

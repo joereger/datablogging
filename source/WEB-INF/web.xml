@@ -53,6 +53,9 @@
         <servlet-class>reger.xforms.chiba.adapter.servlet.ShowAttachmentServlet</servlet-class>
     </servlet>
     <!-- End Chiba Additions -->
+    <listener>
+        <listener-class>reger.exist.ExistManager</listener-class>
+    </listener>
     <servlet>
       <servlet-name>Loader</servlet-name>
       <servlet-class>reger.scheduledtasks.Loader</servlet-class>

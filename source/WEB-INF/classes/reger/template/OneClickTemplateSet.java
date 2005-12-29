@@ -26,15 +26,15 @@ public class OneClickTemplateSet {
 
     public void setAccountToThisSet(int accountid){
         Account acct = reger.cache.AccountCache.get(accountid);
-        if (entryListTemplateid!=0){
+        //if (entryListTemplateid!=0){
             acct.setEntlisttemplateid(entryListTemplateid);
-        }
-        if (hpTemplateid!=0){
+        //}
+        //if (hpTemplateid!=0){
             acct.setHptemplateid(hpTemplateid);
-        }
-        if (siteTemplateid!=0){
+        //}
+        //if (siteTemplateid!=0){
             acct.setSitetemplateid(siteTemplateid);
-        }
+        //}
         try{
             acct.save();
         } catch (reger.core.ValidationException valEx){

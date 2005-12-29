@@ -16,10 +16,17 @@ public class TimeUtils {
 	* The offset var = the user's timezone offset
 	*/
 	public static Calendar usertogmttime(Calendar date, String timezoneid){
+	    //System.out.println("-----------");
+	    //System.out.println("-----------");
+	    //System.out.println("timezoneid: "+timezoneid+"<br>dateformatfordb(date): " +reger.core.TimeUtils.dateformatfordb(date) + "<br>date.getTimeZone().getID():"+date.getTimeZone().getID());
 	    Calendar outCal = (Calendar) date.clone();
+	    //System.out.println("timezoneid: "+timezoneid+"<br>dateformatfordb(outCal): " +reger.core.TimeUtils.dateformatfordb(outCal) + "<br>outCal.getTimeZone().getID():"+outCal.getTimeZone().getID());
 	    outCal.setTimeZone(TimeZoneCache.get("GMT"));
+	    //System.out.println("timezoneid: "+timezoneid+"<br>dateformatfordb(outCal): " +reger.core.TimeUtils.dateformatfordb(outCal) + "<br>outCal.getTimeZone().getID():"+outCal.getTimeZone().getID());
 		int offset = TimeZoneCache.get(timezoneid).getOffset(outCal.getTimeInMillis());
+		//System.out.println("timezoneid: "+timezoneid+"<br>offset: " +offset);
 		outCal.add(Calendar.MILLISECOND, (-1)*offset);
+		//System.out.println("timezoneid: "+timezoneid+"<br>dateformatfordb(outCal): " +reger.core.TimeUtils.dateformatfordb(outCal) + "<br>outCal.getTimeZone().getID():"+outCal.getTimeZone().getID());
 		return outCal;
 	}
 

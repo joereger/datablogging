@@ -90,11 +90,11 @@ public class EmailApi {
 
     private void startWorking(){
         //Set some vars
-        Debug.debug(5, "", "Starting to process mail message.");
+        Debug.debug(3, "EmailApi", "Starting to process mail message.");
 
         //Parse the message
         boolean parseIn = parseIncomingMessage();
-        Debug.debug(5, "", "Result of parsing incoming raw message:" + parseIn);
+        Debug.debug(3, "EmailApi", "Result of parsing incoming raw message:" + parseIn);
 
         //Iterate all recipients, looking for valid logs
         if (parseIn){
@@ -520,17 +520,23 @@ public class EmailApi {
                     Calendar tmpCal = Calendar.getInstance();
                     tmpCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(tmpCal, tmpCal.getTimeZone().getID(), timezoneid);
 
+
                     //So I should set that time to 00:00:00 in their timezone.
                     Calendar startOfDay = reger.core.TimeUtils.xDaysAgoStart(tmpCal, 0);
 
                     //And then convert that value to GMT.
+                    System.out.println("EmailApi.java +++++++=======+++++++=======");
+                    System.out.println("EmailApi.java +++++++ dateformatfordb(startOfDay): " +reger.core.TimeUtils.dateformatfordb(startOfDay));
                     Calendar startOfDayGMT = reger.core.TimeUtils.usertogmttime(startOfDay, timezoneid);
+                    System.out.println("EmailApi.java +++++++ dateformatfordb(startOfDayGMT): " +reger.core.TimeUtils.dateformatfordb(startOfDayGMT));
 
                     //And then do the same for the end of the day.
                     Calendar endOfDay = reger.core.TimeUtils.xDaysAgoEnd(tmpCal, 0);
 
                     //And then convert that value to GMT.
                     Calendar endOfDayGMT = reger.core.TimeUtils.usertogmttime(endOfDay, timezoneid);
+
+                    Debug.debug(3, "EmailApi", "timezoneid:"+timezoneid+"<br>reger.core.TimeUtils.dateformatfordb(tmpCal): " +reger.core.TimeUtils.dateformatfordb(tmpCal)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDay): " +reger.core.TimeUtils.dateformatfordb(startOfDay)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDayGMT):" + reger.core.TimeUtils.dateformatfordb(startOfDayGMT) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDay): " + reger.core.TimeUtils.dateformatfordb(endOfDay) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDayGMT): " + reger.core.TimeUtils.dateformatfordb(endOfDayGMT));
 
                     //And then search for an eventid within this range.
                     //-----------------------------------

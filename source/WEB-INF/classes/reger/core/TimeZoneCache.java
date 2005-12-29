@@ -24,10 +24,12 @@ public class TimeZoneCache {
             try {
                 TimeZone tz = TimeZone.getTimeZone(id);
                 admin.putInCache(id, tz);
+                //Debug.debug(3, "TimeZoneCache.java", "In id: "+id+"<br>REFRESHING<br>Returning tz.getID(): " + tz.getID());
                 return tz;
             } catch (Exception ex) {
                 admin.cancelUpdate(id);
                 Debug.errorsave(ex, "");
+                //Debug.debug(3, "TimeZoneCache.java", "In id: "+id+"<br>REFRESHING<br>Returning the default GMT.");
                 return TimeZone.getTimeZone("GMT");
             }
         }
