@@ -145,6 +145,19 @@ public class SiteTemplateTagQuickStats implements SiteTemplateTag{
         }
 
         //-
+        //if (userSession.getAccount().isPro() && userSession.getAccount().getIssearchmysiteon()==1) {
+            qs.delete(0,qs.length());
+            qs.append("<a href='tags.log'></a> <font face=arial size=-2 class=smallfont> <a href='tags.log'>" + acctCounts.getTagCount() + " Smart Tag");
+            if (acctCounts.getTagCount() <= 1) {
+                qs.append("");
+            } else {
+                qs.append("s");
+            }
+            qs.append("</font>");
+            out.append(reger.SideColumn.sideColContentRow(qs.toString()));
+        //}
+
+        //-
         out.append(reger.SideColumn.sideColTableEnd("Quick Stats"));
 
 
