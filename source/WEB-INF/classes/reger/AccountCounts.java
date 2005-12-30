@@ -6,126 +6,143 @@ import reger.core.db.Db;
  * Retains counts of certain things associated with the account
  */
 public class AccountCounts {
-    private int authorcount=0;
-    private int entrycount=0;
-    private int filecount=0;
-    private int locationcount=0;
-    private int messagecount=0;
-    private int episodecount=0;
-    private int graphcount=0;
-    private int timeperiodcount=0;
-    private int savedsearchescount=0;
+    private int authorcount = 0;
+    private int entrycount = 0;
+    private int filecount = 0;
+    private int locationcount = 0;
+    private int messagecount = 0;
+    private int episodecount = 0;
+    private int graphcount = 0;
+    private int timeperiodcount = 0;
+    private int savedsearchescount = 0;
 
-    private int accountid=0;
-    private int accountuserid=0;
+    private int accountid = 0;
+    private int accountuserid = 0;
 
-    public AccountCounts(){
+    private int tagCount = 0;
+
+    public AccountCounts() {
 
     }
 
-    public AccountCounts(Account account, Accountuser accountuser){
+    public AccountCounts(Account account, Accountuser accountuser) {
         this.accountid = account.getAccountid();
         this.accountuserid = accountuser.getAccountuserid();
 
         //@todo Should only count authors who can write to at least one log you can see
         //-----------------------------------
         //-----------------------------------
-        String[][] rstAuthorsCount= Db.RunSQL("SELECT count(*) FROM accountuser WHERE accountid='"+account.getAccountid()+"' AND isactive='1'");
+        String[][] rstAuthorsCount = Db.RunSQL("SELECT count(*) FROM accountuser WHERE accountid='" + account.getAccountid() + "' AND isactive='1'");
         //-----------------------------------
         //-----------------------------------
-        if (rstAuthorsCount!=null && rstAuthorsCount.length>0){
+        if (rstAuthorsCount != null && rstAuthorsCount.length > 0) {
             authorcount = Integer.parseInt(rstAuthorsCount[0][0]);
         }
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEntryCount= Db.RunSQL("SELECT count(*) FROM event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + account.getAccountid() + "' AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
+        String[][] rstEntryCount = Db.RunSQL("SELECT count(*) FROM event, megalog WHERE " + reger.Entry.sqlOfLiveEntry + " AND event.logid=megalog.logid AND megalog.accountid='" + account.getAccountid() + "' AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
         //-----------------------------------
         //-----------------------------------
-        if (rstEntryCount!=null && rstEntryCount.length>0){
+        if (rstEntryCount != null && rstEntryCount.length > 0) {
             entrycount = Integer.parseInt(rstEntryCount[0][0]);
         }
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImageCount= Db.RunSQL("SELECT count(*) FROM image, event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.eventid=image.eventid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
+        String[][] rstImageCount = Db.RunSQL("SELECT count(*) FROM image, event, megalog WHERE " + reger.Entry.sqlOfLiveEntry + " AND event.eventid=image.eventid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
         //-----------------------------------
         //-----------------------------------
-        if (rstImageCount!=null && rstImageCount.length>0){
+        if (rstImageCount != null && rstImageCount.length > 0) {
             filecount = Integer.parseInt(rstImageCount[0][0]);
         }
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstLocactionCount= Db.RunSQL("SELECT count(DISTINCT location.locationid) FROM location, event, megalog WHERE location.accountid>0 AND "+reger.Entry.sqlOfLiveEntry+" AND event.locationid=location.locationid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
+        String[][] rstLocactionCount = Db.RunSQL("SELECT count(DISTINCT location.locationid) FROM location, event, megalog WHERE location.accountid>0 AND " + reger.Entry.sqlOfLiveEntry + " AND event.locationid=location.locationid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
         //-----------------------------------
         //-----------------------------------
-        if (rstLocactionCount!=null && rstLocactionCount.length>0){
+        if (rstLocactionCount != null && rstLocactionCount.length > 0) {
             locationcount = Integer.parseInt(rstLocactionCount[0][0]);
         }
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstMessageCount= Db.RunSQL("SELECT count(*) FROM message, event, megalog WHERE message.isapproved='1' AND "+reger.Entry.sqlOfLiveEntry+" AND event.eventid=message.eventid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
+        String[][] rstMessageCount = Db.RunSQL("SELECT count(*) FROM message, event, megalog WHERE message.isapproved='1' AND " + reger.Entry.sqlOfLiveEntry + " AND event.eventid=message.eventid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
         //-----------------------------------
         //-----------------------------------
-        if (rstMessageCount!=null && rstMessageCount.length>0){
+        if (rstMessageCount != null && rstMessageCount.length > 0) {
             messagecount = Integer.parseInt(rstMessageCount[0][0]);
         }
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEpisodeCount= Db.RunSQL("SELECT count(DISTINCT(episode.episodeid)) FROM episode, event, megalog, eventtoepisode WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.eventid=eventtoepisode.eventid AND eventtoepisode.episodeid=episode.episodeid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
+        String[][] rstEpisodeCount = Db.RunSQL("SELECT count(DISTINCT(episode.episodeid)) FROM episode, event, megalog, eventtoepisode WHERE " + reger.Entry.sqlOfLiveEntry + " AND event.eventid=eventtoepisode.eventid AND eventtoepisode.episodeid=episode.episodeid AND megalog.accountid='" + account.getAccountid() + "' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + "");
         //-----------------------------------
         //-----------------------------------
-        if (rstEpisodeCount!=null && rstEpisodeCount.length>0){
+        if (rstEpisodeCount != null && rstEpisodeCount.length > 0) {
             episodecount = Integer.parseInt(rstEpisodeCount[0][0]);
         }
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstGraph= Db.RunSQL("SELECT COUNT(DISTINCT megachart.megachartid) FROM megachart, megachartyaxis, megalog" +
-        " WHERE "+
-        " megachart.megachartid=megachartyaxis.megachartid "+
-        " AND "+ accountuser.LogsUserCanViewQueryend(account.getAccountid()) +
-        " AND "+
-        " ( "+
-        "    (megalog.accountid='"+account.getAccountid()+"' AND (megalog.logid=megachart.xlogid OR megalog.logid=megachartyaxis.ylogid OR megalog.eventtypeid=megachart.xeventtypeid OR megalog.eventtypeid=megachartyaxis.yeventtypeid )) "+
-        " ) "+
-        " ORDER BY megachart.accountid DESC, megalog.logid ASC, megachart.megachartid DESC"
+        String[][] rstGraph = Db.RunSQL("SELECT COUNT(DISTINCT megachart.megachartid) FROM megachart, megachartyaxis, megalog" +
+                " WHERE " +
+                " megachart.megachartid=megachartyaxis.megachartid " +
+                " AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) +
+                " AND " +
+                " ( " +
+                "    (megalog.accountid='" + account.getAccountid() + "' AND (megalog.logid=megachart.xlogid OR megalog.logid=megachartyaxis.ylogid OR megalog.eventtypeid=megachart.xeventtypeid OR megalog.eventtypeid=megachartyaxis.yeventtypeid )) " +
+                " ) " +
+                " ORDER BY megachart.accountid DESC, megalog.logid ASC, megachart.megachartid DESC"
         );
         //-----------------------------------
         //-----------------------------------
-        if (rstGraph!=null && rstGraph.length>0){
+        if (rstGraph != null && rstGraph.length > 0) {
             graphcount = Integer.parseInt(rstGraph[0][0]);
         }
 
         //Deal with private/public
         String privateSql = " isprivate='0' ";
-        if (accountuser.userCanDoAcl("TIMEPERIODSVIEWPRIVATE", account.getAccountid())){
+        if (accountuser.userCanDoAcl("TIMEPERIODSVIEWPRIVATE", account.getAccountid())) {
             privateSql = " (isprivate='0' || isprivate='1') ";
         }
         //-----------------------------------
         //-----------------------------------
-        String[][] rstTimePeriods= Db.RunSQL("SELECT count(*) FROM timeperiod WHERE accountid='"+account.getAccountid()+"' AND " + privateSql);
+        String[][] rstTimePeriods = Db.RunSQL("SELECT count(*) FROM timeperiod WHERE accountid='" + account.getAccountid() + "' AND " + privateSql);
         //-----------------------------------
         //-----------------------------------
-        if (rstTimePeriods!=null && rstTimePeriods.length>0){
+        if (rstTimePeriods != null && rstTimePeriods.length > 0) {
             timeperiodcount = Integer.parseInt(rstTimePeriods[0][0]);
         }
 
-
         //-----------------------------------
         //-----------------------------------
-        String[][] rstSavedSearch= Db.RunSQL("SELECT savedsearch.savedsearchid, savedsearch.name FROM savedsearch, megalog, savedsearchlog WHERE savedsearch.savedsearchid=savedsearchlog.savedsearchid AND savedsearchlog.logid=megalog.logid AND "+accountuser.LogsUserCanViewQueryend(account.getAccountid())+" GROUP BY savedsearchid ORDER BY savedsearch.name ASC");
+        String[][] rstSavedSearch = Db.RunSQL("SELECT savedsearch.savedsearchid, savedsearch.name FROM savedsearch, megalog, savedsearchlog WHERE savedsearch.savedsearchid=savedsearchlog.savedsearchid AND savedsearchlog.logid=megalog.logid AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + " GROUP BY savedsearchid ORDER BY savedsearch.name ASC");
         //-----------------------------------
         //-----------------------------------
         int numberOfSavedSearches = 0;
-        if (rstSavedSearch!=null && rstSavedSearch.length>0){
+        if (rstSavedSearch != null && rstSavedSearch.length > 0) {
             savedsearchescount = rstSavedSearch.length;
         }
 
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstTagCount = Db.RunSQL("select count(DISTINCT tag.tagid) from event, image, eventtaglink, tagimagelink, tag where " + reger.Entry.sqlOfLiveEntry + " AND event.accountid= " + accountuser.LogsUserCanViewQueryend(accountid) + " and event.accountuserid= " + accountuser.LogsUserCanViewQueryend(accountuserid) + " and eventtaglink.eventid=event.eventid and tagimagelink.imageid=image.imageid and image.accountid=event.accountid and image.accountuserid=event.accountuserid  and eventtaglink.tagid=tag.tagid or tagimagelink.tagid=tag.tagid");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstTagCount != null && rstTagCount.length > 0) {
+            tagCount = Integer.parseInt(rstTagCount[0][0]);
+        }
 
+    }
+
+    public int getTagCount() {
+        return tagCount;
+    }
+
+    public void setTagCount(int tagCount) {
+        this.tagCount = tagCount;
     }
 
     public int getAuthorcount() {
