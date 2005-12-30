@@ -80,7 +80,7 @@ public class EventTagLink {
         StringBuffer tags = new StringBuffer("\"");
         //-----------------------------------
         //-----------------------------------
-        String[][] rstTags = Db.RunSQL("SELECT tag.tag FROM tag tag, eventtaglink event WHERE tag.tagid=event.tagid AND event.eventid='" + eventid + "'");
+        String[][] rstTags = Db.RunSQL("SELECT tag.tag FROM tag tag, eventtaglink event WHERE tag.tagid=event.tagid AND event.eventid='" + eventid + "' order by tag");
         //-----------------------------------
         //-----------------------------------
         if (rstTags != null && rstTags.length > 0) {
