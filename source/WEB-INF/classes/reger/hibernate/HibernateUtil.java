@@ -11,6 +11,9 @@ public class HibernateUtil {
 
     static {
         try {
+
+        
+
             //Create a configuration object
             Configuration conf = new Configuration();
             //Add mapping files

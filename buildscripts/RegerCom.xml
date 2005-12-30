@@ -169,6 +169,7 @@
 
    
     <!-- Tomcat Deployers -->
+    <!--
     <target name="undeploy" description="Undeploys the Web Application" depends="packagewithsource">
         <ant antfile="TomcatDeploy.xml" target="undeployApp" inheritAll="true"/> 
     </target>
@@ -178,6 +179,7 @@
     <target name="deployNew" description="Deploys the Web Application" depends="packagewithsource">
         <ant antfile="TomcatDeploy.xml" target="deployNewApp" inheritAll="true"/> 
     </target>
+    -->
 
     
     <!-- Dev WAR file builders -->
@@ -190,9 +192,9 @@
     </target>
 
     <!-- Obfuscate with yGuard -->
+    <!--
     <target name="buildObfuscated" description="Builds an obfuscated jar." depends="compile">
         <jar destfile="${lastbuild}/WEB-INF/lib/reger.jar" basedir="${javasrc}" excludes="**/*.java" />
-        <!-- I should now delete the classes -->
         <taskdef name="obfuscate" classname="com.yworks.yguard.ObfuscatorTask" classpath="source/WEB-INF/lib/yguard.jar"/>
         <obfuscate mainclass="reger.core" logfile="obfuscationlog.xml">
             <inoutpair in="${lastbuild}/WEB-INF/lib/reger.jar" out="${lastbuild}/WEB-INF/lib/regerObfuscated.jar"/>
@@ -205,6 +207,7 @@
             </expose>
         </obfuscate>
     </target>
+    -->
 
 
 
@@ -243,7 +246,7 @@
 		-->
 	</target>
     
-
+    
     
 
 </project>

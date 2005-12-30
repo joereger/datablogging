@@ -105,7 +105,7 @@ public class Tag {
                     //Delete the tag itself
                     //-----------------------------------
                     //-----------------------------------
-                    int count = Db.RunSQLUpdate("DELETE FROM tag WHERE tagid='"+rstTags[i][0]+"'");
+                    //int count = Db.RunSQLUpdate("DELETE FROM tag WHERE tagid='"+rstTags[i][0]+"'");
                     //-----------------------------------
                     //-----------------------------------
                 }

@@ -205,37 +205,31 @@ public class MegaHtmlFormBottom {
                 mb.append("</tr>");
             }
 
+
+
+
+            //Smart Entry Tags
             mb.append("<tr>");
             mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
-            mb.append("Keyword Tags:");
+            if (displayasadmin) {
+                mb.append("Keyword Tags</b></font><br><font face=arial size=-2><b>Enter keyword tags to help organize and find your entries.");
+            } else {
+                mb.append("Keyword Tags");
+            }
             mb.append("</b></font><br>");
             mb.append("</td>");
-            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent><input type='text' name='entrykeywordtags' value=" + pageProps.entry.entryKeywordTags + ">");
+            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
+            if (displayasadmin) {
+                //This is where the admin side is shown.
+                //Users can enter and edit tag information here as a single input text field
+                mb.append("<input type='text' name='entrykeywordtags' value=\"" + reger.core.Util.cleanForHtml(pageProps.entry.entryKeywordTags) + "\">");
+            } else {
+                //This is where the public side is shown.
+                //Readers view keyword tags as links to the keyword tag page.
+                mb.append(pageProps.entry.entryKeywordTags);
+            }
             mb.append("</td>");
             mb.append("</tr>");
-
-
-//            //Smart Entry Tags
-//            mb.append("<tr>");
-//            mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
-//            if (displayasadmin) {
-//                mb.append("Keyword Tags</b></font><br><font face=arial size=-2><b>Enter keyword tags to help organize and find your entries.");
-//            } else {
-//                mb.append("Keyword Tags");
-//            }
-//            mb.append("</b></font><br>");
-//            mb.append("</td>");
-//            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
-//            if (displayasadmin) {
-//                //This is where the admin side is shown.
-//                //Users can enter and edit tag information here as a single input text field
-//
-//            } else {
-//                //This is where the public side is shown.
-//                //Readers view keyword tags as links to the keyword tag page.
-//            }
-//            mb.append("</td>");
-//            mb.append("</tr>");
 
 
 
