@@ -1,113 +1,92 @@
-<%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.AccountCounts" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.TreeMap"%>
+<%@ page import="java.math.BigDecimal"%>
 <%
-/*----------------------------------------------------*/
+    /*----------------------------------------------------*/
 /*                  Page Config                       */
-reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-pageProps.siteSection=pageProps.PUBLICSITE;
-pageProps.isPasswordProtected = false;
-pageProps.isLogidRequired=false;
-pageProps.isEventidRequired=false;
-pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICMISC;
-pageProps.pathToAppRoot="";
+    reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+    pageProps.siteSection = pageProps.PUBLICSITE;
+    pageProps.isPasswordProtected = false;
+    pageProps.isLogidRequired = false;
+    pageProps.isEventidRequired = false;
+    pageProps.trafficType = reger.Vars.TRAFFICTYPEPUBLICMISC;
+    pageProps.pathToAppRoot = "";
 /*----------------------------------------------------*/
 %>
 
 <%@ include file="globalheader.jsp" %>
 
 <%
-/*----------------------------------------------------*/
+    /*----------------------------------------------------*/
 /*                  Main Body                         */
-        StringBuffer mb = new StringBuffer();
+    StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+    mb.append(reger.SideColumn.sideColTableStart("Smart Tags"));
+    mb.append(reger.SideColumn.sideColHeaderRow("Smart Tags"));
 
+    StringBuffer qs = new StringBuffer();
+    qs.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");
+    qs.append("<tr>");
+    qs.append("<td>");
 
-
-
-mb.append(reger.SideColumn.sideColTableStart("Keyword Tags"));
-mb.append(reger.SideColumn.sideColHeaderRow("Keyword Tags"));
-
-StringBuffer qs = new StringBuffer();
-
-qs.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");
-qs.append("<tr>");
-qs.append("<td bgcolor=#e6e6e6>");
-qs.append("<font face=arial size=-1 class=mediumfont>");
-qs.append("<a href='files.log'>");
-qs.append("All Images");
-qs.append("</a>");
-qs.append("</font>");
-qs.append("</td>");
-qs.append("</tr>");
-qs.append("<tr>");
-qs.append("<td>");
-qs.append(reger.Tag.getTagsAndLinksHtml(userSession.getAccount().getAccountid(), userSession, false));
-qs.append("</td>");
-qs.append("</tr>");
-qs.append("</table>");
-
-mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
-
-mb.append(reger.SideColumn.sideColTableEnd("Keyword Tags"));
-
-mb.append("<br><br>");
-
-
-
-
-
-
-//Currentpage
-int currentpage=1;
-if (request.getParameter("currentpage")!=null && reger.core.Util.isinteger(request.getParameter("currentpage"))){
-    currentpage=Integer.parseInt(request.getParameter("currentpage"));
-}
-//tagid
-int tagid=-1;
-if (request.getParameter("tagid")!=null && reger.core.Util.isinteger(request.getParameter("tagid"))){
-    tagid=Integer.parseInt(request.getParameter("tagid"));
-}
-
-//Show the tag name
-if (tagid>0) {
-    String tag = "";
-    //-----------------------------------
-    //-----------------------------------
-    String[][] rstTagname= Db.RunSQL("SELECT tag FROM tag WHERE tagid='"+tagid+"'");
-    //-----------------------------------
-    //-----------------------------------
-    if (rstTagname!=null && rstTagname.length>0){
-        tag = rstTagname[0][0];
+    AccountCounts acctCounts = reger.cache.AccountCountCache.get(userSession.getAccount(), userSession.getAccountuser());
+    HashMap smartTagMap = acctCounts.getSmartTagMap();
+    Iterator iter = smartTagMap.keySet().iterator();
+    String tagId = null;
+    HashMap tempTagMap = null;
+    HashMap tagMap = new HashMap();
+    TreeMap tempMap = new TreeMap();
+    String tag = null;
+    int size = 0;
+    while (iter.hasNext()) {
+        tagId = (String) iter.next();
+        tagId = tagId.substring(0, tagId.indexOf("_"));
+        size = 0;
+        if (smartTagMap.containsKey(tagId + "_img")) {
+            tempTagMap = (HashMap) smartTagMap.get(tagId+"_img");
+            size += tempTagMap.size();
+        }
+        if (smartTagMap.containsKey(tagId + "_event")) {
+            tempTagMap = (HashMap) smartTagMap.get(tagId+"_event");
+            size += tempTagMap.size();
+        }
+        tag = (String)(tempTagMap.values().iterator().next());
+        tempTagMap = new HashMap();
+        tempTagMap.put(tag, new Integer(size));
+        tagMap.put(tagId, tempTagMap);
+        tempMap.put(new Integer(size), tagId);
     }
-    if (!tag.equals("")){
-        mb.append("<font face=arial size=+1 class=largefont>");
-        mb.append(tag);
-        mb.append("</font>");
-        mb.append("<br><br>");
+    int maxSize = ((Integer)tempMap.lastKey()).intValue();
+    iter = tagMap.keySet().iterator();
+    while (iter.hasNext()) {
+        tagId = (String) iter.next();
+        tempTagMap = (HashMap) tagMap.get(tagId);
+        tag = (String) tempTagMap.keySet().iterator().next();
+        size = ((Integer)tempTagMap.get(tag)).intValue();
+        System.out.println("<a href=tags.log?tagid=" + tagId + " style=font-size:" + (new Double(size).doubleValue()/new Double(maxSize).doubleValue())*35+ "px; class=SmartTag>" + tag + "</a>");
+        qs.append("<a href=tags.log?tagid=" + tagId + " style=font-size:" + (new Double(size).doubleValue()/new Double(maxSize).doubleValue())*35 + "px; class=SmartTag>" + tag + "</a>");
+        qs.append(" ");
     }
-}
 
-//Perpage
-int perpage=50;
-//Output the images in html format
-mb.append(reger.core.Util.popup());
-boolean displayasadmin = false;
-mb.append(reger.ImageListHtml.tableStart());
-mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, tagid, displayasadmin, userSession, currentpage, perpage, request));
-mb.append(reger.ImageListHtml.tableEnd());
+    qs.append("</td>");
+    qs.append("</tr>");
+    qs.append("</table>");
 
+   mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
+   mb.append(reger.SideColumn.sideColTableEnd("Smart Tags"));
 
 %>
 
 <%
-/*----------------------------------------------------*/
+    /*----------------------------------------------------*/
 /*                  Side Column                       */
-        StringBuffer sc = new StringBuffer();
+    StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
-
 
 
 %>
 
 <%@ include file="globalfooter.jsp" %>
-
