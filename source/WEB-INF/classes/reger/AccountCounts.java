@@ -131,17 +131,16 @@ public class AccountCounts {
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEventTags = Db.RunSQL("select DISTINCT tag.tagid, tag.tag, event.eventid from event, eventtaglink, tag, megalog where " + reger.Entry.sqlOfLiveEntry + " AND event.accountid= " + accountuser.LogsUserCanViewQueryend(accountid) + " and event.accountuserid= " + accountuser.LogsUserCanViewQueryend(accountuserid) + " and eventtaglink.eventid=event.eventid and megalog.logid=event.logid and eventtaglink.tagid=tag.tagid");
-
+        String[][] rstEventTags = Db.RunSQL("SELECT DISTINCT tag.tagid, tag.tag, event.eventid FROM event, eventtaglink, tag, megalog WHERE " + reger.Entry.sqlOfLiveEntry + " AND event.accountid='"+account.getAccountid()+"' AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + " AND eventtaglink.eventid=event.eventid AND megalog.logid=event.logid AND eventtaglink.tagid=tag.tagid");
         //-----------------------------------
         //-----------------------------------
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImgTags = Db.RunSQL("select DISTINCT tag.tagid, tag.tag, image.imageid from image, tagimagelink, tag, event, megalog where " + reger.Entry.sqlOfLiveEntry + " AND image.accountid= " + accountuser.LogsUserCanViewQueryend(accountid) + " and image.accountuserid= " + accountuser.LogsUserCanViewQueryend(accountuserid) + " and tagimagelink.imageid=image.imageid and tagimagelink.tagid=tag.tagid and megalog.logid=event.logid and image.eventid=event.eventid and event.accountid=image.accountid and event.accountuserid=image.accountuserid");
+        String[][] rstImgTags = Db.RunSQL("SELECT DISTINCT tag.tagid, tag.tag, image.imageid FROM image, tagimagelink, tag, event, megalog WHERE " + reger.Entry.sqlOfLiveEntry + " AND image.accountid='"+account.getAccountid()+"' AND " + accountuser.LogsUserCanViewQueryend(account.getAccountid()) + " AND tagimagelink.imageid=image.imageid AND tagimagelink.tagid=tag.tagid AND megalog.logid=event.logid AND image.eventid=event.eventid");
+        //-----------------------------------
+        //-----------------------------------
 
-        //-----------------------------------
-        //-----------------------------------
         HashMap tempTagMap = null;
         HashMap tagMap = new HashMap();
         String tagId = null;

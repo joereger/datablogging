@@ -74,7 +74,7 @@ if (pageProps.action.equals("edit")){
     if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl").equals("null")){
         response.sendRedirect(request.getParameter("returnurl")+"?plid=" + plid);
     } else {
-        response.sendRedirect("pltemplates.log");
+        response.sendRedirect("pltemplates.log?plid="+plid);
     }
 }
 

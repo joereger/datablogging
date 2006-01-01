@@ -4,6 +4,8 @@ import org.hibernate.*;
 import org.hibernate.cfg.*;
 import reger.core.db.DbConfig;
 
+import java.io.File;
+
 
 public class HibernateUtil {
 
@@ -12,13 +14,14 @@ public class HibernateUtil {
     static {
         try {
 
-        
+
 
             //Create a configuration object
             Configuration conf = new Configuration();
             //Add mapping files
             String pathToMaps = reger.core.WebAppRootDir.getWebAppRootPath() + "hibernatemaps/";
-            conf.addFile(pathToMaps + "Cat.hbm.xml");
+//            conf.addFile(pathToMaps + "Cat.hbm.xml");
+            conf.addDirectory(new File(pathToMaps));
             //Set up database connection
             conf.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLMyISAMDialect");
             conf.setProperty("hibernate.current_session_context_class", "thread");

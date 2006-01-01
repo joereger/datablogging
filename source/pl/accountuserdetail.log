@@ -93,7 +93,9 @@ if (pageProps.action.equals("revokepladmin")) {
 
 //Grant pladmin permission
 if (pageProps.action.equals("grantloeadmin")) {
-    au.addUserToAclGroup("LOEAdmin", au.getAccountid());
+    if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", au.getAccountid())){
+        au.addUserToAclGroup("LOEAdmin", au.getAccountid());
+    }
 }
 
 //Revoke pladmin permission
@@ -152,13 +154,13 @@ mb.append("<tr>");
 
 mb.append("<td valign=top bgcolor=#ffffff class=acct>");
 if (!au.userCanDoAcl("PLADMIN", au.getAccountid())){
-    mb.append("<a href='accountuserdetail.log?action=grantpladmin&accountuserid="+au.accountuserid+"'>");
+    mb.append("<a href='accountuserdetail.log?action=grantpladmin&accountuserid="+au.accountuserid+"&plid="+pl.getPlid()+"'>");
     mb.append("Grant PLAdmin Permission");
     mb.append("</a>");
     mb.append("<br>");
     mb.append("Grants this user permission to manage the private label that they are associated to.");
 } else {
-    mb.append("<a href='accountuserdetail.log?action=revokepladmin&accountuserid="+au.accountuserid+"'>");
+    mb.append("<a href='accountuserdetail.log?action=revokepladmin&accountuserid="+au.accountuserid+"&plid="+pl.getPlid()+"'>");
     mb.append("Revoke PLAdmin Permission");
     mb.append("</a>");
     mb.append("<br>");
@@ -187,18 +189,20 @@ for (int i = 0; i < allPls.length; i++) {
 mb.append("</td>");
 
 mb.append("<td valign=top bgcolor=#ffffff class=acct>");
-if (!au.userCanDoAcl("MASTERADMIN", au.getAccountid())){
-    mb.append("<a href='accountuserdetail.log?action=grantloeadmin&accountuserid="+au.accountuserid+"'>");
-    mb.append("Grant LOEAdmin Permission");
-    mb.append("</a>");
-    mb.append("<br>");
-    mb.append("Grants this user overall admin permission.  Caution: this is the highest amount of power available in the system.");
-} else {
-    mb.append("<a href='accountuserdetail.log?action=revokeloeadmin&accountuserid="+au.accountuserid+"&plid="+plid+"'>");
-    mb.append("Revoke LOEAdmin Permission");
-    mb.append("</a>");
-    mb.append("<br>");
-    mb.append("Revokes LOEAdmin permission.");
+if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", au.getAccountid())){
+    if (!au.userCanDoAcl("MASTERADMIN", au.getAccountid())){
+        mb.append("<a href='accountuserdetail.log?action=grantloeadmin&accountuserid="+au.accountuserid+"&plid="+pl.getPlid()+"'>");
+        mb.append("Grant LOEAdmin Permission");
+        mb.append("</a>");
+        mb.append("<br>");
+        mb.append("Grants this user overall admin permission.  Caution: this is the highest amount of power available in the system.");
+    } else {
+        mb.append("<a href='accountuserdetail.log?action=revokeloeadmin&accountuserid="+au.accountuserid+"&plid="+plid+"'>");
+        mb.append("Revoke LOEAdmin Permission");
+        mb.append("</a>");
+        mb.append("<br>");
+        mb.append("Revokes LOEAdmin permission.");
+    }
 }
 mb.append("</td>");
 

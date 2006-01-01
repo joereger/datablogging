@@ -144,10 +144,10 @@ public class SiteTemplateTagQuickStats implements SiteTemplateTag{
             out.append(reger.SideColumn.sideColContentRow(qs.toString()));
         }
 
-        //-
+
         //if (userSession.getAccount().isPro() && userSession.getAccount().getIssearchmysiteon()==1) {
             qs.delete(0,qs.length());
-            qs.append("<a href='tags.log'></a> <font face=arial size=-2 class=smallfont> <a href='tags.log'>" + acctCounts.getTagCount() + " Smart Tag");
+            qs.append("<a href='tags.log'><img src=images/imageavailable2.gif border=0 align=middle></a> <font face=arial size=-2 class=smallfont> <a href='tags.log'>" + acctCounts.getTagCount() + " Smart Tag");
             if (acctCounts.getTagCount() <= 1) {
                 qs.append("");
             } else {
@@ -157,7 +157,7 @@ public class SiteTemplateTagQuickStats implements SiteTemplateTag{
             out.append(reger.SideColumn.sideColContentRow(qs.toString()));
         //}
 
-        //-
+
         out.append(reger.SideColumn.sideColTableEnd("Quick Stats"));
 
 

@@ -40,6 +40,7 @@ mb.append("</font>");
 mb.append("</td></tr></table");
 mb.append("</center>");
 mb.append("<br>");
+mb.append("Enjoy!");
 
 
 
