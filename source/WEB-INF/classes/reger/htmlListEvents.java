@@ -115,7 +115,7 @@ public class htmlListEvents {
         //sqlCount = "SELECT count(*) FROM event event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + "" + logidSql + viewdatesql + locationidSql + showonhomepageSql;
 
         sql = "SELECT " + fieldSql + " FROM " + from + " WHERE " + reger.Entry.sqlOfLiveEntry + " AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + tagSql + locationidSql + "ORDER BY event.date DESC" + " LIMIT " + limitMin + "," + limitMax;
-        sqlCount = "SELECT count(*) FROM " + from + " WHERE " + reger.Entry.sqlOfLiveEntry + " AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + locationidSql;
+        sqlCount = "SELECT count(*) FROM " + from + " WHERE " + reger.Entry.sqlOfLiveEntry + " AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + locationidSql + tagSql;
         //For debugging, output the sql to the screen
         //list.append("<br>" + sql);
 
