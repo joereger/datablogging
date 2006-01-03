@@ -95,15 +95,14 @@ public class htmlListEvents {
         String from = "event event";
         String tagSql = "";
         String tagId = request.getParameter("tagid");
-        String tag = request.getParameter("tag");
+//        String tag = request.getParameter("tag");
         if ((tagId != null) && (tagId.trim().length() > 0)) {
             from += ", tag tag, eventtaglink eventtaglink";
             tagSql += " AND tag.tagid='" + tagId + "' AND eventtaglink.tagid=tag.tagid and event.eventid=eventtaglink.eventid ";
-            System.out.println("TAGID IS **** " + tagId);
         }
-        if ((tag != null) && (tag.trim().length() > 0)) {
-            System.out.println("TAG IS **** " + tag);
-        }
+//        if ((tag != null) && (tag.trim().length() > 0)) {
+//            System.out.println("TAG IS **** " + tag);
+//        }
 
         //This section builds one of two sets of SQL queries.
         //In each set is a main that returns a limited number of records.
@@ -117,7 +116,6 @@ public class htmlListEvents {
 
         sql = "SELECT " + fieldSql + " FROM " + from + " WHERE " + reger.Entry.sqlOfLiveEntry + " AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + tagSql + locationidSql + "ORDER BY event.date DESC" + " LIMIT " + limitMin + "," + limitMax;
         sqlCount = "SELECT count(*) FROM " + from + " WHERE " + reger.Entry.sqlOfLiveEntry + " AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + locationidSql;
-        System.out.println("QUERY IS *** " + sql);
         //For debugging, output the sql to the screen
         //list.append("<br>" + sql);
 
