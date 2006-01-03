@@ -1,0 +1,55 @@
+<%@ page import="reger.htmlListEvents"%>
+<%
+    /*----------------------------------------------------*/
+/*                  Page Config                       */
+    reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+    pageProps.siteSection = reger.pageFramework.PageProps.PUBLICSITE;
+    pageProps.isPasswordProtected = false;
+    pageProps.isLogidRequired = false;
+    pageProps.isEventidRequired = false;
+    pageProps.trafficType = reger.Vars.TRAFFICTYPEPUBLICMISC;
+    pageProps.pathToAppRoot = "";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+    /*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+    mb.append(reger.SideColumn.sideColTableStart("Smart Tags"));
+    mb.append(reger.SideColumn.sideColHeaderRow("Smart Tags"));
+
+    StringBuffer qs = new StringBuffer();
+    qs.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");
+    qs.append("<tr>");
+    qs.append("<td>");
+    try {
+        System.out.println("In JSP ****** ");
+        qs.append(htmlListEvents.getList(userSession, pageProps.logProps.logid, reger.core.Util.getCurrentPage(request.getParameter("currentpage")),request.getParameter("viewdate"), request.getParameter("viewmonth"), "tag-detail.log", -1, true, request).toString());
+        System.out.println("In JSP AFTER ****** ");
+    } catch (Exception e) {
+        Debug.errorsave(e, "Exception occurred in tags.log");
+    }
+
+    qs.append("</td>");
+    qs.append("</tr>");
+    qs.append("</table>");
+
+    mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
+    mb.append(reger.SideColumn.sideColTableEnd("Smart Tags"));
+%>
+
+<%
+    /*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+<%@ include file="globalfooter.jsp" %>

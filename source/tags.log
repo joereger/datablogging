@@ -2,12 +2,11 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.TreeMap"%>
-<%@ page import="java.math.BigDecimal"%>
 <%
     /*----------------------------------------------------*/
 /*                  Page Config                       */
     reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-    pageProps.siteSection = pageProps.PUBLICSITE;
+    pageProps.siteSection = reger.pageFramework.PageProps.PUBLICSITE;
     pageProps.isPasswordProtected = false;
     pageProps.isLogidRequired = false;
     pageProps.isEventidRequired = false;
@@ -31,47 +30,52 @@
     qs.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");
     qs.append("<tr>");
     qs.append("<td>");
-
-    AccountCounts acctCounts = reger.cache.AccountCountCache.get(userSession.getAccount(), userSession.getAccountuser());
-    HashMap smartTagMap = acctCounts.getSmartTagMap();
-    if (smartTagMap != null && smartTagMap.size() > 0) {
-        Iterator iter = smartTagMap.keySet().iterator();
-        String tagId = null;
-        HashMap tempTagMap = null;
-        HashMap tagMap = new HashMap();
-        TreeMap tempMap = new TreeMap();
-        String tag = null;
-        int size = 0;
-        while (iter.hasNext()) {
-            tagId = (String) iter.next();
-            tagId = tagId.substring(0, tagId.indexOf("_"));
-            size = 0;
-            if (smartTagMap.containsKey(tagId + "_img")) {
-                tempTagMap = (HashMap) smartTagMap.get(tagId+"_img");
-                size += tempTagMap.size();
+    try {
+        AccountCounts acctCounts = reger.cache.AccountCountCache.get(userSession.getAccount(), userSession.getAccountuser());
+        HashMap smartTagMap = acctCounts.getSmartTagMap();
+        if (smartTagMap != null && smartTagMap.size() > 0) {
+            Iterator iter = smartTagMap.keySet().iterator();
+            String tagId;
+            HashMap tempTagMap = null;
+            HashMap tagMap = new HashMap();
+            TreeMap tempMap = new TreeMap();
+            String tag;
+            int size;
+            while (iter.hasNext()) {
+                tagId = (String) iter.next();
+                tagId = tagId.substring(0, tagId.indexOf("_"));
+                size = 0;
+                if (smartTagMap.containsKey(tagId + "_img")) {
+                    tempTagMap = (HashMap) smartTagMap.get(tagId+"_img");
+                    size += tempTagMap.size();
+                }
+                if (smartTagMap.containsKey(tagId + "_event")) {
+                    tempTagMap = (HashMap) smartTagMap.get(tagId+"_event");
+                    size += tempTagMap.size();
+                }
+                if (tempTagMap != null && tempTagMap.size() > 0) {
+                    tag = (String)(tempTagMap.values().iterator().next());
+                    tempTagMap = new HashMap();
+                    tempTagMap.put(tag, new Integer(size));
+                    tagMap.put(tagId, tempTagMap);
+                    tempMap.put(new Integer(size), tagId);
+                }
             }
-            if (smartTagMap.containsKey(tagId + "_event")) {
-                tempTagMap = (HashMap) smartTagMap.get(tagId+"_event");
-                size += tempTagMap.size();
+            int maxSize = ((Integer)tempMap.lastKey()).intValue();
+            iter = tagMap.keySet().iterator();
+            while (iter.hasNext()) {
+                tagId = (String) iter.next();
+                tempTagMap = (HashMap) tagMap.get(tagId);
+                tag = (String) tempTagMap.keySet().iterator().next();
+                size = ((Integer)tempTagMap.get(tag)).intValue();
+                qs.append("<a href=tag-detail.log?tagid=" + tagId + "&tag=" + tag + " style=font-size:" + (new Double(size).doubleValue()/new Double(maxSize).doubleValue())*35 + "px; class=SmartTag>" + tag + "</a>");
+                qs.append(" ");
             }
-            tag = (String)(tempTagMap.values().iterator().next());
-            tempTagMap = new HashMap();
-            tempTagMap.put(tag, new Integer(size));
-            tagMap.put(tagId, tempTagMap);
-            tempMap.put(new Integer(size), tagId);
+        } else {
+            qs.append("No Smart Tags Found.");
         }
-        int maxSize = ((Integer)tempMap.lastKey()).intValue();
-        iter = tagMap.keySet().iterator();
-        while (iter.hasNext()) {
-            tagId = (String) iter.next();
-            tempTagMap = (HashMap) tagMap.get(tagId);
-            tag = (String) tempTagMap.keySet().iterator().next();
-            size = ((Integer)tempTagMap.get(tag)).intValue();
-            qs.append("<a href=tags.log?tagid=" + tagId + " style=font-size:" + (new Double(size).doubleValue()/new Double(maxSize).doubleValue())*35 + "px; class=SmartTag>" + tag + "</a>");
-            qs.append(" ");
-        }
-    } else {
-        qs.append("No Smart Tags Found.");
+    } catch (Exception e) {
+        Debug.errorsave(e, "Exception occurred in tags.log");
     }
 
     qs.append("</td>");
@@ -80,7 +84,6 @@
 
    mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
    mb.append(reger.SideColumn.sideColTableEnd("Smart Tags"));
-
 %>
 
 <%
