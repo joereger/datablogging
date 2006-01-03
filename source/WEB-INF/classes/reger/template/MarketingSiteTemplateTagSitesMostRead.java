@@ -31,7 +31,7 @@ public class MarketingSiteTemplateTagSitesMostRead implements MarketingSiteTempl
     }
 
     public boolean isRequired(){
-        return true;
+        return false;
     }
 
     /**

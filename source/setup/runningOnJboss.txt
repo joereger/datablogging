@@ -1,0 +1,90 @@
+
+GETTING THE APP TO RUN ON JBOSS APPLICATION SERVER
+
+------------------------
+
+Some information (as of this document's creation) at:
+http://wiki.jboss.org/wiki/Wiki.jsp?page=ConfiguringMultipleJBossInstancesOnOneMachine
+
+------------------------
+
+If you have multiple IP Addresses:
+Launch each instance of JBoss AS with the commandline option to bind this instance
+to a particular IP address (run.bat -b <ip-addressORhost> -c all)
+where all is your configuration... could be all, default, etc.
+
+This is generally done in production.
+
+------------------------
+
+If you want to run multiple instances on one IP address:
+
+1) Download the jboss application server as interactive installer.
+   Install the "all" configuration when prompted.
+
+2) Extract jboss to c:/superfly/jboss/
+
+3) Rename jboss/server/all/deploy/jbossweb-tomcat55.sar/ROOT.war/ directory to oldROOT.war/
+
+3) If you want jboss to run multiple versions of the app on the same server:
+   a) Make sure you have C:\Superfly\jboss\server\all\ to copy... if you don't
+      then you installed a version without the full version support of jboss.
+      You can use these same instructions with jboss\server\default\ but you won't
+      have clustering support, should you decide to use it later on.
+
+   b) Copy C:\Superfly\jboss\server\all\ to C:\Superfly\jboss\server\allInstance1
+   c) Copy C:\Superfly\jboss\server\all\ to C:\Superfly\jboss\server\allInstance2
+
+   d) Edit C:\Superfly\jboss\server\allInstance1\deploy\binding-service.xml
+        i) Uncomment the <mbean code="org.jboss.services.binding.ServiceBindingManager" node
+        ii) Set <attribute name="ServerName">ports-01</attribute>
+   e) Edit C:\Superfly\jboss\server\allInstance2\deploy\binding-service.xml
+        i) Uncomment the <mbean code="org.jboss.services.binding.ServiceBindingManager" node
+        ii) Set <attribute name="ServerName">ports-02</attribute>
+
+   f) Edit C:\Superfly\jboss\server\allInstance1\deploy\cluster-service.xml
+        i) Set loopback="true" in the UDP node
+   g) Edit C:\Superfly\jboss\server\allInstance2\deploy\cluster-service.xml
+        i) Set loopback="true" in the UDP node
+
+   h) Edit C:\Superfly\jboss\server\allInstance1\deploy\tc5-cluster-service.xml
+        i) Set loopback="true" in the UDP node
+   i) Edit C:\Superfly\jboss\server\allInstance2\deploy\tc5-cluster-service.xml
+        i) Set loopback="true" in the UDP node
+
+   j) Make sure you have a farm-service.xml file in:
+      C:\Superfly\jboss\server\allInstance1\deploy\
+      C:\Superfly\jboss\server\allInstance2\deploy\
+      (If your install didn't automatically create this file,
+      download the zip file of jboss, extract it and find it
+      in \jboss\server\all\deploy\deploy.last\farm-service.xml.
+      The main thing you're looking for is that this version of
+      farm-service.xml uses this syntax: ${jboss.partition.name:DefaultPartition}
+      so that it'll pull the cluster/partition name from the
+      command line on startup.  Older versions of this file don't do that.)
+
+   k) If you need to set individual port numbers for each instance, edit:
+      /jboss/docs/examples/binding-manager/sample-bindings.xml
+
+4) Start a particular instance by running the following in /bin/:
+   run.bat -c allInstance1 -g allInstance1 -u 230.1.2.7
+   run.bat -c allInstance2 -g allInstance2 -u 230.1.2.8
+
+------------------------
+
+The default port settings in sample-bindings.xml have:
+ports-01 = http on port 8180
+ports-02 = http on port 8280
+ports-03 = http on port 8380
+
+------------------------
+
+You can view the current cluster information by pointing your browser to the JMX console
+of any JBoss instance in the cluster (i.e., http://hostname:8080/jmx-console/) and then
+clicking on the jboss:service=DefaultPartition MBean (change the MBean name to reflect your
+cluster name if this node does not join DefaultPartition). A list of IP addresses for the
+current cluster members is shown in the CurrentView field.
+
+------------------------
+
+

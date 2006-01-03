@@ -32,7 +32,7 @@ public class MarketingSiteTemplateTagNavBar implements MarketingSiteTemplateTag{
     }
 
     public boolean isRequired(){
-        return true;
+        return false;
     }
 
     /**

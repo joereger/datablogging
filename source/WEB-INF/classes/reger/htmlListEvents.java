@@ -46,7 +46,7 @@ public class htmlListEvents {
 
         //Show on homepage sql
         boolean includelogshiddenfromhomepage = true;
-        if (logid <= 0) {
+        if ((logid<=0) && (request.getParameter("tagid")==null) && (request.getParameter("tag")==null) ) {
             includelogshiddenfromhomepage = false;
         }
 

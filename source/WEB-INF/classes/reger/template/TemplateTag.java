@@ -4,8 +4,6 @@ package reger.template;
  * The base requirements for a template tag
  */
 public interface TemplateTag {
-
-
     /**
      *  The syntax required to put this tag into the page.
      *  Note: this is "Page.Title", not <$Page.Title$>

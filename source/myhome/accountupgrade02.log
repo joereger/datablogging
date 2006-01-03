@@ -87,9 +87,13 @@ if (pageProps.action.equals("upgrade") && errortext.equals("")) {
     //Calculate the price
     double price = PriceCalculator.calculatePrice(userSession.getPl().getBaseaccountprice(), userSession.getPl().getPriceper100mbstorage(), userSession.getPl().getPricepergbbandwidth(), storagespace, maxbandwidth);
 
+    NumberFormat formatter = DecimalFormat.getInstance();
+    formatter.setMinimumFractionDigits(2);
+    formatter.setMaximumFractionDigits(2);
+
     //Create a license
     Hashtable props = new Hashtable();
-    props.put(License.PROPSTRINGAMOUNT, String.valueOf(price));
+    props.put(License.PROPSTRINGAMOUNT, String.valueOf(formatter.format(price)));
     props.put(License.PROPSTRINGISCHARGEDTOCREDITCARD, "1");
     props.put(License.PROPSTRINGISRECURRINGBILLING, "1");
     props.put(License.PROPSTRINGCHARGEEVERY, "1");
@@ -102,8 +106,6 @@ if (pageProps.action.equals("upgrade") && errortext.equals("")) {
     //Call the licensing server
     Hashtable result = RegerLicensingApiClient.createLicense(userSession.getAccount().getLicense().getEncryptedLicense(), proposedLicense.getEncryptedLicense(), request.getParameter("name"), request.getParameter("address1"), request.getParameter("address2"), request.getParameter("city"), request.getParameter("state"), request.getParameter("zip"), request.getParameter("country"), request.getParameter("ccnum"), request.getParameter("expirationmonth"), request.getParameter("expirationyear"), request.getParameter("phone"), request.getParameter("email"));
 
-
-
     //Display
     if (result.get("successful")!=null && ((String)result.get("successful")).equals("true")){
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  Your account has been upgraded!"));
@@ -113,7 +115,6 @@ if (pageProps.action.equals("upgrade") && errortext.equals("")) {
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "There has been an error: " + result.get("errormessage")));
         mb.append("<br>");
     }
-
 
     //Debug
     if (1==2){

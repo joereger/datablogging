@@ -1,7 +1,7 @@
 
 <project name="RegerCom" default="QuickBuild" basedir=".">
   <description>
-        The Best Darn Build Process This Side of Sanity
+        The core build script.
   </description>
 
   <!-- Import properties file -->
@@ -32,83 +32,19 @@
   <property name="wardir" value="${builddir}/WARs/${tomcat.app.name}"/>
   <property name="javasrc" value="${builddir}/lastbuild/${tomcat.app.name}/WEB-INF/classes"/>
   <property name="sourcedir" value="${source.root.directory}"/>
-  <property name="tomcatjarsforclasspath" value="
-        ${tomcat.install.directory}/common/lib/jsp-api.jar;
-        ${tomcat.install.directory}/common/lib/servlet-api.jar;
-        ${tomcat.install.directory}/server/lib/catalina.jar;
-        ${tomcat.install.directory}/server/lib/catalina-optional.jar;
-        ${tomcat.install.directory}/server/lib/catalina-ant.jar;
-        ${tomcat.install.directory}/server/lib/servlets-default.jar;
-  "/>
-  <property name="thirdpartylibs" value="
-        ${sourcedir}/WEB-INF/lib/activation.jar;
-        ${sourcedir}/WEB-INF/lib/commons-beanutils.jar;
-        ${sourcedir}/WEB-INF/lib/commons-codec-1.2.jar;
-        ${sourcedir}/WEB-INF/lib/commons-collections-3.1.jar;
-        ${sourcedir}/WEB-INF/lib/commons-dbcp-1.2.1.jar;
-        ${sourcedir}/WEB-INF/lib/commons-digester.jar;
-        ${sourcedir}/WEB-INF/lib/commons-logging-1.0.4.jar;
-        ${sourcedir}/WEB-INF/lib/commons-fileupload-1.0.jar;
-        ${sourcedir}/WEB-INF/lib/commons-httpclient-3.0-rc1.jar;
-        ${sourcedir}/WEB-INF/lib/commons-pool-1.2.jar;
-        ${sourcedir}/WEB-INF/lib/dwr.jar;
-        ${sourcedir}/WEB-INF/lib/ehcache-1.1.jar;
-        ${sourcedir}/WEB-INF/lib/FCKeditor-2.3.jar;
-        ${sourcedir}/WEB-INF/lib/jakarta-oro-2.0.8.jar;
-        ${sourcedir}/WEB-INF/lib/jazzy-core.jar;
-        ${sourcedir}/WEB-INF/lib/jcaptcha-all-1.0-RC2.0.1.jar;
-        ${sourcedir}/WEB-INF/lib/jcommon-1.0.0-pre2.jar;
-        ${sourcedir}/WEB-INF/lib/jdom.jar;
-        ${sourcedir}/WEB-INF/lib/jfreechart-1.0.0-pre2.jar;
-        ${sourcedir}/WEB-INF/lib/jtidy-r8-SNAPSHOT.jar;
-        ${sourcedir}/WEB-INF/lib/log4j-1.2.11.jar;
-        ${sourcedir}/WEB-INF/lib/mail.jar;
-        ${sourcedir}/WEB-INF/lib/milStd2525_png.jar;
-        ${sourcedir}/WEB-INF/lib/mysql-connector-java-3.1.8-bin.jar;
-        ${sourcedir}/WEB-INF/lib/omcorba.jar;
-        ${sourcedir}/WEB-INF/lib/omj3d.jar;
-        ${sourcedir}/WEB-INF/lib/omsvg.jar;
-        ${sourcedir}/WEB-INF/lib/openmap.jar;
-        ${sourcedir}/WEB-INF/lib/oscache-2.2.jar;
-        ${sourcedir}/WEB-INF/lib/password1_4.jar;
-        ${sourcedir}/WEB-INF/lib/proxool-0.8.3.jar;
-        ${sourcedir}/WEB-INF/lib/resolver.jar;
-        ${sourcedir}/WEB-INF/lib/rome-0.7.jar;
-        ${sourcedir}/WEB-INF/lib/urlrewrite-1.2.jar;
-        ${sourcedir}/WEB-INF/lib/xercesSamples.jar;
-        ${sourcedir}/WEB-INF/lib/xmlParserAPIs.jar;
-        ${sourcedir}/WEB-INF/lib/xmlrpc-1.2-b1.jar;
-        ${sourcedir}/WEB-INF/lib/xpp3_min-1.1.3.4.I.jar;
-        ${sourcedir}/WEB-INF/lib/xstream-1.0.2.jar;
-        ${sourcedir}/WEB-INF/lib/yguard.jar;
-        ${sourcedir}/WEB-INF/lib/chiba-1.1.1.jar;
-        ${sourcedir}/WEB-INF/lib/commons-jxpath-1.2.jar;
-        ${sourcedir}/WEB-INF/lib/xsltc.jar;
-        ${sourcedir}/WEB-INF/lib/dom3-xercesImpl.jar;
-        ${sourcedir}/WEB-INF/lib/dom3-xml-apis.jar;
-        ${sourcedir}/WEB-INF/lib/jcs-1.2.6.5.jar;
-        ${sourcedir}/WEB-INF/lib/commons-lang-2.1.jar;
-        ${sourcedir}/WEB-INF/lib/concurrent.jar;
-        ${sourcedir}/WEB-INF/lib/sequoia-driver.jar;
-        ${sourcedir}/WEB-INF/lib/hibernate3.jar;
-        ${sourcedir}/WEB-INF/lib/asm.jar;
-        ${sourcedir}/WEB-INF/lib/asm-attrs.jar;
-        ${sourcedir}/WEB-INF/lib/dom4j-1.6.1.jar;
-        ${sourcedir}/WEB-INF/lib/antlr-2.7.6rc1.jar;
-        ${sourcedir}/WEB-INF/lib/cglib2.1.3.jar;
-        ${sourcedir}/WEB-INF/lib/c3p0-0.9.0.jar;
-  "/>
 
 
+  <path id="lib.classpath">
+      <fileset dir="${sourcedir}/WEB-INF/lib">
+        <include name="**/*.jar" />
+      </fileset>
+      <fileset dir="${tomcat.install.directory}/common/lib">
+        <include name="**/*.jar" />
+      </fileset>
+  </path>
 
 
-
-
-
-  <!-- If the build process fails saying that a context doesn't exist, just go into the web-based tomcat manager and create an app named ${tomcat.app.name}... for the script to be able to remove an app it needs to be there in the first place.  Probably a better workaround in Ant, but I haven't researched it yet. Yes, this solution sucks.  Joe -->
-
-
-  <!-- First, Delete any files in the lastbuild folder -->
+  <!-- Delete any files in the lastbuild folder... start fresh my friend... start fresh. -->
   <target name="cleanuplastbuild" description="Cleans up the last build" depends="timestamp">
     <delete dir="${lastbuild}"/>
   </target>
@@ -126,11 +62,46 @@
 
   <!-- Compile the app-->
    <target name="compile" description="compile the source" depends="movefilestolastbuild">
-  	 <echo message="Compiling Java code."/>
-       <javac srcdir="${javasrc}" excludes="**.x" debug="on" classpath="${tomcatjarsforclasspath}; ${thirdpartylibs}"/>
+  	  <echo message="Compiling Java code."/>
+        <javac srcdir="${javasrc}" includes="**/**" debug="true" deprecation="true">
+            <classpath>
+                <path refid="lib.classpath" />
+            </classpath>
+        </javac>
    </target>
+
+
+
+
+   <!-- pre-compile directory with annotationc using jdk1.4 -->
+   <target name="annoc" depends="compile" description="Annotation precompiler for aop class">
+  	  <taskdef name="annotationc" classname="org.jboss.aop.ant.AnnotationC" classpathref="lib.classpath"/>
+      <annotationc compilerclasspathref="lib.classpath" bytecode="true">
+         <classpath refid="lib.classpath"/>
+         <classpath path="${build}"/>
+         <src path="${source}"/>
+         <include name="examples/**/*.java"/>
+      </annotationc>
+   </target>
+
+
+
+   <!-- pre-compile directory with aopc -->
+   <target name="aopc" depends="annoc" description="Precompile aop test classes after annoc">
+   	    <taskdef name="aopc" classname="org.jboss.aop.ant.AopC" classpathref="lib.classpath"/>
+  	    <aopc compilerclasspathref="lib.classpath" classpathref="lib.classpath" verbose="true">
+            <src path="${build}/examples"/>
+            <aoppath path="${output}/etc/META-INF/jboss-aop.xml"/>
+            <classpath path="${build}"/>
+        </aopc>
+   </target>
+
+
+
+
    
    <!-- Create reger.jar package -->
+   <!-- This set of core functions is used in other Reger.com supporting apps. -->
    <target name="createregerjar" description="Creates the re-usable regercore.jar package" depends="compile">
         <echo message="Creating regercore.jar."/>
         <jar jarfile="${builddir}/regercore.jar">
@@ -158,6 +129,7 @@
 		<copy file="${tomcat.app.name}-(bld${build.number})-${build.time}.war" todir="${builddir}"/>
    </target>
 
+
    <target name="packagewithsource" description="Backup source files" depends="package">
         <echo message="Backing up ${tomcat.app.name}'s source."/>
         <jar jarfile="${builddir}/${tomcat.app.name}-(bld${build.number})-${build.time}-src.jar">
@@ -167,19 +139,6 @@
         </jar>
    </target>
 
-   
-    <!-- Tomcat Deployers -->
-    <!--
-    <target name="undeploy" description="Undeploys the Web Application" depends="packagewithsource">
-        <ant antfile="TomcatDeploy.xml" target="undeployApp" inheritAll="true"/> 
-    </target>
-    <target name="deploy" description="Deploys the Web Application" depends="undeploy">
-    	  <ant antfile="TomcatDeploy.xml" target="deployApp" inheritAll="true"/> 
-    </target>
-    <target name="deployNew" description="Deploys the Web Application" depends="packagewithsource">
-        <ant antfile="TomcatDeploy.xml" target="deployNewApp" inheritAll="true"/> 
-    </target>
-    -->
 
     
     <!-- Dev WAR file builders -->
@@ -191,23 +150,7 @@
 		<delete file="${tomcat.app.name}-(bld${build.number})-${build.time}.war"/>
     </target>
 
-    <!-- Obfuscate with yGuard -->
-    <!--
-    <target name="buildObfuscated" description="Builds an obfuscated jar." depends="compile">
-        <jar destfile="${lastbuild}/WEB-INF/lib/reger.jar" basedir="${javasrc}" excludes="**/*.java" />
-        <taskdef name="obfuscate" classname="com.yworks.yguard.ObfuscatorTask" classpath="source/WEB-INF/lib/yguard.jar"/>
-        <obfuscate mainclass="reger.core" logfile="obfuscationlog.xml">
-            <inoutpair in="${lastbuild}/WEB-INF/lib/reger.jar" out="${lastbuild}/WEB-INF/lib/regerObfuscated.jar"/>
-            <expose>
-                <class classes="public" methods="public" fields="public">
-                    <patternset>
-                        <include name="**.*"/>
-                    </patternset>
-                </class>
-            </expose>
-        </obfuscate>
-    </target>
-    -->
+
 
 
 
@@ -215,18 +158,13 @@
     <target name="createJavaDoc" description="Creates javadoc" depends="">
         <echo message="Creating javaDoc for ${tomcat.app.name}."/>
         <delete dir="${builddir}/javaDoc"/>
-
         <javadoc destdir="${builddir}/javaDoc" author="true" version="true" use="true" windowtitle="Reger.com javaDoc">
-
             <packageset dir="${sourcedir}/WEB-INF/classes" defaultexcludes="yes">
                 <include name="reger/**" />
             </packageset>
-
             <doctitle><![CDATA[<h1>Reger.com</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Copyright &#169; 2005 Reger.com. Confidential and proprietary. All Rights Reserved.</i>]]></bottom>
-
+            <bottom><![CDATA[<i>Copyright &#169; 2006 Reger.com. Confidential and proprietary. All Rights Reserved.</i>]]></bottom>
         </javadoc>
-
     </target>
 	
     
@@ -235,18 +173,15 @@
      	<copy todir="${lastbuild}" >
             <fileset dir="${sourcedir}" excludes="**/Thumbs.db"/>
         </copy>
-
-     	<javac srcdir="${javasrc}" destdir="${quickbuild.compiled.destination.directory}" classpath="${tomcatjarsforclasspath}; ${thirdpartylibs}" excludes="**.x" debug="on" />
+		<javac srcdir="${javasrc}" destdir="${quickbuild.compiled.destination.directory}" includes="**/**" debug="true" deprecation="true">
+            <classpath>
+                <path refid="lib.classpath" />
+            </classpath>
+        </javac>
 		<copy todir="${quickbuild.tomcat.root.directory}">
 			<fileset dir="${lastbuild}">
 			</fileset>
 		</copy>
-		<!--
-		<ant antfile="TomcatDeploy.xml" target="reloadApp" inheritAll="true"/>
-		-->
 	</target>
     
-    
-    
-
 </project>

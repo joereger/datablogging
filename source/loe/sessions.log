@@ -1,6 +1,6 @@
 
 <%@ page import="java.util.*" %>
-<%@ page import="reger.cache.jcs.UserSessionCache"%>
+<%@ page import="reger.cache.jboss.UserSessionCache"%>
 <%@ page import="reger.UserSession"%>
 
 <%
@@ -40,6 +40,7 @@ int sessionsLessThanTwentyMin = 0;
 int sessionsTotal = 0;
 String bgcolor="";
 HashSet keys = (HashSet)UserSessionCache.getKeys();
+reger.core.Debug.debug(4, "sessions.log", "keys.size()="+keys.size());
 UserSessionCache ucs = UserSessionCache.getInstance();
 for (java.util.Iterator iterator = keys.iterator(); iterator.hasNext();) {
     String key = (String) iterator.next();

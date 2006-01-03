@@ -31,29 +31,23 @@ pageProps.pathToAppRoot="../";
 <%@ include file="pladminheader.jsp" %>
 <%
 
-
 //Get type
-int type = -1;
+int type = 0;
 if (request.getParameter("type")!=null && reger.core.Util.isinteger(request.getParameter("type"))){
     type = Integer.parseInt(request.getParameter("type"));
 }
-
 //Get templateid
-int templateid = -1;
+int templateid = 0;
 if (request.getParameter("templateid")!=null && reger.core.Util.isinteger(request.getParameter("templateid"))){
     templateid = Integer.parseInt(request.getParameter("templateid"));
 }
-
 //Load the template
 Template template = reger.template.AllTemplatesInSystem.getTemplateByTemplateid(templateid, type);
 if (template==null){
     template = reger.template.AllTemplatesInSystem.getSystemDefaultByType(type);
 }
-
-
 //Load a handler
 TemplateProcessor tp = TemplateProcessorFactory.getProcessorByType(type);
-
 
 
 //Edit
@@ -67,14 +61,14 @@ if (pageProps.action.equals("edit")){
         if (tp.validateTemplate(request.getParameter("template"))){
             template.save();
         }
+        //Redirect to the template homepage
+        if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl").equals("null")){
+            response.sendRedirect(request.getParameter("returnurl")+"?plid=" + plid);
+        } else {
+            response.sendRedirect("pltemplates.log?plid="+plid);
+        }
     } catch (reger.template.TemplateValidationException e) {
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, e.getError()));
-    }
-    //Redirect to the template homepage
-    if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl").equals("null")){
-        response.sendRedirect(request.getParameter("returnurl")+"?plid=" + plid);
-    } else {
-        response.sendRedirect("pltemplates.log?plid="+plid);
     }
 }
 
@@ -132,7 +126,7 @@ for (int i = 0; i < tags.length; i++) {
     mb.append("</b>");
     mb.append("</font>");
     mb.append("<br>");
-    if (tags[i].isRequired()){
+    if (tags[i].isRequired()==true){
         mb.append("<font face=arial size=-1 color=#ff0000>");
         mb.append("<b>");
         mb.append("Required");

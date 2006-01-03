@@ -1,35 +1,31 @@
-package reger.cache.jcs;
+package reger.cache.jboss;
 
-import org.apache.jcs.JCS;
-import org.apache.jcs.engine.behavior.ICompositeCacheAttributes;
-import org.apache.jcs.engine.CompositeCacheAttributes;
 import reger.UserSession;
+import reger.core.WebAppRootDir;
 
 import java.util.Set;
 import java.util.HashSet;
+
+import org.jboss.cache.TreeCache;
+import org.jboss.cache.PropertyConfigurator;
+import org.jboss.cache.CacheException;
 
 public class UserSessionCache {
 
     private static UserSessionCache instance;
     private static int checkedOut = 0;
-    private static JCS userSessionCache;
+    private static int created = 0;
+    private static TreeCache userSessionCache;
+    private static String fqn = "/usersession";
 
     private UserSessionCache(){
         try{
-            //Cache properties
-            CompositeCacheAttributes attr = new CompositeCacheAttributes();
-            attr.setCacheName("userSessionCache");
-            attr.setMaxMemoryIdleTimeSeconds(1800);
-            attr.setMaxObjects(10000);
-            attr.setMaxSpoolPerRun(1000);
-            attr.setMemoryCacheName("userSessionCache");
-            attr.setShrinkerIntervalSeconds(60);
-            attr.setUseDisk(false);
-            attr.setUseLateral(false);
-            attr.setUseMemoryShrinker(true);
-            attr.setUseRemote(false);
-            //Create the cache
-            userSessionCache = JCS.getInstance("userSessionCache", attr);
+            created++;
+            userSessionCache = new TreeCache();
+            PropertyConfigurator config = new PropertyConfigurator();
+            config.configure(userSessionCache, WebAppRootDir.getWebAppRootPath()+"WEB-INF/jbosscache-replSync-service.xml");
+            userSessionCache.startService();
+            reger.core.Debug.debug(3, "UserSessionCache.java", "JBossCache UserSessionCache created.");
         } catch (Exception e){
             reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
         }
@@ -44,16 +40,18 @@ public class UserSessionCache {
                 instance = new UserSessionCache();
             }
         }
+
         synchronized (instance){
             instance.checkedOut++;
         }
+
         return instance;
     }
 
 
     public void flushUserSessions(){
         try{
-            userSessionCache.clear();
+            userSessionCache.remove(fqn);
         }catch (Exception e){
             reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
         }
@@ -62,7 +60,7 @@ public class UserSessionCache {
 
     public void removeUserSession(String userSessionid){
         try{
-            userSessionCache.remove("UserSession"+userSessionid, "us");
+            userSessionCache.remove(fqn, "UserSession"+userSessionid);
         }catch (Exception e){
             reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
         }
@@ -71,9 +69,13 @@ public class UserSessionCache {
 
     public void removeUserSessionByCacheKey(String key){
         reger.core.Debug.debug(4, "UserSessionCache.java", "removeUserSessionByCacheKey("+key+")");
-        if(userSessionCache.get(key)!=null){
-            reger.core.Debug.debug(4, "UserSessionCache.java", "userSessionCache.get("+key+")!=null");
-        } else {
+        try{
+            if(userSessionCache.get(fqn, key)!=null){
+                reger.core.Debug.debug(4, "UserSessionCache.java", "userSessionCache.get("+key+")!=null");
+            } else {
+                reger.core.Debug.debug(4, "UserSessionCache.java", "userSessionCache.get("+key+")==null");
+            }
+        } catch (CacheException ex){
             reger.core.Debug.debug(4, "UserSessionCache.java", "userSessionCache.get("+key+")==null");
         }
         try{
@@ -87,30 +89,26 @@ public class UserSessionCache {
 
     public UserSession getUserSession(String userSessionId){
         UserSession userSession = null;
-
-        userSession = (UserSession) userSessionCache.getFromGroup("UserSession" + userSessionId, "us");
-
-        if (userSession == null){
-            reger.core.Debug.debug(4, "UserSessionCache.java", "Session not found in cache.");
-        } else {
+        try{
+            userSession = (UserSession) userSessionCache.get(fqn, "UserSession" + userSessionId);
             reger.core.Debug.debug(4, "UserSessionCache.java", "Found session in cache.");
+            return userSession;
+        } catch (CacheException ex){
+            reger.core.Debug.debug(4, "UserSessionCache.java", "Session not found in cache.");
+            return null;
         }
-
-        return  userSession;
     }
 
     public UserSession getUserSessionUsingActualKeyOfCache(String key){
         UserSession userSession = null;
-
-        userSession = (UserSession) userSessionCache.getFromGroup(key, "us");
-
-        if (userSession == null){
-            reger.core.Debug.debug(4, "UserSessionCache.java", "Session not found in cache.");
-        } else {
+        try{
+            userSession = (UserSession) userSessionCache.get(fqn, key);
             reger.core.Debug.debug(4, "UserSessionCache.java", "Found session in cache.");
+            return userSession;
+        } catch (CacheException ex){
+            reger.core.Debug.debug(4, "UserSessionCache.java", "Session not found in cache.");
+            return null;
         }
-
-        return  userSession;
     }
 
 
@@ -120,7 +118,7 @@ public class UserSessionCache {
      */
     public void putUserSession(String userSessionId, UserSession userSession){
         try{
-            userSessionCache.putInGroup("UserSession" + userSessionId, "us", userSession);
+            userSessionCache.put(fqn, "UserSession" + userSessionId, userSession);
         }catch (Exception e){
             reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
         }
@@ -129,16 +127,26 @@ public class UserSessionCache {
     public static String getCacheStatsAsHtml(){
         StringBuffer mb = new StringBuffer();
         if (userSessionCache!=null){
-            mb.append(userSessionCache.getStats());
-
-
+            try{
+                HashSet hsh = (HashSet)userSessionCache.getKeys(fqn);
+                mb.append(hsh.size() + " keys in UserSessionCache.");
+            } catch (CacheException ex){
+                return "";
+            }
         }
+        mb.append("<br>");
+        mb.append("UserSessionCache singleton created " + created + " time(s).");
+        mb.append("UserSessionCache checked out " + checkedOut + " time(s).");
         return mb.toString();
     }
 
     public static Set getKeys(){
         if (userSessionCache!=null){
-            return userSessionCache.getGroupKeys("us");
+            try{
+                return userSessionCache.getKeys(fqn);
+            } catch (CacheException ex){
+                return new HashSet();
+            }
         }
         return new HashSet();
     }

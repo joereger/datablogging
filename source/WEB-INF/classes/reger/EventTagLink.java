@@ -21,7 +21,7 @@ public class EventTagLink {
     }
 
     public void load() {
-        reger.core.Debug.debug(3, "EventTagLink.java", "load(eventid="+eventid+") called.");
+        reger.core.Debug.debug(5, "EventTagLink.java", "load(eventid="+eventid+") called.");
         //-----------------------------------
         //-----------------------------------
         String[][] rstEvtTagLnk = Db.RunSQL("SELECT eventtaglinkid, eventid, tagid FROM eventtaglink WHERE eventid='" + eventid + "'");
@@ -39,7 +39,7 @@ public class EventTagLink {
     }
 
     public void save() {
-        reger.core.Debug.debug(3, "EventTagLink.java", "save(eventid="+eventid+") called.");
+        reger.core.Debug.debug(5, "EventTagLink.java", "save(eventid="+eventid+") called.");
         try {
             //-----------------------------------
             //-----------------------------------
@@ -79,7 +79,7 @@ public class EventTagLink {
     }
 
     public static String getAllTagsForEntry(int eventid) {
-        reger.core.Debug.debug(3, "EventTagLink.java", "getAllTagsForEntry(eventid="+eventid+") called.");
+        reger.core.Debug.debug(5, "EventTagLink.java", "getAllTagsForEntry(eventid="+eventid+") called.");
         StringBuffer tags = new StringBuffer("");
         //-----------------------------------
         //-----------------------------------

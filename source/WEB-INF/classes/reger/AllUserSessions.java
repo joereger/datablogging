@@ -1,62 +1,40 @@
 package reger;
 
 import reger.core.Debug;
-import reger.cache.jcs.UserSessionCache;
+import reger.cache.jboss.UserSessionCache;
 
 import javax.servlet.http.Cookie;
 import java.util.*;
 
 /**
- * This class holds all user sessions that are active on the web system.
+ * This class holds all user sessions that are active on the web system...
+ * actually, it doesn't... it acts as a front for the cache.
  *
  * Sessions themselves are stored in the session cache.
  */
 public class AllUserSessions {
-
-//    private static Map userSessions;
-//    private static int sessionTimeoutInMinutes = 20;
 
     public AllUserSessions(){
 
     }
 
     public static void flushSessions(){
-//        userSessions=null;
         UserSessionCache usc = UserSessionCache.getInstance();
         usc.flushUserSessions();
 
     }
 
     private void addSession(String userSessionId, reger.UserSession userSession){
-//        if (userSessions==null){
-//            userSessions = Collections.synchronizedMap(new HashMap());
-//        }
-//        userSessions.put(userSessionId, userSession);
-//        //logListOfUserSessionsToDb();
-
         UserSessionCache usc = UserSessionCache.getInstance();
         usc.putUserSession(userSessionId, userSession);
-
-
-
     }
 
     public void removeSession(String userSessionId){
-//        if (userSessions.containsKey(userSessionId)){
-//            userSessions.remove(userSessionId);
-//        }
-
         UserSessionCache usc = UserSessionCache.getInstance();
         usc.removeUserSession(userSessionId);
-
     }
 
     public static int numberOfSessionsCurrentlyLive(){
-//        int numberOfSessions = 0;
-//        if (userSessions!=null){
-//            numberOfSessions = userSessions.size();
-//        }
-//        return numberOfSessions;
         return 0;
     }
 
@@ -107,51 +85,12 @@ public class AllUserSessions {
     }
 
     public int expireSessions(){
-//        int numberOfSessionsExpired = 0;
-//        //reger.core.Util.logtodb("Start Expire-----------");
-//        //logListOfUserSessionsToDb();
-//        if (userSessions!=null){
-//            synchronized(userSessions){
-//                for (Iterator i=userSessions.entrySet().iterator(); i.hasNext(); ) {
-//                    Map.Entry e = (Map.Entry) i.next();
-//                    // retrieve the object_key
-//                    String object_key = (String)e.getKey();
-//                    // retrieve the object associated with the key
-//                    reger.UserSession us = (reger.UserSession)e.getValue();
-//                    //Get the last active date
-//                    Calendar lastActive = us.getMostRecentActivity();
-//                    Calendar now = Calendar.getInstance();
-//                    //@todo Make session timeout configurable in context.xml
-//                    //String c1 = reger.core.TimeUtils.dateformatcompactwithtime(lastActive);
-//                    //String c2 = reger.core.TimeUtils.dateformatcompactwithtime(now);
-//                    //reger.core.Util.logtodb("AllUserSessions.expireSessions()<br>cal1=" + c1 + "<br>cal2=" + c2 + "<br>diff= " + reger.core.DateDiff.DateDiff("minute", lastActive, now));
-//                    if (reger.core.DateDiff.dateDiff("minute", now, lastActive)>sessionTimeoutInMinutes){
-//                        //userSessions.remove(object_key);
-//                        i.remove();
-//                        numberOfSessionsExpired = numberOfSessionsExpired + 1;
-//                        //reger.core.Util.logtodb("Session expired.  key: " + object_key);
-//                    }
-//                }
-//            }
-//        }
-//        //reger.core.Util.logtodb("End Expire-----------");
-//        //logListOfUserSessionsToDb();
-//        return numberOfSessionsExpired;
         return 0;
     }
 
     private UserSession getUserSession(String userSessionId){
-//        if (!userSessionId.equals("")){
-//            if (userSessions!=null){
-//                return (UserSession)userSessions.get(userSessionId);
-//            }
-//
-//        }
-//        return null;
-
         UserSessionCache usc = UserSessionCache.getInstance();
         return usc.getUserSession(userSessionId);
-
     }
 
     private Cookie[] getCookies(javax.servlet.http.HttpServletRequest request, reger.UserSession userSession){
@@ -183,33 +122,9 @@ public class AllUserSessions {
         return userCookie;
     }
 
-    private void logListOfUserSessionsToDb(){
-//        StringBuffer mb = new StringBuffer();
-//        mb.append("AllUserSessions.userSessions<br>");
-//        if (userSessions!=null){
-//            synchronized(userSessions){
-//                for (Iterator i=userSessions.entrySet().iterator(); i.hasNext(); ) {
-//                    Map.Entry e = (Map.Entry) i.next();
-//                    // retrieve the object_key
-//                    String object_key = (String)e.getKey();
-//                    // retrieve the object associated with the key
-//                    reger.UserSession us = (reger.UserSession)e.getValue();
-//                    mb.append("<br>=============<br>userSessionId=" + object_key);
-//                    if (us.getAccount()!=null){
-//                        mb.append("<br>accountid=" + us.getAccount().getAccountid());
-//                    } else {
-//                        mb.append("<br>accountid=NULL");
-//                    }
-//                    mb.append("<br>us.getAccountuser().getAccountuserid()=" + us.getAccountuser().getAccountuserid());
-//                    mb.append("<br>us.getPl().getPlid()=" + us.getPl().getPlid() + "<br>========");
-//                }
-//            }
-//        }
-//        Debug.logtodb(mb.toString(), "");
-    }
+
 
     public static Map getUserSessions() {
-//        return userSessions;
         return null;
     }
 

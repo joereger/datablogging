@@ -31,7 +31,7 @@ public class MarketingSiteTemplateTagEntriesMostRead implements MarketingSiteTem
     }
 
     public boolean isRequired(){
-        return true;
+        return false;
     }
 
     /**

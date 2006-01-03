@@ -773,17 +773,23 @@ public class Accountuser {
     * Example: OR megalog.logid='3' OR megalog.logid='6'
     */
     public String LogsUserCanViewQueryend(int accountid){
+        return LogsUserCanViewQueryend(accountid, true, "megalog.");
+    }
+    public String LogsUserCanViewQueryend(int accountid, boolean includelogshiddenfromhomepage){
+        return LogsUserCanViewQueryend(accountid, includelogshiddenfromhomepage, "megalog.");
+    }
+    public String LogsUserCanViewQueryend(int accountid, boolean includelogshiddenfromhomepage, String table_prefix){
         //If this accountuser is the siteowner of this account then the query is simpler
         if (isInAclgroup("SiteOwner", accountid)){
-            return " (megalog.accountid='"+accountid+"') ";
+            return " ("+table_prefix+"accountid='"+accountid+"') ";
         }
         //Start the SQL out by making sure we only grab logs in this accountid
-        String queryend="(megalog.accountid='"+accountid+"' AND (megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' ";
+        String queryend="("+table_prefix+"accountid='"+accountid+"' AND ("+table_prefix+"logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' ";
         //And finally, add ORs to make sure any logs this user has been granted explicit permission to view are included
         if (logsUserHasExlicitPermissionToAccess!=null){
              if (logsUserHasExlicitPermissionToAccess.length>0){
                 for(int i=0; i<logsUserHasExlicitPermissionToAccess.length; i++){
-                    queryend=queryend + " OR megalog.logid='"+ logsUserHasExlicitPermissionToAccess[i] +"'";
+                    queryend=queryend + " OR "+table_prefix+"logid='"+ logsUserHasExlicitPermissionToAccess[i] +"'";
                     if (i==(logsUserHasExlicitPermissionToAccess.length-1)){
                         queryend = queryend + "))";
                     }
@@ -798,7 +804,7 @@ public class Accountuser {
         }
         //If, for some crazy reason it's still blank, then return this docile SQL
         if (queryend.equals("")){
-            return " (megalog.logid<'-1') ";
+            return " ("+table_prefix+"logid<'-1') ";
         }
         return queryend;
     }
@@ -880,44 +886,7 @@ public class Accountuser {
         }
     }
 
-    /**
-     * Logs this user can administer/author
-     */
-    public String LogsUserCanAdministerQueryendNoMegalog(int accountid){
-        return LogsUserCanAdministerQueryendNoMegalog(accountid, true);
-    }
 
-    public String LogsUserCanAdministerQueryendNoMegalog(int accountid, boolean includelogshiddenfromhomepage){
-        StringBuffer queryend=new StringBuffer();
-        int numberoflogsusercanview = 0;
-        Account acct = reger.cache.AccountCache.get(accountid);
-        if (acct!=null){
-            int[] alllogidsforaccount = acct.getAllLogids();
-            for (int i = 0; i < alllogidsforaccount.length; i++) {
-                if(userCanAuthorLog(alllogidsforaccount[i])){
-                    Log log = reger.cache.LogCache.get(alllogidsforaccount[i]);
-                    if (includelogshiddenfromhomepage || (!includelogshiddenfromhomepage && log.getShowonhomepage())){
-                        numberoflogsusercanview = numberoflogsusercanview + 1;
-                        if (numberoflogsusercanview==1){
-                            queryend.append(" ( ");
-                        } else {
-                            queryend.append(" OR ");
-                        }
-                        queryend.append(" logid='"+alllogidsforaccount[i]+"' ");
-                    }
-                }
-            }
-            if (numberoflogsusercanview>0){
-                queryend.append(" ) ");
-            }
-        }
-        //Return
-        if (queryend.length()>0){
-            return queryend.toString();
-        } else {
-            return " (logid<'-1') ";
-        }
-    }
 
     /**
      * Checks for mobile logon.  Each time the mobile device makes a request it sends xUpSubNo.

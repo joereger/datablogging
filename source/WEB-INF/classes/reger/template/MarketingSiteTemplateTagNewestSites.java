@@ -31,7 +31,7 @@ public class MarketingSiteTemplateTagNewestSites implements MarketingSiteTemplat
     }
 
     public boolean isRequired(){
-        return true;
+        return false;
     }
 
     /**

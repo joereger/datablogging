@@ -31,7 +31,7 @@ public class MarketingSiteTemplateTagPageTitle implements MarketingSiteTemplateT
     }
 
     public boolean isRequired(){
-        return true;
+        return false;
     }
 
     /**

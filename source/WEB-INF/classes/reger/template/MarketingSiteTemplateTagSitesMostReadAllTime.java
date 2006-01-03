@@ -31,7 +31,7 @@ public class MarketingSiteTemplateTagSitesMostReadAllTime implements MarketingSi
     }
 
     public boolean isRequired(){
-        return true;
+        return false;
     }
 
     /**

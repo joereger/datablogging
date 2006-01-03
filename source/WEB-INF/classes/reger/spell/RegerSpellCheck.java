@@ -60,7 +60,7 @@ public class RegerSpellCheck implements SpellCheckListener {
                 spellCheck.checkSpelling(new StringWordTokenizer(textToSpellCheck));
 
         } catch (Exception e) {
-                Debug.errorsave(e, "", "RegerSpellCheck error.");
+                Debug.errorsave(e, "RegerSpellCheck.java", "RegerSpellCheck error.");
         }
     }
 

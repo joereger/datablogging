@@ -37,17 +37,10 @@ public class HpTemplateTagMostRecentList implements HpTemplateTag{
      * The workhorse of the tag which services live requests.
      * It takes in these elements and then spits out what the
      * tag should be replaced with on the screen.
-     * @return
      */
     public String getHtml(reger.UserSession userSession, javax.servlet.http.HttpServletRequest request, PageProps pageProps){
 
         StringBuffer mb = new StringBuffer();
-
-        //Put the header on
-//        mb.append("<font face=arial size=-1 class=mediumfont color=#cccccc>");
-//        mb.append("15 Most Recent Entries");
-//        mb.append("</font>");
-//        mb.append("<br>");
 
         //Get the list
         mb.append("<table cellpadding=0 cellspacing=1 border=0>");
@@ -58,9 +51,17 @@ public class HpTemplateTagMostRecentList implements HpTemplateTag{
             logidSql = " AND event.logid='"+pageProps.logProps.logid+"'";
         }
 
+        //Decide whether or not to show entries that are hidden from the homepage
+        boolean includelogshiddenfromhomepage = false;
+        if (pageProps.logProps.logid>0){
+            includelogshiddenfromhomepage = true;
+        }
+
+        String sql = "SELECT eventid, title, event.logid FROM event WHERE event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+reger.Entry.sqlOfLiveEntry+" AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage)+" "+logidSql+" ORDER BY date DESC LIMIT 0,15";
+        reger.core.Debug.debug(3, "HpTemplateTagMostRecentList.java", sql);
         //-----------------------------------
         //-----------------------------------
-        String[][] rstLastentries= reger.core.db.Db.RunSQL("SELECT eventid, title, event.logid FROM event WHERE event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+reger.Entry.sqlOfLiveEntry+" AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY date DESC LIMIT 0,15");
+        String[][] rstLastentries= reger.core.db.Db.RunSQL(sql);
         //-----------------------------------
         //-----------------------------------
         if (rstLastentries!=null && rstLastentries.length>0){

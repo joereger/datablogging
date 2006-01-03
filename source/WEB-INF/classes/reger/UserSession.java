@@ -11,21 +11,12 @@ import java.util.HashMap;
  */
 public class UserSession implements java.io.Serializable {
 
-    //Main contents of the object
-    //private reger.Account account;
     private int accountid=0;
     private Account account;
     private reger.Accountuser accountuser;
-    //private reger.PrivateLabel pl;
     private int plid = reger.Vars.PLIDDEFAULT;
-
-    //Identifiers
     private reger.UrlSplitter urlSplitter;
-
-    //Activity for timeout
     private Calendar mostRecentActivity;
-
-    //Session attributes map
     private HashMap attributes = new HashMap();
 
     public UserSession(javax.servlet.http.HttpServletRequest request){
@@ -43,11 +34,6 @@ public class UserSession implements java.io.Serializable {
                         //reger.core.Util.logtodb("UserSession - persistent cookie found.");
                         int accountuseridFromCookie = reger.PersistentLogin.checkPersistentLogin(cookies[i]);
                         if (accountuseridFromCookie>-1){
-                            //reger.core.Util.logtodb("UserSession - persistent cookie is valid.");
-                            //int accountid = -1;
-                            //if (account!=null){
-                            //    accountid = account.getAccountid();
-                            //}
                             accountuser = new reger.Accountuser(accountid);
                             accountuser.forceLogin(accountuseridFromCookie);
                         }
@@ -80,16 +66,6 @@ public class UserSession implements java.io.Serializable {
             //Find the account using the URL Splitter
             this.accountid = reger.cache.UrlToAccountidLookupCache.get(urlSplitter);
             this.account=null;
-            //if (this.account==null){
-            //    this.account=new Account(0);
-            //}
-            //Use the account plid, if possible
-            //if (account!=null && account.getPlid()>0){
-                //this.plid = account.getPlid();
-            //} else {
-                //Find the private label using the URL Splitter
-            //    this.plid = reger.PrivateLabel.findPlid(urlSplitter);
-            //}
             if (accountid>0){
                 if (getAccount().getPlid()>0){
                     this.plid = getAccount().getPlid();
