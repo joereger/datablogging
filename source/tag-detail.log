@@ -22,25 +22,34 @@
 
     mb.append(reger.SideColumn.sideColTableStart("Smart Tags"));
     mb.append(reger.SideColumn.sideColHeaderRow("Smart Tags"));
-
     StringBuffer qs = new StringBuffer();
-    qs.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");
-    qs.append("<tr>");
-    qs.append("<td>");
+    qs.append("<font face=arial size=+1 class=largefont>"+ "Tag Name Here Please" +"</font>");
+    mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
+    mb.append(reger.SideColumn.sideColTableEnd("Smart Tags"));
+
+
+    mb.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
     try {
         System.out.println("In JSP ****** ");
-        qs.append(htmlListEvents.getList(userSession, pageProps.logProps.logid, reger.core.Util.getCurrentPage(request.getParameter("currentpage")),request.getParameter("viewdate"), request.getParameter("viewmonth"), "tag-detail.log", -1, true, request).toString());
+        mb.append(htmlListEvents.getList(userSession, pageProps.logProps.logid, reger.core.Util.getCurrentPage(request.getParameter("currentpage")),request.getParameter("viewdate"), request.getParameter("viewmonth"), "tag-detail.log", -1, true, request).toString());
         System.out.println("In JSP AFTER ****** ");
     } catch (Exception e) {
         Debug.errorsave(e, "Exception occurred in tags.log");
     }
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    try {
+        mb.append("Images here please.");
+    } catch (Exception e) {
+        Debug.errorsave(e, "Exception occurred in tags.log");
+    }
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
 
-    qs.append("</td>");
-    qs.append("</tr>");
-    qs.append("</table>");
 
-    mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
-    mb.append(reger.SideColumn.sideColTableEnd("Smart Tags"));
 %>
 
 <%
