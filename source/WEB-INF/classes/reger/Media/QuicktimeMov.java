@@ -46,9 +46,10 @@ public class QuicktimeMov implements MediaType {
      * Returns a string array of file extensions that this media type will accept.
      */
     public String[] getAcceptableFileExtensions() {
-        String[] extensions = new String[2];
+        String[] extensions = new String[3];
         extensions[0]="mov";
         extensions[1]="qt";
+        extensions[2]="m4v";
         return extensions;
     }
 
@@ -69,7 +70,7 @@ public class QuicktimeMov implements MediaType {
     }
 
     /**
-     * Deletes any data that goes with the file.  File is deleted elsewhere.
+     * Deletes any special data that goes with the file.  File is deleted elsewhere.
      */
     public void deleteData(int imageid) {
 

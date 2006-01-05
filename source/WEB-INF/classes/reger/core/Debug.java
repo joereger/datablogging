@@ -31,7 +31,7 @@ public class Debug {
         try {
             boolean doRecord = true;
             try{
-                if (e instanceof org.apache.catalina.connector.ClientAbortException){
+                if (e instanceof java.net.SocketException){
                     doRecord=false;
                 }
             }catch (Throwable ee){

@@ -1,6 +1,7 @@
 package reger;
 
 import reger.core.Debug;
+import reger.cache.jboss.Cacheable;
 
 import javax.servlet.http.Cookie;
 import java.util.Calendar;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 /**
  * A user session that holds all critical login, pl and account information.
  */
+@Cacheable
 public class UserSession implements java.io.Serializable {
 
     private int accountid=0;

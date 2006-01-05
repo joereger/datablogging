@@ -7,6 +7,7 @@ import reger.core.*;
 import reger.core.licensing.License;
 import reger.core.licensing.RegerLicensingApiClient;
 import reger.cache.LogCache;
+import reger.cache.jboss.Cacheable;
 
 import java.util.*;
 
@@ -17,6 +18,7 @@ import java.util.*;
 * Once the userLogin() function is called user-specific vars are
 * populated.
 */
+@Cacheable
 public class Account implements java.io.Serializable {
 
     //Basic account variables

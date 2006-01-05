@@ -9,68 +9,68 @@ import java.util.HashSet;
 import org.jboss.cache.TreeCache;
 import org.jboss.cache.PropertyConfigurator;
 import org.jboss.cache.CacheException;
+import org.jboss.cache.aop.TreeCacheAop;
 
 public class UserSessionCache {
 
-    private static UserSessionCache instance;
-    private static int checkedOut = 0;
-    private static int created = 0;
-    private static TreeCache userSessionCache;
+//    private static UserSessionCache instance;
+//    private static int checkedOut = 0;
+//    private static int created = 0;
+//    private static TreeCacheAop userSessionCache;
     private static String fqn = "/usersession";
 
     private UserSessionCache(){
-        try{
-            created++;
-            userSessionCache = new TreeCache();
-            PropertyConfigurator config = new PropertyConfigurator();
-            config.configure(userSessionCache, WebAppRootDir.getWebAppRootPath()+"WEB-INF/jbosscache-replSync-service.xml");
-            userSessionCache.startService();
-            reger.core.Debug.debug(3, "UserSessionCache.java", "JBossCache UserSessionCache created.");
-        } catch (Exception e){
-            reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
-        }
-    }
-
-    /**
-     * Singleton access point to the manager.
-     */
-    public static UserSessionCache getInstance(){
-        synchronized (UserSessionCache.class){
-            if (instance == null){
-                instance = new UserSessionCache();
-            }
-        }
-
-        synchronized (instance){
-            instance.checkedOut++;
-        }
-
-        return instance;
+//        try{
+//            created++;
+//            userSessionCache = new TreeCacheAop();
+//            PropertyConfigurator config = new PropertyConfigurator();
+//            config.configure(userSessionCache, WebAppRootDir.getWebAppRootPath()+"WEB-INF/jbosscache-replSync-service.xml");
+//            //userSessionCache.setClusterName("RegerCom-TreeCache-Cluster");
+//            userSessionCache.start();
+//            reger.core.Debug.debug(3, "UserSessionCache.java", "JBossCache UserSessionCache created.");
+//        } catch (Exception e){
+//            reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
+//        }
     }
 
 
-    public void flushUserSessions(){
+//    public static UserSessionCache getInstance(){
+//        synchronized (UserSessionCache.class){
+//            if (instance == null){
+//                instance = new UserSessionCache();
+//            }
+//        }
+//
+//        synchronized (instance){
+//            instance.checkedOut++;
+//        }
+//
+//        return instance;
+//    }
+
+
+    public static void flushUserSessions(){
         try{
-            userSessionCache.remove(fqn);
+            Cache.getTreeCache().remove(fqn);
         }catch (Exception e){
             reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
         }
 
     }
 
-    public void removeUserSession(String userSessionid){
+    public static void removeUserSession(String userSessionid){
         try{
-            userSessionCache.remove(fqn, "UserSession"+userSessionid);
+            Cache.getTreeCache().remove(fqn, "UserSession"+userSessionid);
         }catch (Exception e){
             reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
         }
 
     }
 
-    public void removeUserSessionByCacheKey(String key){
+    public static void removeUserSessionByCacheKey(String key){
         reger.core.Debug.debug(4, "UserSessionCache.java", "removeUserSessionByCacheKey("+key+")");
         try{
-            if(userSessionCache.get(fqn, key)!=null){
+            if(Cache.getTreeCache().get(fqn, key)!=null){
                 reger.core.Debug.debug(4, "UserSessionCache.java", "userSessionCache.get("+key+")!=null");
             } else {
                 reger.core.Debug.debug(4, "UserSessionCache.java", "userSessionCache.get("+key+")==null");
@@ -79,7 +79,7 @@ public class UserSessionCache {
             reger.core.Debug.debug(4, "UserSessionCache.java", "userSessionCache.get("+key+")==null");
         }
         try{
-            userSessionCache.remove(key, "us");
+            Cache.getTreeCache().remove(key, "us");
         }catch (Exception e){
             reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
         }
@@ -87,10 +87,10 @@ public class UserSessionCache {
     }
 
 
-    public UserSession getUserSession(String userSessionId){
+    public static UserSession getUserSession(String userSessionId){
         UserSession userSession = null;
         try{
-            userSession = (UserSession) userSessionCache.get(fqn, "UserSession" + userSessionId);
+            userSession = (UserSession) Cache.getTreeCache().get(fqn, "UserSession" + userSessionId);
             reger.core.Debug.debug(4, "UserSessionCache.java", "Found session in cache.");
             return userSession;
         } catch (CacheException ex){
@@ -99,10 +99,10 @@ public class UserSessionCache {
         }
     }
 
-    public UserSession getUserSessionUsingActualKeyOfCache(String key){
+    public static UserSession getUserSessionUsingActualKeyOfCache(String key){
         UserSession userSession = null;
         try{
-            userSession = (UserSession) userSessionCache.get(fqn, key);
+            userSession = (UserSession) Cache.getTreeCache().get(fqn, key);
             reger.core.Debug.debug(4, "UserSessionCache.java", "Found session in cache.");
             return userSession;
         } catch (CacheException ex){
@@ -112,13 +112,10 @@ public class UserSessionCache {
     }
 
 
-    /**
-     * Stores UserSession in database.  Clears old items and caches
-     * new.
-     */
-    public void putUserSession(String userSessionId, UserSession userSession){
+
+    public static void putUserSession(String userSessionId, UserSession userSession){
         try{
-            userSessionCache.put(fqn, "UserSession" + userSessionId, userSession);
+            Cache.getTreeCache().put(fqn, "UserSession" + userSessionId, userSession);
         }catch (Exception e){
             reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
         }
@@ -126,24 +123,21 @@ public class UserSessionCache {
 
     public static String getCacheStatsAsHtml(){
         StringBuffer mb = new StringBuffer();
-        if (userSessionCache!=null){
+        if (Cache.getTreeCache()!=null){
             try{
-                HashSet hsh = (HashSet)userSessionCache.getKeys(fqn);
+                HashSet hsh = (HashSet)Cache.getTreeCache().getKeys(fqn);
                 mb.append(hsh.size() + " keys in UserSessionCache.");
             } catch (CacheException ex){
                 return "";
             }
         }
-        mb.append("<br>");
-        mb.append("UserSessionCache singleton created " + created + " time(s).");
-        mb.append("UserSessionCache checked out " + checkedOut + " time(s).");
         return mb.toString();
     }
 
     public static Set getKeys(){
-        if (userSessionCache!=null){
+        if (Cache.getTreeCache()!=null){
             try{
-                return userSessionCache.getKeys(fqn);
+                return Cache.getTreeCache().getKeys(fqn);
             } catch (CacheException ex){
                 return new HashSet();
             }

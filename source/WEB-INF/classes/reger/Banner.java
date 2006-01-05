@@ -1,8 +1,5 @@
 package reger;
 
-/**
- *
- */
 public class Banner {
 
     public static String getBannerHtml(UserSession userSession){
@@ -11,7 +8,6 @@ public class Banner {
         //Google adwords
         //https://www.google.com/adsense/
         //username: joe@joereger.com
-        //password: ph****s
         out.append(reger.Vars.LINEBREAKCHARFORHTML);
         out.append("<script type=\"text/javascript\"><!--"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("google_ad_client = \"pub-9883617370563969\";"+reger.Vars.LINEBREAKCHARFORHTML);
@@ -28,7 +24,7 @@ public class Banner {
         out.append("//--></script>"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("<script type=\"text/javascript\" src=\""+userSession.getUrlSplitter().getScheme()+"://"+"pagead2.googlesyndication.com/pagead/show_ads.js\">"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("</script>"+reger.Vars.LINEBREAKCHARFORHTML);
-        
+
         return out.toString();
     }
 

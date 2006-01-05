@@ -1,10 +1,12 @@
 package reger;
 
 import reger.core.Debug;
+import reger.cache.jboss.Cacheable;
 
 /**
  * Splits incoming urls into an accounturl, plbasedomain and virtualdir.
  */
+@Cacheable
 public class UrlSplitter implements java.io.Serializable {
 
     private String rawIncomingServername = "";

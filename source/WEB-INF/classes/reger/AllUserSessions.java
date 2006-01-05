@@ -19,19 +19,19 @@ public class AllUserSessions {
     }
 
     public static void flushSessions(){
-        UserSessionCache usc = UserSessionCache.getInstance();
-        usc.flushUserSessions();
+        //UserSessionCache usc = UserSessionCache.getInstance();
+        UserSessionCache.flushUserSessions();
 
     }
 
     private void addSession(String userSessionId, reger.UserSession userSession){
-        UserSessionCache usc = UserSessionCache.getInstance();
-        usc.putUserSession(userSessionId, userSession);
+        //UserSessionCache usc = UserSessionCache.getInstance();
+        UserSessionCache.putUserSession(userSessionId, userSession);
     }
 
     public void removeSession(String userSessionId){
-        UserSessionCache usc = UserSessionCache.getInstance();
-        usc.removeUserSession(userSessionId);
+        //UserSessionCache usc = UserSessionCache.getInstance();
+        UserSessionCache.removeUserSession(userSessionId);
     }
 
     public static int numberOfSessionsCurrentlyLive(){
@@ -89,8 +89,8 @@ public class AllUserSessions {
     }
 
     private UserSession getUserSession(String userSessionId){
-        UserSessionCache usc = UserSessionCache.getInstance();
-        return usc.getUserSession(userSessionId);
+        //UserSessionCache usc = UserSessionCache.getInstance();
+        return UserSessionCache.getUserSession(userSessionId);
     }
 
     private Cookie[] getCookies(javax.servlet.http.HttpServletRequest request, reger.UserSession userSession){

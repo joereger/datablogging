@@ -74,26 +74,41 @@
 
 
    <!-- pre-compile directory with annotationc using jdk1.4 -->
+   <!--
    <target name="annoc" depends="compile" description="Annotation precompiler for aop class">
   	  <taskdef name="annotationc" classname="org.jboss.aop.ant.AnnotationC" classpathref="lib.classpath"/>
       <annotationc compilerclasspathref="lib.classpath" bytecode="true">
          <classpath refid="lib.classpath"/>
          <classpath path="${build}"/>
-         <src path="${source}"/>
-         <include name="examples/**/*.java"/>
+         <src path="${javasrc}"/>
+         <include name="**/*.java"/>
       </annotationc>
    </target>
+   -->
 
 
 
    <!-- pre-compile directory with aopc -->
-   <target name="aopc" depends="annoc" description="Precompile aop test classes after annoc">
+   <!--
+   <target name="aopc" depends="compile" description="Precompile aop classes">
    	    <taskdef name="aopc" classname="org.jboss.aop.ant.AopC" classpathref="lib.classpath"/>
   	    <aopc compilerclasspathref="lib.classpath" classpathref="lib.classpath" verbose="true">
-            <src path="${build}/examples"/>
-            <aoppath path="${output}/etc/META-INF/jboss-aop.xml"/>
+            <src padth="${javasrc}"/>
+            <aoppath path="${sourcedir}/WEB-INF/jboss-aop.xml"/>
             <classpath path="${build}"/>
         </aopc>
+   </target>
+   -->
+
+   <taskdef name="aopc" classname="org.jboss.aop.ant.AopC" classpathref="lib.classpath"/>
+   <target name="aopc" depends="compile" description="Precompile aop classes">
+  	    <aopc compilerclasspathref="classpath" verbose="false">
+            <classpath path="${javasrc}"/>
+            <src path="${javasrc}"/>
+            <include name="**/*.class"/>
+            <aoppath path="${sourcedir}/WEB-INF/jboss-aop.xml"/>
+            <!--<aopclasspath path="aspects.jar"/>-->
+         </aopc>
    </target>
 
 
@@ -178,6 +193,13 @@
                 <path refid="lib.classpath" />
             </classpath>
         </javac>
+        <aopc compilerclasspathref="lib.classpath" verbose="false">
+            <classpath path="${quickbuild.compiled.destination.directory}"/>
+            <src path="${quickbuild.compiled.destination.directory}"/>
+            <include name="**/*.class"/>
+            <aoppath path="${sourcedir}/WEB-INF/jboss-aop.xml"/>
+            <!--<aopclasspath path="aspects.jar"/>-->
+         </aopc>
 		<copy todir="${quickbuild.tomcat.root.directory}">
 			<fileset dir="${lastbuild}">
 			</fileset>

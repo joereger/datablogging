@@ -27,8 +27,8 @@ pageProps.pathToAppRoot="../";
 
 if (request.getParameter("action")!=null && request.getParameter("action").equals("kill")){
     reger.core.Debug.debug(5, "sessions.log", "Into action=kill");
-    UserSessionCache ucs = UserSessionCache.getInstance();
-    ucs.removeUserSessionByCacheKey(request.getParameter("sessionid"));
+    //UserSessionCache ucs = UserSessionCache.getInstance();
+    UserSessionCache.removeUserSessionByCacheKey(request.getParameter("sessionid"));
 }
 
 
@@ -41,12 +41,12 @@ int sessionsTotal = 0;
 String bgcolor="";
 HashSet keys = (HashSet)UserSessionCache.getKeys();
 reger.core.Debug.debug(4, "sessions.log", "keys.size()="+keys.size());
-UserSessionCache ucs = UserSessionCache.getInstance();
+//UserSessionCache ucs = UserSessionCache.getInstance();
 for (java.util.Iterator iterator = keys.iterator(); iterator.hasNext();) {
     String key = (String) iterator.next();
     reger.core.Debug.debug(4, "sessions.log", "key="+key);
     //Get the userSession
-    UserSession us = ucs.getUserSessionUsingActualKeyOfCache(key);
+    UserSession us = UserSessionCache.getUserSessionUsingActualKeyOfCache(key);
     if (us!=null){
         //Get the last active date
         Calendar lastActive = us.getMostRecentActivity();

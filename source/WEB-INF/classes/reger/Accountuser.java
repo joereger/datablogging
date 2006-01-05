@@ -9,12 +9,14 @@ import reger.core.PasswordHash;
 import reger.core.PasswordVerifier;
 import reger.core.Debug;
 import reger.cache.LogCache;
+import reger.cache.jboss.Cacheable;
 
 import java.util.*;
 
 /**
  * Represents an account user.  This could be an owner or an author, for example.
  */
+@Cacheable
 public class Accountuser {
 
 
