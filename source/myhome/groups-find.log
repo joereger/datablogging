@@ -61,7 +61,7 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
                 mb.append("<table cellpadding=5 cellspacing=2 border=0>");
                 if (result!=null){
                     for (int j = 0; j < result.size(); j++) {
-                        Hashtable o = (Hashtable) result.elementAt(j);
+                        Hashtable o = (Hashtable) result.get(j);
 
 
                         mb.append("<tr>");

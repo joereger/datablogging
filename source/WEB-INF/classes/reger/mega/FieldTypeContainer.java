@@ -1,6 +1,7 @@
 package reger.mega;
 
 import reger.AddToArray;
+import reger.cache.jboss.Cacheable;
 import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.jdom.Element;
 /**
  * A container field... this holds other fields under it and acts as, well, a container.
  */
+@Cacheable
 public class FieldTypeContainer extends Field implements FieldType, ChartField{
 
 

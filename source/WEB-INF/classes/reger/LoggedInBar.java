@@ -19,6 +19,7 @@ public class LoggedInBar {
 
             String bgcolor = "cccccc";
 
+            mb.append("<div style=\"position: relative;\">");
             mb.append("<table width=100% cellpadding=0 cellspacing=0 border=0>");
             mb.append("<tr>");
             mb.append("<td bgcolor=#000000 colspan=13><img src='"+pageProps.pathToAppRoot+"images/clear.gif' width=1 height=1></td>");
@@ -162,7 +163,7 @@ public class LoggedInBar {
 
 
             mb.append("</table>");
-
+            mb.append("</div>");
 
 
 

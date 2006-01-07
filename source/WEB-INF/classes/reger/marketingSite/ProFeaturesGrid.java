@@ -242,7 +242,7 @@ public class ProFeaturesGrid {
 
         for (int i = 0; i < features.size(); i++) {
             //Get the category
-            ProCategory cat = (ProCategory) features.elementAt(i);
+            ProCategory cat = (ProCategory) features.get(i);
 
 
                 mb.append("<tr>");
@@ -271,7 +271,7 @@ public class ProFeaturesGrid {
 
             //Iterate each individualfeature
             for (int j = 0; j < individualfeatures.size(); j++) {
-                ProFeature feature = (ProFeature) individualfeatures.elementAt(j);
+                ProFeature feature = (ProFeature) individualfeatures.get(j);
 
                 mb.append("<tr>");
                 mb.append("<td class='feature'>");

@@ -7,13 +7,10 @@ import reger.core.db.Db;
 import reger.core.Util;
 import reger.core.Debug;
 import reger.cache.LogCache;
-import reger.xforms.LogTypeXform;
-
+import reger.cache.jboss.Cacheable;
 import java.util.Calendar;
 
-/**
- * Represents a Log
- */
+@Cacheable
 public class Log implements NestedNavItem {
 
     private int logid;
@@ -23,18 +20,19 @@ public class Log implements NestedNavItem {
     private int logaccess;
     private String message="";
     private boolean showonhomepage;
-    private FieldType[] fields;
-    private FieldType[] fieldshidden;
+    private FieldType[] fields = new FieldType[0];
+    private FieldType[] fieldshidden = new FieldType[0];
     private String password;
     private int maintemplateid;
     private int entlisttemplateid;
     private String fieldorder = "";
     private int[] hiddenfields = new int[0];
     private FieldOrderCollection fieldOrderCollection;
-
-    //Derived properties
     private int numberOfLiveEntriesInLog = -1;
     private Calendar mostRecentEntryDateGMT;
+    private int nestednavparenttype=NestedNavItem.NESTEDNAVITEMBASE;
+    private int nestednavparentid=0;
+    private int nestednavorder=0;
 
     public Log(int logid){
         load(logid);
@@ -381,9 +379,7 @@ public class Log implements NestedNavItem {
      * ---------------------------------------------------
      */
 
-    private int nestednavparenttype=NestedNavItem.NESTEDNAVITEMBASE;
-    private int nestednavparentid=0;
-    private int nestednavorder=0;
+
 
     /**
      * The text that should appear in the navigation bar

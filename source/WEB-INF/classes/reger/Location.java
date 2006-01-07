@@ -4,10 +4,12 @@ import reger.core.db.Db;
 import reger.core.Util;
 import reger.core.ValidationException;
 import reger.core.Debug;
+import reger.cache.jboss.Cacheable;
 
 /**
  * This class models a content page.
  */
+@Cacheable
 public class Location {
 
     private int locationid=0;

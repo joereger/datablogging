@@ -17,7 +17,7 @@ import java.util.*;
  * Represents an account user.  This could be an owner or an author, for example.
  */
 @Cacheable
-public class Accountuser {
+public class Accountuser implements java.io.Serializable {
 
 
 
@@ -25,13 +25,13 @@ public class Accountuser {
     //These hold the aclnames and logids that user can view.
     //Note that outside code should use userCanViewLog()
     //and userCanDoAcl() as much as possible.
-    private Vector accountUserAcls=null; //The ACL Perms that this user explicitly has
-    private Vector accountUserAclGroups=null;
-    private int[] logsUserHasExlicitPermissionToAccess=null;
-    private int[] logsUserHasExlicitPermissionToAuthor=null;
-    private int[] plidsUserCanAdminister=null;
+    private Vector accountUserAcls=new Vector(); //The ACL Perms that this user explicitly has
+    private Vector accountUserAclGroups=new Vector();
+    private int[] logsUserHasExlicitPermissionToAccess=new int[0];
+    private int[] logsUserHasExlicitPermissionToAuthor=new int[0];
+    private int[] plidsUserCanAdminister=new int[0];
 
-    private Hashtable accountsUserHasAccessTo = null;
+    private Hashtable accountsUserHasAccessTo = new Hashtable();
 
     //Logged-in flag
     public boolean isLoggedIn=false;
@@ -53,9 +53,6 @@ public class Accountuser {
     public boolean isactive = true;
     private java.util.Calendar createdate = Calendar.getInstance();
     private boolean isHelpOn = true;
-    //private String siteRootUrl = "";
-
-
 
     //Accountuserfields
     private Vector accountuserfields = new Vector(10);
@@ -347,7 +344,7 @@ public class Accountuser {
     private boolean quickPassAccountidComboExists(String pass, int accountidToLogInTo){
         if (quickpass!=null){
             for (int i = 0; i < quickpass.size(); i++) {
-                AccountUserQuickpass qp = (AccountUserQuickpass) quickpass.elementAt(i);
+                AccountUserQuickpass qp = (AccountUserQuickpass) quickpass.get(i);
                 if (qp.quickpass.equals(pass) && qp.accountid==accountidToLogInTo){
                     return true;
                 }
@@ -476,7 +473,7 @@ public class Accountuser {
             String quickpassSql = "";
 
             for (int i = 0; i < quickpass.size(); i++) {
-                AccountUserQuickpass qpass = (AccountUserQuickpass) quickpass.elementAt(i);
+                AccountUserQuickpass qpass = (AccountUserQuickpass) quickpass.get(i);
                 if (i==0){
                     quickpassSql = " ( ";
                 }
@@ -640,7 +637,7 @@ public class Accountuser {
     public boolean isInAclgroup(int aclgroupid, int accountid){
         if (accountUserAclGroups!=null){
             for (int i = 0; i < accountUserAclGroups.size(); i++) {
-                AccountUserAclGroup accountUserAclGroup = (AccountUserAclGroup) accountUserAclGroups.elementAt(i);
+                AccountUserAclGroup accountUserAclGroup = (AccountUserAclGroup) accountUserAclGroups.get(i);
                 if (accountUserAclGroup.aclgroupid==aclgroupid && accountUserAclGroup.accountid==accountid){
                     return true;
                 }
@@ -652,7 +649,7 @@ public class Accountuser {
     public boolean isInAclgroup(String aclgroupname, int accountid){
         if (accountUserAclGroups!=null){
             for (int i = 0; i < accountUserAclGroups.size(); i++) {
-                AccountUserAclGroup accountUserAclGroup = (AccountUserAclGroup) accountUserAclGroups.elementAt(i);
+                AccountUserAclGroup accountUserAclGroup = (AccountUserAclGroup) accountUserAclGroups.get(i);
                 if (accountUserAclGroup.aclgroupname.equals(aclgroupname) && accountUserAclGroup.accountid==accountid){
                     return true;
                 }
@@ -744,7 +741,8 @@ public class Accountuser {
     public boolean userCanDoAcl(String aclobjectname, int accountid) {
         if (accountUserAcls!=null){
             for (int i = 0; i < accountUserAcls.size(); i++) {
-                AccountUserAcl accountUserAcl = (AccountUserAcl) accountUserAcls.elementAt(i);
+                //AccountUserAcl accountUserAcl = (AccountUserAcl) accountUserAcls.get(i);
+                AccountUserAcl accountUserAcl = (AccountUserAcl) accountUserAcls.get(i);
                 if (accountUserAcl.aclobjectname.equals(aclobjectname) && accountUserAcl.accountid==accountid){
                     return true;
                 }
@@ -759,7 +757,7 @@ public class Accountuser {
     public boolean userCanDoAcl(int aclobjectid, int accountid){
         if (accountUserAcls!=null){
             for (int i = 0; i < accountUserAcls.size(); i++) {
-                AccountUserAcl accountUserAcl = (AccountUserAcl) accountUserAcls.elementAt(i);
+                AccountUserAcl accountUserAcl = (AccountUserAcl) accountUserAcls.get(i);
                 if (accountUserAcl.aclobjectid==aclobjectid && accountUserAcl.accountid==accountid){
                     return true;
                 }
@@ -1562,7 +1560,7 @@ public class Accountuser {
             //Iterate the accountuserfields and insert them into the database
             for (int i = 0; i < accountuserfields.size(); i++) {
                 //Get the field
-                reger.Accountuserfield field = (reger.Accountuserfield) accountuserfields.elementAt(i);
+                reger.Accountuserfield field = (reger.Accountuserfield) accountuserfields.get(i);
                 field.saveFieldToDatabase(accountuserid);
                 //-----------------------------------
                 //-----------------------------------
@@ -2056,7 +2054,7 @@ public class Accountuser {
 
                 Vector allLogs = LogCache.allLogsForAccount(accountid.intValue());
                 for (int i = 0; i < allLogs.size(); i++) {
-                    Log log = (Log) allLogs.elementAt(i);
+                    Log log = (Log) allLogs.get(i);
                     //reger.core.Util.logtodb("Logid=" + log.getLogid() + "<br>userCanViewLog(log.getLogid())=" + userCanViewLog(log.getLogid()));
                     if (userCanViewLog(log.getLogid()) || userCanAuthorLog(log.getLogid())){
                         if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
@@ -2337,6 +2335,7 @@ public class Accountuser {
     }
 
     public Calendar getCreatedate() {
+
         return createdate;
     }
 

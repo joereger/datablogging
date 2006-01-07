@@ -18,7 +18,7 @@ public class UserSession implements java.io.Serializable {
     private reger.Accountuser accountuser;
     private int plid = reger.Vars.PLIDDEFAULT;
     private reger.UrlSplitter urlSplitter;
-    private Calendar mostRecentActivity;
+    private Calendar mostRecentActivity = Calendar.getInstance();
     private HashMap attributes = new HashMap();
 
     public UserSession(javax.servlet.http.HttpServletRequest request){
@@ -115,7 +115,11 @@ public class UserSession implements java.io.Serializable {
 
 
     public void setAttribute(String attributename, Object obj){
-        attributes.put(attributename, obj);
+        try{
+            attributes.put(attributename, obj);
+        } catch (Exception e){
+            reger.core.Debug.errorsave(e, "UserSession.java");
+        }
     }
 
     public Object getAttribute(String attributename){

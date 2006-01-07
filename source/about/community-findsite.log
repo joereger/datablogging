@@ -140,7 +140,7 @@ int refreshintervalinseconds = 3600;
     mb.append("<table align=center cellpadding=5 cellspacing=2 bgcolor=#e6e6e6>");
     mb.append("<tr>");
         for (int i = 0; i < alphas.size(); i++) {
-            String s = (String) alphas.elementAt(i);
+            String s = (String) alphas.get(i);
             String bgcolor="#ffffff";
             if (s.equals(request.getParameter("alpha"))){
                 bgcolor="#cccccc";

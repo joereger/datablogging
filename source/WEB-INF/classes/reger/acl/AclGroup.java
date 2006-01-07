@@ -2,10 +2,12 @@ package reger.acl;
 
 import reger.core.db.Db;
 import reger.AddToArray;
+import reger.cache.jboss.Cacheable;
 
 /**
  * A group.
  */
+@Cacheable
 public class AclGroup {
 
     private int aclgroupid;
@@ -25,9 +27,9 @@ public class AclGroup {
         //-----------------------------------
         //-----------------------------------
         if (rstId!=null && rstId.length>0){
-        	for(int i=0; i<rstId.length; i++){
-        	    aclgroupid = Integer.parseInt(rstId[i][0]);
-        	}
+            for(int i=0; i<rstId.length; i++){
+                aclgroupid = Integer.parseInt(rstId[i][0]);
+            }
         }
         loadGroupInfo(aclgroupid);
         loadAclObjects();
@@ -40,10 +42,10 @@ public class AclGroup {
         //-----------------------------------
         //-----------------------------------
         if (rstGroup!=null && rstGroup.length>0){
-        	for(int i=0; i<rstGroup.length; i++){
+            for(int i=0; i<rstGroup.length; i++){
                 this.aclgroupid = Integer.parseInt(rstGroup[i][0]);
                 this.aclgroupname = rstGroup[i][1];
-        	}
+            }
         }
     }
 
@@ -55,11 +57,11 @@ public class AclGroup {
         //-----------------------------------
         //-----------------------------------
         if (rstAcls!=null && rstAcls.length>0){
-        	for(int i=0; i<rstAcls.length; i++){
-        	    AclObject tmpAclObject = reger.acl.AllAclObjects.getAclObjectById(Integer.parseInt(rstAcls[i][0]));
+            for(int i=0; i<rstAcls.length; i++){
+                AclObject tmpAclObject = reger.acl.AllAclObjects.getAclObjectById(Integer.parseInt(rstAcls[i][0]));
                 aclObjectsThisGroupCanDo = AddToArray.addToAclObjectArray(aclObjectsThisGroupCanDo, tmpAclObject);
-        	    //reger.core.Util.logtodb("--Done adding aclobjectid=" + rstAcls[i][0] + " to aclObjectsThisGroupCanDo.length=" + aclObjectsThisGroupCanDo.length);
-        	}
+                //reger.core.Util.logtodb("--Done adding aclobjectid=" + rstAcls[i][0] + " to aclObjectsThisGroupCanDo.length=" + aclObjectsThisGroupCanDo.length);
+            }
         }
     }
 

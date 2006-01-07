@@ -6,6 +6,7 @@ import reger.core.Debug;
 import reger.core.TimeUtils;
 import reger.linkrot.AnchorFinder;
 import reger.cache.LogCache;
+import reger.cache.jboss.Cacheable;
 import reger.xforms.EventXformData;
 
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import java.util.Iterator;
 /**
  * Represents an entry
  */
+@Cacheable
 public class Entry {
 
     //Public Properties
@@ -81,7 +83,7 @@ public class Entry {
     public boolean haveSpellingErrors = false;
     public String textWithSuggestionsAsDropdowns = "";
     public String originalEntryTextBeforeSpellcheck = "";
-    public ArrayList spellCheckEvents = null;
+    //public ArrayList spellCheckEvents = new ArrayList();
 
     //MegaData validation flag
     public boolean validateRequiredFields = true;

@@ -64,8 +64,10 @@ if (pageProps.action.equals("edit")){
         //Redirect to the template homepage
         if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl").equals("null")){
             response.sendRedirect(request.getParameter("returnurl")+"?plid=" + plid);
+            return;
         } else {
             response.sendRedirect("pltemplates.log?plid="+plid);
+            return;
         }
     } catch (reger.template.TemplateValidationException e) {
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, e.getError()));

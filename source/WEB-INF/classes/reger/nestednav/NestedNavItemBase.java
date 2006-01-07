@@ -1,12 +1,14 @@
 package reger.nestednav;
 
 import reger.Accountuser;
+import reger.cache.jboss.Cacheable;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * This base class is used to start off navbars.
  */
+@Cacheable
 public class NestedNavItemBase implements NestedNavItem{
 
     /**

@@ -261,7 +261,7 @@ public class Profile {
         //Iterate the accountuserfields
         for (int i = 0; i < accountuser.getAccountuserfields().size(); i++) {
             //Get the field
-            reger.Accountuserfield field = (reger.Accountuserfield) accountuser.getAccountuserfields().elementAt(i);
+            reger.Accountuserfield field = (reger.Accountuserfield) accountuser.getAccountuserfields().get(i);
             mb.append("<tr>");
             mb.append("<td valign=top bgcolor=#e6e6e6>");
             if (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){

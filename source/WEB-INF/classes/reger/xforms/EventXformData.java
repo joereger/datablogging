@@ -3,6 +3,7 @@ package reger.xforms;
 import reger.core.db.Db;
 import reger.cache.EntryCache;
 import reger.cache.LogCache;
+import reger.cache.jboss.Cacheable;
 import reger.Entry;
 import reger.Log;
 import reger.MegaLogType;
@@ -11,6 +12,7 @@ import reger.AllMegaLogTypesInSystem;
 /**
  * represents the xform data instance as stored in the database
  */
+@Cacheable
 public class EventXformData {
 
     private int eventxformdataid;

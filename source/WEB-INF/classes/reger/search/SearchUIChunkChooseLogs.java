@@ -59,7 +59,7 @@ public class SearchUIChunkChooseLogs implements SearchUIChunk{
             Vector eventTypeidsForPlid = reger.AllMegaLogTypesInSystem.allMegaLogTypesForPlid(userSession.getPl().getPlid());
 
             for (int j = 0; j < eventTypeidsForPlid.size(); j++) {
-                MegaLogType logType = (MegaLogType) eventTypeidsForPlid.elementAt(j);
+                MegaLogType logType = (MegaLogType) eventTypeidsForPlid.get(j);
 
                 String selectedText = "";
                 if (se.getSearchParameters().isEventtypeidBeingSearched(logType.getEventtypeid()) || se.getSearchParameters().isEventtypeidBeingSearched(SearchParameters.ALL)){
@@ -106,7 +106,7 @@ public class SearchUIChunkChooseLogs implements SearchUIChunk{
                     mb.append("</td>");
                     mb.append("</tr>");
                     for (int j = 0; j < logsForAcct.size(); j++) {
-                        Log log = (Log) logsForAcct.elementAt(j);
+                        Log log = (Log) logsForAcct.get(j);
                         //If the user can view this log
                         if (userSession.getAccountuser().userCanViewLog(log.getLogid())){
                             String selectedText = "";

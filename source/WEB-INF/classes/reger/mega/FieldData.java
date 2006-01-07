@@ -1,8 +1,11 @@
 package reger.mega;
 
+import reger.cache.jboss.Cacheable;
+
 /**
  * Represents data for a single field in name/value form.
  */
+@Cacheable
 public class FieldData {
 
     private String name;

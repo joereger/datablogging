@@ -54,7 +54,7 @@ public class Tabs {
 
         for (int i = 0; i < tabs.size(); i++) {
             //Get the category
-            reger.Tab tab = (reger.Tab) tabs.elementAt(i);
+            reger.Tab tab = (reger.Tab) tabs.get(i);
 
             String tabcolor = this.offcolor;
             String fontcolor = this.offfontcolor;

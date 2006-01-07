@@ -15,7 +15,6 @@ public class UrlSplitter implements java.io.Serializable {
     private String siterooturl = "";
     private int port = 80;
     private String scheme = "http://";
-
     private String[] servernameAllPossibleDomains=new String[0];
 
 

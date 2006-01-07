@@ -7,7 +7,6 @@ import reger.core.*;
 import reger.core.licensing.License;
 import reger.core.licensing.RegerLicensingApiClient;
 import reger.cache.LogCache;
-import reger.cache.jboss.Cacheable;
 
 import java.util.*;
 
@@ -18,7 +17,7 @@ import java.util.*;
 * Once the userLogin() function is called user-specific vars are
 * populated.
 */
-@Cacheable
+@reger.cache.jboss.Cacheable
 public class Account implements java.io.Serializable {
 
     //Basic account variables
@@ -279,7 +278,7 @@ public class Account implements java.io.Serializable {
 //        //Logs added to allNestedNavItems
 //        Vector logs = LogCache.allLogsForAccount(accountid);
 //        for (int i = 0; i < logs.size(); i++) {
-//            Log log = (Log) logs.elementAt(i);
+//            Log log = (Log) logs.get(i);
 //            reger.core.Util.debug(5, "Account.java - log added:" + log.getName());
 //            allNestedNavItems = AddToArray.addToNestedNavItemArray(allNestedNavItems, (NestedNavItem)log);
 //        }

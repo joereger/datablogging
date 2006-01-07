@@ -2,12 +2,14 @@ package reger;
 
 import reger.nestednav.NestedNavItem;
 import reger.core.db.Db;
+import reger.cache.jboss.Cacheable;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class models a content page.
  */
+@Cacheable
 public class ContentPage implements NestedNavItem{
 
     private int contentpageid=0;

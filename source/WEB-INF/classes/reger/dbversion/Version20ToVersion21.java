@@ -39,7 +39,7 @@ public class Version20ToVersion21 implements UpgradeDatabaseOneVersion{
 
     private void addAllWordsToDb(){
         for (int i = 0; i < getWords().size(); i++) {
-            String word = (String) getWords().elementAt(i);
+            String word = (String) getWords().get(i);
             insertOneWordToDb(word);
         }
     }

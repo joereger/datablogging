@@ -1,6 +1,7 @@
 package reger.mega;
 
 import reger.AddToArray;
+import reger.cache.jboss.Cacheable;
 import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.jdom.Element;
 /**
  * A time period
  */
+@Cacheable
 public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
 
 

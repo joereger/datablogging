@@ -20,6 +20,7 @@ import reger.systemproperties.PathUploadMedia;
 import reger.Entry;
 import reger.Log;
 import reger.AllMegaLogTypesInSystem;
+import reger.cache.jboss.Cacheable;
 
 /**
  * The ChibaServlet handles all interactions between client and
@@ -33,6 +34,7 @@ import reger.AllMegaLogTypesInSystem;
  * Incoming request params will be mapped to data and action-handlers.
  *
  */
+@Cacheable
 public class ChibaServletReger {
 
     private static final String XSL_PARAM_NAME = "xslt";
@@ -43,13 +45,10 @@ public class ChibaServletReger {
     private Entry entry;
     private Log log;
 
-
     public ChibaServletReger(Entry entry, Log log){
         reger.core.Debug.debug(3, "ChibaServletReger.java", "--------------- creating instance of ChibaServletReger... ---------------");
-
         this.entry = entry;
         this.log = log;
-
     }
 
 

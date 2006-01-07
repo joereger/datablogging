@@ -1,8 +1,11 @@
 package reger.mega;
 
+import reger.cache.jboss.Cacheable;
+
 /**
  * Holds field location information
  */
+@Cacheable
 public class FieldOrder {
 
     private int megafieldid = 0;
@@ -16,7 +19,7 @@ public class FieldOrder {
         this.x = x;
         this.y = y;
         this.w = w;
-        this.h = h;   
+        this.h = h;
     }
 
     public int getMegafieldid() {

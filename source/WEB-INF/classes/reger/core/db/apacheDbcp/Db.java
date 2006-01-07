@@ -123,7 +123,7 @@ public class Db {
 				//Put records into a string array
 				results = new String[rows.size()][];
 				for(int i=0; i < results.length; i++){
-					results[i] = (String[]) rows.elementAt(i);
+					results[i] = (String[]) rows.get(i);
 				}
 	        } else {
                 Debug.errorsave(null, "", "Db.java: conn==null.<br>sql=" + sql);

@@ -1,13 +1,12 @@
 package reger.mega;
 
-import reger.core.db.Db;
-import reger.UserSession;
 import reger.Accountuser;
 import org.jdom.Element;
 
 /**
  *
  */
+
 public interface FieldInterface {
 
     public Object clone();

@@ -413,7 +413,7 @@ This is a reference showing the jar file to module relationship:
     - hibernate3.jar
     - c3p0-0.9.0.jar
 
-10) OpenMap (http://openmap.bbn.com)
+10) OpenMap (http://openmap.bbn.com) (No longer included)
     - milStd2525_png.jar
     - omcorba.jar
     - omj3d.jar

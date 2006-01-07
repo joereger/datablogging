@@ -1,10 +1,12 @@
 package reger.acl;
 
 import reger.core.db.Db;
+import reger.cache.jboss.Cacheable;
 
 /**
  * Represents a single AclObject.  A single thing that can be done in the system.
  */
+@Cacheable
 public class AclObject {
 
     public int aclobjectid;
@@ -14,7 +16,7 @@ public class AclObject {
 
     public AclObject(){
 
-    }
+    }               
 
 //    public AclObject(int aclobjectid){
 //        AclObject tmpAclObject = AllAclObjects.getAclObjectById(aclobjectid);

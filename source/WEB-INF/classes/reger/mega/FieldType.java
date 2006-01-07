@@ -1,9 +1,5 @@
 package reger.mega;
 
-import reger.Entry;
-
-import java.util.TreeMap;
-
 import org.jdom.Element;
 
 /**
@@ -12,7 +8,7 @@ import org.jdom.Element;
  * FieldTypes do not generally talk directly to the database... they rely on StorageMethods (essentially DAOs)
  * to get data.
  */
-public interface FieldType extends FieldInterface{
+public interface FieldType extends FieldInterface {
 
     //Megafieldtype. The name is the field type.  The value is the megafieldtypeid in the megafieldtype table in the database.
     public static final int FIELDTYPEDROPDOWN = 1;

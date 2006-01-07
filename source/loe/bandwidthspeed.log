@@ -46,7 +46,7 @@ mb.append("</tr>");
 Vector results = reger.core.bandwidthtest.BandwidthTest.getAllTestResults();
 if (results!=null && results.size()>0){
     for (int i = (results.size()-1); i >= 0; i--) {
-        BandwidthTest bwtest = (BandwidthTest) results.elementAt(i);
+        BandwidthTest bwtest = (BandwidthTest) results.get(i);
         mb.append("<tr>");
         mb.append("<td valign=top>");
         mb.append("<font face=arial size=-2>");

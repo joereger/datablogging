@@ -2,12 +2,14 @@ package reger.plcontentmanagement;
 
 import reger.nestednav.NestedNavItem;
 import reger.Accountuser;
+import reger.cache.jboss.Cacheable;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * Represents a single jsp page in the content management scheme of the private label marketing site.
  */
+@Cacheable
 public class PlJspPage implements NestedNavItem {
 
 

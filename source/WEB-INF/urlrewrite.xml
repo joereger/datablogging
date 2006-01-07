@@ -202,7 +202,7 @@
     </rule>
 
     <!-- Google Maps XML -->
-
+    <!--
     <rule>
         <name>GoogleMapsTestXML</name>
         <note>The google maps url.</note>
@@ -216,6 +216,7 @@
         <from>/googlemap-locationid([0-9]+).xml(\?)*(.*)</from>
         <to>/googlemapxml.log?locationid=$1&amp;$3</to>
     </rule>
+    -->
 
     <!-- Rss Groups -->
     <rule>

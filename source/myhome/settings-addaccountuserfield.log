@@ -177,7 +177,7 @@ mb.append("</tr>");
 
 //Display the list
 for (int i = 0; i < pre.size(); i++) {
-    String s = (String) pre.elementAt(i);
+    String s = (String) pre.get(i);
     mb.append("<tr>");
     mb.append("<td valign=top align=left bgcolor=#e6e6e6>");
     mb.append("<input type=text name=newtitle-"+i+" size=45 maxlength=255 value=\""+reger.core.Util.cleanForHtml(s)+"\">");

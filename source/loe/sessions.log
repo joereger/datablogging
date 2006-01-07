@@ -25,6 +25,15 @@ pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 
 
+//mb.append(reger.cache.jboss.CacheDumper.getHtml("/"));
+
+
+
+
+
+
+//Start UserSessionCache Display
+
 if (request.getParameter("action")!=null && request.getParameter("action").equals("kill")){
     reger.core.Debug.debug(5, "sessions.log", "Into action=kill");
     //UserSessionCache ucs = UserSessionCache.getInstance();
@@ -175,104 +184,6 @@ mb.append("</table>");
 
 
 
-//mb.append("<font face=arial size=-1>");
-//
-//
-//
-//mb.append("<br>");
-//mb.append("<br>");
-//
-//mb.append("<b>Total: " + reger.AllUserSessions.numberOfSessionsCurrentlyLive()+"</b>");
-//mb.append("<br>");
-//
-//Map userSessions = reger.AllUserSessions.getUserSessions();
-//
-////Find number of sessions less than five minutes old
-//TreeMap displaySessions = new TreeMap();
-//int sessionsLessThanOneMin = 0;
-//int sessionsLessThanFiveMin = 0;
-//int sessionsLessThanTenMin = 0;
-//int sessionsLessThanTwentyMin = 0;
-//String bgcolor="";
-//if (userSessions!=null){
-//    for (Iterator i=userSessions.entrySet().iterator(); i.hasNext(); ) {
-//        Map.Entry e = (Map.Entry) i.next();
-//        // retrieve the object_key
-//        String object_key = (String)e.getKey();
-//        // retrieve the object associated with the key
-//        reger.UserSession us = (reger.UserSession)e.getValue();
-//        //Get the last active date
-//        Calendar lastActive = us.getMostRecentActivity();
-//        Calendar now = Calendar.getInstance();
-//        if (reger.core.DateDiff.dateDiff("minute", now, lastActive)<=1){
-//            sessionsLessThanOneMin = sessionsLessThanOneMin + 1;
-//        }
-//        if (reger.core.DateDiff.dateDiff("minute", now, lastActive)<=5){
-//            sessionsLessThanFiveMin = sessionsLessThanFiveMin + 1;
-//        }
-//        if (reger.core.DateDiff.dateDiff("minute", now, lastActive)<=10){
-//            sessionsLessThanTenMin = sessionsLessThanTenMin + 1;
-//        }
-//        if (reger.core.DateDiff.dateDiff("minute", now, lastActive)<=20){
-//            sessionsLessThanTwentyMin = sessionsLessThanTwentyMin + 1;
-//        }
-//        //Create a nice display
-//        if (!bgcolor.equals("#ffffff")){
-//            bgcolor="#ffffff";
-//        } else {
-//            bgcolor="#ffffff";
-//        }
-//        StringBuffer oln = new StringBuffer();
-//        oln.append("<tr>");
-//        oln.append("<td valign=top bgcolor="+bgcolor+">");
-//        oln.append("<font face=arial size=-2>");
-//        oln.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.convertFromOneTimeZoneToAnother(lastActive, lastActive.getTimeZone().getID(), "GMT")));
-//        oln.append("</font>");
-//        oln.append("</td>");
-//        oln.append("<td valign=top bgcolor="+bgcolor+">");
-//        oln.append("<font face=arial size=-2>");
-//        oln.append(us.getAccountuser().getUsername());
-//        oln.append("</font>");
-//        oln.append("</td>");
-//        oln.append("<td valign=top bgcolor="+bgcolor+">");
-//        oln.append("<font face=arial size=-2>");
-//        oln.append(us.getAccountuser().getFriendlyname());
-//        oln.append("</font>");
-//        oln.append("</td>");
-//        oln.append("<td valign=top bgcolor="+bgcolor+">");
-//        oln.append("<a href='"+us.getSiteRootUrl()+"/'>");
-//        oln.append("<font face=arial size=-2>");
-//        oln.append(""+us.getSiteRootUrl()+"/");
-//        oln.append("</font>");
-//        oln.append("</a>");
-//        oln.append("</td>");
-//        oln.append("</tr>");
-//        //Store in a TreeMap so that it orders them
-//        displaySessions.put(new Integer(reger.core.DateDiff.dateDiff("second", now, lastActive)), oln);
-//    }
-//}
-//
-//mb.append("<br>Sessions < 1 Minute Since Last Activity  : " + sessionsLessThanOneMin);
-//mb.append("<br>Sessions < 5 Minutes Since Last Activity : " + sessionsLessThanFiveMin);
-//mb.append("<br>Sessions < 10 Minutes Since Last Activity: " + sessionsLessThanTenMin);
-//mb.append("<br>Sessions < 20 Minutes Since Last Activity: " + sessionsLessThanTwentyMin);
-//
-//mb.append("<br>");
-//mb.append("<br>");
-//mb.append("Each session consumes an average of 25K of memory.  Sessions are the largest web tier scaling concern. In addition to the sessions, the application needs enough memory to operate.");
-//
-//mb.append("</font>");
-//
-//mb.append("<br><br>");
-//
-//mb.append("<table cellpadding=10 cellspacing=1 border=0>");
-//mb.append("<tr><td bgcolor=#cccccc colspan=4><font face=arial size=+1>Active Sessions</font></td></tr>");
-//for (Iterator i=displaySessions.entrySet().iterator(); i.hasNext(); ) {
-//    Map.Entry e = (Map.Entry) i.next();
-//    //out.println(e.getKey() + ": " + e.getValue());
-//    mb.append(e.getValue());
-//}
-//mb.append("</table>");
 
 
 %>

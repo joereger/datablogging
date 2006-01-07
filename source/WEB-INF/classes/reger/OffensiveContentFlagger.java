@@ -47,7 +47,7 @@ public class OffensiveContentFlagger {
         boolean isoffensive = false;
         Debug.debug(5, "", "OffensiveContentFlagger.java - in=" + in);
         for (int i = 0; i < words.size(); i++) {
-            String wordToLookFor = (String) words.elementAt(i);
+            String wordToLookFor = (String) words.get(i);
             Debug.debug(5, "", "OffensiveContentFlagger.java - wordToLookFor=" + wordToLookFor + "<br>in=" + in);
             if (in.indexOf(wordToLookFor)>0){
                 Debug.debug(5, "", "OffensiveContentFlagger.java - found=" + wordToLookFor + " <br>in=" + in);

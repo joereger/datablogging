@@ -301,7 +301,7 @@ if (fieldAllParams!=null && fieldAllParams.getParams().size()>0){
     java.util.Vector params = fieldAllParams.getParams();
     //Iterate the vector
     for (int i = 0; i < params.size(); i++) {
-        reger.mega.FieldParam param = (reger.mega.FieldParam) params.elementAt(i);
+        reger.mega.FieldParam param = (reger.mega.FieldParam) params.get(i);
 
         mb.append("<tr>");
         mb.append("<td valign=top align=right bgcolor=#eeeeee colspan=2><font face=arial size=-1><strong>"+param.name+"</strong></font><br><font face=arial size=-2>"+param.description+"</font></td>");

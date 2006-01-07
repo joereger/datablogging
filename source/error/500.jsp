@@ -1,6 +1,4 @@
 <%@ page isErrorPage="true" %>
-<%@ page import="reger.core.Util,
-                 reger.core.db.Db"%>
 <%@ page import="reger.core.Debug"%>
 
 <%

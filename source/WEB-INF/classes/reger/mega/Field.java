@@ -2,6 +2,7 @@ package reger.mega;
 
 import reger.*;
 import reger.cache.LogCache;
+import reger.cache.jboss.Cacheable;
 import reger.core.db.Db;
 import reger.core.Debug;
 import org.jdom.Element;
@@ -9,6 +10,7 @@ import org.jdom.Element;
 /**
  *
  */
+@Cacheable
 public class Field implements Cloneable, FieldInterface {
 
     public static final int FIELDTYPEDROPDOWN = 1;

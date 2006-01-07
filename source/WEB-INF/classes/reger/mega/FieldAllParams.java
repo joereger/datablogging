@@ -26,7 +26,7 @@ public class FieldAllParams {
     public void loadData(){
 
         for (int i = 0; i < params.size(); i++) {
-            FieldParam fieldParam = (FieldParam) params.elementAt(i);
+            FieldParam fieldParam = (FieldParam) params.get(i);
 
             fieldParam.loadValue();
         }
@@ -35,7 +35,7 @@ public class FieldAllParams {
 
     public String getParamValue(String name){
         for (int i = 0; i < params.size(); i++) {
-            FieldParam fieldParam = (FieldParam) params.elementAt(i);
+            FieldParam fieldParam = (FieldParam) params.get(i);
 
             if (fieldParam.name.equals(name)){
                 //It's a match... return value
@@ -48,7 +48,7 @@ public class FieldAllParams {
 
     public String getParamValueByOneworddatabasekey(String key){
         for (int i = 0; i < params.size(); i++) {
-            FieldParam fieldParam = (FieldParam) params.elementAt(i);
+            FieldParam fieldParam = (FieldParam) params.get(i);
 
             if (fieldParam.onewordDatabaseKey.equals(key)){
                 //It's a match... return value
@@ -61,7 +61,7 @@ public class FieldAllParams {
 
     public FieldParam getFieldParamByName(String name){
         for (int i = 0; i < params.size(); i++) {
-            FieldParam fieldParam = (FieldParam) params.elementAt(i);
+            FieldParam fieldParam = (FieldParam) params.get(i);
 
             if (fieldParam.name.equals(name)){
                 //It's a match... return it
@@ -85,14 +85,14 @@ public class FieldAllParams {
 
     public void loadFromRequest(javax.servlet.http.HttpServletRequest request){
         for (int i = 0; i < params.size(); i++) {
-            FieldParam fieldParam = (FieldParam) params.elementAt(i);
+            FieldParam fieldParam = (FieldParam) params.get(i);
             fieldParam.loadFromRequest(request);
         }
     }
 
     public void deleteAllParams(){
         for (int i = 0; i < params.size(); i++) {
-            FieldParam fieldParam = (FieldParam) params.elementAt(i);
+            FieldParam fieldParam = (FieldParam) params.get(i);
             fieldParam.deleteParam();
         }
     }
@@ -100,7 +100,7 @@ public class FieldAllParams {
     public String validateAllParams(){
         String errortext = "";
         for (int i = 0; i < params.size(); i++) {
-            FieldParam fieldParam = (FieldParam) params.elementAt(i);
+            FieldParam fieldParam = (FieldParam) params.get(i);
             errortext = errortext + fieldParam.validate();
         }
         return errortext;
@@ -113,7 +113,7 @@ public class FieldAllParams {
 
         if (errortext.equals("")){
             for (int i = 0; i < params.size(); i++) {
-                FieldParam fieldParam = (FieldParam) params.elementAt(i);
+                FieldParam fieldParam = (FieldParam) params.get(i);
                 fieldParam.saveParam();
             }
         }
@@ -123,7 +123,7 @@ public class FieldAllParams {
 
     public void setMegafieldidOnAll(int megafieldid){
         for (int i = 0; i < params.size(); i++) {
-            FieldParam fieldParam = (FieldParam) params.elementAt(i);
+            FieldParam fieldParam = (FieldParam) params.get(i);
             fieldParam.megafieldid=megafieldid;
         }
     }

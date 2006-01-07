@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import reger.xforms.chiba.adapter.servlet.HttpRequestHandler;
+import reger.cache.jboss.Cacheable;
 
 /**
  * integrates XForms Processor into Web-applications and handles request processing. This is the default
@@ -23,6 +24,7 @@ import reger.xforms.chiba.adapter.servlet.HttpRequestHandler;
  * manages a UIGenerator to build the rendered output for the browser.
  *
  */
+@Cacheable
 public class ServletAdapterReger extends AbstractChibaAdapter{
 
     //private static final Category LOGGER = Category.getInstance(ServletAdapter.class);

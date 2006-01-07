@@ -329,7 +329,7 @@ try {
         plot.setGap(10.0);
         //Add the subplots...
         for (int i = 0; i < xyplots.size(); i++) {
-            XYPlot xyPlot = (XYPlot) xyplots.elementAt(i);
+            XYPlot xyPlot = (XYPlot) xyplots.get(i);
             plot.add(xyPlot, 1);
         }
         //Orientation

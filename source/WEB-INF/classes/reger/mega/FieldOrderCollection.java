@@ -1,6 +1,7 @@
 package reger.mega;
 
 import reger.core.Debug;
+import reger.cache.jboss.Cacheable;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import java.util.Map;
 /**
  * A collection of fieldorder objects
  */
+@Cacheable
 public class FieldOrderCollection {
 
     private HashMap fieldorders = new HashMap();

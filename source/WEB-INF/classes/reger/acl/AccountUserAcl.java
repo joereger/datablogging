@@ -1,9 +1,12 @@
 package reger.acl;
 
+import reger.cache.jboss.Cacheable;
+
 /**
  * This class represents a single permission that an accountuser can do.
  */
-public class AccountUserAcl {
+@Cacheable
+public class AccountUserAcl implements java.io.Serializable {
 
     public int aclobjectid;
     public String aclobjectname;

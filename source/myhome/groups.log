@@ -214,7 +214,7 @@ if (pageProps.action.equals("newgroup")){
 //                    Vector result = (Vector) xmlrpc.execute ("weblogGroup.getGroupDetails", params);
 //                    if (result!=null){
 //                        for (int j = 0; j < result.size(); j++) {
-//                            Hashtable o = (Hashtable) result.elementAt(j);
+//                            Hashtable o = (Hashtable) result.get(j);
 //                            String groupName = (String)o.get("groupName");
 //                            String groupDescription = (String)o.get("groupDescription");
 //                            String webUrlOfGroup = (String)o.get("webUrlOfGroup");

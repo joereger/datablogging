@@ -362,7 +362,7 @@ public class MegaLogTypeListHtmlRenderer {
             Vector tps = reger.AllMegaLogTypesInSystem.allMegaLogTypesForPlid(userSession.getPl().getPlid());
             List typesSorted = new ArrayList();
             for (int i = 0; i < tps.size(); i++) {
-                MegaLogType type = (MegaLogType)tps.elementAt(i);
+                MegaLogType type = (MegaLogType)tps.get(i);
                 boolean isMatch = false;
                 //Search term vs. name
                 if (type.getMegalogname().indexOf(searchterms)>-1){

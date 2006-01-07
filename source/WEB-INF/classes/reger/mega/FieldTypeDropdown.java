@@ -1,6 +1,7 @@
 package reger.mega;
 
 import reger.AddToArray;
+import reger.cache.jboss.Cacheable;
 import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.jdom.Element;
 /**
  * A dropdown field
  */
+@Cacheable
 public class FieldTypeDropdown extends Field implements FieldType, ChartField{
 
 

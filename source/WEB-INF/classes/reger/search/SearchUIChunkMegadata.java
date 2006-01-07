@@ -35,7 +35,7 @@ public class SearchUIChunkMegadata implements SearchUIChunk{
             Vector eventTypeidsForPlid = reger.AllMegaLogTypesInSystem.allMegaLogTypesForPlid(userSession.getPl().getPlid());
 
             for (int j = 0; j < eventTypeidsForPlid.size(); j++) {
-                MegaLogType logType = (MegaLogType) eventTypeidsForPlid.elementAt(j);
+                MegaLogType logType = (MegaLogType) eventTypeidsForPlid.get(j);
                 //If this is being searched
                 if(se.getSearchParameters().isEventtypeidBeingSearched(logType.getEventtypeid()) || se.getSearchParameters().isEventtypeidBeingSearched(SearchParameters.ALL)){
 
@@ -115,7 +115,7 @@ public class SearchUIChunkMegadata implements SearchUIChunk{
                     mb.append("</td>");
                     mb.append("</tr>");
                     for (int j = 0; j < logsForAcct.size(); j++) {
-                        Log log = (Log) logsForAcct.elementAt(j);
+                        Log log = (Log) logsForAcct.get(j);
                         //If this is being searched
                         if(se.getSearchParameters().isLogidBeingSearched(log.getLogid()) || se.getSearchParameters().isLogidBeingSearched(SearchParameters.ALL)){
                             //If the user can view this log

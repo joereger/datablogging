@@ -448,7 +448,7 @@ public class SearchEntries {
                         //Get all logs for this account
                         Vector logsForThisAcct = LogCache.allLogsForAccount(searchParameters.accountidsToSearch[i]);
                         for (int xx = 0; xx < logsForThisAcct.size(); xx++) {
-                            Log log = (Log) logsForThisAcct.elementAt(xx);
+                            Log log = (Log) logsForThisAcct.get(xx);
                             //If this is being searched or ALL is being searched
                             if (searchParameters.isLogidBeingSearched(log.getLogid()) || searchParameters.isLogidBeingSearched(SearchParameters.ALL)){
                                 //Only show if the log is for this account
@@ -514,7 +514,7 @@ public class SearchEntries {
                     //Get all logs for this account
                     Vector eventTypeidsForPlid = reger.AllMegaLogTypesInSystem.allMegaLogTypesForPlid(userSessionOfSearcher.getPl().getPlid());
                     for (int xx = 0; xx < eventTypeidsForPlid.size(); xx++) {
-                        MegaLogType logType = (MegaLogType) eventTypeidsForPlid.elementAt(xx);
+                        MegaLogType logType = (MegaLogType) eventTypeidsForPlid.get(xx);
                         //If this is being searched or ALL is being searched
                         if (searchParameters.isEventtypeidBeingSearched(logType.getEventtypeid()) || searchParameters.isEventtypeidBeingSearched(SearchParameters.ALL)){
 

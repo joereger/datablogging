@@ -12,7 +12,7 @@ import java.util.*;
  * This class starts with a collection of navItems and gives utility functions for dealing with them
  */
 @Cacheable
-public class NestedNavCollection implements java.io.Serializable {
+public class NestedNavCollection  {
 
     private NestedNavItem[] allNestedNavItems;
 
