@@ -25,6 +25,7 @@ public class htmlListEvents {
         if (request.getParameter("displaypagingnumbers") != null && request.getParameter("displaypagingnumbers").equals("false")) {
             displaypagingnumbers = false;
         }
+
         //Deal with paging
         int limitMin = (currentpage * numberofentriestodisplay) - numberofentriestodisplay;
         int limitMax = numberofentriestodisplay;
