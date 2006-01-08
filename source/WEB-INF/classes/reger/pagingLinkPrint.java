@@ -83,7 +83,7 @@ public class pagingLinkPrint {
 
 public static StringBuffer getImagePageNumbers(int counttotal, int currentpage, int perpage, HttpServletRequest request){
 
-        Debug.debug(5, "", "pagingLinkPrint.java - getHtml(counttotal=" + counttotal + ", currentpage=" + currentpage + ", perpage=" + perpage);
+        Debug.debug(5, "", "pagingLinkPrint.java - getImagePageNumbers(counttotal=" + counttotal + ", currentpage=" + currentpage + ", perpage=" + perpage);
 
         //Parse request object.
         //Remove references to currentpage
