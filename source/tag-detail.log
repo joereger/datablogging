@@ -47,7 +47,8 @@
     mb.append("</td>");
     mb.append("</tr>");
     mb.append("</table>");
-
+    //Add the popup javascript
+    mb.append(reger.core.Util.popup());
 
 %>
 
