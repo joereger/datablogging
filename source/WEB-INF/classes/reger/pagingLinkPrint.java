@@ -27,7 +27,7 @@ public class pagingLinkPrint {
 
         //Get the script name
         //String thispagename = request.getServletPath();
-        String thispagename = request.getRequestURL().toString();
+        String thispagename = reger.core.Util.getJspName(request.getRequestURL().toString());
         //reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));
 
 
@@ -83,7 +83,7 @@ public class pagingLinkPrint {
 
 public static StringBuffer getImagePageNumbers(int counttotal, int currentpage, int perpage, HttpServletRequest request){
 
-        Debug.debug(5, "", "pagingLinkPrint.java - getImagePageNumbers(counttotal=" + counttotal + ", currentpage=" + currentpage + ", perpage=" + perpage);
+        Debug.debug(5, "", "pagingLinkPrint.java - getHtml(counttotal=" + counttotal + ", currentpage=" + currentpage + ", perpage=" + perpage);
 
         //Parse request object.
         //Remove references to currentpage
@@ -102,9 +102,9 @@ public static StringBuffer getImagePageNumbers(int counttotal, int currentpage, 
 
         //Get the script name
         //String thispagename = request.getServletPath();
-        String thispagename = request.getRequestURL().toString();
+        String thispagename = reger.core.Util.getJspName(request.getRequestURL().toString());
         //reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));
-        thispagename = "http://localhost/~pawan/tag-detail.log";
+        //thispagename = "http://localhost/~pawan/tag-detail.log";
 
         //Create the output stringbuffer
         StringBuffer html = new StringBuffer();
