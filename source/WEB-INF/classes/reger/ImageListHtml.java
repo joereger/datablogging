@@ -343,10 +343,6 @@ public class ImageListHtml {
     public static StringBuffer getImageList(UserSession userSession, HttpServletRequest request) {
         StringBuffer mb = new StringBuffer();
 
-        int tagId = 0;
-        if (request.getParameter("tagid") != null) {
-            tagId = Integer.parseInt(request.getParameter("tagid"));
-        }
         int currentPage = 1;
         if (request.getParameter("currentImagePage") != null) {
             currentPage = reger.core.Util.getCurrentPage(request.getParameter("currentImagePage"));
@@ -358,16 +354,35 @@ public class ImageListHtml {
         //Limit vars
         int limitMin = (currentPage * perPage) - perPage;
         int limitMax = perPage;
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstImageList = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'  LIMIT " + limitMin +"," + limitMax);
-        //-----------------------------------
-        //-----------------------------------
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
-        //-----------------------------------
-        //-----------------------------------
+        String[][] rstImageList = null;
+        String[][] rstImageCount = null;
+        // IF tagid is null, retrieve data based on tag.
+        if (request.getParameter("tagid") != null) {
+            int tagId = Integer.parseInt(request.getParameter("tagid"));
+            //-----------------------------------
+            //-----------------------------------
+            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'  LIMIT " + limitMin +"," + limitMax);
+            //-----------------------------------
+            //-----------------------------------
+            //-----------------------------------
+            //-----------------------------------
+            rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
+            //-----------------------------------
+            //-----------------------------------
+        } else if ( (request.getParameter("tagid") == null) && (request.getParameter("tag") != null) ) {
+            String tag = request.getParameter("tag");
+            //-----------------------------------
+            //-----------------------------------
+            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'  LIMIT " + limitMin +"," + limitMax);
+            //-----------------------------------
+            //-----------------------------------
+            //-----------------------------------
+            //-----------------------------------
+            rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
+            //-----------------------------------
+            //-----------------------------------
+        }
+
 
         int recordcount = rstImageCount.length;
         mb.append("<table border=0>");
