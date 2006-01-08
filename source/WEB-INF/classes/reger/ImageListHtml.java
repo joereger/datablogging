@@ -342,6 +342,10 @@ public class ImageListHtml {
 
     public static StringBuffer getImageList(UserSession userSession, HttpServletRequest request) {
         StringBuffer mb = new StringBuffer();
+
+        //Add the popup javascript
+        mb.append(reger.core.Util.popup());
+
         int tagId = 0;
         if (request.getParameter("tagid") != null) {
             tagId = Integer.parseInt(request.getParameter("tagid"));
