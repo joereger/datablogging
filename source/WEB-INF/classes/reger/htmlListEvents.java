@@ -17,17 +17,14 @@ public class htmlListEvents {
 
         //Number of entries to display
         int numberofentriestodisplay = userSession.getAccount().getDisplaynumberofentries();
-        if (request.getParameter("numberofentriestodisplay") != null && reger.core.Util.isinteger(request.getParameter("numberofentriestodisplay")))
-        {
+        if (request.getParameter("numberofentriestodisplay") != null && reger.core.Util.isinteger(request.getParameter("numberofentriestodisplay"))) {
             numberofentriestodisplay = Integer.parseInt(request.getParameter("numberofentriestodisplay"));
         }
 
         //Override display
-        if (request.getParameter("displaypagingnumbers") != null && request.getParameter("displaypagingnumbers").equals("false"))
-        {
+        if (request.getParameter("displaypagingnumbers") != null && request.getParameter("displaypagingnumbers").equals("false")) {
             displaypagingnumbers = false;
         }
-
         //Deal with paging
         int limitMin = (currentpage * numberofentriestodisplay) - numberofentriestodisplay;
         int limitMax = numberofentriestodisplay;
@@ -46,7 +43,7 @@ public class htmlListEvents {
 
         //Show on homepage sql
         boolean includelogshiddenfromhomepage = true;
-        if ((logid<=0) && (request.getParameter("tagid")==null) && (request.getParameter("tag")==null) ) {
+        if ((logid <= 0) && (request.getParameter("tagid") == null) && (request.getParameter("tag") == null)) {
             includelogshiddenfromhomepage = false;
         }
 
@@ -118,7 +115,6 @@ public class htmlListEvents {
         sqlCount = "SELECT count(*) FROM " + from + " WHERE " + reger.Entry.sqlOfLiveEntry + " AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + locationidSql + tagSql;
         //For debugging, output the sql to the screen
         //list.append("<br>" + sql);
-
         Debug.debug(5, "", "htmlListEvents.java - <br>sql:<br>" + sql + "<br><br>sqlCount:<br>" + sqlCount);
         //Count total records
         //-----------------------------------
@@ -146,8 +142,7 @@ public class htmlListEvents {
 
         //Create the paging links
         StringBuffer pagingLinks = new StringBuffer();
-        if (userSession != null && userSession.getAccount() != null && userSession.getAccount().getAccountid() > 0 && reger.core.Util.isinteger(String.valueOf(numberofentriestodisplay)) && request != null)
-        {
+        if (userSession != null && userSession.getAccount() != null && userSession.getAccount().getAccountid() > 0 && reger.core.Util.isinteger(String.valueOf(numberofentriestodisplay)) && request != null) {
             pagingLinks.append(reger.pagingLinkPrint.getHtml(counttotal, currentpage, numberofentriestodisplay, request));
         }
 
@@ -222,8 +217,7 @@ public class htmlListEvents {
                 //If we're on edit.log and the logged-in user can't administer this logid then don't display the result.
                 if (!thispagename.equals("entries.log")) {
                     list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, reger.core.Util.truncateString(entry.comments, userSession.getAccount().getDisplaycharsinsummary()), logname, entry.filecount, entry.messagecount, entry.accountuserid));
-                } else
-                if ((thispagename.equals("entries.log") && userSession.getAccountuser().userCanViewLog(entry.logid))) {
+                } else if ((thispagename.equals("entries.log") && userSession.getAccountuser().userCanViewLog(entry.logid))) {
                     list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurladmin, reger.core.Util.truncateString(entry.comments, userSession.getAccount().getDisplaycharsinsummary()), logname, entry.filecount, entry.messagecount, entry.accountuserid));
                 }
             }
