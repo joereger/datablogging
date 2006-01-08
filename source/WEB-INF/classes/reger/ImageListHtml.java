@@ -359,12 +359,12 @@ public class ImageListHtml {
         int limitMax = perPage;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImageList = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "' and image.accountuserid='" + userSession.getAccountuser().getAccountid() + "' LIMIT " + limitMin +"," + limitMax);
+        String[][] rstImageList = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "' LIMIT " + limitMin +"," + limitMax);
         //-----------------------------------
         //-----------------------------------
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "' and image.accountuserid='" + userSession.getAccountuser().getAccountid() + "'");
+        String[][] rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
         //-----------------------------------
         //-----------------------------------
 
