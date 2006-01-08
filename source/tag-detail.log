@@ -1,4 +1,5 @@
 <%@ page import="reger.htmlListEvents"%>
+<%@ page import="reger.ImageListHtml"%>
 <%
     /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -23,7 +24,7 @@
     mb.append(reger.SideColumn.sideColTableStart("Smart Tags"));
     mb.append(reger.SideColumn.sideColHeaderRow("Smart Tags"));
     StringBuffer qs = new StringBuffer();
-    qs.append("<font face=arial size=+1 class=largefont>"+ "Tag Name Here Please" +"</font>");
+    qs.append("<font face=arial size=+1 class=largefont>"+ request.getParameter("tag") +"</font>");
     mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
     mb.append(reger.SideColumn.sideColTableEnd("Smart Tags"));
 
@@ -39,7 +40,7 @@
     mb.append("</td>");
     mb.append("<td valign=top>");
     try {
-        mb.append("Images here please.");
+        mb.append(ImageListHtml.getImageList(userSession, request));
     } catch (Exception e) {
         Debug.errorsave(e, "Exception occurred in tags.log");
     }
