@@ -384,8 +384,6 @@ public class ImageListHtml {
         mb.append("<tr>");
         //End paging
 
-        //Add the popup javascript
-        mb.append(reger.core.Util.popup());
         String mediaoutPath = "";
         if (rstImageList != null) {
             int imagesPerRow = 1;
@@ -395,7 +393,7 @@ public class ImageListHtml {
                     mb.append("<tr>");
                 }
                 mb.append("<td valign=middle align=center bgcolor=#cccccc>");
-                mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?imageid=" + rstImageList[i][0] + "' onclick=\"javascript:NewWindow(this...href,'name','0','0','yes');return false;\">");
+                mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?imageid=" + rstImageList[i][0] + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
                 mb.append("<img src='" + mediaoutPath + "mediaout.log?imageid=" + rstImageList[i][0] + "&isthumbnail=yes" + "' border=0></a>");
                 mb.append("</td>");
                 imagesPerRow ++;
@@ -409,6 +407,7 @@ public class ImageListHtml {
             mb.append("</tr>");
         }
         mb.append("</table>");
+
         return mb;
     }
 }
