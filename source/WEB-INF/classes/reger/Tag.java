@@ -193,7 +193,7 @@ public class Tag {
         //-----------------------------------
         if (rstTags!=null && rstTags.length>0){
         	for(int i=0; i<rstTags.length; i++){
-                out = out + "<a href='"+pathToAppRoot+"files.log?tagid="+rstTags[i][0]+"&tag="+rstTags[i][1]+"'>" + rstTags[i][1] + "</a> ";
+                out = out + "<a href='"+pathToAppRoot+"tag-detail.log?tagid="+rstTags[i][0]+"&tag="+rstTags[i][1]+"'>" + rstTags[i][1] + "</a> ";
         	}
         }
         return out.toLowerCase();
