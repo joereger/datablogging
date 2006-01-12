@@ -41,6 +41,8 @@
             TreeMap tempMap = new TreeMap();
             String tag;
             int size;
+            int minSize = 8;
+            int maxSize = 35;
             while (iter.hasNext()) {
                 tagId = (String) iter.next();
                 tagId = tagId.substring(0, tagId.indexOf("_"));
@@ -60,16 +62,24 @@
                     tagMap.put(tagId, tempTagMap);
                     tempMap.put(new Integer(size), tagId);
                 }
-            }
-            int maxSize = ((Integer)tempMap.lastKey()).intValue();
-            iter = tagMap.keySet().iterator();
-            while (iter.hasNext()) {
-                tagId = (String) iter.next();
-                tempTagMap = (HashMap) tagMap.get(tagId);
-                tag = (String) tempTagMap.keySet().iterator().next();
-                size = ((Integer)tempTagMap.get(tag)).intValue();
-                qs.append("<a href=tag-detail.log?tagid=" + tagId + "&tag=" + tag + " style=font-size:" + (new Double(size).doubleValue()/new Double(maxSize).doubleValue())*35 + "px; class=SmartTag>" + tag + "</a>");
-                qs.append(" ");
+            } if ( (tempMap != null) && (tempMap.size() > 0) ) {
+                int maxTagSize = ((Integer)tempMap.lastKey()).intValue();
+                iter = tagMap.keySet().iterator();
+                while (iter.hasNext()) {
+                    tagId = (String) iter.next();
+                    tempTagMap = (HashMap) tagMap.get(tagId);
+                    tag = (String) tempTagMap.keySet().iterator().next();
+                    size = ((Integer)tempTagMap.get(tag)).intValue();
+                    int fontSize = (size/maxTagSize)*maxSize;
+                    if ( fontSize < minSize) {
+                        fontSize = minSize;
+                    } else if (fontSize > maxSize) {
+                        fontSize = maxSize;
+                    }
+                    //double fontSize = (new Double(size).doubleValue()/new Double(maxSize).doubleValue())*35;
+                    qs.append("<a href=tag-detail.log?tagid=" + tagId + "&tag=" + tag + " style=font-size:" + fontSize + "px; class=SmartTag>" + tag + "</a>");
+                    qs.append(" ");
+                }
             }
         } else {
             qs.append("No Smart Tags Found.");
