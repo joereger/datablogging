@@ -406,18 +406,19 @@ public class ImageListHtml {
                     mb.append("</tr>");
                 }
                 mb.append("<td valign=middle align=center bgcolor=#cccccc>");
+                mb.append("<font face=arial size=-2 class=smallfont style=\"font-size: 12px;\">" + rstImageList[i][7] + "</font><br>");
+                mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?imageid=" + rstImageList[i][0] + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
+                mb.append("<img src='" + mediaoutPath + "mediaout.log?imageid=" + rstImageList[i][0] + "&isthumbnail=yes" + "' border=0></a>");
+                // for displaying image name and size.
+                mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + rstImageList[i][4] + "</font><br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImageList[i][3] + " bytes</font><br>");
+
                 String entryurl = reger.Entry.entryFileNameStatic(Integer.parseInt(rstImageList[i][6]), Integer.parseInt(rstImageList[i][5]), rstImageList[i][8]);
                 if (request.getLocalPort() == 80 || request.getLocalPort() == 443) {
                     entryurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl;
                 } else {
                     entryurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + ":" + request.getLocalPort() + "/" + entryurl;
                 }
-                mb.append("<font face=arial size=-2 class=smallfont style=\"font-size: 12px;\">From Entry:<br><a href=" + entryurl + ">" + rstImageList[i][8] + "</a><br>Date:<br>" + rstImageList[i][7] + "</font><br>");
-
-                mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?imageid=" + rstImageList[i][0] + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
-                mb.append("<img src='" + mediaoutPath + "mediaout.log?imageid=" + rstImageList[i][0] + "&isthumbnail=yes" + "' border=0></a>");
-                // for displaying image name and size.
-                mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + rstImageList[i][4] + "</font><br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImageList[i][3] + " bytes</font>");
+                mb.append("<font face=arial size=-2 class=smallfont style=\"font-size: 12px;\">From Entry:<br><a href=" + entryurl + ">" + rstImageList[i][8] + "</a></font>");
                 mb.append("</td>");
                 imagesPerRow ++;
             }
