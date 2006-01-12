@@ -361,24 +361,24 @@ public class ImageListHtml {
             int tagId = Integer.parseInt(request.getParameter("tagid"));
             //-----------------------------------
             //-----------------------------------
-            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'  LIMIT " + limitMin +"," + limitMax);
+            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename, event.eventid, event.logid, event.date, event.title  from image, tag, tagimagelink, event where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and event.eventid=image.eventid and event.accountid=image.accountid and image.accountid='" + userSession.getAccount().getAccountid() + "'  LIMIT " + limitMin +"," + limitMax);
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
-            rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
+            rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename, event.eventid, event.logid, event.date, event.title  from image, tag, tagimagelink, event where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and event.eventid=image.eventid and event.accountid=image.accountid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
             //-----------------------------------
             //-----------------------------------
         } else if ( (request.getParameter("tagid") == null) && (request.getParameter("tag") != null) ) {
             String tag = request.getParameter("tag");
             //-----------------------------------
             //-----------------------------------
-            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename from image, tag, tagimagelink where tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'  LIMIT " + limitMin +"," + limitMax);
+            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename, event.eventid, event.logid, event.date, event.title  from image, tag, tagimagelink, event where tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and event.eventid=image.eventid and event.accountid=image.accountid and image.accountid='" + userSession.getAccount().getAccountid() + "'  LIMIT " + limitMin +"," + limitMax);
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
-            rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename from image, tag, tagimagelink where tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
+            rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename, event.eventid, event.logid, event.date, event.title  from image, tag, tagimagelink, event where tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and event.eventid=image.eventid and event.accountid=image.accountid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
             //-----------------------------------
             //-----------------------------------
         }
@@ -394,26 +394,35 @@ public class ImageListHtml {
             mb.append(pagingOut);
         }
         mb.append("</tr>");
-        mb.append("<tr>");
+//        mb.append("<tr>");
         //End paging
 
         String mediaoutPath = "";
         if (rstImageList != null) {
-            int imagesPerRow = 1;
+            int imagesPerRow = 0;
             for (int i = 0; i < rstImageList.length; i++) {
                 if (imagesPerRow%3 == 0) {
-                    mb.append("</tr>");
                     mb.append("<tr>");
+                    mb.append("</tr>");
                 }
                 mb.append("<td valign=middle align=center bgcolor=#cccccc>");
+                String entryurl = reger.Entry.entryFileNameStatic(Integer.parseInt(rstImageList[i][6]), Integer.parseInt(rstImageList[i][5]), rstImageList[i][8]);
+                if (request.getLocalPort() == 80 || request.getLocalPort() == 443) {
+                    entryurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl;
+                } else {
+                    entryurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + ":" + request.getLocalPort() + "/" + entryurl;
+                }
+                mb.append("<font face=arial size=-2 class=smallfont style=\"font-size: 12px;\">From Entry:<br><a href=" + entryurl + ">" + rstImageList[i][8] + "</a><br>Date:<br>" + rstImageList[i][7] + "</font><br>");
+
                 mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?imageid=" + rstImageList[i][0] + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
                 mb.append("<img src='" + mediaoutPath + "mediaout.log?imageid=" + rstImageList[i][0] + "&isthumbnail=yes" + "' border=0></a>");
-                mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + rstImageList[i][4] + "</font><br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImageList[i][3] + " bytes</font>");                 
+                // for displaying image name and size.
+                mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + rstImageList[i][4] + "</font><br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImageList[i][3] + " bytes</font>");
                 mb.append("</td>");
                 imagesPerRow ++;
             }
         }
-        mb.append("</tr>");
+//        mb.append("</tr>");
         //Paging footer
         if (recordcount > perPage) {
             mb.append("<tr>");
