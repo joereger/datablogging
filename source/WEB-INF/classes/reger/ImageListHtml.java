@@ -382,8 +382,6 @@ public class ImageListHtml {
             //-----------------------------------
             //-----------------------------------
         }
-
-
         int recordcount = rstImageCount.length;
         mb.append("<table border=0>");
         mb.append("<tr>");
