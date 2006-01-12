@@ -2,6 +2,7 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.TreeMap"%>
+<%@ page import="java.math.BigDecimal"%>
 <%
     /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -70,11 +71,11 @@
                     tempTagMap = (HashMap) tagMap.get(tagId);
                     tag = (String) tempTagMap.keySet().iterator().next();
                     size = ((Integer)tempTagMap.get(tag)).intValue();
-                    int fontSize = (size/maxTagSize)*maxSize;
+                    int fontSize = new BigDecimal(size).divide(new BigDecimal(maxTagSize)).multiply(new BigDecimal(maxSize)).intValue();
                     if ( fontSize < minSize) {
-                        fontSize = minSize;
+                        fontSize += minSize;
                     } else if (fontSize > maxSize) {
-                        fontSize = maxSize;
+                        fontSize -= maxSize;
                     }
                     //double fontSize = (new Double(size).doubleValue()/new Double(maxSize).doubleValue())*35;
                     qs.append("<a href=tag-detail.log?tagid=" + tagId + "&tag=" + tag + " style=font-size:" + fontSize + "px; class=SmartTag>" + tag + "</a>");
