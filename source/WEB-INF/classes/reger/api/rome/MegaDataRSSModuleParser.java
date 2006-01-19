@@ -6,6 +6,7 @@ import org.jdom.Namespace;
 import org.jdom.Element;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import reger.mega.FieldType;
 
@@ -37,8 +38,8 @@ public class MegaDataRSSModuleParser implements ModuleParser{
         return (foundSomething) ? fm : null;
     }
 
-    private FieldType[] parseFoos(List eList) {
-        FieldType[] foos = new FieldType[0];
+    private ArrayList<FieldType> parseFoos(List eList) {
+        ArrayList<FieldType> foos = new ArrayList<FieldType>();
 //        for (int i = 0; i < eList.size(); i++) {
 //            Element e = (Element) eList.get(i);
 //            foos.add(e.getText());

@@ -17,7 +17,6 @@ public class RegerLicensingApiClient {
 
     private static String licensingServerUrl = AllSystemProperties.getProp("LICENSINGSERVERURL");
 
-
     public static Hashtable createLicense(String currentLicenseEncrypted, String proposedLicense, String name, String address1, String address2, String city, String state, String zip, String country, String ccnum, String ccexpmonth, String ccexpyear, String phone, String email){
         try{
 
@@ -90,8 +89,8 @@ public class RegerLicensingApiClient {
             //}
 
             Debug.logHashTableToDb("Result after calling regerlicensingapi.createLicense", result);
-
             return result;
+
         } catch (MalformedURLException urle){
             Debug.errorsave(urle, "");
             return errorMessage("The URL for the licensing server is invalid.  Please contact reger.com for a fix.");

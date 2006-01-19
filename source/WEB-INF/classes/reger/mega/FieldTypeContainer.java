@@ -6,6 +6,8 @@ import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jdom.Element;
 
@@ -21,17 +23,17 @@ public class FieldTypeContainer extends Field implements FieldType, ChartField{
     //This is the name that's used in the name/value pair.  This is specific to this FieldType and is not part of the interface.
     String NAMEOFDATAVALUE = "";
 
-    private FieldData[] fieldData = new FieldData[1];
+    private ArrayList<FieldData> fieldData = new ArrayList<FieldData>();
 
     public FieldTypeContainer(){
-        fieldData[0] = new FieldData(NAMEOFDATAVALUE, "");
+        fieldData.add(0, new FieldData(NAMEOFDATAVALUE, ""));
     }
 
     public FieldTypeContainer(FieldTypeContainer field){
-        this.fieldData = new FieldData[field.getDataForField().length];
-        for (int i = 0; i < field.getDataForField().length; i++) {
-            FieldData fldDataTmp = new FieldData(field.getDataForField()[i]);
-            this.fieldData[i] = fldDataTmp;
+        this.fieldData = new ArrayList<FieldData>();
+        for (Iterator it = field.getDataForField().iterator(); it.hasNext(); ) {
+            FieldData fldDataTmp = (FieldData)it.next();
+            this.fieldData.add(0, fldDataTmp);
         }
         populateFromAnotherField(field);
     }
@@ -96,18 +98,17 @@ public class FieldTypeContainer extends Field implements FieldType, ChartField{
     /**
      * Returns an array of FieldData objects which represent the data held in this field.
      */
-    public FieldData[] getDataForField() {
+    public ArrayList<FieldData> getDataForField() {
         return fieldData;
     }
 
     /**
      * Returns an array of empty FieldData objects that demonstrate the name/value pairs that this field generates/accepts/works with
      */
-    public FieldData[] getEmptyDataFields() {
-        FieldData[] fd = new FieldData[1];
-        fd[0] = new FieldData("data", "");
+    public ArrayList<FieldData> getEmptyDataFields() {
+        ArrayList<FieldData> fd = new ArrayList<FieldData>();
+        fd.add(new FieldData("data", ""));
         return fd;
-
     }
 
 
@@ -360,7 +361,7 @@ public class FieldTypeContainer extends Field implements FieldType, ChartField{
      */
     public Element getXmlForFieldData() {
         Element elField = new Element(getFieldnameForApis());
-        elField.addContent(fieldData[0].getValue());
+        elField.addContent(fieldData.get(0).getValue());
         return elField;
     }
 

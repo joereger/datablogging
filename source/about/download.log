@@ -42,7 +42,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
     mb.append("<br>");
     mb.append("<b>Not for you?  Don't want to download and install?</b>");
     mb.append("<ul>");
-    mb.append("<li>No problem.  Use our hosted service.  You'll be <a href='http://localhost.com/about/signup2.log'>blogging in minutes</a>!</li>");
+    mb.append("<li>No problem.  Use our hosted service.  You'll be <a href='http://localhost.com/about/signup.log'>blogging in minutes</a>!</li>");
     mb.append("</ul>");
 
     mb.append("<br>");

@@ -5,6 +5,8 @@ import reger.core.Debug;
 
 import javax.servlet.http.Cookie;
 import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Handles functions regarding persistent login via a browser cookie.
@@ -44,15 +46,15 @@ public class PersistentLogin {
                     //-----------------------------------
                     //-----------------------------------
                     if (rstPersistentLogin!=null && rstPersistentLogin.length>0){
-                    	for(int i=0; i<rstPersistentLogin.length; i++){
-                    	    //We have a match.  Record the latest accessed date.
-                    	    //-----------------------------------
-                    	    //-----------------------------------
-                    	    int count = Db.RunSQLUpdate("UPDATE accountuserpersistentlogin SET lastusedtologin='"+reger.core.TimeUtils.nowInGmtString()+"' WHERE accountuserpersistentloginid='"+rstPersistentLogin[i][0]+"'");
-                    	    //-----------------------------------
-                    	    //-----------------------------------
-                    	    return Integer.parseInt(rstPersistentLogin[i][1]);
-                    	}
+                        for(int i=0; i<rstPersistentLogin.length; i++){
+                            //We have a match.  Record the latest accessed date.
+                            //-----------------------------------
+                            //-----------------------------------
+                            int count = Db.RunSQLUpdate("UPDATE accountuserpersistentlogin SET lastusedtologin='"+reger.core.TimeUtils.nowInGmtString()+"' WHERE accountuserpersistentloginid='"+rstPersistentLogin[i][0]+"'");
+                            //-----------------------------------
+                            //-----------------------------------
+                            return Integer.parseInt(rstPersistentLogin[i][1]);
+                        }
                     }
                 }
             }
@@ -68,9 +70,10 @@ public class PersistentLogin {
         //Create a cookie with no domain specified
         outCookies[0] = createPersistentCookie(accountuserid, request, "");
         //Iterate all possible domains
-        String[] domains =  urlSplitter.getServernameAllPossibleDomains();
-        for (int i = 0; i < domains.length; i++) {
-            outCookies = reger.core.Util.addToCookieArray(outCookies, createPersistentCookie(accountuserid, request, domains[i]));
+        ArrayList<String> domains =  urlSplitter.getServernameAllPossibleDomains();
+        for (Iterator it = domains.iterator(); it.hasNext(); ) {
+            String domain = (String)it.next();
+            outCookies = reger.core.Util.addToCookieArray(outCookies, createPersistentCookie(accountuserid, request, domain));
         }
         return outCookies;
     }
@@ -157,8 +160,8 @@ public class PersistentLogin {
         //-----------------------------------
         //-----------------------------------
         if (rstPers!=null && rstPers.length>0){
-        	for(int i=0; i<rstPers.length; i++){
-        	    //Get the last active date
+            for(int i=0; i<rstPers.length; i++){
+                //Get the last active date
                 Calendar lastActive = reger.core.TimeUtils.dbstringtocalendar(rstPers[i][1]);
 
                 //String c1 = reger.core.TimeUtils.dateformatcompactwithtime(lastActive);
@@ -174,7 +177,7 @@ public class PersistentLogin {
 
                    numberDeleted=numberDeleted + 1;
                 }
-        	}
+            }
         }
 
         return numberDeleted;

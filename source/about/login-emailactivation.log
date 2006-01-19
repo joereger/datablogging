@@ -1,0 +1,64 @@
+<%@ page import="reger.core.Util"%>
+<%@ page import="reger.Accountuser"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Account Activation";
+pageProps.navButtonName = "aboutindex";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+boolean success=false;
+
+//Validate incoming key and accountid
+if (request.getParameter("accountuserid")!=null && Util.isinteger(request.getParameter("accountuserid")) && request.getParameter("key")!=null && !request.getParameter("key").equals("")){
+    Accountuser au = new Accountuser(Integer.parseInt(request.getParameter("accountuserid")), true);
+    if (au.getEmailactivationkey().equals(request.getParameter("key"))){
+        au.setIsactivatedbyemail(true);
+        String errortext = au.saveSettings(userSession.getPl());
+        if (!errortext.equals("")){
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+        } else {
+            //Send welcome message by email
+            reger.emailtext.BasicEmails.newAccountWelcome(au, au.getAccountid(), userSession.getPl(), "");
+            success=true;
+        }
+    }
+}
+
+
+if (success){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Congratulations!  Your account is activated!  Please click <a href='login.log'>here</a> to log in."));
+} else {
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, the activation key is not valid.  Please click <a href='login-awaitingactivation.log'>here</a> to continue."));
+}
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

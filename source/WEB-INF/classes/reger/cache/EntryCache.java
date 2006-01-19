@@ -12,6 +12,7 @@ public class EntryCache {
 
     private static GeneralCacheAdministrator admin;
 
+
     public static Entry get(int eventid){
         Debug.debug(5, "", "EntryCache.get("+eventid+") called.");
         if (admin==null){

@@ -8,6 +8,7 @@
 
 <%@ page import="java.text.*"%>
 <%@ page import="reger.core.Debug"%>
+<%@ page import="java.util.HashMap"%>
 
 
 
@@ -56,22 +57,7 @@ if (pageProps.action.equals("togglehelp")){
 }
 
 
-////Mark expired trial accounts and redirect them
-//if (userSession.getAccount().daysuntilexpiration()<1 && userSession.getAccount().getAccounttypeid()==reger.Vars.ACCTYPETRIAL) {
-//	//Mark account as accounttype=reger.Vars.ACCTYPEFREE
-//	//-----------------------------------
-//	//-----------------------------------
-//	int count = reger.core.db.Db.RunSQLUpdate("UPDATE account SET accounttypeid='"+reger.Vars.ACCTYPEFREE+"' WHERE accountid='"+ userSession.getAccount().getAccountid() +"'");
-//	//-----------------------------------
-//	//-----------------------------------
-//
-//	//Repopulate the object
-//	userSession.getAccount().refresh();
-//
-//	//Redirect to the account expiration page
-//	//response.sendRedirect("accountstatus.log?expired=true");
-//	//return;
-//}
+
 
 //Display page performance in milliseconds
 //out.println("Before special messages: " + reger.debugInfo.exececutionTimeOutput(executionTime.getElapsedMillis()));
@@ -90,7 +76,7 @@ if (request.getParameter("msg")!=null) {
 	} else if (request.getParameter("msg").equals("namesupdated")) {
 		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Log names and messages updated."));
 	} else if (request.getParameter("msg").equals("signupcomplete")) {
-		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Congratulations!  Signup is complete.  You can add entries to your weblog.  Note your site URLs.  Keep your username and password.  Enjoy!"));
+		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Congratulations!  Signup is complete.  You can add entries to your weblog.  Note your site URLs.  Keep your email and password.  Enjoy!"));
 	} else if (request.getParameter("msg").equals("passwordwasreset")) {
 		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your password has successfully been reset.  Please store it in a safe place."));
 	} else if (request.getParameter("msg").equals("logadded")) {
@@ -147,7 +133,7 @@ mb.append("</td>");
 mb.append("</tr>");
 //-----------------------------------
 //-----------------------------------
-String[][] rstDrafts= reger.core.db.Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.username, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
+String[][] rstDrafts= reger.core.db.Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
 //-----------------------------------
 //-----------------------------------
 if (rstDrafts!=null && rstDrafts.length>0){
@@ -169,11 +155,7 @@ if (rstDrafts!=null && rstDrafts.length>0){
 		mb.append("</td>");
         mb.append("<td bgcolor=#ffffff valign=top align=left>");
         mb.append("<font face=arial size=-2>");
-        if (!rstDrafts[i][6].equals("")){
-            mb.append(" " + rstDrafts[i][6]);
-        } else {
-            mb.append(" " + rstDrafts[i][5]);
-        }
+        mb.append(" " + rstDrafts[i][5]);
         mb.append("</font>");
         mb.append("</td>");
 		mb.append("</tr>");
@@ -630,15 +612,15 @@ sc.append(reger.ui.BubbleBox.start("Sites", pageProps.pathToAppRoot));
 //    sc.append("</font>");
 //}
 
-Hashtable accts = userSession.getAccountuser().getAccountsUserHasAccessTo();
+HashMap accts = userSession.getAccountuser().getAccountsUserHasAccessTo();
 if (accts!=null){
     sc.append("<table>");
-    for ( Enumeration e = accts.keys() ; e.hasMoreElements() ; ) {
-        // retrieve the object_key
-        Integer accountid = (Integer) e.nextElement();
-        // retrieve the object associated with the key
-        String sitename = (String) accts.get ( accountid );
-        //Create an account object
+    java.util.Iterator keyValuePairs = accts.entrySet().iterator();
+    for (int i = 0; i < accts.size(); i++){
+        java.util.Map.Entry mapentry = (java.util.Map.Entry) keyValuePairs.next();
+        Integer accountid = (Integer)mapentry.getKey();
+        String sitename = (String)mapentry.getValue();
+
 
         reger.Account acct = userSession.getAccount();
         if (accountid.intValue()!=userSession.getAccount().getAccountid()){
@@ -833,20 +815,6 @@ sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 sc.append("<!-- Version End -->");
 //Version End
 
-
-
-
-//if (!userSession.getAccount().isPro()) {
-//	sc.append("<br>");
-//	sc.append("<!-- Start Pro -->");
-//	sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
-//	sc.append("<tr><td bgcolor=#ffcc00><font face=arial size=+1 color=#000000><a href='accountstatus.log'><strong><img src='../images/pro-yellow.gif' alt='' border='0'></strong></a></font></td></tr>");
-//	sc.append("<tr><td bgcolor=#ffffff valign=top>");
-//	sc.append("<font face=arial size=-1 color=#000000>The Pro version includes lots of enhanced features and techno-goodies.");
-//	sc.append("<br><a href='accountstatus.log'>Learn More</a>.</font>");
-//	sc.append("</td></tr></table>");
-//	sc.append("<!-- End Pro -->");
-//}
 
 
 

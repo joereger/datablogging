@@ -9,10 +9,7 @@ import reger.mega.FieldType;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
-import java.util.Vector;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Caches Account objects using OSCache
@@ -38,10 +35,11 @@ public class LogCache {
                 //Create groups for megafieldid and eventtypeid usage
                 String[] groups = new String[0];
                 groups = reger.AddToArray.addToStringArray(groups, "eventtypeid"+log.getEventtypeid());
-                FieldType[] fields = log.getFields();
+                ArrayList<FieldType> fields = log.getFields();
                 if (fields!=null){
-                    for (int i = 0; i < fields.length; i++) {
-                        groups = reger.AddToArray.addToStringArray(groups, "megafieldid"+fields[i].getMegafieldid());
+                    for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                        FieldType fld = (FieldType)it.next();
+                        groups = reger.AddToArray.addToStringArray(groups, "megafieldid"+fld.getMegafieldid());
                     }
                 }
                 //Put it in the cache and group
@@ -99,12 +97,13 @@ public class LogCache {
         Vector out = new Vector();
         Account acct = AccountCache.get(accountid);
         if (acct!=null){
-            int[] alllogsforaccountid = acct.getAllLogids();
-            for (int i = 0; i < alllogsforaccountid.length; i++) {
-              Log log = get(alllogsforaccountid[i]);
-              if (log!=null){
-                out.add(log);
-              }
+            ArrayList<Integer> alllogsforaccountid = acct.getAlllogsforaccountid();
+            for (Iterator it = alllogsforaccountid.iterator(); it.hasNext(); ) {
+                Integer logid = (Integer)it.next();
+                Log log = get(logid);
+                if (log!=null){
+                    out.add(log);
+                }
             }
         }
         return out;
@@ -138,9 +137,10 @@ public class LogCache {
         if (acct!=null){
             //Get a list of logs
             List logList = new ArrayList();
-            int[] alllogsforaccountid = acct.getAllLogids();
-            for (int i = 0; i < alllogsforaccountid.length; i++) {
-                Log log = get(alllogsforaccountid[i]);
+            ArrayList<Integer> alllogsforaccountid = acct.getAlllogsforaccountid();
+            for (Iterator it = alllogsforaccountid.iterator(); it.hasNext(); ) {
+                Integer logid = (Integer)it.next();
+                Log log = get(logid);
                 if (log!=null){
                   logList.add(log);
                 }

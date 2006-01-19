@@ -3,6 +3,9 @@ package reger.nestednav;
 import reger.UserSession;
 import reger.core.Debug;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * A Horizontal navbar
  */
@@ -32,7 +35,7 @@ public class NestedNavDisplayHorizontal implements NestedNavDisplay{
         Debug.debug(5, "", "NestedNavbarHorizontal.java - Row called. parent="+navItem.getNestedNavLinkText());
 
         //Get the children of the current parent
-        NestedNavItem[] children = collection.getChildrenUserCanView(navItem, userSession.getAccountuser());
+        ArrayList<NestedNavItem> children = collection.getChildrenUserCanView(navItem, userSession.getAccountuser());
 
         //Which tab is active
         NestedNavItem turnedOnNavItem = null;
@@ -48,14 +51,15 @@ public class NestedNavDisplayHorizontal implements NestedNavDisplay{
         }
 
         //Output each tab... these are the children
-        if (children!=null && children.length>0){
-            for (int i = 0; i < children.length; i++) {
+        if (children!=null && children.size()>0){
+            for (Iterator it = children.iterator(); it.hasNext(); ) {
+                NestedNavItem childNavItem = (NestedNavItem)it.next();
                 //See if this is active, or if any of its children are active
-                if (children[i].isActive(request) || NestedNavCollection.isAnyChildActive(children[i], collection, userSession, request)){
-                    turnedOnNavItem = children[i];
+                if (childNavItem.isActive(request) || NestedNavCollection.isAnyChildActive(childNavItem, collection, userSession, request)){
+                    turnedOnNavItem = childNavItem;
                 }
                 //Do the nested items as columns
-                mb.append(outputItemHtml(children[i], collection, currentNestedLevel, userSession, request));
+                mb.append(outputItemHtml(childNavItem, collection, currentNestedLevel, userSession, request));
             }
 
         }

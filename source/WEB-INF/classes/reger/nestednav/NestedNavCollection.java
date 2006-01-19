@@ -14,46 +14,45 @@ import java.util.*;
 @Cacheable
 public class NestedNavCollection  {
 
-    private NestedNavItem[] allNestedNavItems;
+    private ArrayList<NestedNavItem> allNestedNavItems;
 
-
-    public NestedNavCollection(NestedNavItem[] allNestedNavItems){
+    public NestedNavCollection(ArrayList<NestedNavItem> allNestedNavItems){
         this.allNestedNavItems = orderNavItems(allNestedNavItems);
-        Debug.debug(5, "NestedNavCollection", "NestedNavCollection.getChildrenUserCanView() - this.allNestedNavItems.length=" + this.allNestedNavItems.length);
+        Debug.debug(5, "NestedNavCollection", "NestedNavCollection.getChildrenUserCanView() - this.allNestedNavItems.length=" + this.allNestedNavItems.size());
     }
 
-    public static NestedNavItem[] getNavItemsUserCanView(NestedNavItem[] inNestedNavItems, Accountuser accountuser){
-        NestedNavItem[] outItems = new NestedNavItem[0];
+    public static ArrayList<NestedNavItem> getNavItemsUserCanView(ArrayList<NestedNavItem> inNestedNavItems, Accountuser accountuser){
+        ArrayList<NestedNavItem> outItems = new ArrayList<NestedNavItem>();
         //Find those that the user can view
-        for (int i = 0; i < inNestedNavItems.length; i++) {
-            NestedNavItem navItem = inNestedNavItems[i];
+        for (Iterator it = inNestedNavItems.iterator(); it.hasNext(); ) {
+            NestedNavItem navItem = (NestedNavItem)it.next();
             //Check permission
             if (navItem.userCanViewNavItem(accountuser)){
-                outItems = AddToArray.addToNestedNavItemArray(outItems, navItem);
+                outItems.add(navItem);
             }
         }
         return outItems;
     }
 
-    public NestedNavItem[] getAllChildrenApplyNoPermissions(NestedNavItem parent){
+    public ArrayList<NestedNavItem> getAllChildrenApplyNoPermissions(NestedNavItem parent){
         return getAllChildrenApplyNoPermissions(allNestedNavItems, parent);
     }
 
-    public NestedNavItem[] getChildrenUserCanView(NestedNavItem parent, Accountuser accountuser){
-        NestedNavItem[] itemsUserCanView = getNavItemsUserCanView(allNestedNavItems, accountuser);
+    public ArrayList<NestedNavItem> getChildrenUserCanView(NestedNavItem parent, Accountuser accountuser){
+        ArrayList<NestedNavItem> itemsUserCanView = getNavItemsUserCanView(allNestedNavItems, accountuser);
         //reger.core.Util.logtodb("NestedNavCollection.getChildrenUserCanView() - allNestedNavItems.length=" + allNestedNavItems.length);
         //reger.core.Util.logtodb("NestedNavCollection.getChildrenUserCanView() - itemsUserCanView.length=" + itemsUserCanView.length);
         return getAllChildrenApplyNoPermissions(itemsUserCanView, parent);
     }
 
-    public static NestedNavItem[] getAllChildrenApplyNoPermissions(NestedNavItem[] inItems, NestedNavItem parent){
-        NestedNavItem[] children = new NestedNavItem[0];
+    public static ArrayList<NestedNavItem> getAllChildrenApplyNoPermissions(ArrayList<NestedNavItem> inItems, NestedNavItem parent){
+        ArrayList<NestedNavItem> children = new ArrayList<NestedNavItem>();
         if (inItems!=null && parent!=null){
-            for (int i = 0; i < inItems.length; i++) {
-                NestedNavItem navItem = inItems[i];
+            for (Iterator it = inItems.iterator(); it.hasNext(); ) {
+                NestedNavItem navItem = (NestedNavItem)it.next();
                 if (navItem.getNestedNavParentType()==parent.getThisNestedNavType()){
                     if (navItem.getNestedNavParentId()==parent.getThisNestedNavId()){
-                        children = AddToArray.addToNestedNavItemArray(children, navItem);
+                        children.add(navItem);
                     }
                 }
             }
@@ -61,13 +60,13 @@ public class NestedNavCollection  {
         return children;
     }
 
-    public static NestedNavItem getNavItem(int nestednavtype, int nestednavid, NestedNavItem[] inItems){
+    private static NestedNavItem getNavItem(int nestednavtype, int nestednavid, ArrayList<NestedNavItem> inItems){
         if (nestednavtype==NestedNavItem.NESTEDNAVITEMBASE && nestednavid==0){
             return new NestedNavItemBase();
         }
         if (inItems!=null){
-            for (int i = 0; i < inItems.length; i++) {
-                NestedNavItem navItem = inItems[i];
+            for (Iterator it = inItems.iterator(); it.hasNext(); ) {
+                NestedNavItem navItem = (NestedNavItem)it.next();
                 if (navItem.getThisNestedNavType()==nestednavtype){
                     if (navItem.getThisNestedNavId()==nestednavid){
                         return navItem;
@@ -83,19 +82,19 @@ public class NestedNavCollection  {
     /**
      * Ordering is done first by nestednavorder and second alphabetically.
      */
-    public static NestedNavItem[] orderNavItems(NestedNavItem[] inNavItems){
-        NestedNavItem[] orderedNavItems = new NestedNavItem[0];
-
+    private static ArrayList<NestedNavItem> orderNavItems(ArrayList<NestedNavItem> inNavItems){
+        ArrayList<NestedNavItem> orderedNavItems = new ArrayList<NestedNavItem>();
         //Iterate from minOrder to maxOrder
         int minOrder = getMinOrder(inNavItems);
         int maxOrder = getMaxOrder(inNavItems);
         for(int currentOrder=minOrder; currentOrder<=maxOrder; currentOrder++){
             //Iterate all items
             List itemList = new ArrayList();
-            for (int i = 0; i < inNavItems.length; i++) {
+            for (Iterator it = inNavItems.iterator(); it.hasNext(); ) {
+                NestedNavItem navItem = (NestedNavItem)it.next();
                 //Put all items with this currentOrder into a treemap
-                if (inNavItems[i].getNestedNavOrder()==currentOrder){
-                    itemList.add(inNavItems[i]);
+                if (navItem.getNestedNavOrder()==currentOrder){
+                    itemList.add(navItem);
                 }
             }
             //Alphabetize using the NavItemComparator
@@ -104,18 +103,19 @@ public class NestedNavCollection  {
             //And add the alphabetized items to the orderedNavItems array
             for (Iterator iterator = itemList.iterator(); iterator.hasNext();) {
                 NestedNavItem navItem = (NestedNavItem) iterator.next();
-                orderedNavItems = AddToArray.addToNestedNavItemArray(orderedNavItems, navItem);
+                orderedNavItems.add(navItem);
             }
         }
 
         return orderedNavItems;
     }
 
-    public static int getMaxOrder(NestedNavItem[] inNavItems){
+    public static int getMaxOrder(ArrayList<NestedNavItem> inNavItems){
         int outOrder = 0;
         if (inNavItems!=null){
-            for (int i = 0; i < inNavItems.length; i++) {
-                NestedNavItem navItem = inNavItems[i];
+            for (Iterator it = inNavItems.iterator(); it.hasNext(); ) {
+                NestedNavItem navItem = (NestedNavItem)it.next();
+
                 if (navItem.getNestedNavOrder()>outOrder){
                     outOrder = navItem.getNestedNavOrder();
                 }
@@ -124,11 +124,11 @@ public class NestedNavCollection  {
         return outOrder;
     }
 
-    public static int getMinOrder(NestedNavItem[] inNavItems){
+    public static int getMinOrder(ArrayList<NestedNavItem> inNavItems){
         int outOrder = Integer.MAX_VALUE;
         if (inNavItems!=null){
-            for (int i = 0; i < inNavItems.length; i++) {
-                NestedNavItem navItem = inNavItems[i];
+            for (Iterator it = inNavItems.iterator(); it.hasNext(); ) {
+                NestedNavItem navItem = (NestedNavItem)it.next();
                 if (navItem.getNestedNavOrder()<outOrder){
                     outOrder = navItem.getNestedNavOrder();
                 }
@@ -143,14 +143,18 @@ public class NestedNavCollection  {
     public void resetEntireLayout(){
         if (allNestedNavItems!=null){
             //Flatten the collection
-            for (int i = 0; i < allNestedNavItems.length; i++) {
-                allNestedNavItems[i].moveNestedNavTo(0,0,0);
+            for (Iterator it = allNestedNavItems.iterator(); it.hasNext(); ) {
+                NestedNavItem navItem = (NestedNavItem)it.next();
+                navItem.moveNestedNavTo(0,0,0);
             }
             //Order the collection
             this.allNestedNavItems = orderNavItems(this.allNestedNavItems);
             //Set the order accordingly
-            for (int i = 0; i < allNestedNavItems.length; i++) {
-                allNestedNavItems[i].moveNestedNavTo(0,0, i+1);
+            int i = 0;
+            for (Iterator it = allNestedNavItems.iterator(); it.hasNext(); ) {
+                NestedNavItem navItem = (NestedNavItem)it.next();
+                navItem.moveNestedNavTo(0,0, i+1);
+                i++;
             }
         }
     }
@@ -169,10 +173,10 @@ public class NestedNavCollection  {
         //Get the old parent of the item being moved
         NestedNavItem oldParentOfNavItemBeingMoved = getNavItem(navItemBeingMoved.getNestedNavParentType(), navItemBeingMoved.getNestedNavParentId(), allNestedNavItems);
         //Get the children of the parent... these are the old peers
-        NestedNavItem[] oldChildren = NestedNavCollection.getAllChildrenApplyNoPermissions(allNestedNavItems, oldParentOfNavItemBeingMoved);
+        ArrayList<NestedNavItem> oldChildren = NestedNavCollection.getAllChildrenApplyNoPermissions(allNestedNavItems, oldParentOfNavItemBeingMoved);
         //Find any peers that have an order equal to or higher than the newOrder... the spot the navItemBeingMoved will occupy
-        for (int i = 0; i < oldChildren.length; i++) {
-            NestedNavItem childNavItem = oldChildren[i];
+        for (Iterator it = oldChildren.iterator(); it.hasNext(); ) {
+            NestedNavItem childNavItem = (NestedNavItem)it.next();
             if (childNavItem.getNestedNavOrder()>navItemBeingMoved.getNestedNavOrder()){
                 childNavItem.moveNestedNavUp();
             }
@@ -183,10 +187,10 @@ public class NestedNavCollection  {
         //Get the new parent of the item being moved
         NestedNavItem newParentOfNavItemBeingMoved = getNavItem(newParentType, newParentId, allNestedNavItems);
         //Get the children of the parent... these will be the peers of the navItemBeingMoved... once it's moved, of course
-        NestedNavItem[] newChildren = NestedNavCollection.getAllChildrenApplyNoPermissions(allNestedNavItems, newParentOfNavItemBeingMoved);
+        ArrayList<NestedNavItem> newChildren = NestedNavCollection.getAllChildrenApplyNoPermissions(allNestedNavItems, newParentOfNavItemBeingMoved);
         //Find any peers that have an order equal to or higher than the newOrder... the spot the navItemBeingMoved will occupy
-        for (int i = 0; i < newChildren.length; i++) {
-            NestedNavItem childNavItem = newChildren[i];
+        for (Iterator it = newChildren.iterator(); it.hasNext(); ) {
+            NestedNavItem childNavItem = (NestedNavItem)it.next();
             if (childNavItem.getNestedNavOrder()>=newOrder){
                 childNavItem.moveNestedNavDown();
             }
@@ -208,10 +212,10 @@ public class NestedNavCollection  {
             //Get the old parent of the item being moved
             NestedNavItem oldParentOfNavItemBeingMoved = getNavItem(navItemBeingMoved.getNestedNavParentType(), navItemBeingMoved.getNestedNavParentId(), allNestedNavItems);
             //Get the children of the parent... these are the old peers
-            NestedNavItem[] oldChildren = NestedNavCollection.getAllChildrenApplyNoPermissions(allNestedNavItems, oldParentOfNavItemBeingMoved);
+            ArrayList<NestedNavItem> oldChildren = NestedNavCollection.getAllChildrenApplyNoPermissions(allNestedNavItems, oldParentOfNavItemBeingMoved);
             //Find any peers that have an order equal to or higher than the newOrder... the spot the navItemBeingMoved will occupy
-            for (int i = 0; i < oldChildren.length; i++) {
-                NestedNavItem childNavItem = oldChildren[i];
+            for (Iterator it = oldChildren.iterator(); it.hasNext(); ) {
+                NestedNavItem childNavItem = (NestedNavItem)it.next();
                 if (childNavItem.getNestedNavOrder()>navItemBeingMoved.getNestedNavOrder()){
                     childNavItem.moveNestedNavUp();
                 }
@@ -222,11 +226,11 @@ public class NestedNavCollection  {
     public static boolean isAnyChildActive(NestedNavItem parent, NestedNavCollection collection, UserSession userSession, javax.servlet.http.HttpServletRequest request){
         Debug.debug(5, "", "NestedNavCollection.java isAnyChildActive() called<br>parent=" + parent.getNestedNavLinkText());
         if (collection!=null){
-            NestedNavItem[] inItems = collection.getAllNestedNavItems();
+            ArrayList<NestedNavItem> inItems = collection.getAllNestedNavItems();
             if (inItems!=null){
-                NestedNavItem[] children = NestedNavCollection.getAllChildrenApplyNoPermissions(inItems, parent);
-                for (int i = 0; i < children.length; i++) {
-                    NestedNavItem navItem = children[i];
+                ArrayList<NestedNavItem> children = NestedNavCollection.getAllChildrenApplyNoPermissions(inItems, parent);
+                for (Iterator it = children.iterator(); it.hasNext(); ) {
+                    NestedNavItem navItem = (NestedNavItem)it.next();
                     if (navItem.userCanViewNavItem(userSession.getAccountuser())){
                         //If this one's active.
                         if (navItem.isActive(request)){
@@ -246,7 +250,7 @@ public class NestedNavCollection  {
         return false;
     }
 
-    public NestedNavItem[] getAllNestedNavItems() {
+    private ArrayList<NestedNavItem> getAllNestedNavItems() {
         return allNestedNavItems;
     }
 

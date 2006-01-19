@@ -26,8 +26,12 @@ public class PasswordVerifier {
     public String validatePassword(String password, String verifypassword){
         Debug.debug(5, "", "PasswordVerifier.java: Verifying passwords.  <br>password="+password+"<br>verifypassword="+verifypassword);
 
+        if (password==null || verifypassword==null){
+            return "Your passwords must match and must not be blank.";
+        }
+
         if (!password.equals(verifypassword)){
-            return "Password and Verify Password must match.";
+            return "Your passwords must match.";
         }
 
         int numberofrules = 0;
@@ -93,9 +97,9 @@ public class PasswordVerifier {
         out.append("Spaces are not allowed. ");
 
         if (minPasswordCharacters>0){
-            out.append("Password must be at least " + minPasswordCharacters + " and less than 50 characters in length. ");
+            out.append("Password must be " + minPasswordCharacters + " to 50 characters in length. ");
         } else {
-            out.append("Password must less than 50 characters in length. ");
+            out.append("Password must be less than 50 characters in length. ");
         }
 
         if (minPasswordUpperCaseChars>0){

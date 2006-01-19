@@ -89,7 +89,7 @@ pageProps.pathToAppRoot="../";
 
         mb.append("<tr>");
         mb.append("<td bgcolor=#cccccc><font face=arial size=-1><strong>License Key</strong></font></td>");
-        mb.append("<td bgcolor=#e6e6e6><font face=arial size=-1><textarea rows=5 cols=35>"+userSession.getAccount().getLicense().getEncryptedLicense()+"</textarea></font></td>");
+        mb.append("<td bgcolor=#e6e6e6><font face=arial size=-2><!--<textarea rows=5 cols=35>-->"+userSession.getAccount().getLicense().getEncryptedLicense()+"<!--</textarea>--></font></td>");
         mb.append("</tr>");
 
         mb.append("<tr>");
@@ -117,11 +117,11 @@ pageProps.pathToAppRoot="../";
         mb.append("<td bgcolor=#cccccc><font face=arial size=-1></font></td>");
         mb.append("<td bgcolor=#e6e6e6>");
         if (!userSession.getAccount().isPro()) {
-            mb.append("<a href='accountupgrade01.log'><font face=arial size=-1>Upgrade Account to Pro</font></a>");
+            mb.append("<a href='"+userSession.getPl().getPlBaseUrl(userSession)+"/about/accountupgrade1.log?accountid="+userSession.getAccount().getAccountid()+"&plid="+userSession.getPl().getPlid()+"'><font face=arial size=-1>Upgrade Account to Pro</font></a>");
             mb.append("<br><font face=arial size=-1><a href='accountprofeatures.log'>View Pro Upgrade Features.</a></font>");
         } else {
             mb.append("<a href='accountcancel.log'><font face=arial size=-1>Cancel Account License</font></a>");
-            mb.append("<br><a href='accountupgrade01.log'><font face=arial size=-1>Upgrade/Edit/Change Account License</font></a>");
+            mb.append("<br><a href='"+userSession.getPl().getPlBaseUrl(userSession)+"/about/accountupgrade1.log?accountid="+userSession.getAccount().getAccountid()+"&plid="+userSession.getPl().getPlid()+"'><font face=arial size=-1>Upgrade/Edit/Change Account License</font></a>");
         }
         mb.append("<br><a href='accountlicensemanualentry.log'><font face=arial size=-1>Click Here to Manually Add/Edit License Key (Not Recommended)</font></a>");
         mb.append("</td>");

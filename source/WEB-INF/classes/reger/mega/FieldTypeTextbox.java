@@ -6,6 +6,8 @@ import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jdom.Element;
 
@@ -21,17 +23,17 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
     //This is the name that's used in the name/value pair.  This is specific to this FieldType and is not part of the interface.
     String NAMEOFDATAVALUE = "";
 
-    private FieldData[] fieldData = new FieldData[1];
+    private ArrayList<FieldData> fieldData = new ArrayList<FieldData>();
 
     public FieldTypeTextbox(){
-        fieldData[0] = new FieldData(NAMEOFDATAVALUE, "");
+        fieldData.add(0, new FieldData(NAMEOFDATAVALUE, ""));
     }
 
     public FieldTypeTextbox(FieldTypeTextbox field){
-        this.fieldData = new FieldData[field.getDataForField().length];
-        for (int i = 0; i < field.getDataForField().length; i++) {
-            FieldData fldDataTmp = new FieldData(field.getDataForField()[i]);
-            this.fieldData[i] = fldDataTmp;
+        this.fieldData = new ArrayList<FieldData>();
+        for (Iterator it = field.getDataForField().iterator(); it.hasNext(); ) {
+            FieldData fldDataTmp = (FieldData)it.next();
+            this.fieldData.add(0, fldDataTmp);
         }
         populateFromAnotherField(field);
     }
@@ -98,18 +100,17 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
     /**
      * Returns an array of FieldData objects which represent the data held in this field.
      */
-    public FieldData[] getDataForField() {
+    public ArrayList<FieldData> getDataForField() {
         return fieldData;
     }
 
     /**
      * Returns an array of empty FieldData objects that demonstrate the name/value pairs that this field generates/accepts/works with
      */
-    public FieldData[] getEmptyDataFields() {
-        FieldData[] fd = new FieldData[1];
-        fd[0] = new FieldData("data", "");
+    public ArrayList<FieldData> getEmptyDataFields() {
+        ArrayList<FieldData> fd = new ArrayList<FieldData>();
+        fd.add(new FieldData(NAMEOFDATAVALUE, ""));
         return fd;
-
     }
 
 
@@ -125,7 +126,7 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
             disabledFormText = "disabled=\"true\"";
         }
 
-	    outstring.append("<input type=text name=megafieldid-"+megafieldid+" value=\""+reger.core.Util.cleanForHtml(this.fieldData[0].getValue())+"\" size=10 maxlength=255 "+disabledFormText+">");
+	    outstring.append("<input type=text name=megafieldid-"+megafieldid+" value=\""+reger.core.Util.cleanForHtml(this.fieldData.get(0).getValue())+"\" size=10 maxlength=255 "+disabledFormText+">");
 
 		return outstring.toString();
     }
@@ -143,10 +144,10 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
     public String getHtmlPublic(int logid) {
         StringBuffer mb = new StringBuffer();
         mb.append("<font face=arial size=-1>");
-        if (this.fieldData[0].getValue().equals("")){
+        if (this.fieldData.get(0).getValue().equals("")){
             mb.append("&nbsp;");
         } else {
-            mb.append(this.fieldData[0].getValue());
+            mb.append(this.fieldData.get(0).getValue());
         }
         mb.append("</font>");
         return mb.toString();
@@ -179,14 +180,14 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
 
         //Find the value
         if (request.getParameter("megafieldid-" + this.megafieldid)!=null){
-            this.fieldData[0].setValue(request.getParameter("megafieldid-" + this.megafieldid));
+            this.fieldData.get(0).setValue(request.getParameter("megafieldid-" + this.megafieldid));
         } else {
-            this.fieldData[0].setValue("");
+            this.fieldData.get(0).setValue("");
         }
 
         //Look for new values, which will override old ones
         if (request.getParameter("megafieldid-new-" + this.megafieldid)!=null && !request.getParameter("megafieldid-new-" + this.megafieldid).equals("")){
-            this.fieldData[0].setValue(request.getParameter("megafieldid-new-" + this.megafieldid));
+            this.fieldData.get(0).setValue(request.getParameter("megafieldid-new-" + this.megafieldid));
         }
 
         //reger.core.Util.logtodb("Value is set from request object to: " + value);
@@ -200,7 +201,7 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
         //reger.core.Util.logtodb("Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         FieldDAOSimple sm = new FieldDAOSimple();
         sm.loadData(this.megafieldid, eventid, logid);
-        this.fieldData[0].setValue(sm.value);
+        this.fieldData.get(0).setValue(sm.value);
      }
 
      /**
@@ -210,7 +211,7 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
      public void loadDefaultData(int logid){
         FieldDAOSimple sm = new FieldDAOSimple();
         sm.loadDefaultData(this.megafieldid, logid);
-        this.fieldData[0].setValue(sm.value);
+        this.fieldData.get(0).setValue(sm.value);
      }
 
      /**
@@ -222,16 +223,16 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
 
         //Check requiredness
         if (isrequired==1){
-            if (fieldData[0].getValue().equals("")){
+            if (fieldData.get(0).getValue().equals("")){
                 errortext = errortext + ">> " + this.fieldname + " is a required field.<br>";
             }
         }
 
         //Check data type
-        if (!fieldData[0].getValue().equals("")){
+        if (!fieldData.get(0).getValue().equals("")){
             DataType dt = reger.mega.DataTypeFactory.get(this.megadatatypeid);
             try{
-                dt.validataData(this.fieldData[0].getValue());
+                dt.validataData(this.fieldData.get(0).getValue());
             } catch (reger.core.ValidationException ex){
                 errortext = errortext +  ">> " + this.fieldname + ": " + ex.getErrorsAsSingleString() + "<br>";
             } catch (Exception e){
@@ -247,7 +248,7 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
      */
     public void saveToDb(int eventid, int logid) {
         FieldDAOSimple sm = new FieldDAOSimple();
-        sm.setValue(this.fieldData[0].getValue());
+        sm.setValue(this.fieldData.get(0).getValue());
         //reger.core.Util.logtodb("In FieldTypeDropdown.saveToDb.  About to call sm.saveData<br>this.value: " +this.value+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         sm.saveData(this.megafieldid, eventid, logid);
     }
@@ -257,7 +258,7 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
      */
     public void saveDefaultToDb(int logid) {
         FieldDAOSimple sm = new FieldDAOSimple();
-        sm.setValue(this.fieldData[0].getValue());
+        sm.setValue(this.fieldData.get(0).getValue());
         sm.saveDefaultData(this.megafieldid, logid);
     }
 
@@ -373,7 +374,7 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
      * purposes of offensive content validation.
      */
     public String getValuesAsStringForOffensiveContentValidation() {
-        return fieldData[0].getValue();
+        return fieldData.get(0).getValue();
     }
 
     /**
@@ -381,7 +382,7 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
      */
     public boolean fulfillsQuery(FieldQueryElement[] fieldQueryElements, int logidOrEtid) {
 
-        Debug.debug(5, "", "FieldTypeTextbox.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData[0].getValue());
+        Debug.debug(5, "", "FieldTypeTextbox.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData.get(0).getValue());
 
 
         if (this.megadatatypeid==reger.mega.DataTypeString.DATATYPEID){
@@ -389,7 +390,7 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
             String equalto = FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0];
             //Do the evaluation.  If no value for equalto, return true, this is because if nobody's
             //set an explicit value to search for then this data must fulfill it.
-            if (equalto.equals("") || equalto.equals(this.fieldData[0].getValue())){
+            if (equalto.equals("") || equalto.equals(this.fieldData.get(0).getValue())){
                 return true;
             }
         } else {
@@ -409,8 +410,8 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
 
             //Get the current value of this field
             Float thisvalue = null;
-            if (reger.core.Util.isnumeric(this.fieldData[0].getValue())){
-                thisvalue = new Float(this.fieldData[0].getValue());
+            if (reger.core.Util.isnumeric(this.fieldData.get(0).getValue())){
+                thisvalue = new Float(this.fieldData.get(0).getValue());
             }
 
             //Do the evaluation
@@ -578,7 +579,7 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
      */
     public Element getXmlForFieldData() {
         Element elField = new Element(getFieldnameForApis());
-        elField.addContent(fieldData[0].getValue());
+        elField.addContent(fieldData.get(0).getValue());
         return elField;
     }
 

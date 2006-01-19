@@ -7,6 +7,9 @@ import org.jdom.output.XMLOutputter;
 import reger.mega.FieldType;
 import reger.core.Debug;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 
 /**
  * Renders a log type as an XML Schema document
@@ -137,9 +140,9 @@ public class MegaLogTypeXmlSchemaRenderer {
                     entry.addContent(extendedData);
 
                         //Individual fields
-                        FieldType[] fields = logType.getMegaFields();
-                        for (int i = 0; i < fields.length; i++) {
-                            FieldType field = fields[i];
+                        ArrayList<FieldType> fields = logType.getMegaFields();
+                        for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                            FieldType field = (FieldType)it.next();
                             extendedData.addContent(field.getXmlSchemaRepresentationOfFieldType());
                         }
 

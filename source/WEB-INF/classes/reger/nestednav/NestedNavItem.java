@@ -1,17 +1,19 @@
 package reger.nestednav;
 
 import reger.Accountuser;
+import reger.cache.jboss.Cacheable;
 
 /**
  * An item that wants to appear on the nested navigation scheme must fulfill this interface.
  */
+@Cacheable
 public interface NestedNavItem {
 
-    public static final int NESTEDNAVITEMBASE = 0;
-    public static final int NESTEDNAVTYPEMEGALOG = 1;
-    public static final int NESTEDNAVTYPECONTENTPAGE = 2;
-    public static final int NESTEDNAVTYPEPLCONTENTPAGE = 3;
-    public static final int NESTEDNAVTYPEPLJSPPAGE = 4;
+    public static int NESTEDNAVITEMBASE = 0;
+    public static int NESTEDNAVTYPEMEGALOG = 1;
+    public static int NESTEDNAVTYPECONTENTPAGE = 2;
+    public static int NESTEDNAVTYPEPLCONTENTPAGE = 3;
+    public static int NESTEDNAVTYPEPLJSPPAGE = 4;
 
     /**
      * The text that should appear in the navigation bar

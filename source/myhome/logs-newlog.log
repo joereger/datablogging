@@ -2,6 +2,8 @@
                  reger.MegaLogType,
                  java.util.Vector"%>
 <%@ page import="reger.cache.LogCache"%>
+<%@ page import="reger.nestednav.NestedNavItem"%>
+<%@ page import="java.util.ArrayList"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -49,7 +51,7 @@ if (userSession.getAccountuser().userCanDoAcl("NEWLOG", userSession.getAccount()
 
     //Set ordering info by finding all on first level and getting highest
     reger.nestednav.NestedNavCollection collection = userSession.getAccount().getNestedNavCollection();
-    reger.nestednav.NestedNavItem[] topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
+    ArrayList<NestedNavItem> topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
     int currentMaxOrder = reger.nestednav.NestedNavCollection.getMaxOrder(topLevelNavItems);
 
 

@@ -3,6 +3,9 @@ package reger.nestednav;
 import reger.UserSession;
 import reger.core.Debug;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Creates the screen to manage nav item layout
  */
@@ -126,9 +129,9 @@ public class NestedNavDisplayLayoutManager implements NestedNavDisplay{
 
         //Go get children and append output from each of them.
         //This is the recursive function.
-        NestedNavItem[] children = collection.getChildrenUserCanView(navItem, userSession.getAccountuser());
-        for (int i = 0; i < children.length; i++) {
-            NestedNavItem childNavItem = children[i];
+        ArrayList<NestedNavItem> children = collection.getChildrenUserCanView(navItem, userSession.getAccountuser());
+        for (Iterator it = children.iterator(); it.hasNext(); ) {
+            NestedNavItem childNavItem = (NestedNavItem)it.next();
             mb.append(outputItemHtml(childNavItem, collection, currentNestedLevel+1, userSession, request));
         }
 

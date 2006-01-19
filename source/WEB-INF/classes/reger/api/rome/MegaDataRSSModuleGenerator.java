@@ -56,12 +56,13 @@ public class MegaDataRSSModuleGenerator implements ModuleGenerator {
 
         MegaDataRSSModule fm = (MegaDataRSSModule)module;
 
-        FieldType[] fields = fm.getFields();
+        ArrayList<FieldType> fields = fm.getFields();
         if (fields!=null){
-            for (int i = 0; i < fields.length; i++) {
-                Debug.debug(5, "", "MegaDataRSSModuleGenerator.java - Found a fieldid=" + fields[i].getFieldname());
+            for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                Debug.debug(5, "", "MegaDataRSSModuleGenerator.java - Found a fieldid=" + ft.getFieldname());
                 //element.addContent(generateSimpleElement("foo",foos.get(i).toString()));
-                element.addContent(generateElementFromField(fields[i]));
+                element.addContent(generateElementFromField(ft));
             }
         }
 
@@ -84,22 +85,25 @@ public class MegaDataRSSModuleGenerator implements ModuleGenerator {
         Debug.debug(5, "", "MegaDataRSSModuleGenerator.java - Generating element tag for " + field.getFieldname());
 
         //Collect the data
-        FieldData[] fieldData = field.getDataForField();
+        ArrayList<FieldData> fieldData = field.getDataForField();
         if (fieldData!=null){
-            for (int i = 0; i < fieldData.length; i++) {
-                Debug.debug(5, "", "MegaDataRSSModuleGenerator.java - Fielddata for " + field.getFieldname() + " is NOT null.  fieldData[i].getValue()=" + fieldData[i].getValue());
+            for (Iterator it = fieldData.iterator(); it.hasNext(); ) {
+                FieldData fd = (FieldData)it.next();
+
+
+                Debug.debug(5, "", "MegaDataRSSModuleGenerator.java - Fielddata for " + field.getFieldname() + " is NOT null.  fieldData[i].getValue()=" + fd.getValue());
 
                 //Data
                 Element elementData = new Element ("data" , ENTRYDATA_NS);
 
                 //Name
                 Element elementName = new Element ("name" , ENTRYDATA_NS);
-                elementName.addContent(fieldData[i].getName());
+                elementName.addContent(fd.getName());
                 elementData.addContent(elementName);
 
                 //Value
                 Element elementValue = new Element ("value" , ENTRYDATA_NS);
-                elementValue.addContent(fieldData[i].getValue());
+                elementValue.addContent(fd.getValue());
                 elementData.addContent(elementValue);
 
                 //Add to the field

@@ -1,0 +1,272 @@
+<%@ page import="reger.Accountuser"%>
+<%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.nestednav.NestedNavItem"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="reger.cache.LogCache"%>
+<%@ page import="reger.MegaLogType"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Please Log In";
+pageProps.navButtonName = "aboutindex";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+String errortext = "";
+
+//Get any returnurl
+String returnurl = "";
+if (request.getParameter("returnurl")!=null){
+    returnurl = request.getParameter("returnurl");
+}
+
+//Get the name and eventtypeid
+int eventtypeid = reger.Vars.DEFAULTLOGEVENTTYPEID;
+String logname = reger.Vars.DEFAULTLOGNAME;
+MegaLogType logTypeToAdd = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid);
+if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+    eventtypeid = Integer.parseInt(request.getParameter("eventtypeid"));
+    logTypeToAdd = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid);
+    if (logTypeToAdd!=null){
+        logname = logTypeToAdd.getMegalogname();
+    }
+}
+String showonhomepage = "1";
+if (!reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getShowonhomepage()){
+    showonhomepage = "0";
+}
+
+//Get the accountuseridtarget
+int accountuseridtarget = -1;
+Accountuser autarget = new Accountuser(0, true);
+if (request.getParameter("accountuseridtarget")!=null && reger.core.Util.isinteger(request.getParameter("accountuseridtarget"))){
+    accountuseridtarget = Integer.parseInt(request.getParameter("accountuseridtarget"));
+    //Set the session var
+    userSession.setAttribute( "accountuseridtarget", String.valueOf(accountuseridtarget));
+}
+
+//Get incoming friendinvitationid
+int friendinvitationid = -1;
+String friendinvitationkey = "";
+String friendlyname = "Your Friend";
+int accountuseridsource = -1;
+if (request.getParameter("friendinvitationid")!=null && reger.core.Util.isinteger(request.getParameter("friendinvitationid"))){
+    //Get friendinvitationkey
+    if (request.getParameter("friendinvitationkey")!=null){
+        friendinvitationkey = request.getParameter("friendinvitationkey");
+    }
+    //Set the friendinvitationid
+    friendinvitationid = Integer.parseInt(request.getParameter("friendinvitationid"));
+    //Pull up the details of the invitation
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstInvitation= Db.RunSQL("SELECT friendlyname, accountuseridsource, friendinvitationkey FROM friendinvitation, accountuser WHERE friendinvitation.accountuseridsource=accountuser.accountuserid AND friendinvitationid='"+friendinvitationid+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstInvitation!=null && rstInvitation.length>0){
+        //Friendinvitationkey must match
+        if (friendinvitationkey.equals(rstInvitation[0][2])){
+            //Get the accountuseridsource
+            accountuseridsource = Integer.parseInt(rstInvitation[0][1]);
+            //Get friendlyname
+            friendlyname = rstInvitation[0][0];
+            //Update the status of the invitation to viewed
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("UPDATE friendinvitation SET status='"+reger.Vars.INVITATIONSTATUSVIEWED+"' WHERE friendinvitationid='"+friendinvitationid+"'");
+            //-----------------------------------
+            //-----------------------------------
+            //Set the session vars
+            userSession.setAttribute( "friendinvitationid", String.valueOf(friendinvitationid));
+            userSession.setAttribute( "friendinvitationkey", friendinvitationkey);
+        } else {
+            errortext = errortext + "Sorry.  That invitation is no longer valid.  But you can still sign up for a weblogging account and start logging immediately.<br>";
+        }
+    } else {
+        errortext = errortext + "Sorry.  That invitation is no longer valid.  But you can still sign up for a weblogging account and start logging immediately.<br>";
+    }
+}
+
+
+
+
+//Login Action
+if (pageProps.action.equals("login")){
+    userSession.setAccountuser(new reger.Accountuser(request.getParameter("email"), request.getParameter("password")));
+    if (userSession.getAccountuser().isLoggedIn){
+        //Add Friend
+        if (accountuseridtarget>0){
+            userSession.getAccountuser().addFriend(accountuseridtarget);
+        }
+        //Create a log of a particular type
+        reger.Account acct = new reger.Account(userSession.getAccountuser().getAccountid());
+        reger.nestednav.NestedNavCollection collection = acct.getNestedNavCollection();
+        ArrayList<NestedNavItem> topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
+        int currentMaxOrder = reger.nestednav.NestedNavCollection.getMaxOrder(topLevelNavItems);
+        //-----------------------------------
+        //-----------------------------------
+        int newlogid = Db.RunSQLInsert("INSERT INTO megalog(accountid, name, eventtypeid, logaccess, showonhomepage, nestednavorder) VALUES('"+ userSession.getAccountuser().getAccountid() +"', '"+reger.core.Util.cleanForSQL(logname)+"', '"+ eventtypeid +"', '"+reger.Vars.LOGACCESSPUBLIC+"', '"+showonhomepage+"', '"+(currentMaxOrder+1)+"')");
+        //-----------------------------------
+        //-----------------------------------
+        LogCache.flushByLogid(newlogid);
+        //Build redirect string(s)
+        String msgQueryString = "";
+        if (request.getParameter("msg")!=null){
+            msgQueryString = "&msg="+request.getParameter("msg");
+        }
+        String friendQueryString = "";
+        if (request.getParameter("friendinvitationid")!=null){
+            friendQueryString = "&friendinvitationid="+request.getParameter("friendinvitationid");
+        }
+        String friendKeyQueryString = "";
+        if (request.getParameter("friendinvitationkey")!=null){
+            friendKeyQueryString = "&friendinvitationkey="+request.getParameter("friendinvitationkey");
+        }
+        String returnurlQueryString = "";
+        if (!returnurl.equals("")){
+            returnurlQueryString = "&returnurl="+java.net.URLEncoder.encode(returnurl, "UTF-8");
+        }
+        String loginInfoQueryString = "";
+        loginInfoQueryString="&email="+java.net.URLEncoder.encode(userSession.getAccountuser().getEmail(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&keepmeloggedin="+request.getParameter("keepmeloggedin");
+        //Redirect to the user's site
+        response.sendRedirect(userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) + "/login.log?action=login"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString+loginInfoQueryString);
+        return;
+    } else {
+        errortext = errortext + "Email or password incorrect.  Please try again.<br>";
+    }
+}
+
+
+
+//Errortext
+//if (!errortext.equals("")){
+//    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+//}
+
+mb.append("<center>");
+mb.append("<table cellpadding=15 cellspacing=10 width=75% border=0>");
+mb.append("<tr>");
+mb.append("<td valign=top colspan=2 align=center bgcolor=#e6e6e6>");
+mb.append("<img src='images/login-required.gif' align=right>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+
+
+mb.append("<td valign=top width=50% align=center bgcolor=#e6e6e6>");
+//mb.append("<font face=arial size=+1>");
+//mb.append("Please Log In:");
+//mb.append("</font>");
+//mb.append("<br>");
+//mb.append("<br>");
+//mb.append("<form action=login.log>");
+//if (!returnurl.equals("")){
+//    mb.append("<input type=hidden name=returnurl value=\""+reger.core.Util.cleanForHtml(java.net.URLEncoder.encode(returnurl, "UTF-8"))+"\">");
+//}
+//mb.append("<input type=hidden name=action value=login>");
+reger.template.MarketingHpTemplateTagLogInBox box = new reger.template.MarketingHpTemplateTagLogInBox();
+mb.append(box.getHtml(userSession, request, pageProps));
+////Begin login table
+//mb.append("<table cellpadding=10 cellspacing=5 border=0>");
+//mb.append("<tr>");
+//mb.append("<td valign=middle align=right>");
+//mb.append("<font class=mediumfont face=arial size=-1>");
+//mb.append("<strong>Email:</strong>");
+//mb.append("</font>");
+//mb.append("</td>");
+//mb.append("<td valign=top align=left>");
+//String incomingEmail = "";
+//if (request.getParameter("email")!=null){
+//    incomingEmail = request.getParameter("email");
+//}
+//mb.append("<input type='text' name='email' size=10 maxlength=49 style=\"font-size: 18px;\" value=\""+reger.core.Util.cleanForSQL(incomingEmail)+"\">");
+//mb.append("</td>");
+//mb.append("<tr>");
+//mb.append("<tr>");
+//mb.append("<td valign=middle align=right>");
+//mb.append("<font class=mediumfont face=arial size=-1>");
+//mb.append("<strong>Password:</strong>");
+//mb.append("</font>");
+//mb.append("</td>");
+//mb.append("<td valign=top align=left>");
+//mb.append("<input type='password' name='password' size=10 maxlength=49 style=\"font-size: 18px;\">");
+//mb.append("<br>");
+//mb.append("<font class=smallfont face=arial size=-2>");
+//mb.append("<a href='"+pageProps.pathToAppRoot+"about/login-passwordreset.log'>");
+//mb.append("Lost Your Password?");
+//mb.append("</a>");
+//mb.append("</font>");
+//mb.append("</td>");
+//mb.append("</tr>");
+//mb.append("<tr>");
+//mb.append("<tr>");
+//mb.append("<td valign=middle align=right>");
+//mb.append("</td>");
+//mb.append("<td valign=top align=left>");
+//mb.append("<input type='checkbox' name='keepmeloggedin' value='1'>");
+//mb.append("<font class=smallfont face=arial size=-2>");
+//mb.append("<strong>Stay Logged-In on this Computer Until I Log Out</strong>");
+//mb.append("</font>");
+//mb.append("</td>");
+//mb.append("</tr>");
+//mb.append("<td valign=top align=left>");
+//mb.append("<font class=mediumfont face=arial size=-1>");
+//mb.append("&nbsp;");
+//mb.append("</font>");
+//mb.append("</td>");
+//mb.append("<td valign=top align=left>");
+//mb.append("<input type='submit' value='Log In'>");
+//mb.append("</form>");
+//mb.append("</td>");
+//mb.append("</tr>");
+//mb.append("</table>");
+////End login table
+mb.append("</td>");
+
+
+mb.append("<td valign=top width=50% align=center bgcolor=#e6e6e6>");
+mb.append("<font face=arial size=+1>");
+mb.append("<a href='signup.log'>Create an Account</a>");
+mb.append("</font>");
+mb.append("<br><br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Creating an account only takes a few seconds.  You'll be datablogging in no time!");
+mb.append("</font>");
+mb.append("</tr>");
+
+mb.append("</tr>");
+mb.append("</table>");
+mb.append("</center>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

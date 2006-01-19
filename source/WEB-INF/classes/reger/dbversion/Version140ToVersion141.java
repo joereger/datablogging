@@ -7,6 +7,7 @@ import reger.core.Debug;
 
 import java.util.Calendar;
 import java.util.Hashtable;
+import java.util.HashMap;
 
 
 /**
@@ -27,7 +28,7 @@ public class Version140ToVersion141 implements UpgradeDatabaseOneVersion{
                 try{
 
                     //License props
-                    Hashtable licenseProps = new Hashtable();
+                    HashMap licenseProps = new HashMap();
                     Calendar expDate = reger.core.TimeUtils.nowInGmtCalendar();
                     //Create the license
                     License accountLicense = new License(null, "");

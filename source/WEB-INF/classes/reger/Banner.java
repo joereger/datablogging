@@ -7,7 +7,7 @@ public class Banner {
 
         //Google adwords
         //https://www.google.com/adsense/
-        //username: joe@joereger.com
+        //login: joe@joereger.com
         out.append(reger.Vars.LINEBREAKCHARFORHTML);
         out.append("<script type=\"text/javascript\"><!--"+reger.Vars.LINEBREAKCHARFORHTML);
         out.append("google_ad_client = \"pub-9883617370563969\";"+reger.Vars.LINEBREAKCHARFORHTML);

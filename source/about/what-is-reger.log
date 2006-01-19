@@ -31,7 +31,7 @@ mb.append("<img src='images/number-01.gif' align=left>");
 mb.append("<h1>A Hosted Blogging Service</h1>");
 mb.append("A datablogging service, to be precise.  Anybody in the world can sign up for a free account and start blogging in minutes.  We host the blogs so you don't have to. Join the thousands of people already datablogging!");
 mb.append("<ul>");
-mb.append("<li><a href='signup2.log'>Get Started Here</a> - Free account with 10Mb storage and 1Gb of bandwidth per month.  You also get a free trial of the Pro features for 15 days.  Continue using your blog for free as long as you like.</li>");
+mb.append("<li><a href='signup.log'>Get Started Here</a> - Free account with 10Mb storage and 1Gb of bandwidth per month.  You also get a free trial of the Pro features for 15 days.  Continue using your blog for free as long as you like.</li>");
 mb.append("<li><a href='community.log'>Our Community</a> - Lists of new blog sites, recently updated blogs, most read entries, etc. appear in our community aggregator.</li>");
 mb.append("<li><a href='community-logtypes.log'>Log Types</a> - See what datablog types we offer and users have contributed.  Of course, you can always create your own datablog type with drag-and-drop ease.</li>");
 mb.append("<li><a href='features.log'>Feature List</a> - A big, hairy list of features... let us know if you fall in and get lost... there's a lot of stuff there.</li>");

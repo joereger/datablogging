@@ -5,6 +5,7 @@ import reger.core.db.Db;
 import reger.cache.jboss.Cacheable;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 /**
  * This class models a content page.
@@ -79,7 +80,7 @@ public class ContentPage implements NestedNavItem{
             //Set ordering info by finding all on first level and getting highest
             reger.Account account = new Account(accountid);
             reger.nestednav.NestedNavCollection collection = account.getNestedNavCollection();
-            reger.nestednav.NestedNavItem[] topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
+            ArrayList<NestedNavItem> topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
             int currentMaxOrder = reger.nestednav.NestedNavCollection.getMaxOrder(topLevelNavItems);
             this.nestednavorder = currentMaxOrder + 1;
 
@@ -93,7 +94,7 @@ public class ContentPage implements NestedNavItem{
             //-----------------------------------
         }
 
-       
+
     }
 
 

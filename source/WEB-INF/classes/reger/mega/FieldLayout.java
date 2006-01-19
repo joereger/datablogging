@@ -7,6 +7,9 @@ import reger.core.Debug;
 import reger.cache.LogCache;
 import reger.pageFramework.PageProps;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 
 /**
  * Manages the layout of fields in a log
@@ -29,7 +32,7 @@ public class FieldLayout {
         }
 
         //Go get the fields to work with, either from the entry, log or the log type
-        FieldType[] fields = null;
+        ArrayList<FieldType> fields = null;
         FieldOrderCollection fieldOrderCollection = null;
         if (eventtypeid>0){
             fields = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getMegaFields();
@@ -72,8 +75,9 @@ public class FieldLayout {
         int wrapperWidth = 0;
         int wrapperHeight = 0;
         if (fields!=null){
-            for (int i = 0; i < fields.length; i++) {
-                FieldType fld = fields[i];
+            int i = 0;
+            for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                FieldType fld = (FieldType)it.next();
                 if (fld!=null){
                     int x = 0;
                     int y = wrapperHeight + 2;
@@ -93,6 +97,7 @@ public class FieldLayout {
                         wrapperHeight = y+h;
                     }
                     mb.append("    fen["+i+"] = new xFenster('"+fld.getMegafieldid()+"', 'fieldBox"+fld.getMegafieldid()+"', "+x+", "+y+", "+w+", "+h+", 'fieldBoxBar"+fld.getMegafieldid()+"', 'fieldBoxResBtn"+fld.getMegafieldid()+"', 'fieldBoxContent"+fld.getMegafieldid()+"', "+isMovableAndDraggable+", "+isMovableAndDraggable+");" + reger.Vars.LINEBREAKCHARFORHTML);
+                    i++;
                 }
             }
         }
@@ -133,12 +138,9 @@ public class FieldLayout {
 
             //Start invividual fields
             if (fields!=null){
-                for (int i = 0; i < fields.length; i++) {
-                    FieldType fld = fields[i];
+                for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                    FieldType fld = (FieldType)it.next();
                     if (fld!=null){
-
-
-
                         Debug.debug(5, "FieldLayout.java", "FieldLayout.java field not null.  fld.getFieldname()" + fld.getFieldname());
                         mb.append("<div id='fieldBox"+fld.getMegafieldid()+"' class='fieldBox'>" + reger.Vars.LINEBREAKCHARFORHTML);
                         mb.append("    <div id='fieldBoxBar"+fld.getMegafieldid()+"' class='fieldBoxBar' title='Drag to Move'>");
@@ -340,7 +342,7 @@ public class FieldLayout {
             //If we're working with a particular field
             if (megafieldid>0){
                 //Get all fields for this eventtype or logtype
-                FieldType[] fields = null;
+                ArrayList<FieldType> fields = new ArrayList<FieldType>();
                 if (eventtypeid>0){
                     fields = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getMegaFields();
                 }
@@ -349,9 +351,10 @@ public class FieldLayout {
                 }
                 FieldType fld = null;
                 //Iterate and find field with the correct megafieldid
-                for (int i = 0; i < fields.length; i++) {
-                    if (fields[i].getMegafieldid()==megafieldid){
-                        fld = fields[i];
+                for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                    FieldType ft = (FieldType)it.next();
+                    if (ft.getMegafieldid()==megafieldid){
+                        fld = ft;
                     }
                 }
 
@@ -428,14 +431,14 @@ public class FieldLayout {
 
 
         //Unhide start
-        FieldType[] hiddenfields = null;
+        ArrayList<FieldType> hiddenfields = null;
         if (eventtypeid>0){
             hiddenfields = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getMegaFieldsHidden();
         }
         if (logid>0){
             hiddenfields = LogCache.get(logid).getFieldshidden();
         }
-        if (hiddenfields!=null && hiddenfields.length>0){
+        if (hiddenfields!=null && hiddenfields.size()>0){
             mb.append("<td bgcolor=#e6e6e6 align=center>");
             mb.append("<form action="+pageName+" method=post style=\"margin:0px;border:0px;\">");
             mb.append("<input type=hidden name=action value=unhide>");
@@ -444,8 +447,9 @@ public class FieldLayout {
             mb.append("<input type=hidden name=returntopage value="+pageName+">");
             mb.append("<input type=hidden name=mode value=editlayout>");
             mb.append("<select name='megafieldid' style=\"font-size: 10px;\">");
-            for (int i = 0; i < hiddenfields.length; i++) {
-                mb.append("<option value='"+hiddenfields[i].getMegafieldid()+"'>"+hiddenfields[i].getFieldname()+"</option>");
+            for (Iterator it = hiddenfields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                mb.append("<option value='"+ft.getMegafieldid()+"'>"+ft.getFieldname()+"</option>");
             }
             mb.append("</select>");
             mb.append("<input type=submit value='Unhide Field' onclick=\"javascript: savelayout();\" style=\"font-size: 10px;\">");

@@ -1,4 +1,7 @@
-<%@ page import="reger.core.Debug"%><%@ page import="org.jdom.Document"%><%@ page import="org.jdom.Element"%><%@ page import="org.jdom.output.XMLOutputter"%><%@ page import="reger.Log"%><%
+<%@ page import="reger.core.Debug"%><%@ page import="org.jdom.Document"%><%@ page import="org.jdom.Element"%><%@ page import="org.jdom.output.XMLOutputter"%><%@ page import="reger.Log"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.Iterator"%>
+<%
 //Set the content type.
 response.setContentType("text/xml");
 %><%
@@ -45,13 +48,13 @@ doc.addContent(opml);
     opml.addContent(body);
 
         //Iterate on logs
-        int[] allLogids = userSession.getAccount().getAllLogids();
-
-        for (int i = 0; i < allLogids.length; i++) {
+        ArrayList<Integer> alllogsforaccountid = userSession.getAccount().getAlllogsforaccountid();
+        for (Iterator it = alllogsforaccountid.iterator(); it.hasNext(); ) {
+            Integer logid = (Integer)it.next();
             //Permissions
-            if (userSession.getAccountuser().userCanViewLog(allLogids[i])){
+            if (userSession.getAccountuser().userCanViewLog(logid)){
                 //Create Log object
-                Log log = reger.cache.LogCache.get(allLogids[i]);
+                Log log = reger.cache.LogCache.get(logid);
                 //outline
                 Element outline = new Element("outline");
                 outline.setAttribute("text", log.getName());

@@ -35,9 +35,9 @@ int refreshintervalinseconds = 3600;
 
 
         if (pageProps.action.equals("search")){
-            mb.append(reger.MegaLogTypeListHtmlRenderer.getSearchResults(request.getParameter("searchterms"), "signup2.log", "community-logtypes.log", "community-logtypes-detail.log", request, response, userSession, pageProps));
+            mb.append(reger.MegaLogTypeListHtmlRenderer.getSearchResults(request.getParameter("searchterms"), "signup.log", "community-logtypes.log", "community-logtypes-detail.log", request, response, userSession, pageProps));
         } else {
-            mb.append(reger.MegaLogTypeListHtmlRenderer.getLogTypeList("signup2.log", "community-logtypes.log", "community-logtypes-detail.log", request, response, userSession, pageProps));
+            mb.append(reger.MegaLogTypeListHtmlRenderer.getLogTypeList("signup.log", "community-logtypes.log", "community-logtypes-detail.log", request, response, userSession, pageProps));
         }
 
 

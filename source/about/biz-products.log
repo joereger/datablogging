@@ -69,7 +69,7 @@ mb.append("<h1>Service Configuration</h1>");
 mb.append("There are numerous ways to configure the web logging service to suit your needs.");
 mb.append("<ul>");
 mb.append("<li>Choose log types - You can include as many or as few log types as you like.  Most corporations don't include the Sex Log, for example.  Once a log type is removed, your users will never know that it even exists.  This allows you to create a focus on, say, fitness logs or business logs.");
-mb.append("<li>Base URL - Determines what users will use as their site name (i.e. http://username.yourdomain.com)");
+mb.append("<li>Base URL - Determines what users will use as their site name (i.e. http://user.yourdomain.com)");
 mb.append("<li>Pricing options - How much your users pay if they choose to upgrade.");
 mb.append("<li>Advertising options - Whether or not banners will be displayed on your free users' sites.  You can subsidize them to remove the banners.");
 mb.append("</ul>");

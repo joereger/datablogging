@@ -8,6 +8,9 @@ import reger.mega.FieldType;
 import reger.core.TimeUtils;
 import reger.core.Debug;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Renders an entry to XML per XML Schema doc
  */
@@ -78,9 +81,9 @@ public class EntryStructuredBlogginglRenderer {
                     entry.addContent(extendedData);
 
                         //Individual fields
-                        FieldType[] fields = ent.fields;
-                        for (int i = 0; i < fields.length; i++) {
-                            FieldType field = fields[i];
+                        ArrayList<FieldType> fields = ent.fields;
+                        for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                            FieldType field = (FieldType)it.next();
                             extendedData.addContent(field.getXmlForFieldData());
                         }
 

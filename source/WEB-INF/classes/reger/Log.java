@@ -9,6 +9,8 @@ import reger.core.Debug;
 import reger.cache.LogCache;
 import reger.cache.jboss.Cacheable;
 import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 @Cacheable
 public class Log implements NestedNavItem {
@@ -20,13 +22,13 @@ public class Log implements NestedNavItem {
     private int logaccess;
     private String message="";
     private boolean showonhomepage;
-    private FieldType[] fields = new FieldType[0];
-    private FieldType[] fieldshidden = new FieldType[0];
+    private ArrayList<FieldType> fields = new ArrayList<FieldType>();
+    private ArrayList<FieldType> fieldshidden = new ArrayList<FieldType>();
     private String password;
     private int maintemplateid;
     private int entlisttemplateid;
     private String fieldorder = "";
-    private int[] hiddenfields = new int[0];
+    private ArrayList<Integer> hiddenfields = new ArrayList<Integer>();
     private FieldOrderCollection fieldOrderCollection;
     private int numberOfLiveEntriesInLog = -1;
     private Calendar mostRecentEntryDateGMT;
@@ -39,6 +41,7 @@ public class Log implements NestedNavItem {
     }
 
     public void load(int logid){
+        reger.core.Debug.debug(3, "Log.java", "Load() called for logid="+logid);
         //-----------------------------------
         //-----------------------------------
         String[][] rstLog= Db.RunSQL("SELECT logid, accountid, eventtypeid, name, logaccess, password, message, showonhomepage, maintemplateid, entlisttemplateid, nestednavparenttype, nestednavparentid, nestednavorder, fieldorder, hiddenfields FROM megalog WHERE logid='"+logid+"'");
@@ -51,6 +54,7 @@ public class Log implements NestedNavItem {
                 eventtypeid=Integer.parseInt(rstLog[i][2]);
                 name=rstLog[i][3];
                 logaccess=Integer.parseInt(rstLog[i][4]);
+                reger.core.Debug.debug(3, "Log.java", "logaccess="+logaccess);
                 password=rstLog[i][5];
                 message=rstLog[i][6];
                 if (rstLog[i][7].equals("0")){
@@ -69,10 +73,10 @@ public class Log implements NestedNavItem {
                 if (!rstLog[i][14].equals("")){
                     try{
                         String[] hf = rstLog[i][14].split("\\|");
-                        hiddenfields = new int[hf.length];
+                        hiddenfields = new ArrayList<Integer>();
                         for (int j = 0; j < hf.length; j++) {
                             if (reger.core.Util.isinteger(hf[j])){
-                                hiddenfields[j] = Integer.parseInt(hf[j]);
+                                hiddenfields.add(Integer.parseInt(hf[j]));
                             }
                         }
                     } catch (Exception e){
@@ -94,8 +98,9 @@ public class Log implements NestedNavItem {
                 //Debug
                 StringBuffer tmp2 = new StringBuffer();
                 if (fields!=null){
-                    for (int cc = 0; cc < fields.length; cc++) {
-                        tmp2.append(fields[cc].getMegafieldid() + "<br>fieldname=" + fields[cc].getFieldname() + "<br>");
+                    for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                        FieldType ft = (FieldType)it.next();
+                        tmp2.append(ft.getMegafieldid() + "<br>fieldname=" + ft.getFieldname() + "<br>");
                     }
                 }
                 Debug.debug(5, "", "Log.java - logid="+this.logid+" - fields After Assignment<br>" + tmp2.toString());
@@ -114,10 +119,10 @@ public class Log implements NestedNavItem {
 
         //Get the system fields for this megalogtype
         Debug.debug(5, "", "Log.allMegaFieldsForLog() - logid="+logid+" eventtypeid=" + eventtypeid);
-        FieldType[] systemFields = AllFieldsInSystem.allMegaFieldsForEventtypeid(eventtypeid, true);
+        ArrayList<FieldType> systemFields = AllFieldsInSystem.allMegaFieldsForEventtypeid(eventtypeid, true);
 
         //Get the log fields for this logid
-        FieldType[] logFields = AllFieldsInSystem.getFieldsExplicitylAssignedToLogid(logid, true);
+        ArrayList<FieldType> logFields = AllFieldsInSystem.getFieldsExplicitylAssignedToLogid(logid, true);
 
         //Combine systemFields and logFields into interimFields
         //Start with systemFields as a base and then iterate logFields.
@@ -125,25 +130,27 @@ public class Log implements NestedNavItem {
         fields = systemFields;
         if (logFields!=null){
             //Iterate log fields
-            for (int k = 0; k < logFields.length; k++) {
+            for (Iterator it = logFields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
                 boolean logFieldOverridesSystemField = false;
                 //Iterate interimFields
-                for (int l = 0; l < fields.length && !logFieldOverridesSystemField; l++) {
-                    if (logFields[k].getMegafieldid()==fields[l].getMegafieldid()){
+                for (Iterator itA = fields.iterator(); itA.hasNext(); ) {
+                    FieldType ftA = (FieldType)itA.next();
+                    if (ft.getMegafieldid()==ftA.getMegafieldid()){
                         //Replace systemField with the userField
-                        if (logFields[k].getMegafieldid()==debugMegafieldidToWatch){
-                            Debug.debug(5, "", "Log.java - Replacing megafieldid=" + logFields[k].getMegafieldid());
+                        if (ft.getMegafieldid()==debugMegafieldidToWatch){
+                            Debug.debug(5, "", "Log.java - Replacing megafieldid=" + ft.getMegafieldid());
                         }
-                        fields[l] = logFields[k];
+                        ftA = ft;
                         logFieldOverridesSystemField=true;
                     }
                 }
                 //If, after looking for a field this logField, there isn't one, add it
                 if (!logFieldOverridesSystemField){
-                    if (logFields[k].getMegafieldid()==debugMegafieldidToWatch){
-                        Debug.debug(5, "", "Log.java - logid="+logid+" - Adding userField.megafieldid=" + logFields[k].getMegafieldid());
+                    if (ft.getMegafieldid()==debugMegafieldidToWatch){
+                        Debug.debug(5, "", "Log.java - logid="+logid+" - Adding userField.megafieldid=" + ft.getMegafieldid());
                     }
-                    fields = AddToArray.addToFieldTypeArray(fields, logFields[k]);
+                    fields.add(ft);
                 }
             }
         }
@@ -152,8 +159,9 @@ public class Log implements NestedNavItem {
         //Debug
         StringBuffer tmp0 = new StringBuffer();
         if (fields!=null){
-            for (int cc = 0; cc < fields.length; cc++) {
-                tmp0.append(fields[cc].getMegafieldid() + "<br>fieldname=" + fields[cc].getFieldname() + "<br>");
+            for (Iterator it = fields.iterator(); it.hasNext(); ) {
+               FieldType ftC = (FieldType)it.next();
+                tmp0.append(ftC.getMegafieldid() + "<br>fieldname=" + ftC.getFieldname() + "<br>");
             }
         }
         Debug.debug(5, "", "Log.java - logid="+logid+" fields Before Assignment<br>" + tmp0.toString());
@@ -162,20 +170,19 @@ public class Log implements NestedNavItem {
         orderFieldsAndSeparateHidden(fields);
     }
 
-    private void orderFieldsAndSeparateHidden(FieldType[] inFields){
+    private void orderFieldsAndSeparateHidden(ArrayList<FieldType> inFields){
         //Reset field values
-        FieldType[] fields = new FieldType[0];
-        FieldType[] fieldshidden = new FieldType[0];
+        ArrayList<FieldType> fields = new ArrayList<FieldType>();
+        ArrayList<FieldType> fieldshidden = new ArrayList<FieldType>();
 
-        for (int j = 0; j < inFields.length; j++) {
-
+        for (Iterator it = inFields.iterator(); it.hasNext(); ) {
+            FieldType ft = (FieldType)it.next();
                 //Check visibility
-                if (!reger.core.Util.isIntInIntArray(inFields[j].getMegafieldid(), hiddenfields)){
-                    fields = AddToArray.addToFieldTypeArray(fields, inFields[j]);
+                if (!hiddenfields.contains(ft.getMegafieldid())){
+                    fields.add(ft);
                 } else {
-                    fieldshidden = AddToArray.addToFieldTypeArray(fieldshidden, inFields[j]);
+                    fieldshidden.add(ft);
                 }
-
         }
 
         this.fields = fields;
@@ -220,11 +227,14 @@ public class Log implements NestedNavItem {
 
 
         StringBuffer hiddenfieldsForSql = new StringBuffer();
-        for (int i = 0; i < hiddenfields.length; i++) {
-            hiddenfieldsForSql.append(hiddenfields[i]);
-            if (i<(hiddenfields.length-1)){
+        int i = 0;
+        for (Iterator it = hiddenfields.iterator(); it.hasNext(); ) {
+            Integer tmpFieldid = (Integer)it.next();
+            hiddenfieldsForSql.append(tmpFieldid);
+            if (i<(hiddenfields.size()-1)){
                 hiddenfieldsForSql.append("|");
             }
+            i++;
         }
 
         //-----------------------------------
@@ -313,7 +323,7 @@ public class Log implements NestedNavItem {
         return showonhomepage;
     }
 
-    public FieldType[] getFields() {
+    public ArrayList<FieldType> getFields() {
         return fields;
     }
 
@@ -510,8 +520,8 @@ public class Log implements NestedNavItem {
         FieldType tmpFt = reger.AllFieldsInSystem.getMegaFieldByMegafieldid(megafieldid);
         if (tmpFt.isThereDataForFieldInDB()){
             //Hide it
-            if (!reger.core.Util.isIntInIntArray(megafieldid, hiddenfields)){
-                hiddenfields = reger.core.Util.addToIntArray(hiddenfields, megafieldid);
+            if (!hiddenfields.contains(megafieldid)){
+                hiddenfields.add(megafieldid);
                 save();
             }
         } else {
@@ -523,17 +533,18 @@ public class Log implements NestedNavItem {
     public void unhideField(int megafieldid){
         //Remove from hiddenfields
         Debug.debug(5, "", "Field.java - Unhide called on megafieldid=" + megafieldid);
-        int[] out = new int[0];
-        for (int i = 0; i < hiddenfields.length; i++) {
-            if(hiddenfields[i]!=megafieldid){
-                out = reger.core.Util.addToIntArray(out, hiddenfields[i]);
+        ArrayList<Integer> out = new ArrayList<Integer>();
+        for (Iterator it = hiddenfields.iterator(); it.hasNext(); ) {
+            Integer tmpfieldid = (Integer)it.next();
+            if(tmpfieldid!=megafieldid){
+                out.add(tmpfieldid);
             }
         }
         hiddenfields = out;
         save();
     }
 
-    public int[] getHiddenfields() {
+    public ArrayList<Integer> getHiddenfields() {
         return hiddenfields;
     }
 
@@ -541,11 +552,11 @@ public class Log implements NestedNavItem {
         return fieldorder;
     }
 
-    public FieldType[] getFieldshidden() {
+    public ArrayList<FieldType> getFieldshidden() {
         return fieldshidden;
     }
 
-    public void setFieldshidden(FieldType[] fieldshidden) {
+    public void setFieldshidden(ArrayList<FieldType> fieldshidden) {
         this.fieldshidden = fieldshidden;
     }
 
@@ -553,7 +564,7 @@ public class Log implements NestedNavItem {
         this.fieldorder = fieldorder;
     }
 
-    public void setHiddenfields(int[] hiddenfields) {
+    public void setHiddenfields(ArrayList<Integer> hiddenfields) {
         this.hiddenfields = hiddenfields;
     }
 
@@ -561,5 +572,5 @@ public class Log implements NestedNavItem {
         return fieldOrderCollection;
     }
 
- 
+
 }

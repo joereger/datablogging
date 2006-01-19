@@ -2,9 +2,7 @@ package reger;
 
 import org.apache.xmlrpc.XmlRpcClient;
 
-import java.util.Calendar;
-import java.util.Vector;
-import java.util.Hashtable;
+import java.util.*;
 
 import reger.core.db.Db;
 import reger.core.Debug;
@@ -73,10 +71,10 @@ public class GroupsClient {
     }
 
 
-    public static void addEntryToGroups(int eventid, int[] groupsubscriptionids, int accountuserid){
+    public static void addEntryToGroups(int eventid, ArrayList<Integer> groupsubscriptionids, int accountuserid){
 
         if (groupsubscriptionids==null){
-            groupsubscriptionids = new int[0];
+            groupsubscriptionids = new ArrayList<Integer>();
         }
 
         //Get a list of groupsubscriptionids that have already been sent over XML to groups server for this eventid
@@ -110,8 +108,9 @@ public class GroupsClient {
         for (int i = 0; i < allGroupsubscriptions.length; i++) {
             //Figure out the user's intention
             boolean userWantsAddedToGroup = false;
-            for (int j = 0; j < groupsubscriptionids.length && !userWantsAddedToGroup; j++) {
-                if (groupsubscriptionids[j]==allGroupsubscriptions[i]){
+            for (Iterator it = groupsubscriptionids.iterator(); it.hasNext(); ) {
+                Integer gsid = (Integer)it.next();
+                if (gsid==allGroupsubscriptions[i]){
                     userWantsAddedToGroup = true;
                 }
             }

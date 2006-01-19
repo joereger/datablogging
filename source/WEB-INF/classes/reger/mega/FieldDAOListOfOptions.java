@@ -5,6 +5,7 @@ import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.TreeMap;
+import java.util.ArrayList;
 
 /**
  * Simple storage method puts data into DB in simple megavalue table
@@ -13,7 +14,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
 
     //This is the format of the data
     String value = "";
-    String[] possibleValues = new String[0];
+    ArrayList<String> possibleValues = new ArrayList<String>();
 
 
     public void saveData(int megafieldid, int eventid, int logid) {
@@ -114,10 +115,10 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         //-----------------------------------
         if (rstVal!=null && rstVal.length>0){
-        	for(int i=0; i<rstVal.length; i++){
-        	    Debug.debug(5, "", "Value is set for<br>megafieldid=" + megafieldid +"<br>value=" + rstVal[i][1]);
+            for(int i=0; i<rstVal.length; i++){
+                Debug.debug(5, "", "Value is set for<br>megafieldid=" + megafieldid +"<br>value=" + rstVal[i][1]);
                 value = rstVal[i][1];
-        	}
+            }
         }
 
     }
@@ -132,9 +133,9 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         //-----------------------------------
         if (rstVal!=null && rstVal.length>0){
-        	for(int i=0; i<rstVal.length; i++){
+            for(int i=0; i<rstVal.length; i++){
                 value = rstVal[i][1];
-        	}
+            }
         }
     }
 
@@ -147,10 +148,10 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         //-----------------------------------
         if (rstOpts!=null && rstOpts.length>0){
-        	for(int i=0; i<rstOpts.length; i++){
-        	    Debug.debug(5, "", "FieldDAOListOfOptions.loadPossibleValues() - adding possiblevalue=" + rstOpts[i][0]);
-                possibleValues = reger.core.Util.addToStringArray(possibleValues, rstOpts[i][0]);
-        	}
+            for(int i=0; i<rstOpts.length; i++){
+                Debug.debug(5, "", "FieldDAOListOfOptions.loadPossibleValues() - adding possiblevalue=" + rstOpts[i][0]);
+                possibleValues.add(rstOpts[i][0]);
+            }
         }
     }
 
@@ -162,7 +163,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
         this.value = value;
     }
 
-    public String[] getPossibleValues() {
+    public ArrayList<String> getPossibleValues() {
         return possibleValues;
     }
 
@@ -233,15 +234,15 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         //-----------------------------------
         if (rstVal!=null && rstVal.length>0){
-        	for(int i=0; i<rstVal.length; i++){
-        	    //The value we're looking for
-        	    String val = rstVal[i][1];
+            for(int i=0; i<rstVal.length; i++){
+                //The value we're looking for
+                String val = rstVal[i][1];
 
-        	    //This will be the new identity
-        	    int myidentity = -1;
+                //This will be the new identity
+                int myidentity = -1;
 
-        	    //Add this option to the new logid
-        	    //See if this option already exists in the new log
+                //Add this option to the new logid
+                //See if this option already exists in the new log
                 //-----------------------------------
                 //-----------------------------------
                 String[][] rstOpts= reger.core.db.Db.RunSQL("SELECT megaoptionid FROM megaoption WHERE logid='"+ newlogid +"' AND megafieldid='"+ megafieldid +"' AND optiontext='"+ reger.core.Util.cleanForSQL(val) +"'");
@@ -265,7 +266,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
                 int count = Db.RunSQLUpdate("UPDATE megavalue SET megavalue='"+myidentity+"' WHERE megafieldid='"+megafieldid+"' AND eventid='"+eventid+"'");
                 //-----------------------------------
                 //-----------------------------------
-        	}
+            }
         }
     }
 
@@ -296,14 +297,14 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         //-----------------------------------
         if (rstData!=null && rstData.length>0){
-        	for(int i=0; i<rstData.length; i++){
-        	    //Create new entries for the data and attach it to the new eventid
-        	    //-----------------------------------
-        	    //-----------------------------------
-        	    int identity = Db.RunSQLInsert("INSERT INTO megavalue(megafieldid, eventid, megavalue) VALUES('"+megafieldid+"', '"+desteventid+"', '"+reger.core.Util.cleanForSQL(rstData[i][0])+"')");
-        	    //-----------------------------------
-        	    //-----------------------------------
-        	}
+            for(int i=0; i<rstData.length; i++){
+                //Create new entries for the data and attach it to the new eventid
+                //-----------------------------------
+                //-----------------------------------
+                int identity = Db.RunSQLInsert("INSERT INTO megavalue(megafieldid, eventid, megavalue) VALUES('"+megafieldid+"', '"+desteventid+"', '"+reger.core.Util.cleanForSQL(rstData[i][0])+"')");
+                //-----------------------------------
+                //-----------------------------------
+            }
         }
     }
 
@@ -347,8 +348,8 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         //-----------------------------------
         if (rstOptsProcess!=null && rstOptsProcess.length>0){
-        	for(int i=0; i<rstOptsProcess.length; i++){
-        	    //If we have an incoming value for this field
+            for(int i=0; i<rstOptsProcess.length; i++){
+                //If we have an incoming value for this field
                 if (request.getParameter("systemconfig-optiontext-megaoptionid-" + rstOptsProcess[i][0])!=null && !request.getParameter("systemconfig-optiontext-megaoptionid-" + rstOptsProcess[i][0]).equals("")){
                     //If it's different than the one in the Db
                     if (!request.getParameter("systemconfig-optiontext-megaoptionid-" + rstOptsProcess[i][0]).equals(rstOptsProcess[i][1])){
@@ -372,13 +373,13 @@ public class FieldDAOListOfOptions implements FieldDAO{
                         //-----------------------------------
                         //-----------------------------------
                         if (rstCount!=null && rstCount.length>0){
-                        	//Just mark inactive because some peeps are using it
-                        	Debug.debug(5, "", "marking inactive.  megaoptionid=" + rstOptsProcess[i][0]);
-                        	//-----------------------------------
-                        	//-----------------------------------
-                        	int count = Db.RunSQLUpdate("UPDATE megaoption SET isactive='0' WHERE megaoptionid='"+rstOptsProcess[i][0]+"'");
-                        	//-----------------------------------
-                        	//-----------------------------------
+                            //Just mark inactive because some peeps are using it
+                            Debug.debug(5, "", "marking inactive.  megaoptionid=" + rstOptsProcess[i][0]);
+                            //-----------------------------------
+                            //-----------------------------------
+                            int count = Db.RunSQLUpdate("UPDATE megaoption SET isactive='0' WHERE megaoptionid='"+rstOptsProcess[i][0]+"'");
+                            //-----------------------------------
+                            //-----------------------------------
                         } else {
                             //Do a delete because nobody's using this option
                             Debug.debug(5, "", "deleting.  megaoptionid=" + rstOptsProcess[i][0]);
@@ -390,7 +391,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
                         }
                     }
                 }
-        	}
+            }
         }
 
         //Continue processing by creating new options if necessary
@@ -438,7 +439,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         //-----------------------------------
         if (rstOpts!=null && rstOpts.length>0){
-        	for(int i=0; i<rstOpts.length; i++){
+            for(int i=0; i<rstOpts.length; i++){
                 mb.append("<tr>");
                 mb.append("<td valign=top align=right bgcolor=#ffffff>");
                 mb.append("<font face=arial size=-1>");
@@ -451,7 +452,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
                 mb.append("</font>");
                 mb.append("</td>");
                 mb.append("</tr>");
-        	}
+            }
         } else {
             mb.append("<tr>");
             mb.append("<td valign=top align=right bgcolor=#ffffff>");
@@ -497,7 +498,7 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //-----------------------------------
         //-----------------------------------
         if (rstData!=null && rstData.length>0){
-        	if (Integer.parseInt(rstData[0][0])>0){
+            if (Integer.parseInt(rstData[0][0])>0){
                 return true;
             }
         }

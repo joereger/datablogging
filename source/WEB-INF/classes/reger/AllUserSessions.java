@@ -35,6 +35,11 @@ public class AllUserSessions {
         //UserSessionCache.removeUserSession(userSessionId);
     }
 
+    private UserSession getUserSession(String userSessionId){
+        return UserSessionCache.getInstance().getUserSession(userSessionId);
+        //return UserSessionCache.getUserSession(userSessionId);
+    }
+
     public static int numberOfSessionsCurrentlyLive(){
         return 0;
     }
@@ -59,14 +64,14 @@ public class AllUserSessions {
         } else {
             //One last try to find the session based on jsessionid
             //Note that this assumes I'm keying my own session scheme off of Tomcat's jsessionid
-            reger.core.Debug.debug(5, "AllUserSessions.java", "userSessionId was blank so trying to use sessionid.");
+            reger.core.Debug.debug(4, "AllUserSessions.java", "userSessionId was blank so trying to use sessionid.");
             reger.UserSession us = getUserSession(request.getSession().getId());
             if (us!=null){
                 us.processNewRequest(request);
                 return us;
             }
         }
-        reger.core.Debug.debug(5, "AllUseressions.java", "AllUserSessions.getUserSession() - Existing session not found.  Will create a new session.");
+        reger.core.Debug.debug(4, "AllUseressions.java", "AllUserSessions.getUserSession() - Existing session not found.  Will create a new session.");
         //Create a new session
         reger.UserSession us = new reger.UserSession(request);
         //Add the session to the session hashtable
@@ -89,19 +94,17 @@ public class AllUserSessions {
         return 0;
     }
 
-    private UserSession getUserSession(String userSessionId){
-        return UserSessionCache.getInstance().getUserSession(userSessionId);
-        //return UserSessionCache.getUserSession(userSessionId);
-    }
+
 
     private Cookie[] getCookies(javax.servlet.http.HttpServletRequest request, reger.UserSession userSession){
         Cookie[] outCookies = new Cookie[1];
         //Create a cookie with no domain specified
         outCookies[0] = createNewCookie(request, "");
         //Iterate all possible domains
-        String[] domains =  userSession.getUrlSplitter().getServernameAllPossibleDomains();
-        for (int i = 0; i < domains.length; i++) {
-            outCookies = reger.core.Util.addToCookieArray(outCookies, createNewCookie(request, domains[i]));
+        ArrayList<String> domains =  userSession.getUrlSplitter().getServernameAllPossibleDomains();
+        for (Iterator it = domains.iterator(); it.hasNext(); ) {
+            String domain = (String)it.next();
+            outCookies = reger.core.Util.addToCookieArray(outCookies, createNewCookie(request, domain));
         }
         return outCookies;
     }

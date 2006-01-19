@@ -6,6 +6,7 @@
                  java.util.Hashtable,
                  reger.core.licensing.License"%>
 <%@ page import="reger.cache.LogCache"%>
+<%@ page import="java.util.HashMap"%>
 <%
 //Only do this page if we have an invalid database connection.
 //Otherwise, anybody's going to be able to reset the database
@@ -69,7 +70,7 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
     au.populateFromRequest(request);
 
     //Make sure we have a password
-    if (request.getParameter("acctuserpassword")==null || request.getParameter("acctuserpassword").equals("")){
+    if (request.getParameter("password")==null || request.getParameter("password").equals("")){
         errortext = errortext + "You must provide a password.<br>";
     }
     //Servername validation
@@ -89,7 +90,7 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
         //Expiration date
         Calendar xDaysFromNow = reger.core.TimeUtils.xDaysAgoEnd(reger.core.TimeUtils.nowInGmtCalendar(), (-1*reger.Vars.TRIALACCOUNTDAYS));
         //License props
-        Hashtable licenseProps = new Hashtable();
+        HashMap licenseProps = new HashMap();
         licenseProps.put(License.PROPSTRINGLICENSETYPE, String.valueOf(License.LICENSETYPEACCOUNTSUBSCRIPTION));
         licenseProps.put(License.PROPSTRINGEXPDATEGMT, String.valueOf(reger.core.TimeUtils.dateformatfordb(xDaysFromNow)));
         //Create the license
@@ -144,7 +145,7 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
         reger.AllPrivateLabelsInSystem.refresh();
 
         //Redirect to log the user in
-        //response.sendRedirect(baseUrlOfAccount +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("acctuserpassword"), "UTF-8")+"&msg=signupcomplete");
+        //response.sendRedirect(baseUrlOfAccount +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&msg=signupcomplete");
         //return;
         response.sendRedirect("setup-04.log");
         return;

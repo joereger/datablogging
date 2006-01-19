@@ -352,29 +352,23 @@ if (rstAcct!=null && rstAcct.length>0){
     mb.append("<tr>");
     mb.append("<td valign=top bgcolor=#cccccc class=acct>createdate</td>");
     mb.append("<td valign=top bgcolor=#cccccc class=acct>Friendly Name</td>");
-    mb.append("<td valign=top bgcolor=#cccccc class=acct>username</td>");
     mb.append("<td valign=top bgcolor=#cccccc class=acct>accountuserid</td>");
     mb.append("<td valign=top bgcolor=#cccccc class=acct>isactive</td>");
-    mb.append("<td valign=top bgcolor=#cccccc class=acct>passphrasequestion</td>");
-    mb.append("<td valign=top bgcolor=#cccccc class=acct>passphraseanswer</td>");
     mb.append("<td valign=top bgcolor=#cccccc class=acct>lastlogindate</td>");
     mb.append("<tr>");
     //-----------------------------------
     //-----------------------------------
-    String[][] rstUsers= Db.RunSQL("SELECT accountuserid, isactive, username, password, passphrasequestion, passphraseanswer, lastlogindate, createdate, friendlyname FROM accountuser WHERE accountid='"+request.getParameter("accountid")+"' ORDER BY createdate ASC");
+    String[][] rstUsers= Db.RunSQL("SELECT accountuserid, isactive, password, lastlogindate, createdate, friendlyname FROM accountuser WHERE accountid='"+request.getParameter("accountid")+"' ORDER BY createdate ASC");
     //-----------------------------------
     //-----------------------------------
     if (rstUsers!=null && rstUsers.length>0){
         for(int i=0; i<rstUsers.length; i++){
             mb.append("<tr>");
-            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][7]+"</td>");
-            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct><a href='accountuserdetail.log?accountuserid="+rstUsers[i][0]+"&plid="+plid+"'>"+rstUsers[i][8]+" </a></td>");
-            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][2]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][4]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct><a href='accountuserdetail.log?accountuserid="+rstUsers[i][0]+"&plid="+plid+"'>"+rstUsers[i][5]+" </a></td>");
             mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][0]+"</td>");
             mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][1]+"</td>");
-            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][4]+"</td>");
-            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][5]+"</td>");
-            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][6]+"</td>");
+            mb.append("<td valign=top bgcolor=#e6e6e6 class=acct>"+rstUsers[i][3]+"</td>");
             mb.append("<tr>");
         }
     }

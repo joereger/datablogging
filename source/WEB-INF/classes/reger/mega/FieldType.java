@@ -2,6 +2,8 @@ package reger.mega;
 
 import org.jdom.Element;
 
+import java.util.ArrayList;
+
 /**
  * The iterface represents field types like textbox, dropdown, time, etc.
  * FieldTypes are generally created by extending the Field class and implementing the FieldType class.
@@ -64,12 +66,12 @@ public interface FieldType extends FieldInterface {
     /**
      * Returns an array of FieldData objects which represent the data held in this field.
      */
-    FieldData[] getDataForField();
+    ArrayList<FieldData> getDataForField();
 
     /**
      * Returns an array of empty FieldData objects that demonstrate the name/value pairs that this field generates/accepts/works with
      */
-    FieldData[] getEmptyDataFields();
+    ArrayList<FieldData> getEmptyDataFields();
 
 
     /**

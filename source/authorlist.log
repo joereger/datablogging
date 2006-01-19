@@ -42,7 +42,7 @@ mb.append("</tr>");
 //@todo Should only show authors who can write to at least one log you can see
 //-----------------------------------
 //-----------------------------------
-String[][] rstAuthors= Db.RunSQL("SELECT accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser WHERE accountid='"+userSession.getAccount().getAccountid()+"' AND isactive='1' ORDER BY accountuserid ASC");
+String[][] rstAuthors= Db.RunSQL("SELECT accountuserid, friendlyname, isactive, lastlogindate FROM accountuser WHERE accountid='"+userSession.getAccount().getAccountid()+"' AND isactive='1' ORDER BY accountuserid ASC");
 //-----------------------------------
 //-----------------------------------
 if (rstAuthors!=null && rstAuthors.length==1){
@@ -64,11 +64,7 @@ if (rstAuthors!=null && rstAuthors.length>0){
         mb.append("<font face=arial size=-1>");
         mb.append("<a href='author.log?accountuserid="+rstAuthors[i][0]+"'>");
         mb.append("<img src='"+ac.primaryImage(pageProps.pathToAppRoot, true)+"' width=35 border=0 align=top>");
-        String name = rstAuthors[i][1];
-        if (!rstAuthors[i][2].equals("")){
-            name = rstAuthors[i][2];
-        }
-        mb.append(name);
+        mb.append(rstAuthors[i][1]);
         mb.append("</a>");
         mb.append("</font>");
         mb.append("</td>");
@@ -76,7 +72,7 @@ if (rstAuthors!=null && rstAuthors.length>0){
 
         mb.append("<td valign=top align=left>");
         mb.append("<font face=arial size=-2>");
-        String cal = reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.gmttousertime(reger.core.TimeUtils.dbstringtocalendar(rstAuthors[i][4]), userSession.getAccount().getTimezoneid()));
+        String cal = reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.gmttousertime(reger.core.TimeUtils.dbstringtocalendar(rstAuthors[i][3]), userSession.getAccount().getTimezoneid()));
         mb.append(cal);
         mb.append("</font>");
         mb.append("</td>");

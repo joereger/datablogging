@@ -1,10 +1,12 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.cache.jboss.Cacheable;
 
 /**
  * This object represents a field that an accountuser adds to their profile
  */
+@Cacheable
 public class Accountuserfield {
 
     public int accountuserfieldid=-1;
@@ -20,11 +22,11 @@ public class Accountuserfield {
         //-----------------------------------
         //-----------------------------------
         if (rstAcUField!=null && rstAcUField.length>0){
-        	this.fieldtitle = rstAcUField[0][0];
-        	this.fielddata = rstAcUField[0][1];
-        	this.accountuserfieldid=accountuserfieldid;
-        	this.order = Integer.parseInt(rstAcUField[0][2]);
-        	this.accountuserid = Integer.parseInt(rstAcUField[0][3]);
+            this.fieldtitle = rstAcUField[0][0];
+            this.fielddata = rstAcUField[0][1];
+            this.accountuserfieldid=accountuserfieldid;
+            this.order = Integer.parseInt(rstAcUField[0][2]);
+            this.accountuserid = Integer.parseInt(rstAcUField[0][3]);
         }
     }
 
@@ -71,7 +73,7 @@ public class Accountuserfield {
             int count = Db.RunSQLUpdate("DELETE FROM accountuserfield WHERE accountuserfieldid='"+accountuserfieldid+"'");
             //-----------------------------------
             //-----------------------------------
-        }   
+        }
     }
 
 }

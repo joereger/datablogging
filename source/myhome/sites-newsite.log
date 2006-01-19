@@ -112,7 +112,7 @@ if (pageProps.action.equals("createaccount")) {
         if (userSession.getPl().getNewaccountsrequireadminapproval()){
             reger.emailtext.BasicEmails.newAccountRequiringAdminApproval(userSession.getPl(), newaccountid);
             //Redirect to awaiting approval screen
-            response.sendRedirect("awaitingapproval.log?accountid="+newaccountid);
+            response.sendRedirect("login-awaitingapproval.log?accountid="+newaccountid);
             return;
         }
 

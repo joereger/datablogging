@@ -3,7 +3,6 @@ package reger;
 import reger.template.Template;
 import reger.core.TimeUtils;
 import reger.core.Debug;
-import reger.core.db.Db;
 import reger.cache.LogCache;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,33 +14,40 @@ public class htmlListEvents {
 
         //Create the output stringbuffer
         StringBuffer list = new StringBuffer();
+
         //Number of entries to display
         int numberofentriestodisplay = userSession.getAccount().getDisplaynumberofentries();
         if (request.getParameter("numberofentriestodisplay") != null && reger.core.Util.isinteger(request.getParameter("numberofentriestodisplay"))) {
             numberofentriestodisplay = Integer.parseInt(request.getParameter("numberofentriestodisplay"));
         }
+
         //Override display
         if (request.getParameter("displaypagingnumbers") != null && request.getParameter("displaypagingnumbers").equals("false")) {
             displaypagingnumbers = false;
         }
+
         //Deal with paging
         int limitMin = (currentpage * numberofentriestodisplay) - numberofentriestodisplay;
         int limitMax = numberofentriestodisplay;
+
         //Logid SQL clause
         String logidSql = "";
         if (logid > 0) {
             logidSql = " AND event.logid='" + logid + "' ";
         }
+
         //Locationid SQL clause
         String locationidSql = "";
         if (locationid > 0) {
             locationidSql = " AND locationid='" + locationid + "' ";
         }
+
         //Show on homepage sql
         boolean includelogshiddenfromhomepage = true;
         if ((logid <= 0) && (request.getParameter("tagid") == null) && (request.getParameter("tag") == null)) {
             includelogshiddenfromhomepage = false;
         }
+
         //@!todo Setting a viewdate in the url line doesn't work.  It returns no results.  Possibly a timezone issue.
         //Viewdate SQL - 2003-12-23
         String viewdatesql = "";
@@ -56,8 +62,10 @@ public class htmlListEvents {
             }
             Calendar viewstart = TimeUtils.dbstringtocalendar(tmp + " 00:00:00");
             viewdateusermessage = reger.core.TimeUtils.dateformatdate(viewstart);
+            ;
             viewstart = TimeUtils.usertogmttime(viewstart, userSession.getAccount().getTimezoneid());
             String viewstartStr = TimeUtils.dateformatfordb(viewstart);
+
             //End date
             if (viewmonth != null && !viewmonth.equals("")) {
                 tmp = viewmonth.substring(0, 7) + "-01 00:00:00";
@@ -70,36 +78,40 @@ public class htmlListEvents {
             viewdateusermessage = viewdateusermessage + " - " + reger.core.TimeUtils.dateformatdate(viewend) + "<br>";
             viewend = TimeUtils.usertogmttime(viewend, userSession.getAccount().getTimezoneid());
             String viewendStr = TimeUtils.dateformatfordb(viewend);
+
             //Create the sql
             viewdatesql = " AND event.date>'" + viewstartStr + "' AND event.date<'" + viewendStr + "'";
+
             //reger.core.Util.logtodb("viewdatesql: " + viewdatesql);
         }
+
         //Field list.  Do this to keep the resulting array the same for all queries
         String fieldSql = "";
         //fieldSql = "title, comments, date, eventid, event.logid, (SELECT count(*) FROM message m WHERE m.eventid=event.eventid and m.isapproved='1'), (SELECT count(*) FROM image i WHERE i.eventid=event.eventid), event.accountuserid";
         fieldSql = "event.eventid";
+
         String from = "event event";
         String tagSql = "";
         String tagId = request.getParameter("tagid");
-        String tag = request.getParameter("tag");
+//        String tag = request.getParameter("tag");
         if ((tagId != null) && (tagId.trim().length() > 0)) {
             from += ", tag tag, eventtaglink eventtaglink";
             tagSql += " AND tag.tagid='" + tagId + "' AND eventtaglink.tagid=tag.tagid and event.eventid=eventtaglink.eventid ";
-        } else if ((tagId == null) && ((tag != null) && (tag.trim().length() > 0))) {
-            from += ", tag tag, eventtaglink eventtaglink";
-            tagSql += " AND tag.tag='" + tag + "' AND eventtaglink.tagid=tag.tagid and event.eventid=eventtaglink.eventid ";
         }
 //        if ((tag != null) && (tag.trim().length() > 0)) {
 //            System.out.println("TAG IS **** " + tag);
 //        }
+
         //This section builds one of two sets of SQL queries.
         //In each set is a main that returns a limited number of records.
         //And a count that only returns the count of all records fulfilling criteria.
         String sql = "";
         String sqlCount = "";
+
         //It's the homepage or a log homepage
         //sql = "SELECT "+ fieldSql +" FROM event event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + "" + logidSql + viewdatesql + locationidSql + showonhomepageSql +"ORDER BY event.date DESC" + " LIMIT "+ limitMin +","+ limitMax;
         //sqlCount = "SELECT count(*) FROM event event, megalog WHERE "+reger.Entry.sqlOfLiveEntry+" AND event.logid=megalog.logid AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + "" + logidSql + viewdatesql + locationidSql + showonhomepageSql;
+
         sql = "SELECT " + fieldSql + " FROM " + from + " WHERE " + reger.Entry.sqlOfLiveEntry + " AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + tagSql + locationidSql + "ORDER BY event.date DESC" + " LIMIT " + limitMin + "," + limitMax;
         sqlCount = "SELECT count(*) FROM " + from + " WHERE " + reger.Entry.sqlOfLiveEntry + " AND " + userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage) + "" + logidSql + viewdatesql + locationidSql + tagSql;
         //For debugging, output the sql to the screen
@@ -115,6 +127,7 @@ public class htmlListEvents {
         if (rsEventCount != null) {
             counttotal = Integer.parseInt(rsEventCount[0][0]);
         }
+
         //reger.core.Util.logtodb("sql htmlListEvents.java: "+sql);
         //Return the actual records needed
         //-----------------------------------
@@ -144,6 +157,7 @@ public class htmlListEvents {
 
         if (rsEvent != null && rsEvent.length > 0) {
             for (int i = 0; i < rsEvent.length; i++) {
+
                 //Go get the entry from the cache
                 Entry entry = reger.cache.EntryCache.get(Integer.parseInt(rsEvent[i][0]));
 

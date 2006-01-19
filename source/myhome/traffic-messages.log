@@ -1,4 +1,5 @@
 <%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.cache.EntryCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -60,7 +61,7 @@ if (pageProps.action.equals("delete")) {
         //Make sure this messageid is tied to this account
         //-----------------------------------
         //-----------------------------------
-        String[][] rstChkMsg= Db.RunSQL("SELECT messageid FROM message, event WHERE messageid='"+request.getParameter("messageid")+"' AND accountid='"+userSession.getAccount().getAccountid()+"' AND message.eventid=event.eventid");
+        String[][] rstChkMsg= Db.RunSQL("SELECT messageid, event.eventid FROM message, event WHERE messageid='"+request.getParameter("messageid")+"' AND accountid='"+userSession.getAccount().getAccountid()+"' AND message.eventid=event.eventid");
         //-----------------------------------
         //-----------------------------------
         if (rstChkMsg!=null && rstChkMsg.length>0){
@@ -70,6 +71,9 @@ if (pageProps.action.equals("delete")) {
             int count = Db.RunSQLUpdate("DELETE FROM message WHERE messageid='"+request.getParameter("messageid")+"'");
             //-----------------------------------
             //-----------------------------------
+
+            //Refresh the entry cache
+            EntryCache.flush(Integer.parseInt(rstChkMsg[0][1]));
 
             //Update the AccountCounts cache
             reger.cache.AccountCountCache.flushByAccountid(userSession.getAccount().getAccountid());

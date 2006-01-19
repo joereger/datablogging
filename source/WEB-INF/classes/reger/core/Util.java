@@ -1300,20 +1300,19 @@ public class Util {
     
 
     /**
-     * Verifies that a username is of the correct form... not that it matches any account.
-     * @param username
+     * Verifies that a Email is of the correct form... not that it matches any account.
      */
-    public static String validateUsername(String username){
+    public static String validateEmail(String email){
         String errortext = "";
 
-        //Make sure username isn't blank
-        if (username.equals("")) {
-            errortext=errortext + "Your username can't be blank.<br>";
+        //Make sure email isn't blank
+        if (email.equals("")) {
+            errortext=errortext + "Your email can't be blank.<br>";
         }
 
-        //username can't have funky characters
-        if (username.split("[a-zA-Z0-9\\-]").length>1){
-            errortext=errortext+"Your username can only be made up of letters, numbers and dashes.  No spaces or other characters are allowed.<br>";
+        //Email can't have spaces
+        if (email.split(" ").length>1){
+            errortext=errortext+"No spaces or other characters are allowed in the email.<br>";
         }
 
         return errortext;

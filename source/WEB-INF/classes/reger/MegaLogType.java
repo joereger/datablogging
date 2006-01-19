@@ -8,6 +8,9 @@ import reger.core.Debug;
 import reger.cache.LogCache;
 import reger.xforms.LogTypeXform;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Represents a Log
  */
@@ -27,8 +30,8 @@ public class MegaLogType {
     private int[] hiddenfields = new int[0];
     private FieldOrderCollection fieldOrderCollection;
 
-    private FieldType[] megaFields;
-    private FieldType[] megaFieldsHidden;
+    private ArrayList<FieldType> megaFields;
+    private ArrayList<FieldType> megaFieldsHidden;
 
     private LogTypeXform logtypexform = null;
 
@@ -37,7 +40,7 @@ public class MegaLogType {
         load();
     }
 
-    public MegaLogType(int accountuserid, String megalogname, String description, String longdescription, boolean showlocation, String icon, boolean showonhomepage, int issystemlogtype, FieldType[] megaFields, boolean isprivate, String fieldorder, int[] hiddenfields, FieldType[] megaFieldsHidden, FieldOrderCollection fieldOrderCollection){
+    public MegaLogType(int accountuserid, String megalogname, String description, String longdescription, boolean showlocation, String icon, boolean showonhomepage, int issystemlogtype, ArrayList<FieldType> megaFields, boolean isprivate, String fieldorder, int[] hiddenfields, ArrayList<FieldType> megaFieldsHidden, FieldOrderCollection fieldOrderCollection){
         this.eventtypeid = -1;
         this.accountuserid = accountuserid;
         this.megalogname = megalogname;
@@ -138,17 +141,18 @@ public class MegaLogType {
         orderFieldsAndSeparateHidden(megaFields);
     }
 
-    private void orderFieldsAndSeparateHidden(FieldType[] inFields){
+    private void orderFieldsAndSeparateHidden(ArrayList<FieldType> inFields){
         //Reset field values
-        FieldType[] megaFields = new FieldType[0];
-        FieldType[] megaFieldsHidden = new FieldType[0];
+        ArrayList<FieldType> megaFields = new ArrayList<FieldType>();
+        ArrayList<FieldType> megaFieldsHidden = new ArrayList<FieldType>();
 
-        for (int j = 0; j < inFields.length; j++) {
+        for (Iterator it = inFields.iterator(); it.hasNext(); ) {
+            FieldType ft = (FieldType)it.next();
             //Check visibility
-            if (!reger.core.Util.isIntInIntArray(inFields[j].getMegafieldid(), hiddenfields)){
-                megaFields = AddToArray.addToFieldTypeArray(megaFields, inFields[j]);
+            if (!reger.core.Util.isIntInIntArray(ft.getMegafieldid(), hiddenfields)){
+                megaFields.add(ft);
             } else {
-                megaFieldsHidden = AddToArray.addToFieldTypeArray(megaFieldsHidden, inFields[j]);
+                megaFieldsHidden.add(ft);
             }
         }
 
@@ -320,11 +324,12 @@ public class MegaLogType {
         return showonhomepage;
     }
 
-    public FieldType[] getMegaFields() {
-        FieldType[] out = new FieldType[0];
+    public ArrayList<FieldType> getMegaFields() {
+        ArrayList<FieldType> out = new ArrayList<FieldType>();
         if (megaFields!=null){
-            for (int i = 0; i < megaFields.length; i++) {
-                out = AddToArray.addToFieldTypeArray(out, (FieldType)megaFields[i].clone());
+            for (Iterator it = megaFields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                out.add((FieldType)ft.clone());
             }
         }
         return out;
@@ -372,7 +377,7 @@ public class MegaLogType {
         this.showonhomepage = showonhomepage;
     }
 
-    public void setMegaFields(FieldType[] megaFields) {
+    public void setMegaFields(ArrayList<FieldType> megaFields) {
         this.megaFields = megaFields;
     }
 
@@ -392,7 +397,7 @@ public class MegaLogType {
         return hiddenfields;
     }
 
-    public FieldType[] getMegaFieldsHidden() {
+    public ArrayList<FieldType> getMegaFieldsHidden() {
         return megaFieldsHidden;
     }
 
@@ -404,7 +409,7 @@ public class MegaLogType {
         this.hiddenfields = hiddenfields;
     }
 
-    public void setMegaFieldsHidden(FieldType[] megaFieldsHidden) {
+    public void setMegaFieldsHidden(ArrayList<FieldType> megaFieldsHidden) {
         this.megaFieldsHidden = megaFieldsHidden;
     }
 
@@ -416,5 +421,5 @@ public class MegaLogType {
         return logtypexform;
     }
 
-    
+
 }

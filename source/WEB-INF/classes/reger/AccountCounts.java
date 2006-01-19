@@ -1,12 +1,14 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.cache.jboss.Cacheable;
 
 import java.util.HashMap;
 
 /**
  * Retains counts of certain things associated with the account
  */
+@Cacheable
 public class AccountCounts {
     private int authorcount = 0;
     private int entrycount = 0;

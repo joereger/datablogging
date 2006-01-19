@@ -19,10 +19,6 @@ public class UserSessionCache {
 //
 //    }
 //
-//
-//
-//
-//
 //    public static void flushUserSessions(){
 //        try{
 //            Cache.getTreeCache().removeObject(fqn);
@@ -34,7 +30,7 @@ public class UserSessionCache {
 //
 //    public static void removeUserSession(String userSessionid){
 //        try{
-//            Cache.getTreeCache().removeObject(fqn+"/UserSession"+userSessionid);
+//            Cache.getTreeCache().removeObject(fqn+"/"+userSessionid);
 //        }catch (Exception e){
 //            reger.core.Debug.errorsave(e, "UserSessionCache.java");
 //        }
@@ -64,13 +60,16 @@ public class UserSessionCache {
 //    public static UserSession getUserSession(String userSessionId){
 //        UserSession userSession = null;
 //        try{
-//            userSession = (UserSession) Cache.getTreeCache().getObject(fqn+"/UserSession" + userSessionId);
-//            reger.core.Debug.debug(4, "UserSessionCache.java", "Found session in cache.");
-//            return userSession;
+//            userSession = (UserSession) Cache.getTreeCache().getObject(fqn+"/" + userSessionId);
+//            if(userSession!=null){
+//                reger.core.Debug.debug(4, "UserSessionCache.java", "Found session in cache.");
+//                return userSession;
+//            }
 //        } catch (CacheException ex){
 //            reger.core.Debug.debug(4, "UserSessionCache.java", "Session not found in cache.");
 //            return null;
 //        }
+//        return null;
 //    }
 //
 //    public static UserSession getUserSessionUsingActualKeyOfCache(String key){
@@ -89,7 +88,7 @@ public class UserSessionCache {
 //
 //    public static void putUserSession(String userSessionId, UserSession userSession){
 //        try{
-//            Cache.getTreeCache().putObject(fqn+"/UserSession" + userSessionId, userSession);
+//            Cache.getTreeCache().putObject(fqn+"/" + userSessionId, userSession);
 //        }catch (Exception e){
 //            reger.core.Debug.errorsave(e, "UserSessionCache.java");
 //        }

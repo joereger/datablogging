@@ -38,6 +38,8 @@ public class EmailSendThread extends Thread {
 
 		try{
 
+		    System.out.println("EMAIL TRY: to:"+to+" from:"+from+" subject="+subject);
+
             Properties props =  System.getProperties();
             props.put("mail.smtp.host",  reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"));
             props.put("mail.transport.protocol", "smtp");
@@ -65,12 +67,17 @@ public class EmailSendThread extends Thread {
             transport.connect(reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"), null, null);
             transport.sendMessage(msg, addrArray);
 
+
+
         } catch (javax.mail.SendFailedException nsend){
-            Debug.debug(5, "", nsend);
+            System.out.println("EMAIL FAIL: nsend:"+nsend.getMessage());
+            Debug.debug(3, "EmailSendThread.java", nsend);
         } catch (javax.mail.internet.AddressException ex){
-            Debug.debug(5, "", ex);
+            System.out.println("EMAIL FAIL: ex:"+ex.getMessage());
+            Debug.debug(3, "EmailSendThread.java", ex);
         } catch (Exception e) {
-			Debug.errorsave(e, "");
+            System.out.println("EMAIL FAIL: e:"+e.getMessage());
+			Debug.errorsave(e, "EmailSendThread.java");
         }
 
     }

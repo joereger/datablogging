@@ -6,6 +6,8 @@ import reger.core.db.Db;
 import reger.core.Debug;
 
 import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Renders a chart into html screen with options to set, etc.
@@ -306,12 +308,12 @@ public class MegaChartHtmlRenderer {
                             mb.append("</br>");
 
                             //Now add on the activity-specific search options
-                            FieldType[] megaFields = log.getFields();
+                            ArrayList<FieldType> megaFields = log.getFields();
                             boolean foundAtLeastOneField = false;
-                            if (megaFields!=null && megaFields.length>0){
-                                for (int k = 0; k < megaFields.length; k++) {
+                            if (megaFields!=null && megaFields.size()>0){
+                                for (Iterator it = megaFields.iterator(); it.hasNext(); ) {
+                                    FieldType field = (FieldType)it.next();
                                     foundAtLeastOneField = true;
-                                    FieldType field = megaFields[k];
                                     String xMegaFieldChoiceString = field.getMegafieldid()+"_"+log.getLogid()+"_"+log.getEventtypeid();
                                     mb.append("<font face=arial size=-1 class=smallfont>");
                                     mb.append("<input name=xMegafieldChoice type=radio value='"+xMegaFieldChoiceString+"'");
@@ -345,12 +347,12 @@ public class MegaChartHtmlRenderer {
                         mb.append("</br>");
 
                         //Now add on the activity-specific search options
-                        FieldType[] megaFields = logType.getMegaFields();
+                        ArrayList<FieldType> megaFields = logType.getMegaFields();
                         boolean foundAtLeastOneField = false;
-                        if (megaFields!=null && megaFields.length>0){
-                            for (int k = 0; k < megaFields.length; k++) {
+                        if (megaFields!=null && megaFields.size()>0){
+                            for (Iterator it = megaFields.iterator(); it.hasNext(); ) {
+                                FieldType field = (FieldType)it.next();
                                 foundAtLeastOneField = true;
-                                FieldType field = megaFields[k];
                                 String xMegaFieldChoiceString = field.getMegafieldid()+"_"+0+"_"+logType.getEventtypeid();
                                 mb.append("<font face=arial size=-1 class=smallfont>");
                                 mb.append("<input name=xMegafieldChoice type=radio value='"+xMegaFieldChoiceString+"'");
@@ -401,11 +403,11 @@ public class MegaChartHtmlRenderer {
                             mb.append("</br>");
 
                             //Now add on the activity-specific search options
-                            FieldType[] megaFields = log.getFields();
+                            ArrayList<FieldType> megaFields = log.getFields();
                             boolean foundAtLeastOneField = false;
-                            if (megaFields!=null && megaFields.length>0){
-                                for (int k = 0; k < megaFields.length; k++) {
-                                    FieldType field = megaFields[k];
+                            if (megaFields!=null && megaFields.size()>0){
+                                for (Iterator it = megaFields.iterator(); it.hasNext(); ) {
+                                    FieldType field = (FieldType)it.next();
                                     if (field.getMegadatatypeid()!=reger.mega.DataTypeString.DATATYPEID){
                                         foundAtLeastOneField=true;
                                         String yMegaFieldChoiceString = field.getMegafieldid()+"_"+log.getLogid()+"_"+log.getEventtypeid();
@@ -444,11 +446,11 @@ public class MegaChartHtmlRenderer {
                         mb.append("</br>");
 
                         //Now add on the activity-specific search options
-                        FieldType[] megaFields = logType.getMegaFields();
+                        ArrayList<FieldType> megaFields = logType.getMegaFields();
                         boolean foundAtLeastOneField = false;
-                        if (megaFields!=null && megaFields.length>0){
-                            for (int k = 0; k < megaFields.length; k++) {
-                                FieldType field = megaFields[k];
+                        if (megaFields!=null && megaFields.size()>0){
+                            for (Iterator it = megaFields.iterator(); it.hasNext(); ) {
+                                FieldType field = (FieldType)it.next();
                                 if (field.getMegadatatypeid()!=reger.mega.DataTypeString.DATATYPEID){
                                     foundAtLeastOneField=true;
                                     String yMegaFieldChoiceString = field.getMegafieldid()+"_"+0+"_"+logType.getEventtypeid();

@@ -43,10 +43,9 @@ public class ImageCaptchaServlet extends HttpServlet {
 
                 // call the ImageCaptchaService getChallenge method
                 BufferedImage challenge = CaptchaServiceSingleton.getInstance().getImageChallengeForID(captchaId, httpServletRequest.getLocale());
-
+      
                 // a jpeg encoder
-                JPEGImageEncoder jpegEncoder =
-                        JPEGCodec.createJPEGEncoder(jpegOutputStream);
+                JPEGImageEncoder jpegEncoder = JPEGCodec.createJPEGEncoder(jpegOutputStream);
                 jpegEncoder.encode(challenge);
             } catch (IllegalArgumentException e) {
                 httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);

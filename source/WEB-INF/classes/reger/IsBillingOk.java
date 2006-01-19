@@ -4,6 +4,7 @@ import reger.core.licensing.DesEncrypter;
 import reger.core.licensing.License;
 
 import java.util.Hashtable;
+import java.util.HashMap;
 
 /**
  * Handles storage of the isbillingok variable in the database
@@ -21,7 +22,7 @@ public class IsBillingOk {
         //Do the decryption
         String decrypted = encrypter2.decrypt(isbillingokencrypted);
         //Split the name/valuepairs
-        Hashtable props = reger.core.licensing.License.putLicensePropsIntoHashmap(decrypted);
+        HashMap props = reger.core.licensing.License.putLicensePropsIntoHashmap(decrypted);
         //See if we have the correct value
         if (props.get(PROPSTRINGISBILLINGOK)!=null){
             if (props.get(PROPSTRINGISBILLINGOK).equals("1") || props.get(PROPSTRINGISBILLINGOK).equals("true")){
@@ -45,7 +46,7 @@ public class IsBillingOk {
         StringBuffer tmpLic = new StringBuffer();
 
         //Add boolean to props
-        Hashtable props = new Hashtable();
+        HashMap props = new HashMap();
         if(isbillingok){
             props.put(PROPSTRINGISBILLINGOK, "1");
         } else {

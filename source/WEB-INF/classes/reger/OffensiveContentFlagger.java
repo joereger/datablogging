@@ -1,8 +1,10 @@
 package reger;
 
 import reger.core.Debug;
+import reger.mega.FieldType;
 
 import java.util.Vector;
+import java.util.Iterator;
 
 /**
  *
@@ -25,7 +27,7 @@ public class OffensiveContentFlagger {
         //reger.core.Util.logtodb("OffensiveContentFlagger.isOffensive()");
         return isOffensive(entryToString(entry), plid);
     }
-    
+
     /**
      * Checks a string for offensiveness, but only uses the default system words.
      * Note: see isOffensive(String in, int plid)
@@ -73,8 +75,9 @@ public class OffensiveContentFlagger {
 
         //Add the megavalue field values to the string
         if (entry.fields!=null){
-            for (int i = 0; i < entry.fields.length; i++) {
-                str.append(entry.fields[i].getValuesAsStringForOffensiveContentValidation() + " ");
+            for (Iterator it = entry.fields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                str.append(ft.getValuesAsStringForOffensiveContentValidation() + " ");
             }
         }
         return str.toString();

@@ -34,17 +34,17 @@ if (request.getParameter("returnurl")!=null){
     returnurl = request.getParameter("returnurl");
 }
 
-//java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")
+//java.net.URLEncoder.encode(userSession.getAccountuser().getEmail(), "UTF-8")
 
 //Login Action
-if (pageProps.action.equals("login")){
-    userSession.setAccountuser(new reger.Accountuser(request.getParameter("username"), request.getParameter("password")));
-    if (userSession.getAccountuser().isLoggedIn){
-        response.sendRedirect("" + userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) + "/login.log?action=login&username="+java.net.URLEncoder.encode(userSession.getAccountuser().getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
-        //response.sendRedirect("" + userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) + "/login.log?action=login&username="+userSession.getAccountuser().getUsername()+"&password="+request.getParameter("password")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
-        return;
-    }
-}
+//if (pageProps.action.equals("login")){
+//    userSession.setAccountuser(new reger.Accountuser(request.getParameter("email"), request.getParameter("password")));
+//    if (userSession.getAccountuser().isLoggedIn){
+//        response.sendRedirect("" + userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) + "/login.log?action=login&email="+java.net.URLEncoder.encode(userSession.getAccountuser().getEmail(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
+//        //response.sendRedirect("" + userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) + "/login.log?action=login&email="+userSession.getAccountuser().getEmail()+"&password="+request.getParameter("password")+"&keepmeloggedin="+request.getParameter("keepmeloggedin")+"&returnurl=" + returnurl);
+//        return;
+//    }
+//}
 
 
 %>

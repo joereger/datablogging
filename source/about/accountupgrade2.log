@@ -1,27 +1,30 @@
-<%@ page import="reger.core.db.Db,
-                 java.text.NumberFormat,
-                 java.text.DecimalFormat,
-                 java.util.Locale,
-                 reger.core.licensing.License,
-                 reger.core.licensing.RegerLicensingApiClient,
-                 reger.core.licensing.PriceCalculator,
-                 java.util.Calendar,
-                 java.util.Hashtable"%>
+<%@ page import="reger.core.licensing.License"%>
+<%@ page import="java.util.Hashtable"%>
+<%@ page import="reger.core.licensing.RegerLicensingApiClient"%>
+<%@ page import="java.util.HashMap"%>
+<%@ page import="reger.core.licensing.PriceCalculator"%>
+<%@ page import="java.text.NumberFormat"%>
+<%@ page import="java.text.DecimalFormat"%>
+<%@ page import="reger.Account"%>
+<%@ page import="reger.PrivateLabel"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.siteSection=pageProps.MARKETINGSITE;
 pageProps.title = "Account Upgrade";
-pageProps.isPasswordProtected = true;
-pageProps.navButtonName = "settingsacctstatus";
-pageProps.aclObjectName = "ADMINHOME";
-pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.navButtonName = "aboutaccount-upgrade-2";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 /*----------------------------------------------------*/
 %>
 
 <%@ include file="../globalheader.jsp" %>
+
+
+
 
 <%
 /*----------------------------------------------------*/
@@ -29,8 +32,24 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-////Grab some incoming vars
 
+//Must have an accountid
+Account account = null;
+if (reger.core.Util.isinteger(request.getParameter("accountid"))){
+    account = new Account(Integer.parseInt(request.getParameter("accountid")));
+}
+
+//Must have a plid
+PrivateLabel pl = null;
+if (reger.core.Util.isinteger(request.getParameter("plid"))){
+    pl = new PrivateLabel(Integer.parseInt(request.getParameter("plid")));
+}
+
+//Both accountid and plid must be valid
+if (account.getAccountid()<=0 || pl.getPlid()<=0){
+    out.println(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  Invalid accountid and/or plid."));
+    return;
+}
 
 
 //Validate incoming
@@ -85,14 +104,14 @@ if (!errortext.equals("")){
 if (pageProps.action.equals("upgrade") && errortext.equals("")) {
 
     //Calculate the price
-    double price = PriceCalculator.calculatePrice(userSession.getPl().getBaseaccountprice(), userSession.getPl().getPriceper100mbstorage(), userSession.getPl().getPricepergbbandwidth(), storagespace, maxbandwidth);
+    double price = PriceCalculator.calculatePrice(pl.getBaseaccountprice(), pl.getPriceper100mbstorage(), pl.getPricepergbbandwidth(), storagespace, maxbandwidth);
 
     NumberFormat formatter = DecimalFormat.getInstance();
     formatter.setMinimumFractionDigits(2);
     formatter.setMaximumFractionDigits(2);
 
     //Create a license
-    Hashtable props = new Hashtable();
+    HashMap props = new HashMap();
     props.put(License.PROPSTRINGAMOUNT, String.valueOf(formatter.format(price)));
     props.put(License.PROPSTRINGISCHARGEDTOCREDITCARD, "1");
     props.put(License.PROPSTRINGISRECURRINGBILLING, "1");
@@ -104,7 +123,7 @@ if (pageProps.action.equals("upgrade") && errortext.equals("")) {
     License proposedLicense = new License(null, props);
 
     //Call the licensing server
-    Hashtable result = RegerLicensingApiClient.createLicense(userSession.getAccount().getLicense().getEncryptedLicense(), proposedLicense.getEncryptedLicense(), request.getParameter("name"), request.getParameter("address1"), request.getParameter("address2"), request.getParameter("city"), request.getParameter("state"), request.getParameter("zip"), request.getParameter("country"), request.getParameter("ccnum"), request.getParameter("expirationmonth"), request.getParameter("expirationyear"), request.getParameter("phone"), request.getParameter("email"));
+    Hashtable result = RegerLicensingApiClient.createLicense(account.getLicense().getEncryptedLicense(), proposedLicense.getEncryptedLicense(), request.getParameter("name"), request.getParameter("address1"), request.getParameter("address2"), request.getParameter("city"), request.getParameter("state"), request.getParameter("zip"), request.getParameter("country"), request.getParameter("ccnum"), request.getParameter("expirationmonth"), request.getParameter("expirationyear"), request.getParameter("phone"), request.getParameter("email"));
 
     //Display
     if (result.get("successful")!=null && ((String)result.get("successful")).equals("true")){
@@ -135,7 +154,7 @@ if (pageProps.action.equals("upgrade") && errortext.equals("")) {
     if (result.get("encryptedlicense")!=null && !((String)result.get("encryptedlicense")).equals("")){
         License lic = new License(null, (String)result.get("encryptedlicense"));
         //Save the license to the account
-        userSession.getAccount().setEncryptedLicense(lic.getEncryptedLicense());
+        account.setEncryptedLicense(lic.getEncryptedLicense());
 
 //        mb.append("expdategmt="+lic.getProperty(License.PROPSTRINGEXPDATEGMT)+"<br>");
 //        mb.append("iscommercial="+lic.getProperty(License.PROPSTRINGISCOMMERCIAL)+"<br>");
@@ -153,9 +172,6 @@ if (pageProps.action.equals("upgrade") && errortext.equals("")) {
 
 
 
-
-
-
 %>
 
 <%
@@ -164,9 +180,9 @@ if (pageProps.action.equals("upgrade") && errortext.equals("")) {
         StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
 
-//sc.append("This is a ");
-//sc.append("side column section.");
+
 %>
 
 
 <%@ include file="../globalfooter.jsp" %>
+

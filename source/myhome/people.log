@@ -123,7 +123,7 @@ mb.append("<tr>");
 mb.append("<td bgcolor='#ffffff' valign=top colspan=2>");
 mb.append("<a href=settings-accountuser.log><img src='../images/round-arrow-green.gif' width='15' height='15' alt='' border='0'><font face=arial size=-1><b>Your Personal Account Settings</b></font></a>");
 mb.append("<br>");
-mb.append("<font face=arial size=-2>Control your username, password, one line summary, timezone and other information about yourself.");
+mb.append("<font face=arial size=-2>Control your email, password, one line summary, timezone and other information about yourself.");
 mb.append("</font></td>");
 mb.append("</tr>");
 

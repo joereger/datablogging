@@ -11,6 +11,10 @@ public class FieldData {
     private String name;
     private String value;
 
+    public FieldData(){
+        
+    }
+
     public FieldData(String name, String value){
         this.name=name;
         this.value=value;

@@ -66,7 +66,7 @@ public class GlobalHeader {
                     //if ((userSession.getAccountuser()==null || userSession.getAccount().getAccountid()==0) || !userSession.getAccountuser().isLoggedIn) {
                     if ((userSession.getAccountuser()==null) || !userSession.getAccountuser().isLoggedIn) {
                         Debug.debug(5, "GlobalHeader", "globalheader.jsp - redirecting to force a login because the user is not logged in.");
-                        response.sendRedirect(request.getScheme()+"://"+userSession.getPl().getPlBaseUrl()+"/about/forcelogin.log?returnurl=" + java.net.URLEncoder.encode(request.getRequestURL()+"?"+request.getQueryString(), "UTF-8"));
+                        response.sendRedirect(request.getScheme()+"://"+userSession.getPl().getPlBaseUrl()+"/about/login.log?returnurl=" + java.net.URLEncoder.encode(request.getRequestURL()+"?"+request.getQueryString(), "UTF-8"));
                         return;
                     }
                 }
@@ -110,6 +110,8 @@ public class GlobalHeader {
             //reger.core.Util.logtodb("Past https block.");
 
 
+
+
             //If it's an Admin or a Public site, we need an account
             if (pageProps.siteSection==pageProps.PUBLICSITE || pageProps.siteSection==pageProps.ADMINSITE){
                 //If the account object is null
@@ -127,10 +129,10 @@ public class GlobalHeader {
                     //If it's a valid account but it's not active then we need to tell the user what's up
                     if (!userSession.getAccount().getIsActiveAccount()){
                         if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && userSession.getAccount().getIsNewPendingAdminApproval()){
-                            response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/awaitingapproval.log?accountid="+userSession.getAccount().getAccountid());
+                            response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/login-awaitingapproval.log?accountid="+userSession.getAccount().getAccountid());
                             return;
                         } else {
-                            response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/sitenotactive.log?accountid="+userSession.getAccount().getAccountid());
+                            response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/login-sitenotactive.log?accountid="+userSession.getAccount().getAccountid());
                             return;
                         }
                     }
@@ -160,6 +162,8 @@ public class GlobalHeader {
                     return;
                 }
             }
+
+
 
 
             //Populate the pageProps object
@@ -264,6 +268,17 @@ public class GlobalHeader {
                 }
 
             }
+
+
+            //If it's an Admin site, user must be activated by email
+            if (pageProps.siteSection==pageProps.ADMINSITE){
+                if (userSession.getAccountuser()==null || !userSession.getAccountuser().isIsactivatedbyemail()){
+                    Debug.debug(3, "GlobalHeader", "globalheader.jsp - sending to login-awaitingactivation.log");
+                    response.sendRedirect(pageProps.pathToAppRoot + "/about/login-awaitingactivation.log");
+                    return;
+                }
+            }
+
         } catch (java.io.IOException ioex){
             Debug.errorsave(ioex, "GlobalHeader", "Error in GlobalHeader.java");
         }

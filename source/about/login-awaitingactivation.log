@@ -1,0 +1,105 @@
+<%@ page import="reger.Accountuser"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Account Activation";
+pageProps.navButtonName = "aboutindex";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+if (pageProps.action.equals("send")){
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstAu= reger.core.db.Db.RunSQL("SELECT accountuserid FROM accountuser WHERE email='"+reger.core.Util.cleanForSQL(request.getParameter("email"))+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstAu!=null && rstAu.length>0){
+        for(int i=0; i<rstAu.length; i++){
+            Accountuser au = new Accountuser(Integer.parseInt(rstAu[i][0]), true);
+            boolean accountisreadyforactivation = true;
+            if (au.getEmailactivationkey().equals("")){
+                au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
+                String errortext = au.saveSettings(userSession.getPl());
+                if (!errortext.equals("")){
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+                    accountisreadyforactivation = false;
+                }
+            }
+            if (accountisreadyforactivation){
+                reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), "");
+            }
+        }
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "An activation message has been sent!  Please check your email."));
+    } else{
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, that email address was not found."));
+    }
+}
+
+
+
+if (request.getParameter("msg")!=null && request.getParameter("msg").equals("signupcomplete")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Congratulations and thanks for signing up!"));
+} else {
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Your account is currently awaiting activation."));
+}
+
+
+mb.append("<br><br>");
+mb.append("<center>");
+mb.append("<font face=arial size=+2>");
+mb.append("Please check your email for an activation message.  Click the link in the email to activate your new datablogging account.");
+mb.append("</font>");
+mb.append("</center>");
+
+mb.append("<br><br>");
+
+//mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+mb.append("<center>");
+mb.append("<font face=arial size=-1>");
+mb.append("If you haven't received this email after a few minutes, please enter your email address below.");
+mb.append("</font>");
+mb.append("<form action=login-awaitingactivation.log method=post>");
+mb.append("<input type=hidden name=action value=send>");
+mb.append("Email Address: <input type=text name=email size=25 maxlength=100>");
+mb.append("<br>");
+mb.append("<input type=submit value='Re-send Activation Message'>");
+mb.append("</form>");
+mb.append("</center>");
+//mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+
+
+
+
+
+
+
+
+mb.append("<br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

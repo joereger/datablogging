@@ -8,6 +8,10 @@ package reger.core;
 public class EmailSend {
 
     public static void sendMail(String from, String to, String subject, String message, boolean isHtmlEmail){
+        if (from.equals("")){
+            from = reger.Vars.EMAILDEFAULTFROM;   
+        }
+        System.out.println("EMAIL NOT THREAD: to"+to+" from:"+from+" subject:"+subject);
         Debug.debug(5, "", "Email Sent<br>To:" +to+"<br>From:" + from + "<br>Subject:" + subject + "<br>Body:" + message + "<br>isHtmlEmail:" + isHtmlEmail);
         try {
             //Kick off a thread to send the email

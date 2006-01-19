@@ -32,6 +32,7 @@ int tempAccountuserid = userSession.getAccountuser().getAccountuserid();
 
 //Create an accountuser object... this is not the one held in userSession
 reger.Accountuser au = new reger.Accountuser(userSession.getAccount().getAccountid(), tempAccountuserid);
+String originalEmail = au.getEmail();
 
 //Grab data from the request
 au.populateFromRequest(request);
@@ -49,15 +50,20 @@ if (pageProps.action.equals("edit")){
     //Only do something if we have good data.
     if (errortext.equals("")){
 
+        //If the email has changed
+        if (!au.getEmail().equals(originalEmail)){
+            au.setIsactivatedbyemail(false);
+            au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
+        }
 
         //Do the account edits
         errortext = errortext + au.saveSettings(userSession.getPl());
 
-        //Accountuser permissions
-        //au.permissionsUpdateFromRequest(request, userSession.getAccountuser(), userSession.getAccount().getAccountid());
-
-        //Accountuser logaccess
-        //au.logaccessUpdateFromRequest(request, userSession);
+        //If the email has changed
+        if (!au.getEmail().equals(originalEmail) && errortext.equals("")){
+            reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), "");
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Your email has changed so you will need to re-validate it.  A message has been sent to the email that you specified.  Please check your email."));
+        }
 
         //If it's the current logged-in user, repopulate the account
         if (au.getAccountuserid()==userSession.getAccountuser().getAccountuserid()){
@@ -67,6 +73,11 @@ if (pageProps.action.equals("edit")){
 
         //Repopulate the object
         au = new reger.Accountuser(userSession.getAccount().getAccountid(), au.getAccountuserid());
+
+        //Tell user it's complete
+        if (errortext.equals("")){
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your changes have been saved."));
+        }
 
     }
 
@@ -93,11 +104,7 @@ mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
 mb.append("<tr>");
 mb.append("<td valign=top align=left bgcolor=#ffffff>");
 mb.append("<font face=arial size=+2 color=#666666>");
-if (!au.getFriendlyname().equals("")){
-    mb.append(au.getFriendlyname());
-} else if (!au.getUsername().equals("")) {
-    mb.append(au.getUsername());
-}
+mb.append(au.getFriendlyname());
 mb.append("</font>");
 mb.append("</td>");
 mb.append("</tr>");

@@ -134,12 +134,14 @@
                 <path refid="lib.classpath" />
             </classpath>
         </javac>
+        <!--
         <aopc compilerclasspathref="lib.classpath" verbose="false">
             <classpath path="${quickbuild.compiled.destination.directory}"/>
             <src path="${quickbuild.compiled.destination.directory}"/>
             <include name="**/*.class"/>
             <aoppath path="${sourcedir}/WEB-INF/jboss-aop.xml"/>
          </aopc>
+         -->
 		<copy todir="${quickbuild.tomcat.root.directory}">
 			<fileset dir="${lastbuild}">
 			</fileset>

@@ -10,6 +10,8 @@ import reger.core.Debug;
 
 import java.util.Calendar;
 import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -262,14 +264,12 @@ public class SearchEntries {
 
                     //Get the fields that relate to this entry's log
                     Log logByLogid = LogCache.get(Integer.parseInt(rsEvent[i][4]));
-                    reger.mega.FieldType[] fieldsInEntryLog = AllFieldsInSystem.copyFieldTypeArray(logByLogid.getFields());
-
-
-
+                    ArrayList<FieldType> fieldsInEntryLog = AllFieldsInSystem.copyFieldTypeArray(logByLogid.getFields());
                     //See if it fulfills megadata search
                     if (fieldsInEntryLog!=null){
                         Debug.debug(5, "", "SearchEntries.java: we have megafields. eventid=" + rsEvent[i][3]);
-                        for (int j = 0; j < fieldsInEntryLog.length; j++) {
+                        for (Iterator it = fieldsInEntryLog.iterator(); it.hasNext(); ) {
+                            FieldType fieldInEntryLog = (FieldType)it.next();
 
                             //The flag determining whether this fulfills.
                             boolean fulfillsSearch = false;
@@ -279,7 +279,7 @@ public class SearchEntries {
                             boolean loadAndSearchThisField = false;
                             for (int k = 0; k < searchParameters.fieldQueryElements.length; k++) {
                                 FieldQueryElement tmpFqe = searchParameters.fieldQueryElements[k];
-                                if (tmpFqe.megafieldid==fieldsInEntryLog[j].getMegafieldid()){
+                                if (tmpFqe.megafieldid==fieldInEntryLog.getMegafieldid()){
                                     loadAndSearchThisField = true;
                                     break;
                                 }
@@ -287,18 +287,18 @@ public class SearchEntries {
 
                             //Load and search
                             if (loadAndSearchThisField){
-                                Debug.debug(5, "", "SearchEntries.java: Starting field search.<br>title=" + rsEvent[i][3] + "<br>field=" + fieldsInEntryLog[j].getFieldname());
+                                Debug.debug(5, "", "SearchEntries.java: Starting field search.<br>title=" + rsEvent[i][3] + "<br>field=" + fieldInEntryLog.getFieldname());
                                 //Load the data
-                                fieldsInEntryLog[j].loadDataForEventid(Integer.parseInt(rsEvent[i][3]), Integer.parseInt(rsEvent[i][4]));
+                                fieldInEntryLog.loadDataForEventid(Integer.parseInt(rsEvent[i][3]), Integer.parseInt(rsEvent[i][4]));
                                 //See whether to search the log or the eventtype
                                 if (searchParameters.isAccountBeingSearched(SearchParameters.ALL)){
                                     //Run fulfillsquery by eventtypeid
-                                    fulfillsSearch = fieldsInEntryLog[j].fulfillsQuery(searchParameters.fieldQueryElements, Integer.parseInt(rsEvent[i][7]));
+                                    fulfillsSearch = fieldInEntryLog.fulfillsQuery(searchParameters.fieldQueryElements, Integer.parseInt(rsEvent[i][7]));
                                 } else {
                                     //Run fulfillsquery by logid
-                                    fulfillsSearch = fieldsInEntryLog[j].fulfillsQuery(searchParameters.fieldQueryElements, Integer.parseInt(rsEvent[i][4]));
+                                    fulfillsSearch = fieldInEntryLog.fulfillsQuery(searchParameters.fieldQueryElements, Integer.parseInt(rsEvent[i][4]));
                                 }
-                                Debug.debug(5, "", "SearchEntries.java: Finished field search.<br>eventid=" + rsEvent[i][3] + "<br>field=" + fieldsInEntryLog[j].getFieldname() + "<br>fulfillsSearch=" + fulfillsSearch);
+                                Debug.debug(5, "", "SearchEntries.java: Finished field search.<br>eventid=" + rsEvent[i][3] + "<br>field=" + fieldInEntryLog.getFieldname() + "<br>fulfillsSearch=" + fulfillsSearch);
 
                             } else {
                                 //There were no specific query items for this field so I need to return true
@@ -458,11 +458,11 @@ public class SearchEntries {
                                         mb.append("<li>");
                                         mb.append(log.getName());
                                         //Now show activity-specific search params
-                                        FieldType[] megaFields = log.getFields();
+                                        ArrayList<FieldType> megaFields = log.getFields();
                                         if (megaFields!=null){
                                             mb.append("<ul>");
-                                            for (int k = 0; k < megaFields.length; k++) {
-                                                FieldType field = megaFields[k];
+                                            for (Iterator it = megaFields.iterator(); it.hasNext(); ) {
+                                                FieldType field = (FieldType)it.next();
                                                 //field.loadDefaultData(searchParameters.logsToSearch[i]);
                                                 String fieldSummary = field.queryDisplayHtmlSummary(searchParameters.fieldQueryElements, log.getLogid());
                                                 //Only if it's not blank
@@ -521,11 +521,11 @@ public class SearchEntries {
                             mb.append("<li>");
                             mb.append(logType.getMegalogname());
                             //Now show activity-specific search params
-                            FieldType[] megaFields = logType.getMegaFields();
+                            ArrayList<FieldType> megaFields = logType.getMegaFields();
                             if (megaFields!=null){
                                 mb.append("<ul>");
-                                for (int k = 0; k < megaFields.length; k++) {
-                                    FieldType field = megaFields[k];
+                                for (Iterator it = megaFields.iterator(); it.hasNext(); ) {
+                                    FieldType field = (FieldType)it.next();
                                     //field.loadDefaultData(searchParameters.logsToSearch[i]);
                                     String fieldSummary = field.queryDisplayHtmlSummary(searchParameters.fieldQueryElements, logType.getEventtypeid());
                                     //Only if it's not blank
@@ -646,6 +646,6 @@ public class SearchEntries {
         return searchParameters;
     }
 
-    
+
 
 }

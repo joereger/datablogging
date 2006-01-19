@@ -9,6 +9,8 @@
 <%@ page import="reger.core.ValidationException"%>
 <%@ page import="org.jdom.input.SAXBuilder"%>
 <%@ page import="java.io.InputStream"%>
+<%@ page import="reger.nestednav.NestedNavItem"%>
+<%@ page import="java.util.ArrayList"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -118,7 +120,7 @@ if (pageProps.action.equals("endadd") || pageProps.action.equals("go")){
     eventtypeid=megaLogType.getEventtypeid();
     //Create a new log of this type
     reger.nestednav.NestedNavCollection collection = userSession.getAccount().getNestedNavCollection();
-    reger.nestednav.NestedNavItem[] topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
+    ArrayList<NestedNavItem> topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
     int currentMaxOrder = reger.nestednav.NestedNavCollection.getMaxOrder(topLevelNavItems);
 
     //Use the current max order in the account to calculate the newLogOrder for this log

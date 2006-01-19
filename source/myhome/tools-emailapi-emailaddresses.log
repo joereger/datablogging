@@ -103,7 +103,7 @@ if (rstEventtype!=null){
 	    reger.api.EmailApiAddress addr = new reger.api.EmailApiAddress(userSession.getAccountuser().getAccountuserid(), userSession.getAccount().getAccountid(), Integer.parseInt(rstEventtype[i][0]), reger.api.EmailApi.EMAILPOST);
 
 	    //Build the email address that should be used
-	    //String emailaddress = userSession.getAccount().getAccounturl()+"."+userSession.getPl().getPlid()+"."+userSession.getAccountuser().getUsername()+"."+emailsecret+"."+rstEventtype[i][0]+".email"+emailapiuniqueidentifierText+"@"+emailDomain;
+	    //String emailaddress = userSession.getAccount().getAccounturl()+"."+userSession.getPl().getPlid()+"."+userSession.getAccountuser().getEmail()+"."+emailsecret+"."+rstEventtype[i][0]+".email"+emailapiuniqueidentifierText+"@"+emailDomain;
         String emailaddress = addr.getUniquekey()+"."+emailsecret+emailapiuniqueidentifierText+"@"+emailDomain;
 
 
@@ -143,7 +143,7 @@ mb.append("Why are the addresses so long?");
 mb.append("</strong>");
 mb.append("<br>");
 mb.append("<br>");
-mb.append("These addresses are so long for security reasons.  Before the system posts anything to your web log it needs to collect a number of critical pieces of information like username, email secret, which log to post to, your site url, etc.  With email posts you'll be using the subject as your title and the body as your post which leaves us with only the email address to use to collect the information we need for security.");
+mb.append("These addresses are so long for security reasons.  Before the system posts anything to your web log it needs to collect a number of critical pieces of information like email secret, which log to post to, your site url, etc.  With email posts you'll be using the subject as your title and the body as your post which leaves us with only the email address to use to collect the information we need for security.");
 mb.append("<br>");
 mb.append("<br>");
 mb.append("We recommend setting up easy-to-use email aliases in your email client or your phone so that you don't have to type these addresses each time you post via email or camera phone.");

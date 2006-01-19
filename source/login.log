@@ -34,7 +34,7 @@ boolean loginResult=false;
 if (request.getParameter("action")!=null && request.getParameter("action").equals("login")) {
 	reger.Accountuser au = new reger.Accountuser(userSession.getAccount().getAccountid());
 	userSession.setAccountuser(au);
-	loginResult = userSession.getAccountuser().userAuthenticate(request.getParameter("username"), request.getParameter("password"));
+	loginResult = userSession.getAccountuser().userAuthenticate(request.getParameter("email"), request.getParameter("password"));
     //If successful login
     if (loginResult){
         //Persistent login
@@ -49,11 +49,9 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
                 Cookie cookie = cookies[i];
                 response.addCookie(cookies[i]);
             }
-
         }
         //Refresh the account after login
         userSession.getAccount().refresh();
-
     }
 }
 
@@ -70,25 +68,16 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 	response.addCookie(reger.PersistentLogin.createCookieToClearPersistentLogin(request));
 	//If this pl is in forcedlogin mode, redirect to the pl home.  Otherwise, the user won't actually be able to login from the login page.  Whoops.
 	if (userSession.getPl().getForcelogintoviewsites()){
-
-        response.sendRedirect(userSession.getPl().getPlBaseUrl(userSession)+"/about/index.log");
+        response.sendRedirect(userSession.getPl().getPlBaseUrl(userSession)+"/about/login.log");
         return;
     }
 }
-
-
-//Redirect to returnurl, if specified
-//if (userSession.getAccountuser().isLoggedIn && !returnurl.equals("")){
-//    reger.core.Util.debug(5, "login.log<br>java.net.URLDecoder.decode(returnurl, \"UTF-8\")=" + java.net.URLDecoder.decode(returnurl, "UTF-8"));
-//    response.sendRedirect(java.net.URLDecoder.decode(returnurl, "UTF-8"));
-//    return;
-//}
 
 //Redirect to the user's admin home
 if (userSession.getAccountuser().userCanDoAcl("ADMINHOME", userSession.getAccountuser().getAccountid())){
     String msgQueryString = "";
     if (request.getParameter("msg")!=null){
-        msgQueryString = "msg="+request.getParameter("msg");
+        msgQueryString = "&msg="+request.getParameter("msg");
     }
     String friendQueryString = "";
     if (request.getParameter("friendinvitationid")!=null){
@@ -103,15 +92,9 @@ if (userSession.getAccountuser().userCanDoAcl("ADMINHOME", userSession.getAccoun
         returnurlQueryString = "&returnurl="+java.net.URLEncoder.encode(returnurl, "UTF-8");
     }
     //Redirect to the accountuser's admin home page... always
-    try{
-        Debug.debug(5, "", "login.log - user logged in - redirecting to:" + userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) +"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
-
-        response.sendRedirect(userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
-
-        return;
-    } catch (Exception e){
-        Debug.errorsave(e, "");
-    }
+    Debug.debug(5, "", "login.log - user logged in - redirecting to:" + userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession) +"/myhome/index.log?"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
+    response.sendRedirect(userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/index.log?action=nothing"+msgQueryString+friendQueryString+friendKeyQueryString+returnurlQueryString);
+    return;
 }
 
 
@@ -137,7 +120,7 @@ mb.append("</font>");
 mb.append("</td>");
 mb.append("<td valign=top align=left>");
 if (!loginResult && (request.getParameter("action")!=null && (request.getParameter("action").equals("login") || request.getParameter("action").equals("quicklogin")))) {
-	mb.append("<font face=arial size=+2 color=red>Your username/password combination was not found.  Please try again.</font>");
+	mb.append("<font face=arial size=+2 color=red>Your email/password combination was not found.  Please try again.</font>");
 } else if (userSession.getAccountuser().getIsLoggedIn()) {
     mb.append("<font face=arial size=+2 color=black>You are now logged in.</font>");
 } else {
@@ -156,15 +139,15 @@ if (!userSession.getAccountuser().getIsLoggedIn()){
     mb.append("<tr>");
     mb.append("<td valign=middle align=right>");
     mb.append("<font class=mediumfont face=arial size=-1>");
-    mb.append("<strong>Username:</strong>");
+    mb.append("<strong>Email:</strong>");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top align=left>");
-    String incomingUsername = "";
-    if (request.getParameter("username")!=null){
-        incomingUsername = request.getParameter("username");
+    String incomingEmail = "";
+    if (request.getParameter("email")!=null){
+        incomingEmail = request.getParameter("email");
     }
-    mb.append("<input type='text' name='username' size=10 maxlength=49 style=\"font-size: 18px;\" value=\""+reger.core.Util.cleanForSQL(incomingUsername)+"\">");
+    mb.append("<input type='text' name='email' size=10 maxlength=49 style=\"font-size: 18px;\" value=\""+reger.core.Util.cleanForSQL(incomingEmail)+"\">");
     mb.append("</td>");
     mb.append("</tr>");
 
@@ -179,7 +162,7 @@ if (!userSession.getAccountuser().getIsLoggedIn()){
     mb.append("<input type='password' name='password' size=10 maxlength=49 style=\"font-size: 18px;\">");
     mb.append("<br>");
     mb.append("<font class=smallfont face=arial size=-2>");
-    mb.append("<a href='"+pageProps.pathToAppRoot+"about/passwordreset1.log'>");
+    mb.append("<a href='"+pageProps.pathToAppRoot+"about/login-passwordreset.log'>");
     mb.append("Lost Your Password?");
     mb.append("</a>");
     mb.append("</font>");
@@ -207,6 +190,18 @@ if (!userSession.getAccountuser().getIsLoggedIn()){
     mb.append("<td valign=top align=left>");
     mb.append("<input type='submit' value='Log In'>");
     mb.append("</form>");
+    //Temporary Start
+    mb.append("<br><br>");
+    mb.append("<table border=0 width=190><tr><td>");
+    mb.append("<font class=smallfont face=arial color=#ff0000 size=-1><b>");
+    mb.append("Attention: If you're having trouble logging in please ");
+    mb.append("<a href='"+pageProps.pathToAppRoot+"about/login-legacyusernameaddemail.log'>");
+    mb.append("click here");
+    mb.append("</a>");
+    mb.append(", as we now handle login with your email address.");
+    mb.append("</b></font>");
+    mb.append("</td></tr></table>");
+    //Temporary End
     mb.append("</td>");
     mb.append("</tr>");
 

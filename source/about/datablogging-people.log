@@ -240,7 +240,7 @@ mb.append("</tr>");
 mb.append("</table>");
 mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
 mb.append("<ul>");
-mb.append("<li><a href='signup2.log'><font face=arial size=+1>Start datablogging now!</font></a>");
+mb.append("<li><a href='signup.log'><font face=arial size=+1>Start datablogging now!</font></a>");
 mb.append("<li><a href='tour.log'><font face=arial size=+1>Screencast tours.</font></a>");
 mb.append("</ul>");
 mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));

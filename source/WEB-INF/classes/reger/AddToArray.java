@@ -330,21 +330,7 @@ public class AddToArray {
 		return outArr;
 	}
 
-    /*
-	 * Adds a row to the Object array src with the value of String str
-	 */
-	public static reger.mega.FieldType[] addToFieldTypeArray(reger.mega.FieldType[] src, reger.mega.FieldType str){
-		if (src==null){
-            src=new reger.mega.FieldType[0];
-        }
 
-		reger.mega.FieldType[] outArr = new reger.mega.FieldType[src.length+1];
-		for(int i=0; i < src.length; i++) {
-			outArr[i]=src[i];
-		}
-		outArr[src.length]=str;
-		return outArr;
-	}
 
     /*
     * Adds a row to the Object array src with the value of String str

@@ -34,11 +34,6 @@ pageProps.pathToAppRoot="../";
 //Load the log
 reger.Log log = LogCache.get(pageProps.logProps.logid);
 
-
-
-
-
-
 boolean saved = false;
 if (pageProps.action.equals("go")) {
 

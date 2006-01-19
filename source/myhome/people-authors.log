@@ -67,13 +67,13 @@ mb.append("</font>");
 mb.append("</td>");
 mb.append("</tr>");
 
-String sql = "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser WHERE accountuser.accountid='"+userSession.getAccount().getAccountid()+"' " +
+String sql = "SELECT accountuser.accountuserid FROM accountuser WHERE accountuser.accountid='"+userSession.getAccount().getAccountid()+"' " +
              " UNION DISTINCT " +
-             "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuseracl WHERE accountuser.accountuserid=accountuseracl.accountuserid AND accountuseracl.accountid='"+userSession.getAccount().getAccountid()+"'"+
+             "SELECT accountuser.accountuserid FROM accountuser, accountuseracl WHERE accountuser.accountuserid=accountuseracl.accountuserid AND accountuseracl.accountid='"+userSession.getAccount().getAccountid()+"'"+
              " UNION DISTINCT " +
-             "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuseraclgroup WHERE accountuser.accountuserid=accountuseraclgroup.accountuserid AND accountuseraclgroup.accountid='"+userSession.getAccount().getAccountid()+"'"+
+             "SELECT accountuser.accountuserid FROM accountuser, accountuseraclgroup WHERE accountuser.accountuserid=accountuseraclgroup.accountuserid AND accountuseraclgroup.accountid='"+userSession.getAccount().getAccountid()+"'"+
              " UNION DISTINCT " +
-             "SELECT accountuser.accountuserid, username, friendlyname, isactive, lastlogindate FROM accountuser, accountuserlogaccess, account, megalog WHERE accountuser.accountuserid=accountuserlogaccess.accountuserid AND accountuserlogaccess.logid=megalog.logid AND megalog.accountid=account.accountid AND account.accountid='"+userSession.getAccount().getAccountid()+"'";
+             "SELECT accountuser.accountuserid FROM accountuser, accountuserlogaccess, account, megalog WHERE accountuser.accountuserid=accountuserlogaccess.accountuserid AND accountuserlogaccess.logid=megalog.logid AND megalog.accountid=account.accountid AND account.accountid='"+userSession.getAccount().getAccountid()+"'";
 
 //-----------------------------------
 //-----------------------------------
@@ -94,11 +94,7 @@ if (rstAuthors!=null && rstAuthors.length>0){
             mb.append("<font face=arial size=-1>");
             mb.append("<a href='people-accountuser.log?accountuserid="+rstAuthors[i][0]+"'>");
             mb.append("<img src='"+ac.primaryImage(pageProps.pathToAppRoot, true)+"' width=35 border=0 align=top>");
-            String name = rstAuthors[i][1];
-            if (!rstAuthors[i][2].equals("")){
-                name = rstAuthors[i][2];
-            }
-            mb.append(name);
+            mb.append(ac.getFriendlyname());
             mb.append("</a>");
             mb.append("</font>");
             mb.append("</td>");
@@ -111,7 +107,7 @@ if (rstAuthors!=null && rstAuthors.length>0){
             mb.append("</td>");
             mb.append("<td valign=top align=left>");
             mb.append("<font face=arial size=-2>");
-            String cal = reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.gmttousertime(reger.core.TimeUtils.dbstringtocalendar(rstAuthors[i][4]), userSession.getAccount().getTimezoneid()));
+            String cal = reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.gmttousertime(ac.getLastlogindate(), userSession.getAccount().getTimezoneid()));
             mb.append(cal);
             mb.append("</font>");
             mb.append("</td>");

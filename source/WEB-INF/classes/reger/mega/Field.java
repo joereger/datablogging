@@ -440,40 +440,6 @@ public class Field implements Cloneable, FieldInterface {
         this.fieldname = fieldname;
     }
 
-
-
-//    public static FieldType[] getFieldsForEventTypeOrLogid(int eventtypeid, int logid){
-//        FieldType[] fldsOut = null;
-//        if (eventtypeid>0){
-//            fldsOut = reger.AllFieldsInSystem.allMegaFieldsForEventtypeid(eventtypeid, false, false, new int[0], new int[0]);
-//        }
-//        if (logid>0){
-//            fldsOut = reger.cache.LogCache.get(logid).getFields();
-//        }
-//        return fldsOut;
-//
-//    }
-
-//    public static FieldType[] getFieldsForEventTypeOrLogidFromDB(int eventtypeid, int logid, boolean includeHidden){
-//        FieldType[] fldsOut = null;
-//        if (eventtypeid>0){
-//            fldsOut = reger.AllFieldsInSystem.allMegaFieldsForEventtypeid(eventtypeid, includeHidden, false);
-//        }
-//        if (logid>0){
-//            fldsOut = reger.AllFieldsInSystem.allMegaFieldsForLog(logid, eventtypeid, includeHidden);
-//        }
-//        return fldsOut;
-//
-//
-//    }
-
-
-
-
-
-
-
-
     public void setIsrequired(boolean isrequired) {
         if (isrequired){
             this.isrequired = 1;

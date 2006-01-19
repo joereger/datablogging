@@ -457,7 +457,7 @@ public class Profile {
                     //Put stuff that you should see on people who are NOT your friends here
                     mb.append("<tr>");
                     mb.append("<td valign=top align=left bgcolor=#e6e6e6 colspan=2>");
-                    mb.append("<a href='"+pathToAppRoot+"friendassociatestart.log?accountuseridtarget="+accountuser.getAccountuserid()+"'>");
+                    mb.append("<a href='"+pathToAppRoot+"about/login.log?accountuseridtarget="+accountuser.getAccountuserid()+"'>");
                     mb.append("<font face=arial size=-2>");
                     mb.append("Make Me Your Friend");
                     mb.append("</font>");

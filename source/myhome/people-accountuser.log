@@ -161,11 +161,7 @@ mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
 mb.append("<tr>");
 mb.append("<td valign=top align=left bgcolor=#ffffff>");
 mb.append("<font face=arial size=+2 color=#666666>");
-if (!au.getFriendlyname().equals("")){
-    mb.append(au.getFriendlyname());
-} else if (!au.getUsername().equals("")) {
-    mb.append(au.getUsername());
-}
+mb.append(au.getFriendlyname());
 mb.append("</font>");
 mb.append("</td>");
 mb.append("</tr>");

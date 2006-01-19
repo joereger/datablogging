@@ -231,30 +231,17 @@ mb.append("<td valign=top bgcolor=#cccccc class=acct>Friendly Name</td>");
 mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=friendlyname value=\""+Util.cleanForHtml(au.getFriendlyname())+"\"></td>");
 mb.append("</tr>");
 
-mb.append("<tr>");
-mb.append("<td valign=top bgcolor=#cccccc class=acct>Username</td>");
-mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=acctuserusername value=\""+Util.cleanForHtml(au.getUsername())+"\"></td>");
-mb.append("</tr>");
 
 mb.append("<tr>");
 mb.append("<td valign=top bgcolor=#cccccc class=acct>Password</td>");
-mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=password name=acctuserpassword value=''></td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=password name=password value=''></td>");
 mb.append("</tr>");
 
 mb.append("<tr>");
 mb.append("<td valign=top bgcolor=#cccccc class=acct>Verify Password</td>");
-mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=password name=acctuserverifypassword value=''></td>");
+mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=password name=passwordverify value=''></td>");
 mb.append("</tr>");
 
-mb.append("<tr>");
-mb.append("<td valign=top bgcolor=#cccccc class=acct>Passphrase Question</td>");
-mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=passphrasequestion value=\""+Util.cleanForHtml(au.getPassphrasequestion())+"\"></td>");
-mb.append("</tr>");
-
-mb.append("<tr>");
-mb.append("<td valign=top bgcolor=#cccccc class=acct>Passphrase Answer</td>");
-mb.append("<td valign=top bgcolor=#ffffff class=acct><input type=text name=passphraseanswer value=\""+Util.cleanForHtml(au.getPassphraseanswer())+"\"></td>");
-mb.append("</tr>");
 
 mb.append("<tr>");
 mb.append("<td valign=top bgcolor=#cccccc class=acct>Email Address</td>");

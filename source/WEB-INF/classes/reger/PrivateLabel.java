@@ -11,6 +11,8 @@ import reger.plcontentmanagement.AllPlJspPages;
 import reger.plcontentmanagement.PlContentPage;
 
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * This class represents a private label.
@@ -37,8 +39,8 @@ public class PrivateLabel {
     private String emailapiuniqueidentifier = "";
     private String termsofservice = "";
     private String comments = "";
-    private String termsofuselinktext = "";
-    private String feedbacklinktext = "";
+    private String termsofuselinktext = "Terms of Service";
+    private String feedbacklinktext = "Feedback";
     private boolean doapplyplusertemplatetopro = false;
     private int publicsitetemplateid = 0;
     private int entlisttemplateid = 0;
@@ -55,6 +57,12 @@ public class PrivateLabel {
     private String bannertwo = "";
     private String bannerthree = "";
     private boolean showbannertagsonpro = false;
+    private boolean isemailactivationofaccountsrequired = false;
+    private String emailtextactivationmessage = "";
+    private String emailsubjectactivationmessage = "";
+    private String emailtextwelcomemessage = "";
+    private String emailsubjectwelcomemessage = "";
+
 
 
     private License plLicense;
@@ -97,7 +105,7 @@ public class PrivateLabel {
         //Check for private label using this url
         //-----------------------------------
         //-----------------------------------
-        String[][] getPl= Db.RunSQL("SELECT plid, titlebar, plname, islive, plbasedomain, plid, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, forcelogintoviewsites, istrackbackenabled, isweblogscompingon, emailtonotifyofnewaccounts, newaccountsrequireadminapproval, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, termsofservice, comments, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, issignupenabled, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth, plusertemplateid, bannerone, bannertwo, bannerthree, showbannertagsonpro FROM pl WHERE plid='"+plid+"'");
+        String[][] getPl= Db.RunSQL("SELECT plid, titlebar, plname, islive, plbasedomain, plid, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, forcelogintoviewsites, istrackbackenabled, isweblogscompingon, emailtonotifyofnewaccounts, newaccountsrequireadminapproval, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, termsofservice, comments, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, issignupenabled, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth, plusertemplateid, bannerone, bannertwo, bannerthree, showbannertagsonpro, isemailactivationofaccountsrequired, emailtextactivationmessage, emailsubjectactivationmessage, emailtextwelcomemessage, emailsubjectwelcomemessage FROM pl WHERE plid='"+plid+"'");
         //-----------------------------------
         //-----------------------------------
         if (getPl!=null && getPl.length>0){
@@ -129,6 +137,9 @@ public class PrivateLabel {
                 isweblogscompingon = false;
             }
             emailtonotifyofnewaccounts = getPl[0][12];
+            if (emailtonotifyofnewaccounts.equals("")){
+                emailtonotifyofnewaccounts=reger.Vars.EMAILDEFAULTFROM;
+            }
             if (getPl[0][13].equals("1")){
                 newaccountsrequireadminapproval = true;
             } else {
@@ -195,6 +206,17 @@ public class PrivateLabel {
             bannertwo = getPl[0][42];
             bannerthree = getPl[0][43];
             showbannertagsonpro = reger.core.Util.booleanFromSQLText(getPl[0][44]);
+            isemailactivationofaccountsrequired = reger.core.Util.booleanFromSQLText(getPl[0][45]);
+            emailtextactivationmessage =  getPl[0][46];
+            if (emailtextactivationmessage.equals("")){
+                emailtextactivationmessage = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages\\activationmessage.txt").toString();
+            }
+            emailsubjectactivationmessage = getPl[0][47];
+            emailtextwelcomemessage = getPl[0][48];
+            if (emailtextwelcomemessage.equals("")){
+                emailtextwelcomemessage = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages\\welcomemessage.txt").toString();      
+            }
+            emailsubjectwelcomemessage = getPl[0][49];
 
             //Override license values
             if (defaultmaxspaceinbytes<=0){
@@ -236,7 +258,7 @@ public class PrivateLabel {
     private void loadNestedNavItems(){
 
         //Get nav items from system
-        NestedNavItem[] staticJspPages = AllPlJspPages.getNestedNavItems();
+        ArrayList<NestedNavItem> staticJspPages = AllPlJspPages.getNestedNavItems();
         //Get list of those that are hidden by this pl
         HashMap hiddenByPl = new HashMap();
         //-----------------------------------
@@ -250,10 +272,11 @@ public class PrivateLabel {
             }
         }
         //Create a new list of staticJspPages without those that are hidden by the pl
-        NestedNavItem[] staticJspPagesMinusHiddenOnes = new NestedNavItem[0];
-        for (int i = 0; i < staticJspPages.length; i++) {
-            if (!hiddenByPl.containsKey(staticJspPages[i].getThisNestedNavId())){
-                staticJspPagesMinusHiddenOnes = AddToArray.addToNestedNavItemArray(staticJspPagesMinusHiddenOnes, staticJspPages[i]);
+        ArrayList<NestedNavItem> staticJspPagesMinusHiddenOnes = new ArrayList<NestedNavItem>();
+        for (Iterator it = staticJspPages.iterator(); it.hasNext(); ) {
+            NestedNavItem navItem = (NestedNavItem)it.next();
+            if (!hiddenByPl.containsKey(navItem.getThisNestedNavId())){
+                staticJspPagesMinusHiddenOnes.add(navItem);
             }
         }
         //Get nav items from private label
@@ -266,10 +289,9 @@ public class PrivateLabel {
             for(int i=0; i<rstPlContPage.length; i++){
                 PlContentPage plContPage = new PlContentPage(Integer.parseInt(rstPlContPage[i][0]));
                 reger.core.Debug.debug(5, "PrivateLabel.java", "Found a plcontentpageid: "+plContPage.getPlcontentpageid() + " " + plContPage.getName());
-                staticJspPagesMinusHiddenOnes = AddToArray.addToNestedNavItemArray(staticJspPagesMinusHiddenOnes, (NestedNavItem)plContPage);
+                staticJspPagesMinusHiddenOnes.add((NestedNavItem)plContPage);
             }
         }
-
         nestedNavCollection = new NestedNavCollection(staticJspPagesMinusHiddenOnes);
     }
 
@@ -377,14 +399,14 @@ public class PrivateLabel {
         if (rstPlCt!=null && rstPlCt.length>0){
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE pl SET plname='"+ reger.core.Util.cleanForSQL(plname)+"',  titlebar='"+ reger.core.Util.cleanForSQL(titlebar)+"', comments='"+ reger.core.Util.cleanForSQL(comments)+"', plbasedomain='"+ reger.core.Util.cleanForSQL(plbasedomain)+"', issignupenabled='"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', iscontentflaggingon='"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', doesflaggedcontentneedtobeapproved='"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', doallpostsneedtobeapproved='"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', usedynamicdns='"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', defaultmaxspaceinbytes='"+ defaultmaxspaceinbytes+"', defaultmaxbandwidth='"+ defaultmaxbandwidth+"', termsofservice='"+ reger.core.Util.cleanForSQL(termsofservice)+"', newaccountsrequireadminapproval='"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', forcelogintoviewsites='"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"', istrackbackenabled='"+reger.core.Util.booleanAsSQLText(istrackbackenabled)+"', isweblogscompingon='"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', emailtonotifyofnewaccounts='"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', emailapiuniqueidentifier='"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', minpasswordchars='"+minPasswordChars+"', minpassworduppercasechars='"+minPasswordUpperCaseChars+"', minpasswordlowercasechars='"+minPasswordLowerCaseChars+"', minpasswordspecialchars='"+minPasswordSpecialChars+"', minpasswordnumericchars='"+minPasswordNumericChars+"', ispasswordsentviaemail='"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', termsofuselinktext='"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', feedbacklinktext='"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', doapplyplusertemplatetopro='"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', publicsitetemplateid='"+ publicsitetemplateid+"', entlisttemplateid='"+ entlisttemplateid+"', hptemplateid='"+ hptemplateid+"', marketingsitetemplateid='"+ marketingsitetemplateid+"', marketingsitehptemplateid='"+ marketingsitehptemplateid+"', defaulteventtypeid='"+defaulteventtypeid+"', encryptedlicense='"+reger.core.Util.cleanForSQL(encryptedlicense)+"', baseaccountprice='"+baseaccountprice+"', priceper100mbstorage='"+priceper100mbstorage+"', pricepergbbandwidth='"+pricepergbbandwidth+"', plusertemplateid='"+plusertemplateid+"', bannerone='"+reger.core.Util.cleanForSQL(bannerone)+"', bannertwo='"+reger.core.Util.cleanForSQL(bannertwo)+"', bannerthree='"+reger.core.Util.cleanForSQL(bannerthree)+"', showbannertagsonpro='"+reger.core.Util.booleanAsSQLText(showbannertagsonpro)+"' WHERE plid='"+ plid +"'");
+            int count = Db.RunSQLUpdate("UPDATE pl SET plname='"+ reger.core.Util.cleanForSQL(plname)+"',  titlebar='"+ reger.core.Util.cleanForSQL(titlebar)+"', comments='"+ reger.core.Util.cleanForSQL(comments)+"', plbasedomain='"+ reger.core.Util.cleanForSQL(plbasedomain)+"', issignupenabled='"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', iscontentflaggingon='"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', doesflaggedcontentneedtobeapproved='"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', doallpostsneedtobeapproved='"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', usedynamicdns='"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', defaultmaxspaceinbytes='"+ defaultmaxspaceinbytes+"', defaultmaxbandwidth='"+ defaultmaxbandwidth+"', termsofservice='"+ reger.core.Util.cleanForSQL(termsofservice)+"', newaccountsrequireadminapproval='"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', forcelogintoviewsites='"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"', istrackbackenabled='"+reger.core.Util.booleanAsSQLText(istrackbackenabled)+"', isweblogscompingon='"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', emailtonotifyofnewaccounts='"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', emailapiuniqueidentifier='"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', minpasswordchars='"+minPasswordChars+"', minpassworduppercasechars='"+minPasswordUpperCaseChars+"', minpasswordlowercasechars='"+minPasswordLowerCaseChars+"', minpasswordspecialchars='"+minPasswordSpecialChars+"', minpasswordnumericchars='"+minPasswordNumericChars+"', ispasswordsentviaemail='"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', termsofuselinktext='"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', feedbacklinktext='"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', doapplyplusertemplatetopro='"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', publicsitetemplateid='"+ publicsitetemplateid+"', entlisttemplateid='"+ entlisttemplateid+"', hptemplateid='"+ hptemplateid+"', marketingsitetemplateid='"+ marketingsitetemplateid+"', marketingsitehptemplateid='"+ marketingsitehptemplateid+"', defaulteventtypeid='"+defaulteventtypeid+"', encryptedlicense='"+reger.core.Util.cleanForSQL(encryptedlicense)+"', baseaccountprice='"+baseaccountprice+"', priceper100mbstorage='"+priceper100mbstorage+"', pricepergbbandwidth='"+pricepergbbandwidth+"', plusertemplateid='"+plusertemplateid+"', bannerone='"+reger.core.Util.cleanForSQL(bannerone)+"', bannertwo='"+reger.core.Util.cleanForSQL(bannertwo)+"', bannerthree='"+reger.core.Util.cleanForSQL(bannerthree)+"', showbannertagsonpro='"+reger.core.Util.booleanAsSQLText(showbannertagsonpro)+"', isemailactivationofaccountsrequired='"+reger.core.Util.booleanAsSQLText(isemailactivationofaccountsrequired)+"', emailtextactivationmessage='"+reger.core.Util.cleanForSQL(emailtextactivationmessage)+"', emailsubjectactivationmessage='"+reger.core.Util.cleanForSQL(emailsubjectactivationmessage)+"', emailtextwelcomemessage='"+reger.core.Util.cleanForSQL(emailtextwelcomemessage)+"', emailsubjectwelcomemessage='"+reger.core.Util.cleanForSQL(emailsubjectwelcomemessage)+"' WHERE plid='"+ plid +"'");
             //-----------------------------------
             //-----------------------------------
         } else {
             Debug.debug(5, "", "PrivateLabel.java - save() called. Validation passed. Couldn't update so adding new.");
             //-----------------------------------
             //-----------------------------------
-            plid = Db.RunSQLInsert("INSERT INTO pl(plname, titlebar, comments, plbasedomain, issignupenabled, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, termsofservice, newaccountsrequireadminapproval, forcelogintoviewsites, istrackbackenabled, isweblogscompingon, emailtonotifyofnewaccounts, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth, plusertemplateid, bannerone, bannertwo, bannerthree, showbannertagsonpro) VALUES('"+ reger.core.Util.cleanForSQL(plname)+"','"+ reger.core.Util.cleanForSQL(titlebar)+"','"+ reger.core.Util.cleanForSQL(comments)+"','"+ reger.core.Util.cleanForSQL(plbasedomain)+"','"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', '"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', '"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', '"+ defaultmaxspaceinbytes+"', '"+ defaultmaxbandwidth+"', '"+ reger.core.Util.cleanForSQL(termsofservice)+"', '"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', '"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"',  '"+reger.core.Util.booleanAsSQLText(istrackbackenabled)+"', '"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', '"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', '"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', '"+minPasswordChars+"', '"+minPasswordUpperCaseChars+"', '"+minPasswordLowerCaseChars+"', '"+minPasswordSpecialChars+"', '"+ minPasswordNumericChars +"', '"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', '"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', '"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', '"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', '"+publicsitetemplateid+"', '"+entlisttemplateid+"', '"+hptemplateid+"', '"+marketingsitetemplateid+"', '"+marketingsitehptemplateid+"', '"+defaulteventtypeid+"', '"+reger.core.Util.cleanForSQL(encryptedlicense)+"', '"+baseaccountprice+"', '"+priceper100mbstorage+"', '"+pricepergbbandwidth+"', '"+plusertemplateid+"', '"+reger.core.Util.cleanForSQL(bannerone)+"', '"+reger.core.Util.cleanForSQL(bannertwo)+"', '"+reger.core.Util.cleanForSQL(bannerthree)+"', '"+reger.core.Util.booleanAsSQLText(showbannertagsonpro)+"')");
+            plid = Db.RunSQLInsert("INSERT INTO pl(plname, titlebar, comments, plbasedomain, issignupenabled, iscontentflaggingon, doesflaggedcontentneedtobeapproved, doallpostsneedtobeapproved, usedynamicdns, defaultmaxspaceinbytes, defaultmaxbandwidth, termsofservice, newaccountsrequireadminapproval, forcelogintoviewsites, istrackbackenabled, isweblogscompingon, emailtonotifyofnewaccounts, emailapiuniqueidentifier, minpasswordchars, minpassworduppercasechars, minpasswordlowercasechars, minpasswordspecialchars, minpasswordnumericchars, ispasswordsentviaemail, termsofuselinktext, feedbacklinktext, doapplyplusertemplatetopro, publicsitetemplateid, entlisttemplateid, hptemplateid, marketingsitetemplateid, marketingsitehptemplateid, defaulteventtypeid, encryptedlicense, baseaccountprice, priceper100mbstorage, pricepergbbandwidth, plusertemplateid, bannerone, bannertwo, bannerthree, showbannertagsonpro, isemailactivationofaccountsrequired, emailtextactivationmessage, emailsubjectactivationmessage, emailtextwelcomemessage, emailsubjectwelcomemessage) VALUES('"+ reger.core.Util.cleanForSQL(plname)+"','"+ reger.core.Util.cleanForSQL(titlebar)+"','"+ reger.core.Util.cleanForSQL(comments)+"','"+ reger.core.Util.cleanForSQL(plbasedomain)+"','"+ reger.core.Util.booleanAsSQLText(issignupenabled)+"', '"+reger.core.Util.booleanAsSQLText(iscontentflaggingon)+"', '"+reger.core.Util.booleanAsSQLText(doesflaggedcontentneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(doallpostsneedtobeapproved)+"', '"+reger.core.Util.booleanAsSQLText(usedynamicdns)+"', '"+ defaultmaxspaceinbytes+"', '"+ defaultmaxbandwidth+"', '"+ reger.core.Util.cleanForSQL(termsofservice)+"', '"+reger.core.Util.booleanAsSQLText(newaccountsrequireadminapproval)+"', '"+reger.core.Util.booleanAsSQLText(forcelogintoviewsites)+"',  '"+reger.core.Util.booleanAsSQLText(istrackbackenabled)+"', '"+reger.core.Util.booleanAsSQLText(isweblogscompingon)+"', '"+reger.core.Util.cleanForSQL(emailtonotifyofnewaccounts)+"', '"+reger.core.Util.cleanForSQL(emailapiuniqueidentifier)+"', '"+minPasswordChars+"', '"+minPasswordUpperCaseChars+"', '"+minPasswordLowerCaseChars+"', '"+minPasswordSpecialChars+"', '"+ minPasswordNumericChars +"', '"+reger.core.Util.booleanAsSQLText(isPasswordSentViaEmail)+"', '"+ reger.core.Util.cleanForSQL(termsofuselinktext)+"', '"+ reger.core.Util.cleanForSQL(feedbacklinktext)+"', '"+ reger.core.Util.booleanAsSQLText(doapplyplusertemplatetopro)+"', '"+publicsitetemplateid+"', '"+entlisttemplateid+"', '"+hptemplateid+"', '"+marketingsitetemplateid+"', '"+marketingsitehptemplateid+"', '"+defaulteventtypeid+"', '"+reger.core.Util.cleanForSQL(encryptedlicense)+"', '"+baseaccountprice+"', '"+priceper100mbstorage+"', '"+pricepergbbandwidth+"', '"+plusertemplateid+"', '"+reger.core.Util.cleanForSQL(bannerone)+"', '"+reger.core.Util.cleanForSQL(bannertwo)+"', '"+reger.core.Util.cleanForSQL(bannerthree)+"', '"+reger.core.Util.booleanAsSQLText(showbannertagsonpro)+"', '"+reger.core.Util.booleanAsSQLText(isemailactivationofaccountsrequired)+"', '"+reger.core.Util.cleanForSQL(emailtextactivationmessage)+"', '"+reger.core.Util.cleanForSQL(emailsubjectactivationmessage)+"', '"+reger.core.Util.cleanForSQL(emailtextwelcomemessage)+"', '"+reger.core.Util.cleanForSQL(emailsubjectwelcomemessage)+"')");
             //-----------------------------------
             //-----------------------------------
         }
@@ -604,6 +626,11 @@ public class PrivateLabel {
         bannertwo = reger.core.RequestParam.getString(request, "bannertwo", "");
         bannerthree = reger.core.RequestParam.getString(request, "bannerthree", "");
         showbannertagsonpro = reger.core.RequestParam.getBoolean(request, "showbannertagsonpro", false);
+        isemailactivationofaccountsrequired = reger.core.RequestParam.getBoolean(request, "isemailactivationofaccountsrequired", true);
+        emailtextactivationmessage = reger.core.RequestParam.getString(request, "emailtextactivationmessage", "");
+        emailsubjectactivationmessage = reger.core.RequestParam.getString(request, "emailsubjectactivationmessage", "");
+        emailtextwelcomemessage = reger.core.RequestParam.getString(request, "emailtextwelcomemessage", "");
+        emailsubjectwelcomemessage = reger.core.RequestParam.getString(request, "emailsubjectwelcomemessage", "");
 
         String contentapproval=reger.core.RequestParam.getString(request, "contentapproval", "unmoderated");;
         if (contentapproval.equals("unmoderated")){
@@ -928,4 +955,45 @@ public class PrivateLabel {
     public NestedNavCollection getNestedNavCollection() {
         return nestedNavCollection;
     }
+
+    public boolean getIsemailactivationofaccountsrequired() {
+        return isemailactivationofaccountsrequired;
+    }
+
+    public void setIsemailactivationofaccountsrequired(boolean isemailactivationofaccountsrequired) {
+        this.isemailactivationofaccountsrequired = isemailactivationofaccountsrequired;
+    }
+
+    public String getEmailtextactivationmessage() {
+        return emailtextactivationmessage;
+    }
+
+    public void setEmailtextactivationmessage(String emailtextactivationmessage) {
+        this.emailtextactivationmessage = emailtextactivationmessage;
+    }
+
+    public String getEmailsubjectactivationmessage() {
+        return emailsubjectactivationmessage;
+    }
+
+    public void setEmailsubjectactivationmessage(String emailsubjectactivationmessage) {
+        this.emailsubjectactivationmessage = emailsubjectactivationmessage;
+    }
+
+    public String getEmailtextwelcomemessage() {
+        return emailtextwelcomemessage;
+    }
+
+    public void setEmailtextwelcomemessage(String emailtextwelcomemessage) {
+        this.emailtextwelcomemessage = emailtextwelcomemessage;
+    }
+
+    public String getEmailsubjectwelcomemessage() {
+        return emailsubjectwelcomemessage;
+    }
+
+    public void setEmailsubjectwelcomemessage(String emailsubjectwelcomemessage) {
+        this.emailsubjectwelcomemessage = emailsubjectwelcomemessage;
+    }
+
 }

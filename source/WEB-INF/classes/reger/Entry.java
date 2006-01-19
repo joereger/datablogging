@@ -8,6 +8,7 @@ import reger.linkrot.AnchorFinder;
 import reger.cache.LogCache;
 import reger.cache.jboss.Cacheable;
 import reger.xforms.EventXformData;
+import reger.mega.FieldType;
 
 import java.util.Calendar;
 import java.util.ArrayList;
@@ -89,14 +90,14 @@ public class Entry {
     public boolean validateRequiredFields = true;
 
     //This important property holds all of the MegaData fields for this entry
-    public reger.mega.FieldType[] fields = null;
+    public ArrayList<FieldType> fields = null;
 
     //Groups
-    public int[] groupsubscriptionids = null;
+    public ArrayList<Integer> groupsubscriptionids = new ArrayList<Integer>();
     String entryKey;
 
     //Episodes
-    public int[] episodesThisEntryBelongsTo = null;
+    public ArrayList<Integer> episodesThisEntryBelongsTo = new ArrayList<Integer>();
     String newepisodename;
     String newepisodedescription;
 
@@ -263,22 +264,22 @@ public class Entry {
         if (request.getParameter("accountuserid") != null && reger.core.Util.isinteger(request.getParameter("accountuserid"))) {
             this.accountuserid = Integer.parseInt(request.getParameter("accountuserid"));
         }
-        groupsubscriptionids = new int[0];
+        groupsubscriptionids = new ArrayList<Integer>();
         if (request.getParameterValues("groupsubscriptionid") != null) {
             String[] inGroups = request.getParameterValues("groupsubscriptionid");
             for (int i = 0; i < inGroups.length; i++) {
                 if (reger.core.Util.isinteger(inGroups[i])) {
-                    groupsubscriptionids = reger.core.Util.addToIntArray(groupsubscriptionids, Integer.parseInt(inGroups[i]));
+                    groupsubscriptionids.add(Integer.parseInt(inGroups[i]));
                 }
             }
         }
 
-        episodesThisEntryBelongsTo = new int[0];
+        episodesThisEntryBelongsTo = new ArrayList<Integer>();
         if (request.getParameterValues("episodeid") != null) {
             String[] inEpisodes = request.getParameterValues("episodeid");
             for (int i = 0; i < inEpisodes.length; i++) {
                 if (reger.core.Util.isinteger(inEpisodes[i])) {
-                    episodesThisEntryBelongsTo = reger.core.Util.addToIntArray(episodesThisEntryBelongsTo, Integer.parseInt(inEpisodes[i]));
+                    episodesThisEntryBelongsTo.add(Integer.parseInt(inEpisodes[i]));
                 }
             }
         }
@@ -324,8 +325,9 @@ public class Entry {
 
         //Populate from request
         if (fields != null) {
-            for (int i = 0; i < this.fields.length; i++) {
-                this.fields[i].populateFromRequest(request);
+            for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                ft.populateFromRequest(request);
             }
         }
     }
@@ -478,8 +480,9 @@ public class Entry {
 
         //Parse through fields and call save method on megadata
         if (fields != null) {
-            for (int i = 0; i < this.fields.length; i++) {
-                this.fields[i].saveToDb(this.eventid, logid);
+            for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                ft.saveToDb(this.eventid, logid);
             }
         }
 
@@ -589,10 +592,10 @@ public class Entry {
         String[][] rstGroups = Db.RunSQL("SELECT groupsubscriptionid FROM eventtogroup WHERE eventid='" + eventid + "'");
         //-----------------------------------
         //-----------------------------------
-        groupsubscriptionids = new int[0];
+        groupsubscriptionids = new ArrayList<Integer>();
         if (rstGroups != null && rstGroups.length > 0) {
             for (int i = 0; i < rstGroups.length; i++) {
-                groupsubscriptionids = reger.core.Util.addToIntArray(groupsubscriptionids, Integer.parseInt(rstGroups[i][0]));
+                groupsubscriptionids.add(Integer.parseInt(rstGroups[i][0]));
             }
         }
 
@@ -602,10 +605,10 @@ public class Entry {
         String[][] rstEpisodes = Db.RunSQL("SELECT episodeid FROM eventtoepisode WHERE eventid='" + eventid + "' ORDER BY episodeid DESC");
         //-----------------------------------
         //-----------------------------------
-        episodesThisEntryBelongsTo = new int[0];
+        episodesThisEntryBelongsTo = new ArrayList<Integer>();
         if (rstEpisodes != null && rstEpisodes.length > 0) {
             for (int i = 0; i < rstEpisodes.length; i++) {
-                episodesThisEntryBelongsTo = reger.core.Util.addToIntArray(episodesThisEntryBelongsTo, Integer.parseInt(rstEpisodes[i][0]));
+                episodesThisEntryBelongsTo.add(Integer.parseInt(rstEpisodes[i][0]));
             }
         }
 
@@ -625,11 +628,12 @@ public class Entry {
 
         //Go get the data for those fields
         if (fields != null) {
-            for (int i = 0; i < fields.length; i++) {
+            for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
                 //Populate the object with values from the eventid
-                Debug.debug(5, "", "Entry.java - fields[i].loadDataForEventid() will be called for " + fields[i].getFieldname());
-                fields[i].loadDataForEventid(eventid, logid);
-                Debug.debug(5, "", "Entry.java - fieldname= " + fields[i].getFieldname() + " fields[i].getDataForField()[0].getValue()=" + fields[i].getDataForField()[0].getValue());
+                Debug.debug(5, "", "Entry.java - fields[i].loadDataForEventid() will be called for " + ft.getFieldname());
+                ft.loadDataForEventid(eventid, logid);
+                Debug.debug(5, "", "Entry.java - fieldname= " + ft.getFieldname() + " fields[i].getDataForField()[0].getValue()=" + ft.getDataForField().get(0).getValue());
             }
         }
 
@@ -669,9 +673,10 @@ public class Entry {
 
         //Tell the field to get its default MegaData
         if (fields != null) {
-            for (int i = 0; i < fields.length; i++) {
+            for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
                 //Populate the object with default values from the logid
-                fields[i].loadDefaultData(logid);
+                ft.loadDefaultData(logid);
             }
         }
 
@@ -692,8 +697,9 @@ public class Entry {
 
         //Parse through fields and call save method
         if (fields != null) {
-            for (int i = 0; i < this.fields.length; i++) {
-                this.fields[i].saveDefaultToDb(logid);
+            for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                ft.saveDefaultToDb(logid);
             }
         }
 
@@ -750,8 +756,9 @@ public class Entry {
         ValidationException validationException = new ValidationException();
         if (fields != null) {
             //Iterate the fields, calling the validate function
-            for (int i = 0; i < this.fields.length; i++) {
-                String err = this.fields[i].validateCurrentData();
+            for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                String err = ft.validateCurrentData();
                 if (!err.equals("")) {
                     validationException.addValidationError(err);
                 }
@@ -773,13 +780,13 @@ public class Entry {
             //-----------------------------------
             //-----------------------------------
 
-            episodesThisEntryBelongsTo = reger.core.Util.addToIntArray(episodesThisEntryBelongsTo, newepisodeid);
+            episodesThisEntryBelongsTo.add(newepisodeid);
         }
 
         //Add new episodes from the checkbox
         if (episodesThisEntryBelongsTo != null) {
-            for (int i = 0; i < episodesThisEntryBelongsTo.length; i++) {
-                int episodeid = episodesThisEntryBelongsTo[i];
+            for (Iterator it = episodesThisEntryBelongsTo.iterator(); it.hasNext(); ) {
+                Integer episodeid = (Integer)it.next();
                 //-----------------------------------
                 //-----------------------------------
                 String[][] rstEp = Db.RunSQL("SELECT episodeid FROM eventtoepisode WHERE episodeid='" + episodeid + "' AND eventid='" + eventid + "'");
@@ -808,8 +815,9 @@ public class Entry {
             for (int i = 0; i < rstEpEv.length; i++) {
                 //See if this one appears in the incoming list
                 boolean isStillLive = false;
-                for (int j = 0; j < episodesThisEntryBelongsTo.length; j++) {
-                    if (episodesThisEntryBelongsTo[j] == Integer.parseInt(rstEpEv[j][0])) {
+                for (Iterator it = episodesThisEntryBelongsTo.iterator(); it.hasNext(); ) {
+                    Integer episodeid = (Integer)it.next();
+                    if (episodeid == Integer.parseInt(rstEpEv[i][0])) {
                         isStillLive = true;
                     }
                 }
@@ -896,15 +904,13 @@ public class Entry {
         String author = "";
         //-----------------------------------
         //-----------------------------------
-        String[][] rstAuth = Db.RunSQL("SELECT username, friendlyname FROM accountuser WHERE accountuserid='" + accountuserid + "' LIMIT 0,1");
+        String[][] rstAuth = Db.RunSQL("SELECT friendlyname FROM accountuser WHERE accountuserid='" + accountuserid + "' LIMIT 0,1");
         //-----------------------------------
         //-----------------------------------
         if (rstAuth != null && rstAuth.length > 0) {
-            if (!rstAuth[0][1].equals("")) {
-                author = rstAuth[0][1];
-            } else {
-                author = rstAuth[0][0];
-            }
+
+            author = rstAuth[0][0];
+
         }
         return author;
     }
@@ -1088,8 +1094,9 @@ public class Entry {
         //Delete any data with megafields that exists
         if (fields != null) {
             //Iterate the fields, calling the delete function
-            for (int i = 0; i < this.fields.length; i++) {
-                this.fields[i].deleteData(eventid);
+            for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                ft.deleteData(eventid);
             }
         }
     }
@@ -1131,8 +1138,9 @@ public class Entry {
                     //Move the data
                     if (fields != null) {
                         //Iterate the fields, calling the move function
-                        for (int j = 0; j < this.fields.length; j++) {
-                            this.fields[j].moveDataToAnotherLog(eventid, logid, newLogid);
+                        for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
+                            FieldType ft = (FieldType)it.next();
+                            ft.moveDataToAnotherLog(eventid, logid, newLogid);
                         }
                     }
                 }

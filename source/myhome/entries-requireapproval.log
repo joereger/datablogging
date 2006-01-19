@@ -53,7 +53,7 @@ mb.append("</td>");
 mb.append("</tr>");
 //-----------------------------------
 //-----------------------------------
-String[][] rstApprovals= Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.username, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isapproved='0' AND event.istemporary='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
+String[][] rstApprovals= Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isapproved='0' AND event.istemporary='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
 //-----------------------------------
 //-----------------------------------
 if (rstApprovals!=null && rstApprovals.length>0){
@@ -75,11 +75,7 @@ if (rstApprovals!=null && rstApprovals.length>0){
         mb.append("</td>");
         mb.append("<td bgcolor=#ffffff valign=top align=left>");
         mb.append("<font face=arial size=-2>");
-        if (!rstApprovals[i][6].equals("")){
-            mb.append(" " + rstApprovals[i][6]);
-        } else {
-            mb.append(" " + rstApprovals[i][5]);
-        }
+        mb.append(" " + rstApprovals[i][5]);
         mb.append("</font>");
         mb.append("</td>");
         mb.append("</tr>");

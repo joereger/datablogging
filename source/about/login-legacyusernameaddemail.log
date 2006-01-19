@@ -1,0 +1,148 @@
+<%@ page import="reger.Accountuser"%>
+<%@ page import="reger.core.PasswordHash"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Add Email Address to Account";
+pageProps.navButtonName = "aboutindex";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONHOME;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+if (pageProps.action.equals("")){
+
+
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "We've changed the way that login is handled.  You'll now use your email address to login."));
+
+    mb.append("<font face=arial size=+1 color=#666666><b>If you've been with us prior to 2006 then you're accustomed to logging in with a username.  We now need to make sure that you have a valid email address associated with your account.  To do this, please enter your username and password below:</b></font>");
+
+    mb.append("<br><br>");
+
+    mb.append("<form action=login-legacyusernameaddemail.log method=post>");
+    mb.append("<input type=hidden name=action value=findbyusername>");
+    mb.append("<b>Username: </b><input type=text name=username size=25 maxlength=100>");
+    mb.append("<br>");
+    mb.append("<b>Password: </b><input type=password name=password size=25 maxlength=100>");
+    mb.append("<br>");
+    mb.append("<input type=submit value='Continue'>");
+    mb.append("</form>");
+
+//    mb.append("<br><br>");
+//
+//    mb.append("<form action=login-legacyusernameaddemail.log method=post>");
+//    mb.append("<input type=hidden name=action value=findbyemail>");
+//    mb.append("Find By Email: <input type=text name=email size=25 maxlength=100>");
+//    mb.append("<br>");
+//    mb.append("Password: <input type=password name=password size=25 maxlength=100>");
+//    mb.append("<br>");
+//    mb.append("<input type=submit value='Find'>");
+//    mb.append("</form>");
+} else if (pageProps.action.equals("findbyusername")) {
+
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstAu= reger.core.db.Db.RunSQL("SELECT accountuserid, password FROM accountuser WHERE username='"+reger.core.Util.cleanForSQL(request.getParameter("username"))+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstAu!=null && rstAu.length>0){
+        Accountuser au = new Accountuser(Integer.parseInt(rstAu[0][0]), true);
+        if (PasswordHash.getHash(request.getParameter("password")).equals(rstAu[0][1])){
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Welcome, "+au.getFriendlyname()+".  We've located your account... you're almost done."));
+            mb.append("<form action=login-legacyusernameaddemail.log method=post>");
+            mb.append("<input type=hidden name=action value=setemail>");
+            mb.append("<input type=hidden name=password value="+request.getParameter("password")+">");
+            mb.append("<input type=hidden name=accountuserid value="+au.getAccountuserid()+">");
+            mb.append("<b>Please enter your email address:</b><input type=text name=email value='"+au.getEmail()+"' size=25 maxlength=100>");
+            mb.append("<br>");
+            mb.append("<input type=submit value='Continue'>");
+            mb.append("</form>");
+        } else {
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, an account was not found.  Please click <a href='login-legacyusernameaddemail.log'>here</a> to continue."));
+        }
+    } else {
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, an account was not found.  Please click <a href='login-legacyusernameaddemail.log'>here</a> to continue."));
+    }
+} else if (pageProps.action.equals("findbyemail")) {
+//    //-----------------------------------
+//    //-----------------------------------
+//    String[][] rstAu= reger.core.db.Db.RunSQL("SELECT accountuserid, password FROM accountuser WHERE email='"+reger.core.Util.cleanForSQL(request.getParameter("email"))+"'");
+//    //-----------------------------------
+//    //-----------------------------------
+//    if (rstAu!=null && rstAu.length>0){
+//        Accountuser au = new Accountuser(Integer.parseInt(rstAu[0][0]), true);
+//        if (PasswordHash.getHash(request.getParameter("password")).equals(rstAu[0][1])){
+//            mb.append("<form action=login-legacyusernameaddemail.log method=post>");
+//            mb.append("<input type=hidden name=action value=setemail>");
+//            mb.append("<input type=hidden name=password value="+request.getParameter("password")+">");
+//            mb.append("<input type=hidden name=accountuserid value="+au.getAccountuserid()+">");
+//            mb.append("Please enter the email address that you'd like to use to login to this account:<br><input type=text name=email value='"+au.getEmail()+"' size=25 maxlength=100>");
+//            mb.append("<br>");
+//            mb.append("<input type=submit value='Go'>");
+//            mb.append("</form>");
+//        } else {
+//            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, an account was not found.  Please click <a href='login-legacyusernameaddemail.log'>here</a> to continue."));
+//        }
+//    } else {
+//        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, an account was not found.  Please click <a href='login-legacyusernameaddemail.log'>here</a> to continue."));
+//    }
+} else if (pageProps.action.equals("setemail")) {
+    if (request.getParameter("accountuserid")!=null && reger.core.Util.isinteger(request.getParameter("accountuserid"))){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstAu= reger.core.db.Db.RunSQL("SELECT accountuserid, password FROM accountuser WHERE accountuserid='"+reger.core.Util.cleanForSQL(request.getParameter("accountuserid"))+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstAu!=null && rstAu.length>0){
+            Accountuser au = new Accountuser(Integer.parseInt(rstAu[0][0]), true);
+            if (PasswordHash.getHash(request.getParameter("password")).equals(rstAu[0][1])){
+                au.setEmail(request.getParameter("email"));
+                au.setIsactivatedbyemail(false);
+                if (au.getEmailactivationkey().equals("")){
+                    au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
+                }
+                String errortext = au.saveSettings(userSession.getPl());
+                if (!errortext.equals("")){
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+                } else {
+                    reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), request.getParameter("password"));
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  An activation message has been sent!  Please check your email and click the link included in it."));
+                }
+            } else {
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, an account was not found.  Please click <a href='login-legacyusernameaddemail.log'>here</a> to continue."));
+            }
+        } else {
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, an account was not found.  Please click <a href='login-legacyusernameaddemail.log'>here</a> to continue."));
+        }
+    } else {
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, an account was not found.  Please click <a href='login-legacyusernameaddemail.log'>here</a> to continue."));
+    }
+}
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

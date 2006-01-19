@@ -3,6 +3,8 @@ package reger;
 import reger.core.db.Db;
 import reger.core.Debug;
 import reger.jcaptcha.CaptchaServiceSingleton;
+import reger.cache.AccountCountCache;
+import reger.cache.EntryCache;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -478,6 +480,12 @@ public class MessageListHtml {
                 emailNotifications(userSession, eventid);
             }
 
+            //Refresh the entry cache
+            EntryCache.flush(eventid);
+
+            //Refresh account counts
+            AccountCountCache.flushByAccountid(accountid);
+
 
         } else {
             mb.append("<tr>");
@@ -514,6 +522,9 @@ public class MessageListHtml {
                 }
             }
         }
+        //Refresh the entry cache
+        EntryCache.flush(eventid);
+
         //Update the AccountCounts cache
         reger.cache.AccountCountCache.flushByAccountid(userSession.getAccount().getAccountid());
     }

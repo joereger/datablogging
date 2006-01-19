@@ -19,32 +19,27 @@ import java.util.*;
 @Cacheable
 public class Accountuser implements java.io.Serializable {
 
-
-
-    //Permission vars
+    //Permission vars for the object
     //These hold the aclnames and logids that user can view.
     //Note that outside code should use userCanViewLog()
     //and userCanDoAcl() as much as possible.
-    private Vector accountUserAcls=new Vector(); //The ACL Perms that this user explicitly has
-    private Vector accountUserAclGroups=new Vector();
-    private int[] logsUserHasExlicitPermissionToAccess=new int[0];
-    private int[] logsUserHasExlicitPermissionToAuthor=new int[0];
-    private int[] plidsUserCanAdminister=new int[0];
+    private ArrayList<AccountUserAcl> accountUserAcls=new ArrayList<AccountUserAcl>(); //The ACL Perms that this user explicitly has
+    private ArrayList<AccountUserAclGroup> accountUserAclGroups=new ArrayList<AccountUserAclGroup>();
+    private ArrayList<Integer> logsUserHasExlicitPermissionToAccess=new ArrayList<Integer>();
+    private ArrayList<Integer> logsUserHasExlicitPermissionToAuthor=new ArrayList<Integer>();
+    private ArrayList<Integer> plidsUserCanAdminister=new ArrayList<Integer>();
 
-    private Hashtable accountsUserHasAccessTo = new Hashtable();
+    private HashMap accountsUserHasAccessTo = new HashMap();
 
     //Logged-in flag
     public boolean isLoggedIn=false;
 
     //User properties
     public int accountid = -1;
-    private String username = "";
     private String password = "";
     private String verifypassword = "";
     private String friendlyname = "";
     private String onelinesummary = "";
-    private String passphrasequestion = "";
-    private String passphraseanswer = "";
     private String email = "";
     private java.util.Calendar lastlogindate = Calendar.getInstance();
     private int entrymode = reger.Vars.ENTRYMODESIMPLE;
@@ -53,12 +48,14 @@ public class Accountuser implements java.io.Serializable {
     public boolean isactive = true;
     private java.util.Calendar createdate = Calendar.getInstance();
     private boolean isHelpOn = true;
+    private boolean isactivatedbyemail = false;
+    private String emailactivationkey = "";
 
     //Accountuserfields
-    private Vector accountuserfields = new Vector(10);
+    private ArrayList<Accountuserfield> accountuserfields = new ArrayList<Accountuserfield>();
 
     //Quick pass
-    private Vector quickpass = null;
+    private ArrayList<AccountUserQuickpass> quickpass = null;
 
     /**
      * Constructor
@@ -87,17 +84,17 @@ public class Accountuser implements java.io.Serializable {
     /**
      * Constructor
      */
-    public Accountuser(String username, String password){
-        Debug.debug(5, "", "Accountuser(username, password) constructor<br>username=" + username + "<br>password=" + password);
+    public Accountuser(String email, String password){
+        Debug.debug(5, "", "Accountuser(email, password) constructor<br>email=" + email + "<br>password=" + password);
         //-----------------------------------
         //-----------------------------------
-        String[][] rstUser= Db.RunSQL("SELECT accountuserid FROM accountuser WHERE username='"+reger.core.Util.cleanForSQL(username)+"' AND password='"+reger.core.Util.cleanForSQL(PasswordHash.getHash(password))+"'");
+        String[][] rstUser= Db.RunSQL("SELECT accountuserid FROM accountuser WHERE email='"+reger.core.Util.cleanForSQL(email)+"' AND password='"+reger.core.Util.cleanForSQL(PasswordHash.getHash(password))+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstUser!=null && rstUser.length>0){
             this.accountuserid = Integer.parseInt(rstUser[0][0]);
             populate();
-            userAuthenticate(username, password);
+            userAuthenticate(email, password);
         }
     }
 
@@ -131,40 +128,40 @@ public class Accountuser implements java.io.Serializable {
     /**
      * Constructor
      */
-    public Accountuser(int accountid, int accountuserid, String username, String password){
-        this.accountuserid = accountuserid;
-        populate();
-        userAuthenticate(username, password);
-    }
+//    public Accountuser(int accountid, int accountuserid, String email, String password){
+//        this.accountuserid = accountuserid;
+//        populate();
+//        userAuthenticate(email, password);
+//    }
 
     public void populate(){
         //-----------------------------------
         //-----------------------------------
-        String[][] rstAccountuser= Db.RunSQL("SELECT username, password, friendlyname, passphrasequestion, passphraseanswer, email, lastlogindate, entrymode, usertimezoneid, accountuser.isactive, accountuser.accountid, accountuser.createdate, onelinesummary, ishelpon FROM accountuser WHERE accountuser.accountuserid='"+accountuserid+"' LIMIT 0,1");
+        String[][] rstAccountuser= Db.RunSQL("SELECT friendlyname, email, lastlogindate, entrymode, usertimezoneid, accountuser.isactive, accountuser.accountid, accountuser.createdate, onelinesummary, ishelpon, isactivatedbyemail, emailactivationkey FROM accountuser WHERE accountuser.accountuserid='"+accountuserid+"' LIMIT 0,1");
         //-----------------------------------
         //-----------------------------------
         if (rstAccountuser!=null && rstAccountuser.length>0){
-            this.accountid = Integer.parseInt(rstAccountuser[0][10]);
-            this.username = rstAccountuser[0][0];
-            this.friendlyname = rstAccountuser[0][2];
-            this.passphrasequestion = rstAccountuser[0][3];
-            this.passphraseanswer = rstAccountuser[0][4];
-            this.email = rstAccountuser[0][5];
-            this.lastlogindate = reger.core.TimeUtils.dbstringtocalendar(rstAccountuser[0][6]);
-            this.entrymode = Integer.parseInt(rstAccountuser[0][7]);
-            this.usertimezoneid = rstAccountuser[0][8];
-            if (rstAccountuser[0][9].equals("1")){
+            this.friendlyname = rstAccountuser[0][0];
+            this.email = rstAccountuser[0][1];
+            this.lastlogindate = reger.core.TimeUtils.dbstringtocalendar(rstAccountuser[0][2]);
+            this.entrymode = Integer.parseInt(rstAccountuser[0][3]);
+            this.usertimezoneid = rstAccountuser[0][4];
+            if (rstAccountuser[0][5].equals("1")){
                 this.isactive = true;
             } else {
                 this.isactive = false;
             }
-            this.createdate = reger.core.TimeUtils.dbstringtocalendar(rstAccountuser[0][11]);
-            this.onelinesummary = rstAccountuser[0][12];
-            if (rstAccountuser[0][13].equals("1")){
+            this.accountid = Integer.parseInt(rstAccountuser[0][6]);
+            this.createdate = reger.core.TimeUtils.dbstringtocalendar(rstAccountuser[0][7]);
+            this.onelinesummary = rstAccountuser[0][8];
+            if (rstAccountuser[0][9].equals("1")){
                 this.isHelpOn = true;
             } else {
                 this.isHelpOn = false;
             }
+            this.isactivatedbyemail = reger.core.Util.booleanFromSQLText(rstAccountuser[0][10]);
+            this.emailactivationkey = rstAccountuser[0][11];
+
         } else {
             this.accountuserid = -1;
         }
@@ -183,7 +180,7 @@ public class Accountuser implements java.io.Serializable {
 
         //Get the fields and store them in the Vector accountuserfields
         if (this.accountuserid>0){
-            accountuserfields = new Vector(10);
+            accountuserfields = new ArrayList<Accountuserfield>();
             //-----------------------------------
             //-----------------------------------
             String[][] rstAcUf= Db.RunSQL("SELECT accountuserfieldid, fieldtitle, fielddata, accountuserfield.order FROM accountuserfield WHERE accountuserid='"+this.accountuserid+"' ORDER BY accountuserfield.order ASC");
@@ -206,12 +203,9 @@ public class Accountuser implements java.io.Serializable {
         //Clear logged-in status
         isLoggedIn=false;
         //Clear user-specific vars
-        username=null;
         password=null;
         onelinesummary=null;
         friendlyname=null;
-        passphrasequestion=null;
-        passphraseanswer=null;
         email=null;
         lastlogindate=null;
         entrymode=0;
@@ -223,23 +217,21 @@ public class Accountuser implements java.io.Serializable {
     }
 
     /**
-     * Checks to see if this user is entering a valid username/password combo
-     * @param username
-     * @param password
+     * Checks to see if this user is entering a valid email/password combo
      */
-    public boolean userAuthenticate(String username, String password){
+    public boolean userAuthenticate(String email, String password){
 
-        Debug.debug(5, "", "Accountuser.userAuthenticate() called.<br>username=" + username + "<br>password=" + password);
+        Debug.debug(5, "", "Accountuser.userAuthenticate() called.<br>email=" + email + "<br>password=" + password);
 
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rs= reger.core.db.Db.RunSQL("SELECT accountuserid, password, accountid FROM accountuser WHERE username='"+ reger.core.Util.cleanForSQL(username) +"' AND isactive='1' LIMIT 0,1");
+        String[][] rs= reger.core.db.Db.RunSQL("SELECT accountuserid, password, accountid FROM accountuser WHERE email='"+ reger.core.Util.cleanForSQL(email) +"' AND isactive='1' LIMIT 0,1");
         //-----------------------------------
         //-----------------------------------
         if(rs!=null && rs.length>=1){
 
-            Debug.debug(5, "", "Attempted Login<br>username=" + username + "<br>password=" + password + "<br>rs[0][1]=" + rs[0][1] + "<br>PasswordHash.getHash()=" + PasswordHash.getHash(password));
+            Debug.debug(5, "", "Attempted Login<br>email=" + email + "<br>password=" + password + "<br>rs[0][1]=" + rs[0][1] + "<br>PasswordHash.getHash()=" + PasswordHash.getHash(password));
 
             //If the hash of the incoming password equals the hash that we have in the database, it's a valid login.
             if (PasswordHash.getHash(password).equals(rs[0][1])){
@@ -281,14 +273,12 @@ public class Accountuser implements java.io.Serializable {
     }
 
     /**
-     * Checks to see if this user is entering a valid username/password combo
-     * @param username
-     * @param password
+     * Checks to see if this user is entering a valid email/password combo
      */
-    public boolean userAuthenticateEmailsecret(String username, String password){
+    public boolean userAuthenticateEmailsecret(String email, String password){
         //-----------------------------------
         //-----------------------------------
-        String[][] rs= reger.core.db.Db.RunSQL("SELECT accountuser.accountuserid, emailsecret, password, accountuser.accountid FROM accountuser, emailapi WHERE accountuser.accountuserid=emailapi.accountuserid AND username='"+ reger.core.Util.cleanForSQL(username) +"' AND isactive='1' LIMIT 0,1");
+        String[][] rs= reger.core.db.Db.RunSQL("SELECT accountuser.accountuserid, emailsecret, password, accountuser.accountid FROM accountuser, emailapi WHERE accountuser.accountuserid=emailapi.accountuserid AND email='"+ reger.core.Util.cleanForSQL(email) +"' AND isactive='1' LIMIT 0,1");
         //-----------------------------------
         //-----------------------------------
         if(rs!=null && rs.length>=1){
@@ -328,7 +318,7 @@ public class Accountuser implements java.io.Serializable {
                 qp.accountid = accountidToLogInTo;
                 //Add to quickpass
                 if (quickpass==null){
-                    quickpass=new Vector();
+                    quickpass=new ArrayList<AccountUserQuickpass>();
                 }
                 quickpass.add(qp);
                 //Update the permissions
@@ -371,7 +361,7 @@ public class Accountuser implements java.io.Serializable {
         if (rstGroups!=null && rstGroups.length>0){
             for(int i=0; i<rstGroups.length; i++){
                 if (accountUserAclGroups==null){
-                    accountUserAclGroups = new Vector();
+                    accountUserAclGroups=new ArrayList<AccountUserAclGroup>();
                 }
                 //Create a new aclgroup object
                 AccountUserAclGroup accountUserAclGroup = new reger.acl.AccountUserAclGroup();
@@ -389,7 +379,7 @@ public class Accountuser implements java.io.Serializable {
                 for (int j = 0; j < aclObjects.length; j++) {
                     //Add to acl array
                     if (accountUserAcls==null){
-                        accountUserAcls = new Vector();
+                        accountUserAcls = new ArrayList<AccountUserAcl>();
                     }
                     if (aclObjects[j]!=null){
                         if (!userCanDoAcl(aclObjects[j].aclobjectid, Integer.parseInt(rstGroups[i][2]))){
@@ -421,7 +411,7 @@ public class Accountuser implements java.io.Serializable {
                 reger.acl.AclObject aclObject = reger.acl.AllAclObjects.getAclObjectById(Integer.parseInt(rsAcl[i][0]));
                 //Add to acl array
                 if (accountUserAcls==null){
-                    accountUserAcls = new Vector();
+                    accountUserAcls = new ArrayList<AccountUserAcl>();
                 }
                 if (!userCanDoAcl(aclObject.aclobjectid, Integer.parseInt(rsAcl[i][1]))){
                     //Create a new acl object
@@ -437,31 +427,37 @@ public class Accountuser implements java.io.Serializable {
 
         //Look for explicit log access permissions
         //Clear the logaccess vector so that we have a blank slate
-        logsUserHasExlicitPermissionToAccess=null;
-        logsUserHasExlicitPermissionToAuthor=null;
+        logsUserHasExlicitPermissionToAccess=new ArrayList<Integer>();
+        logsUserHasExlicitPermissionToAccess.clear();
+        logsUserHasExlicitPermissionToAuthor=new ArrayList<Integer>();
+        logsUserHasExlicitPermissionToAuthor.clear();
 
+        String sql = "SELECT megalog.logid, megalog.accountid, accountuserlogaccess.canread, accountuserlogaccess.canwrite FROM accountuserlogaccess, megalog WHERE accountuserlogaccess.logid=megalog.logid AND accountuserlogaccess.accountuserid='"+accountuserid+"'";
+        reger.core.Debug.debug(3, "Accountuser.java", sql);
         //Explicitly defined user permissions
         //-----------------------------------
         //-----------------------------------
-        String[][] rstAdminLogAccess= Db.RunSQL("SELECT megalog.logid, megalog.accountid, accountuserlogaccess.canread, accountuserlogaccess.canwrite FROM accountuserlogaccess, megalog WHERE accountuserlogaccess.logid=megalog.logid AND accountuserid='"+accountuserid+"'");
+        String[][] rstAdminLogAccess= Db.RunSQL(sql);
         //-----------------------------------
         //-----------------------------------
         if (rstAdminLogAccess!=null && rstAdminLogAccess.length>0){
             for(int i=0; i<rstAdminLogAccess.length; i++){
                 //Read permission
                 if (rstAdminLogAccess[i][2].equals("1")){
+                    reger.core.Debug.debug(3, "Accountuser.populatePermissionsFromDb()", "logid "+rstAdminLogAccess[i][0]+" is canread for accountuserid="+accountuserid);
                     //If I currently don't have an entry for this log
                     if (!isAlreadyInlogsUserHasExplicitPermissionToAccess(Integer.parseInt(rstAdminLogAccess[i][0]))){
                         //Add to the accountUserLogAccess array
-                        logsUserHasExlicitPermissionToAccess=reger.core.Util.addToIntArray(logsUserHasExlicitPermissionToAccess, Integer.parseInt(rstAdminLogAccess[i][0]));
+                        logsUserHasExlicitPermissionToAccess.add(Integer.parseInt(rstAdminLogAccess[i][0]));
                     }
                 }
                 //Write permission
                 if (rstAdminLogAccess[i][3].equals("1")){
+                    reger.core.Debug.debug(3, "Accountuser.populatePermissionsFromDb()", "logid "+rstAdminLogAccess[i][0]+" is canwrite for accountuserid="+accountuserid);
                     //If I currently don't have an entry for this log
                     if (!isAlreadyInlogsUserHasExplicitPermissionToAuthor(Integer.parseInt(rstAdminLogAccess[i][0]))){
                         //Add to the accountUserLogAccess array
-                        logsUserHasExlicitPermissionToAuthor=reger.core.Util.addToIntArray(logsUserHasExlicitPermissionToAuthor, Integer.parseInt(rstAdminLogAccess[i][0]));
+                        logsUserHasExlicitPermissionToAuthor.add(Integer.parseInt(rstAdminLogAccess[i][0]));
                     }
                 }
             }
@@ -500,7 +496,7 @@ public class Accountuser implements java.io.Serializable {
                     //If I currently don't have an entry for this log
                     if (!isAlreadyInlogsUserHasExplicitPermissionToAccess(Integer.parseInt(rsLgs[i][0]))){
                         //Add to the accountUserLogAccess array
-                        logsUserHasExlicitPermissionToAccess=reger.core.Util.addToIntArray(logsUserHasExlicitPermissionToAccess, Integer.parseInt(rsLgs[i][0]));
+                        logsUserHasExlicitPermissionToAccess.add(Integer.parseInt(rsLgs[i][0]));
                     }
                 }
             }
@@ -511,7 +507,7 @@ public class Accountuser implements java.io.Serializable {
     }
 
     private void populatePlsUserCanAdmin(){
-        plidsUserCanAdminister = new int[0];
+        plidsUserCanAdminister = new ArrayList<Integer>();
         //-----------------------------------
         //-----------------------------------
         String[][] rstData= Db.RunSQL("SELECT accountuserpladminid, plid, accountuserid FROM accountuserpladmin WHERE accountuserid='"+accountuserid+"'");
@@ -519,7 +515,7 @@ public class Accountuser implements java.io.Serializable {
         //-----------------------------------
         if (rstData!=null && rstData.length>0){
             for(int i=0; i<rstData.length; i++){
-                plidsUserCanAdminister = reger.core.Util.addToIntArray(plidsUserCanAdminister, Integer.parseInt(rstData[i][1]));
+                plidsUserCanAdminister.add(Integer.parseInt(rstData[i][1]));
             }
         }
     }
@@ -540,8 +536,9 @@ public class Accountuser implements java.io.Serializable {
                     return true;
                 }
                 //But if this is another pl, then we need to see if they have explicit permission
-                for (int i = 0; i < plidsUserCanAdminister.length; i++) {
-                    if(plidsUserCanAdminister[i]==plid){
+                for (Iterator it = plidsUserCanAdminister.iterator(); it.hasNext(); ) {
+                    Integer tmpPlid = (Integer)it.next();
+                    if(tmpPlid==plid){
                         return true;
                     }
                 }
@@ -598,7 +595,7 @@ public class Accountuser implements java.io.Serializable {
         if (rstAccounts!=null && rstAccounts.length>0){
             for(int i=0; i<rstAccounts.length; i++){
                 if (accountsUserHasAccessTo==null){
-                    accountsUserHasAccessTo = new Hashtable();
+                    accountsUserHasAccessTo = new HashMap();
                 }
                 String sitetitle = rstAccounts[i][1];
                 if (sitetitle.equals("")){
@@ -611,8 +608,9 @@ public class Accountuser implements java.io.Serializable {
 
     private boolean isAlreadyInlogsUserHasExplicitPermissionToAccess(int logid){
         if (logsUserHasExlicitPermissionToAccess!=null){
-            for (int i = 0; i < logsUserHasExlicitPermissionToAccess.length; i++) {
-                if (logsUserHasExlicitPermissionToAccess[i]==logid){
+            for (Iterator it = logsUserHasExlicitPermissionToAccess.iterator(); it.hasNext(); ) {
+                Integer tmpLogid = (Integer)it.next();
+                if (tmpLogid==logid){
                     return true;
                 }
             }
@@ -622,8 +620,9 @@ public class Accountuser implements java.io.Serializable {
 
     private boolean isAlreadyInlogsUserHasExplicitPermissionToAuthor(int logid){
         if (logsUserHasExlicitPermissionToAuthor!=null){
-            for (int i = 0; i < logsUserHasExlicitPermissionToAuthor.length; i++) {
-                if (logsUserHasExlicitPermissionToAuthor[i]==logid){
+            for (Iterator it = logsUserHasExlicitPermissionToAuthor.iterator(); it.hasNext(); ) {
+                Integer tmpLogid = (Integer)it.next();
+                if (tmpLogid==logid){
                     return true;
                 }
             }
@@ -663,9 +662,9 @@ public class Accountuser implements java.io.Serializable {
         if (!isAlreadyInlogsUserHasExplicitPermissionToAccess(logid)){
             //Add to the accountUserLogAccess array
             if (logsUserHasExlicitPermissionToAccess==null){
-                logsUserHasExlicitPermissionToAccess=new int[0];
+                logsUserHasExlicitPermissionToAccess=new ArrayList<Integer>();
             }
-            logsUserHasExlicitPermissionToAccess=reger.core.Util.addToIntArray(logsUserHasExlicitPermissionToAccess, logid);
+            logsUserHasExlicitPermissionToAccess.add(logid);
         }
     }
 
@@ -676,8 +675,10 @@ public class Accountuser implements java.io.Serializable {
     public boolean userCanViewLog(int logid) {
         //Look for the logid in the logaccess array
         if (logsUserHasExlicitPermissionToAccess!=null){
-            for (int i = 0; i < logsUserHasExlicitPermissionToAccess.length; i++) {
-                if(logsUserHasExlicitPermissionToAccess[i]==logid){
+            for (Iterator it = logsUserHasExlicitPermissionToAccess.iterator(); it.hasNext(); ) {
+                Integer tmpLogid = (Integer)it.next();
+                if(tmpLogid==logid){
+                    reger.core.Debug.debug(3, "Accountuser.java", "userCanViewLog("+logid+") returning TRUE because logid is in logsUserHasExlicitPermissionToAccess.");
                     return true;
                 }
             }
@@ -686,20 +687,23 @@ public class Accountuser implements java.io.Serializable {
         //It's not explicitly defined.  If this is the SiteOwner of the logid in question then they have access to it.
         //Get the log
         Log log = LogCache.get(logid);
-        if (log!=null){
+        if (log!=null && log.getLogid()==logid){
             //If this accountuser is the SiteOwner of this log's account then they get access
             if (isInAclgroup("SiteOwner", log.getAccountid())){
                 addToListOfLogsUserHasExplicitPermissionToAccess(logid);
+                reger.core.Debug.debug(3, "Accountuser.java", "userCanViewLog("+logid+") returning TRUE because accountuser is a site owner of accountid="+log.getAccountid());
                 return true;
             }
             //If this is a public log, they can see it
             if (log.getLogaccess()==reger.Vars.LOGACCESSPUBLIC){
                 addToListOfLogsUserHasExplicitPermissionToAccess(logid);
+                reger.core.Debug.debug(3, "Accountuser.java", "userCanViewLog("+logid+") returning TRUE because log is public.");
                 return true;
             }
         }
 
         //Otherwise the user can't access
+        reger.core.Debug.debug(3, "Accountuser.java", "userCanViewLog("+logid+") returning FALSE.");
         return false;
     }
 
@@ -710,8 +714,9 @@ public class Accountuser implements java.io.Serializable {
     public boolean userCanAuthorLog(int logid) {
         //Look for the logid in the logaccess array
         if (logsUserHasExlicitPermissionToAuthor!=null){
-            for (int i = 0; i < logsUserHasExlicitPermissionToAuthor.length; i++) {
-                if(logsUserHasExlicitPermissionToAuthor[i]==logid){
+            for (Iterator it = logsUserHasExlicitPermissionToAuthor.iterator(); it.hasNext(); ) {
+                Integer tmpLogid = (Integer)it.next();
+                if(tmpLogid==logid){
                     return true;
                 }
             }
@@ -787,12 +792,15 @@ public class Accountuser implements java.io.Serializable {
         String queryend="("+table_prefix+"accountid='"+accountid+"' AND ("+table_prefix+"logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' ";
         //And finally, add ORs to make sure any logs this user has been granted explicit permission to view are included
         if (logsUserHasExlicitPermissionToAccess!=null){
-             if (logsUserHasExlicitPermissionToAccess.length>0){
-                for(int i=0; i<logsUserHasExlicitPermissionToAccess.length; i++){
-                    queryend=queryend + " OR "+table_prefix+"logid='"+ logsUserHasExlicitPermissionToAccess[i] +"'";
-                    if (i==(logsUserHasExlicitPermissionToAccess.length-1)){
+             if (logsUserHasExlicitPermissionToAccess.size()>0){
+                int i = 0;
+                for (Iterator it = logsUserHasExlicitPermissionToAccess.iterator(); it.hasNext(); ) {
+                    Integer tmpLogid = (Integer)it.next();
+                    queryend=queryend + " OR "+table_prefix+"logid='"+ tmpLogid +"'";
+                    if (i==(logsUserHasExlicitPermissionToAccess.size()-1)){
                         queryend = queryend + "))";
                     }
+                    i++;
                 }
             } else {
                 //There was nothing in the logaccess array so I need to close the string
@@ -821,15 +829,18 @@ public class Accountuser implements java.io.Serializable {
         String queryend="(megalog.accountid='"+accountid+"' AND ( ";
         //Add ORs to make sure any logs this user has been granted explicit permission to are included
         if (logsUserHasExlicitPermissionToAuthor!=null){
-             if (logsUserHasExlicitPermissionToAuthor.length>0){
-                for(int i=0; i<logsUserHasExlicitPermissionToAuthor.length; i++){
-                    queryend=queryend + " megalog.logid='"+ logsUserHasExlicitPermissionToAuthor[i] +"'";
-                    if (i<=(logsUserHasExlicitPermissionToAuthor.length-2) && logsUserHasExlicitPermissionToAuthor.length>1){
+             if (logsUserHasExlicitPermissionToAuthor.size()>0){
+                int i = 0;
+                for (Iterator it = logsUserHasExlicitPermissionToAuthor.iterator(); it.hasNext(); ) {
+                    Integer tmpLogid = (Integer)it.next();
+                    queryend=queryend + " megalog.logid='"+ tmpLogid +"'";
+                    if (i<=(logsUserHasExlicitPermissionToAuthor.size()-2) && logsUserHasExlicitPermissionToAuthor.size()>1){
                         queryend = queryend + " OR ";
                     }
-                    if (i==(logsUserHasExlicitPermissionToAuthor.length-1)){
+                    if (i==(logsUserHasExlicitPermissionToAuthor.size()-1)){
                         queryend = queryend + "))";
                     }
+                    i++;
                 }
             } else {
                 //There was nothing in the logaccess array so I need to close the string
@@ -859,10 +870,13 @@ public class Accountuser implements java.io.Serializable {
         int numberoflogsusercanview = 0;
         Account acct = reger.cache.AccountCache.get(accountid);
         if (acct!=null){
-            int[] alllogidsforaccount = acct.getAllLogids();
-            for (int i = 0; i < alllogidsforaccount.length; i++) {
-                if(userCanViewLog(alllogidsforaccount[i])){
-                    Log log = reger.cache.LogCache.get(alllogidsforaccount[i]);
+            ArrayList<Integer> alllogsforaccountid = acct.getAlllogsforaccountid();
+            for (Iterator it = alllogsforaccountid.iterator(); it.hasNext(); ) {
+                Integer logid = (Integer)it.next();
+                reger.core.Debug.debug(5, "Accountuser.java", "Start process: "+logid);
+                if(userCanViewLog(logid)){
+                    reger.core.Debug.debug(5, "Accountuser.java", "User can view log: "+logid);
+                    Log log = reger.cache.LogCache.get(logid);
                     if (includelogshiddenfromhomepage || (!includelogshiddenfromhomepage && log.getShowonhomepage())){
                         numberoflogsusercanview = numberoflogsusercanview + 1;
                         if (numberoflogsusercanview==1){
@@ -870,9 +884,10 @@ public class Accountuser implements java.io.Serializable {
                         } else {
                             queryend.append(" OR ");
                         }
-                        queryend.append(" logid='"+alllogidsforaccount[i]+"' ");
+                        queryend.append(" logid='"+logid+"' ");
                     }
                 }
+                reger.core.Debug.debug(5, "Accountuser.java", "End process: "+logid);
             }
             if (numberoflogsusercanview>0){
                 queryend.append(" ) ");
@@ -1215,7 +1230,7 @@ public class Accountuser implements java.io.Serializable {
         if (errortext.equals("")){
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE accountuser SET accountid='"+accountid+"', username='"+reger.core.Util.cleanForSQL(this.username)+"', friendlyname='"+reger.core.Util.cleanForSQL(this.friendlyname)+"', passphrasequestion='"+reger.core.Util.cleanForSQL(this.passphrasequestion)+"', passphraseanswer='"+reger.core.Util.cleanForSQL(this.passphraseanswer)+"', email='"+reger.core.Util.cleanForSQL(this.email)+"', entrymode='"+this.entrymode+"', usertimezoneid='"+reger.core.Util.cleanForSQL(this.usertimezoneid)+"', onelinesummary='"+reger.core.Util.cleanForSQL(this.onelinesummary)+"', isactive='"+isactivetext+"' WHERE accountuserid='"+this.accountuserid+"'");
+            int count = Db.RunSQLUpdate("UPDATE accountuser SET accountid='"+accountid+"',  friendlyname='"+reger.core.Util.cleanForSQL(this.friendlyname)+"', email='"+reger.core.Util.cleanForSQL(this.email)+"', entrymode='"+this.entrymode+"', usertimezoneid='"+reger.core.Util.cleanForSQL(this.usertimezoneid)+"', onelinesummary='"+reger.core.Util.cleanForSQL(this.onelinesummary)+"', isactive='"+isactivetext+"', isactivatedbyemail='"+reger.core.Util.booleanAsSQLText(isactivatedbyemail)+"', emailactivationkey='"+reger.core.Util.cleanForSQL(emailactivationkey)+"' WHERE accountuserid='"+this.accountuserid+"'");
             //-----------------------------------
             //-----------------------------------
 
@@ -1229,7 +1244,7 @@ public class Accountuser implements java.io.Serializable {
     }
 
     public String savePassword(String password, String verifypassword, PrivateLabel pl){
-        Debug.debug(5, "", "Accountuser.java: savePassword():  <br>password="+password+"<br>verifypassword="+verifypassword);
+        Debug.debug(3, "AccountUser.java savePassword()", "Accountuser.java: savePassword():  <br>password="+password+"<br>verifypassword="+verifypassword);
 
             String errortext = validateNewPassword(password, verifypassword, pl);
             if (errortext.equals("")){
@@ -1259,7 +1274,7 @@ public class Accountuser implements java.io.Serializable {
         if (errortext.equals("")){
             //-----------------------------------
             //-----------------------------------
-            this.accountuserid = Db.RunSQLInsert("INSERT INTO accountuser(accountid, username, friendlyname, passphrasequestion, passphraseanswer, email, lastlogindate, entrymode, usertimezoneid, isactive, onelinesummary, createdate, ishelpon) VALUES('"+accountid+"', '"+Util.cleanForSQL(this.username)+"', '"+Util.cleanForSQL(this.friendlyname)+"', '"+Util.cleanForSQL(this.passphrasequestion)+"', '"+Util.cleanForSQL(this.passphraseanswer)+"', '"+Util.cleanForSQL(this.email)+"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+this.entrymode+"', '"+Util.cleanForSQL(this.usertimezoneid)+"', '"+Util.cleanForSQL(isactivetext)+"', '"+Util.cleanForSQL(this.onelinesummary)+"', Now(), '0')");
+            this.accountuserid = Db.RunSQLInsert("INSERT INTO accountuser(accountid, friendlyname, email, lastlogindate, entrymode, usertimezoneid, isactive, onelinesummary, createdate, ishelpon) VALUES('"+accountid+"', '"+Util.cleanForSQL(this.friendlyname)+"', '"+Util.cleanForSQL(this.email)+"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+this.entrymode+"', '"+Util.cleanForSQL(this.usertimezoneid)+"', '"+Util.cleanForSQL(isactivetext)+"', '"+Util.cleanForSQL(this.onelinesummary)+"', Now(), '0')");
             //-----------------------------------
             //-----------------------------------
 
@@ -1284,11 +1299,11 @@ public class Accountuser implements java.io.Serializable {
 
         //Maxusers validation
         if(!pl.canAddAnotherUser()){
-            errortext = errortext + "<br>The current license does not another user to be added.  Please contact your system administrator or increase the number of maximum users in your license.";
+            errortext = errortext + "<br>The current license does not allow another user to be added.  Please contact your system administrator or increase the number of maximum users in your license.";
         }
 
-        //Username validation
-        errortext = errortext + reger.core.Util.validateUsername(username);
+        //Email validation
+        errortext = errortext + reger.core.Util.validateEmail(email);
 
         //Only validate password if a new one has been sent in
         String passwordError = "";
@@ -1298,20 +1313,20 @@ public class Accountuser implements java.io.Serializable {
         }
         errortext = errortext + passwordError;
 
-        //Don't duplicate usernames
+        //Don't duplicate emails
         //-----------------------------------
         //-----------------------------------
-        String[][] rstCheckUsername= Db.RunSQL("SELECT accountuserid FROM accountuser WHERE accountuserid<>'"+accountuserid+"' AND username='"+reger.core.Util.cleanForSQL(username)+"'");
+        String[][] rstCheckEmail = Db.RunSQL("SELECT accountuserid FROM accountuser WHERE accountuserid<>'"+accountuserid+"' AND email='"+reger.core.Util.cleanForSQL(email)+"'");
         //-----------------------------------
         //-----------------------------------
-        if (rstCheckUsername!=null && rstCheckUsername.length>0){
-            errortext = errortext + "<br>We're sorry:  '"+ username +"' is already in use.";
+        if (rstCheckEmail !=null && rstCheckEmail.length>0){
+            errortext = errortext + "<br>We're sorry:  '"+ email +"' is already in use.";
         }
 
 
         //Make sure friendlyname isn't blank
         if (friendlyname.equals("")) {
-            friendlyname = username;
+            friendlyname = errortext = errortext + "<br>Friendly Name can't be blank.";
         }
 
         //Make sure one line summary isn't blank
@@ -1319,15 +1334,7 @@ public class Accountuser implements java.io.Serializable {
             onelinesummary = friendlyname;
         }
 
-        //Make sure passphrasequestion isn't blank
-        if (passphrasequestion.equals("")) {
-            errortext=errortext + "Your Passphrase Question can't be blank.<br>";
-        }
 
-        //Make sure passphraseanswer isn't blank
-        if (passphraseanswer.equals("")) {
-            errortext=errortext + "Your Passphrase Answer can't be blank.<br>";
-        }
 
         //Make sure email isn't blank
         if (email.equals("")) {
@@ -1423,9 +1430,7 @@ public class Accountuser implements java.io.Serializable {
 
 
     public void populateFromRequest(javax.servlet.http.HttpServletRequest request){
-        if (request.getParameter("acctuserusername")!=null && !request.getParameter("acctuserusername").equals("")){
-            setUsername(request.getParameter("acctuserusername"));
-        }
+
         if (request.getParameter("friendlyname")!=null && !request.getParameter("friendlyname").equals("")){
             setFriendlyname(request.getParameter("friendlyname"));
         }
@@ -1435,17 +1440,11 @@ public class Accountuser implements java.io.Serializable {
         if (request.getParameter("email")!=null && !request.getParameter("email").equals("")){
             setEmail(request.getParameter("email"));
         }
-        if (request.getParameter("acctuserpassword")!=null && !request.getParameter("acctuserpassword").equals("")){
-            setPassword(request.getParameter("acctuserpassword"));
+        if (request.getParameter("password")!=null && !request.getParameter("password").equals("")){
+            setPassword(request.getParameter("password"));
         }
-        if (request.getParameter("acctuserverifypassword")!=null && !request.getParameter("acctuserverifypassword").equals("")){
-            setVerifypassword(request.getParameter("acctuserverifypassword"));
-        }
-        if (request.getParameter("passphrasequestion")!=null && !request.getParameter("passphrasequestion").equals("")){
-            setPassphrasequestion(request.getParameter("passphrasequestion"));
-        }
-        if (request.getParameter("passphraseanswer")!=null && !request.getParameter("passphraseanswer").equals("")){
-            setPassphraseanswer(request.getParameter("passphraseanswer"));
+        if (request.getParameter("passwordverify")!=null && !request.getParameter("passwordverify").equals("")){
+            setVerifypassword(request.getParameter("passwordverify"));
         }
         if (request.getParameter("isactive")!=null && !request.getParameter("isactive").equals("") && reger.core.Util.isinteger(request.getParameter("isactive"))){
             if (Integer.parseInt(request.getParameter("isactive"))==1){
@@ -1529,7 +1528,7 @@ public class Accountuser implements java.io.Serializable {
 
     public void updateAccountuserfieldsFromRequest(javax.servlet.http.HttpServletRequest request){
         //Get the fields and store them in the Vector accountuserfields
-        accountuserfields = new Vector(10);
+        accountuserfields = new ArrayList<Accountuserfield>();
         //-----------------------------------
         //-----------------------------------
         String[][] rstAcUf= Db.RunSQL("SELECT accountuserfieldid, fieldtitle, fielddata, accountuserfield.order FROM accountuserfield WHERE accountuserid='"+this.accountuserid+"' ORDER BY accountuserfield.order ASC");
@@ -1582,7 +1581,7 @@ public class Accountuser implements java.io.Serializable {
 
         //Friendlyname
         mb.append("<tr>");
-        mb.append("<td valign=top align=right bgcolor=#ffffff>");
+        mb.append("<td valign=top align=right width=50% bgcolor=#ffffff>");
         mb.append("<font face=arial size=-1>");
         mb.append("<b>Friendly Name:</b>");
         mb.append("</font>");
@@ -1612,21 +1611,22 @@ public class Accountuser implements java.io.Serializable {
         mb.append("</td>");
         mb.append("</tr>");
 
-        //Username
+
+        //Email
         mb.append("<tr>");
         mb.append("<td valign=top align=right bgcolor=#ffffff>");
         mb.append("<font face=arial size=-1>");
-        mb.append("<b>Username:</b>");
+        mb.append("<b>Email:</b>");
         mb.append("</font>");
-        mb.append("<br>");
-        mb.append("<font face=arial size=-2>");
-        mb.append("You will use this to log in to your site.");
+        mb.append("<br><font face=arial size=-2>");
+        mb.append("You use this to log in.  Changing your email will trigger a new email validation process.");
         mb.append("</font>");
         mb.append("</td>");
         mb.append("<td valign=top align=left bgcolor=#ffffff>");
-        mb.append("<input type=text name=acctuserusername value=\""+reger.core.Util.cleanForHtml(username)+"\" size=15 maxlength=50>");
+        mb.append("<input type=text name=email value=\""+email+"\" size=15 maxlength=100>");
         mb.append("</td>");
         mb.append("</tr>");
+
 
         //Password
         mb.append("<tr>");
@@ -1641,7 +1641,7 @@ public class Accountuser implements java.io.Serializable {
         mb.append("</font>");
         mb.append("</td>");
         mb.append("<td valign=top align=left bgcolor=#ffffff>");
-        mb.append("<input type=password name=acctuserpassword value='' size=15 maxlength=50>");
+        mb.append("<input type=password name=password value='' size=15 maxlength=50>");
         mb.append("</td>");
         mb.append("</tr>");
 
@@ -1657,7 +1657,7 @@ public class Accountuser implements java.io.Serializable {
         mb.append("</font>");
         mb.append("</td>");
         mb.append("<td valign=top align=left bgcolor=#ffffff>");
-        mb.append("<input type=password name=acctuserverifypassword value='' size=15 maxlength=50>");
+        mb.append("<input type=password name=passwordverify value='' size=15 maxlength=50>");
         mb.append("</td>");
         mb.append("</tr>");
 
@@ -1686,54 +1686,12 @@ public class Accountuser implements java.io.Serializable {
 
 
 
-        //Email
-        mb.append("<tr>");
-        mb.append("<td valign=top align=right bgcolor=#ffffff>");
-        mb.append("<font face=arial size=-1>");
-        mb.append("<b>Email:</b>");
-        mb.append("</font>");
-        mb.append("<br><font face=arial size=-2>");
-        mb.append("Your information will be kept confidential.");
-        mb.append("</font>");
-        mb.append("</td>");
-        mb.append("<td valign=top align=left bgcolor=#ffffff>");
-        mb.append("<input type=text name=email value=\""+email+"\" size=15 maxlength=100>");
-        mb.append("</td>");
-        mb.append("</tr>");
 
 
 
 
 
-        //passphrase question
-        mb.append("<tr>");
-        mb.append("<td valign=top align=right bgcolor=#ffffff>");
-        mb.append("<font face=arial size=-1>");
-        mb.append("<b>Passphrase Question:</b>");
-        mb.append("</font>");
-        mb.append("<br><font face=arial size=-2>");
-        mb.append("A question that only you know the answer to.  This is used in case you forget your password.");
-        mb.append("</font>");
-        mb.append("</td>");
-        mb.append("<td valign=top align=left bgcolor=#ffffff>");
-        mb.append("<input type=text name=passphrasequestion value=\""+reger.core.Util.cleanForHtml(passphrasequestion)+"\" size=15 maxlength=255>");
-        mb.append("</td>");
-        mb.append("</tr>");
 
-        //passphrase answer
-        mb.append("<tr>");
-        mb.append("<td valign=top align=right bgcolor=#ffffff>");
-        mb.append("<font face=arial size=-1>");
-        mb.append("<b>Passphrase Answer:</b>");
-        mb.append("</font>");
-        mb.append("<br><font face=arial size=-2>");
-        mb.append("The answer to the passphrase question that you entered above.");
-        mb.append("</font>");
-        mb.append("</td>");
-        mb.append("<td valign=top align=left bgcolor=#ffffff>");
-        mb.append("<input type=text name=passphraseanswer value=\""+reger.core.Util.cleanForHtml(passphraseanswer)+"\" size=15 maxlength=50>");
-        mb.append("</td>");
-        mb.append("</tr>");
 
         //usertimezoneid
         mb.append("<tr>");
@@ -2000,14 +1958,14 @@ public class Accountuser implements java.io.Serializable {
         mb.append("<table cellpadding=15 cellspacing=3 width=100% border=0>");
 
 
-        Hashtable accts = getAccountsUserHasAccessTo();
+        HashMap accts = getAccountsUserHasAccessTo();
         if (accts!=null){
+            Iterator keyValuePairs = accts.entrySet().iterator();
+            for (int i = 0; i < accts.size(); i++){
+                Map.Entry mapentry = (Map.Entry) keyValuePairs.next();
+                Integer accountid = (Integer)mapentry.getKey();
+                String  sitename = (String)mapentry.getValue();
 
-            for ( Enumeration e = accts.keys() ; e.hasMoreElements() ; ) {
-                // retrieve the object_key
-                Integer accountid = (Integer) e.nextElement();
-                // retrieve the object associated with the key
-                String sitename = (String) accts.get ( accountid );
 
                 //Create an account object
                 reger.Account acct = new reger.Account(accountid.intValue());
@@ -2053,8 +2011,8 @@ public class Accountuser implements java.io.Serializable {
                 //mb.append("Logs You Have Access To On This Site:");
 
                 Vector allLogs = LogCache.allLogsForAccount(accountid.intValue());
-                for (int i = 0; i < allLogs.size(); i++) {
-                    Log log = (Log) allLogs.get(i);
+                for (int j = 0; j < allLogs.size(); j++) {
+                    Log log = (Log) allLogs.get(j);
                     //reger.core.Util.logtodb("Logid=" + log.getLogid() + "<br>userCanViewLog(log.getLogid())=" + userCanViewLog(log.getLogid()));
                     if (userCanViewLog(log.getLogid()) || userCanAuthorLog(log.getLogid())){
                         if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
@@ -2093,10 +2051,10 @@ public class Accountuser implements java.io.Serializable {
                 mb.append("<font face=arial size=-2>");
                 //mb.append("Permissions You Have On This Site:<br>");
                 AclObject[] allAclObjects = reger.acl.AllAclObjects.getAllAclObjects();
-                for (int i = 0; i < allAclObjects.length; i++) {
-                    if (userCanDoAcl(allAclObjects[i].aclobjectid, acct.getAccountid())){
+                for (int j = 0; j < allAclObjects.length; j++) {
+                    if (userCanDoAcl(allAclObjects[j].aclobjectid, acct.getAccountid())){
                         mb.append("(");
-                        mb.append(allAclObjects[i].aclfriendlyname);
+                        mb.append(allAclObjects[j].aclfriendlyname);
                         mb.append(") ");
                     }
                 }
@@ -2194,7 +2152,7 @@ public class Accountuser implements java.io.Serializable {
     }
 
     public void setDefaultAccountidForThisUser(int accountid, PrivateLabel pl){
-        Hashtable accts = getAccountsUserHasAccessTo();
+        HashMap accts = getAccountsUserHasAccessTo();
         if (accts!=null){
             if (userCanDoAcl("ADMINHOME", accountid)){
                 this.accountid=accountid;
@@ -2231,14 +2189,7 @@ public class Accountuser implements java.io.Serializable {
         this.accountid = accountid;
     }
 
-    public String getUsername() {
-        Debug.debug(5, "", "Accountuser.java - getUsername() called.  returning:" + username);
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
 
 
@@ -2260,21 +2211,7 @@ public class Accountuser implements java.io.Serializable {
         this.friendlyname = friendlyname;
     }
 
-    public String getPassphrasequestion() {
-        return passphrasequestion;
-    }
 
-    public void setPassphrasequestion(String passphrasequestion) {
-        this.passphrasequestion = passphrasequestion;
-    }
-
-    public String getPassphraseanswer() {
-        return passphraseanswer;
-    }
-
-    public void setPassphraseanswer(String passphraseanswer) {
-        this.passphraseanswer = passphraseanswer;
-    }
 
     public String getEmail() {
         return email;
@@ -2326,11 +2263,11 @@ public class Accountuser implements java.io.Serializable {
         this.isactive = isactive;
     }
 
-    public Vector getAccountuserfields() {
+    public ArrayList<Accountuserfield> getAccountuserfields() {
         return accountuserfields;
     }
 
-    public void setAccountuserfields(Vector accountuserfields) {
+    public void setAccountuserfields(ArrayList<Accountuserfield> accountuserfields) {
         this.accountuserfields = accountuserfields;
     }
 
@@ -2349,15 +2286,35 @@ public class Accountuser implements java.io.Serializable {
 
 
 
-    public Vector getAccountUserAcls() {
+    public ArrayList<AccountUserAcl> getAccountUserAcls() {
         return accountUserAcls;
     }
 
-    public Hashtable getAccountsUserHasAccessTo() {
+    public HashMap getAccountsUserHasAccessTo() {
         return accountsUserHasAccessTo;
     }
 
     public boolean getIsHelpOn() {
         return isHelpOn;
+    }
+
+    public boolean isIsactivatedbyemail() {
+        return isactivatedbyemail;
+    }
+
+    public void setIsactivatedbyemail(boolean isactivatedbyemail) {
+        //Clear the key so that it can't be used again
+        if (isactivatedbyemail){
+            emailactivationkey = "";
+        }
+        this.isactivatedbyemail = isactivatedbyemail;
+    }
+
+    public String getEmailactivationkey() {
+        return emailactivationkey;
+    }
+
+    public void setEmailactivationkey(String emailactivationkey) {
+        this.emailactivationkey = emailactivationkey;
     }
 }

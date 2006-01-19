@@ -6,6 +6,8 @@ import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jdom.Element;
 
@@ -17,23 +19,23 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
 
 
     //Field data - These properties define the data type for this field
-    String[] possibleValues = new String[0];
+    private ArrayList<String> possibleValues = new ArrayList<String>();
+    private ArrayList<FieldData> fieldData = new ArrayList<FieldData>();
 
     //This is the name that's used in the name/value pair.  This is specific to this FieldType and is not part of the interface.
     String NAMEOFDATAVALUE = "";
 
-    private FieldData[] fieldData = new FieldData[1];
 
     public FieldTypeHorizontalradios(){
-        fieldData[0] = new FieldData(NAMEOFDATAVALUE, "");
+        fieldData.add(0, new FieldData(NAMEOFDATAVALUE, ""));
     }
 
     public FieldTypeHorizontalradios(FieldTypeHorizontalradios field){
         this.possibleValues = field.possibleValues;
-        this.fieldData = new FieldData[field.getDataForField().length];
-        for (int i = 0; i < field.getDataForField().length; i++) {
-            FieldData fldDataTmp = new FieldData(field.getDataForField()[i]);
-            this.fieldData[i] = fldDataTmp;
+        this.fieldData = new ArrayList<FieldData>();
+        for (Iterator it = field.getDataForField().iterator(); it.hasNext(); ) {
+            FieldData fldDataTmp = (FieldData)it.next();
+            this.fieldData.add(0, fldDataTmp);
         }
         populateFromAnotherField(field);
     }
@@ -102,18 +104,17 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
     /**
      * Returns an array of FieldData objects which represent the data held in this field.
      */
-    public FieldData[] getDataForField() {
+    public ArrayList<FieldData> getDataForField() {
         return fieldData;
     }
 
     /**
      * Returns an array of empty FieldData objects that demonstrate the name/value pairs that this field generates/accepts/works with
      */
-    public FieldData[] getEmptyDataFields() {
-        FieldData[] fd = new FieldData[1];
-        fd[0] = new FieldData("data", "");
+    public ArrayList<FieldData> getEmptyDataFields() {
+        ArrayList<FieldData> fd = new ArrayList<FieldData>();
+        fd.add(new FieldData(NAMEOFDATAVALUE, ""));
         return fd;
-
     }
 
     /**
@@ -135,16 +136,16 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         //Top row - radios ---------------------------
         boolean wasCurrentValueDisplayed = false;
         outstring.append("<tr>");
-        for (int i = 0; i < possibleValues.length; i++) {
-
+        for (Iterator it = possibleValues.iterator(); it.hasNext(); ) {
+            String pv = (String)it.next();
 
             //Append the radio button
             outstring.append("<td valign=top align=center>");
-            outstring.append(singleOptionHtml(possibleValues[i], isFormActive));
+            outstring.append(singleOptionHtml(pv, isFormActive));
             outstring.append("</td>");
 
             //Set the boolean
-            if (possibleValues[i].equals(this.fieldData[0].getValue())){
+            if (pv.equals(this.fieldData.get(0).getValue())){
                 wasCurrentValueDisplayed=true;
             }
 
@@ -152,12 +153,12 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         //If the current value wasn't displayed then we have a valid value that wasn't put to the screen
         if (!wasCurrentValueDisplayed){
             outstring.append("<td valign=top align=center>");
-            outstring.append(singleOptionHtml(this.fieldData[0].getValue(), isFormActive));
+            outstring.append(singleOptionHtml(this.fieldData.get(0).getValue(), isFormActive));
             outstring.append("</td>");
         }
 
         //This is how you clear your value
-        if (!this.fieldData[0].getValue().equals("")){
+        if (!this.fieldData.get(0).getValue().equals("")){
             outstring.append("<td valign=top align=center>");
             outstring.append(singleOptionHtml("", isFormActive));
             outstring.append("</td>");
@@ -167,13 +168,15 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         //Bottom row - text ------------------------------------
         wasCurrentValueDisplayed = false;
         outstring.append("<tr>");
-        for (int i = 0; i < possibleValues.length; i++) {
+
+        for (Iterator it = possibleValues.iterator(); it.hasNext(); ) {
+            String pv = (String)it.next();
 
             //Output the text value
             outstring.append("<td valign=top align=center>");
             outstring.append("<font face=arial size=-1>");
-            if (!possibleValues[i].equals("")){
-                outstring.append(possibleValues[i]);
+            if (!pv.equals("")){
+                outstring.append(pv);
             } else {
                 outstring.append("-");
             }
@@ -181,7 +184,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
             outstring.append("</td>");
 
             //Determine whether markselected has been output to the screen.  It's important that it is
-            if (possibleValues[i].equals(this.fieldData[0].getValue())){
+            if (pv.equals(this.fieldData.get(0).getValue())){
                 wasCurrentValueDisplayed=true;
             }
 
@@ -192,8 +195,8 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         if (!wasCurrentValueDisplayed){
             outstring.append("<td valign=top align=center>");
             outstring.append("<font face=arial size=-1>");
-            if (!this.fieldData[0].getValue().equals("")){
-                outstring.append(this.fieldData[0].getValue());
+            if (!this.fieldData.get(0).getValue().equals("")){
+                outstring.append(this.fieldData.get(0).getValue());
             } else {
                 outstring.append("-");
             }
@@ -202,7 +205,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         }
 
         //This is how you clear your value
-        if (!this.fieldData[0].getValue().equals("")){
+        if (!this.fieldData.get(0).getValue().equals("")){
             outstring.append("<td valign=top align=center>");
             outstring.append("<font face=arial size=-1>");
             outstring.append("-");
@@ -241,10 +244,10 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
     public String getHtmlPublic(int logid) {
         StringBuffer mb = new StringBuffer();
         mb.append("<font face=arial size=-1>");
-        if (this.fieldData[0].getValue().equals("")){
+        if (this.fieldData.get(0).getValue().equals("")){
             mb.append("&nbsp;");
         } else {
-            mb.append(this.fieldData[0].getValue());
+            mb.append(this.fieldData.get(0).getValue());
         }
         mb.append("</font>");
         return mb.toString();
@@ -278,7 +281,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         }
 
         outstring.append("<input type=radio name=\"megafieldid-"+ megafieldid + "\" value=\""+reger.core.Util.cleanForHtml(thisValue)+"\" "+disabledFormText+" ");
-        if (thisValue.equals(this.fieldData[0].getValue())){
+        if (thisValue.equals(this.fieldData.get(0).getValue())){
             outstring.append(" checked");
         }
         outstring.append(">");
@@ -295,14 +298,14 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
 
         //Find the value
         if (request.getParameter("megafieldid-" + this.megafieldid)!=null){
-            this.fieldData[0].setValue(request.getParameter("megafieldid-" + this.megafieldid));
+            this.fieldData.get(0).setValue(request.getParameter("megafieldid-" + this.megafieldid));
         } else {
-            this.fieldData[0].setValue("");
+            this.fieldData.get(0).setValue("");
         }
 
         //Look for new values, which will override old ones
         if (request.getParameter("megafieldid-new-" + this.megafieldid)!=null && !request.getParameter("megafieldid-new-" + this.megafieldid).equals("")){
-            this.fieldData[0].setValue(request.getParameter("megafieldid-new-" + this.megafieldid));
+            this.fieldData.get(0).setValue(request.getParameter("megafieldid-new-" + this.megafieldid));
         }
 
         //reger.core.Util.logtodb("Value is set from request object to: " + value);
@@ -316,7 +319,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         //reger.core.Util.logtodb("Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         FieldDAOListOfOptions sm = new FieldDAOListOfOptions();
         sm.loadData(this.megafieldid, eventid, logid);
-        this.fieldData[0].setValue(sm.value);
+        this.fieldData.get(0).setValue(sm.value);
         this.possibleValues = sm.possibleValues;
      }
 
@@ -327,7 +330,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
      public void loadDefaultData(int logid){
         FieldDAOListOfOptions sm = new FieldDAOListOfOptions();
         sm.loadDefaultData(this.megafieldid, logid);
-        this.fieldData[0].setValue(sm.value);
+        this.fieldData.get(0).setValue(sm.value);
         this.possibleValues = sm.possibleValues;
      }
 
@@ -340,16 +343,16 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
 
         //Check requiredness
         if (isrequired==1){
-            if (fieldData[0].getValue().equals("")){
+            if (fieldData.get(0).getValue().equals("")){
                 errortext = errortext + ">> " + this.fieldname + " is a required field.<br>";
             }
         }
 
         //Check data type
-        if (!fieldData[0].getValue().equals("")){
+        if (!fieldData.get(0).getValue().equals("")){
             DataType dt = reger.mega.DataTypeFactory.get(this.megadatatypeid);
             try{
-                dt.validataData(this.fieldData[0].getValue());
+                dt.validataData(this.fieldData.get(0).getValue());
             } catch (reger.core.ValidationException ex){
                 errortext = errortext +  ">> " + this.fieldname + ": " + ex.getErrorsAsSingleString() + "<br>";
             } catch (Exception e){
@@ -365,7 +368,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
      */
     public void saveToDb(int eventid, int logid) {
         FieldDAOListOfOptions sm = new FieldDAOListOfOptions();
-        sm.setValue(this.fieldData[0].getValue());
+        sm.setValue(this.fieldData.get(0).getValue());
         //reger.core.Util.logtodb("In FieldTypeDropdown.saveToDb.  About to call sm.saveData<br>this.value: " +this.value+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         sm.saveData(this.megafieldid, eventid, logid);
     }
@@ -375,7 +378,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
      */
     public void saveDefaultToDb(int logid) {
         FieldDAOListOfOptions sm = new FieldDAOListOfOptions();
-        sm.setValue(this.fieldData[0].getValue());
+        sm.setValue(this.fieldData.get(0).getValue());
         sm.saveDefaultData(this.megafieldid, logid);
     }
 
@@ -491,7 +494,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
      * purposes of offensive content validation.
      */
     public String getValuesAsStringForOffensiveContentValidation() {
-        return fieldData[0].getValue();
+        return fieldData.get(0).getValue();
     }
 
     /**
@@ -499,7 +502,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
          */
         public boolean fulfillsQuery(FieldQueryElement[] fieldQueryElements, int logidOrEtid) {
 
-            Debug.debug(5, "", "FieldTypeHorizontalradios.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData[0].getValue());
+            Debug.debug(5, "", "FieldTypeHorizontalradios.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData.get(0).getValue());
 
             if (this.megadatatypeid==reger.mega.DataTypeString.DATATYPEID){
                 //Get the values
@@ -508,7 +511,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
                     String equalto = equaltoVals[i];
                     //Do the evaluation.  If no value for equalto, return true, this is because if nobody's
                     //set an explicit value to search for then this data must fulfill it.
-                    if (equalto.equals("") || equalto.equals(this.fieldData[0].getValue())){
+                    if (equalto.equals("") || equalto.equals(this.fieldData.get(0).getValue())){
                         return true;
                     }
                 }
@@ -529,8 +532,8 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
 
                 //Get the current value of this field
                 Float thisvalue = null;
-                if (reger.core.Util.isnumeric(this.fieldData[0].getValue())){
-                    thisvalue = new Float(this.fieldData[0].getValue());
+                if (reger.core.Util.isnumeric(this.fieldData.get(0).getValue())){
+                    thisvalue = new Float(this.fieldData.get(0).getValue());
                 }
 
                 //Do the evaluation
@@ -621,7 +624,8 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
             int numberOfColumns = 4;
             int currentColumn = 0;
             mb.append("<table cellpadding=2 cellspacing=1 border=0>");
-            for (int i = 0; i < possibleValues.length; i++) {
+            for (Iterator it = possibleValues.iterator(); it.hasNext(); ) {
+                String pv = (String)it.next();
                 //Increment Col number
                 currentColumn = currentColumn + 1;
                 //Row
@@ -632,16 +636,16 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
                 mb.append("<td valign=top width=30 align=right>");
                 //Determine whether markselected has been output to the screen.  It's important that it is
                 String checkedText = "";
-                if (FieldQueryElement.doesNameValuePairExist(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto", possibleValues[i])){
+                if (FieldQueryElement.doesNameValuePairExist(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto", pv)){
                     checkedText=" checked";
                 }
                 //Output the option
-                mb.append("<input type=checkbox name="+fieldNamePre(logidOrEtid)+"equalto value=\""+reger.core.Util.cleanForHtml(possibleValues[i])+"\" "+checkedText+">");
+                mb.append("<input type=checkbox name="+fieldNamePre(logidOrEtid)+"equalto value=\""+reger.core.Util.cleanForHtml(pv)+"\" "+checkedText+">");
                 mb.append("</td>");
 
                 mb.append("<td valign=top align=left>");
                 mb.append("<font face=arial size=-2>");
-                mb.append(possibleValues[i]);
+                mb.append(pv);
                 mb.append("</font>");
                 mb.append("</td>");
 
@@ -727,9 +731,10 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         Element dataType = dt.getXmlSchemaRepresentationOfType();
         Element child = dataType.getChild("restriction", reger.MegaLogTypeXmlSchemaRenderer.xsNs);
         if (child!=null){
-            for (int j = 0; j < possibleValues.length; j++) {
+            for (Iterator it = possibleValues.iterator(); it.hasNext(); ) {
+                String pv = (String)it.next();
                 Element enum1 = new Element("enumeration", reger.MegaLogTypeXmlSchemaRenderer.xsNs);
-                enum1.setAttribute("name", possibleValues[j]);
+                enum1.setAttribute("name", pv);
                 child.addContent(enum1);
             }
         }
@@ -742,7 +747,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
      */
     public Element getXmlForFieldData() {
         Element elField = new Element(getFieldnameForApis());
-        elField.addContent(fieldData[0].getValue());
+        elField.addContent(fieldData.get(0).getValue());
         return elField;
     }
 

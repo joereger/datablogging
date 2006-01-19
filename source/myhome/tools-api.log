@@ -47,7 +47,7 @@ mb.append("</table>");
 mb.append("<br><br>");
 
 mb.append("<font face=arial size=-1>");
-mb.append("In addition to the API URL you also need to use your username, password and logid.  You know your username and password.  Your logid is listed in a table below.");
+mb.append("In addition to the API URL you also need to use your email, password and logid.  You know your email and password.  Your logid is listed in a table below.");
 mb.append("<br><br>");
 mb.append("There are a number of external pieces of software that allow you to post to your site.  One popular one is <a href='http://www.wbloggar.com' target='wbloggar'>W.Bloggar</a>");
 mb.append("</font>");

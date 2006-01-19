@@ -27,7 +27,7 @@ pageProps.pathToAppRoot="../";
 
 //-----------------------------------
 //-----------------------------------
-String[][] rstDeclines= Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.username, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='0' AND event.istemporary='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
+String[][] rstDeclines= Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='0' AND event.istemporary='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
 //-----------------------------------
 //-----------------------------------
 if (rstDeclines!=null && rstDeclines.length>0){
@@ -76,11 +76,7 @@ if (rstDeclines!=null && rstDeclines.length>0){
         mb.append("</td>");
         mb.append("<td bgcolor=#ffffff valign=top align=left>");
         mb.append("<font face=arial size=-2>");
-        if (!rstDeclines[i][6].equals("")){
-            mb.append(" " + rstDeclines[i][6]);
-        } else {
-            mb.append(" " + rstDeclines[i][5]);
-        }
+        mb.append(" " + rstDeclines[i][5]);
         mb.append("</font>");
         mb.append("</td>");
         mb.append("</tr>");

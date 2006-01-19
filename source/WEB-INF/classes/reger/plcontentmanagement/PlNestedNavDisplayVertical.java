@@ -7,6 +7,9 @@ import reger.nestednav.NestedNavItem;
 import reger.nestednav.NestedNavCollection;
 import reger.core.Debug;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * A vertical navbar
  */
@@ -74,13 +77,13 @@ public class PlNestedNavDisplayVertical implements NestedNavDisplay {
 
         //Go get children and append output from each of them.
         //This is the recursive function.
-        NestedNavItem[] children = null;
+        ArrayList<NestedNavItem> children = null;
         if (collection!=null && userSession!=null){
             children = collection.getChildrenUserCanView(navItem, userSession.getAccountuser());
         }
         if (children!=null){
-            for (int i = 0; i < children.length; i++) {
-                NestedNavItem childNavItem = children[i];
+            for (Iterator it = children.iterator(); it.hasNext(); ) {
+                NestedNavItem childNavItem = (NestedNavItem)it.next();
                 mb.append(outputItemHtml(childNavItem, collection, currentNestedLevel+1, userSession, request));
             }
         }

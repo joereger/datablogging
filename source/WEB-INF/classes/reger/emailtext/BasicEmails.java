@@ -9,41 +9,81 @@ import reger.core.db.Db;
  */
 public class BasicEmails {
 
-    public static StringBuffer friendEmailTop(String friendlyname){
-        StringBuffer mes = new StringBuffer();
-        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        //mes.append(friendlyname + " has sent you the following links.");
-        //mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        return mes;
-    }
-
-    public static void newAccountWelcome(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword){
+    public static void newAccountEmailVerificationMessage(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword){
         StringBuffer content=new StringBuffer();
-
         reger.Account acct = new reger.Account(accountid);
 
         String to = au.getEmail();
-        String from = reger.Vars.EMAILDEFAULTFROM;
-        String subject = "Welcome to Your Weblogging Account!";
+        String from = pl.getEmailtonotifyofnewaccounts();
+        String subject = pl.getEmailsubjectactivationmessage();
+        if (subject.equals("")){
+            subject = "Verify your new datablog!";
+        }
 
-        content.append("Welcome!  Your account has been created.  Keep this email for your records." + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Hi" + au.getFriendlyname() + ":" + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append(pl.getEmailtextactivationmessage());
+        content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Please click here to activate your account: ");
+        content.append(pl.getPlBaseUrl() + "/about/login-emailactivation.log?accountuserid="+au.getAccountuserid()+"&key=" + au.getEmailactivationkey() + reger.Vars.LINEBREAKCHARFOREMAIL);
+
+
+        //Send the email
+        reger.core.EmailSend.sendMail(from, to, subject, content.toString(), false);
+    }
+
+    public static void passwordResetMessage(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword){
+        StringBuffer content=new StringBuffer();
+        reger.Account acct = new reger.Account(accountid);
+
+        String to = au.getEmail();
+        String from = pl.getEmailtonotifyofnewaccounts();
+        String subject = pl.getEmailsubjectactivationmessage();
+        if (subject.equals("")){
+            subject = "datablogging Account Password Reset Message";
+        }
+
+        content.append("Please click here to reset your password: ");
+        content.append(pl.getPlBaseUrl() + "/about/login-passwordreset.log?action=reset&accountuserid="+au.getAccountuserid()+"&key=" + au.getEmailactivationkey() + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Your public weblog is here: " + acct.getSiteRootUrl() + "/" + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Administer your site here: " + acct.getSiteRootUrl() + "/myhome/" + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Your Username: " + au.getUsername() + reger.Vars.LINEBREAKCHARFOREMAIL);
-        if (pl.getIsPasswordSentViaEmail()){
+        content.append("Your public blog: " + acct.getSiteRootUrl() + "/" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Administer your site: " + acct.getSiteRootUrl() + "/myhome/" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Your Email: " + au.getEmail() + reger.Vars.LINEBREAKCHARFOREMAIL);
+        if (pl.getIsPasswordSentViaEmail() && !cleartextPassword.equals("")){
             content.append("Your Password: " + cleartextPassword + reger.Vars.LINEBREAKCHARFOREMAIL);
         }
         content.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("To add log entries, go to the administration URL" + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("and you will be presented with a list of your logs." + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Click the Create a New Log button to add more logs. We're" + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("constantly adding log types to fit your needs." + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append(pl.getEmailtextactivationmessage());
+
+        //Send the email
+        reger.core.EmailSend.sendMail(from, to, subject, content.toString(), false);
+    }
+
+    public static void newAccountWelcome(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword){
+        StringBuffer content=new StringBuffer();
+        reger.Account acct = new reger.Account(accountid);
+
+        String to = au.getEmail();
+        String from = pl.getEmailtonotifyofnewaccounts();
+        String subject = pl.getEmailsubjectwelcomemessage();
+        if (subject.equals("")){
+            subject = "Hi " + au.getFriendlyname() + ", welcome to your new datablogging Account!";
+        }
+
+        content.append("Hi " + au.getFriendlyname() + "!" + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Thanks for signing up for your new datablogging account. We are glad that you have selected us!" + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Your account has been created, so please save this email for your records and for future reference, as important information regarding your account is provided in this email." + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Your public datablog is: " + acct.getSiteRootUrl() + "/" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Your Password is: " + cleartextPassword + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Administer your site here: " + acct.getSiteRootUrl() + "/myhome/" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Your Email: " + au.getEmail() + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Happy logging!" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append(pl.getEmailtextwelcomemessage());
 
         //Send the email
         reger.core.EmailSend.sendMail(from, to, subject, content.toString(), false);
@@ -73,7 +113,7 @@ public class BasicEmails {
                     mes.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append("Your public weblog is here: "+ au.getSiteRootUrlOfPrimaryAccount() + "/" + reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append("Administer your site here: "+ au.getSiteRootUrlOfPrimaryAccount() + "/myhome/" + reger.Vars.LINEBREAKCHARFOREMAIL);
-                    mes.append("Your Username: " + au.getUsername() + reger.Vars.LINEBREAKCHARFOREMAIL);
+                    mes.append("Your Email: " + au.getEmail() + reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
                     mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
@@ -146,12 +186,10 @@ public class BasicEmails {
         mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
         mes.append("Click below to see the invitation:");
         mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        mes.append(""+pl.getPlBaseUrl()+"/about/invitation-"+friendinvitationid+"-"+friendinvitationkey+".log");
+        mes.append(""+pl.getPlBaseUrl()+"/about/login-fid-"+friendinvitationid+"-fkey-"+friendinvitationkey+".log");
         mes.append(reger.Vars.LINEBREAKCHARFOREMAIL);
         return mes;
     }
-
-
 
     public static StringBuffer messagesEmailNotify(String servername, int eventid, String eventTitle){
         StringBuffer mes = new StringBuffer();

@@ -158,7 +158,6 @@ public class weblogGroupApi {
      * @param addingEntriesRequiresGroupKey
      * @param newGroupKey
      * @param newGroupAdminKey
-     * @return
      */
     public Hashtable editGroupDetails(String groupAdminKey, int groupid, String groupName, String groupDescription, boolean viewingEntriesRequiresGroupKey, boolean addingEntriesRequiresGroupKey, String newGroupKey, String newGroupAdminKey){
 

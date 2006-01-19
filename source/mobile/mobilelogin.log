@@ -25,11 +25,11 @@ String errortext = "";
 if (pageProps.action.equals("login")){
     try {
         //See if we have a valid admin password
-        String username = reger.core.Util.getParameterClean(request.getParameter("username"));
+        String email = reger.core.Util.getParameterClean(request.getParameter("email"));
         String password = reger.core.Util.getParameterClean(request.getParameter("password"));
 
         //Log in
-        reger.Accountuser au = new reger.Accountuser(username, password);
+        reger.Accountuser au = new reger.Accountuser(email, password);
 
         if (au.isLoggedIn && request.getHeader("x-up-subno")!=null && !request.getHeader("x-up-subno").equals("")) {
 
@@ -73,21 +73,15 @@ if (!errortext.equals("")){
 }
 
 mb.append("<br/>");
-mb.append("Username: <input name=\"username\" type=\"text\" emptyok=\"false\"  value=\"\"/>");
+mb.append("Email: <input name=\"email\" type=\"text\" emptyok=\"false\"  value=\"\"/>");
 mb.append("<br/>");
 mb.append("Password: <input name=\"password\" type=\"password\" emptyok=\"false\" value=\"\"/>");
-mb.append("<a href=\"login.log?username=$(username)&password=$(password)&action=login\">");
+mb.append("<a href=\"login.log?email=$(email)&password=$(password)&action=login\">");
 mb.append("Go");
 mb.append("</a>");
 mb.append("<br/>");
 mb.append("<br/>");
 mb.append("</p>");
-//mb.append("<do type=\"accept\" label=\"Go\">");
-//mb.append("<go href=\"login.log\" method=\"get\">");
-//mb.append("<postfield name=\"username\" value=\"$(username)\"/>");
-//mb.append("<postfield name=\"password\" value=\"$(password)\"/>");
-//mb.append("</go>");
-//mb.append("</do>");
 
 mb.append("</card>");
 

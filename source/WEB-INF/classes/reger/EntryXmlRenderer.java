@@ -7,6 +7,9 @@ import org.jdom.output.Format;
 import reger.mega.FieldType;
 import reger.core.Debug;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Renders an entry to XML per XML Schema doc
  */
@@ -97,10 +100,10 @@ public class EntryXmlRenderer {
                         entry.addContent(extendedData);
 
                             //Individual fields
-                            FieldType[] fields = ent.fields;
+                            ArrayList<FieldType> fields = ent.fields;
                             if (fields!=null){
-                                for (int i = 0; i < fields.length; i++) {
-                                    FieldType field = fields[i];
+                                for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                                    FieldType field = (FieldType)it.next();
                                     extendedData.addContent(field.getXmlForFieldData());
                                 }
                             }

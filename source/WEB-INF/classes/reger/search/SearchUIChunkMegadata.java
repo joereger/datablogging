@@ -6,6 +6,8 @@ import reger.cache.LogCache;
 import reger.mega.FieldType;
 
 import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Keyword portion of searches
@@ -49,11 +51,11 @@ public class SearchUIChunkMegadata implements SearchUIChunk{
                     mb.append("</tr>");
 
                     //Now add on the activity-specific search options
-                    FieldType[] megaFields = logType.getMegaFields();
-                    if (megaFields!=null && megaFields.length>0){
+                    ArrayList<FieldType> megaFields = logType.getMegaFields();
+                    if (megaFields!=null && megaFields.size()>0){
+                        for (Iterator it = megaFields.iterator(); it.hasNext(); ) {
+                            FieldType field = (FieldType)it.next();
 
-                        for (int k = 0; k < megaFields.length; k++) {
-                            FieldType field = megaFields[k];
                             field.loadDefaultData(-1);
 
                             mb.append("<tr>");
@@ -130,11 +132,11 @@ public class SearchUIChunkMegadata implements SearchUIChunk{
                                 mb.append("</tr>");
 
                                 //Now add on the activity-specific search options
-                                FieldType[] megaFields = log.getFields();
-                                if (megaFields!=null && megaFields.length>0){
+                                ArrayList<FieldType> megaFields = log.getFields();
+                                if (megaFields!=null && megaFields.size()>0){
+                                    for (Iterator it = megaFields.iterator(); it.hasNext(); ) {
+                                        FieldType field = (FieldType)it.next();
 
-                                    for (int k = 0; k < megaFields.length; k++) {
-                                        FieldType field = megaFields[k];
                                         field.loadDefaultData(log.getLogid());
 
                                         mb.append("<tr>");

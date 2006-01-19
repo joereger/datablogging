@@ -4,6 +4,7 @@ import reger.core.db.Db;
 import reger.core.Debug;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  *
@@ -311,7 +312,7 @@ public class MegaHtmlFormBottom {
             if (!displayasadmin && userSession.getAccount().getUserelatedlinks()==1){
                 String searchterms = pageProps.entry.title + " " + pageProps.entry.comments;
                 reger.RelatedLinks relatedLinks = reger.cache.RelatedLinksCache.get(pageProps.entry.eventid, searchterms, userSession);
-                if (relatedLinks.relatedEventid.length>0){
+                if (relatedLinks.getRelatedLinks().size()>0){
                     mb.append("<tr>");
                     mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
                     mb.append("Related Entries");
@@ -320,8 +321,9 @@ public class MegaHtmlFormBottom {
                     mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
                     //Rip through the related entries
                     //@todo Display rank of related links.  We have relatedLinks.relatedRank[] available with the info.
-                    for (int i = 0; i < relatedLinks.relatedEventid.length; i++) {
-                        mb.append("<a href='"+reger.Entry.entryFileNameStatic(relatedLinks.relatedEventid[i], relatedLinks.relatedTitles[i])+"'>" + relatedLinks.relatedTitles[i] + "</a><br>");
+                    for (Iterator it = relatedLinks.getRelatedLinks().iterator(); it.hasNext(); ) {
+                        RelatedLink rl = (RelatedLink)it.next();
+                        mb.append("<a href='"+reger.Entry.entryFileNameStatic(rl.getEventid(), rl.getTitle())+"'>" + rl.getTitle() + "</a><br>");
                     }
                     mb.append("</td>");
                     mb.append("</tr>");
@@ -345,8 +347,9 @@ public class MegaHtmlFormBottom {
                     mb.append("<select multiple name=episodeid size=3 style=\"font-size: 10px;\" "+disabledFormText+">");
                     for(int i=0; i<rstEpisodes.length; i++){
                         String selectedText = "";
-                        for (int j = 0; j < pageProps.entry.episodesThisEntryBelongsTo.length; j++) {
-                            if (pageProps.entry.episodesThisEntryBelongsTo[j] == Integer.parseInt(rstEpisodes[i][0])){
+                        for (Iterator it = pageProps.entry.episodesThisEntryBelongsTo.iterator(); it.hasNext(); ) {
+                            Integer episodeid = (Integer)it.next();
+                            if (episodeid == Integer.parseInt(rstEpisodes[i][0])){
                                 selectedText = " selected";
                             }
                         }
@@ -382,13 +385,13 @@ public class MegaHtmlFormBottom {
                 mb.append("</td>");
                 mb.append("</tr>");
             } else {
-                if (pageProps.entry.episodesThisEntryBelongsTo.length>0){
+                if (pageProps.entry.episodesThisEntryBelongsTo.size()>0){
                     mb.append("<tr>");
                     mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top  class=logentryheader><font face=arial size=-1><b>Episodes</b></font><br><font face=arial size=-2><b>This entry is part of these episodes.</b></font><br>");
                     mb.append("</td>");
                     mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
-                    for (int i = 0; i < pageProps.entry.episodesThisEntryBelongsTo.length; i++) {
-                        int episodeid = pageProps.entry.episodesThisEntryBelongsTo[i];
+                    for (Iterator it = pageProps.entry.episodesThisEntryBelongsTo.iterator(); it.hasNext(); ) {
+                        Integer episodeid = (Integer)it.next();
                         reger.episodes.Episode episode = new reger.episodes.Episode(episodeid, userSession.getAccountuser());
                         mb.append(reger.episodes.EpisodeRender.getHtml(episode, userSession.getAccount(), false, ""));
                     }
@@ -543,8 +546,9 @@ public class MegaHtmlFormBottom {
                         mb.append("<input type=checkbox name=groupsubscriptionid value='"+rstGroups[i][0]+"' "+disabledFormText+" ");
                         boolean eventIsInGroup = false;
                         if (pageProps.entry.groupsubscriptionids!=null){
-                            for (int j = 0; j < pageProps.entry.groupsubscriptionids.length; j++) {
-                                if (pageProps.entry.groupsubscriptionids[j]==Integer.parseInt(rstGroups[i][0])){
+                            for (Iterator it = pageProps.entry.groupsubscriptionids.iterator(); it.hasNext(); ) {
+                                Integer gsid = (Integer)it.next();
+                                if (gsid==Integer.parseInt(rstGroups[i][0])){
                                     eventIsInGroup = true;
                                 }
                             }

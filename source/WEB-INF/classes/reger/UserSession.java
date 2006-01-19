@@ -15,9 +15,9 @@ public class UserSession implements java.io.Serializable {
 
     private int accountid=0;
     private Account account;
-    private reger.Accountuser accountuser;
+    private Accountuser accountuser;
     private int plid = reger.Vars.PLIDDEFAULT;
-    private reger.UrlSplitter urlSplitter;
+    private UrlSplitter urlSplitter;
     private Calendar mostRecentActivity = Calendar.getInstance();
     private HashMap attributes = new HashMap();
 
@@ -60,9 +60,7 @@ public class UserSession implements java.io.Serializable {
         if (this.urlSplitter==null || (!urlSplitter.getServername().equals(this.urlSplitter.getServername()) || !urlSplitter.getVirtualdir().equals(this.urlSplitter.getVirtualdir()) || !urlSplitter.getScheme().equals(this.urlSplitter.getScheme()) || !String.valueOf(urlSplitter.getPort()).equals(String.valueOf(this.urlSplitter.getPort())))) {
             Debug.debug(5, "", "Refresh of UserSession object triggered.");
             Debug.debug(5, "", "UserSession.processNewRequest() - after urlSplitter. <br>urlSplitter.getRawIncomingServername()=" + urlSplitter.getRawIncomingServername() + "<br>urlSplitter.getServername()=" + urlSplitter.getServername() + "<br>urlSplitter.getVirtualdir()=" + urlSplitter.getVirtualdir() + "<br>urlSplitter.getSiterooturl()=" + urlSplitter.getSiterooturl());
-            if (reger.core.DegubLevel.getDebugLevel()>=5){
-                Debug.logStringArrayToDb("UserSession.java - urlSplitter.getServernameAllPossibleDomains()", urlSplitter.getServernameAllPossibleDomains());
-            }
+
             //Set the new urlSplitter to be the one for the session
             this.urlSplitter = urlSplitter;
             //Find the account using the URL Splitter

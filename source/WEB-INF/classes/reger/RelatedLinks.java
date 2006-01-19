@@ -1,18 +1,24 @@
 package reger;
 
 import reger.core.db.Db;
+import reger.cache.jboss.Cacheable;
+
+import java.util.ArrayList;
 
 /**
  * The Related Links feature
  */
+@Cacheable
 public class RelatedLinks {
 
     //These are the outputs of the object
     //These are guaranteed to be of the same index... in other words,
     //relatedEventid[1] goes with relatedTitles[1]
-    public int[] relatedEventid = new int[0];
-    public String[] relatedTitles = new String[0];
-    public String[] relatedRank = new String[0];
+//    public int[] relatedEventid = new int[0];
+//    public String[] relatedTitles = new String[0];
+//    public String[] relatedRank = new String[0];
+
+    private ArrayList<RelatedLink> relatedLinks = new ArrayList<RelatedLink>();
 
     //Internal vars
     private int eventid = -1;
@@ -74,15 +80,16 @@ public class RelatedLinks {
         //-----------------------------------
         if (rstRelatedLinks!=null && rstRelatedLinks.length>0){
             //Initialize our main output vars to the correct size
-            relatedEventid = new int[rstRelatedLinks.length];
-        	relatedTitles = new String[rstRelatedLinks.length];
-        	relatedRank = new String[rstRelatedLinks.length];
-        	//Iterate the results
-        	for(int i=0; i<rstRelatedLinks.length; i++){
-                relatedEventid[i] = Integer.parseInt(rstRelatedLinks[i][0]);
-                relatedTitles[i] = rstRelatedLinks[i][1];
-                relatedRank[i] = rstRelatedLinks[i][2];
-        	}
+//            relatedEventid = new int[rstRelatedLinks.length];
+//            relatedTitles = new String[rstRelatedLinks.length];
+//            relatedRank = new String[rstRelatedLinks.length];
+            //Iterate the results
+            for(int i=0; i<rstRelatedLinks.length; i++){
+//                relatedEventid[i] = Integer.parseInt(rstRelatedLinks[i][0]);
+//                relatedTitles[i] = rstRelatedLinks[i][1];
+//                relatedRank[i] = rstRelatedLinks[i][2];
+                relatedLinks.add(new RelatedLink(Integer.parseInt(rstRelatedLinks[i][0]), rstRelatedLinks[i][1], rstRelatedLinks[i][2]));
+            }
         }
         //Clear the memory required for searchterms
         searchterms="";
@@ -100,6 +107,10 @@ public class RelatedLinks {
             sterms = rstSearchterms[0][0] + " " +rstSearchterms[0][1];
         }
         return sterms;
+    }
+
+    public ArrayList<RelatedLink> getRelatedLinks() {
+        return relatedLinks;
     }
 
 }

@@ -3,6 +3,8 @@ package reger;
 import reger.core.Debug;
 import reger.cache.jboss.Cacheable;
 
+import java.util.ArrayList;
+
 /**
  * Splits incoming urls into an accounturl, plbasedomain and virtualdir.
  */
@@ -15,7 +17,7 @@ public class UrlSplitter implements java.io.Serializable {
     private String siterooturl = "";
     private int port = 80;
     private String scheme = "http://";
-    private String[] servernameAllPossibleDomains=new String[0];
+    private ArrayList<String> servernameAllPossibleDomains=new ArrayList<String>();
 
 
     public UrlSplitter(String servername, String accounturl, String plbasedomain, String virtualdir, int port, String siterooturl, String rawIncomingServername){
@@ -51,13 +53,13 @@ public class UrlSplitter implements java.io.Serializable {
 
         //Sequentially rip off subdomains from the servername
         String tmpServername = rawIncomingServername;
-        servernameAllPossibleDomains = reger.core.Util.addToStringArray(servernameAllPossibleDomains, rawIncomingServername);
+        servernameAllPossibleDomains.add(rawIncomingServername);
         //See if we have any subdomains
         while (tmpServername.indexOf(".")>-1 && tmpServername.split("\\.").length>=3){
             //Grab what's to the right of the dot
             tmpServername = tmpServername.substring(tmpServername.indexOf(".")+1, tmpServername.length());
             //Add it to the array
-            servernameAllPossibleDomains = reger.core.Util.addToStringArray(servernameAllPossibleDomains, tmpServername);
+            servernameAllPossibleDomains.add(tmpServername);
         }
 
 
@@ -115,7 +117,7 @@ public class UrlSplitter implements java.io.Serializable {
         return rawIncomingServername;
     }
 
-    public String[] getServernameAllPossibleDomains() {
+    public ArrayList<String> getServernameAllPossibleDomains() {
         return servernameAllPossibleDomains;
     }
 

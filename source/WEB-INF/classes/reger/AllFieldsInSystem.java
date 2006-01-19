@@ -211,12 +211,13 @@ public class AllFieldsInSystem {
         }
     }
 
-    public static FieldType[] copyFieldTypeArray(FieldType[] src){
+    public static ArrayList<FieldType> copyFieldTypeArray(ArrayList<FieldType> src){
 		//If the source isn't null
 		if (src!=null){
-            FieldType[] outArr = new FieldType[src.length];
-            for(int i=0; i < (src.length); i++) {
-                outArr[i]=FieldTypeFactory.getCopyOfField(src[i]);
+            ArrayList<FieldType> outArr = new ArrayList<FieldType>();
+            for (Iterator it = src.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                outArr.add(FieldTypeFactory.getCopyOfField(ft));
             }
             return outArr;
         //If the source is null, just return an empty array
@@ -243,9 +244,9 @@ public class AllFieldsInSystem {
 
 
 
-    public static FieldType[] allMegaFieldsForEventtypeid(int eventtypeid, boolean getCopyOfFieldInsteadOfReference){
+    public static ArrayList<FieldType> allMegaFieldsForEventtypeid(int eventtypeid, boolean getCopyOfFieldInsteadOfReference){
         Debug.debug(5, "", "AllFieldsInSystem.allMegaFieldsForEventtypeid() - eventtypeid=" + eventtypeid);
-        FieldType[] out = new FieldType[0];
+        ArrayList<FieldType> out = new ArrayList<FieldType>();
         if (allFieldsInSystem==null){
             refresh();
         }
@@ -264,94 +265,22 @@ public class AllFieldsInSystem {
                         if (field.getEventtypeid()==eventtypeid){
                             if (getCopyOfFieldInsteadOfReference){
                                 //Add a copy of the field to the array
-                                out = AddToArray.addToFieldTypeArray(out, FieldTypeFactory.getCopyOfField(field));
+                                out.add(FieldTypeFactory.getCopyOfField(field));
                             } else {
                                 //Add a reference of the field to the array
-                                out = AddToArray.addToFieldTypeArray(out, field);
+                                out.add(field);
                             }
                         }
                     }
                 }
             }
-
-
-//            //Go to the lookup table
-//            Set megafieldidsForThisEventtypeid = (Set)eventtypeidToMegafieldid.get(new Integer(eventtypeid));
-//            if (megafieldidsForThisEventtypeid!=null){
-//
-//                //Create a map for the usage info
-//                HashMap fieldsHandled = new HashMap();
-//                for (Iterator iterator = megafieldidsForThisEventtypeid.iterator(); iterator.hasNext();) {
-//                    int megafieldid = ((Integer) iterator.next()).intValue();
-//                    fieldsHandled.put(new Integer(megafieldid), new Boolean(false));
-//                }
-//
-//                //Order according to mlt.fieldorder
-//                for (int i = 0; i < fieldorder.length; i++) {
-//                    //Update the fieldsHandled map which essentially tells me that this field has been dealt with
-//                    fieldsHandled.put(new Integer(fieldorder[i]), new Boolean(true));
-//                    //Make sure the entry in fieldorder is a valid field for this log type
-//                    if (megafieldidsForThisEventtypeid.contains(new Integer(fieldorder[i]))){
-//                        //Go to the allFieldsInSystem and get this field
-//                        FieldType field = (FieldType)allFieldsInSystem.get(new Integer(fieldorder[i]));
-//                        if (field!=null){
-//                            //Quick safety check to make sure this is the correct eventtypeid
-//                            if (field.getEventtypeid()==eventtypeid){
-//                                //Check visibility
-//                                if (!reger.core.Util.isIntInIntArray(field.getMegafieldid(), hiddenfields) || includeHiddenFields){
-//                                    if (getCopyOfFieldInsteadOfReference){
-//                                        //Add a copy of the field to the array
-//                                        outSorted = reger.core.Util.addToFieldTypeArray(outSorted, FieldTypeFactory.getCopyOfField(field));
-//                                    } else {
-//                                        //Add a reference of the field to the array
-//                                        outSorted = reger.core.Util.addToFieldTypeArray(outSorted, field);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                //Iterate the fieldsHandled map and find those where the value is false, meaning they haven't been dealt with
-//                reger.core.Util.debug(5, "AllFieldsInSystem.java - Checking to see if there are any fields that haven't been dealt with.");
-//                if (fieldsHandled.containsValue(new Boolean(false))){
-//                    reger.core.Util.debug(5, "AllFieldsInSystem.java - There are fields that haven't been dealt with.");
-//                    for (Iterator i=fieldsHandled.entrySet().iterator(); i.hasNext(); ) {
-//                        Map.Entry e = (Map.Entry) i.next();
-//                        //e.getKey()
-//                        //e.getValue()
-//                        reger.core.Util.debug(5, "AllFieldsInSystem.java - e.getKey()=" + e.getKey() + " e.getValue()=" + e.getValue());
-//                        if (((Boolean)e.getValue()).booleanValue()==false){
-//                            reger.core.Util.debug(5, "AllFieldsInSystem.java - Value is false.");
-//                            //This field hasn't been added yet
-//                            //Go to the allFieldsInSystem and get this field
-//                            FieldType field = (FieldType)allFieldsInSystem.get((Integer)e.getKey());
-//                            if (field!=null){
-//                                //Quick safety check to make sure this is the correct eventtypeid
-//                                if (field.getEventtypeid()==eventtypeid){
-//                                    //Check visibility
-//                                    if (!reger.core.Util.isIntInIntArray(field.getMegafieldid(), hiddenfields) || includeHiddenFields){
-//                                        if (getCopyOfFieldInsteadOfReference){
-//                                            //Add a copy of the field to the array
-//                                            outSorted = reger.core.Util.addToFieldTypeArray(outSorted, FieldTypeFactory.getCopyOfField(field));
-//                                        } else {
-//                                            //Add a reference of the field to the array
-//                                            outSorted = reger.core.Util.addToFieldTypeArray(outSorted, field);
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-
         }
         return out;
     }
 
-    public static FieldType[] getFieldsExplicitylAssignedToLogid(int logid, boolean getCopyOfFieldInsteadOfReference){
+    public static ArrayList<FieldType> getFieldsExplicitylAssignedToLogid(int logid, boolean getCopyOfFieldInsteadOfReference){
         Debug.debug(5, "", "AllFieldsInSystem.getFieldsExplicitylAssignedToLogid() - logid=" + logid);
-        FieldType[] out = new FieldType[0];
+        ArrayList<FieldType> out = new ArrayList<FieldType>();
         if (allFieldsInSystem==null){
             refresh();
         }
@@ -371,89 +300,15 @@ public class AllFieldsInSystem {
                         if (field.getLogid()==logid){
                             if (getCopyOfFieldInsteadOfReference){
                                 //Add a copy of the field to the array
-                                out = AddToArray.addToFieldTypeArray(out, FieldTypeFactory.getCopyOfField(field));
+                                out.add(FieldTypeFactory.getCopyOfField(field));
                             } else {
                                 //Add a reference of the field to the array
-                                out = AddToArray.addToFieldTypeArray(out, field);
+                                out.add(field);
                             }
                         }
                     }
                 }
             }
-
-
-
-//            //Go to the lookup table
-//            Set megafieldidsForThisLogid = (Set)logidExplicitlyToMegafieldid.get(new Integer(logid));
-//            if (megafieldidsForThisLogid!=null){
-//
-//                //Create a map for the usage info
-//                HashMap fieldsHandled = new HashMap();
-//                for (Iterator iterator = megafieldidsForThisLogid.iterator(); iterator.hasNext();) {
-//                    int megafieldid = ((Integer) iterator.next()).intValue();
-//                    fieldsHandled.put(new Integer(megafieldid), new Boolean(false));
-//                }
-//
-//                //Order according to mlt.fieldorder
-//                for (int i = 0; i < fieldorder.length; i++) {
-//                    //Update the fieldsHandled map which essentially tells me that this field has been dealt with
-//                    fieldsHandled.put(new Integer(fieldorder[i]), new Boolean(true));
-//                    //Make sure the entry in fieldorder is a valid field for this log type
-//                    if (megafieldidsForThisLogid.contains(new Integer(fieldorder[i]))){
-//                        //Go to the allFieldsInSystem and get this field
-//                        FieldType field = (FieldType)allFieldsInSystem.get(new Integer(fieldorder[i]));
-//                        if (field!=null){
-//                            //Quick safety check to make sure this is the correct eventtypeid
-//                            if (field.getEventtypeid()==logid){
-//                                //Check visibility
-//                                if (!reger.core.Util.isIntInIntArray(field.getMegafieldid(), hiddenfields) || includeHiddenFields){
-//                                    if (getCopyOfFieldInsteadOfReference){
-//                                        //Add a copy of the field to the array
-//                                        outSorted = reger.core.Util.addToFieldTypeArray(outSorted, FieldTypeFactory.getCopyOfField(field));
-//                                    } else {
-//                                        //Add a reference of the field to the array
-//                                        outSorted = reger.core.Util.addToFieldTypeArray(outSorted, field);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                //Iterate the fieldsHandled map and find those where the value is false, meaning they haven't been dealt with
-//                reger.core.Util.debug(5, "AllFieldsInSystem.java - Checking to see if there are any fields that haven't been dealt with.");
-//                if (fieldsHandled.containsValue(new Boolean(false))){
-//                    reger.core.Util.debug(5, "AllFieldsInSystem.java - There are fields that haven't been dealt with.");
-//                    for (Iterator i=fieldsHandled.entrySet().iterator(); i.hasNext(); ) {
-//                        Map.Entry e = (Map.Entry) i.next();
-//                        //e.getKey()
-//                        //e.getValue()
-//                        reger.core.Util.debug(5, "AllFieldsInSystem.java - e.getKey()=" + e.getKey() + " e.getValue()=" + e.getValue());
-//                        if (((Boolean)e.getValue()).booleanValue()==false){
-//                            reger.core.Util.debug(5, "AllFieldsInSystem.java - Value is false.");
-//                            //This field hasn't been added yet
-//                            //Go to the allFieldsInSystem and get this field
-//                            FieldType field = (FieldType)allFieldsInSystem.get((Integer)e.getKey());
-//                            if (field!=null){
-//                                //Quick safety check to make sure this is the correct eventtypeid
-//                                if (field.getEventtypeid()==logid){
-//                                    //Check visibility
-//                                    if (!reger.core.Util.isIntInIntArray(field.getMegafieldid(), hiddenfields) || includeHiddenFields){
-//                                        if (getCopyOfFieldInsteadOfReference){
-//                                            //Add a copy of the field to the array
-//                                            outSorted = reger.core.Util.addToFieldTypeArray(outSorted, FieldTypeFactory.getCopyOfField(field));
-//                                        } else {
-//                                            //Add a reference of the field to the array
-//                                            outSorted = reger.core.Util.addToFieldTypeArray(outSorted, field);
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-
-
 
         }
 
@@ -463,7 +318,7 @@ public class AllFieldsInSystem {
     /**
      * Eventtypeid must be provided to prevent a call to the database
      */
-    public static FieldType[] allMegaFieldsForLog(int logid, int eventtypeid){
+    public static ArrayList<FieldType> allMegaFieldsForLog(int logid, int eventtypeid){
         if (allFieldsInSystem==null){
             refresh();
         }
@@ -473,34 +328,38 @@ public class AllFieldsInSystem {
 
         //Get the system fields for this megalogtype
         Debug.debug(5, "", "AllFieldsInSystem.allMegaFieldsForLog() - logid="+logid+" eventtypeid=" + eventtypeid);
-        FieldType[] systemFields = allMegaFieldsForEventtypeid(eventtypeid, true);
+        ArrayList<FieldType> systemFields = allMegaFieldsForEventtypeid(eventtypeid, true);
 
         //Get the log fields for this logid
-        FieldType[] logFields = getFieldsExplicitylAssignedToLogid(logid, true);
+        ArrayList<FieldType> logFields = getFieldsExplicitylAssignedToLogid(logid, true);
 
         //Combine systemFields and logFields into interimFields
         //Start with systemFields as a base and then iterate logFields.
         //A logField can either a) overwrite a systemField or b) be added to the list of fields
-        FieldType[] interimFields = systemFields;
+        ArrayList<FieldType> interimFields = systemFields;
         if (logFields!=null){
-            for (int k = 0; k < logFields.length; k++) {
+            for (Iterator it = logFields.iterator(); it.hasNext(); ) {
+                FieldType tmpLogField = (FieldType)it.next();
                 boolean logFieldOverridesSystemField = false;
-                for (int l = 0; l < interimFields.length && !logFieldOverridesSystemField; l++) {
-                    if (logFields[k].getMegafieldid()==interimFields[l].getMegafieldid()){
-                        //Replace systemField with the userField
-                        if (logFields[k].getMegafieldid()==debugMegafieldidToWatch){
-                            Debug.debug(5, "", "AllFieldsInSystem.java - Replacing megafieldid=" + logFields[k].getMegafieldid());
+                for (Iterator itA = interimFields.iterator(); itA.hasNext(); ) {
+                    if (!logFieldOverridesSystemField){
+                        FieldType tmpInterimField = (FieldType)itA.next();
+                        if (tmpLogField.getMegafieldid()==tmpInterimField.getMegafieldid()){
+                            //Replace systemField with the userField
+                            if (tmpLogField.getMegafieldid()==debugMegafieldidToWatch){
+                                Debug.debug(5, "", "AllFieldsInSystem.java - Replacing megafieldid=" + tmpLogField.getMegafieldid());
+                            }
+                            tmpInterimField=tmpLogField;
+                            logFieldOverridesSystemField=true;
                         }
-                        interimFields[l] = logFields[k];
-                        logFieldOverridesSystemField=true;
                     }
                 }
                 //If, after looking for a field this logField, there isn't one, add it
                 if (!logFieldOverridesSystemField){
-                    if (logFields[k].getMegafieldid()==debugMegafieldidToWatch){
-                        Debug.debug(5, "", "AllFieldsInSystem.java - logid="+logid+" - Adding userField.megafieldid=" + logFields[k].getMegafieldid());
+                    if (tmpLogField.getMegafieldid()==debugMegafieldidToWatch){
+                        Debug.debug(5, "", "AllFieldsInSystem.java - logid="+logid+" - Adding userField.megafieldid=" + tmpLogField.getMegafieldid());
                     }
-                    interimFields = AddToArray.addToFieldTypeArray(interimFields, logFields[k]);
+                    interimFields.add(tmpLogField);
                 }
             }
         }
@@ -508,8 +367,9 @@ public class AllFieldsInSystem {
         //Debug
         StringBuffer tmp0 = new StringBuffer();
         if (interimFields!=null){
-            for (int cc = 0; cc < interimFields.length; cc++) {
-                tmp0.append(interimFields[cc].getMegafieldid() + "<br>fieldname=" + interimFields[cc].getFieldname() + "<br>");
+            for (Iterator it = interimFields.iterator(); it.hasNext(); ) {
+                FieldType ft = (FieldType)it.next();
+                tmp0.append(ft.getMegafieldid() + "<br>fieldname=" + ft.getFieldname() + "<br>");
             }
         }
         Debug.debug(5, "", "AllFieldsInSystem.java - logid="+logid+" interimFields Before Assignment<br>" + tmp0.toString());

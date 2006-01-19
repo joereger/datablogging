@@ -7,6 +7,7 @@ import reger.core.*;
 import reger.core.licensing.License;
 import reger.core.licensing.RegerLicensingApiClient;
 import reger.cache.LogCache;
+import reger.cache.jboss.Cacheable;
 
 import java.util.*;
 
@@ -17,7 +18,7 @@ import java.util.*;
 * Once the userLogin() function is called user-specific vars are
 * populated.
 */
-@reger.cache.jboss.Cacheable
+@Cacheable
 public class Account implements java.io.Serializable {
 
     //Basic account variables
@@ -68,7 +69,7 @@ public class Account implements java.io.Serializable {
     private License accountLicense;
     private String googlemapsapikey;
 
-    
+
 
     //Account space vars
     private long imagespaceused=0;
@@ -83,10 +84,10 @@ public class Account implements java.io.Serializable {
     private String siteRootUrl="";
 
     //The NestedNavItems for this account. Note that this is ALL of them.
-    private NestedNavCollection nestedNavCollection;
+    private NestedNavCollection nestedNavCollection = new NestedNavCollection(new ArrayList<NestedNavItem>());
 
     //Holds integer identifiers of all logs for this account
-    int[] alllogsforaccountid;
+    private ArrayList<Integer> alllogsforaccountid = new ArrayList<Integer>();
 
     //Whether the account space var has been called
     private boolean hasUpdateSpaceBeenCalled=false;
@@ -273,25 +274,16 @@ public class Account implements java.io.Serializable {
     }
 
     private void loadNestedNavItems(){
-        NestedNavItem[] allNestedNavItems = new NestedNavItem[0];
-
-//        //Logs added to allNestedNavItems
-//        Vector logs = LogCache.allLogsForAccount(accountid);
-//        for (int i = 0; i < logs.size(); i++) {
-//            Log log = (Log) logs.get(i);
-//            reger.core.Util.debug(5, "Account.java - log added:" + log.getName());
-//            allNestedNavItems = AddToArray.addToNestedNavItemArray(allNestedNavItems, (NestedNavItem)log);
-//        }
-//        reger.core.Util.debug(5, "Account.java - allNestedNavItems.length:" + allNestedNavItems.length);
+        ArrayList<NestedNavItem> allNestedNavItems = new ArrayList<NestedNavItem>();
 
         //Add all logs
-        for (int i = 0; i < alllogsforaccountid.length; i++) {
-            Log log = LogCache.get(alllogsforaccountid[i]);
+        for (Iterator it = alllogsforaccountid.iterator(); it.hasNext(); ) {
+           Integer logid = (Integer)it.next();
+            Log log = LogCache.get(logid);
             Debug.debug(5, "", "Account.java - log added:" + log.getName());
-            allNestedNavItems = AddToArray.addToNestedNavItemArray(allNestedNavItems, (NestedNavItem)log);
-
+            allNestedNavItems.add((NestedNavItem)log);
         }
-        Debug.debug(5, "", "Account.java - allNestedNavItems.length:" + allNestedNavItems.length);
+        Debug.debug(5, "", "Account.java - allNestedNavItems.length:" + allNestedNavItems.size());
 
 
         //contentPages added to allNestedNavItems
@@ -303,7 +295,7 @@ public class Account implements java.io.Serializable {
         if (rstCp!=null && rstCp.length>0){
             for(int i=0; i<rstCp.length; i++){
                 ContentPage cp = new ContentPage(Integer.parseInt(rstCp[i][0]));
-                allNestedNavItems = AddToArray.addToNestedNavItemArray(allNestedNavItems, (NestedNavItem)cp);
+                allNestedNavItems.add((NestedNavItem)cp);
             }
         }
 
@@ -382,14 +374,10 @@ public class Account implements java.io.Serializable {
       //-----------------------------------
       //-----------------------------------
       //Create an array of the size of the result set
-      alllogsforaccountid = new int[rsAllLgs.length];
+      alllogsforaccountid = new ArrayList<Integer>();
       for(int i=0; i<rsAllLgs.length; i++){
-          alllogsforaccountid[i]=Integer.parseInt(rsAllLgs[i][0]);
+          alllogsforaccountid.add(new Integer(rsAllLgs[i][0]));
       }
-  }
-
-  public int[] getAllLogids(){
-    return alllogsforaccountid;
   }
 
   /**
@@ -999,7 +987,7 @@ public class Account implements java.io.Serializable {
 
 
 
-        //Check to see if the accounturl or username is taken
+        //Check to see if the accounturl or email is taken
         //-----------------------------------
         //-----------------------------------
         String[][] rstUser= Db.RunSQL("SELECT count(*) FROM account WHERE "+accountidSql+" AND accounturl='"+ Util.cleanForSQL(accounturl)+"'");
@@ -1154,7 +1142,7 @@ public class Account implements java.io.Serializable {
     }
 
     public void generateSimpleLicenseWithExpirationDate(Calendar expDateGMT){
-        Hashtable props = new Hashtable();
+        HashMap props = new HashMap();
         props.put(License.PROPSTRINGEXPDATEGMT, String.valueOf(reger.core.TimeUtils.dateformatfordb(expDateGMT)));
         License lic = new License(null, props);
 
@@ -1268,4 +1256,12 @@ public class Account implements java.io.Serializable {
     public void setSitetemplateid(int sitetemplateid) {
         this.sitetemplateid = sitetemplateid;
     }
+
+    public ArrayList<Integer> getAlllogsforaccountid() {
+        return alllogsforaccountid;
+    }
+
+
+
+
 }

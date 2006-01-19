@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.ArrayList;
 
 import org.jdom.Element;
 
@@ -23,17 +24,17 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
     //This is the name that's used in the name/value pair.  This is specific to this FieldType and is not part of the interface.
     String NAMEOFDATAVALUE = "";
 
-    private FieldData[] fieldData = new FieldData[1];
+    private ArrayList<FieldData> fieldData = new ArrayList<FieldData>();
 
     public FieldTypeTimeperiod(){
-        fieldData[0] = new FieldData(NAMEOFDATAVALUE, "");
+        fieldData.add(0, new FieldData(NAMEOFDATAVALUE, ""));
     }
 
     public FieldTypeTimeperiod(FieldTypeTimeperiod field){
-        this.fieldData = new FieldData[field.getDataForField().length];
-        for (int i = 0; i < field.getDataForField().length; i++) {
-            FieldData fldDataTmp = new FieldData(field.getDataForField()[i]);
-            this.fieldData[i] = fldDataTmp;
+        this.fieldData = new ArrayList<FieldData>();
+        for (Iterator it = field.getDataForField().iterator(); it.hasNext(); ) {
+            FieldData fldDataTmp = (FieldData)it.next();
+            this.fieldData.add(0, fldDataTmp);
         }
         populateFromAnotherField(field);
     }
@@ -98,18 +99,17 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
     /**
      * Returns an array of FieldData objects which represent the data held in this field.
      */
-    public FieldData[] getDataForField() {
+    public ArrayList<FieldData> getDataForField() {
         return fieldData;
     }
 
     /**
      * Returns an array of empty FieldData objects that demonstrate the name/value pairs that this field generates/accepts/works with
      */
-    public FieldData[] getEmptyDataFields() {
-        FieldData[] fd = new FieldData[1];
-        fd[0] = new FieldData("data", "");
+    public ArrayList<FieldData> getEmptyDataFields() {
+        ArrayList<FieldData> fd = new ArrayList<FieldData>();
+        fd.add(new FieldData(NAMEOFDATAVALUE, ""));
         return fd;
-
     }
 
     /**
@@ -118,7 +118,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
     public String getHtmlAdmin(int logid, boolean isFormActive) {
         StringBuffer outstring = new StringBuffer();
 
-        reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Into getHtmlAdmin()<br>fieldData[0].getValue()=" + fieldData[0].getValue());
+        reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Into getHtmlAdmin()<br>fieldData.get(0).getValue()=" + fieldData.get(0).getValue());
 
         //isFormActive determines whether the form is turned on or off
         String disabledFormText = "";
@@ -131,9 +131,9 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
 
 
 		//Populate the hms object with the correct number of baseSeconds
-		if (reger.core.Util.isinteger(fieldData[0].getValue())){
-            hms = new reger.core.HoursMinutesSeconds(Integer.parseInt(fieldData[0].getValue()));
-            reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Into getHtmlAdmin()<br>fieldData[0].getValue() determined to be integer");
+		if (reger.core.Util.isinteger(fieldData.get(0).getValue())){
+            hms = new reger.core.HoursMinutesSeconds(Integer.parseInt(fieldData.get(0).getValue()));
+            reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Into getHtmlAdmin()<br>fieldData.get(0).getValue() determined to be integer");
         }
 
         outstring.append("<table><tr><td nowrap>");
@@ -172,8 +172,8 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
 
 
 		//Populate the hms object with the correct number of baseSeconds
-		if (reger.core.Util.isinteger(fieldData[0].getValue())){
-            hms = new reger.core.HoursMinutesSeconds(Integer.parseInt(fieldData[0].getValue()));
+		if (reger.core.Util.isinteger(fieldData.get(0).getValue())){
+            hms = new reger.core.HoursMinutesSeconds(Integer.parseInt(fieldData.get(0).getValue()));
         }
 
 
@@ -242,7 +242,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
             s = Integer.parseInt(request.getParameter("megafieldid-" + megafieldid + "-seconds"));
         }
         //Finally, set the value
-        this.fieldData[0].setValue(String.valueOf((h*3600)+(m*60)+(s)));
+        this.fieldData.get(0).setValue(String.valueOf((h*3600)+(m*60)+(s)));
 
         //reger.core.Util.logtodb("Value is set from request object to: " + value);
      }
@@ -255,8 +255,8 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
         reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         FieldDAOSimple sm = new FieldDAOSimple();
         sm.loadData(this.megafieldid, eventid, logid);
-        this.fieldData[0].setValue(sm.value);
-        reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid + "<br>this.fieldData[0].getValue()=" + this.fieldData[0].getValue());
+        this.fieldData.get(0).setValue(sm.value);
+        reger.core.Debug.debug(5, "FieldTypeTimeperiod.java", "Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid + "<br>this.fieldData.get(0).getValue()=" + this.fieldData.get(0).getValue());
      }
 
      /**
@@ -266,7 +266,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
      public void loadDefaultData(int logid){
         FieldDAOSimple sm = new FieldDAOSimple();
         sm.loadDefaultData(this.megafieldid, logid);
-        this.fieldData[0].setValue(sm.value);
+        this.fieldData.get(0).setValue(sm.value);
      }
 
      /**
@@ -278,16 +278,16 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
 
         //Check requiredness
         if (isrequired==1){
-            if (fieldData[0].getValue().equals("")){
+            if (fieldData.get(0).getValue().equals("")){
                 errortext = errortext + ">> " + this.fieldname + " is a required field.<br>";
             }
         }
 
         //Check data type
-        if (!fieldData[0].getValue().equals("")){
+        if (!fieldData.get(0).getValue().equals("")){
             DataType dt = reger.mega.DataTypeFactory.get(this.megadatatypeid);
             try{
-                dt.validataData(this.fieldData[0].getValue());
+                dt.validataData(this.fieldData.get(0).getValue());
             } catch (reger.core.ValidationException ex){
                 errortext = errortext +  ">> " + this.fieldname + ": " + ex.getErrorsAsSingleString() + "<br>";
             } catch (Exception e){
@@ -303,7 +303,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
      */
     public void saveToDb(int eventid, int logid) {
         FieldDAOSimple sm = new FieldDAOSimple();
-        sm.setValue(this.fieldData[0].getValue());
+        sm.setValue(this.fieldData.get(0).getValue());
         //reger.core.Util.logtodb("In FieldTypeDropdown.saveToDb.  About to call sm.saveData<br>this.value: " +this.value+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         sm.saveData(this.megafieldid, eventid, logid);
     }
@@ -313,7 +313,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
      */
     public void saveDefaultToDb(int logid) {
         FieldDAOSimple sm = new FieldDAOSimple();
-        sm.setValue(this.fieldData[0].getValue());
+        sm.setValue(this.fieldData.get(0).getValue());
         sm.saveDefaultData(this.megafieldid, logid);
     }
 
@@ -417,7 +417,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
      * purposes of offensive content validation.
      */
     public String getValuesAsStringForOffensiveContentValidation() {
-        return fieldData[0].getValue();
+        return fieldData.get(0).getValue();
     }
 
     /**
@@ -426,7 +426,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
     public boolean fulfillsQuery(FieldQueryElement[] fieldQueryElements, int logidOrEtid) {
 
 
-        Debug.debug(5, "", "FieldTypeTimeperiod.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData[0].getValue());
+        Debug.debug(5, "", "FieldTypeTimeperiod.java<br>fieldNamePre(logidOrEtid)+\"equalto\"="+fieldNamePre(logidOrEtid)+"equalto"+"<br>equalto=" + FieldQueryElement.getValues(fieldQueryElements, fieldNamePre(logidOrEtid)+"equalto")[0] + "<br>this.value=" + this.fieldData.get(0).getValue());
 
 
         //Get the values
@@ -493,8 +493,8 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
 
         //Get the current value of this field
         Float thisvalue = null;
-        if (reger.core.Util.isnumeric(this.fieldData[0].getValue())){
-            thisvalue = new Float(this.fieldData[0].getValue());
+        if (reger.core.Util.isnumeric(this.fieldData.get(0).getValue())){
+            thisvalue = new Float(this.fieldData.get(0).getValue());
         }
 
         //Do the evaluation
@@ -772,7 +772,7 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
      */
     public Element getXmlForFieldData() {
         Element elField = new Element(getFieldnameForApis());
-        elField.addContent(fieldData[0].getValue());
+        elField.addContent(fieldData.get(0).getValue());
         return elField;
     }
 

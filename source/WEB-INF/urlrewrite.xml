@@ -230,16 +230,16 @@
     <rule>
         <name>Invitation</name>
         <note>The invitations url.</note>
-        <from>/invitation-([0-9]+).log(\?)*(.*)</from>
-        <to>/invitation.log?friendinvitationid=$1&amp;$3</to>
+        <from>/about/login-fid-([0-9]+).log(\?)*(.*)</from>
+        <to>/about/login.log?friendinvitationid=$1&amp;$3</to>
     </rule>
 
     <!-- Invitation -->
     <rule>
         <name>Invitation</name>
         <note>The invitations url.</note>
-        <from>/invitation-([0-9]+)-([a-zA-Z0-9\-]*).log(\?)*(.*)</from>
-        <to>/invitation.log?friendinvitationid=$1&amp;friendinvitationkey=$2&amp;$4</to>
+        <from>/about/login-fid-([0-9]+)-fkey-([a-zA-Z0-9\-]*).log(\?)*(.*)</from>
+        <to>/about/login.log?friendinvitationid=$1&amp;friendinvitationkey=$2&amp;$4</to>
     </rule>
 
     <!-- Media File -->

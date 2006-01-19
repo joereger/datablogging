@@ -5,6 +5,9 @@ import reger.Help;
 import reger.core.Debug;
 import reger.cache.LogCache;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Creates the screen to manage nav item layout
  */
@@ -184,10 +187,10 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
         //Go get children and append output from each of them.
         //This is the recursive function.
         //@todo Only show logs user can post to
-        NestedNavItem[] children = collection.getChildrenUserCanView(navItem, userSession.getAccountuser());
-        for (int i = 0; i < children.length; i++) {
-            NestedNavItem childNavItem = children[i];
-            mb.append(outputItemHtml(childNavItem, collection, currentNestedLevel+1, userSession, request));
+        ArrayList<NestedNavItem> children = collection.getChildrenUserCanView(navItem, userSession.getAccountuser());
+        for (Iterator it = children.iterator(); it.hasNext(); ) {
+             NestedNavItem childNavItem = (NestedNavItem)it.next();
+             mb.append(outputItemHtml(childNavItem, collection, currentNestedLevel+1, userSession, request));
         }
 
         return mb.toString();

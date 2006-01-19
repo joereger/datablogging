@@ -437,7 +437,7 @@ public class EmailApi {
                 reger.PrivateLabel plOfEntry = new reger.PrivateLabel(accountOfEntry.getPlid());
                 reger.Accountuser accountuserOfPersonAccessing = new reger.Accountuser(emaddr.getAccountuserid(), false);
                 friendlyname = accountuserOfPersonAccessing.getFriendlyname();
-                accountuserOfPersonAccessing.userAuthenticateEmailsecret(accountuserOfPersonAccessing.getUsername(), emailsecret);
+                accountuserOfPersonAccessing.userAuthenticateEmailsecret(accountuserOfPersonAccessing.getEmail(), emailsecret);
                 logid = emaddr.getLogid();
                 accountuserid = emaddr.getAccountuserid();
                 mailtype = emaddr.getEmailtype();

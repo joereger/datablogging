@@ -55,10 +55,12 @@ if (lic!=null){
 }
 mb.append("<textarea rows='5' name=encryptedlicense cols='50' wrap='virtual'>"+reger.core.Util.cleanForHtml(tmpEncryptedlicense)+"</textarea>");
 if (lic!=null && lic.getProps()!=null && lic.getProps().size()>0){
-    Enumeration keys = lic.getProps().keys();
-    while ( keys.hasMoreElements() ){
-        String key = (String)keys.nextElement();
-        String value = (String)lic.getProps().get(key);
+    java.util.Iterator keyValuePairs = lic.getProps().entrySet().iterator();
+    for (int i = 0; i < lic.getProps().size(); i++){
+        java.util.Map.Entry mapentry = (java.util.Map.Entry) keyValuePairs.next();
+        String key = (String)mapentry.getKey();
+        String value = (String)mapentry.getValue();
+
         mb.append("<br>");
         mb.append(key);
         mb.append(" = ");

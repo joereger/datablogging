@@ -199,7 +199,7 @@ public class AllNavButtons {
         //LOE Performance
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loememory", "loeperformance", "MEMORY", "loe/memory.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedbconnpool", "loeperformance", "DB CONNECTION POOL", "loe/dbconnpool.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesessions", "loeperformance", "SESSIONS", "loe/sessions.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loecache", "loeperformance", "CACHE", "loe/cache.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loepagenotfound", "loeperformance", "404s", "loe/pagenotfoundlist.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetrafficbypage", "loeperformance", "PAGE LOAD", "loe/trafficbypage.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loehtmlcache", "loeperformance", "HTMLCACHE", "loe/htmlcache.log", false, "MASTERADMIN", null));

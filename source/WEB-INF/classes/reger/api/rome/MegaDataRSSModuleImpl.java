@@ -5,13 +5,15 @@ import com.sun.syndication.feed.module.ModuleImpl;
 import reger.mega.FieldType;
 import reger.core.Debug;
 
+import java.util.ArrayList;
+
 /**
  * MegaDataRSSModule implementation
  */
 public class MegaDataRSSModuleImpl extends ModuleImpl implements MegaDataRSSModule{
 
 
-    private FieldType[] _foos;
+    private ArrayList<FieldType> _foos;
 
     public MegaDataRSSModuleImpl() {
 
@@ -26,15 +28,15 @@ public class MegaDataRSSModuleImpl extends ModuleImpl implements MegaDataRSSModu
 
     public void copyFrom(Object obj) {
         MegaDataRSSModule tm = (MegaDataRSSModule) obj;
-        FieldType[] foos = tm.getFields();
+        ArrayList<FieldType> foos = tm.getFields();
         setFields(foos);
     }
 
-    public FieldType[] getFields() {
-        return (_foos==null) ? (_foos=new FieldType[0]) : _foos;
+    public ArrayList<FieldType> getFields() {
+        return (_foos==null) ? (_foos=new ArrayList<FieldType>()) : _foos;
     }
 
-    public void setFields(FieldType[] foos) {
+    public void setFields(ArrayList<FieldType> foos) {
         _foos = foos;
         Debug.debug(5, "", "MegaDataRSSModuleImpl.java - setFields() called.");
     }

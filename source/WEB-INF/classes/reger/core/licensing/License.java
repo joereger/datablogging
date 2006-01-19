@@ -43,8 +43,8 @@ public class License implements java.io.Serializable {
     //End properties encoded into each license
 
 
-    private Hashtable props;
-    private static Hashtable allPropTypes;
+    private HashMap props;
+    private static HashMap allPropTypes;
     private String encryptedLicense = "";
     private String decryptedLicense = "";
     private License parentLicense;
@@ -52,9 +52,9 @@ public class License implements java.io.Serializable {
 
 
     private static void loadPropTypes(){
-        allPropTypes = new Hashtable();
+        allPropTypes = new HashMap();
         synchronized(allPropTypes){
-            allPropTypes = new Hashtable();
+            allPropTypes = new HashMap();
             allPropTypes.put(PROPSTRINGLICENSEID, new LicenseProp(PROPSTRINGLICENSEID, "0"));
             allPropTypes.put(PROPSTRINGLICENSETYPE, new LicenseProp(PROPSTRINGLICENSETYPE, "0"));
             allPropTypes.put(PROPSTRINGMAXUSERS, new LicenseProp(PROPSTRINGMAXUSERS, "3"));
@@ -84,14 +84,14 @@ public class License implements java.io.Serializable {
         loadEncryptedLicense(parentLicense, encryptedLicense);
     }
 
-    public License(License parentLicense, Hashtable props){
+    public License(License parentLicense, HashMap props){
         if (allPropTypes==null){
             loadPropTypes();
         }
         createLicense(parentLicense, props);
     }
 
-    public License(Hashtable props){
+    public License(HashMap props){
         if (allPropTypes==null){
             loadPropTypes();
         }
@@ -100,7 +100,7 @@ public class License implements java.io.Serializable {
 
 
 
-    public static Hashtable getAllPropTypes(){
+    public static HashMap getAllPropTypes(){
         if (allPropTypes==null){
             loadPropTypes();
         }
@@ -135,7 +135,7 @@ public class License implements java.io.Serializable {
         }
     }
 
-    private void createLicense(License parentLicense, Hashtable props){
+    private void createLicense(License parentLicense, HashMap props){
         this.encryptedLicense = "";
         this.decryptedLicense = "";
         this.parentLicense = parentLicense;
@@ -157,13 +157,15 @@ public class License implements java.io.Serializable {
         encryptLicenseV1();
     }
 
-    public static StringBuffer addHashtablePropsToLongString(Hashtable props){
+    public static StringBuffer addHashtablePropsToLongString(HashMap props){
         //Add each of the props
         StringBuffer tmpLic = new StringBuffer();
-        Enumeration keys = props.keys();
-        while ( keys.hasMoreElements() ){
-            String key = (String)keys.nextElement();
-            String value = (String)props.get(key );
+        Iterator keyValuePairs = props.entrySet().iterator();
+        for (int i = 0; i < props.size(); i++){
+            Map.Entry mapentry = (Map.Entry) keyValuePairs.next();
+            String key = (String)mapentry.getKey();
+            String value = (String)mapentry.getValue();
+
             tmpLic = addNameValuePairToLicense(tmpLic, key, value);
         }
         return tmpLic;
@@ -200,12 +202,12 @@ public class License implements java.io.Serializable {
         encryptedLicense = "001" + encrypter2.encrypt(decryptedLicense);
     }
 
-    public static Hashtable putLicensePropsIntoHashmap(String namevaluepairsaslongstring){
+    public static HashMap putLicensePropsIntoHashmap(String namevaluepairsaslongstring){
         Debug.debug(5, "", "License.java - putLicensePropsIntoHashmap()");
-        Hashtable out = null;
+        HashMap out = null;
         if (namevaluepairsaslongstring!=null && !namevaluepairsaslongstring.equals("")){
             Debug.debug(5, "", "License.java - decryptedLicense!=null");
-            out = new Hashtable();
+            out = new HashMap();
             //Now we have a string like: maxusers=50&maxlogs=45&maxsites=78&owner=Bob
             //Split on &
             String[] keyValuePairs = namevaluepairsaslongstring.split("&");
@@ -263,7 +265,7 @@ public class License implements java.io.Serializable {
         return decryptedLicense;
     }
 
-    public Hashtable getProps() {
+    public HashMap getProps() {
         return props;
     }
 
@@ -281,26 +283,26 @@ public class License implements java.io.Serializable {
     public static boolean licensesAreEqual(License lic1, License lic2){
         StringBuffer debug = new StringBuffer();
         boolean theyMatch = true;
-        Hashtable props1 = new Hashtable();
-        Hashtable props2 = new Hashtable();
+        HashMap props1 = new HashMap();
+        HashMap props2 = new HashMap();
         if (lic1!=null){
             props1 = lic1.getProps();
             if (props1==null){
-                props1 = new Hashtable();
+                props1 = new HashMap();
             }
         }
         if (lic2!=null){
             props2 = lic2.getProps();
             if (props2==null){
-                props2 = new Hashtable();
+                props2 = new HashMap();
             }
         }
 
         //Start with lic1's props
-        Enumeration keys = props1.keys();
-        debug.append("<br>Checking using Lic1's keys first");
-        while ( keys.hasMoreElements() ){
-            String key = (String)keys.nextElement();
+        Iterator keyValuePairsA = props1.entrySet().iterator();
+        for (int i = 0; i < props1.size(); i++){
+            Map.Entry mapentry = (Map.Entry) keyValuePairsA.next();
+            String key = (String)mapentry.getKey();
             String value1 = (String)props1.get(key);
             String value2 = (String)props2.get(key);
             if (value1==null){
@@ -317,10 +319,10 @@ public class License implements java.io.Serializable {
         }
 
         //Start with lic2's props
-        keys = props2.keys();
-        debug.append("<br><br>Checking using Lic2's keys first");
-        while ( keys.hasMoreElements() ){
-            String key = (String)keys.nextElement();
+        Iterator keyValuePairsB = props2.entrySet().iterator();
+        for (int i = 0; i < props2.size(); i++){
+            Map.Entry mapentry = (Map.Entry) keyValuePairsB.next();
+            String key = (String)mapentry.getKey();
             String value1 = (String)props1.get(key);
             String value2 = (String)props2.get(key);
             if (value1==null){
