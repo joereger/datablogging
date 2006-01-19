@@ -38,21 +38,21 @@ if (request.getParameter("returnurl")!=null){
     returnurl = request.getParameter("returnurl");
 }
 
-//Get the name and eventtypeid
-int eventtypeid = reger.Vars.DEFAULTLOGEVENTTYPEID;
-String logname = reger.Vars.DEFAULTLOGNAME;
-MegaLogType logTypeToAdd = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid);
-if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
-    eventtypeid = Integer.parseInt(request.getParameter("eventtypeid"));
-    logTypeToAdd = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid);
-    if (logTypeToAdd!=null){
-        logname = logTypeToAdd.getMegalogname();
-    }
-}
-String showonhomepage = "1";
-if (!reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getShowonhomepage()){
-    showonhomepage = "0";
-}
+////Get the name and eventtypeid
+//int eventtypeid = reger.Vars.DEFAULTLOGEVENTTYPEID;
+//String logname = reger.Vars.DEFAULTLOGNAME;
+//MegaLogType logTypeToAdd = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid);
+//if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+//    eventtypeid = Integer.parseInt(request.getParameter("eventtypeid"));
+//    logTypeToAdd = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid);
+//    if (logTypeToAdd!=null){
+//        logname = logTypeToAdd.getMegalogname();
+//    }
+//}
+//String showonhomepage = "1";
+//if (!reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getShowonhomepage()){
+//    showonhomepage = "0";
+//}
 
 //Get the accountuseridtarget
 int accountuseridtarget = -1;
@@ -117,16 +117,18 @@ if (pageProps.action.equals("login")){
             userSession.getAccountuser().addFriend(accountuseridtarget);
         }
         //Create a log of a particular type
-        reger.Account acct = new reger.Account(userSession.getAccountuser().getAccountid());
-        reger.nestednav.NestedNavCollection collection = acct.getNestedNavCollection();
-        ArrayList<NestedNavItem> topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
-        int currentMaxOrder = reger.nestednav.NestedNavCollection.getMaxOrder(topLevelNavItems);
-        //-----------------------------------
-        //-----------------------------------
-        int newlogid = Db.RunSQLInsert("INSERT INTO megalog(accountid, name, eventtypeid, logaccess, showonhomepage, nestednavorder) VALUES('"+ userSession.getAccountuser().getAccountid() +"', '"+reger.core.Util.cleanForSQL(logname)+"', '"+ eventtypeid +"', '"+reger.Vars.LOGACCESSPUBLIC+"', '"+showonhomepage+"', '"+(currentMaxOrder+1)+"')");
-        //-----------------------------------
-        //-----------------------------------
-        LogCache.flushByLogid(newlogid);
+//        if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
+//            reger.Account acct = new reger.Account(userSession.getAccountuser().getAccountid());
+//            reger.nestednav.NestedNavCollection collection = acct.getNestedNavCollection();
+//            ArrayList<NestedNavItem> topLevelNavItems = collection.getAllChildrenApplyNoPermissions(new reger.nestednav.NestedNavItemBase());
+//            int currentMaxOrder = reger.nestednav.NestedNavCollection.getMaxOrder(topLevelNavItems);
+//            //-----------------------------------
+//            //-----------------------------------
+//            int newlogid = Db.RunSQLInsert("INSERT INTO megalog(accountid, name, eventtypeid, logaccess, showonhomepage, nestednavorder) VALUES('"+ userSession.getAccountuser().getAccountid() +"', '"+reger.core.Util.cleanForSQL(logname)+"', '"+ eventtypeid +"', '"+reger.Vars.LOGACCESSPUBLIC+"', '"+showonhomepage+"', '"+(currentMaxOrder+1)+"')");
+//            //-----------------------------------
+//            //-----------------------------------
+//            LogCache.flushByLogid(newlogid);
+//        }
         //Build redirect string(s)
         String msgQueryString = "";
         if (request.getParameter("msg")!=null){

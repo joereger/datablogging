@@ -1260,21 +1260,17 @@ public class Accountuser implements java.io.Serializable {
 
 
     public String newAccountuser(PrivateLabel pl){
-
         String errortext ="";
-
         String isactivetext = "0";
         if (isactive){
             isactivetext = "1";
         }
-
         //Validate the account
         errortext = errortext + validateAccountuser(pl);
-
         if (errortext.equals("")){
             //-----------------------------------
             //-----------------------------------
-            this.accountuserid = Db.RunSQLInsert("INSERT INTO accountuser(accountid, friendlyname, email, lastlogindate, entrymode, usertimezoneid, isactive, onelinesummary, createdate, ishelpon) VALUES('"+accountid+"', '"+Util.cleanForSQL(this.friendlyname)+"', '"+Util.cleanForSQL(this.email)+"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+this.entrymode+"', '"+Util.cleanForSQL(this.usertimezoneid)+"', '"+Util.cleanForSQL(isactivetext)+"', '"+Util.cleanForSQL(this.onelinesummary)+"', Now(), '0')");
+            this.accountuserid = Db.RunSQLInsert("INSERT INTO accountuser(accountid, friendlyname, email, lastlogindate, entrymode, usertimezoneid, isactive, onelinesummary, createdate, ishelpon, isactivatedbyemail, emailactivationkey) VALUES('"+accountid+"', '"+Util.cleanForSQL(this.friendlyname)+"', '"+Util.cleanForSQL(this.email)+"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+this.entrymode+"', '"+Util.cleanForSQL(this.usertimezoneid)+"', '"+Util.cleanForSQL(isactivetext)+"', '"+Util.cleanForSQL(this.onelinesummary)+"', Now(), '0', '"+reger.core.Util.booleanAsSQLText(isactivatedbyemail)+"', '"+reger.core.Util.cleanForSQL(emailactivationkey)+"')");
             //-----------------------------------
             //-----------------------------------
 
