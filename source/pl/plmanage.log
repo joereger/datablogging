@@ -352,6 +352,16 @@ if (!pageProps.action.equals("deletestart")) {
 
     mb.append("</DIV>");
 
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+    mb.append("<font face=arial size=-1><strong>Account Upgrade URL:</strong></font><br>");
+    mb.append("<input type='text' name='accountupgradeurl' value=\""+Util.cleanForHtml(pl.getAccountupgradeurl())+"\" size='30' maxlength='49'>");
+    mb.append("<br><font face=arial size=-2>This is used so that users go to the /about/ private label section to upgrade.  This means that if an SSL cert is desired you can buy only one for the URL in this box.  If you're unsure of this setting, leave blank.  An example is http://www.reger.com/ or https://www.reger.com/</font>");
+    mb.append("</DIV>");
+
+
     mb.append("<br><br>");
 
     mb.append("<DIV class=yellowbox>");

@@ -112,6 +112,8 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
         au.setAccountid(newaccountid);
         //Save the accountuser
         au.newAccountuser(pl);
+        //Auto-validate
+        au.setIsactivatedbyemail(true);
         //Grant the accountuser ownership of the account
         au.addUserToAclGroup("SiteOwner", newaccountid);
         au.addUserToAclGroup("LOEAdmin", newaccountid);
