@@ -90,8 +90,9 @@ public class EventTagLink {
         if (rstTags != null && rstTags.length > 0) {
             for (int i = 0; i < rstTags.length; i++) {
                 //tags.append(rstTags[i][0].toLowerCase());
-                tags.append("<a href='tag-detail.log?tagid="+rstTags[i][1]+"&tag="+rstTags[i][0].toLowerCase()+"'>");
-                tags.append("<font face=arial style=font-size: 12px;>" + rstTags[i][0] + "</font></a>");
+                //tags.append("<a href='tag-detail.log?tagid="+rstTags[i][1]+"&tag="+rstTags[i][0].toLowerCase()+"'>");
+                //tags.append("<font face=arial style=font-size: 12px;>" + rstTags[i][0] + "</font></a>");
+                tags.append(rstTags[i][0].toLowerCase());                
                 tags.append(" ");
             }
         }
