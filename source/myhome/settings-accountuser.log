@@ -2,6 +2,7 @@
                  java.util.TimeZone,
                  java.util.Iterator,
                  java.util.TreeSet"%>
+<%@ page import="reger.core.EmailSendException"%>
 
 <%
 /*----------------------------------------------------*/
@@ -51,7 +52,7 @@ if (pageProps.action.equals("edit")){
     if (errortext.equals("")){
 
         //If the email has changed
-        if (!au.getEmail().equals(originalEmail)){
+        if (!au.getEmail().equals(originalEmail) && userSession.getPl().getIsemailactivationofaccountsrequired()){
             au.setIsactivatedbyemail(false);
             au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
         }
@@ -60,8 +61,12 @@ if (pageProps.action.equals("edit")){
         errortext = errortext + au.saveSettings(userSession.getPl());
 
         //If the email has changed
-        if (!au.getEmail().equals(originalEmail) && errortext.equals("")){
-            reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), "");
+        if (!au.getEmail().equals(originalEmail) && errortext.equals("")  && userSession.getPl().getIsemailactivationofaccountsrequired()){
+            try{
+                reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), "");
+            } catch (EmailSendException ex){
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error sending the email:<br><br>"+ex.getErrorsAsSingleString()+"<br><br>Please try again."));
+            }
             mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Your email has changed so you will need to re-validate it.  A message has been sent to the email that you specified.  Please check your email."));
         }
 

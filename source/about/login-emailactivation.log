@@ -42,7 +42,7 @@ if (request.getParameter("accountuserid")!=null && Util.isinteger(request.getPar
 
 
 if (success){
-    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Congratulations!  Your account is activated!  Please click <a href='login.log'>here</a> to log in."));
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Congratulations!  Your datablogging account is activated!  Please click <a href='login.log'>here</a> to log in."));
 } else {
     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, the activation key is not valid.  Please click <a href='login-awaitingactivation.log'>here</a> to continue."));
 }

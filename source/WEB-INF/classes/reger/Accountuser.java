@@ -2189,15 +2189,9 @@ public class Accountuser implements java.io.Serializable {
         this.accountid = accountid;
     }
 
-
-
-
-
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 
     public void setVerifypassword(String verifypassword) {
         this.verifypassword = verifypassword;
@@ -2210,8 +2204,6 @@ public class Accountuser implements java.io.Serializable {
     public void setFriendlyname(String friendlyname) {
         this.friendlyname = friendlyname;
     }
-
-
 
     public String getEmail() {
         return email;
@@ -2253,8 +2245,6 @@ public class Accountuser implements java.io.Serializable {
         this.accountuserid = accountuserid;
     }
 
-
-
     public boolean getIsactive() {
         return isactive;
     }
@@ -2284,8 +2274,6 @@ public class Accountuser implements java.io.Serializable {
         this.onelinesummary = onelinesummary;
     }
 
-
-
     public ArrayList<AccountUserAcl> getAccountUserAcls() {
         return accountUserAcls;
     }
@@ -2303,10 +2291,6 @@ public class Accountuser implements java.io.Serializable {
     }
 
     public void setIsactivatedbyemail(boolean isactivatedbyemail) {
-        //Clear the key so that it can't be used again
-        if (isactivatedbyemail){
-            emailactivationkey = "";
-        }
         this.isactivatedbyemail = isactivatedbyemail;
     }
 

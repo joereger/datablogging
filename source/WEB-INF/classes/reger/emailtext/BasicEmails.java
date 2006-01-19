@@ -3,13 +3,14 @@ package reger.emailtext;
 import reger.core.db.Db;
 import reger.PrivateLabel;
 import reger.core.db.Db;
+import reger.core.EmailSendException;
 
 /**
  *
  */
 public class BasicEmails {
 
-    public static void newAccountEmailVerificationMessage(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword){
+    public static void newAccountEmailVerificationMessage(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword) throws EmailSendException{
         StringBuffer content=new StringBuffer();
         reger.Account acct = new reger.Account(accountid);
 
@@ -28,10 +29,14 @@ public class BasicEmails {
 
 
         //Send the email
-        reger.core.EmailSend.sendMail(from, to, subject, content.toString(), false);
+        try{
+            reger.core.EmailSend.sendMailNoThread(from, to, subject, content.toString(), false);
+        } catch (EmailSendException ex){
+            throw ex;
+        }
     }
 
-    public static void passwordResetMessage(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword){
+    public static void passwordResetMessage(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword) throws EmailSendException{
         StringBuffer content=new StringBuffer();
         reger.Account acct = new reger.Account(accountid);
 
@@ -59,7 +64,11 @@ public class BasicEmails {
         content.append(pl.getEmailtextactivationmessage());
 
         //Send the email
-        reger.core.EmailSend.sendMail(from, to, subject, content.toString(), false);
+        try{
+            reger.core.EmailSend.sendMailNoThread(from, to, subject, content.toString(), false);
+        } catch (EmailSendException ex){
+            throw ex;
+        }
     }
 
     public static void newAccountWelcome(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword){
@@ -171,8 +180,8 @@ public class BasicEmails {
         //-----------------------------------
         //-----------------------------------
         if (rstInv!=null && rstInv.length>0){
-        	message = rstInv[0][0];
-        	friendinvitationkey = rstInv[0][1];
+            message = rstInv[0][0];
+            friendinvitationkey = rstInv[0][1];
         }
 
         StringBuffer mes = new StringBuffer();

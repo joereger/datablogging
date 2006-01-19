@@ -34,51 +34,56 @@ public class EmailSendThread extends Thread {
     }
 
 	public void run() {
-
-
-		try{
-
-		    System.out.println("EMAIL TRY: to:"+to+" from:"+from+" subject="+subject);
-
-            Properties props =  System.getProperties();
-            props.put("mail.smtp.host",  reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"));
-            props.put("mail.transport.protocol", "smtp");
-            Session session = Session.getDefaultInstance(props, null);
-
-            Message msg = new MimeMessage(session);
-
-            InternetAddress addr = new InternetAddress(to);
-            InternetAddress[] addrArray = new InternetAddress[] {addr};
-            msg.addRecipients(Message.RecipientType.TO, new InternetAddress[] {addr});
-            InternetAddress from_addr = new InternetAddress(from);
-            msg.setFrom(from_addr);
-            msg.setSubject(subject);
-
-            if (isHtmlEmail){
-                msg.setContent(message, "text/html");
-            } else {
-                msg.setContent(message, "text/plain");
-            }
-
-            msg.saveChanges();
-
-            //Transport.send(msg);
-            Transport transport = session.getTransport("smtp");
-            transport.connect(reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"), null, null);
-            transport.sendMessage(msg, addrArray);
-
-
-
-        } catch (javax.mail.SendFailedException nsend){
-            System.out.println("EMAIL FAIL: nsend:"+nsend.getMessage());
-            Debug.debug(3, "EmailSendThread.java", nsend);
-        } catch (javax.mail.internet.AddressException ex){
-            System.out.println("EMAIL FAIL: ex:"+ex.getMessage());
-            Debug.debug(3, "EmailSendThread.java", ex);
-        } catch (Exception e) {
-            System.out.println("EMAIL FAIL: e:"+e.getMessage());
-			Debug.errorsave(e, "EmailSendThread.java");
+        try{
+            EmailSend.sendMailNoThread(to, from, subject, message, isHtmlEmail);
+        } catch (EmailSendException e){
+            reger.core.Debug.debug(3, "EmailSendThread.java", e);
         }
+
+
+//		try{
+//
+//		    System.out.println("EMAIL TRY: to:"+to+" from:"+from+" subject="+subject);
+//
+//            Properties props =  System.getProperties();
+//            props.put("mail.smtp.host",  reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"));
+//            props.put("mail.transport.protocol", "smtp");
+//            Session session = Session.getDefaultInstance(props, null);
+//
+//            Message msg = new MimeMessage(session);
+//
+//            InternetAddress addr = new InternetAddress(to);
+//            InternetAddress[] addrArray = new InternetAddress[] {addr};
+//            msg.addRecipients(Message.RecipientType.TO, new InternetAddress[] {addr});
+//            InternetAddress from_addr = new InternetAddress(from);
+//            msg.setFrom(from_addr);
+//            msg.setSubject(subject);
+//
+//            if (isHtmlEmail){
+//                msg.setContent(message, "text/html");
+//            } else {
+//                msg.setContent(message, "text/plain");
+//            }
+//
+//            msg.saveChanges();
+//
+//            //Transport.send(msg);
+//            Transport transport = session.getTransport("smtp");
+//            transport.connect(reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"), null, null);
+//            transport.sendMessage(msg, addrArray);
+//
+//
+//
+//        } catch (javax.mail.SendFailedException nsend){
+//            System.out.println("EMAIL FAIL: nsend:"+nsend.getMessage());
+//            Debug.debug(3, "EmailSendThread.java", nsend);
+//        } catch (javax.mail.internet.AddressException ex){
+//            System.out.println("EMAIL FAIL: ex:"+ex.getMessage());
+//            Debug.debug(3, "EmailSendThread.java", ex);
+//        } catch (Exception e) {
+//            System.out.println("EMAIL FAIL: e:"+e.getMessage());
+//			Debug.errorsave(e, "EmailSendThread.java");
+//        }
 
     }
 

@@ -1,4 +1,5 @@
 <%@ page import="reger.Accountuser"%>
+<%@ page import="reger.core.EmailSendException"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -42,10 +43,15 @@ if (pageProps.action.equals("send")){
                 }
             }
             if (accountisreadyforactivation){
-                reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), "");
+                try{
+                    reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), "");
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "An activation message has been sent to "+au.getEmail()+"!  Please check your email."));
+                } catch (EmailSendException ex){
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error sending the email:<br><br>"+ex.getErrorsAsSingleString()+"<br><br>Please try again."));
+                }
             }
         }
-        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "An activation message has been sent!  Please check your email."));
+
     } else{
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, that email address was not found."));
     }
@@ -55,6 +61,8 @@ if (pageProps.action.equals("send")){
 
 if (request.getParameter("msg")!=null && request.getParameter("msg").equals("signupcomplete")){
     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Congratulations and thanks for signing up!"));
+} else if (request.getParameter("msg")!=null && request.getParameter("msg").equals("signupcompletewitherror")){
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Congratulations and thanks for signing up!  However, there was an error trying to send your activation email.  Please enter your email address below to try again."));
 } else {
     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Your account is currently awaiting activation."));
 }

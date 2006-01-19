@@ -9,6 +9,7 @@
 <%@ page import="reger.core.PasswordVerifier"%>
 <%@ page import="java.util.*"%>
 <%@ page import="reger.cache.AccountCache"%>
+<%@ page import="reger.core.EmailSendException"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -182,7 +183,12 @@ if (pageProps.action.equals("createaccount")) {
         }
         //Send email
         if (userSession.getPl().getIsemailactivationofaccountsrequired()){
-            reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, newaccountid, userSession.getPl(), request.getParameter("password"));
+            try{
+                reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, newaccountid, userSession.getPl(), request.getParameter("password"));
+            } catch (EmailSendException ex){
+                response.sendRedirect("login-awaitingactivation.log?msg=signupcompletewitherror");
+                return;
+            }
             response.sendRedirect("login-awaitingactivation.log?msg=signupcomplete");
             return;
         } else {

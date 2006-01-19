@@ -1,5 +1,6 @@
 <%@ page import="reger.Accountuser"%>
 <%@ page import="reger.core.PasswordHash"%>
+<%@ page import="reger.core.EmailSendException"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -118,8 +119,12 @@ if (pageProps.action.equals("")){
                 if (!errortext.equals("")){
                     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
                 } else {
-                    reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), request.getParameter("password"));
-                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  An activation message has been sent!  Please check your email and click the link included in it."));
+                    try{
+                        reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), request.getParameter("password"));
+                        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  An activation message has been sent!  Please check your email and click the link included in it."));
+                    } catch (EmailSendException ex){
+                        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error sending the email:<br><br>"+ex.getErrorsAsSingleString()+"<br><br>Please click <a href='login-legacyusernameaddemail.log'>here</a> to try again."));   
+                    }
                 }
             } else {
                 mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, an account was not found.  Please click <a href='login-legacyusernameaddemail.log'>here</a> to continue."));
