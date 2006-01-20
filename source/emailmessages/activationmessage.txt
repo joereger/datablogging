@@ -1,6 +1,6 @@
-In order to prevent spammers from utilizing our system,
-we now require that you authenticate your email (see below) to
-activate your datablogging account and begin your service.
+This activation helps prevent spammers from utilizing our system. This is an
+automated response, so please use one of the addresses below if you need
+to reach us.
 
 Thanks for understanding,
 

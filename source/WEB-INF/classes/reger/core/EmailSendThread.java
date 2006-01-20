@@ -35,7 +35,7 @@ public class EmailSendThread extends Thread {
 
 	public void run() {
         try{
-            EmailSend.sendMailNoThread(to, from, subject, message, isHtmlEmail);
+            EmailSend.sendMailNoThread(from, to, subject, message, isHtmlEmail);
         } catch (EmailSendException e){
             reger.core.Debug.debug(3, "EmailSendThread.java", e);
         }

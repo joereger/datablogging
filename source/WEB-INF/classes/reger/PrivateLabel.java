@@ -209,14 +209,8 @@ public class PrivateLabel {
             showbannertagsonpro = reger.core.Util.booleanFromSQLText(getPl[0][44]);
             isemailactivationofaccountsrequired = reger.core.Util.booleanFromSQLText(getPl[0][45]);
             emailtextactivationmessage =  getPl[0][46];
-            if (emailtextactivationmessage.equals("")){
-                emailtextactivationmessage = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages\\activationmessage.txt").toString();
-            }
             emailsubjectactivationmessage = getPl[0][47];
             emailtextwelcomemessage = getPl[0][48];
-            if (emailtextwelcomemessage.equals("")){
-                emailtextwelcomemessage = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages\\welcomemessage.txt").toString();      
-            }
             emailsubjectwelcomemessage = getPl[0][49];
             accountupgradeurl = getPl[0][50];
 

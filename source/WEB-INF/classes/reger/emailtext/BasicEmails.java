@@ -17,16 +17,18 @@ public class BasicEmails {
         String to = au.getEmail();
         String from = pl.getEmailtonotifyofnewaccounts();
         String subject = pl.getEmailsubjectactivationmessage();
+        String body = pl.getEmailtextactivationmessage();
+        if (body.equals("")){
+            body = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages\\activationmessage.txt").toString();
+        }
         if (subject.equals("")){
-            subject = "Verify your new datablog!";
+            subject = "Activate your new datablog!";
         }
 
-        content.append("Hi" + au.getFriendlyname() + ":" + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append(pl.getEmailtextactivationmessage());
-        content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Please click here to activate your account: ");
+        content.append("Hi " + au.getFriendlyname() + ":" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Please click here to activate your account: " + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append(pl.getPlBaseUrl() + "/about/login-emailactivation.log?accountuserid="+au.getAccountuserid()+"&key=" + au.getEmailactivationkey() + reger.Vars.LINEBREAKCHARFOREMAIL);
-
+        content.append(body);
 
         //Send the email
         try{
@@ -43,6 +45,7 @@ public class BasicEmails {
         String to = au.getEmail();
         String from = pl.getEmailtonotifyofnewaccounts();
         String subject = pl.getEmailsubjectactivationmessage();
+
         if (subject.equals("")){
             subject = "datablogging Account Password Reset Message";
         }
@@ -60,8 +63,6 @@ public class BasicEmails {
         }
         content.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append(pl.getEmailtextactivationmessage());
 
         //Send the email
         try{
@@ -78,21 +79,26 @@ public class BasicEmails {
         String to = au.getEmail();
         String from = pl.getEmailtonotifyofnewaccounts();
         String subject = pl.getEmailsubjectwelcomemessage();
+        String body = pl.getEmailtextwelcomemessage();
+        if (body.equals("")){    
+            body = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages\\welcomemessage.txt").toString();
+        }
         if (subject.equals("")){
             subject = "Hi " + au.getFriendlyname() + ", welcome to your new datablogging Account!";
         }
 
-        content.append("Hi " + au.getFriendlyname() + "!" + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Thanks for signing up for your new datablogging account. We are glad that you have selected us!" + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Your account has been created, so please save this email for your records and for future reference, as important information regarding your account is provided in this email." + reger.Vars.LINEBREAKCHARFOREMAIL + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Hi " + au.getFriendlyname() + "!" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Thanks for signing up for your new datablogging account. We are glad that you have selected us!" + reger.Vars.LINEBREAKCHARFOREMAIL);
+        content.append("Your account has been created, so please save this email for your records and for future reference, as important information regarding your account is provided in this email." + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append("Your public datablog is: " + acct.getSiteRootUrl() + "/" + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append("Your Password is: " + cleartextPassword + reger.Vars.LINEBREAKCHARFOREMAIL);
+        if(!cleartextPassword.equals("")){
+            content.append("Your Password is: " + cleartextPassword + reger.Vars.LINEBREAKCHARFOREMAIL);
+        }
         content.append("Administer your site here: " + acct.getSiteRootUrl() + "/myhome/" + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append("Your Email: " + au.getEmail() + reger.Vars.LINEBREAKCHARFOREMAIL);
         content.append("----------------------------------" + reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append(reger.Vars.LINEBREAKCHARFOREMAIL);
-        content.append(pl.getEmailtextwelcomemessage());
+        content.append(body);
 
         //Send the email
         reger.core.EmailSend.sendMail(from, to, subject, content.toString(), false);
