@@ -43,7 +43,7 @@ public class EventTagLink {
         try {
             //-----------------------------------
             //-----------------------------------
-            String[][] rstEvtTagLnk = Db.RunSQL("SELECT eventtaglinkid FROM eventtaglink WHERE eventtaglinkid='" + eventtaglinkid + "'");
+            String[][] rstEvtTagLnk = Db.RunSQL("SELECT eventtaglinkid, eventid, tagid FROM eventtaglink WHERE eventtaglinkid='" + eventtaglinkid + "'");
             //-----------------------------------
             //-----------------------------------
             if (rstEvtTagLnk != null && rstEvtTagLnk.length > 0) {
@@ -54,12 +54,28 @@ public class EventTagLink {
                 //-----------------------------------
                 //-----------------------------------
             } else {
-                //Insert
                 //-----------------------------------
                 //-----------------------------------
-                int identity = Db.RunSQLInsert("INSERT INTO eventtaglinkid(eventtaglinkid, eventid, tagid) VALUES('" + eventtaglinkid + "', '" + eventid + "', '" + tagid + "')");
+                String[][] rstTags = Db.RunSQL("SELECT eventtaglinkid FROM eventtaglink WHERE eventid='" + eventid + "' and tagid='" + tagid + "'");
+                boolean found = false;
                 //-----------------------------------
                 //-----------------------------------
+                if (rstTags != null && rstTags.length > 0) {
+                    for (int i=0;i<rstTags.length;i++) {
+                        if (eventtaglinkid == Integer.parseInt(rstTags[i][0])) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (!found) {
+                    //Insert
+                    //-----------------------------------
+                    //-----------------------------------
+                    int identity = Db.RunSQLInsert("INSERT INTO eventtaglinkid(eventtaglinkid, eventid, tagid) VALUES('" + eventtaglinkid + "', '" + eventid + "', '" + tagid + "')");
+                    //-----------------------------------
+                    //-----------------------------------
+                }
             }
         } catch (Exception e) {
             Debug.errorsave(e, "save method in EventTagLink", "Exception occurred while saving the data from EventTagLink table");
