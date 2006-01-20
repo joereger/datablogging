@@ -110,6 +110,7 @@ public class Entry {
 
     // Entry tags
     public String entryKeywordTags = "";
+    public String entryKeywordTagsWithLinks = "";
 
     /**
      * Constructor:
@@ -562,8 +563,11 @@ public class Entry {
             istemporary = Integer.parseInt(rstEventdetails[0][12]);
             lastmodifiedbyuserdate = reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][13]);
             entryKey = rstEventdetails[0][14];
+            java.util.Vector vec = EventTagLink.getAllTagsForEntry(this.eventid);
             // Get all tags for an event
-            entryKeywordTags = EventTagLink.getAllTagsForEntry(this.eventid);
+            entryKeywordTags = (String) vec.get(0);
+            // Get all tags with links
+            entryKeywordTagsWithLinks =  (String) vec.get(1);
         }
 
         //Message count
