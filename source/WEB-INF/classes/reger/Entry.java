@@ -565,9 +565,17 @@ public class Entry {
             entryKey = rstEventdetails[0][14];
             java.util.Vector vec = EventTagLink.getAllTagsForEntry(this.eventid);
             // Get all tags for an event
-            entryKeywordTags = (String) vec.get(0);
+            try{
+                entryKeywordTags = (String) vec.get(0);
+            } catch (Exception e){
+                entryKeywordTags = "";
+            }
             // Get all tags with links
-            entryKeywordTagsWithLinks =  (String) vec.get(1);
+            try{
+                entryKeywordTagsWithLinks =  (String) vec.get(1);
+            } catch (Exception e    ){
+                entryKeywordTagsWithLinks = "";
+            }
         }
 
         //Message count

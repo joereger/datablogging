@@ -14,6 +14,20 @@ public class BasicEmails {
         StringBuffer content=new StringBuffer();
         reger.Account acct = new reger.Account(accountid);
 
+        //Start Make sure accountuser is ready for emailverification
+        String errortext = "";
+        if (au.getEmailactivationkey().equals("")){
+            au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
+
+        }
+        au.setEmailactivationlastsent(reger.core.TimeUtils.nowInGmtCalendar());
+        errortext = errortext + au.saveSettings(pl);
+        if (!errortext.equals("")){
+            EmailSendException ex = new EmailSendException(errortext);
+            throw ex;
+        }
+        //End Make sure accountuser is ready for emailverification
+
         String to = au.getEmail();
         String from = pl.getEmailtonotifyofnewaccounts();
         String subject = pl.getEmailsubjectactivationmessage();
@@ -41,6 +55,18 @@ public class BasicEmails {
     public static void passwordResetMessage(reger.Accountuser au, int accountid, PrivateLabel pl, String cleartextPassword) throws EmailSendException{
         StringBuffer content=new StringBuffer();
         reger.Account acct = new reger.Account(accountid);
+
+        //Start Make sure accountuser is ready for emailverification
+        String errortext = "";
+        if (au.getEmailactivationkey().equals("")){
+            au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
+            errortext = errortext + au.saveSettings(pl);
+        }
+        if (!errortext.equals("")){
+            EmailSendException ex = new EmailSendException(errortext);
+            throw ex;
+        }
+        //End Make sure accountuser is ready for emailverification
 
         String to = au.getEmail();
         String from = pl.getEmailtonotifyofnewaccounts();
@@ -80,7 +106,7 @@ public class BasicEmails {
         String from = pl.getEmailtonotifyofnewaccounts();
         String subject = pl.getEmailsubjectwelcomemessage();
         String body = pl.getEmailtextwelcomemessage();
-        if (body.equals("")){    
+        if (body.equals("")){
             body = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages\\welcomemessage.txt").toString();
         }
         if (subject.equals("")){

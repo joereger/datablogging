@@ -33,22 +33,11 @@ if (pageProps.action.equals("send")){
     if (rstAu!=null && rstAu.length>0){
         for(int i=0; i<rstAu.length; i++){
             Accountuser au = new Accountuser(Integer.parseInt(rstAu[i][0]), true);
-            boolean accountisreadyforactivation = true;
-            if (au.getEmailactivationkey().equals("")){
-                au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
-                String errortext = au.saveSettings(userSession.getPl());
-                if (!errortext.equals("")){
-                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
-                    accountisreadyforactivation = false;
-                }
-            }
-            if (accountisreadyforactivation){
-                try{
-                    reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), "");
-                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "An activation message has been sent to "+au.getEmail()+"!  Please check your email."));
-                } catch (EmailSendException ex){
-                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error sending the email:<br><br>"+ex.getErrorsAsSingleString()+"<br><br>Please try again."));
-                }
+            try{
+                reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), "");
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "An activation message has been sent to "+au.getEmail()+"!  Please check your email."));
+            } catch (EmailSendException ex){
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error sending the email:<br><br>"+ex.getErrorsAsSingleString()+"<br><br>Please try again."));
             }
         }
 

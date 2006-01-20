@@ -66,6 +66,7 @@
         </javac>
    </target>
 
+    <!--
    <taskdef name="aopc" classname="org.jboss.aop.ant.AopC" classpathref="lib.classpath"/>
    <target name="aopc" depends="compile" description="Precompile aop classes">
   	    <aopc compilerclasspathref="lib.classpath" verbose="false">
@@ -75,10 +76,11 @@
             <aoppath path="${sourcedir}/WEB-INF/jboss-aop.xml"/>
          </aopc>
    </target>
+   -->
 
    <!-- Create reger.jar package -->
    <!-- This set of core functions is used in other Reger.com supporting apps. -->
-   <target name="createregerjar" description="Creates the re-usable regercore.jar package" depends="aopc">
+   <target name="createregerjar" description="Creates the re-usable regercore.jar package" depends="compile">
         <echo message="Creating regercore.jar."/>
         <jar jarfile="${builddir}/regercore.jar">
             <fileset dir="${javasrc}">
@@ -88,7 +90,7 @@
         </jar>
    </target>
 
-   <target name="package" description="Packages files for the build" depends="aopc">
+   <target name="package" description="Packages files for the build" depends="compile">
         <echo message="Packaging ${tomcat.app.name}'s war file."/>
         <delete>
             <fileset dir="." includes="*.war"/>

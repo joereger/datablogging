@@ -54,7 +54,6 @@ if (pageProps.action.equals("edit")){
         //If the email has changed
         if (!au.getEmail().equals(originalEmail) && userSession.getPl().getIsemailactivationofaccountsrequired()){
             au.setIsactivatedbyemail(false);
-            au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
         }
 
         //Do the account edits

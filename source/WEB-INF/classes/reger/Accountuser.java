@@ -50,6 +50,7 @@ public class Accountuser implements java.io.Serializable {
     private boolean isHelpOn = true;
     private boolean isactivatedbyemail = false;
     private String emailactivationkey = "";
+    private Calendar emailactivationlastsent = Calendar.getInstance();
 
     //Accountuserfields
     private ArrayList<Accountuserfield> accountuserfields = new ArrayList<Accountuserfield>();
@@ -137,7 +138,7 @@ public class Accountuser implements java.io.Serializable {
     public void populate(){
         //-----------------------------------
         //-----------------------------------
-        String[][] rstAccountuser= Db.RunSQL("SELECT friendlyname, email, lastlogindate, entrymode, usertimezoneid, accountuser.isactive, accountuser.accountid, accountuser.createdate, onelinesummary, ishelpon, isactivatedbyemail, emailactivationkey FROM accountuser WHERE accountuser.accountuserid='"+accountuserid+"' LIMIT 0,1");
+        String[][] rstAccountuser= Db.RunSQL("SELECT friendlyname, email, lastlogindate, entrymode, usertimezoneid, accountuser.isactive, accountuser.accountid, accountuser.createdate, onelinesummary, ishelpon, isactivatedbyemail, emailactivationkey, emailactivationlastsent FROM accountuser WHERE accountuser.accountuserid='"+accountuserid+"' LIMIT 0,1");
         //-----------------------------------
         //-----------------------------------
         if (rstAccountuser!=null && rstAccountuser.length>0){
@@ -161,6 +162,7 @@ public class Accountuser implements java.io.Serializable {
             }
             this.isactivatedbyemail = reger.core.Util.booleanFromSQLText(rstAccountuser[0][10]);
             this.emailactivationkey = rstAccountuser[0][11];
+            this.emailactivationlastsent = reger.core.TimeUtils.dbstringtocalendar(rstAccountuser[0][12]);
 
         } else {
             this.accountuserid = -1;
@@ -1230,7 +1232,7 @@ public class Accountuser implements java.io.Serializable {
         if (errortext.equals("")){
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE accountuser SET accountid='"+accountid+"',  friendlyname='"+reger.core.Util.cleanForSQL(this.friendlyname)+"', email='"+reger.core.Util.cleanForSQL(this.email)+"', entrymode='"+this.entrymode+"', usertimezoneid='"+reger.core.Util.cleanForSQL(this.usertimezoneid)+"', onelinesummary='"+reger.core.Util.cleanForSQL(this.onelinesummary)+"', isactive='"+isactivetext+"', isactivatedbyemail='"+reger.core.Util.booleanAsSQLText(isactivatedbyemail)+"', emailactivationkey='"+reger.core.Util.cleanForSQL(emailactivationkey)+"' WHERE accountuserid='"+this.accountuserid+"'");
+            int count = Db.RunSQLUpdate("UPDATE accountuser SET accountid='"+accountid+"',  friendlyname='"+reger.core.Util.cleanForSQL(this.friendlyname)+"', email='"+reger.core.Util.cleanForSQL(this.email)+"', entrymode='"+this.entrymode+"', usertimezoneid='"+reger.core.Util.cleanForSQL(this.usertimezoneid)+"', onelinesummary='"+reger.core.Util.cleanForSQL(this.onelinesummary)+"', isactive='"+isactivetext+"', isactivatedbyemail='"+reger.core.Util.booleanAsSQLText(isactivatedbyemail)+"', emailactivationkey='"+reger.core.Util.cleanForSQL(emailactivationkey)+"', emailactivationlastsent='"+reger.core.TimeUtils.dateformatfordb(emailactivationlastsent)+"' WHERE accountuserid='"+this.accountuserid+"'");
             //-----------------------------------
             //-----------------------------------
 
@@ -1270,7 +1272,9 @@ public class Accountuser implements java.io.Serializable {
         if (errortext.equals("")){
             //-----------------------------------
             //-----------------------------------
-            this.accountuserid = Db.RunSQLInsert("INSERT INTO accountuser(accountid, friendlyname, email, lastlogindate, entrymode, usertimezoneid, isactive, onelinesummary, createdate, ishelpon, isactivatedbyemail, emailactivationkey) VALUES('"+accountid+"', '"+Util.cleanForSQL(this.friendlyname)+"', '"+Util.cleanForSQL(this.email)+"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+this.entrymode+"', '"+Util.cleanForSQL(this.usertimezoneid)+"', '"+Util.cleanForSQL(isactivetext)+"', '"+Util.cleanForSQL(this.onelinesummary)+"', Now(), '0', '"+reger.core.Util.booleanAsSQLText(isactivatedbyemail)+"', '"+reger.core.Util.cleanForSQL(emailactivationkey)+"')");
+
+
+            this.accountuserid = Db.RunSQLInsert("INSERT INTO accountuser(accountid, friendlyname, email, lastlogindate, entrymode, usertimezoneid, isactive, onelinesummary, createdate, ishelpon, isactivatedbyemail, emailactivationkey, emailactivationlastsent) VALUES('"+accountid+"', '"+Util.cleanForSQL(this.friendlyname)+"', '"+Util.cleanForSQL(this.email)+"', '"+reger.core.TimeUtils.nowInGmtString()+"', '"+this.entrymode+"', '"+Util.cleanForSQL(this.usertimezoneid)+"', '"+Util.cleanForSQL(isactivetext)+"', '"+Util.cleanForSQL(this.onelinesummary)+"', Now(), '0', '"+reger.core.Util.booleanAsSQLText(isactivatedbyemail)+"', '"+reger.core.Util.cleanForSQL(emailactivationkey)+"', '"+reger.core.TimeUtils.dateformatfordb(emailactivationlastsent)+"')");
             //-----------------------------------
             //-----------------------------------
 
@@ -1310,6 +1314,7 @@ public class Accountuser implements java.io.Serializable {
         errortext = errortext + passwordError;
 
         //Don't duplicate emails
+        reger.core.Debug.debug(3, "Accountuser.java", "SELECT accountuserid FROM accountuser WHERE accountuserid<>'"+accountuserid+"' AND email='"+reger.core.Util.cleanForSQL(email)+"'");
         //-----------------------------------
         //-----------------------------------
         String[][] rstCheckEmail = Db.RunSQL("SELECT accountuserid FROM accountuser WHERE accountuserid<>'"+accountuserid+"' AND email='"+reger.core.Util.cleanForSQL(email)+"'");
@@ -2296,5 +2301,13 @@ public class Accountuser implements java.io.Serializable {
 
     public void setEmailactivationkey(String emailactivationkey) {
         this.emailactivationkey = emailactivationkey;
+    }
+
+    public Calendar getEmailactivationlastsent() {
+        return emailactivationlastsent;
+    }
+
+    public void setEmailactivationlastsent(Calendar emailactivationlastsent) {
+        this.emailactivationlastsent = emailactivationlastsent;
     }
 }

@@ -1306,13 +1306,13 @@ public class Util {
         String errortext = "";
 
         //Make sure email isn't blank
-        if (email.equals("")) {
-            errortext=errortext + "Your email can't be blank.<br>";
+        if (email==null || email.equals("")) {
+            return "Your email can't be blank.<br>";
         }
 
         //Email can't have spaces
         if (email.split(" ").length>1){
-            errortext=errortext+"No spaces or other characters are allowed in the email.<br>";
+            return "No spaces or other characters are allowed in the email.<br>";
         }
 
         return errortext;

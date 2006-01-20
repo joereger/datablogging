@@ -371,7 +371,7 @@ mb.append("</td>");
 mb.append("<td bgcolor=#ffffff valign=top nowrap align=left colspan=2>");
 mb.append("<input type='text' name='j_captcha_response' value=''>");
 mb.append("<br>");
-mb.append("<div style=\"background: #e6e6e6; padding: 8px;\"");
+mb.append("<div style=\"background: #e6e6e6; padding: 8px;\">");
 mb.append("<img src=\"/jcaptcha\" style=\"border-color: #e6e6e6; border-width: 10px;\">");
 mb.append("</div>");
 mb.append("</td>");

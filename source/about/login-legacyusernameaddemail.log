@@ -112,12 +112,9 @@ if (pageProps.action.equals("")){
             if (PasswordHash.getHash(request.getParameter("password")).equals(rstAu[0][1])){
                 au.setEmail(request.getParameter("email"));
                 au.setIsactivatedbyemail(false);
-                if (au.getEmailactivationkey().equals("")){
-                    au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
-                }
                 String errortext = au.saveSettings(userSession.getPl());
                 if (!errortext.equals("")){
-                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!<br><br>"+errortext+"<br><br>That email may be in use on another account that you operate.  However, email addresses must now be unique per user.<br><br>Please click <a href='login-legacyusernameaddemail.log'>here</a> to try again."));
                 } else {
                     try{
                         reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, au.getAccountid(), userSession.getPl(), request.getParameter("password"));

@@ -1,6 +1,7 @@
 package reger.pageFramework;
 
 import reger.UserSession;
+import reger.emailtext.BasicEmails;
 import reger.licensing.ServerLicense;
 import reger.core.db.DbConfig;
 import reger.core.WebAppRootDir;
@@ -273,8 +274,16 @@ public class GlobalHeader {
             //If it's an Admin site, user must be activated by email
             if (pageProps.siteSection==pageProps.ADMINSITE){
                 if (userSession.getAccountuser()==null || !userSession.getAccountuser().isIsactivatedbyemail()){
+                    try{
+                        BasicEmails.newAccountEmailVerificationMessage(userSession.getAccountuser(), userSession.getAccountuser().getAccountid(), userSession.getPl(), "");
+                    } catch (EmailSendException e){
+                        reger.core.Debug.debug(3, "GlobalHeader.java", "Error sending email on activation redirect: " + e.getErrorsAsSingleString());
+                    } catch(Exception ex){
+                        reger.core.Debug.errorsave(ex, "GlobalHeader.java");
+                    }
+                    userSession.getAccountuser().userLogout();
                     Debug.debug(3, "GlobalHeader", "globalheader.jsp - sending to login-awaitingactivation.log");
-                    response.sendRedirect(pageProps.pathToAppRoot + "/about/login-awaitingactivation.log");
+                    response.sendRedirect(pageProps.pathToAppRoot + "about/login-awaitingactivation.log");
                     return;
                 }
             }
