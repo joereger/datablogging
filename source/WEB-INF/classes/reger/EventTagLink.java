@@ -78,9 +78,12 @@ public class EventTagLink {
         }
     }
 
-    public static String getAllTagsForEntry(int eventid) {
+    //public static String getAllTagsForEntry(int eventid) {
+    public static Vector getAllTagsForEntry(int eventid) {
         reger.core.Debug.debug(5, "EventTagLink.java", "getAllTagsForEntry(eventid="+eventid+") called.");
+        Vector tagVector = new Vector();
         StringBuffer tags = new StringBuffer("");
+        StringBuffer tagsWithLinks = new StringBuffer("");
         //-----------------------------------
         //-----------------------------------
         String[][] rstTags = Db.RunSQL("SELECT tag.tag, tag.tagid FROM tag tag, eventtaglink event WHERE tag.tagid=event.tagid AND event.eventid='" + eventid + "' order by tag.tag");
@@ -89,14 +92,19 @@ public class EventTagLink {
 
         if (rstTags != null && rstTags.length > 0) {
             for (int i = 0; i < rstTags.length; i++) {
+
                 //tags.append(rstTags[i][0].toLowerCase());
-                //tags.append("<a href='tag-detail.log?tagid="+rstTags[i][1]+"&tag="+rstTags[i][0].toLowerCase()+"'>");
-                //tags.append("<font face=arial style=font-size: 12px;>" + rstTags[i][0] + "</font></a>");
+                tagsWithLinks.append("<a href='tag-detail.log?tagid="+rstTags[i][1]+"&tag="+rstTags[i][0].toLowerCase()+"'>");
+                tagsWithLinks.append("<font face=arial style=font-size: 12px;>" + rstTags[i][0] + "</font></a>");
+                tagsWithLinks.append(" ");
+
                 tags.append(rstTags[i][0].toLowerCase());                
                 tags.append(" ");
             }
+            tagVector.add(0, tags.toString());
+            tagVector.add(1, tagsWithLinks.toString());
         }
-        return tags.toString();
+        return tagVector;
     }
 
     public static void addTagsToEntry(String tags, int eventId) {
