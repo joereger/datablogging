@@ -227,7 +227,7 @@ public class MegaHtmlFormBottom {
             } else {
                 //This is where the public side is shown.
                 //Readers view keyword tags as links to the keyword tag page.
-                mb.append(pageProps.entry.entryKeywordTags);
+                mb.append(pageProps.entry.entryKeywordTagsWithLinks);
             }
             mb.append("</td>");
             mb.append("</tr>");
@@ -289,7 +289,6 @@ public class MegaHtmlFormBottom {
 
 
 
-
             //Output the images in html format, but only if we're not doing a preview
             int perpage = 500;
             //Imagetagid
@@ -298,7 +297,6 @@ public class MegaHtmlFormBottom {
                 imagetagid=Integer.parseInt(request.getParameter("imagetagid"));
             }
             mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, imagetagid, displayasadmin, userSession, -1, perpage, request));
-
 
             mb.append("<!-- End Images -->");
 
