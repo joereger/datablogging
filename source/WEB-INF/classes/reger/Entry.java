@@ -9,10 +9,10 @@ import reger.cache.LogCache;
 import reger.cache.jboss.Cacheable;
 import reger.xforms.EventXformData;
 import reger.mega.FieldType;
+import reger.groups.EventToGroup;
 
 import java.util.Calendar;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -93,7 +93,7 @@ public class Entry {
     public ArrayList<FieldType> fields = null;
 
     //Groups
-    public ArrayList<Integer> groupsubscriptionids = new ArrayList<Integer>();
+    public ArrayList<Integer> groupids = new ArrayList<Integer>();
     String entryKey;
 
     //Episodes
@@ -265,12 +265,12 @@ public class Entry {
         if (request.getParameter("accountuserid") != null && reger.core.Util.isinteger(request.getParameter("accountuserid"))) {
             this.accountuserid = Integer.parseInt(request.getParameter("accountuserid"));
         }
-        groupsubscriptionids = new ArrayList<Integer>();
-        if (request.getParameterValues("groupsubscriptionid") != null) {
-            String[] inGroups = request.getParameterValues("groupsubscriptionid");
+        groupids = new ArrayList<Integer>();
+        if (request.getParameterValues("groupid") != null) {
+            String[] inGroups = request.getParameterValues("groupid");
             for (int i = 0; i < inGroups.length; i++) {
                 if (reger.core.Util.isinteger(inGroups[i])) {
-                    groupsubscriptionids.add(Integer.parseInt(inGroups[i]));
+                    groupids.add(Integer.parseInt(inGroups[i]));
                 }
             }
         }
@@ -306,6 +306,18 @@ public class Entry {
             this.entryKeywordTags = request.getParameter("entrykeywordtags").toLowerCase();
         }
 
+    }
+
+    public boolean isInGroup(int groupid){
+        if (groupids !=null){
+            for (Iterator it = groupids.iterator(); it.hasNext(); ) {
+                Integer gsid = (Integer)it.next();
+                if (gsid==groupid){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void populateMegafieldValuesFromRequest(javax.servlet.http.HttpServletRequest request) {
@@ -474,7 +486,7 @@ public class Entry {
         reger.cache.RelatedLinksCache.flush(eventid);
 
         //Groups
-        reger.GroupsClient.addEntryToGroups(eventid, groupsubscriptionids, accountuserid);
+        addGroups();
 
         //Episodes
         saveEpisodes();
@@ -513,6 +525,44 @@ public class Entry {
 
     }
 
+    private void addGroups(){
+        if (groupids !=null){
+            //Clean out groupids not checked any more
+            StringBuffer sql = new StringBuffer();
+            for (Iterator it = groupids.iterator(); it.hasNext(); ) {
+                Integer groupid = (Integer)it.next();
+                sql.append(" groupid<>'"+groupid+"' ");
+                if(it.hasNext()){
+                    sql.append(" AND ");
+                }
+            }
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("DELETE FROM eventtogroup WHERE eventid='"+eventid+"' AND "+sql);
+            //-----------------------------------
+            //-----------------------------------
+
+            //Add groupids not already there
+            for (Iterator it = groupids.iterator(); it.hasNext(); ) {
+                Integer groupid = (Integer)it.next();
+                //-----------------------------------
+                //-----------------------------------
+                String[][] rstData= Db.RunSQL("SELECT eventtogroupid FROM eventtogroup WHERE eventid='"+eventid+"' AND groupid='"+groupid+"'");
+                //-----------------------------------
+                //-----------------------------------
+                if (rstData!=null && rstData.length>0){
+                    //Do nothing... it's already there
+                } else {
+                    EventToGroup eventToGroup = new EventToGroup();
+                    eventToGroup.setEventid(eventid);
+                    eventToGroup.setGroupid(groupid);
+                    eventToGroup.save();
+                }
+            }
+        }
+
+    }
+
 
     public boolean getEntryAll() {
         return getEntryAll(this.eventid);
@@ -523,7 +573,7 @@ public class Entry {
         //First, set all of the public properties to values from the database
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEventdetails = reger.core.db.Db.RunSQL("SELECT date, megalog.eventtypeid, title, comments, favorite, locationid, event.logid, isdraft, isapproved, accountuserid, isflaggedformoderator, ismoderatorapproved, istemporary, lastmodifiedbyuserdate, entrykey FROM event, megalog WHERE eventid='" + eventid + "' AND event.logid=megalog.logid");
+        String[][] rstEventdetails = reger.core.db.Db.RunSQL("SELECT date, megalog.eventtypeid, title, comments, favorite, locationid, event.logid, isdraft, isapproved, accountuserid, isflaggedformoderator, ismoderatorapproved, istemporary, lastmodifiedbyuserdate, entrykey, megalog.accountid FROM event, megalog WHERE eventid='" + eventid + "' AND event.logid=megalog.logid");
         //-----------------------------------
         //-----------------------------------
         if (rstEventdetails != null && rstEventdetails.length > 0) {
@@ -563,6 +613,9 @@ public class Entry {
             istemporary = Integer.parseInt(rstEventdetails[0][12]);
             lastmodifiedbyuserdate = reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][13]);
             entryKey = rstEventdetails[0][14];
+            if(reger.core.Util.isinteger(rstEventdetails[0][15])){
+                accountid = Integer.parseInt(rstEventdetails[0][15]);
+            }
             java.util.Vector vec = EventTagLink.getAllTagsForEntry(this.eventid);
             // Get all tags for an event
             try{
@@ -601,13 +654,13 @@ public class Entry {
         //Groups
         //-----------------------------------
         //-----------------------------------
-        String[][] rstGroups = Db.RunSQL("SELECT groupsubscriptionid FROM eventtogroup WHERE eventid='" + eventid + "'");
+        String[][] rstGroups = Db.RunSQL("SELECT groupid FROM eventtogroup WHERE eventid='" + eventid + "'");
         //-----------------------------------
         //-----------------------------------
-        groupsubscriptionids = new ArrayList<Integer>();
+        groupids = new ArrayList<Integer>();
         if (rstGroups != null && rstGroups.length > 0) {
             for (int i = 0; i < rstGroups.length; i++) {
-                groupsubscriptionids.add(Integer.parseInt(rstGroups[i][0]));
+                groupids.add(Integer.parseInt(rstGroups[i][0]));
             }
         }
 
@@ -1409,6 +1462,13 @@ public class Entry {
         }
 
         return -1;
+    }
+
+    public boolean isLive(){
+        if (isDraft==0 && isApproved==1 && istemporary==0 && ismoderatorapproved==1 && requiresmoderatorapproval==0){
+            return true;
+        }
+        return false;
     }
 
     public EventXformData getEventXformData() {

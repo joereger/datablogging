@@ -3,7 +3,6 @@ package reger;
 import reger.core.db.Db;
 import reger.core.Debug;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -526,7 +525,7 @@ public class MegaHtmlFormBottom {
                 //Get all groups this accountuser is subscribed to
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstGroups= Db.RunSQL("SELECT groupsubscription.groupsubscriptionid, groupname FROM groupsubscription  WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY groupname ASC");
+                String[][] rstGroups= Db.RunSQL("SELECT groups.groupid, groups.name FROM groupmembership, groups  WHERE groups.groupid=groupmembership.groupid AND groupmembership.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY name ASC");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstGroups!=null && rstGroups.length>0){
@@ -535,23 +534,14 @@ public class MegaHtmlFormBottom {
                         mb.append("<img src='"+pageProps.pathToAppRoot+"images/info-icon.gif' border=0>");
                         mb.append(" ");
                         mb.append("<font face=arial size=-2>");
-                        mb.append("Note: posting entries from private logs (like this one) to groups will generate an entryKey that allows readers of the group to view this single entry.  You are sharing something otherwise private with the group.  Readers of the group will not be able to view other entries in the this private log.  You're basically granting them a pass for this single entry.");
+                        mb.append("Note: posting entries from private logs (like this one) to groups will make it visible to readers and members of the group.  You are sharing something otherwise private with the group.  Readers of the group will not be able to view other entries in the this private log.  You're granting them a pass for this single entry.");
                         mb.append("</font>");
                         mb.append("<br>");
                     }
 
                     for(int i=0; i<rstGroups.length; i++){
-                        mb.append("<input type=checkbox name=groupsubscriptionid value='"+rstGroups[i][0]+"' "+disabledFormText+" ");
-                        boolean eventIsInGroup = false;
-                        if (pageProps.entry.groupsubscriptionids!=null){
-                            for (Iterator it = pageProps.entry.groupsubscriptionids.iterator(); it.hasNext(); ) {
-                                Integer gsid = (Integer)it.next();
-                                if (gsid==Integer.parseInt(rstGroups[i][0])){
-                                    eventIsInGroup = true;
-                                }
-                            }
-                        }
-                        if (eventIsInGroup){
+                        mb.append("<input type=checkbox name=groupid value='"+rstGroups[i][0]+"' "+disabledFormText+" ");
+                        if (pageProps.entry.isInGroup(Integer.parseInt(rstGroups[i][0]))){
                             mb.append(" checked ");
                         }
                         mb.append(" >");
@@ -575,7 +565,7 @@ public class MegaHtmlFormBottom {
             } else {
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstGroupsThisEventIsIn= Db.RunSQL("SELECT groupsubscription.groupsubscriptionid, groupname, weburlofgroup FROM eventtogroup, groupsubscription WHERE eventtogroup.groupsubscriptionid=groupsubscription.groupsubscriptionid AND eventtogroup.eventid='"+pageProps.entry.eventid+"'");
+                String[][] rstGroupsThisEventIsIn= Db.RunSQL("SELECT groups.groupid, groups.name FROM eventtogroup, groups WHERE eventtogroup.groupid=groups.groupid AND eventtogroup.eventid='"+pageProps.entry.eventid+"'");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstGroupsThisEventIsIn!=null && rstGroupsThisEventIsIn.length>0){
@@ -588,7 +578,7 @@ public class MegaHtmlFormBottom {
                     mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
                     for(int i=0; i<rstGroupsThisEventIsIn.length; i++){
                         mb.append("<font face=arial size=-2 class=smallfont>");
-                        mb.append("<a href='"+rstGroupsThisEventIsIn[i][2]+"'>");
+                        mb.append("<a href='group-view.log&groupid="+rstGroupsThisEventIsIn[i][0]+"'>");
                         mb.append(rstGroupsThisEventIsIn[i][1]);
                         mb.append("</a>");
                         mb.append("</font> ");

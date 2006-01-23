@@ -1,0 +1,197 @@
+<%@ page import="reger.core.db.Db,
+                 org.apache.xmlrpc.XmlRpcClient,
+                 java.util.Vector,
+                 java.util.Hashtable,
+                 reger.core.db.Db"%>
+<%@ page import="reger.groups.GroupMembership"%>
+<%@ page import="reger.groups.Group"%>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.Accountuser"%>
+<%@ page import="reger.groups.GroupUtil"%>
+<%@ page import="reger.Entry"%>
+<%@ page import="reger.cache.EntryCache"%>
+<%@ page import="reger.Account"%>
+<%@ page import="reger.cache.AccountCache"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Group";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "groups";
+pageProps.aclObjectName = "MANAGEGROUPS";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+Group group = null;
+if(request.getParameter("groupid")!=null && reger.core.Util.isinteger(request.getParameter("groupid"))){
+    group = new Group(Integer.parseInt(request.getParameter("groupid")));
+}
+
+
+if (group==null || !GroupUtil.canAccountuserReadGroup(userSession.getAccountuser(), group)){
+    response.sendRedirect("groups.log");
+    return;
+}
+
+
+
+pageProps.title = "";
+
+
+
+mb.append("<table cellpadding=10 width=100% cellspacing=0 border=0>");
+
+mb.append("<tr>");
+mb.append("<td colspan=2>");
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+mb.append("<font face=arial size=+3 color=#666666><b>");
+mb.append("<center>");
+mb.append(group.getName());
+mb.append("</center>");
+mb.append("</b></font>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("</td>");
+mb.append("</tr>");
+
+
+
+
+mb.append("<tr>");
+mb.append("<td width=33% valign=top>");
+mb.append(reger.ui.BubbleBox.start("Moderators", pageProps.pathToAppRoot));
+//-----------------------------------
+//-----------------------------------
+String[][] rstMod= reger.core.db.Db.RunSQL("SELECT groupmembershipid, accountuser.accountuserid FROM groupmembership, accountuser WHERE groupmembership.accountuserid=accountuser.accountuserid AND groupmembership.groupid='"+group.getGroupid()+"' AND groupmembership.ismoderator='1'");
+//-----------------------------------
+//-----------------------------------
+if (rstMod!=null && rstMod.length>0){
+    mb.append("<table cellpadding=10 width=100% cellspacing=0 border=0>");
+    for(int i=0; i<rstMod.length; i++){
+        GroupMembership tmpGroupMembership = new GroupMembership(Integer.parseInt(rstMod[i][0]));
+        Accountuser au = new Accountuser(Integer.parseInt(rstMod[i][1]), true);
+        mb.append("<tr>");
+        mb.append("<td valign=top>");
+        mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount()+"author.log?accountuserid="+au.getAccountuserid()+"'>");
+        mb.append("<img src = '"+au.primaryImage(pageProps.pathToAppRoot, true)+"' width=50 border=0 align=left>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(au.getFriendlyname());
+        mb.append("</font>");
+        mb.append("</a>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+    mb.append("</table>");
+}
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("<br><br>");
+mb.append(reger.ui.BubbleBox.start("Members", pageProps.pathToAppRoot));
+//-----------------------------------
+//-----------------------------------
+String[][] rstMem = reger.core.db.Db.RunSQL("SELECT groupmembershipid, accountuser.accountuserid FROM groupmembership, accountuser WHERE groupmembership.accountuserid=accountuser.accountuserid AND groupmembership.groupid='"+group.getGroupid()+"' AND groupmembership.isapproved='1'");
+//-----------------------------------
+//-----------------------------------
+if (rstMem !=null && rstMem.length>0){
+    mb.append("<table cellpadding=10 width=100% cellspacing=0 border=0>");
+    for(int i=0; i<rstMem.length; i++){
+        GroupMembership tmpGroupMembership = new GroupMembership(Integer.parseInt(rstMem[i][0]));
+        Accountuser au = new Accountuser(Integer.parseInt(rstMem[i][1]), true);
+        mb.append("<tr>");
+        mb.append("<td valign=top>");
+        mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount()+"author.log?accountuserid="+au.getAccountuserid()+"'>");
+        mb.append("<img src = '"+au.primaryImage(pageProps.pathToAppRoot, true)+"' width=50 border=0 align=left>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(au.getFriendlyname());
+        mb.append("</font>");
+        mb.append("</a>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+    mb.append("</table>");
+}
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("</td>");
+mb.append("<td valign=top>");
+
+
+mb.append(reger.ui.BubbleBox.start("Group Posts", pageProps.pathToAppRoot));
+
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstData= reger.core.db.Db.RunSQL("SELECT eventid FROM eventtogroup WHERE groupid='"+group.getGroupid()+"'");
+//-----------------------------------
+//-----------------------------------
+int numberofentriesdisplayed = 0;
+if (rstData!=null && rstData.length>0){
+    for(int i=0; i<rstData.length && numberofentriesdisplayed<100; i++){
+        Entry entry = EntryCache.get(Integer.parseInt(rstData[i][0]));
+        if (entry.isLive()){
+            numberofentriesdisplayed++;
+            Account account = AccountCache.get(entry.accountid);
+            Accountuser au = new Accountuser(entry.accountuserid, true);
+            mb.append("<br>");
+            mb.append("<img src = '"+au.primaryImage(pageProps.pathToAppRoot, true)+"' width=50 border=0 align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append("<a href='"+account.getSiteRootUrl(userSession)+"/entry.log?eventid="+entry.eventid+"'>");
+            mb.append(entry.title);
+            mb.append("</a>");
+            mb.append("</font>");
+            mb.append("<br>");
+            mb.append("<font face=arial size=-2>");
+            mb.append(reger.core.Util.truncateString(entry.comments, 1000));
+            mb.append("</font>");
+            mb.append("<br clear=all>");
+        }
+    }
+}
+
+if (numberofentriesdisplayed==0){
+    mb.append("<font face=arial size=-2>");
+    mb.append("No entries posted to this group yet.");
+    mb.append("</font>");
+}
+
+
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

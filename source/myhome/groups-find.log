@@ -4,6 +4,7 @@
                  java.util.Hashtable,
                  reger.core.db.Db"%>
 <%@ page import="reger.core.Debug"%>
+<%@ page import="reger.groups.Group"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -35,135 +36,103 @@ if (request.getParameter("searchterms")==null || request.getParameter("searchter
 mb.append("<br>");
 mb.append("<form action='groups-find.log' method=post>");
 mb.append("<input type=hidden name=action value='searchgroups'>");
-mb.append("<input type=textbox name=searchterms value='' size=35 maxlength=255>");
+String sbtext = "";
+if (request.getParameter("searchterms")!=null){
+    sbtext = request.getParameter("searchterms");
+}
+mb.append("<input type=textbox name=searchterms value=\""+reger.core.Util.cleanForHtml(sbtext)+"\" size=35 maxlength=255>");
 mb.append("<input type=submit value='Search for Groups'>");
 mb.append("</form>");
 mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 
 
 if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms")!=null && !request.getParameter("searchterms").equals("")){
-    //-----------------------------------
-    //-----------------------------------
-    String[][] rstServers= Db.RunSQL("SELECT groupserversubscriptionid, serverurl FROM groupserversubscription WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY serverurl ASC");
-    //-----------------------------------
-    //-----------------------------------
-    if (rstServers!=null && rstServers.length>0){
-    	for(int i=0; i<rstServers.length; i++){
-
-    	    mb.append(reger.ui.BubbleBox.start("Search Results on Server: " + rstServers[i][1], pageProps.pathToAppRoot));
-
-            try{
-                XmlRpcClient xmlrpc = new XmlRpcClient (rstServers[i][1]);
-                Vector params = new Vector();
-                params.addElement (request.getParameter("searchterms"));
-                Vector result = (Vector) xmlrpc.execute ("weblogGroup.searchGroups", params);
-
-                mb.append("<table cellpadding=5 cellspacing=2 border=0>");
-                if (result!=null){
-                    for (int j = 0; j < result.size(); j++) {
-                        Hashtable o = (Hashtable) result.get(j);
 
 
-                        mb.append("<tr>");
+        mb.append("<table cellpadding=5 cellspacing=2 border=0>");
+
+
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstData= reger.core.db.Db.RunSQL("SELECT groupid FROM groups, pl WHERE ((groups.name LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchterms"))+"%') OR (groups.description LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchterms"))+"%')) AND groups.plid=pl.plid AND " + userSession.getPl().getPeerSql() + " LIMIT 0,100");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstData!=null && rstData.length>0){
+            for(int i=0; i<rstData.length; i++){
+
+                Group group = new Group(Integer.parseInt(rstData[i][0]));
+
+
+                mb.append("<tr>");
 
 
 
-//                        mb.append("<td valign=top>");
-//                        mb.append("<font face=arial size=-2>");
-//                        mb.append("<a href='"+o.get("webUrlOfGroup")+"'>");
-//                        mb.append("Web");
-//                        mb.append("</a>");
-//                        mb.append("</font>");
-//                        mb.append("</td>");
+//                int totalEntries = 0;
+//                if (o.get("totalEntries")!=null){
+//                    totalEntries = ((Integer)o.get("totalEntries")).intValue();
+//                }
 
 
-                        mb.append("<td valign=top align=center>");
-                        mb.append("<font face=arial size=-2>");
-                        if (((Boolean)o.get("viewingEntriesRequiresGroupKey")).booleanValue()){
-                            mb.append("<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'><br>Private Reading");
-                        } else {
-                            mb.append("<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'><br>Public Reading");
-                        }
-                        mb.append("</font>");
-                        mb.append("</td>");
+                mb.append("<td valign=top>");
+                mb.append("<a href='"+pageProps.pathToAppRoot+"groups/group.log?groupid="+group.getGroupid()+"'>");
+                mb.append("<font face=arial size=-1>");
+                mb.append("<strong>");
+                mb.append(group.getName());
+                mb.append("</strong>");
+                mb.append("</font>");
+                mb.append("</a>");
+//                mb.append(" <font face=arial size=-2>( ");
+//                mb.append(totalEntries);
+//                if (totalEntries==1){
+//                    mb.append(" Entry");
+//                } else {
+//                    mb.append(" Entries");
+//                }
+//                mb.append(" )</font>");
+                mb.append("<br>");
+                mb.append("<font face=arial size=-2>");
+                mb.append(group.getDescription());
+                mb.append("</font>");
+                mb.append("</td>");
 
-                        mb.append("<td valign=top align=center>");
-                        mb.append("<font face=arial size=-2>");
-                        if (((Boolean)o.get("addingEntriesRequiresGroupKey")).booleanValue()){
-                            mb.append("<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'><br>Private Posting");
-                        } else {
-                            mb.append("<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'><br>Public Posting");
-                        }
-                        mb.append("</font>");
-                        mb.append("</td>");
-
-
-
-                        mb.append("<td valign=top align=center>");
-                        mb.append("<font face=arial size=-2>");
-                        mb.append("<a href='groups-edit.log?action=join&groupid="+o.get("groupid")+"&groupserversubscriptionid="+rstServers[i][0]+"'>");
-                        mb.append("<img src='../images/plus-icon.gif' border=0>");
-                        mb.append("<br>");
-                        mb.append("Join Group");
-                        mb.append("</a>");
-                        mb.append("</font>");
-                        mb.append("</td>");
-
-
-                        int totalEntries = 0;
-                        if (o.get("totalEntries")!=null){
-                            totalEntries = ((Integer)o.get("totalEntries")).intValue();
-                        }
-
-
-                        mb.append("<td valign=top>");
-                        mb.append("<a href='"+o.get("webUrlOfGroup")+"'>");
-                        mb.append("<font face=arial size=-1>");
-                        mb.append("<strong>");
-                        mb.append(o.get("groupName"));
-                        mb.append("</strong>");
-                        mb.append("</font>");
-                        mb.append("</a>");
-                        mb.append(" <font face=arial size=-2>( ");
-                        mb.append(totalEntries);
-                        if (totalEntries==1){
-                            mb.append(" Entry");
-                        } else {
-                            mb.append(" Entries");
-                        }
-                        mb.append(" )</font>");
-                        mb.append("<br>");
-                        mb.append("<font face=arial size=-2>");
-                        mb.append(o.get("groupDescription"));
-                        mb.append("</font>");
-                        mb.append("</td>");
-
-
-
-
-
-                        mb.append("<td valign=top>");
-                        mb.append("<font face=arial size=-2>");
-                        mb.append("<a href='"+o.get("feedUrlOfGroup")+"'>");
-                        mb.append("<img src='../images/xml-newsfeed.png' alt='' border='0'>");
-                        mb.append("</a>");
-                        mb.append("</font>");
-                        mb.append("</td>");
-
-                        mb.append("</tr>");
-
-                    }
+                mb.append("<td valign=top align=center>");
+                mb.append("<font face=arial size=-2>");
+                if (group.getEntriesareprivate()){
+                    mb.append("<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'><br>Private Reading");
+                } else {
+                    mb.append("<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'><br>Public Reading");
                 }
-                mb.append("</table>");
-            } catch (Exception e){
-                Debug.errorsave(e, "");
+                mb.append("</font>");
+                mb.append("</td>");
+
+                mb.append("<td valign=top align=center>");
                 mb.append("<font face=arial size=-2>");
-                mb.append("Error contacting this server: " + e.getMessage());
+                if (group.getMembershipismoderated()){
+                    mb.append("<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'><br>Membership must be approved");
+                } else {
+                    mb.append("<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'><br>Anybody may join");
+                }
+                mb.append("</font>");
+                mb.append("</td>");
+
+
+                mb.append("<td valign=top align=center>");
                 mb.append("<font face=arial size=-2>");
+                mb.append("<a href='groups-edit.log?action=join&groupid="+group.getGroupid()+"'>");
+                mb.append("<img src='../images/plus-icon.gif' border=0>");
+                mb.append("<br>");
+                mb.append("Join Group");
+                mb.append("</a>");
+                mb.append("</font>");
+                mb.append("</td>");
+
+
+                mb.append("</tr>");
+
+
             }
-            mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-    	}
-    }
+        }
+
 
 
 

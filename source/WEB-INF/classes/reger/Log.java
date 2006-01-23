@@ -41,7 +41,7 @@ public class Log implements NestedNavItem {
     }
 
     public void load(int logid){
-        reger.core.Debug.debug(3, "Log.java", "Load() called for logid="+logid);
+        reger.core.Debug.debug(5, "Log.java", "Load() called for logid="+logid);
         //-----------------------------------
         //-----------------------------------
         String[][] rstLog= Db.RunSQL("SELECT logid, accountid, eventtypeid, name, logaccess, password, message, showonhomepage, maintemplateid, entlisttemplateid, nestednavparenttype, nestednavparentid, nestednavorder, fieldorder, hiddenfields FROM megalog WHERE logid='"+logid+"'");
@@ -54,7 +54,7 @@ public class Log implements NestedNavItem {
                 eventtypeid=Integer.parseInt(rstLog[i][2]);
                 name=rstLog[i][3];
                 logaccess=Integer.parseInt(rstLog[i][4]);
-                reger.core.Debug.debug(3, "Log.java", "logaccess="+logaccess);
+                reger.core.Debug.debug(5, "Log.java", "logaccess="+logaccess);
                 password=rstLog[i][5];
                 message=rstLog[i][6];
                 if (rstLog[i][7].equals("0")){

@@ -2,6 +2,8 @@ package reger.api;
 
 import reger.core.db.Db;
 import reger.core.Debug;
+import reger.Entry;
+import reger.cache.EntryCache;
 
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class RssRomeGroups {
         String groupDesc = "";
         //-----------------------------------
         //-----------------------------------
-        String[][] rstGpDetails= Db.RunSQL("SELECT groupid, groupname, groupdescription FROM groups WHERE groupid='"+groupid+"'");
+        String[][] rstGpDetails= Db.RunSQL("SELECT groupid, name, description FROM groups WHERE groupid='"+groupid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstGpDetails!=null && rstGpDetails.length>0){
@@ -65,7 +67,7 @@ public class RssRomeGroups {
         rssChannel.setDescription(channelDesc);
 
         //Channel Link
-        String channelLink = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/groups/group"+groupid+".log";
+        String channelLink = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/about/group"+groupid+".log";
         rssChannel.setLink(channelLink);
 
         //Channel Generator
@@ -78,11 +80,13 @@ public class RssRomeGroups {
         //Go to database
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEvent= Db.RunSQL("SELECT entrytitle, entryurl, entryextract, datetime, author, authorurl FROM groupentry WHERE groupid='"+groupid+"' ORDER BY datetime DESC");
+        String[][] rstEvent= Db.RunSQL("SELECT eventid FROM eventtogroup WHERE groupid='"+groupid+"' ORDER BY datetime DESC");
         //-----------------------------------
         //-----------------------------------
         if (rstEvent!=null && rstEvent.length>0){
         	for(int i=0; i<rstEvent.length; i++){
+
+        	    Entry entry = EntryCache.get(Integer.parseInt(rstEvent[i][0]));
 
         	    //Create a Rome RSS Item
                 Item item = new Item();
@@ -92,31 +96,31 @@ public class RssRomeGroups {
                 //Sat, 07 Sep 2002 0:00:01 GMT
                 //Calendar gmttime = reger.core.TimeUtils.gmttousertime(rstEvent[i][3], userSession.getAccount().getTimezoneid());
                 //gmttime = reger.core.TimeUtils.usertogmttime(gmttime, userSession.getAccount().getTimezoneid());
-                item.setPubDate(reger.core.TimeUtils.dbstringtocalendar(rstEvent[i][3]).getTime());
+                item.setPubDate(entry.dateGmt.getTime());
 
                 //Item Link
-                item.setLink(rstEvent[i][1]);
+                item.setLink("" + userSession.getAccount().getSiteRootUrl(userSession) + "/about/group"+groupid+".log");
 
                 //Guid
                 Guid guid = new Guid();
                 guid.setPermaLink(true);
-                guid.setValue(rstEvent[i][1]);
+                guid.setValue("" + userSession.getAccount().getSiteRootUrl(userSession) + "/about/group"+groupid+".log");
                 item.setGuid(guid);
 
                 //Item title
-                String itemTitle = rstEvent[i][0];
+                String itemTitle = entry.title;
                 item.setTitle(itemTitle);
 
 
                 //Item Description
-                String itemDescription = rstEvent[i][2];
+                String itemDescription = entry.comments;
                 Description desc = new Description();
                 desc.setValue(itemDescription);
                 item.setDescription(desc);
 
                 //Item Author
-                if (!rstEvent[i][4].equals("")){
-                    item.setAuthor(rstEvent[i][4]);
+                if (!entry.author.equals("")){
+                    item.setAuthor(entry.author);
                 }
 
 

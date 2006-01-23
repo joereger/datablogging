@@ -35,7 +35,6 @@ XmlRpc.setDebug(true);
 XmlRpcServer xmlrpc = new XmlRpcServer();
 xmlrpc.addHandler ("blogger", new reger.api.BloggerApi());
 xmlrpc.addHandler ("metaWeblog", new reger.api.MetaWebLogApi());
-xmlrpc.addHandler ("weblogGroup", new reger.api.weblogGroupApi());
 
 //reger.core.Util.logtodb("Created the XmlRpcServer object in api.log.");
 //reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));

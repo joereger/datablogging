@@ -2,6 +2,9 @@ package reger;
 
 import reger.core.db.Db;
 import reger.core.Debug;
+import reger.core.ValidationException;
+import reger.groups.Group;
+import reger.groups.GroupMembership;
 
 /**
  * Processes accepted invitations
@@ -81,75 +84,28 @@ public class InvitationProcessor {
                 //Grant special group access
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstGroups= Db.RunSQL("SELECT groupsubscriptionid FROM friendinvitationgroupsubscriptionid WHERE friendinvitationid='"+friendinvitationid+"'");
+                String[][] rstGroups= Db.RunSQL("SELECT groupid FROM friendinvitationgroup WHERE friendinvitationid='"+friendinvitationid+"'");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstGroups!=null && rstGroups.length>0){
-
-                    mb.append("<br><br>You have been given read permission to the following groups, which you can find by clicking the Groups tab at the top of the page:<br><br>");
-
+                    mb.append("<br><br>You have been invited to the following groups, which you can find by clicking the Groups tab:<br><br>");
                     for(int i=0; i<rstGroups.length; i++){
-                        //Select the details of the server for this groupsubscription
-                        //-----------------------------------
-                        //-----------------------------------
-                        String[][] rstGpSub= Db.RunSQL("SELECT serverurl, serverkey, groupid, groupname, groupdescription, feedurlofgroup, weburlofgroup, groupkey, viewingentriesrequiresgroupkey, addingentriesrequiresgroupkey FROM groupsubscription, groupserversubscription WHERE groupsubscriptionid='"+rstGroups[i][0]+"' AND groupsubscription.groupserversubscriptionid=groupserversubscription.groupserversubscriptionid");
-                        //-----------------------------------
-                        //-----------------------------------
-                        if (rstGpSub!=null && rstGpSub.length>0){
-                            int groupserversubscriptionid = -1;
-                            Debug.debug(5, "", "InvitationProcessor.java - Seeing if user has a proper groupserversubscription.");
-                            //See if the user has this server and set the groupserversubscriptionid
-                            //-----------------------------------
-                            //-----------------------------------
-                            String[][] rstChkSrvr= Db.RunSQL("SELECT groupserversubscriptionid FROM groupserversubscription WHERE accountuserid='"+au.getAccountuserid()+"' AND serverurl='"+reger.core.Util.cleanForSQL(rstGpSub[0][0])+"'");
-                            //-----------------------------------
-                            //-----------------------------------
-                            if (rstChkSrvr!=null && rstChkSrvr.length>0){
-                                //They do have this server already, so set the value
-                                groupserversubscriptionid = Integer.parseInt(rstChkSrvr[0][0]);
-                                Debug.debug(5, "", "InvitationProcessor.java - They have this groupserversubscriptionid already.");
-                            } else {
-                                //Got to create a new groupserversubscription
-                                //-----------------------------------
-                                //-----------------------------------
-                                groupserversubscriptionid = Db.RunSQLInsert("INSERT INTO groupserversubscription(accountuserid, serverurl, serverkey) VALUES('"+au.getAccountuserid()+"', '"+reger.core.Util.cleanForSQL(rstGpSub[0][0])+"', '"+reger.core.Util.cleanForSQL(rstGpSub[0][1])+"')");
-                                //-----------------------------------
-                                //-----------------------------------
-                                Debug.debug(5, "", "InvitationProcessor.java - They did not have this groupserversubscription yet.  Created it.");
-                            }
-
-                            //See if this user has the groupsubscription with this serverurl
-                            //-----------------------------------
-                            //-----------------------------------
-                            String[][] rstChkGpSub= Db.RunSQL("SELECT groupsubscriptionid FROM groupsubscription, groupserversubscription WHERE groupsubscription.groupserversubscriptionid=groupserversubscription.groupserversubscriptionid AND groupserversubscription.groupserversubscriptionid='"+groupserversubscriptionid+"' AND groupsubscription.groupid='"+rstGpSub[0][2]+"'");
-                            //-----------------------------------
-                            //-----------------------------------
-                            if (rstChkGpSub!=null && rstChkGpSub.length>0){
-                                //The user already has this groupsubscription so we need to see if we should update the groupkey by passing an xml call to the server
-                                if (reger.GroupsClient.testGroupKey(Integer.parseInt(rstGpSub[0][2]), rstGpSub[0][7], rstGpSub[0][0])){
-                                    //The groupkey is good, update it
-                                    //-----------------------------------
-                                    //-----------------------------------
-                                    int count2 = Db.RunSQLUpdate("UPDATE groupsubscription SET groupkey='"+rstGpSub[0][7]+"' WHERE groupsubscriptionid='"+rstChkGpSub[0][0]+"'");
-                                    //-----------------------------------
-                                    //-----------------------------------
-                                    mb.append("> " + rstGpSub[0][3]+"<br>");
-                                    Debug.debug(5, "", "InvitationProcessor.java - Added group by updating keys. groupsubscriptionid=" + rstChkGpSub[0][0]);
-                                } else {
-                                    //The groupkey is no good so do nothing
-                                }
-                            } else {
-                                //Now, create the groupsubscription for the user
-                                //-----------------------------------
-                                //-----------------------------------
-                                int groupsubscriptionid = Db.RunSQLInsert("INSERT INTO groupsubscription(accountuserid, groupserversubscriptionid, groupid, groupname, groupdescription, feedurlofgroup, weburlofgroup, viewingentriesrequiresgroupkey, addingentriesrequiresgroupkey, groupkey, groupadminkey) VALUES('"+au.getAccountuserid()+"', '"+groupserversubscriptionid+"', '"+Integer.parseInt(rstGpSub[0][2])+"', '"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString(rstGpSub[0][3], 255))+"', '"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString(rstGpSub[0][4], 255))+"', '"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString(rstGpSub[0][5], 255))+"', '"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString(rstGpSub[0][6], 255))+"', '"+rstGpSub[0][8]+"', '"+rstGpSub[0][9]+"', '"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString(rstGpSub[0][7], 255))+"', '')");
-                                //-----------------------------------
-                                //-----------------------------------
-                                mb.append(">" + rstGpSub[0][3]+"<br>");
-                                Debug.debug(5, "", "InvitationProcessor.java - Added group by creating groupsubscription.");
-                            }
-
-
+                        Group group = new Group(Integer.parseInt(rstGroups[i][0]));
+                        mb.append("> "+group.getName()+"<br>");
+                        GroupMembership groupMembership = new GroupMembership();
+                        groupMembership.setAccountuserid(au.getAccountuserid());
+                        groupMembership.setGroupid(group.getGroupid());
+                        if (group.getMembershipismoderated()){
+                            groupMembership.setIsapproved(false);
+                        } else {
+                            groupMembership.setIsapproved(true);
+                        }
+                        groupMembership.setIsmoderator(false);
+                        groupMembership.setSharemembershippublicly(true);
+                        try{
+                            groupMembership.save();
+                        } catch (ValidationException vex){
+                            reger.core.Debug.logtodb(vex.getErrorsAsSingleString(), "InvitationProcessor.java");
                         }
                     }
                 }

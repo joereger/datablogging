@@ -153,7 +153,7 @@ public class Version173ToVersion174 implements UpgradeDatabaseOneVersion{
     }
 
 
-//Sample sql statements
+    //Sample sql statements
 
     //-----------------------------------
     //-----------------------------------

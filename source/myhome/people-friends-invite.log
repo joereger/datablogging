@@ -2,6 +2,8 @@
                  reger.core.Util,
                  reger.core.db.Db"%>
 <%@ page import="reger.core.Debug"%>
+<%@ page import="reger.groups.GroupMembership"%>
+<%@ page import="reger.groups.Group"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -137,19 +139,19 @@ if (pageProps.action.equals("sendemail")) {
             }
 
 
-            //Get each groupsubscription that's checked
+            //Get each groupid that's checked
             //-----------------------------------
             //-----------------------------------
-            String[][] rstGp= Db.RunSQL("SELECT groupsubscriptionid FROM groupsubscription WHERE accountuserid='"+ userSession.getAccountuser().getAccountuserid() +"' ORDER BY groupname ASC");
+            String[][] rstGp= Db.RunSQL("SELECT groupid FROM groupmembership WHERE accountuserid='"+ userSession.getAccountuser().getAccountuserid() +"' ORDER BY name ASC");
             //-----------------------------------
             //-----------------------------------
             if (rstGp!=null && rstGp.length>0){
                 for(int j=0; j<rstGp.length; j++){
-                    if (request.getParameter("groupsubscriptionid-" + rstGp[j][0])!=null && request.getParameter("groupsubscriptionid-" + rstGp[j][0]).equals("1")){
+                    if (request.getParameter("groupid-" + rstGp[j][0])!=null && request.getParameter("groupid-" + rstGp[j][0]).equals("1")){
                         //Add to the friendinvitationlogid table
                         //-----------------------------------
                         //-----------------------------------
-                        int identity = Db.RunSQLInsert("INSERT INTO friendinvitationgroupsubscriptionid(friendinvitationid, groupsubscriptionid) VALUES('"+friendinvitationid+"', '"+rstGp[j][0]+"')");
+                        int identity = Db.RunSQLInsert("INSERT INTO friendinvitationgroup(friendinvitationid, groupid) VALUES('"+friendinvitationid+"', '"+rstGp[j][0]+"')");
                         //-----------------------------------
                         //-----------------------------------
                     }
@@ -451,69 +453,33 @@ mb.append("<font face=arial size=-2>");
 mb.append("Group Name");
 mb.append("</font>");
 mb.append("</td>");
-mb.append("<td bgcolor=e6e6e6>");
-mb.append("<font face=arial size=-2>");
-mb.append("Group Reading");
-mb.append("</font>");
-mb.append("</td>");
-mb.append("<td bgcolor=e6e6e6>");
-mb.append("<font face=arial size=-2>");
-mb.append("Group Posting");
-mb.append("</font>");
-mb.append("</td>");
-mb.append("<td bgcolor=e6e6e6>");
-mb.append("<font face=arial size=-2>");
-mb.append(" ");
-mb.append("</font>");
-mb.append("</td>");
 mb.append("</tr>");
 //-----------------------------------
 //-----------------------------------
-String[][] rstGroup= Db.RunSQL("SELECT groupsubscriptionid, groupname, viewingentriesrequiresgroupkey, addingentriesrequiresgroupkey FROM groupsubscription WHERE accountuserid='"+ userSession.getAccountuser().getAccountuserid() +"' ORDER BY groupname ASC");
+String[][] rstGroup= Db.RunSQL("SELECT groupmembershipid, groupid FROM groupmembership WHERE accountuserid='"+ userSession.getAccountuser().getAccountuserid() +"'");
 //-----------------------------------
 //-----------------------------------
 if (rstGroup!=null && rstGroup.length>0){
 	for(int i=0; i<rstGroup.length; i++){
+	    GroupMembership groupMembership = new GroupMembership(Integer.parseInt(rstGroup[i][0]));
+	    Group group = new Group(Integer.parseInt(rstGroup[i][1]));
+
 	    mb.append("<tr>");
 	    mb.append("<td nowrap valign=top>");
-        mb.append("<input type=checkbox name='groupsubscriptionid-"+rstGroup[i][0]+"' value=1 ");
-        if (request.getParameter("groupsubscriptionid")!=null && reger.core.Util.isinteger(request.getParameter("groupsubscriptionid"))){
-            if (request.getParameter("groupsubscriptionid").equals(rstGroup[i][0])){
+        mb.append("<input type=checkbox name='groupid-"+group.getGroupid()+"' value=1 ");
+        if (request.getParameter("groupid")!=null && reger.core.Util.isinteger(request.getParameter("groupid"))){
+            if (request.getParameter("groupid").equals(String.valueOf(group.getGroupid()))){
                 mb.append(" checked ");
             }
         }
         mb.append(">");
         mb.append("<font face=arial size=-1>");
         mb.append("<b>");
-        mb.append(rstGroup[i][1]);
+        mb.append(group.getName());
         mb.append("</b>");
         mb.append("</font>");
         mb.append("</td>");
-        mb.append("<td valign=top align=center>");
-		String groupReadText="<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'><br>Public Reading";
-		if (rstGroup[i][2].equals("1")) {
-			groupReadText="<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'><br>Private Reading";
-		}
-        mb.append("<font face=arial size=-2>");
-        mb.append(groupReadText);
-        mb.append("</font>");
-        mb.append("</td>");
-        mb.append("<td valign=top align=center>");
-		String groupPostText="<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'><br>Public Posting";
-		if (rstGroup[i][3].equals("1")) {
-			groupPostText="<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'><br>Private Posting";
-		}
-        mb.append("<font face=arial size=-2>");
-        mb.append(groupPostText);
-        mb.append("</font>");
-        mb.append("</td>");
-        mb.append("<td valign=top>");
-        if (rstGroup[i][2].equals("1") || rstGroup[i][3].equals("1")){
-            mb.append("<font face=arial size=-2>");
-            mb.append("Note: Inviting people to a group will automatically grant them the groupKey for that group.");
-            mb.append("</font>");
-        }
-        mb.append("</td>");
+
 	}
 } else {
     mb.append("<tr>");

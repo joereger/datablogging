@@ -11,7 +11,7 @@ import java.util.Iterator;
  */
 public class MegaHtmlFormBottomChiba {
 
-    public static StringBuffer getHtml(UserSession userSession, reger.pageFramework.PageProps pageProps, boolean displayasadmin, javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response){
+    public static StringBuffer getHtml(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, boolean displayasadmin, javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response){
         StringBuffer mb = new StringBuffer();
 
         boolean editLayout = false;
@@ -128,7 +128,7 @@ public class MegaHtmlFormBottomChiba {
                 mb.append("<td colspan=3 bgcolor=#cccccc align=center valign=top>");
 
                 //Put the submit button on the page, sometimes with the javascript, sometimes without
-                if (userSession.getAccountuser().getEntrymode()== Vars.ENTRYMODEADVANCED) {
+                if (userSession.getAccountuser().getEntrymode()==reger.Vars.ENTRYMODEADVANCED) {
                     mb.append("<INPUT TYPE=submit NAME=newreview VALUE='"+submittext+"' onclick=\"submitPost();\" "+disabledFormText+">");
                     //mb.append("<INPUT TYPE=submit NAME=newreview VALUE='"+submittext+"' "+disabledFormText+">");
 
@@ -174,9 +174,9 @@ public class MegaHtmlFormBottomChiba {
 
                 mb.append("<font face=arial size=-1>");
 
-                if (pageProps.logProps.megalogaccess== Vars.LOGACCESSPRIVATE) {
+                if (pageProps.logProps.megalogaccess==reger.Vars.LOGACCESSPRIVATE) {
                     mb.append("<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'> Private Entry");
-                } else if (pageProps.logProps.megalogaccess== Vars.LOGACCESSPUBLIC) {
+                } else if (pageProps.logProps.megalogaccess==reger.Vars.LOGACCESSPUBLIC) {
                     mb.append("<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'> Public Entry");
                 }
 
@@ -208,11 +208,43 @@ public class MegaHtmlFormBottomChiba {
 
 
 
+
+            //Smart Entry Tags
+            mb.append("<tr>");
+            mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
+            if (displayasadmin) {
+                mb.append("Keyword Tags</b></font><br><font face=arial size=-2><b>Enter keyword tags to help organize and find your entries.");
+            } else {
+                mb.append("Keyword Tags");
+            }
+            mb.append("</b></font><br>");
+            mb.append("</td>");
+            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
+            if (displayasadmin) {
+                //This is where the admin side is shown.
+                //Users can enter and edit tag information here as a single input text field
+                mb.append("<input type='text' name='entrykeywordtags' value=\"" + reger.core.Util.cleanForHtml(pageProps.entry.entryKeywordTags) + "\">");
+            } else {
+                //This is where the public side is shown.
+                //Readers view keyword tags as links to the keyword tag page.
+                mb.append(pageProps.entry.entryKeywordTagsWithLinks);
+            }
+            mb.append("</td>");
+            mb.append("</tr>");
+
+
+
+
+
+
+
+
+
+
             //Location
             if (pageProps.entry.location!=null){
                 Debug.debug(5, "", "Megahtmlformbottom.java calling location locationid=" + pageProps.entry.location.getLocationid() + "<br>getLongitude()=" + pageProps.entry.location.getLongitude());
             }
-
             mb.append(LocationRenderHtml.getHtmlForEntryPageTable(pageProps.entry.location, displayasadmin, disabledFormText, userSession));
 
 
@@ -257,7 +289,6 @@ public class MegaHtmlFormBottomChiba {
 
 
 
-
             //Output the images in html format, but only if we're not doing a preview
             int perpage = 500;
             //Imagetagid
@@ -265,8 +296,7 @@ public class MegaHtmlFormBottomChiba {
             if (request.getParameter("imagetagid")!=null && reger.core.Util.isinteger(request.getParameter("imagetagid"))){
                 imagetagid=Integer.parseInt(request.getParameter("imagetagid"));
             }
-            mb.append(ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, imagetagid, displayasadmin, userSession, -1, perpage, request));
-
+            mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, imagetagid, displayasadmin, userSession, -1, perpage, request));
 
             mb.append("<!-- End Images -->");
 
@@ -279,7 +309,7 @@ public class MegaHtmlFormBottomChiba {
             //Related Links
             if (!displayasadmin && userSession.getAccount().getUserelatedlinks()==1){
                 String searchterms = pageProps.entry.title + " " + pageProps.entry.comments;
-                RelatedLinks relatedLinks = reger.cache.RelatedLinksCache.get(pageProps.entry.eventid, searchterms, userSession);
+                reger.RelatedLinks relatedLinks = reger.cache.RelatedLinksCache.get(pageProps.entry.eventid, searchterms, userSession);
                 if (relatedLinks.getRelatedLinks().size()>0){
                     mb.append("<tr>");
                     mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
@@ -375,7 +405,7 @@ public class MegaHtmlFormBottomChiba {
 
             //Time Periods
             if (userSession.getAccount().getIstimeperiodon() && !displayasadmin){
-                TimeLine tl = new TimeLine(null, null, pageProps.entry.dateGmt, userSession.getAccount().getAccountid(), userSession);
+                reger.TimeLine tl = new reger.TimeLine(null, null, pageProps.entry.dateGmt, userSession.getAccount().getAccountid(), userSession);
                 if  (tl.timeperiodids.length>0) {
                     mb.append("<tr>");
                     mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top  class=logentryheader><font face=arial size=-1><b>Time Period</b></font><br><font face=arial size=-2><b>This entry took place during these time periods.</b></font><br>");
@@ -496,32 +526,23 @@ public class MegaHtmlFormBottomChiba {
                 //Get all groups this accountuser is subscribed to
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstGroups= Db.RunSQL("SELECT groupsubscription.groupsubscriptionid, groupname FROM groupsubscription  WHERE accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY groupname ASC");
+                String[][] rstGroups= Db.RunSQL("SELECT groups.groupid, groups.name FROM groupmembership, groups  WHERE groups.groupid=groupmembership.groupid AND groupmembership.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY name ASC");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstGroups!=null && rstGroups.length>0){
 
-                    if (pageProps.logProps.megalogaccess== Vars.LOGACCESSPRIVATE){
+                    if (pageProps.logProps.megalogaccess==reger.Vars.LOGACCESSPRIVATE){
                         mb.append("<img src='"+pageProps.pathToAppRoot+"images/info-icon.gif' border=0>");
                         mb.append(" ");
                         mb.append("<font face=arial size=-2>");
-                        mb.append("Note: posting entries from private logs (like this one) to groups will generate an entryKey that allows readers of the group to view this single entry.  You are sharing something otherwise private with the group.  Readers of the group will not be able to view other entries in the this private log.  You're basically granting them a pass for this single entry.");
+                        mb.append("Note: posting entries from private logs (like this one) to groups will make it visible to readers and members of the group.  You are sharing something otherwise private with the group.  Readers of the group will not be able to view other entries in the this private log.  You're granting them a pass for this single entry.");
                         mb.append("</font>");
                         mb.append("<br>");
                     }
 
                     for(int i=0; i<rstGroups.length; i++){
-                        mb.append("<input type=checkbox name=groupsubscriptionid value='"+rstGroups[i][0]+"' "+disabledFormText+" ");
-                        boolean eventIsInGroup = false;
-                        if (pageProps.entry.groupsubscriptionids!=null){
-                            for (Iterator it = pageProps.entry.groupsubscriptionids.iterator(); it.hasNext(); ) {
-                                Integer gsid = (Integer)it.next();
-                                if (gsid==Integer.parseInt(rstGroups[i][0])){
-                                    eventIsInGroup = true;
-                                }
-                            }
-                        }
-                        if (eventIsInGroup){
+                        mb.append("<input type=checkbox name=groupid value='"+rstGroups[i][0]+"' "+disabledFormText+" ");
+                        if (pageProps.entry.isInGroup(Integer.parseInt(rstGroups[i][0]))){
                             mb.append(" checked ");
                         }
                         mb.append(" >");
@@ -545,7 +566,7 @@ public class MegaHtmlFormBottomChiba {
             } else {
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstGroupsThisEventIsIn= Db.RunSQL("SELECT groupsubscription.groupsubscriptionid, groupname, weburlofgroup FROM eventtogroup, groupsubscription WHERE eventtogroup.groupsubscriptionid=groupsubscription.groupsubscriptionid AND eventtogroup.eventid='"+pageProps.entry.eventid+"'");
+                String[][] rstGroupsThisEventIsIn= Db.RunSQL("SELECT groups.groupid, groups.name FROM eventtogroup, groups WHERE eventtogroup.groupid=groups.groupid AND eventtogroup.eventid='"+pageProps.entry.eventid+"'");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstGroupsThisEventIsIn!=null && rstGroupsThisEventIsIn.length>0){
@@ -558,7 +579,7 @@ public class MegaHtmlFormBottomChiba {
                     mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
                     for(int i=0; i<rstGroupsThisEventIsIn.length; i++){
                         mb.append("<font face=arial size=-2 class=smallfont>");
-                        mb.append("<a href='"+rstGroupsThisEventIsIn[i][2]+"'>");
+                        mb.append("<a href='group-view.log&groupid="+rstGroupsThisEventIsIn[i][0]+"'>");
                         mb.append(rstGroupsThisEventIsIn[i][1]);
                         mb.append("</a>");
                         mb.append("</font> ");
@@ -621,7 +642,7 @@ public class MegaHtmlFormBottomChiba {
                     mb.append("<font face=arial size=-2>");
                     mb.append("<b>Trackback URL for this entry:</b>");
                     mb.append("<br>");
-                    String trackbackurl = ""+ Vars.getHttpUrlPrefix()+userSession.getAccount().getSiteRootUrl()+"/trackback-eventid"+pageProps.entry.eventid+".log";
+                    String trackbackurl = ""+userSession.getAccount().getSiteRootUrl(userSession)+"/trackback-eventid"+pageProps.entry.eventid+".log";
                     mb.append("<i>");
                     mb.append(trackbackurl);
                     mb.append("</i>");
@@ -647,7 +668,7 @@ public class MegaHtmlFormBottomChiba {
                             mb.append("<td bgcolor=#e6e6e6 class=logentryheader>");
                             mb.append("<font face=arial size=-2>");
                             mb.append("<a href=\""+reger.core.Util.cleanForHtml(rstListTrackbacks[i][0])+"\" rel=\"nofollow\">");
-                            mb.append("<b>"+ NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][1])+"</b>");
+                            mb.append("<b>"+reger.NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][1])+"</b>");
                             mb.append("</a>");
                             mb.append("</font>");
                             mb.append("</td>");
@@ -656,7 +677,7 @@ public class MegaHtmlFormBottomChiba {
                             mb.append("<tr>");
                             mb.append("<td bgcolor=#ffffff class=logentrycontent>");
                             mb.append("<font face=arial size=-2>");
-                            mb.append("<b>"+ NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][2])+"</b>");
+                            mb.append("<b>"+reger.NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][2])+"</b>");
                             mb.append("</font>");
                             mb.append("</td>");
                             mb.append("</tr>");
@@ -672,7 +693,7 @@ public class MegaHtmlFormBottomChiba {
                             mb.append("<tr>");
                             mb.append("<td bgcolor=#ffffff class=logentrycontent>");
                             mb.append("<font face=arial size=-2>");
-                            String trackbackBody = NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][3]);
+                            String trackbackBody = reger.NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][3]);
                             mb.append(trackbackBody.replaceAll("<", "&lt;"));
                             mb.append("</font>");
                             mb.append("</td>");
@@ -736,10 +757,10 @@ public class MegaHtmlFormBottomChiba {
                 }
                 //Save messages
                 if (request.getParameter("submitmessage")!=null && request.getParameter("submitmessage").equals("true")) {
-                    mb.append(MessageListHtml.saveMessage(message, messagefrom, userSession.getAccount().getAccountid(), pageProps.entry.eventid, email, ipaddress, url, emailnotify, userSession, request));
+                    mb.append(reger.MessageListHtml.saveMessage(message, messagefrom, userSession.getAccount().getAccountid(), pageProps.entry.eventid, email, ipaddress, url, emailnotify, userSession, request));
                 }
                 //Display messages
-                mb.append(MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()), "entry.log", pageProps.action, pageProps.logProps.logid, -1, request, true, response));
+                mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()), "entry.log", pageProps.action, pageProps.logProps.logid, -1, request, true, response));
             }
             mb.append("<!-- End Messages -->");
 

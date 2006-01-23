@@ -65,10 +65,9 @@ if (pageProps.action.equals("togglehelp")){
 
 //Special Messages Section Start
 if (request.getParameter("msg")!=null) {
-	if (request.getParameter("msg").equals("entryadded")) {
-		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log entry has been successfully added.<br><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a>  | <a href=entry-addmedia.log?eventid="+request.getParameter("eventid")+">Add Images</a>"));
-	} else if (request.getParameter("msg").equals("entryedited")) {
+	if (request.getParameter("msg").equals("entryedited")) {
 		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log entry has been successfully edited.<br><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a>"));
+	    
 	} else if (request.getParameter("msg").equals("newlog")) {
 		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Log(s) added. You can add entries by chosing a log below."));
 	} else if (request.getParameter("msg").equals("eventdeleted")) {

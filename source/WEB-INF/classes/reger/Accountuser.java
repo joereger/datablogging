@@ -10,6 +10,7 @@ import reger.core.PasswordVerifier;
 import reger.core.Debug;
 import reger.cache.LogCache;
 import reger.cache.jboss.Cacheable;
+import reger.groups.Group;
 
 import java.util.*;
 
@@ -435,7 +436,7 @@ public class Accountuser implements java.io.Serializable {
         logsUserHasExlicitPermissionToAuthor.clear();
 
         String sql = "SELECT megalog.logid, megalog.accountid, accountuserlogaccess.canread, accountuserlogaccess.canwrite FROM accountuserlogaccess, megalog WHERE accountuserlogaccess.logid=megalog.logid AND accountuserlogaccess.accountuserid='"+accountuserid+"'";
-        reger.core.Debug.debug(3, "Accountuser.java", sql);
+        reger.core.Debug.debug(5, "Accountuser.java", sql);
         //Explicitly defined user permissions
         //-----------------------------------
         //-----------------------------------
@@ -446,7 +447,7 @@ public class Accountuser implements java.io.Serializable {
             for(int i=0; i<rstAdminLogAccess.length; i++){
                 //Read permission
                 if (rstAdminLogAccess[i][2].equals("1")){
-                    reger.core.Debug.debug(3, "Accountuser.populatePermissionsFromDb()", "logid "+rstAdminLogAccess[i][0]+" is canread for accountuserid="+accountuserid);
+                    reger.core.Debug.debug(5, "Accountuser.populatePermissionsFromDb()", "logid "+rstAdminLogAccess[i][0]+" is canread for accountuserid="+accountuserid);
                     //If I currently don't have an entry for this log
                     if (!isAlreadyInlogsUserHasExplicitPermissionToAccess(Integer.parseInt(rstAdminLogAccess[i][0]))){
                         //Add to the accountUserLogAccess array
@@ -455,7 +456,7 @@ public class Accountuser implements java.io.Serializable {
                 }
                 //Write permission
                 if (rstAdminLogAccess[i][3].equals("1")){
-                    reger.core.Debug.debug(3, "Accountuser.populatePermissionsFromDb()", "logid "+rstAdminLogAccess[i][0]+" is canwrite for accountuserid="+accountuserid);
+                    reger.core.Debug.debug(5, "Accountuser.populatePermissionsFromDb()", "logid "+rstAdminLogAccess[i][0]+" is canwrite for accountuserid="+accountuserid);
                     //If I currently don't have an entry for this log
                     if (!isAlreadyInlogsUserHasExplicitPermissionToAuthor(Integer.parseInt(rstAdminLogAccess[i][0]))){
                         //Add to the accountUserLogAccess array
@@ -680,7 +681,7 @@ public class Accountuser implements java.io.Serializable {
             for (Iterator it = logsUserHasExlicitPermissionToAccess.iterator(); it.hasNext(); ) {
                 Integer tmpLogid = (Integer)it.next();
                 if(tmpLogid==logid){
-                    reger.core.Debug.debug(3, "Accountuser.java", "userCanViewLog("+logid+") returning TRUE because logid is in logsUserHasExlicitPermissionToAccess.");
+                    reger.core.Debug.debug(5, "Accountuser.java", "userCanViewLog("+logid+") returning TRUE because logid is in logsUserHasExlicitPermissionToAccess.");
                     return true;
                 }
             }
@@ -693,19 +694,19 @@ public class Accountuser implements java.io.Serializable {
             //If this accountuser is the SiteOwner of this log's account then they get access
             if (isInAclgroup("SiteOwner", log.getAccountid())){
                 addToListOfLogsUserHasExplicitPermissionToAccess(logid);
-                reger.core.Debug.debug(3, "Accountuser.java", "userCanViewLog("+logid+") returning TRUE because accountuser is a site owner of accountid="+log.getAccountid());
+                reger.core.Debug.debug(5, "Accountuser.java", "userCanViewLog("+logid+") returning TRUE because accountuser is a site owner of accountid="+log.getAccountid());
                 return true;
             }
             //If this is a public log, they can see it
             if (log.getLogaccess()==reger.Vars.LOGACCESSPUBLIC){
                 addToListOfLogsUserHasExplicitPermissionToAccess(logid);
-                reger.core.Debug.debug(3, "Accountuser.java", "userCanViewLog("+logid+") returning TRUE because log is public.");
+                reger.core.Debug.debug(5, "Accountuser.java", "userCanViewLog("+logid+") returning TRUE because log is public.");
                 return true;
             }
         }
 
         //Otherwise the user can't access
-        reger.core.Debug.debug(3, "Accountuser.java", "userCanViewLog("+logid+") returning FALSE.");
+        reger.core.Debug.debug(5, "Accountuser.java", "userCanViewLog("+logid+") returning FALSE.");
         return false;
     }
 
@@ -1246,7 +1247,7 @@ public class Accountuser implements java.io.Serializable {
     }
 
     public String savePassword(String password, String verifypassword, PrivateLabel pl){
-        Debug.debug(3, "AccountUser.java savePassword()", "Accountuser.java: savePassword():  <br>password="+password+"<br>verifypassword="+verifypassword);
+        Debug.debug(5, "AccountUser.java savePassword()", "Accountuser.java: savePassword():  <br>password="+password+"<br>verifypassword="+verifypassword);
 
             String errortext = validateNewPassword(password, verifypassword, pl);
             if (errortext.equals("")){
@@ -1314,7 +1315,7 @@ public class Accountuser implements java.io.Serializable {
         errortext = errortext + passwordError;
 
         //Don't duplicate emails
-        reger.core.Debug.debug(3, "Accountuser.java", "SELECT accountuserid FROM accountuser WHERE accountuserid<>'"+accountuserid+"' AND email='"+reger.core.Util.cleanForSQL(email)+"'");
+        reger.core.Debug.debug(5, "Accountuser.java", "SELECT accountuserid FROM accountuser WHERE accountuserid<>'"+accountuserid+"' AND email='"+reger.core.Util.cleanForSQL(email)+"'");
         //-----------------------------------
         //-----------------------------------
         String[][] rstCheckEmail = Db.RunSQL("SELECT accountuserid FROM accountuser WHERE accountuserid<>'"+accountuserid+"' AND email='"+reger.core.Util.cleanForSQL(email)+"'");
@@ -2096,27 +2097,19 @@ public class Accountuser implements java.io.Serializable {
 
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstGroup= Db.RunSQL("SELECT groupsubscriptionid, groupname, groupkey, groupadminkey, weburlofgroup FROM groupsubscription WHERE accountuserid='"+accountuserid+"'");
+                String[][] rstGroup= Db.RunSQL("SELECT groupid FROM groupmembership WHERE accountuserid='"+accountuserid+"'");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstGroup!=null && rstGroup.length>0){
                     for(int i=0; i<rstGroup.length; i++){
+                        Group group = new Group(Integer.parseInt(rstGroup[i][0]));
+                        mb.append("<a href='myhome/group-view.log?groupid="+group.getGroupid()+"'>");
+                        mb.append("<font face=arial size=-1>");
                         mb.append("<b>");
-                        mb.append(rstGroup[i][1]);
+                        mb.append(group.getName());
                         mb.append("</b>");
                         mb.append("</font>");
-                        mb.append("<font face=arial size=-2>");
-                        mb.append(" (<a href='"+rstGroup[i][4]+"?groupkey="+rstGroup[i][2]+"&groupadminkey="+rstGroup[i][3]+"'>");
-                        mb.append("View");
-                        mb.append("</a>)");
-                        mb.append(" (<a href='"+getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/people-friends-invite.log?groupsubscriptionid="+rstGroup[i][0]+"'>");
-                            mb.append("Invite Friends");
-                            mb.append("</a>)");
-                        if (!rstGroup[i][3].equals("")){
-                            mb.append(" (<a href='"+getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/groups-administer.log?groupsubscriptionid="+rstGroup[i][0]+"'>");
-                            mb.append("Administer");
-                            mb.append("</a>)");
-                        }
+                        mb.append("</a>");
                     }
                 } else {
                     mb.append("<b>");

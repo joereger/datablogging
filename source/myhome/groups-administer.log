@@ -3,6 +3,10 @@
                  java.util.Vector,
                  java.util.Hashtable,
                  reger.core.db.Db"%>
+<%@ page import="reger.groups.GroupMembership"%>
+<%@ page import="reger.groups.Group"%>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.Accountuser"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -26,321 +30,356 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-//Get group details
-int groupid = -1;
-int groupsubscriptionid = -1;
-String groupName = "";
-String groupDescription = "";
-String webUrlOfGroup = "";
-String feedUrlOfGroup = "";
-boolean viewingEntriesRequiresGroupKey = false;
-boolean addingEntriesRequiresGroupKey = false;
-String groupKey = "";
-String groupAdminKey = "";
-String serverUrl = "";
 
-//Check for an incoming groupsubscriptionid
-if (request.getParameter("groupsubscriptionid")!=null && reger.core.Util.isinteger(request.getParameter("groupsubscriptionid"))){
-    groupsubscriptionid = Integer.parseInt(request.getParameter("groupsubscriptionid"));
+GroupMembership groupMembership = null;
+if(request.getParameter("groupmembershipid")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipid"))){
+    groupMembership = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipid")));
 }
 
-//Go get the data for this groupsubscriptionid
-//-----------------------------------
-//-----------------------------------
-String[][] rstGroups= Db.RunSQL("SELECT groupid, groupname, groupdescription, viewingentriesrequiresgroupkey, addingentriesrequiresgroupkey, feedurlofgroup, weburlofgroup, groupkey, groupadminkey, serverurl FROM groupsubscription, groupserversubscription WHERE groupsubscription.groupserversubscriptionid=groupserversubscription.groupserversubscriptionid AND groupsubscriptionid='"+request.getParameter("groupsubscriptionid")+"' AND groupsubscription.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"'");
-//-----------------------------------
-//-----------------------------------
-if (rstGroups!=null && rstGroups.length>0){
-    for(int i=0; i<rstGroups.length; i++){
-        //The group already exists.
-        viewingEntriesRequiresGroupKey = false;
-        if (rstGroups[i][3].equals("1")){
-            viewingEntriesRequiresGroupKey = true;
-        }
-        addingEntriesRequiresGroupKey = false;
-        if (rstGroups[i][4].equals("1")){
-            addingEntriesRequiresGroupKey = true;
-        }
-        groupid =  Integer.parseInt(rstGroups[i][0]);
-        groupName = rstGroups[i][1];
-        groupDescription = rstGroups[i][2];
-        feedUrlOfGroup = rstGroups[i][5];
-        webUrlOfGroup = rstGroups[i][6];
-        groupKey = rstGroups[i][7];
-        groupAdminKey = rstGroups[i][8];
-        serverUrl = rstGroups[i][9];
-    }
+if (groupMembership==null || groupMembership.getAccountuserid()!=userSession.getAccountuser().getAccountuserid()){
+    response.sendRedirect("groups.log");
+    return;
+}
+
+Group group = new Group(groupMembership.getGroupid());
+
+if (group.getAccountuserid()!=userSession.getAccountuser().getAccountuserid() && !groupMembership.getIsmoderator()){
+    response.sendRedirect("groups.log");
+    return;
 }
 
 
-
-
-
-//Do any editing to server information
-if (pageProps.action.equals("editserver")){
-    //Override with incoming data from URL or form
-    if (request.getParameter("groupkey")!=null && !request.getParameter("groupkey").equals("")){
-        groupKey = request.getParameter("groupkey");
-    }
-    String origGroupAdminKey = groupAdminKey;
-    if (request.getParameter("groupadminkey")!=null && !request.getParameter("groupadminkey").equals("")){
-        groupAdminKey = request.getParameter("groupadminkey");
-    }
-    if (request.getParameter("groupname")!=null && !request.getParameter("groupname").equals("")){
-        groupName = request.getParameter("groupname");
-    }
-    if (request.getParameter("groupdescription")!=null && !request.getParameter("groupdescription").equals("")){
-        groupDescription = request.getParameter("groupdescription");
-    }
-    String tmpAddBoolean = "0";
-    if (request.getParameter("addingentriesrequiresgroupkey")!=null){
-        if (request.getParameter("addingentriesrequiresgroupkey").equals("1")){
-            addingEntriesRequiresGroupKey = true;
-            tmpAddBoolean = "1";
-        } else {
-            addingEntriesRequiresGroupKey = false;
-            tmpAddBoolean = "0";
-        }
-    }
-    String tmpViewBoolean = "0";
-    if (request.getParameter("viewingentriesrequiresgroupkey")!=null){
-        if (request.getParameter("viewingentriesrequiresgroupkey").equals("1")){
-            viewingEntriesRequiresGroupKey = true;
-            tmpViewBoolean = "1";
-        } else {
-            viewingEntriesRequiresGroupKey = false;
-            tmpViewBoolean = "0";
-        }
-    }
-
-
-    //Now set on the server
-    Hashtable result = reger.GroupsClient.editGroup(serverUrl, origGroupAdminKey, groupid, groupName, groupDescription, viewingEntriesRequiresGroupKey, addingEntriesRequiresGroupKey, groupKey, groupAdminKey);
-
-    if (result!=null && result.get("error")==null){
-        tmpViewBoolean  = "0";
-        if (((Boolean)result.get("viewingEntriesRequiresGroupKey")).booleanValue()){
-            viewingEntriesRequiresGroupKey = true;
-            tmpViewBoolean  = "1";
-        }
-        tmpAddBoolean = "0";
-        if (((Boolean)result.get("addingEntriesRequiresGroupKey")).booleanValue()){
-            addingEntriesRequiresGroupKey = true;
-            tmpAddBoolean = "1";
-        }
-        //Update the record with what came back from the server
-        //-----------------------------------
-        //-----------------------------------
-        int count = Db.RunSQLUpdate("UPDATE groupsubscription SET groupname='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("groupName"), 255))+"', groupdescription='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("groupDescription"), 255))+"', feedurlofgroup='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("feedUrlOfGroup"), 255))+"', weburlofgroup='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("webUrlOfGroup"), 255))+"', viewingentriesrequiresgroupkey='"+tmpViewBoolean+"', addingentriesrequiresgroupkey='"+tmpAddBoolean+"', groupkey='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("groupKey"), 255))+"', groupadminkey='"+reger.core.Util.cleanForSQL(reger.core.Util.truncateString((String)result.get("groupAdminKey"), 255))+"' WHERE groupsubscriptionid='"+groupsubscriptionid+"'");
-        //-----------------------------------
-        //-----------------------------------
-
-        response.sendRedirect("groups.log");
-
+if (pageProps.action.equals("editgroup")){
+    group.setName(request.getParameter("name"));
+    group.setDescription(request.getParameter("description"));
+    if (request.getParameter("entriesareprivate")!=null && request.getParameter("entriesareprivate").equals("1")){
+        group.setEntriesareprivate(true);
     } else {
-        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, (String)result.get("error")));
+        group.setEntriesareprivate(false);
     }
-
-}
-
-//Now go back after editing to get the record
-//Go get the data for this groupsubscriptionid
-//-----------------------------------
-//-----------------------------------
-String[][] rstGroups2= Db.RunSQL("SELECT groupid, groupname, groupdescription, viewingentriesrequiresgroupkey, addingentriesrequiresgroupkey, feedurlofgroup, weburlofgroup, groupkey, groupadminkey, serverurl FROM groupsubscription, groupserversubscription WHERE groupsubscription.groupserversubscriptionid=groupserversubscription.groupserversubscriptionid AND groupsubscriptionid='"+request.getParameter("groupsubscriptionid")+"' AND groupsubscription.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"'");
-//-----------------------------------
-//-----------------------------------
-if (rstGroups2!=null && rstGroups2.length>0){
-    for(int i=0; i<rstGroups2.length; i++){
-        //The group already exists.
-        viewingEntriesRequiresGroupKey = false;
-        if (rstGroups2[i][3].equals("1")){
-            viewingEntriesRequiresGroupKey = true;
-        }
-        addingEntriesRequiresGroupKey = false;
-        if (rstGroups2[i][4].equals("1")){
-            addingEntriesRequiresGroupKey = true;
-        }
-        groupid =  Integer.parseInt(rstGroups[i][0]);
-        groupName = rstGroups2[i][1];
-        groupDescription = rstGroups2[i][2];
-        feedUrlOfGroup = rstGroups2[i][5];
-        webUrlOfGroup = rstGroups2[i][6];
-        groupKey = rstGroups2[i][7];
-        groupAdminKey = rstGroups2[i][8];
-        serverUrl = rstGroups2[i][9];
+    if (request.getParameter("membershipismoderated")!=null && request.getParameter("membershipismoderated").equals("1")){
+        group.setMembershipismoderated(true);
+    } else {
+        group.setMembershipismoderated(false);
+    }
+    try{
+        group.save();
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "The changes have been saved!"));
+    } catch (ValidationException vex){
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
     }
 }
 
-//Test validity of the groupKey
-boolean groupKeyIsValid = reger.GroupsClient.testGroupKey(groupid, groupKey, serverUrl);
-boolean groupAdminKeyIsValid = reger.GroupsClient.testGroupAdminKey(groupid, groupAdminKey, serverUrl);
-
-
-
-
-if (groupAdminKeyIsValid){
-
-    mb.append(reger.ui.BubbleBox.start("Server Information", pageProps.pathToAppRoot));
-
-
-    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Editing the Server Information will affect all users of the group. You are able to edit this information because you hold a valid groupAdminKey.  Note that changing the groupKey or groupAdminKey on the server will immediately lock all users out from the group.  Be careful with these settings."));
-
-    mb.append("<table cellpadding=5 cellspacing=2 width=100% border=0>");
-
-    mb.append("<form action=groups-administer.log method=post>");
-    mb.append("<input type=hidden name=groupsubscriptionid value='"+groupsubscriptionid+"'>");
-    mb.append("<input type=hidden name=action value='editserver'>");
-
-    mb.append("<tr>");
-    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
-    mb.append("<font face=arial size=-1>");
-    mb.append("<b>");
-    mb.append("Group Name");
-    mb.append("</b>");
-    mb.append("</font>");
-    mb.append("<br>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("<input type=text name=groupname size=15 maxlength=255 value=\""+reger.core.Util.cleanForHtml(groupName)+"\">");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
-
-    mb.append("<tr>");
-    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
-    mb.append("<font face=arial size=-1>");
-    mb.append("<b>");
-    mb.append("Group Description");
-    mb.append("</b>");
-    mb.append("</font>");
-    mb.append("<br>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("<input type=text name=groupdescription size=15 maxlength=255 value=\""+reger.core.Util.cleanForHtml(groupDescription)+"\">");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
-
-
-    mb.append("<tr>");
-    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
-    mb.append("<font face=arial size=-1>");
-    mb.append("<b>");
-    mb.append("groupKey");
-    mb.append("</b>");
-    mb.append("</font>");
-    mb.append("<br>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("<input type=text name=groupkey value=\""+reger.core.Util.cleanForHtml(groupKey)+"\" size=10 maxlength=255>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
-
-    mb.append("<tr>");
-    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
-    mb.append("<font face=arial size=-1>");
-    mb.append("<b>");
-    mb.append("groupAdminKey");
-    mb.append("</b>");
-    mb.append("</font>");
-    mb.append("<br>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("<input type=text name=groupadminkey value=\""+reger.core.Util.cleanForHtml(groupAdminKey)+"\" size=10 maxlength=255>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
-
-
-    mb.append("<tr>");
-    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
-    mb.append("<font face=arial size=-1>");
-    mb.append("<b>Viewing Entries</b>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("<input type=radio name=viewingentriesrequiresgroupkey value='0' ");
-    if (!viewingEntriesRequiresGroupKey){
-        mb.append(" checked ");
+if (pageProps.action.equals("revokemoderator")){
+    GroupMembership gmActedOn = null;
+    if(request.getParameter("groupmembershipidtorevoke")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtorevoke")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+        gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtorevoke")));
+        gmActedOn.setIsmoderator(false);
+        try{
+            gmActedOn.save();
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Moderator privileges revoked!"));
+        } catch (ValidationException vex){
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
+        }
     }
-    mb.append(">");
-    mb.append(" Public, anybody on the web.");
-    mb.append("<br>");
-    mb.append("<input type=radio name=viewingentriesrequiresgroupkey value='1' ");
-    if (viewingEntriesRequiresGroupKey){
-        mb.append(" checked ");
+}
+
+if (pageProps.action.equals("grantmoderator")){
+    GroupMembership gmActedOn = null;
+    if(request.getParameter("groupmembershipidtogrant")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtogrant")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+        gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtogrant")));
+        gmActedOn.setIsmoderator(true);
+        try{
+            gmActedOn.save();
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Moderator privileges granted!"));
+        } catch (ValidationException vex){
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
+        }
     }
-    mb.append(">");
-    mb.append(" Private, only with groupKey.");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
+}
 
-    mb.append("<tr>");
-    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
-    mb.append("<font face=arial size=-1>");
-    mb.append("<b>Adding Entries</b>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("<input type=radio name=addingentriesrequiresgroupkey value='0' ");
-    if (!addingEntriesRequiresGroupKey){
-        mb.append(" checked ");
+if (pageProps.action.equals("approverequest")){
+    GroupMembership gmActedOn = null;
+    if(request.getParameter("groupmembershipidtoapprove")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtoapprove")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+        gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtoapprove")));
+        gmActedOn.setIsapproved(true);
+        try{
+            gmActedOn.save();
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Membership approved!"));
+        } catch (ValidationException vex){
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
+        }
     }
-    mb.append(">");
-    mb.append(" Public, anybody on the web.");
-    mb.append("<br>");
-    mb.append("<input type=radio name=addingentriesrequiresgroupkey value='1' ");
-    if (addingEntriesRequiresGroupKey){
-        mb.append(" checked ");
+}
+
+if (pageProps.action.equals("declinerequest")){
+    GroupMembership gmActedOn = null;
+    if(request.getParameter("groupmembershipidtodecline")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtodecline")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+        gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtodecline")));
+        gmActedOn.delete();
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Membership declined!"));
     }
-    mb.append(">");
-    mb.append(" Private, only with groupKey.");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
+}
+
+if (pageProps.action.equals("removemember")){
+    GroupMembership gmActedOn = null;
+    if(request.getParameter("groupmembershipidtoremove")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtoremove")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+        gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtoremove")));
+        gmActedOn.setIsmoderator(false);
+        gmActedOn.delete();
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Member removed!"));
+    }
+}
 
 
-    mb.append("<tr>");
-    mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
-    mb.append("<font face=arial size=-1>");
-    mb.append("<b>");
-    mb.append("");
-    mb.append("</b>");
-    mb.append("</font>");
-    mb.append("<br>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("<td valign=top>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("<input type=submit value='Save to Server'>");
-    mb.append("</font>");
-    mb.append("</td>");
-    mb.append("</tr>");
 
-    mb.append("</form>");
 
+mb.append("<table cellpadding=10 width=100% cellspacing=0 border=0>");
+mb.append("<tr>");
+mb.append("<td width=33% valign=top>");
+mb.append(reger.ui.BubbleBox.start("Members With Moderator Permission", pageProps.pathToAppRoot));
+//-----------------------------------
+//-----------------------------------
+String[][] rstMod= reger.core.db.Db.RunSQL("SELECT groupmembershipid, accountuser.accountuserid FROM groupmembership, accountuser WHERE groupmembership.accountuserid=accountuser.accountuserid AND groupmembership.groupid='"+group.getGroupid()+"' AND groupmembership.ismoderator='1'");
+//-----------------------------------
+//-----------------------------------
+if (rstMod!=null && rstMod.length>0){
+    mb.append("<table cellpadding=10 width=100% cellspacing=0 border=0>");
+    for(int i=0; i<rstMod.length; i++){
+        GroupMembership tmpGroupMembership = new GroupMembership(Integer.parseInt(rstMod[i][0]));
+        Accountuser au = new Accountuser(Integer.parseInt(rstMod[i][1]), true);
+        mb.append("<tr>");
+        mb.append("<td valign=top>");
+        mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount()+"author.log?accountuserid="+au.getAccountuserid()+"'>");
+        mb.append("<img src = '"+au.primaryImage(pageProps.pathToAppRoot, true)+"' width=50 border=0 align=left>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(au.getFriendlyname());
+        mb.append("</font>");
+        mb.append("</a>");
+        mb.append("</td>");
+        mb.append("<td valign=top>");
+        if (group.getAccountuserid()!=au.getAccountuserid()){
+            mb.append("<a href='groups-administer.log?action=revokemoderator&groupmembershipid="+groupMembership.getGroupmembershipid()+"&groupmembershipidtorevoke="+tmpGroupMembership.getGroupmembershipid()+"'>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("Revoke");
+            mb.append("</font>");
+            mb.append("</a>");
+        }
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
     mb.append("</table>");
-    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-
 }
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("<br><br>");
+mb.append(reger.ui.BubbleBox.start("Members", pageProps.pathToAppRoot));
+//-----------------------------------
+//-----------------------------------
+String[][] rstMem = reger.core.db.Db.RunSQL("SELECT groupmembershipid, accountuser.accountuserid FROM groupmembership, accountuser WHERE groupmembership.accountuserid=accountuser.accountuserid AND groupmembership.groupid='"+group.getGroupid()+"' AND groupmembership.isapproved='1'");
+//-----------------------------------
+//-----------------------------------
+if (rstMem !=null && rstMem.length>0){
+    mb.append("<table cellpadding=10 width=100% cellspacing=0 border=0>");
+    for(int i=0; i<rstMem.length; i++){
+        GroupMembership tmpGroupMembership = new GroupMembership(Integer.parseInt(rstMem[i][0]));
+        Accountuser au = new Accountuser(Integer.parseInt(rstMem[i][1]), true);
+        mb.append("<tr>");
+        mb.append("<td valign=top>");
+        mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount()+"author.log?accountuserid="+au.getAccountuserid()+"'>");
+        mb.append("<img src = '"+au.primaryImage(pageProps.pathToAppRoot, true)+"' width=50 border=0 align=left>");
+        mb.append("<font face=arial size=-2>");
+        mb.append(au.getFriendlyname());
+        mb.append("</font>");
+        mb.append("</a>");
+        mb.append("</td>");
+        mb.append("<td valign=top>");
+        if (group.getAccountuserid()!=au.getAccountuserid()){
+            mb.append("<a href='groups-administer.log?action=removemember&groupmembershipid="+groupMembership.getGroupmembershipid()+"&groupmembershipidtoremove="+tmpGroupMembership.getGroupmembershipid()+"'>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("Remove");
+            mb.append("</font>");
+            mb.append("</a>");
+        }
+        mb.append("</td>");
+        mb.append("<td valign=top>");
+        if (group.getAccountuserid()!=au.getAccountuserid()){
+            mb.append("<a href='groups-administer.log?action=grantmoderator&groupmembershipid="+groupMembership.getGroupmembershipid()+"&groupmembershipidtogrant="+tmpGroupMembership.getGroupmembershipid()+"'>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("Make Moderator");
+            mb.append("</font>");
+            mb.append("</a>");
+        }
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+    mb.append("</table>");
+}
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("</td>");
+mb.append("<td valign=top>");
+if(group.getMembershipismoderated()){
+    mb.append(reger.ui.BubbleBox.start("Membership Requests", pageProps.pathToAppRoot));
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstReq = reger.core.db.Db.RunSQL("SELECT groupmembershipid, accountuser.accountuserid FROM groupmembership, accountuser WHERE groupmembership.accountuserid=accountuser.accountuserid AND groupmembership.groupid='"+group.getGroupid()+"' AND groupmembership.isapproved='0'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstReq !=null && rstReq.length>0){
+        mb.append("<table cellpadding=10 width=100% cellspacing=0 border=0>");
+        for(int i=0; i<rstReq.length; i++){
+            GroupMembership tmpGroupMembership = new GroupMembership(Integer.parseInt(rstReq[i][0]));
+            Accountuser au = new Accountuser(Integer.parseInt(rstReq[i][1]), true);
+            mb.append("<tr>");
+            mb.append("<td valign=top>");
+            mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount()+"author.log?accountuserid="+au.getAccountuserid()+"'>");
+            mb.append("<img src = '"+au.primaryImage(pageProps.pathToAppRoot, true)+"' width=50 border=0 align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append(au.getFriendlyname());
+            mb.append("</font>");
+            mb.append("</a>");
+            mb.append("</td>");
+            mb.append("<td valign=top>");
+            if (group.getAccountuserid()!=au.getAccountuserid()){
+                mb.append("<a href='groups-administer.log?action=approverequest&groupmembershipid="+groupMembership.getGroupmembershipid()+"&groupmembershipidtoapprove="+tmpGroupMembership.getGroupmembershipid()+"'>");
+                mb.append("<font face=arial size=-2>");
+                mb.append("Approve");
+                mb.append("</font>");
+                mb.append("</a>");
+            }
+            mb.append("</td>");
+            mb.append("<td valign=top>");
+            if (group.getAccountuserid()!=au.getAccountuserid()){
+                mb.append("<a href='groups-administer.log?action=declinerequest&groupmembershipid="+groupMembership.getGroupmembershipid()+"&groupmembershipidtodecline="+tmpGroupMembership.getGroupmembershipid()+"'>");
+                mb.append("Decline");
+                mb.append("</a>");
+            }
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+        mb.append("</table>");
+    } else {
+        mb.append("<font face=arial size=-2>");
+        mb.append("There are no new membership requests.");
+        mb.append("</font>");
+    }
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    mb.append("<br><br>");
+}
+
+mb.append(reger.ui.BubbleBox.start("Group Properties", pageProps.pathToAppRoot));
+mb.append("<br>");
+mb.append("<form action='groups-administer.log' method=post>");
+mb.append("<input type=hidden name=action value='editgroup'>");
+mb.append("<input type=hidden name=groupmembershipid value='"+groupMembership.getGroupmembershipid()+"'>");
+mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<b>Group Name</b>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<input type=text name=name size=10 maxlength=50 value=\""+reger.core.Util.cleanForHtml(group.getName())+"\" style=\"font-size: 10px;\">");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Note: group name will be public even if group is members-only.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<b>Group Description</b>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<input type=text name=description size=20 maxlength=255 value=\""+reger.core.Util.cleanForHtml(group.getDescription())+"\" style=\"font-size: 10px;\">");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("Note: group description will be public even if group is members-only.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<b>Viewing Entries</b>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=-2>");
+String eapNo = "";
+if (!group.getEntriesareprivate()){
+    eapNo = "checked";
+}
+mb.append("<input type=radio name=entriesareprivate value='0' "+eapNo+">");
+mb.append("<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'>");
+mb.append(" Public, anybody on the web.");
+mb.append("<br>");
+String eapYes = "";
+if (group.getEntriesareprivate()){
+    eapYes = "checked";
+}
+mb.append("<input type=radio name=entriesareprivate value='1' "+eapYes+">");
+mb.append("<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'>");
+mb.append(" Private, only members.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top bgcolor=#e6e6e6 align=right>");
+mb.append("<font face=arial size=-1>");
+mb.append("<b>Membership</b>");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=-2>");
+String mimNo = "";
+if (!group.getMembershipismoderated()){
+    mimNo = "checked";
+}
+mb.append("<input type=radio name=membershipismoderated value='0' "+mimNo+">");
+mb.append("<img src='../images/icon-public.gif' width='16' height='16' alt='' border='0'>");
+mb.append(" Anybody can join.");
+mb.append("<br>");
+String mimYes = "";
+if (group.getMembershipismoderated()){
+    mimYes = "checked";
+}
+mb.append("<input type=radio name=membershipismoderated value='1' "+mimYes+">");
+mb.append("<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'>");
+mb.append(" Members must be approved.");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top>");
+mb.append("<font face=arial size=-1>");
+mb.append("");
+mb.append("</font>");
+mb.append("</td>");
+mb.append("<td valign=top>");
+mb.append("<input type=submit value='Edit Group' style=\"font-size: 10px;\">");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("</table>");
+mb.append("</form>");
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+mb.append("</td>");
+mb.append("</tr>");
+mb.append("</table>");
+
+
 
 
 

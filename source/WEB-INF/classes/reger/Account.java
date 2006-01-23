@@ -533,12 +533,14 @@ public class Account implements java.io.Serializable {
     private String setSiteRootUrlViaAccountid(int accountid){
         String siteRootUrl = "";
         //@todo Use pl cache instead of database call... low priority
+        reger.core.Debug.debug(3, "Account.java", "setSiteRootUrlViaAccountid("+accountid+") called");
         //-----------------------------------
         //-----------------------------------
         String[][] rstData= Db.RunSQL("SELECT pl.usedynamicdns, pl.plbasedomain, account.accounturl, account.customservername, account.customservername2, account.customservername3 FROM account, pl WHERE account.plid=pl.plid AND account.accountid='"+accountid+"' LIMIT 0,1");
         //-----------------------------------
         //-----------------------------------
         if (rstData!=null && rstData.length>0){
+            reger.core.Debug.debug(3, "Account.java", "setSiteRootUrlViaAccountid("+accountid+") found a record");
             String usedynamicdns = rstData[0][0];
             String plbasedomain = rstData[0][1];
             String accounturl = rstData[0][2];
@@ -562,7 +564,7 @@ public class Account implements java.io.Serializable {
                 }
             }
         }
-
+        reger.core.Debug.debug(3, "Account.java", "setSiteRootUrlViaAccountid("+accountid+") siteRootUrl: "+siteRootUrl);
         return siteRootUrl;
     }
 
@@ -626,7 +628,7 @@ public class Account implements java.io.Serializable {
     }
 
     public String getSiteRootUrl(UserSession userSession){
-        reger.core.Debug.debug(5, "Account.java", "sending inUrl="+userSession.getUrlSplitter().getScheme()+"://"+siteRootUrl);
+        reger.core.Debug.debug(3, "Account.java", "sending inUrl="+userSession.getUrlSplitter().getScheme()+"://"+siteRootUrl);
         return userSession.getUrlWithPortSmartlyAttached(userSession.getUrlSplitter().getScheme()+"://"+siteRootUrl);
     }
 

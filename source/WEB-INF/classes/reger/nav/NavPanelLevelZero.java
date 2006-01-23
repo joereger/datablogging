@@ -17,19 +17,13 @@ public class NavPanelLevelZero {
 
 
 
-        //mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 background='"+pathToAppRoot+"images/pattern-yellowsquigglies.gif'>");
-        //mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 background='"+pathToAppRoot+"images/navlevel0bg2.gif'>");
         mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 style=\"background-image: url(images/top-bar-rightbg.gif); background-position: top right; background-repeat: no-repeat;\">");
         mb.append("<tr>");
         mb.append("<td class=navlevel0topbar colspan=10><img src='images/clear.gif' width=1 height=85 align=right>");
-//        mb.append("<font face=impact size=+2 style=\"font-size: 30px; color: ffffcc;\">");
-//        mb.append(userSession.getAccount().getSiteRootUrl(userSession)+"/");
-//        mb.append("</font>");
         mb.append("</td>");
         mb.append("</tr>");
-        //mb.append("</table>");
 
-        //mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 background='"+pathToAppRoot+"images/pattern-yellowblocks.gif'>");
+
         mb.append("<tr>");
 
         mb.append("<td class=navtablevel0spacer width=35>");
@@ -52,14 +46,12 @@ public class NavPanelLevelZero {
                     url = pathToAppRoot + navButtons[i].buttonUrlFromSiteRoot + navButtons[i].getQueryStringIncludingRequestVars(request);
                     text = navButtons[i].buttonTitle;
                     if (navButtons[i].navButtonName.equals(currentNavButtonName)){
-                        //mb.append("<div class=\"tab\" id=\"navlevel-one-here\"><a href=\""+url+"\">"+text+"</a></div>");
                         mb.append("<td class=navtablevel0tabon align=center valign=top nowrap>");
                         mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=5 height=1>");
                         mb.append("<a href=\""+url+"\">"+text+"</a>");
                         mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=5 height=1>");
                         mb.append("</td>");
                     } else {
-                        //mb.append("<div class=\"tab\"><a href=\""+url+"\">"+text+"</a></div>");
                         mb.append("<td class=navtablevel0taboff align=center valign=top nowrap>");
                         mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=5 height=1>");
                         mb.append("<a href=\""+url+"\">"+text+"</a>");

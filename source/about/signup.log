@@ -353,8 +353,6 @@ mb.append("</select>");
 mb.append("</td>");
 mb.append("</tr>");
 
-
-
 //Captcha
 //mb.append("<tr>");
 //mb.append("<td valign=top nowrap align=left bgcolor=#cccccc colspan=3>");
