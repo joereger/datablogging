@@ -1309,12 +1309,20 @@ public class Util {
         if (email==null || email.equals("")) {
             return "Your email can't be blank.<br>";
         }
-
         //Email can't have spaces
         if (email.split(" ").length>1){
             return "No spaces or other characters are allowed in the email.<br>";
         }
-
+        int index = email.indexOf("@");
+        // Make sure if EMail has @ symbol
+        if (index > -1) {
+            // Make sure if EMail has . symbol
+            if (email.indexOf(".", index) == -1) {
+                return "Please enter valid email.<br>";
+            }
+        } else {
+           return "Please enter valid email.<br>";
+        }
         return errortext;
     }
 
