@@ -36,6 +36,7 @@ public class AllPlJspPages {
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-45, "Log Types", "community-logtypes.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 6)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-46, "Tell a Friend", "community-tellfriend.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 7)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-47, "Discussion Forum", "community-discuss.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 8)));
+        nestedNavItems.add((NestedNavItem)(new PlJspPage(-53, "Community Tags", "community-tags.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 9)));
 
 
         //More Info
