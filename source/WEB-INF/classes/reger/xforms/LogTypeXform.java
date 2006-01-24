@@ -10,6 +10,7 @@ public class LogTypeXform {
     private int logtypexformid;
     private int eventtypeid;
     private String xform;
+    private String xformdefinition;
 
     public LogTypeXform(){
     
@@ -22,19 +23,21 @@ public class LogTypeXform {
         this.logtypexformid = 0;
         this.eventtypeid=0;
         this.xform = "";
+        this.xformdefinition = "";
         
         //-----------------------------------
         //-----------------------------------
-        String[][] rstXform= Db.RunSQL("SELECT logtypexformid, eventtypeid, xform FROM logtypexform WHERE eventtypeid='"+eventtypeid+"'");
+        String[][] rstXform= Db.RunSQL("SELECT logtypexformid, eventtypeid, xform, xformdefinition FROM logtypexform WHERE eventtypeid='"+eventtypeid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstXform!=null && rstXform.length>0){
             for(int i=0; i<rstXform.length; i++){
-                reger.core.Debug.debug(5, "LogTypeXForm.java", "Found record for eventtypeid="+eventtypeid);
+                reger.core.Debug.debug(4, "LogTypeXForm.java", "Found record for eventtypeid="+eventtypeid);
                 this.logtypexformid = Integer.parseInt(rstXform[i][0]);
                 this.eventtypeid = Integer.parseInt(rstXform[i][1]);
                 //@todo Possibly make this an array to hold multiple xforms per log.  As is it'll use the last one if there are multiple.
                 this.xform = rstXform[i][2];
+                this.xformdefinition = rstXform[0][3];
             }
         } else {
             reger.core.Debug.debug(4, "LogTypeXForm.java", "No db records found for eventtypeid="+eventtypeid);
@@ -48,10 +51,11 @@ public class LogTypeXform {
         this.logtypexformid = 0;
         this.eventtypeid=0;
         this.xform = "";
+        this.xformdefinition = "";
         
         //-----------------------------------
         //-----------------------------------
-        String[][] rstXform= Db.RunSQL("SELECT logtypexformid, eventtypeid, xform FROM logtypexform WHERE logtypexformid='"+logtypexformid+"'");
+        String[][] rstXform= Db.RunSQL("SELECT logtypexformid, eventtypeid, xform, xformdefinition FROM logtypexform WHERE logtypexformid='"+logtypexformid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstXform!=null && rstXform.length>0){
@@ -60,6 +64,7 @@ public class LogTypeXform {
                 this.eventtypeid = Integer.parseInt(rstXform[i][1]);
                 //@todo Possibly make this an array to hold multiple xforms per log.  As is it'll use the last one if there are multiple.
                 this.xform = rstXform[i][2];
+                this.xformdefinition = rstXform[i][3];
             }
         }
     }
@@ -74,14 +79,14 @@ public class LogTypeXform {
             //Update
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE logtypexform SET eventtypeid='"+eventtypeid+"', xform='"+reger.core.Util.cleanForSQL(xform)+"' WHERE logtypexformid='"+logtypexformid+"'");
+            int count = Db.RunSQLUpdate("UPDATE logtypexform SET eventtypeid='"+eventtypeid+"', xform='"+reger.core.Util.cleanForSQL(xform)+"', xformdefinition='"+reger.core.Util.cleanForSQL(xformdefinition)+"' WHERE logtypexformid='"+logtypexformid+"'");
             //-----------------------------------
             //-----------------------------------
         } else {
             //Insert
             //-----------------------------------
             //-----------------------------------
-            logtypexformid = Db.RunSQLInsert("INSERT INTO logtypexform(eventtypeid, xform) VALUES('"+eventtypeid+"', '"+reger.core.Util.cleanForSQL(xform)+"')");
+            logtypexformid = Db.RunSQLInsert("INSERT INTO logtypexform(eventtypeid, xform, xformdefinition) VALUES('"+eventtypeid+"', '"+reger.core.Util.cleanForSQL(xform)+"', '"+reger.core.Util.cleanForSQL(xformdefinition)+"')");
             //-----------------------------------
             //-----------------------------------
         }
@@ -106,4 +111,13 @@ public class LogTypeXform {
     public void setXform(String xform) {
         this.xform = xform;
     }
+
+    public String getXformdefinition() {
+        return xformdefinition;
+    }
+
+    public void setXformdefinition(String xformdefinition) {
+        this.xformdefinition = xformdefinition;
+    }
+
 }
