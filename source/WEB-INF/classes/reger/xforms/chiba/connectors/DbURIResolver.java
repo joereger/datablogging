@@ -20,7 +20,7 @@ import reger.xforms.EventXformData;
 public class DbURIResolver extends AbstractConnector implements URIResolver {
 
     public DbURIResolver(){
-        reger.core.Debug.debug(3, "DbURIResolver.java", "DbURIResolver instantiated");
+        reger.core.Debug.debug(5, "DbURIResolver.java", "DbURIResolver instantiated");
     }
 
     /**
@@ -31,13 +31,13 @@ public class DbURIResolver extends AbstractConnector implements URIResolver {
      * @throws XFormsException if any error occurred during link traversal.
      */
     public Object resolve() throws XFormsException {
-        reger.core.Debug.debug(3, "DbURIResolver.java", "DbURIResolver.resolve() called");
+        reger.core.Debug.debug(5, "DbURIResolver.java", "DbURIResolver.resolve() called");
         try {
 
             // use scheme specific part in order to handle UNC names
             URI uri = new URI(getURI());
-            reger.core.Debug.debug(3, "DbURIResolver.java", "getContext().get(\"eventid\")="+getContext().get("eventid"));
-            reger.core.Debug.debug(3, "DbURIResolver.java", "getContext().get(\"logid\")="+getContext().get("logid"));
+            reger.core.Debug.debug(5, "DbURIResolver.java", "getContext().get(\"eventid\")="+getContext().get("eventid"));
+            reger.core.Debug.debug(5, "DbURIResolver.java", "getContext().get(\"logid\")="+getContext().get("logid"));
             int eventid=0;
             if (getContext().get("eventid")!=null && reger.core.Util.isinteger(String.valueOf(getContext().get("eventid")))){
                 eventid=Integer.parseInt(String.valueOf(getContext().get("eventid")));
@@ -48,9 +48,9 @@ public class DbURIResolver extends AbstractConnector implements URIResolver {
             }
 
             String uriSpecificPart = uri.getSchemeSpecificPart();
-            reger.core.Debug.debug(3, "DbURIResolver", "uriSpecificPart=" + uriSpecificPart);
+            reger.core.Debug.debug(5, "DbURIResolver", "uriSpecificPart=" + uriSpecificPart);
 
-            reger.core.Debug.debug(3, "DbURIResolver", "loading xform from database");
+            reger.core.Debug.debug(5, "DbURIResolver", "loading xform from database");
 
             //Load from the database
             eventid=1;
@@ -66,7 +66,7 @@ public class DbURIResolver extends AbstractConnector implements URIResolver {
                     Document doc = factory.newDocumentBuilder().parse(new InputSource(new StringReader(eventXformData.getXformdata())));
                     return doc;
                 } catch (Exception e){
-                    reger.core.Debug.debug(3, "DbURIResolver.java", e);
+                    reger.core.Debug.debug(5, "DbURIResolver.java", e);
                 }
             }
 
@@ -74,7 +74,7 @@ public class DbURIResolver extends AbstractConnector implements URIResolver {
             return nothing();
 
         } catch (Exception e) {
-            reger.core.Debug.debug(3, "DbURIResolver.java", e);
+            reger.core.Debug.debug(5, "DbURIResolver.java", e);
             throw new XFormsException(e);
         }
     }

@@ -42,7 +42,7 @@ try{
     //Now get the output
     outUrl = urlPortControlled.toString();
 } catch (Exception ex){
-    reger.core.Debug.debug(3, "Account.java", ex);
+    reger.core.Debug.debug(5, "Account.java", ex);
     mb.append("<br>Error");
 }
 mb.append("<br>outUrl="+outUrl);

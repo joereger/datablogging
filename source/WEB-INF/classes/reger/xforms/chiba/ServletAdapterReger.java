@@ -72,7 +72,7 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
         debug.append("<br>XSLTstylesheet: " + XSLTstylesheet);
         debug.append("<br>stylesheetPath: " + stylesheetPath);
         debug.append("<br>action URL: " + actionUrl);
-        reger.core.Debug.debug(3, "ServletAdapterReger.java", "Init() called.<br>"+debug.toString());
+        reger.core.Debug.debug(5, "ServletAdapterReger.java", "Init() called.<br>"+debug.toString());
 
 
         this.chibaBean.init();
@@ -167,7 +167,7 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
             debug.append("<br>css-file=" + CSSFile);
         }
         debug.append("<br>>>> setting UI generator params...end");
-        reger.core.Debug.debug(3, "ServletAdapterReger.java", debug.toString());
+        reger.core.Debug.debug(5, "ServletAdapterReger.java", debug.toString());
 
         generator.setInputNode(this.chibaBean.getXMLContainer());
         generator.generate();
@@ -218,7 +218,7 @@ public class ServletAdapterReger extends AbstractChibaAdapter{
             debug.append("<br>css-file=" + CSSFile);
         }
         debug.append("<br>>>> setting UI generator params...end");
-        reger.core.Debug.debug(3, "ServletAdapterReger.java", debug.toString());
+        reger.core.Debug.debug(5, "ServletAdapterReger.java", debug.toString());
 
 
         //todo: move these params to buildUI too

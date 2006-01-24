@@ -104,7 +104,7 @@ public class ImportRSSEntries {
                     }
                 }
             } else {
-                Debug.debug(3, "storeInDB method in ImportRSSEntries", "User importing blog entries was not logged in.");
+                Debug.debug(5, "storeInDB method in ImportRSSEntries", "User importing blog entries was not logged in.");
             }
         } catch (Exception ex) {
             throw ex;

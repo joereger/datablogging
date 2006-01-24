@@ -37,7 +37,7 @@ public class EmailSendThread extends Thread {
         try{
             EmailSend.sendMailNoThread(from, to, subject, message, isHtmlEmail);
         } catch (EmailSendException e){
-            reger.core.Debug.debug(3, "EmailSendThread.java", e);
+            reger.core.Debug.debug(5, "EmailSendThread.java", e);
         }
 
 
@@ -76,10 +76,10 @@ public class EmailSendThread extends Thread {
 //
 //        } catch (javax.mail.SendFailedException nsend){
 //            System.out.println("EMAIL FAIL: nsend:"+nsend.getMessage());
-//            Debug.debug(3, "EmailSendThread.java", nsend);
+//            Debug.debug(5, "EmailSendThread.java", nsend);
 //        } catch (javax.mail.internet.AddressException ex){
 //            System.out.println("EMAIL FAIL: ex:"+ex.getMessage());
-//            Debug.debug(3, "EmailSendThread.java", ex);
+//            Debug.debug(5, "EmailSendThread.java", ex);
 //        } catch (Exception e) {
 //            System.out.println("EMAIL FAIL: e:"+e.getMessage());
 //			Debug.errorsave(e, "EmailSendThread.java");

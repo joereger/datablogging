@@ -103,7 +103,7 @@ public class ImportBlogEntries {
                     }
                 }
             } else {
-                Debug.debug(3, "storeInDB method in ImportBlogEntries", "User importing blog entries was not logged in.");
+                Debug.debug(5, "storeInDB method in ImportBlogEntries", "User importing blog entries was not logged in.");
             }
         } catch (Exception ex) {
             throw ex;

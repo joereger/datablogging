@@ -46,7 +46,7 @@ public class ChibaServletReger {
     private Log log;
 
     public ChibaServletReger(Entry entry, Log log){
-        reger.core.Debug.debug(3, "ChibaServletReger.java", "--------------- creating instance of ChibaServletReger... ---------------");
+        reger.core.Debug.debug(5, "ChibaServletReger.java", "--------------- creating instance of ChibaServletReger... ---------------");
         this.entry = entry;
         this.log = log;
     }
@@ -83,12 +83,12 @@ public class ChibaServletReger {
      */
     public String doGet(HttpServletRequest request, HttpServletResponse response){
 
-        reger.core.Debug.debug(3, "ChibaServletReger.java", "ChibaServletReger.doGet(request, response) called.");
+        reger.core.Debug.debug(5, "ChibaServletReger.java", "ChibaServletReger.doGet(request, response) called.");
 
         ServletAdapterReger servletAdapter = null;
         HttpSession session = request.getSession(true);
 
-        reger.core.Debug.debug(3, "ChibaServletReger.java", "--------------- new XForms session ---------------");
+        reger.core.Debug.debug(5, "ChibaServletReger.java", "--------------- new XForms session ---------------");
         try {
             // build actionURL where forms are submitted to
             String actionURL = getActionURL(request, response);
@@ -145,7 +145,7 @@ public class ChibaServletReger {
      */
     public String doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        reger.core.Debug.debug(3, "ChibaServletReger.java", "ChibaServletReger.doPost(request, response) called.");
+        reger.core.Debug.debug(5, "ChibaServletReger.java", "ChibaServletReger.doPost(request, response) called.");
 
         HttpSession session = request.getSession(true);
         ServletAdapterReger servletAdapter = null;
@@ -171,7 +171,7 @@ public class ChibaServletReger {
             // as a submission handler may force a redirect
             if (servletAdapter.getRedirectUri() != null) {
 
-                reger.core.Debug.debug(3, "ChibaServletReger.java", "servletAdapter.getRedirectUri() is NOT null = " + servletAdapter.getRedirectUri());
+                reger.core.Debug.debug(5, "ChibaServletReger.java", "servletAdapter.getRedirectUri() is NOT null = " + servletAdapter.getRedirectUri());
 
                 String redirectTo = servletAdapter.getRedirectUri();
 
@@ -191,7 +191,7 @@ public class ChibaServletReger {
             InputStream forwardStream = (InputStream) forwardMap.get(ChibaAdapter.SUBMISSION_RESPONSE_STREAM);
             if (forwardStream != null) {
 
-                reger.core.Debug.debug(3, "ChibaServletReger.java", "forwardStream is NOT null");
+                reger.core.Debug.debug(5, "ChibaServletReger.java", "forwardStream is NOT null");
 
                 // shutdown processor
                 servletAdapter.getChibaBean().shutdown();
@@ -204,7 +204,7 @@ public class ChibaServletReger {
                 return "";
             }
 
-            reger.core.Debug.debug(3, "ChibaServletReger.java", "Did not redirect and did not forward to stream... returning response myself.");
+            reger.core.Debug.debug(5, "ChibaServletReger.java", "Did not redirect and did not forward to stream... returning response myself.");
 
             // render result to output
             StringWriter out = new StringWriter();
@@ -245,7 +245,7 @@ public class ChibaServletReger {
             //InputSource xForm = new InputSource(new FileInputStream(xFormPath));
 
             //Xform from log/db
-            reger.core.Debug.debug(3, "ChibaServletReger.java", "loading xform from log for logid=" + log.getLogid() + " AND eventtypeid="+log.getEventtypeid());
+            reger.core.Debug.debug(5, "ChibaServletReger.java", "loading xform from log for logid=" + log.getLogid() + " AND eventtypeid="+log.getEventtypeid());
             String xform = AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(log.getEventtypeid()).getLogtypexform().getXform();
             InputSource xFormFromDb = new InputSource(new StringReader(xform));
 
@@ -271,7 +271,7 @@ public class ChibaServletReger {
             if (!(s.equals(XSL_PARAM_NAME) || s.equals(CSS_PARAM_NAME) || s.equals(ACTIONURL_PARAM_NAME))) {
                 String value = request.getParameter(s);
                 servletAdapter.setContextProperty(s, value);
-                reger.core.Debug.debug(3, "ChibaServletReger.java", "added request param '" + s + "' added to context");
+                reger.core.Debug.debug(5, "ChibaServletReger.java", "added request param '" + s + "' added to context");
             }
         }
     }
@@ -292,7 +292,7 @@ public class ChibaServletReger {
             actionURL += sessionId;
         }
 
-        reger.core.Debug.debug(3, "ChibaServletReger.java", "getActionURL actionURL: " + actionURL);
+        reger.core.Debug.debug(5, "ChibaServletReger.java", "getActionURL actionURL: " + actionURL);
         // encode the URL to allow for session id rewriting
         actionURL = response.encodeURL(actionURL);
         return actionURL;

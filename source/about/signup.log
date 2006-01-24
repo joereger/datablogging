@@ -68,10 +68,10 @@ if (pageProps.action.equals("createaccount")) {
 
     //Set properties of this accountuser
     if (userSession.getPl().getIsemailactivationofaccountsrequired()){
-        reger.core.Debug.debug(3, "signup.log", "setting new user to false activated");
+        reger.core.Debug.debug(5, "signup.log", "setting new user to false activated");
         au.setIsactivatedbyemail(false);
     } else {
-        reger.core.Debug.debug(3, "signup.log", "setting new user to true validated");
+        reger.core.Debug.debug(5, "signup.log", "setting new user to true validated");
         au.setIsactivatedbyemail(true);
     }
     au.setEmailactivationkey(reger.core.RandomString.randomAlphanumeric(10));
@@ -188,18 +188,18 @@ if (pageProps.action.equals("createaccount")) {
             try{
                 reger.emailtext.BasicEmails.newAccountEmailVerificationMessage(au, newaccountid, userSession.getPl(), request.getParameter("password"));
             } catch (EmailSendException ex){
-                reger.core.Debug.debug(3, "signup.log", "redirecting new user to login-awaitingactivation.log with error");
+                reger.core.Debug.debug(5, "signup.log", "redirecting new user to login-awaitingactivation.log with error");
                 response.sendRedirect("login-awaitingactivation.log?msg=signupcompletewitherror");
                 return;
             }
-            reger.core.Debug.debug(3, "signup.log", "redirecting new user to login-awaitingactivation.log");
+            reger.core.Debug.debug(5, "signup.log", "redirecting new user to login-awaitingactivation.log");
             response.sendRedirect("login-awaitingactivation.log?msg=signupcomplete");
             return;
         } else {
             reger.emailtext.BasicEmails.newAccountWelcome(au, newaccountid, userSession.getPl(), request.getParameter("password"));
         }
         //Redirect to log the user in
-        reger.core.Debug.debug(3, "signup.log", "redirecting new user to login.log");
+        reger.core.Debug.debug(5, "signup.log", "redirecting new user to login.log");
         response.sendRedirect(au.getSiteRootUrlOfPrimaryAccount(userSession) +"/login.log?action=login&email="+java.net.URLEncoder.encode(au.getEmail(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&msg=signupcomplete");
         return;
     }

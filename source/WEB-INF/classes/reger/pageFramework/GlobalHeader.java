@@ -257,13 +257,13 @@ public class GlobalHeader {
                     }
                     if (!reger.Entry.checkEntryKey(request.getParameter("entrykey"), tmpEventid)){
                         //Then send to permission denied
-                        Debug.debug(3, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because entrykey fails");
+                        Debug.debug(5, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because entrykey fails");
                         response.sendRedirect(pageProps.pathToAppRoot + "permissiondenied.log");
                         return;
                     }
                 } else {
                     //There's no entry key so send to permission denied
-                    Debug.debug(3, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because no entry key");
+                    Debug.debug(5, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because no entry key");
                     response.sendRedirect(pageProps.pathToAppRoot + "permissiondenied.log");
                     return;
                 }
@@ -277,12 +277,12 @@ public class GlobalHeader {
                     try{
                         BasicEmails.newAccountEmailVerificationMessage(userSession.getAccountuser(), userSession.getAccountuser().getAccountid(), userSession.getPl(), "");
                     } catch (EmailSendException e){
-                        reger.core.Debug.debug(3, "GlobalHeader.java", "Error sending email on activation redirect: " + e.getErrorsAsSingleString());
+                        reger.core.Debug.debug(5, "GlobalHeader.java", "Error sending email on activation redirect: " + e.getErrorsAsSingleString());
                     } catch(Exception ex){
                         reger.core.Debug.errorsave(ex, "GlobalHeader.java");
                     }
                     userSession.getAccountuser().userLogout();
-                    Debug.debug(3, "GlobalHeader", "globalheader.jsp - sending to login-awaitingactivation.log");
+                    Debug.debug(5, "GlobalHeader", "globalheader.jsp - sending to login-awaitingactivation.log");
                     response.sendRedirect(pageProps.pathToAppRoot + "about/login-awaitingactivation.log");
                     return;
                 }

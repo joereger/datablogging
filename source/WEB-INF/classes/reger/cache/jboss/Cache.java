@@ -35,7 +35,7 @@ public class Cache {
 //            config.configure(treeCacheAop, WebAppRootDir.getWebAppRootPath()+"WEB-INF/jbosscache-replSync-service.xml");
 //            //treeCacheAop.setClusterName("RegerCom-TreeCache-Cluster");
 //            treeCacheAop.startService();
-//            reger.core.Debug.debug(3, "Cache.java", "JBossCache UserSessionCache created.");
+//            reger.core.Debug.debug(5, "Cache.java", "JBossCache UserSessionCache created.");
 //        } catch (Exception e){
 //            reger.core.Debug.errorsave(e, "Cache.java", "Boomps.");
 //        }

@@ -38,7 +38,7 @@ public class OneClickTemplateSet {
         try{
             acct.save();
         } catch (reger.core.ValidationException valEx){
-            reger.core.Debug.debug(3, "OneClickTemplateSet.java", "Problem setting oneclicktemplate on an account.");
+            reger.core.Debug.debug(5, "OneClickTemplateSet.java", "Problem setting oneclicktemplate on an account.");
         }
     }
 

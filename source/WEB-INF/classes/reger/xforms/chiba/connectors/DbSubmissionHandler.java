@@ -33,7 +33,7 @@ import reger.xforms.EventXformData;
 public class DbSubmissionHandler extends AbstractConnector implements SubmissionHandler {
 
     public DbSubmissionHandler(){
-        reger.core.Debug.debug(3, "DbSubmissionHandler.java", "DbSubmissionHandler instantiated");
+        reger.core.Debug.debug(5, "DbSubmissionHandler.java", "DbSubmissionHandler instantiated");
     }
 
     /**
@@ -46,11 +46,11 @@ public class DbSubmissionHandler extends AbstractConnector implements Submission
      * @throws XFormsException if any error occurred during submission.
      */
     public Map submit(Submission submission, Node instance) throws XFormsException {
-        reger.core.Debug.debug(3, "DbSubmissionHandler.java", "DbSubmissionHandler.submit() called");
+        reger.core.Debug.debug(5, "DbSubmissionHandler.java", "DbSubmissionHandler.submit() called");
 
         //@todo What is submission replace all about?
         if (!submission.getReplace().equals("none")) {
-            reger.core.Debug.debug(3, "DbSubmissionHandler.java", "submission mode '" + submission.getReplace() + "' not supported");
+            reger.core.Debug.debug(5, "DbSubmissionHandler.java", "submission mode '" + submission.getReplace() + "' not supported");
             throw new XFormsException("submission mode '" + submission.getReplace() + "' not supported");
         }
 
@@ -60,9 +60,9 @@ public class DbSubmissionHandler extends AbstractConnector implements Submission
             //This is how to get data from the scheme line
             URI uri = new URI(getURI());
             String uriSpecific = uri.getSchemeSpecificPart();
-            reger.core.Debug.debug(3, "DbSubmissionHandler.java", "getContext().get(\"eventid\")="+getContext().get("eventid"));
-            reger.core.Debug.debug(3, "DbSubmissionHandler.java", "getContext().get(\"logid\")="+getContext().get("logid"));
-            reger.core.Debug.debug(3, "DbSubmissionHandler.java", "putting instance data to database");
+            reger.core.Debug.debug(5, "DbSubmissionHandler.java", "getContext().get(\"eventid\")="+getContext().get("eventid"));
+            reger.core.Debug.debug(5, "DbSubmissionHandler.java", "getContext().get(\"logid\")="+getContext().get("logid"));
+            reger.core.Debug.debug(5, "DbSubmissionHandler.java", "putting instance data to database");
             int eventid=0;
             if (getContext().get("eventid")!=null && reger.core.Util.isinteger(String.valueOf(getContext().get("eventid")))){
                 eventid=Integer.parseInt(String.valueOf(getContext().get("eventid")));
@@ -92,12 +92,12 @@ public class DbSubmissionHandler extends AbstractConnector implements Submission
             eventXformData.save();
 
 
-            reger.core.Debug.debug(3, "DbSubmissionHandler.java", "serializedData = <br>"+serializedData.replaceAll("<", "&lt;"));
+            reger.core.Debug.debug(5, "DbSubmissionHandler.java", "serializedData = <br>"+serializedData.replaceAll("<", "&lt;"));
 
 
 
         } catch (Exception e) {
-            reger.core.Debug.debug(3, "DbSubmissionHandler.java", e);
+            reger.core.Debug.debug(5, "DbSubmissionHandler.java", e);
             throw new XFormsException(e);
         }
 

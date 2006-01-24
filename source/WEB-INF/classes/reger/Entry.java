@@ -1369,17 +1369,17 @@ public class Entry {
     }
 
     public static boolean checkEntryKey(String entryKey, int eventid) {
-        Debug.debug(3, "", "Checking entryKey. eventid=" + eventid + " entryKey=" + entryKey);
+        Debug.debug(5, "", "Checking entryKey. eventid=" + eventid + " entryKey=" + entryKey);
         //-----------------------------------
         //-----------------------------------
         String[][] rstEntry = Db.RunSQL("SELECT eventid FROM event WHERE eventid='" + eventid + "' AND entrykey='" + reger.core.Util.cleanForSQL(entryKey) + "'");
         //-----------------------------------
         //-----------------------------------
         if (rstEntry != null && rstEntry.length > 0) {
-            Debug.debug(3, "", "Returning True. eventid=" + eventid + " entryKey=" + entryKey);
+            Debug.debug(5, "", "Returning True. eventid=" + eventid + " entryKey=" + entryKey);
             return true;
         }
-        Debug.debug(3, "", "Returning False. eventid=" + eventid + " entryKey=" + entryKey);
+        Debug.debug(5, "", "Returning False. eventid=" + eventid + " entryKey=" + entryKey);
         return false;
     }
 

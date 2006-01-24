@@ -26,7 +26,7 @@ pageProps.pathToAppRoot="../";
 /*----------------------------------------------------*/
 
 //Debug
-reger.core.Debug.debug(3, "settings-template-edit.log", reger.template.AllTemplatesInSystem.debugPrintHtmlListOfTemplates());
+reger.core.Debug.debug(5, "settings-template-edit.log", reger.template.AllTemplatesInSystem.debugPrintHtmlListOfTemplates());
 
 //Get type
 int type = -1;

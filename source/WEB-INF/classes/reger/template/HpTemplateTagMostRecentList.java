@@ -58,8 +58,8 @@ public class HpTemplateTagMostRecentList implements HpTemplateTag{
         }
 
         String sql = "SELECT eventid, title, event.logid FROM event WHERE event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+reger.Entry.sqlOfLiveEntry+" AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid(), includelogshiddenfromhomepage)+" "+logidSql+" ORDER BY date DESC LIMIT 0,15";
-        reger.core.Debug.debug(3, "HpTemplateTagMostRecentList.java", sql);
-        reger.core.Debug.debug(3, "HpTemplateTagMostRecentList.java", "userSession.getAccountUser()="+userSession.getAccountuser().getAccountuserid() + "<br>isloggedin:" + userSession.getAccountuser().getIsLoggedIn() + "<br>email:"+userSession.getAccountuser().getEmail());
+        reger.core.Debug.debug(5, "HpTemplateTagMostRecentList.java", sql);
+        reger.core.Debug.debug(5, "HpTemplateTagMostRecentList.java", "userSession.getAccountUser()="+userSession.getAccountuser().getAccountuserid() + "<br>isloggedin:" + userSession.getAccountuser().getIsLoggedIn() + "<br>email:"+userSession.getAccountuser().getEmail());
         //-----------------------------------
         //-----------------------------------
         String[][] rstLastentries= reger.core.db.Db.RunSQL(sql);

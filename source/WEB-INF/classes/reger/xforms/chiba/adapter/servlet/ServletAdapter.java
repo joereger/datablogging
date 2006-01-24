@@ -84,7 +84,7 @@ public class ServletAdapter extends AbstractChibaAdapter{
         debug.append("<br>XSLTstylesheet: " + stylesheet);
         debug.append("<br>stylesheetPath: " + stylesheetPath);
         debug.append("<br>action URL: " + actionUrl);
-        reger.core.Debug.debug(3, "ServletAdapter.java", "Init() called.<br>"+debug.toString());
+        reger.core.Debug.debug(5, "ServletAdapter.java", "Init() called.<br>"+debug.toString());
 
 
         this.chibaBean.init();
@@ -190,7 +190,7 @@ public class ServletAdapter extends AbstractChibaAdapter{
             debug.append("<br>css-file=" + CSSFile);
         }
         debug.append("<br>>>> setting UI generator params...end");
-        reger.core.Debug.debug(3, "ServletAdapter.java", debug.toString());
+        reger.core.Debug.debug(5, "ServletAdapter.java", debug.toString());
 
         generator.setInputNode(this.chibaBean.getXMLContainer());
         generator.generate();

@@ -90,11 +90,11 @@ public class EmailApi {
 
     private void startWorking(){
         //Set some vars
-        Debug.debug(3, "EmailApi", "Starting to process mail message.");
+        Debug.debug(5, "EmailApi", "Starting to process mail message.");
 
         //Parse the message
         boolean parseIn = parseIncomingMessage();
-        Debug.debug(3, "EmailApi", "Result of parsing incoming raw message:" + parseIn);
+        Debug.debug(5, "EmailApi", "Result of parsing incoming raw message:" + parseIn);
 
         //Iterate all recipients, looking for valid logs
         if (parseIn){
@@ -536,7 +536,7 @@ public class EmailApi {
                     //And then convert that value to GMT.
                     Calendar endOfDayGMT = reger.core.TimeUtils.usertogmttime(endOfDay, timezoneid);
 
-                    Debug.debug(3, "EmailApi", "timezoneid:"+timezoneid+"<br>reger.core.TimeUtils.dateformatfordb(tmpCal): " +reger.core.TimeUtils.dateformatfordb(tmpCal)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDay): " +reger.core.TimeUtils.dateformatfordb(startOfDay)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDayGMT):" + reger.core.TimeUtils.dateformatfordb(startOfDayGMT) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDay): " + reger.core.TimeUtils.dateformatfordb(endOfDay) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDayGMT): " + reger.core.TimeUtils.dateformatfordb(endOfDayGMT));
+                    Debug.debug(5, "EmailApi", "timezoneid:"+timezoneid+"<br>reger.core.TimeUtils.dateformatfordb(tmpCal): " +reger.core.TimeUtils.dateformatfordb(tmpCal)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDay): " +reger.core.TimeUtils.dateformatfordb(startOfDay)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDayGMT):" + reger.core.TimeUtils.dateformatfordb(startOfDayGMT) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDay): " + reger.core.TimeUtils.dateformatfordb(endOfDay) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDayGMT): " + reger.core.TimeUtils.dateformatfordb(endOfDayGMT));
 
                     //And then search for an eventid within this range.
                     //-----------------------------------

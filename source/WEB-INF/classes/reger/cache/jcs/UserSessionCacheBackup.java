@@ -27,7 +27,7 @@ public class UserSessionCacheBackup {
             attr.setUseRemote(false);
             //Create the cache
             userSessionCache = JCS.getInstance("UserSessionCache", attr);
-            reger.core.Debug.debug(3, "UserSessionCache.java", "JCS UserSessionCache Set Up.");
+            reger.core.Debug.debug(5, "UserSessionCache.java", "JCS UserSessionCache Set Up.");
         } catch (Exception e){
             reger.core.Debug.errorsave(e, "UserSessionCache.java", "Possible cause: Make sure all objects and sub-objects of UserSession are serializable.");
         }

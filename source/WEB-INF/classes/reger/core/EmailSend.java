@@ -77,12 +77,12 @@ public class EmailSend {
 
         } catch (javax.mail.SendFailedException nsend){
             System.out.println("EMAIL FAIL: nsend:"+nsend.getMessage());
-            Debug.debug(3, "EmailSendThread.java", nsend);
+            Debug.debug(5, "EmailSendThread.java", nsend);
             EmailSendException ex = new EmailSendException("Email send failed: " + nsend.getMessage());
             throw ex;
         } catch (javax.mail.internet.AddressException ex){
             System.out.println("EMAIL FAIL: ex:"+ex.getMessage());
-            Debug.debug(3, "EmailSendThread.java", ex);
+            Debug.debug(5, "EmailSendThread.java", ex);
             EmailSendException esex = new EmailSendException("Email address invalid: " + ex.getMessage());
             throw esex;
         } catch (Exception e) {

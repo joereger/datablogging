@@ -150,7 +150,7 @@ public class ChibaServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        reger.core.Debug.debug(3, "ChibaServlet.java", "ChibaServlet.doGet(request, response) called.");
+        reger.core.Debug.debug(5, "ChibaServlet.java", "ChibaServlet.doGet(request, response) called.");
 
         ServletAdapter servletAdapter = null;
         HttpSession session = request.getSession(true);
@@ -181,7 +181,7 @@ public class ChibaServlet extends HttpServlet {
 
             // build actionURL where forms are submitted to
             String actionURL = getActionURL(request, response);
-            reger.core.Debug.debug(3, "ChibaServlet.java", "actionURL=" + actionURL);
+            reger.core.Debug.debug(5, "ChibaServlet.java", "actionURL=" + actionURL);
 
             servletAdapter = setupServletAdapter(actionURL, session, formURI, xslFile, css);
             updateContext(servletAdapter, request, session);
@@ -227,7 +227,7 @@ public class ChibaServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        reger.core.Debug.debug(3, "ChibaServlet.java", "ChibaServlet.doPost(request, response) called.");
+        reger.core.Debug.debug(5, "ChibaServlet.java", "ChibaServlet.doPost(request, response) called.");
 
         HttpSession session = request.getSession(true);
         ServletAdapter servletAdapter = null;
@@ -246,7 +246,7 @@ public class ChibaServlet extends HttpServlet {
             // NOTE - this needs to be checked *before* the this.getForwardMap()
             // as a submission handler may force a redirect
             if (servletAdapter.getRedirectUri() != null) {
-                reger.core.Debug.debug(3, "ChibaServlet.java", "servletAdapter.getRedirectUri() is NOT null = " + servletAdapter.getRedirectUri());
+                reger.core.Debug.debug(5, "ChibaServlet.java", "servletAdapter.getRedirectUri() is NOT null = " + servletAdapter.getRedirectUri());
                 String redirectTo = servletAdapter.getRedirectUri();
                 // todo: remove from session ?
                 // shutdown processor
@@ -264,7 +264,7 @@ public class ChibaServlet extends HttpServlet {
             Map forwardMap = servletAdapter.getForwardMap();
             InputStream forwardStream = (InputStream) forwardMap.get(ChibaAdapter.SUBMISSION_RESPONSE_STREAM);
             if (forwardStream != null) {
-                reger.core.Debug.debug(3, "ChibaServlet.java", "forwardStream is NOT null");
+                reger.core.Debug.debug(5, "ChibaServlet.java", "forwardStream is NOT null");
                 // todo: remove from session ?
                 // shutdown processor
                 servletAdapter.getChibaBean().shutdown();
@@ -277,7 +277,7 @@ public class ChibaServlet extends HttpServlet {
                 return;
             }
 
-            reger.core.Debug.debug(3, "ChibaServlet.java", "Did not redirect and did not forward to stream... returning response myself.");
+            reger.core.Debug.debug(5, "ChibaServlet.java", "Did not redirect and did not forward to stream... returning response myself.");
 
             // set content type
             response.setContentType("text/html");

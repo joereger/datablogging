@@ -369,12 +369,23 @@ public class MegaHtmlFormTop {
 
 
             //Show the author
-            mb.append("<tr><td colspan=3 bgcolor=#cccccc valign=top class=logentryheader>");
-            //mb.append("<font face=arial size=-2 class=smallfont>Author: <b><a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"' onclick=\"leaveEntryPage(this.href); return false;\">"+pageProps.entry.author+"</b></font>");
-            if (!editLayout){
-                mb.append("<font face=arial size=-2 class=smallfont>Author: <b><a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"'>"+pageProps.entry.author+"</b></font>");
+            try{
+                mb.append("<tr><td colspan=3 bgcolor=#cccccc valign=top class=logentryheader>");
+                //mb.append("<font face=arial size=-2 class=smallfont>Author: <b><a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"' onclick=\"leaveEntryPage(this.href); return false;\">"+pageProps.entry.author+"</b></font>");
+                if (!editLayout){
+                    Accountuser au = new Accountuser(pageProps.entry.accountuserid, true);
+                    mb.append("<font face=arial size=-2 class=smallfont>");
+                    mb.append("Author:<br>");
+                    mb.append("<a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"'>");
+                    mb.append("<img src = '"+au.primaryImage(userSession, true)+"' width=50 border=0><br>");
+                    mb.append(au.getFriendlyname());
+                    mb.append("</b></font></a>");
+                }
+                mb.append("</td></tr>");
+            } catch (Exception e){
+                reger.core.Debug.errorsave(e, "MegaHtmlFormTop.java");
             }
-            mb.append("</td></tr>");
+
 
 
             //Editor toggle
@@ -392,7 +403,7 @@ public class MegaHtmlFormTop {
                         mb.append("</a>");
                         mb.append("<br>");
                     } else {
-                        mb.append("<font face=arial size=-2>If you're using Internet Explorer 4+ want to try more advanced text formatting then go</font><br>");
+                        mb.append("<font face=arial size=-2>If you're using Internet Explorer 4+ and want to try more advanced text formatting then go</font><br>");
                         //mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "' onclick=\"leaveEntryPage(this.href); return false;\">");
                         mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "'>");
                         mb.append("<font face=arial size=-1 color=#0000ff><b>To Advanced Entry Mode</b></font>");
