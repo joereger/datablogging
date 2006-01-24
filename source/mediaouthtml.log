@@ -142,7 +142,18 @@ if (showimage) {
     mb.append("<br>");
     mb.append("<font face=arial size=-1 color=#cccccc><b>From Entry: </b></font><a href=\"javascript:openLocInParentAndCloseWindow('"+entryurl+"');\"><font face=arial size=-1 color=#0000ff><b>" + entrytitle + "</b></font></a>");
     //Display Tag Links
-    String imageTags = reger.Tag.getStringOfAllTagsForImageAsLinks(imageid, "");
+    //String imageTags = reger.Tag.getStringOfAllTagsForImageAsLinks(imageid, "");
+    String imageTags = "";
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstTags= Db.RunSQL("SELECT tag.tagid, tag FROM tagimagelink, tag WHERE tag.tagid=tagimagelink.tagid AND tagimagelink.imageid='"+imageid+"' ORDER BY tagimagelink.tagimagelinkid ASC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstTags!=null && rstTags.length>0){
+        for(int i=0; i<rstTags.length; i++){
+            imageTags = imageTags + "<a href=\"javascript:openLocInParentAndCloseWindow('"+pageProps.pathToAppRoot+"tag-detail.log?tagid="+rstTags[i][0]+"&tag="+rstTags[i][1]+"');\"><font color=#0000ff>" + rstTags[i][1] + "</font></a> ";
+        }
+    }
     if (!imageTags.equals("")) {
         mb.append("<br>");
         mb.append("<font face=arial size=-1 color=#cccccc><b>Tags: </b></font><font face=arial size=-1 color=#0000ff>" + imageTags + "</font>");

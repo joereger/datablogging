@@ -33,7 +33,7 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
 
     public static StringBuffer getValue(StringBuffer mb, UserSession userSession, PageProps pageProps, javax.servlet.http.HttpServletRequest request) {
         reger.core.Debug.debug(5, "PlUserTemplateProcessor.java", "PlUserTemplateProcessor.getValue() called.");
-        if (userSession.getAccount().isPro() && userSession.getPl().getDoapplyplusertemplatetopro()){
+        if ((!userSession.getAccount().isPro()) || (userSession.getAccount().isPro() && userSession.getPl().getDoapplyplusertemplatetopro())){
             reger.core.Debug.debug(5, "PlUserTemplateProcessor.java", "Attempting to apply template.");
             //Get the template string to use
             String templateMainBody="";

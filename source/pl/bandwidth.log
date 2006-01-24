@@ -48,6 +48,7 @@ if (request.getParameter("year")!=null && reger.core.Util.isinteger(request.getP
 }
 
 mb.append("<form action=bandwidth.log method=get>");
+mb.append("<input type=hidden name=plid value="+plid+">");
 mb.append("<select name=month>");
 for(int i=1; i<=12; i++){
     mb.append("<option value='"+i+"' ");
