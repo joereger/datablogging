@@ -28,9 +28,6 @@ mb.append("Coming in a few days.");
 
 
 
-//HtmlCache
-%><%@ include file="../htmlcacheend.jsp" %><%
-
 %>
 
 <%
