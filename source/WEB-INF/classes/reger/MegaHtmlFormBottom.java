@@ -578,7 +578,7 @@ public class MegaHtmlFormBottom {
                     mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
                     for(int i=0; i<rstGroupsThisEventIsIn.length; i++){
                         mb.append("<font face=arial size=-2 class=smallfont>");
-                        mb.append("<a href='group-view.log&groupid="+rstGroupsThisEventIsIn[i][0]+"'>");
+                        mb.append("<a href='"+userSession.getPl().getPlBaseUrl(userSession)+"/about/community-group-view.log?groupid="+rstGroupsThisEventIsIn[i][0]+"'>");
                         mb.append(rstGroupsThisEventIsIn[i][1]);
                         mb.append("</a>");
                         mb.append("</font> ");
@@ -587,8 +587,6 @@ public class MegaHtmlFormBottom {
                     mb.append("</tr>");
                 }
             }
-
-
             //End Groups
 
 

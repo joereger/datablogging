@@ -11,7 +11,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "Group";
+pageProps.title = "<img src='../images/groups-lg.gif' align=middle> Leave Group";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "groups";
 pageProps.aclObjectName = "MANAGEGROUPS";

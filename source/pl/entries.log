@@ -85,7 +85,7 @@ String selectSql = "SELECT eventid, event.eventtypeid, event.createdate, event.d
 String countSelectSql = "SELECT count(*) ";
 String fromSql = " FROM event, account, megalog ";
 String orderbySql = " ORDER BY event.createdate DESC ";
-String whereSql = " WHERE event.accountid=account.accountid AND event.logid=megalog.logid";
+String whereSql = " WHERE event.accountid=account.accountid AND event.logid=megalog.logid AND account.plid='"+plid+"'";
 if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
     whereSql = whereSql + " AND megalog.eventtypeid='"+request.getParameter("eventtypeid")+"'";
 }

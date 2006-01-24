@@ -1,40 +1,36 @@
 <%@ page import="reger.core.db.Db,
-                 org.apache.xmlrpc.XmlRpcClient,
-                 java.util.Vector,
-                 java.util.Hashtable,
-                 reger.core.db.Db"%>
-<%@ page import="reger.core.Debug"%>
+                 reger.search.SearchUIFlowAdvSearch"%>
 <%@ page import="reger.groups.Group"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "<img src='../images/groups-lg.gif' align=middle> Find Groups";
-pageProps.isPasswordProtected = true;
-pageProps.navButtonName = "groups";
-pageProps.aclObjectName = "MANAGEGROUPS";
-pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Community: Groups";
+pageProps.navButtonName = "aboutcommunity-groups";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
 /*----------------------------------------------------*/
 %>
 
 <%@ include file="../globalheader.jsp" %>
 
-<%
 
+
+<%
 /*----------------------------------------------------*/
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-
 
 mb.append(reger.ui.BubbleBox.start("Search Groups", pageProps.pathToAppRoot));
 if (request.getParameter("searchterms")==null || request.getParameter("searchterms").equals("")){
     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Please provide search terms to search groups."));
 }
 mb.append("<br>");
-mb.append("<form action='groups-find.log' method=post>");
+mb.append("<form action='community-groups.log' method=post>");
 mb.append("<input type=hidden name=action value='searchgroups'>");
 String sbtext = "";
 if (request.getParameter("searchterms")!=null){
@@ -48,7 +44,6 @@ mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 
 if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms")!=null && !request.getParameter("searchterms").equals("")){
 
-        mb.append(reger.ui.BubbleBox.start("Search Results", pageProps.pathToAppRoot));
 
         mb.append("<table cellpadding=5 cellspacing=2 border=0>");
 
@@ -75,7 +70,7 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
 
 
                 mb.append("<td valign=top>");
-                mb.append("<a href='"+pageProps.pathToAppRoot+"groups/group.log?groupid="+group.getGroupid()+"'>");
+                mb.append("<a href='community-group-view.log?groupid="+group.getGroupid()+"'>");
                 mb.append("<font face=arial size=-1>");
                 mb.append("<strong>");
                 mb.append(group.getName());
@@ -117,15 +112,17 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
                 mb.append("</td>");
 
 
-                mb.append("<td valign=top align=center>");
-                mb.append("<font face=arial size=-2>");
-                mb.append("<a href='groups-edit.log?action=join&groupid="+group.getGroupid()+"'>");
-                mb.append("<img src='../images/plus-icon.gif' border=0>");
-                mb.append("<br>");
-                mb.append("Join Group");
-                mb.append("</a>");
-                mb.append("</font>");
-                mb.append("</td>");
+                if(userSession.getAccountuser().isLoggedIn){
+                    mb.append("<td valign=top align=center>");
+                    mb.append("<font face=arial size=-2>");
+                    mb.append("<a href='"+pageProps.pathToAppRoot+"myhome/groups-edit.log?action=join&groupid="+group.getGroupid()+"'>");
+                    mb.append("<img src='../images/plus-icon.gif' border=0>");
+                    mb.append("<br>");
+                    mb.append("Join Group");
+                    mb.append("</a>");
+                    mb.append("</font>");
+                    mb.append("</td>");
+                }
 
 
                 mb.append("</tr>");
@@ -136,14 +133,9 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
 
 
 
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-
-
-
-
-
 
 }
+
 
 
 %>
@@ -151,12 +143,10 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
 <%
 /*----------------------------------------------------*/
 /*                  Side Column                       */
-    StringBuffer sc = new StringBuffer();
+        StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
-
-//sc.append("This is a ");
-//sc.append("side column section.");
 %>
 
 
 <%@ include file="../globalfooter.jsp" %>
+

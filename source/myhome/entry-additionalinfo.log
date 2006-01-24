@@ -1,0 +1,156 @@
+<%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.Entry"%>
+<%@ page import="reger.cache.EntryCache"%>
+<%@ page import="reger.Log"%>
+<%@ page import="reger.cache.LogCache"%>
+<%@ page import="reger.core.ValidationException"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.isLogidRequired=true;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
+pageProps.pathToAppRoot="../";
+//pageProps.onloadJavascriptMethod = "makeFormDraggable();";
+pageProps.helpText="This page allows you to add or edit weblog entries.  Once you're done editing, click to Save the Entry.<br><br>Below the save button you'll find a number of important extended properties that are related to this entry.  Explore these special features... they can dramatically improve your weblogging experience.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+if(request.getParameter("eventid")==null || !reger.core.Util.isinteger(request.getParameter("eventid"))){
+    response.sendRedirect("index.log");
+    return;
+}
+
+Entry entry = EntryCache.get(Integer.parseInt(request.getParameter("eventid")));
+Log log = LogCache.get(entry.logid);
+
+if (pageProps.action.equals("submit")){
+    entry.populate(log.getLogid(), request, userSession.getAccountuser().getUsertimezoneid());
+    try{
+        entry.editEntryAll(userSession.getAccount(), userSession.getAccountuser(), userSession.getPl());
+        response.sendRedirect("index.log?msg=entryedited&eventid="+entry.eventid+"&logid="+entry.logid);
+        return;
+    } catch (ValidationException vex){
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br><br>" + vex.getErrorsAsSingleString()));
+    }
+}
+
+
+if(pageProps.action.equals("")){
+    boolean haveSomethingToAdd = false;
+
+    mb.append("<form action=entry-additionalinfo.log method=post>");
+    mb.append("<input type=hidden name=action value='submit'>");
+    mb.append("<input type=hidden name=eventid value='"+entry.eventid+"'>");
+    mb.append("<input type=hidden name=logid value='"+entry.logid+"'>");
+
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  Your entry has been saved.  You can now add optional information below."));
+    mb.append("<br>");
+    mb.append("<center>");
+    mb.append("<input type=submit value='Continue'>");
+    mb.append("</center>");
+    mb.append("<br>");
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
+
+
+
+    //Begin Groups
+    if (userSession.getAccountuser().userCanDoAcl("POSTENTRYTOGROUP", userSession.getAccount().getAccountid())) {
+        haveSomethingToAdd=true;
+        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+        mb.append("<table cellpadding=10 cellspacing=0 border=0>");
+        mb.append("<tr>");
+        mb.append("<td align=left valign=top>");
+        mb.append("<img src='../images/groups-lg.gif' align=left>");
+        mb.append("</td>");
+        mb.append("<td align=right valign=top>");
+        mb.append("<font face=arial size=+2><b>");
+        mb.append("Groups");
+        mb.append("</b></font><br><font face=arial size=-2><b>");
+        mb.append("Post this entry to these groups:");
+        mb.append("</b></font></td>");
+        mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
+        mb.append("");
+        //Get all groups this accountuser is subscribed to
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstGroups= Db.RunSQL("SELECT groups.groupid, groups.name FROM groupmembership, groups  WHERE groups.groupid=groupmembership.groupid AND groupmembership.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY name ASC");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstGroups!=null && rstGroups.length>0){
+
+
+            for(int i=0; i<rstGroups.length; i++){
+                mb.append("<input type=checkbox name=groupid value='"+rstGroups[i][0]+"'");
+                if (entry.isInGroup(Integer.parseInt(rstGroups[i][0]))){
+                    mb.append(" checked ");
+                }
+                mb.append(" >");
+                mb.append(" ");
+                mb.append("<font face=arial size=-1><b>");
+                mb.append(rstGroups[i][1]);
+                mb.append("</b></font>");
+                mb.append("<br>");
+            }
+
+            if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
+                mb.append("<img src='"+pageProps.pathToAppRoot+"images/info-icon.gif' border=0>");
+                mb.append(" ");
+                mb.append("<font face=arial size=-2>");
+                mb.append("Note: posting entries from private logs (like this one) to groups will make it visible to readers and members of the group.  You are sharing something otherwise private with the group.  Readers of the group will not be able to view other entries in the this private log.  You're granting them a pass for this single entry.");
+                mb.append("</font>");
+            }
+
+        } else {
+            mb.append("<font face=arial size=-2>");
+            mb.append("You're not subscribed to any groups.  Groups allow you and your friends to share blog posts.");
+            mb.append("<br><br>");
+            mb.append("Click <a href='groups.log'>here</a> to find groups to join or create one of your own.");
+            mb.append("</font>");
+        }
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("</table>");
+        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    }
+    //End Groups
+
+
+    mb.append("</form>");
+
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+    if(!haveSomethingToAdd){
+        response.sendRedirect("index.log?msg=entryedited&eventid="+entry.eventid+"&logid="+entry.logid);
+    }
+}
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

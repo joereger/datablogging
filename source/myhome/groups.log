@@ -12,7 +12,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "Groups";
+pageProps.title = "<img src='../images/groups-lg.gif' align=middle> Groups";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "groups";
 pageProps.aclObjectName = "MANAGEGROUPS";

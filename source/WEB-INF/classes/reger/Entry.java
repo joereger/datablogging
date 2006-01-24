@@ -94,7 +94,7 @@ public class Entry {
 
     //Groups
     public ArrayList<Integer> groupids = new ArrayList<Integer>();
-    String entryKey;
+    public String entryKey;
 
     //Episodes
     public ArrayList<Integer> episodesThisEntryBelongsTo = new ArrayList<Integer>();
@@ -235,7 +235,9 @@ public class Entry {
             ampm = request.getParameter("ampm");
         }
         if (mm == 0 && dd == 0 && yyyy == 0 && h == 0 && m == 0) {
-            dateGmt = TimeUtils.nowInGmtCalendar();
+            if (dateGmt==null){
+                dateGmt = TimeUtils.nowInGmtCalendar();
+            }
         } else {
             try {
                 Calendar dateFromForm = reger.core.TimeUtils.formtocalendar(yyyy, mm, dd, h, m, 0, ampm);
@@ -472,10 +474,15 @@ public class Entry {
             locationid = location.getLocationid();
         }
 
+        //Make sure a key is set
+        if (entryKey.equals("")){
+            entryKey=reger.core.RandomString.randomAlphanumeric(10);
+        }
+
         //Edit the entry in the database
         //-------------------------------------------------
         //---------------------=======---------------------
-        int rs2 = reger.core.db.Db.RunSQLUpdate("UPDATE event SET locationid='" + locationid + "', date='" + TimeUtils.dateformatfordb(dateGmt) + "', title='" + reger.core.Util.cleanForSQL(title) + "', comments='" + reger.core.Util.cleanForSQL(comments) + "', favorite='" + favorite + "', isdraft='" + isDraft + "', sizeinbytes='" + reger.core.Util.sizeInBytes(comments) + "', isapproved='" + isApproved + "', accountuserid='" + accountuserid + "', istemporary='0', isflaggedformoderator='" + isflaggedformoderator + "', lastmodifiedbyuserdate='" + reger.core.TimeUtils.dateformatfordb(lastmodifiedbyuserdate) + "', ismoderatorapproved='" + ismoderatorapproved + "', requiresmoderatorapproval='" + requiresmoderatorapproval + "' WHERE eventid='" + this.eventid + "' AND accountid='" + accountid + "'");
+        int rs2 = reger.core.db.Db.RunSQLUpdate("UPDATE event SET locationid='" + locationid + "', date='" + TimeUtils.dateformatfordb(dateGmt) + "', title='" + reger.core.Util.cleanForSQL(title) + "', comments='" + reger.core.Util.cleanForSQL(comments) + "', favorite='" + favorite + "', isdraft='" + isDraft + "', sizeinbytes='" + reger.core.Util.sizeInBytes(comments) + "', isapproved='" + isApproved + "', accountuserid='" + accountuserid + "', istemporary='0', isflaggedformoderator='" + isflaggedformoderator + "', lastmodifiedbyuserdate='" + reger.core.TimeUtils.dateformatfordb(lastmodifiedbyuserdate) + "', ismoderatorapproved='" + ismoderatorapproved + "', requiresmoderatorapproval='" + requiresmoderatorapproval + "', entrykey='"+reger.core.Util.cleanForSQL(entryKey)+"' WHERE eventid='" + this.eventid + "' AND accountid='" + accountid + "'");
         //---------------------=======---------------------
         //-------------------------------------------------
 

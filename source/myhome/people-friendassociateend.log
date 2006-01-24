@@ -47,7 +47,7 @@ if (success){
     mb.append(autarget.getFriendlyname());
     mb.append("</font>");
     mb.append("<br>");
-    mb.append("<img src='"+autarget.primaryImage(pageProps.pathToAppRoot, true)+"' border=0 width=100>");
+    mb.append("<img src='"+autarget.primaryImage(userSession, true)+"' border=0 width=100>");
     mb.append("</td>");
     mb.append("<td valign=middle bgcolor=#ffffff nowrap>");
     mb.append("<font face=arial size=+3>");
@@ -59,7 +59,7 @@ if (success){
     mb.append(userSession.getAccountuser().getFriendlyname());
     mb.append("</font>");
     mb.append("<br>");
-    mb.append("<img src='"+userSession.getAccountuser().primaryImage(pageProps.pathToAppRoot, true)+"' border=0 width=100>");
+    mb.append("<img src='"+userSession.getAccountuser().primaryImage(userSession, true)+"' border=0 width=100>");
     mb.append("</td>");
     mb.append("</tr>");
     mb.append("</table>");

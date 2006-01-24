@@ -56,7 +56,7 @@ mb.append(reger.ui.BubbleBox.start("Sent to You By:", pageProps.pathToAppRoot));
 reger.Accountuser friend = new reger.Accountuser(message.accountuserid, true);
 mb.append("<br>");
 mb.append("<font face=arial size=-2 color=#666666>");
-mb.append("<img src='"+friend.primaryImage(pageProps.pathToAppRoot, true)+"' width=35 border=0 align=top>");
+mb.append("<img src='"+friend.primaryImage(userSession, true)+"' width=35 border=0 align=top>");
 mb.append(friend.getFriendlyname());
 mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 

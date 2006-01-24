@@ -1,42 +1,37 @@
 <%@ page import="reger.core.db.Db,
-                 org.apache.xmlrpc.XmlRpcClient,
-                 java.util.Vector,
-                 java.util.Hashtable,
-                 reger.core.db.Db"%>
+                 reger.search.SearchUIFlowAdvSearch"%>
+<%@ page import="reger.Account"%>
+<%@ page import="reger.Accountuser"%>
+<%@ page import="reger.cache.AccountCache"%>
+<%@ page import="reger.Entry"%>
 <%@ page import="reger.groups.GroupMembership"%>
 <%@ page import="reger.groups.Group"%>
-<%@ page import="reger.core.ValidationException"%>
-<%@ page import="reger.Accountuser"%>
 <%@ page import="reger.groups.GroupUtil"%>
-<%@ page import="reger.Entry"%>
 <%@ page import="reger.cache.EntryCache"%>
-<%@ page import="reger.Account"%>
-<%@ page import="reger.cache.AccountCache"%>
 <%@ page import="reger.Log"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "Group";
-pageProps.isPasswordProtected = true;
-pageProps.navButtonName = "groups";
-pageProps.aclObjectName = "MANAGEGROUPS";
-pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Community: Group";
+pageProps.navButtonName = "aboutcommunity-group-view";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
 /*----------------------------------------------------*/
 %>
 
 <%@ include file="../globalheader.jsp" %>
 
-<%
 
+
+<%
 /*----------------------------------------------------*/
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-
-
 
 
 Group group = null;
@@ -63,7 +58,6 @@ mb.append("<td colspan=2>");
 mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
 mb.append("<font face=arial size=+3 color=#666666><b>");
 mb.append("<center>");
-mb.append("<img src='../images/groups-lg.gif' align=middle> ");
 mb.append(group.getName());
 mb.append("</center>");
 mb.append("</b></font>");
@@ -186,19 +180,15 @@ mb.append("</table>");
 
 
 
-
-
 %>
 
 <%
 /*----------------------------------------------------*/
 /*                  Side Column                       */
-    StringBuffer sc = new StringBuffer();
+        StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
-
-//sc.append("This is a ");
-//sc.append("side column section.");
 %>
 
 
 <%@ include file="../globalfooter.jsp" %>
+

@@ -205,7 +205,7 @@ if (request.getParameter("searchsites")!=null || request.getParameter("alpha")!=
             mb.append("<tr>");
             mb.append("<td valign=top bgcolor=#ffffff>");
             reger.Accountuser au = new reger.Accountuser(Integer.parseInt(rstSearch[i][3]));
-            mb.append("<img src=\"" + au.primaryImage(pageProps.pathToAppRoot, true) + "\" border=0 width=35 align=left>");
+            mb.append("<img src=\"" + au.primaryImage(userSession, true) + "\" border=0 width=35 align=left>");
             mb.append("<font face=arial size=-2>");
             mb.append(rstSearch[i][2]);
             mb.append("</font>");

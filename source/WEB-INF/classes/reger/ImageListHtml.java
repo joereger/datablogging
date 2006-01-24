@@ -5,11 +5,6 @@ import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 
-import reger.core.db.Db;
-import reger.core.Debug;
-
-import javax.servlet.http.HttpServletRequest;
-
 /**
  *
  */
@@ -259,58 +254,6 @@ public class ImageListHtml {
                         }
                     }
 
-//                    if (displayasadmin) {
-//                        mb.append("Optional ");
-//                    }
-//                    mb.append("Category:</font><br>");
-//                    mb.append("<!-- Begin imagecategory -->");
-//                    if (displayasadmin) {
-//                        mb.append("<select name='imagecategoryid-"+rstImagelist[i][0]+"'  style=\"font-size: 10px;\">");
-//                        boolean isOneSelected = false;
-//                        //-----------------------------------
-//                        //-----------------------------------
-//                        String[][] rstImageCategory= reger.core.Db.Db.RunSQL("SELECT imagecategoryid, imagecategory FROM imagecategory WHERE accountid='"+ accountid +"' ORDER BY imagecategory");
-//                        //-----------------------------------
-//                        //-----------------------------------
-//                        if (rstImageCategory!=null){
-//                            for(int j=0; j<rstImageCategory.length; j++){
-//                                mb.append("<option value='"+ rstImageCategory[j][0] +"'");
-//                                //if (rstImagelist[i][2].equals(rstImageCategory[j][0]) && pageProps.entry.newlocationname.equals("")) {
-//                                if (rstImagelist[i][2].equals(rstImageCategory[j][0])) {
-//                                    mb.append(" selected");
-//                                    isOneSelected=true;
-//                                }
-//                                mb.append(">"+reger.core.Util.cleanForHtml(rstImageCategory[j][1]) +"</option>");
-//                            }
-//                        }
-//
-//                        if (!isOneSelected) {
-//                            temptext="selected";
-//                        } else {
-//                            temptext="";
-//                        }
-//                        mb.append("<option value='' "+ temptext +">>>New Image Category (use below)</option>");
-//
-//                        mb.append("</select>");
-//                    } else {
-//                        //-----------------------------------
-//                        //-----------------------------------
-//                        String[][] rsImgCat= Db.RunSQL("SELECT imagecategory FROM imagecategory WHERE imagecategoryid='"+rstImagelist[i][2]+"'");
-//                        //-----------------------------------
-//                        //-----------------------------------
-//                        if (rsImgCat!=null && rsImgCat.length>0){
-//                            //for(int k=0; k<rsImgCat.length; i++){
-//                            mb.append("<font face=arial size=-2 style=\"font-size: 10px;\">");
-//                            mb.append(rsImgCat[0][0]+"</font>");
-//                            //reger.core.Util.logtodb("Made it to rsImgCat:<br>SQL:" +"SELECT imagecategory FROM imagecategory WHERE imagecategoryid='"+rstImagelist[i][2]+"'"+ " <br>rsImgCat[k][0]=" + rsImgCat[k][0]);
-//                            //}
-//                        }
-//                    }
-//                    mb.append("<!-- End imagecategory -->");
-//                    if (displayasadmin) {
-//                        mb.append("<br>");
-//                        mb.append("<font face=arial size=-2  style=\"font-size: 10px;\">Or add new category:</font><br><input type='text' name='newimagecategory-"+rstImagelist[i][0]+"' size='15' maxlength='49'  style=\"font-size: 10px;\"><br>");
-//                    }
 
 
                     mb.append("</td>");
@@ -340,7 +283,7 @@ public class ImageListHtml {
         return mb;
     }
 
-    public static StringBuffer getImageList(UserSession userSession, HttpServletRequest request) {
+    public static StringBuffer getImageList(UserSession userSession, HttpServletRequest request, int imagesPerRow) {
         StringBuffer mb = new StringBuffer();
 
         int currentPage = 1;
@@ -350,46 +293,57 @@ public class ImageListHtml {
                 currentPage = 1;
             }
         }
-        int perPage = userSession.getAccount().getDisplaynumberofentries();
+        int perPage = 50;
         //Limit vars
         int limitMin = (currentPage * perPage) - perPage;
         int limitMax = perPage;
         String[][] rstImageList = null;
         String[][] rstImageCount = null;
         // IF tagid is null, retrieve data based on tag.
-        if (request.getParameter("tagid") != null) {
+        if (request.getParameter("tagid") != null && reger.core.Util.isinteger(request.getParameter("tagid"))) {
             int tagId = Integer.parseInt(request.getParameter("tagid"));
             //-----------------------------------
             //-----------------------------------
-            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'  LIMIT " + limitMin +"," + limitMax);
+            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description FROM image, tag, tagimagelink, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "' ORDER BY event.date DESC, image.imageid ASC LIMIT " + limitMin +"," + limitMax);
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
-            rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename from image, tag, tagimagelink where tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
+            rstImageCount = Db.RunSQL("select count(*) FROM image, tag, tagimagelink, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
             //-----------------------------------
             //-----------------------------------
-        } else if ( (request.getParameter("tagid") == null) && (request.getParameter("tag") != null) ) {
+        } else if ( (request.getParameter("tagid")==null) && (request.getParameter("tag")!=null) ) {
             String tag = request.getParameter("tag");
             //-----------------------------------
             //-----------------------------------
-            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename from image, tag, tagimagelink where tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'  LIMIT " + limitMin +"," + limitMax);
+            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description FROM image, tag, tagimagelink, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "' ORDER BY event.date DESC, image.imageid ASC  LIMIT " + limitMin +"," + limitMax);
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
-            rstImageCount = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename from image, tag, tagimagelink where tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
+            rstImageCount = Db.RunSQL("select count(*) FROM image, tag, tagimagelink, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
+            //-----------------------------------
+            //-----------------------------------
+        } else {
+            //-----------------------------------
+            //-----------------------------------
+            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description FROM image, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND image.accountid='" + userSession.getAccount().getAccountid() + "' ORDER BY event.date DESC, image.imageid ASC  LIMIT " + limitMin +"," + limitMax);
+            //-----------------------------------
+            //-----------------------------------
+            //-----------------------------------
+            //-----------------------------------
+            rstImageCount = Db.RunSQL("select count(*) FROM image, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND  image.accountid='" + userSession.getAccount().getAccountid() + "'");
             //-----------------------------------
             //-----------------------------------
         }
 
-
-        int recordcount = rstImageCount.length;
-        mb.append("<table border=0>");
+       
+        int recordcount = Integer.parseInt(rstImageCount[0][0]);
+        mb.append("<table border=0 cellspacing=3 cellpadding=5>");
         mb.append("<tr>");
         StringBuffer pagingOut = new StringBuffer();
         if (recordcount > perPage) {
-            pagingOut.append("<td colspan=4>");
+            pagingOut.append("<td colspan="+imagesPerRow+">");
             pagingOut.append(reger.pagingLinkPrint.getImagePageNumbers(recordcount,currentPage, perPage, request));
             pagingOut.append("</td>");
             //And finally put it on the page
@@ -401,18 +355,18 @@ public class ImageListHtml {
 
         String mediaoutPath = "";
         if (rstImageList != null) {
-            int imagesPerRow = 1;
+            int imagesInCurrentRow = 0;
             for (int i = 0; i < rstImageList.length; i++) {
-                if (imagesPerRow%3 == 0) {
+                if (imagesInCurrentRow % imagesPerRow == 0) {
                     mb.append("</tr>");
                     mb.append("<tr>");
                 }
-                mb.append("<td valign=middle align=center bgcolor=#cccccc>");
+                mb.append("<td valign=top align=center bgcolor=#cccccc>");
                 mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?imageid=" + rstImageList[i][0] + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
                 mb.append("<img src='" + mediaoutPath + "mediaout.log?imageid=" + rstImageList[i][0] + "&isthumbnail=yes" + "' border=0></a>");
-                mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + rstImageList[i][4] + "</font><br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImageList[i][3] + " bytes</font>");                 
+                //mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + rstImageList[i][4] + "</font><br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImageList[i][3] + " bytes</font>");
                 mb.append("</td>");
-                imagesPerRow ++;
+                imagesInCurrentRow ++;
             }
         }
         mb.append("</tr>");

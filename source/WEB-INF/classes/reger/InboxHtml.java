@@ -102,7 +102,7 @@ public class InboxHtml {
                 mb.append("<td bgcolor="+isreadcolor+" valign=top><font face=arial size=-2 color=#666666>"+reger.core.TimeUtils.dateformatcompactwithtime(cal)+"</font></td>");
                 mb.append("<td bgcolor="+isreadcolor+" valign=top><font face=arial size=-2 color=#666666><a href='people-message.log?friendmessageid="+rstInbox[i][0]+"'>"+rstInbox[i][1]+"</a></font></td>");
                 mb.append("<td bgcolor="+isreadcolor+" valign=top><font face=arial size=-2 color=#666666>");
-                mb.append("<img src='"+friend.primaryImage(pageProps.pathToAppRoot, true)+"' width=35 border=0 align=top>");
+                mb.append("<img src='"+friend.primaryImage(userSession, true)+"' width=35 border=0 align=top>");
                 mb.append(friend.getFriendlyname());
                 mb.append("</font></td>");
                 mb.append("<td bgcolor="+isreadcolor+" valign=top><font face=arial size=-2 color=#666666><a href='people-inbox.log?action=delete&friendmessagerecipientid="+rstInbox[i][7]+"&currentpage="+request.getParameter("currentpage")+"'>Delete</a>");

@@ -12,7 +12,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "Group";
+pageProps.title = "<img src='../images/groups-lg.gif' align=middle> Administer Group";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "groups";
 pageProps.aclObjectName = "MANAGEGROUPS";
@@ -150,8 +150,8 @@ if (rstMod!=null && rstMod.length>0){
         Accountuser au = new Accountuser(Integer.parseInt(rstMod[i][1]), true);
         mb.append("<tr>");
         mb.append("<td valign=top>");
-        mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount()+"author.log?accountuserid="+au.getAccountuserid()+"'>");
-        mb.append("<img src = '"+au.primaryImage(pageProps.pathToAppRoot, true)+"' width=50 border=0 align=left>");
+        mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount(userSession)+"/author.log?accountuserid="+au.getAccountuserid()+"'>");
+        mb.append("<img src = '"+au.primaryImage(userSession, true)+"' width=50 border=0 align=left>");
         mb.append("<font face=arial size=-2>");
         mb.append(au.getFriendlyname());
         mb.append("</font>");
@@ -185,8 +185,8 @@ if (rstMem !=null && rstMem.length>0){
         Accountuser au = new Accountuser(Integer.parseInt(rstMem[i][1]), true);
         mb.append("<tr>");
         mb.append("<td valign=top>");
-        mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount()+"author.log?accountuserid="+au.getAccountuserid()+"'>");
-        mb.append("<img src = '"+au.primaryImage(pageProps.pathToAppRoot, true)+"' width=50 border=0 align=left>");
+        mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount(userSession)+"/author.log?accountuserid="+au.getAccountuserid()+"'>");
+        mb.append("<img src = '"+au.primaryImage(userSession, true)+"' width=50 border=0 align=left>");
         mb.append("<font face=arial size=-2>");
         mb.append(au.getFriendlyname());
         mb.append("</font>");
@@ -231,8 +231,8 @@ if(group.getMembershipismoderated()){
             Accountuser au = new Accountuser(Integer.parseInt(rstReq[i][1]), true);
             mb.append("<tr>");
             mb.append("<td valign=top>");
-            mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount()+"author.log?accountuserid="+au.getAccountuserid()+"'>");
-            mb.append("<img src = '"+au.primaryImage(pageProps.pathToAppRoot, true)+"' width=50 border=0 align=left>");
+            mb.append("<a href='"+au.getSiteRootUrlOfPrimaryAccount(userSession)+"/author.log?accountuserid="+au.getAccountuserid()+"'>");
+            mb.append("<img src = '"+au.primaryImage(userSession, true)+"' width=50 border=0 align=left>");
             mb.append("<font face=arial size=-1>");
             mb.append(au.getFriendlyname());
             mb.append("</font>");

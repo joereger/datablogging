@@ -63,8 +63,9 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
         //Get the list
         String sql="SELECT image.imageid, image.image, event.eventid, event.logid, event.title FROM image, event WHERE image.eventid=event.eventid AND  event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY RAND() DESC LIMIT 0,"+maxinlist;
 
-        mb.append("<table cellpadding=0 cellspacing=1 border=0>" );
 
+        mb.append("<table cellpadding=0 cellspacing=1 border=0>" );
+        mb.append(reger.core.Util.popup());
         //-----------------------------------
         //-----------------------------------
         String[][] rstToday= Db.RunSQL(sql);
@@ -77,11 +78,11 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
         		counter=counter+1;
 
         		mb.append("<tr>" );
-                String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rstToday[i][3]), Integer.parseInt(rstToday[i][2]), rstToday[i][4]);
+                //String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rstToday[i][3]), Integer.parseInt(rstToday[i][2]), rstToday[i][4]);
 
                 mb.append("<td valign=top bgcolor=#ffffff><font face=arial size=-2>" );
-                mb.append("<a href='"+entryurl+"'>" );
-                mb.append("<img src='mediaout.log?imageid="+ rstToday[i][0] +"&isthumbnail=yes' border=0>" );
+                mb.append("<a href='"+pageProps.pathToAppRoot+"mediaouthtml.log?imageid="+rstToday[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">" );
+                mb.append("<img src='"+pageProps.pathToAppRoot+"mediaout.log?imageid="+ rstToday[i][0] +"&isthumbnail=yes' border=0>" );
                 mb.append("</a>" );
                 mb.append("</font></td>" );
                 mb.append("</tr>" );

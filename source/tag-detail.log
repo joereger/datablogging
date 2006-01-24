@@ -42,7 +42,7 @@
     mb.append("</td>");
     mb.append("<td valign=top>");
     try {
-        mb.append(ImageListHtml.getImageList(userSession, request));
+        mb.append(ImageListHtml.getImageList(userSession, request, 3));
     } catch (Exception e) {
         Debug.errorsave(e, "Exception occurred in tags.log");
     }

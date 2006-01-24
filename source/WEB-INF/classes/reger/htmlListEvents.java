@@ -223,7 +223,7 @@ public class htmlListEvents {
                 }
             }
         } else {
-            list.append("<font class=bigfont face=arial size=+1>No entries found.</font><br>");
+            //list.append("<font class=bigfont face=arial size=+1>No entries found.</font><br>");
         }
 
         //Append the paginglinks to the bottom of the page

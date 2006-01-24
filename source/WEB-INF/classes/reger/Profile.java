@@ -10,7 +10,6 @@ public class Profile {
     /**
      *
      * @param accountuser -  The profile of the user who is being displayed
-     * @return
      */
     public static StringBuffer getHtmlProfile(reger.Accountuser accountuser, reger.UserSession userSession, boolean iseditable, String pathToAppRoot){
         StringBuffer mb = new StringBuffer();
@@ -170,7 +169,7 @@ public class Profile {
                 mb.append("<tr>");
                 mb.append("<td valign=top align=left>");
                 mb.append("<a href='"+acctTmp.getSiteRootUrl(userSession)+"/"+"author.log?accountuserid="+rstAuthors[i][0]+"'>");
-                mb.append("<img src='"+ac.primaryImage(pathToAppRoot, true)+"' width=35 border=0 align=top>");
+                mb.append("<img src='"+ac.primaryImage(userSession, true)+"' width=35 border=0 align=top>");
                 mb.append("</a>");
                 mb.append("</td>");
 

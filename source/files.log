@@ -1,4 +1,5 @@
 <%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.ImageListHtml"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -24,77 +25,53 @@ pageProps.pathToAppRoot="";
 
 
 
-//mb.append(reger.SideColumn.sideColTableStart("Keyword Tags"));
-//mb.append(reger.SideColumn.sideColHeaderRow("Keyword Tags"));
+
 //
-//StringBuffer qs = new StringBuffer();
 //
-//qs.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");
-//qs.append("<tr>");
-//qs.append("<td bgcolor=#e6e6e6>");
-//qs.append("<font face=arial size=-1 class=mediumfont>");
-//qs.append("<a href='files.log'>");
-//qs.append("All Images");
-//qs.append("</a>");
-//qs.append("</font>");
-//qs.append("</td>");
-//qs.append("</tr>");
-//qs.append("<tr>");
-//qs.append("<td>");
-//qs.append(reger.Tag.getTagsAndLinksHtml(userSession.getAccount().getAccountid(), userSession, false));
-//qs.append("</td>");
-//qs.append("</tr>");
-//qs.append("</table>");
 //
-//mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
+////Currentpage
+//int currentpage=1;
+//if (request.getParameter("currentpage")!=null && reger.core.Util.isinteger(request.getParameter("currentpage"))){
+//    currentpage=Integer.parseInt(request.getParameter("currentpage"));
+//}
+////tagid
+//int tagid=-1;
+//if (request.getParameter("tagid")!=null && reger.core.Util.isinteger(request.getParameter("tagid"))){
+//    tagid=Integer.parseInt(request.getParameter("tagid"));
+//}
 //
-//mb.append(reger.SideColumn.sideColTableEnd("Keyword Tags"));
+////Show the tag name
+//if (tagid>0) {
+//    String tag = "";
+//    //-----------------------------------
+//    //-----------------------------------
+//    String[][] rstTagname= Db.RunSQL("SELECT tag FROM tag WHERE tagid='"+tagid+"'");
+//    //-----------------------------------
+//    //-----------------------------------
+//    if (rstTagname!=null && rstTagname.length>0){
+//        tag = rstTagname[0][0];
+//    }
+//    if (!tag.equals("")){
+//        mb.append("<font face=arial size=+1 class=largefont>");
+//        mb.append(tag);
+//        mb.append("</font>");
+//        mb.append("<br><br>");
+//    }
+//}
 //
-//mb.append("<br><br>");
+////Perpage
+//int perpage=50;
+////Output the images in html format
+//mb.append(reger.core.Util.popup());
+//boolean displayasadmin = false;
+//mb.append(reger.ImageListHtml.tableStart());
+//mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, tagid, displayasadmin, userSession, currentpage, perpage, request));
+//mb.append(reger.ImageListHtml.tableEnd());
 
-
-
-
-
-
-//Currentpage
-int currentpage=1;
-if (request.getParameter("currentpage")!=null && reger.core.Util.isinteger(request.getParameter("currentpage"))){
-    currentpage=Integer.parseInt(request.getParameter("currentpage"));
-}
-//tagid
-int tagid=-1;
-if (request.getParameter("tagid")!=null && reger.core.Util.isinteger(request.getParameter("tagid"))){
-    tagid=Integer.parseInt(request.getParameter("tagid"));
-}
-
-//Show the tag name
-if (tagid>0) {
-    String tag = "";
-    //-----------------------------------
-    //-----------------------------------
-    String[][] rstTagname= Db.RunSQL("SELECT tag FROM tag WHERE tagid='"+tagid+"'");
-    //-----------------------------------
-    //-----------------------------------
-    if (rstTagname!=null && rstTagname.length>0){
-        tag = rstTagname[0][0];
-    }
-    if (!tag.equals("")){
-        mb.append("<font face=arial size=+1 class=largefont>");
-        mb.append(tag);
-        mb.append("</font>");
-        mb.append("<br><br>");
-    }
-}
-
-//Perpage
-int perpage=50;
-//Output the images in html format
 mb.append(reger.core.Util.popup());
-boolean displayasadmin = false;
-mb.append(reger.ImageListHtml.tableStart());
-mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, tagid, displayasadmin, userSession, currentpage, perpage, request));
-mb.append(reger.ImageListHtml.tableEnd());
+mb.append("<center>");
+mb.append(ImageListHtml.getImageList(userSession, request, 4));
+mb.append("</center>");
 
 
 %>

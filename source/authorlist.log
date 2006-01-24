@@ -63,7 +63,7 @@ if (rstAuthors!=null && rstAuthors.length>0){
         mb.append("<td valign=top align=left>");
         mb.append("<font face=arial size=-1>");
         mb.append("<a href='author.log?accountuserid="+rstAuthors[i][0]+"'>");
-        mb.append("<img src='"+ac.primaryImage(pageProps.pathToAppRoot, true)+"' width=35 border=0 align=top>");
+        mb.append("<img src='"+ac.primaryImage(userSession, true)+"' width=35 border=0 align=top>");
         mb.append(rstAuthors[i][1]);
         mb.append("</a>");
         mb.append("</font>");

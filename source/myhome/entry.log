@@ -85,7 +85,8 @@ if (pageProps.action!=null && !pageProps.action.equals("")) {
                 response.sendRedirect(pageProps.pathToAppRoot + "entry-logid"+ pageProps.logProps.logid +"-eventid"+ pageProps.entry.eventid+".log");
                 return;
             } else {
-                response.sendRedirect("index.log?msg=entryedited&logid="+ pageProps.logProps.logid +"&eventid="+ pageProps.entry.eventid);
+                //response.sendRedirect("index.log?msg=entryedited&logid="+ pageProps.logProps.logid +"&eventid="+ pageProps.entry.eventid);
+                response.sendRedirect("entry-additionalinfo.log?msg=entryedited&logid="+ pageProps.logProps.logid +"&eventid="+ pageProps.entry.eventid);
                 return;
             }
         } catch (reger.core.ValidationException error){

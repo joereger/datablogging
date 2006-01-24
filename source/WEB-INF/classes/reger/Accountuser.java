@@ -1460,7 +1460,7 @@ public class Accountuser implements java.io.Serializable {
         }
     }
 
-    public String primaryImage(String pathToAppRoot, boolean isthumbnail){
+    public String primaryImage(UserSession userSession, boolean isthumbnail){
 
         //-----------------------------------
         //-----------------------------------
@@ -1472,31 +1472,14 @@ public class Accountuser implements java.io.Serializable {
             if (!isthumbnail){
                 isthumbnailtext = "no";
             }
-            return pathToAppRoot + "mediaout.log?imageid=" + rstImg[0][0] + "&isProfileImage=true&isthumbnail=" + isthumbnailtext;
+
+            return getSiteRootUrlOfPrimaryAccount(userSession) + "/mediaout.log?imageid=" + rstImg[0][0] + "&isProfileImage=true&isthumbnail=" + isthumbnailtext;
         } else {
-            return pathToAppRoot + reger.Vars.PROFILEGENERICIMAGE;
+            return getSiteRootUrlOfPrimaryAccount(userSession) + "/" +  reger.Vars.PROFILEGENERICIMAGE;
         }
 
     }
 
-    public StringBuffer primaryImageHtml(String pathToAppRoot, boolean isthumbnail){
-        StringBuffer mb = new StringBuffer();
-        mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0>");
-        mb.append("<tr>");
-        mb.append("<td valign=top align=center bgcolor=#e6e6e6>");
-        mb.append("<a href='mediaouthtml.log' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
-        mb.append("<img src='"+primaryImage(pathToAppRoot, isthumbnail)+"' border=0>");
-        mb.append("<br>");
-        mb.append("<font face=arial size=-2>");
-        mb.append("<a href='profile-editimage.log'>");
-        mb.append("Edit/Delete");
-        mb.append("</a>");
-        mb.append("</font>");
-        mb.append("</td>");
-        mb.append("</tr>");
-        mb.append("</table>");
-        return mb;
-    }
 
     public void deleteImage(int imageid, reger.Accountuser accountUserOfDoer){
         //Only the user themselves can delete an image

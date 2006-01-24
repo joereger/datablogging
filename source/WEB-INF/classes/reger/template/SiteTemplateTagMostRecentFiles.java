@@ -40,7 +40,6 @@ public class SiteTemplateTagMostRecentFiles implements SiteTemplateTag{
      * @param sc
      * @param pageProps
      * @param userSession
-     * @return
      */
     public String getValue(StringBuffer mb, StringBuffer sc, PageProps pageProps, UserSession userSession, javax.servlet.http.HttpServletRequest request) {
         HpTemplateTagMostRecentFiles mr = new HpTemplateTagMostRecentFiles();
