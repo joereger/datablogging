@@ -1,0 +1,62 @@
+<%@ page import="reger.pl.PrivateLabelTags"%>
+<%
+    /*----------------------------------------------------*/
+/*                  Page Config                       */
+    reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+    pageProps.siteSection = reger.pageFramework.PageProps.MARKETINGSITE;
+    pageProps.isPasswordProtected = false;
+    pageProps.trafficType = reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+    pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
+    pageProps.pathToAppRoot = "../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+    /*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+    mb.append(reger.SideColumn.sideColTableStart("Community Tags"));
+    mb.append(reger.SideColumn.sideColHeaderRow("Community Tags"));
+    StringBuffer qs = new StringBuffer();
+    String tag = request.getParameter("tag");
+    qs.append("<font face=arial size=+1 class=largefont>"+ tag +"</font>");
+    qs.append("<br><a href='tags.log?tag="+ tag +"'><font siz=+4 face=arial>All Tags</font></a>");
+    mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
+    mb.append(reger.SideColumn.sideColTableEnd("Community Tags"));
+
+    mb.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    try {
+        mb.append(PrivateLabelTags.getEventList(userSession, request));
+    } catch (Exception e) {
+        Debug.errorsave(e, "Exception occurred in community-tag-detail.log");
+    }
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    try {
+        mb.append(PrivateLabelTags.getImageList(userSession, request));
+    } catch (Exception e) {
+        Debug.errorsave(e, "Exception occurred in community-tag-detail.log");
+    }
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
+    //Add the popup javascript
+    mb.append(reger.core.Util.popup());
+
+%>
+
+<%
+    /*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
