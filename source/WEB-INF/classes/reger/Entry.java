@@ -102,8 +102,8 @@ public class Entry {
     String newepisodedescription;
 
     //Counts
-    int messagecount = 0;
-    int filecount = 0;
+    public int messagecount = 0;
+    public int filecount = 0;
 
     //Xform
     private EventXformData eventXformData = null;
