@@ -1,11 +1,14 @@
-<%@ page import="reger.core.db.Db,
-                 reger.core.db.Db"%>
+<%@ page import="reger.PrivateLabelCounts"%>
+<%@ page import="java.util.TreeMap"%>
+<%@ page import="java.util.HashMap"%>
+<%@ page import="java.util.Iterator"%>
+<%@ page import="java.math.BigDecimal"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
-pageProps.title = "Tags";
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Community: Tags";
 pageProps.navButtonName = "aboutcommunity-tags";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -13,22 +16,83 @@ pageProps.pathToAppRoot="../";
 pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
 /*----------------------------------------------------*/
 %>
-
 <%@ include file="../globalheader.jsp" %>
-
-
-
 <%
 /*----------------------------------------------------*/
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-mb.append("Coming in a few days.");
+    mb.append(reger.SideColumn.sideColTableStart("Community Tags"));
+    mb.append(reger.SideColumn.sideColHeaderRow("Community Tags"));
 
+    StringBuffer qs = new StringBuffer();
+    qs.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");
+    qs.append("<tr>");
+    qs.append("<td>");
+    try {
+        PrivateLabelCounts privateLabelCounts = new PrivateLabelCounts(userSession.getPl());
+        HashMap smartTagMap = privateLabelCounts.getSmartTagMap();
+        if (smartTagMap != null && smartTagMap.size() > 0) {
+            Iterator iter = smartTagMap.keySet().iterator();
+            String tagId;
+            HashMap tempTagMap = null;
+            HashMap tagMap = new HashMap();
+            TreeMap tempMap = new TreeMap();
+            String tag;
+            int size;
+            int minSize = 8;
+            int maxSize = 35;
+            while (iter.hasNext()) {
+                tagId = (String) iter.next();
+                tagId = tagId.substring(0, tagId.indexOf("_"));
+                size = 0;
+                if (smartTagMap.containsKey(tagId + "_img")) {
+                    tempTagMap = (HashMap) smartTagMap.get(tagId+"_img");
+                    size += tempTagMap.size();
+                }
+                if (smartTagMap.containsKey(tagId + "_event")) {
+                    tempTagMap = (HashMap) smartTagMap.get(tagId+"_event");
+                    size += tempTagMap.size();
+                }
+                if (tempTagMap != null && tempTagMap.size() > 0) {
+                    tag = (String)(tempTagMap.values().iterator().next());
+                    tempTagMap = new HashMap();
+                    tempTagMap.put(tag, new Integer(size));
+                    tagMap.put(tagId, tempTagMap);
+                    tempMap.put(new Integer(size), tagId);
+                }
+            } if ( (tempMap != null) && (tempMap.size() > 0) ) {
+                int maxTagSize = ((Integer)tempMap.lastKey()).intValue();
+                iter = tagMap.keySet().iterator();
+                while (iter.hasNext()) {
+                    tagId = (String) iter.next();
+                    tempTagMap = (HashMap) tagMap.get(tagId);
+                    tag = (String) tempTagMap.keySet().iterator().next();
+                    size = ((Integer)tempTagMap.get(tag)).intValue();
+                    int fontSize = new BigDecimal(size).divide(new BigDecimal(maxTagSize)).multiply(new BigDecimal(maxSize)).intValue();
+                    if ( fontSize < minSize) {
+                        fontSize += minSize;
+                    } else if (fontSize > maxSize) {
+                        fontSize -= maxSize;
+                    }
+                    qs.append("<a href=community-tag-detail.log?tagid=" + tagId + "&tag=" + tag + " style=font-size:" + fontSize + "px; class=SmartTag>" + tag + "</a>");
+                    qs.append(" ");
+                }
+            }
+        } else {
+            qs.append("No Community Tags Found.");
+        }
+    } catch (Exception e) {
+        Debug.errorsave(e, "Exception occurred in community-tags.log");
+    }
 
+    qs.append("</td>");
+    qs.append("</tr>");
+    qs.append("</table>");
 
-%>
+   mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
+   mb.append(reger.SideColumn.sideColTableEnd("Community Tags"));%>
 
 <%
 /*----------------------------------------------------*/
@@ -36,7 +100,4 @@ mb.append("Coming in a few days.");
         StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
 %>
-
-
 <%@ include file="../globalfooter.jsp" %>
-
