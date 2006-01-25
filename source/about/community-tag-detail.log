@@ -50,21 +50,21 @@
 
             String tagSql = "";
             if (request.getParameter("tagid")!=null && reger.core.Util.isinteger(request.getParameter("tagid"))) {
-                tagSql += " tag.tagid='" + reger.core.Util.cleanForSQL(request.getParameter("tagid")) + "' ";
+                tagSql += " AND tag.tagid='" + reger.core.Util.cleanForSQL(request.getParameter("tagid")) + "' ";
             } else {
                 if (request.getParameter("tag")!=null){
-                    tagSql = " tag.tag='" +reger.core.Util.cleanForSQL(request.getParameter("tag"))+ "' ";
+                    tagSql = " AND tag.tag='" +reger.core.Util.cleanForSQL(request.getParameter("tag"))+ "' ";
                 }
             }
 
             //-----------------------------------
             //-----------------------------------
-            String[][] rstEventList = Db.RunSQL("select event.eventid, account.accountid FROM tag, eventtaglink, account, event, megalog, pl WHERE account.plid=pl.plid AND "+userSession.getPl().getPeerSql()+" AND megalog.logid=event.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND event.accountid=account.accountid AND "+reger.Entry.sqlOfLiveEntry+" AND "+tagSql+" AND eventtaglink.tagid=tag.tagid AND event.eventid=eventtaglink.eventid ORDER BY event.date DESC  LIMIT " + limitMin + "," + limitMax);
+            String[][] rstEventList = Db.RunSQL("select event.eventid, account.accountid FROM tag, eventtaglink, account, event, megalog, pl WHERE account.plid=pl.plid AND "+userSession.getPl().getPeerSql()+" AND megalog.logid=event.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND event.accountid=account.accountid AND "+reger.Entry.sqlOfLiveEntry+" "+tagSql+" AND eventtaglink.tagid=tag.tagid AND event.eventid=eventtaglink.eventid ORDER BY event.date DESC  LIMIT " + limitMin + "," + limitMax);
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
             //-----------------------------------
-            String[][] rstEventCount = Db.RunSQL("SELECT count(*) FROM tag, eventtaglink, account, event, megalog, pl WHERE account.plid=pl.plid AND "+userSession.getPl().getPeerSql()+" AND megalog.logid=event.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND event.accountid=account.accountid AND "+reger.Entry.sqlOfLiveEntry+" AND "+tagSql+" AND eventtaglink.tagid=tag.tagid AND event.eventid=eventtaglink.eventid");
+            String[][] rstEventCount = Db.RunSQL("SELECT count(*) FROM tag, eventtaglink, account, event, megalog, pl WHERE account.plid=pl.plid AND "+userSession.getPl().getPeerSql()+" AND megalog.logid=event.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND event.accountid=account.accountid AND "+reger.Entry.sqlOfLiveEntry+" "+tagSql+" AND eventtaglink.tagid=tag.tagid AND event.eventid=eventtaglink.eventid");
             //-----------------------------------
             //-----------------------------------
 

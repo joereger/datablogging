@@ -297,45 +297,28 @@ public class ImageListHtml {
         //Limit vars
         int limitMin = (currentPage * perPage) - perPage;
         int limitMax = perPage;
-        String[][] rstImageList = null;
-        String[][] rstImageCount = null;
-        // IF tagid is null, retrieve data based on tag.
-        if (request.getParameter("tagid") != null && reger.core.Util.isinteger(request.getParameter("tagid"))) {
-            int tagId = Integer.parseInt(request.getParameter("tagid"));
-            //-----------------------------------
-            //-----------------------------------
-            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description FROM image, tag, tagimagelink, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "' ORDER BY event.date DESC, image.imageid ASC LIMIT " + limitMin +"," + limitMax);
-            //-----------------------------------
-            //-----------------------------------
-            //-----------------------------------
-            //-----------------------------------
-            rstImageCount = Db.RunSQL("select count(*) FROM image, tag, tagimagelink, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
-            //-----------------------------------
-            //-----------------------------------
-        } else if ( (request.getParameter("tagid")==null) && (request.getParameter("tag")!=null) ) {
-            String tag = request.getParameter("tag");
-            //-----------------------------------
-            //-----------------------------------
-            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description FROM image, tag, tagimagelink, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "' ORDER BY event.date DESC, image.imageid ASC  LIMIT " + limitMin +"," + limitMax);
-            //-----------------------------------
-            //-----------------------------------
-            //-----------------------------------
-            //-----------------------------------
-            rstImageCount = Db.RunSQL("select count(*) FROM image, tag, tagimagelink, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tag='" + tag + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
-            //-----------------------------------
-            //-----------------------------------
+
+        String tagSql = "";
+        if (request.getParameter("tagid")!=null && reger.core.Util.isinteger(request.getParameter("tagid"))) {
+            tagSql += " AND tag.tagid='" + reger.core.Util.cleanForSQL(request.getParameter("tagid")) + "' ";
         } else {
-            //-----------------------------------
-            //-----------------------------------
-            rstImageList = Db.RunSQL("select image.imageid, image.image, image.description FROM image, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND image.accountid='" + userSession.getAccount().getAccountid() + "' ORDER BY event.date DESC, image.imageid ASC  LIMIT " + limitMin +"," + limitMax);
-            //-----------------------------------
-            //-----------------------------------
-            //-----------------------------------
-            //-----------------------------------
-            rstImageCount = Db.RunSQL("select count(*) FROM image, event WHERE image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND  image.accountid='" + userSession.getAccount().getAccountid() + "'");
-            //-----------------------------------
-            //-----------------------------------
+            if (request.getParameter("tag")!=null){
+                tagSql = " AND tag.tag='" +reger.core.Util.cleanForSQL(request.getParameter("tag"))+ "' ";
+            }
         }
+
+        int tagId = Integer.parseInt(request.getParameter("tagid"));
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstImageList = Db.RunSQL("select image.imageid, image.image, image.description FROM image, tag, tagimagelink, event, megalog WHERE event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid(), true)+" AND image.eventid=event.eventid "+tagSql+" AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "' ORDER BY event.date DESC, image.imageid ASC LIMIT " + limitMin +"," + limitMax);
+        //-----------------------------------
+        //-----------------------------------
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstImageCount = Db.RunSQL("select count(*) FROM image, tag, tagimagelink, event, megalog WHERE event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid(), true)+" AND image.eventid=event.eventid "+tagSql+" AND "+reger.Entry.sqlOfLiveEntry+" AND tag.tagid='" + tagId + "' and tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
+        //-----------------------------------
+        //-----------------------------------
+
 
        
         int recordcount = Integer.parseInt(rstImageCount[0][0]);
