@@ -15,13 +15,13 @@ public class PrivateLabelCounts {
     public PrivateLabelCounts(PrivateLabel pl) {
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEventTags = Db.RunSQL("SELECT DISTINCT tag.tagid, tag.tag, event.eventid FROM event, eventtaglink, tag, megalog WHERE " + reger.Entry.sqlOfLiveEntry + " AND event.accountid='"+pl.getPlid()+"' AND eventtaglink.eventid=event.eventid AND megalog.logid=event.logid AND eventtaglink.tagid=tag.tagid");
+        String[][] rstEventTags = Db.RunSQL("SELECT DISTINCT tag.tagid, tag.tag, event.eventid FROM event, eventtaglink, tag, megalog, account, pl WHERE megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND account.accountid=event.accountid AND account.plid=pl.plid AND "+pl.getPeerSql()+" AND " + reger.Entry.sqlOfLiveEntry + " AND eventtaglink.eventid=event.eventid AND megalog.logid=event.logid AND eventtaglink.tagid=tag.tagid");
         //-----------------------------------
         //-----------------------------------
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImgTags = Db.RunSQL("SELECT DISTINCT tag.tagid, tag.tag, image.imageid FROM image, tagimagelink, tag, event, megalog, account WHERE " + reger.Entry.sqlOfLiveEntry + " AND image.accountid=account.accountid AND event.accountid=account.accountid AND account.plid='"+pl.getPlid()+"' AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND tagimagelink.imageid=image.imageid AND tagimagelink.tagid=tag.tagid AND megalog.logid=event.logid AND image.eventid=event.eventid");
+        String[][] rstImgTags = Db.RunSQL("SELECT DISTINCT tag.tagid, tag.tag, image.imageid FROM image, tagimagelink, tag, event, megalog, account, pl WHERE megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND account.accountid=event.accountid AND account.plid=pl.plid AND "+pl.getPeerSql()+" AND  " + reger.Entry.sqlOfLiveEntry + " AND image.accountid=account.accountid AND event.accountid=account.accountid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND tagimagelink.imageid=image.imageid AND tagimagelink.tagid=tag.tagid AND megalog.logid=event.logid AND image.eventid=event.eventid");
         //-----------------------------------
         //-----------------------------------
 
