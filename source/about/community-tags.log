@@ -1,8 +1,6 @@
 <%@ page import="reger.PrivateLabelCounts" %>
 <%@ page import="java.util.TreeMap" %>
-<%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Iterator" %>
-<%@ page import="java.math.BigDecimal" %>
 <%
     /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -32,65 +30,28 @@
     qs.append("<td>");
     try {
         PrivateLabelCounts privateLabelCounts = new PrivateLabelCounts(userSession.getPl());
-        HashMap smartTagMap = privateLabelCounts.getSmartTagMap();
+        TreeMap smartTagMap = privateLabelCounts.getTagMap();
+        TreeMap sizeMap = privateLabelCounts.getSizeMap();
         if (smartTagMap != null && smartTagMap.size() > 0) {
-            Iterator iter = smartTagMap.keySet().iterator();
             String tagId;
-            HashMap tempTagMap = null;
-            HashMap tagMap = new HashMap();
-            TreeMap tempMap = new TreeMap();
             String tag;
-            int size;
-            int fontSize;
+            TreeMap tempTagMap = null;
             int minSize = 8;
-            int maxSize = 35;
+            int maxSize = 36;
+            int fontSizeRange = maxSize-minSize;
+            int minNumberOfItems = ((Integer) sizeMap.get((String) sizeMap.firstKey())).intValue();
+            int maxNumberOfItems = ((Integer) sizeMap.get((String) sizeMap.lastKey())).intValue();
+            Iterator iter = smartTagMap.keySet().iterator();
             while (iter.hasNext()) {
-                tagId = (String) iter.next();
-                tagId = tagId.substring(0, tagId.indexOf("_"));
-                size = 0;
-                if (smartTagMap.containsKey(tagId + "_img")) {
-                    tempTagMap = (HashMap) smartTagMap.get(tagId + "_img");
-                    size += tempTagMap.size();
-                }
-                if (smartTagMap.containsKey(tagId + "_event")) {
-                    tempTagMap = (HashMap) smartTagMap.get(tagId + "_event");
-                    size += tempTagMap.size();
-                }
-                if (tempTagMap != null && tempTagMap.size() > 0) {
-                    tag = (String) (tempTagMap.values().iterator().next());
-                    tempTagMap = new HashMap();
-                    tempTagMap.put(tag, new Integer(size));
-                    tagMap.put(tagId, tempTagMap);
-                    tempMap.put(new Integer(size), tagId);
-                }
-            }
-            TreeMap sortedTagMap = new TreeMap();
-            if ((tempMap != null) && (tempMap.size() > 0)) {
-                int maxTagSize = ((Integer) tempMap.lastKey()).intValue();
-                iter = tagMap.keySet().iterator();
-                while (iter.hasNext()) {
-                    tagId = (String) iter.next();
-                    tempTagMap = (HashMap) tagMap.get(tagId);
-                    tag = (String) tempTagMap.keySet().iterator().next();
-                    size = ((Integer) tempTagMap.get(tag)).intValue();
-                    fontSize = new BigDecimal(size).divide(new BigDecimal(maxTagSize)).multiply(new BigDecimal(maxSize)).intValue();
-                    if (fontSize < minSize) {
-                        fontSize += minSize;
-                    } else if (fontSize > maxSize) {
-                        fontSize -= maxSize;
-                    }
-                    sortedTagMap.put(tag, tagId+":"+fontSize);
-                }
-
-                iter = sortedTagMap.keySet().iterator();
-                while (iter.hasNext()) {
-                    tag = (String) iter.next();
-                    tagId = (String) sortedTagMap.get(tag);
-                    fontSize = Integer.parseInt(tagId.substring(tagId.indexOf(":")+1, tagId.length()));
-                    tagId = tagId.substring(0, tagId.indexOf(":"));
-                    qs.append("<a href=community-tag-detail.log?tagid=" + tagId + "&tag=" + tag + " style=font-size:" + fontSize + "px; class=SmartTag>" + tag + "</a>");
-                    qs.append(" ");
-                }
+                tag = (String) iter.next();
+                tempTagMap = (TreeMap) smartTagMap.get(tag);
+                int numberOfItemsInCurrentTag = tempTagMap.size();
+                double howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / (maxNumberOfItems - minNumberOfItems);
+                double howFarInFontSizeRange = fontSizeRange * howFarInNumberOfItemsRange;
+                double finalSizeOfTag = howFarInFontSizeRange + minSize;
+                tagId = (String) tempTagMap.get((String)tempTagMap.firstKey());
+                qs.append("<a href=community-tag-detail.log?tagid=" + tagId + "&tag=" + tag + " style=font-size:" + finalSizeOfTag + "px; class=SmartTag>" + tag + "</a>");
+                qs.append(" ");
             }
         } else {
             qs.append("No Community Tags Found.");
