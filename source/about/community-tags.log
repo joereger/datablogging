@@ -46,7 +46,12 @@
                 tag = (String) iter.next();
                 tempTagMap = (TreeMap) smartTagMap.get(tag);
                 int numberOfItemsInCurrentTag = tempTagMap.size();
-                double howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / (maxNumberOfItems - minNumberOfItems);
+                double howFarInNumberOfItemsRange;
+                if (maxNumberOfItems != minNumberOfItems) {
+                    howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / (maxNumberOfItems - minNumberOfItems);
+                } else {
+                    howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / 1;    
+                }
                 double howFarInFontSizeRange = fontSizeRange * howFarInNumberOfItemsRange;
                 double finalSizeOfTag = howFarInFontSizeRange + minSize;
                 tagId = (String) tempTagMap.get((String)tempTagMap.firstKey());
