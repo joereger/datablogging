@@ -63,7 +63,9 @@
                     tagMap.put(tagId, tempTagMap);
                     tempMap.put(new Integer(size), tagId);
                 }
-            } if ( (tempMap != null) && (tempMap.size() > 0) ) {
+            }
+
+            if ( (tempMap != null) && (tempMap.size() > 0) ) {
                 int maxTagSize = ((Integer)tempMap.lastKey()).intValue();
                 iter = tagMap.keySet().iterator();
                 while (iter.hasNext()) {
