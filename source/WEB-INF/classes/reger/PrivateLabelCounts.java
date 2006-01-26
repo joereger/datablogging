@@ -1,12 +1,12 @@
 package reger;
 
 import reger.core.db.Db;
-
-import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.Iterator;
 
 public class PrivateLabelCounts {
-    private int tagCount;
-    private HashMap smartTagMap = new HashMap();
+    private TreeMap smartTagMap = new TreeMap();
+    private TreeMap sizeMap = new TreeMap();
 
     public PrivateLabelCounts() {
 
@@ -25,50 +25,46 @@ public class PrivateLabelCounts {
         //-----------------------------------
         //-----------------------------------
 
-        HashMap tempTagMap = null;
-        HashMap tagMap = new HashMap();
+        TreeMap tempTagMap = null;
         String tagId = null;
         String tag = null;
         if (rstEventTags != null && rstEventTags.length > 0) {
             for (int i=0;i<rstEventTags.length;i++) {
                 tagId = rstEventTags[i][0];
                 tag = rstEventTags[i][1];
-                if (smartTagMap.containsKey(tagId+"_event")) {
-                    tempTagMap = (HashMap) smartTagMap.get(tagId+"_event");
+                if (smartTagMap.containsKey(tag)) {
+                    tempTagMap = (TreeMap) smartTagMap.get(tag);
                 } else {
-                    tempTagMap = new HashMap();
+                    tempTagMap = new TreeMap();
                 }
-                tempTagMap.put(rstEventTags[i][2], tag);
-                smartTagMap.put(tagId+"_event", tempTagMap);
-                tagMap.put(tag, tagId);
+                tempTagMap.put(rstEventTags[i][2], tagId);
+                smartTagMap.put(tag, tempTagMap);
             }
         }
         if (rstImgTags != null && rstImgTags.length > 0) {
             for (int i=0;i<rstImgTags.length;i++) {
                 tagId = rstImgTags[i][0];
                 tag = rstImgTags[i][1];
-                if (smartTagMap.containsKey(tagId+"_img")) {
-                    tempTagMap = (HashMap) smartTagMap.get(tagId+"_img");
+                if (smartTagMap.containsKey(tag)) {
+                    tempTagMap = (TreeMap) smartTagMap.get(tag);
                 } else {
-                    tempTagMap = new HashMap();
+                    tempTagMap = new TreeMap();
                 }
-                tempTagMap.put(rstImgTags[i][2], tag);
-                smartTagMap.put(tagId+"_img", tempTagMap);
-                tagMap.put(tag, tagId);
+                tempTagMap.put(rstImgTags[i][2], tagId);
+                smartTagMap.put(tag, tempTagMap);
             }
         }
-        tagCount = tagMap.size();
+        Iterator iter = smartTagMap.keySet().iterator();
+        while (iter.hasNext()) {
+            tag = (String) iter.next();
+            tempTagMap = (TreeMap) smartTagMap.get(tag);
+            sizeMap.put(tag, new Integer(tempTagMap.size()));
+        }
     }
-
-    public HashMap getSmartTagMap() {
+    public TreeMap getSizeMap() {
+        return sizeMap;
+    }
+    public TreeMap getTagMap() {
         return smartTagMap;
-    }
-
-    public int getTagCount() {
-        return tagCount;
-    }
-
-    public void setTagCount(int tagCount) {
-        this.tagCount = tagCount;
     }
 }
