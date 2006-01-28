@@ -38,9 +38,9 @@
             String tagId;
             String tag;
             TreeMap tempTagMap = null;
-            int minSize = 8;
-            int maxSize = 36;
-            int fontSizeRange = maxSize-minSize;
+            double minSize = 12;
+            double maxSize = 36;
+            double fontSizeRange = maxSize-minSize;
 //            int minNumberOfItems = ((Integer) sizeMap.get((String) sizeMap.firstKey())).intValue();
 //            int maxNumberOfItems = ((Integer) sizeMap.get((String) sizeMap.lastKey())).intValue();
             int minNumberOfItems = ((Integer) sizeMap.firstKey()).intValue();
@@ -57,19 +57,26 @@
                 double howFarInNumberOfItemsRange;
                 if (maxNumberOfItems != minNumberOfItems) {
                     if(numberOfItemsInCurrentTag!=minNumberOfItems){
-                        howFarInNumberOfItemsRange = (numberOfItemsInCurrentTag - minNumberOfItems) / (maxNumberOfItems - minNumberOfItems);
+                        debug.append("<br>howFarInNumberOfItemsRange calculating");
+                        debug.append("<br>(numberOfItemsInCurrentTag - minNumberOfItems)=" + (numberOfItemsInCurrentTag - minNumberOfItems));
+                        debug.append("<br>(maxNumberOfItems - minNumberOfItems)=" + (maxNumberOfItems - minNumberOfItems));
+                        double a = numberOfItemsInCurrentTag-minNumberOfItems;
+                        double b = maxNumberOfItems-minNumberOfItems;
+                        howFarInNumberOfItemsRange = a/b;
+                        //howFarInNumberOfItemsRange = (numberOfItemsInCurrentTag-minNumberOfItems)/(maxNumberOfItems-minNumberOfItems);
                     } else {
                         //Just needs to be a very small number... it's as close to the start of the range as possible
-                        howFarInNumberOfItemsRange = .000001;
+                        debug.append("<br>howFarInNumberOfItemsRange forcing to .01");
+                        howFarInNumberOfItemsRange = .01;
                     }
                 } else {
                     //All tags are going to be the same size anyway so I can just choose a comfortable size
+                    debug.append("<br>howFarInNumberOfItemsRange forcing to .25 because maxAndMinNumberOfItems is equal.");
                     howFarInNumberOfItemsRange = .25;
                 }
                 debug.append("<br>howFarInNumberOfItemsRange = " + howFarInNumberOfItemsRange);
                 double howFarInFontSizeRange = fontSizeRange * howFarInNumberOfItemsRange;
                 debug.append("<br>howFarInFontSizeRange = " + howFarInFontSizeRange);
-                //double finalSizeOfTag = howFarInFontSizeRange + minSize;
                 double finalSizeOfTag = howFarInFontSizeRange + minSize;
                 debug.append("<br>finalSizeOfTag = " + finalSizeOfTag);
                 tagId = (String) tempTagMap.get((String)tempTagMap.firstKey());
@@ -92,7 +99,7 @@
     mb.append(reger.SideColumn.sideColTableEnd("Community Tags"));
 
     //Debug
-    mb.append(debug);
+    //mb.append(debug);
 
 %>
 
