@@ -41,8 +41,10 @@
             int minSize = 8;
             int maxSize = 36;
             int fontSizeRange = maxSize-minSize;
-            int minNumberOfItems = ((Integer) sizeMap.get((String) sizeMap.firstKey())).intValue();
-            int maxNumberOfItems = ((Integer) sizeMap.get((String) sizeMap.lastKey())).intValue();
+//            int minNumberOfItems = ((Integer) sizeMap.get((String) sizeMap.firstKey())).intValue();
+//            int maxNumberOfItems = ((Integer) sizeMap.get((String) sizeMap.lastKey())).intValue();
+            int minNumberOfItems = ((Integer) sizeMap.firstKey()).intValue();
+            int maxNumberOfItems = ((Integer) sizeMap.lastKey()).intValue();
             debug.append("<br>minNumberOfItems = " + minNumberOfItems);
             debug.append("<br>maxNumberOfItems = " + maxNumberOfItems);
             Iterator iter = smartTagMap.keySet().iterator();
