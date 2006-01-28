@@ -50,10 +50,11 @@
                 if (maxNumberOfItems != minNumberOfItems) {
                     howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / (maxNumberOfItems - minNumberOfItems);
                 } else {
-                    howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / 1;    
+                    howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / 1;
                 }
                 double howFarInFontSizeRange = fontSizeRange * howFarInNumberOfItemsRange;
-                double finalSizeOfTag = howFarInFontSizeRange + minSize;
+                //double finalSizeOfTag = howFarInFontSizeRange + minSize;
+                double finalSizeOfTag = Math.log(howFarInFontSizeRange) * minSize;
                 tagId = (String) tempTagMap.get((String)tempTagMap.firstKey());
                 qs.append("<a href=community-tag-detail.log?tagid=" + tagId + "&tag=" + tag + " style=font-size:" + finalSizeOfTag + "px; class=SmartTag>" + tag + "</a>");
                 qs.append(" ");
