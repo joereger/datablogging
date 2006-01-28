@@ -58,7 +58,8 @@ public class PrivateLabelCounts {
         while (iter.hasNext()) {
             tag = (String) iter.next();
             tempTagMap = (TreeMap) smartTagMap.get(tag);
-            sizeMap.put(tag, new Integer(tempTagMap.size()));
+            System.out.println("************** "+tag+"-->"+new Integer(tempTagMap.size()));
+            sizeMap.put(new Integer(tempTagMap.size()), tag);
         }
     }
     public TreeMap getSizeMap() {
