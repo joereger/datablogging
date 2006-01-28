@@ -54,9 +54,14 @@
                 debug.append("<br>numberOfItemsInCurrentTag = " + numberOfItemsInCurrentTag);
                 double howFarInNumberOfItemsRange;
                 if (maxNumberOfItems != minNumberOfItems) {
-                    howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / (maxNumberOfItems - minNumberOfItems);
+                    if(numberOfItemsInCurrentTag!=minNumberOfItems){
+                        howFarInNumberOfItemsRange = (numberOfItemsInCurrentTag - minNumberOfItems) / (maxNumberOfItems - minNumberOfItems);
+                    } else {
+                        //Just needs to be a very small number... it's as close to the start of the range as possible
+                        howFarInNumberOfItemsRange = .000001;
+                    }
                 } else {
-                    //All tags are going to be the same size anyway so I can just p
+                    //All tags are going to be the same size anyway so I can just choose a comfortable size
                     howFarInNumberOfItemsRange = .25;
                 }
                 debug.append("<br>howFarInNumberOfItemsRange = " + howFarInNumberOfItemsRange);
