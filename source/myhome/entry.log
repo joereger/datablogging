@@ -112,8 +112,9 @@ if (pageProps.action!=null && !pageProps.action.equals("")) {
 
 	} else if (pageProps.action.equals("edit")) {
 	    //Go get the entry.
-		//pageProps.entry.getEntryAll(pageProps.entry.eventid);
-		pageProps.entry=reger.cache.EntryCache.get(pageProps.entry.eventid);
+		pageProps.entry.getEntryAll(pageProps.entry.eventid);
+		//pageProps.entry=reger.cache.EntryCache.get(pageProps.entry.eventid);
+
 	} else if (pageProps.action.equals("default")) {
 		pageProps.entry.getBlankEntryAll();
 	} else {

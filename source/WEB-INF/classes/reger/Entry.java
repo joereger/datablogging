@@ -116,6 +116,7 @@ public class Entry {
      * Constructor:
      */
     public Entry(int eventid) {
+        this.eventid=eventid;
         getEntryAll(eventid);
     }
 
@@ -338,6 +339,7 @@ public class Entry {
             }
         }
 
+
         //Populate from request
         if (fields != null) {
             for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
@@ -475,7 +477,7 @@ public class Entry {
         }
 
         //Make sure a key is set
-        if (entryKey.equals("")){
+        if (entryKey==null || entryKey.equals("")){
             entryKey=reger.core.RandomString.randomAlphanumeric(10);
         }
 
@@ -485,12 +487,6 @@ public class Entry {
         int rs2 = reger.core.db.Db.RunSQLUpdate("UPDATE event SET locationid='" + locationid + "', date='" + TimeUtils.dateformatfordb(dateGmt) + "', title='" + reger.core.Util.cleanForSQL(title) + "', comments='" + reger.core.Util.cleanForSQL(comments) + "', favorite='" + favorite + "', isdraft='" + isDraft + "', sizeinbytes='" + reger.core.Util.sizeInBytes(comments) + "', isapproved='" + isApproved + "', accountuserid='" + accountuserid + "', istemporary='0', isflaggedformoderator='" + isflaggedformoderator + "', lastmodifiedbyuserdate='" + reger.core.TimeUtils.dateformatfordb(lastmodifiedbyuserdate) + "', ismoderatorapproved='" + ismoderatorapproved + "', requiresmoderatorapproval='" + requiresmoderatorapproval + "', entrykey='"+reger.core.Util.cleanForSQL(entryKey)+"' WHERE eventid='" + this.eventid + "' AND accountid='" + accountid + "'");
         //---------------------=======---------------------
         //-------------------------------------------------
-
-        //Flush the entry cache
-        reger.cache.EntryCache.flush(eventid);
-
-        //Flush the related entries cache
-        reger.cache.RelatedLinksCache.flush(eventid);
 
         //Groups
         addGroups();
@@ -507,7 +503,7 @@ public class Entry {
         }
 
         //Only ping when public entries are made
-        if (!pl.getForcelogintoviewsites() && pl.getIsweblogscompingon() && getLogPermission(logid) == reger.Vars.LOGACCESSPUBLIC && ismoderatorapproved == 1) {
+        if (!pl.getForcelogintoviewsites() && pl.getIsweblogscompingon() && getLogPermission(logid)==reger.Vars.LOGACCESSPUBLIC && ismoderatorapproved==1) {
             reger.api.WebLogsComPing.ping(account.getAccountid());
         }
 
@@ -526,26 +522,30 @@ public class Entry {
         LogCache.get(logid).refreshMostRecentEntryDateGMTFromDB();
         LogCache.get(logid).refreshNumberOfLiveEntriesInLogFromDB();
 
+        //Entry tags
         EventTagLink.addTagsToEntry(entryKeywordTags, eventid);
+
+        //Flush the entry cache
+        reger.cache.EntryCache.flush(eventid);
+
+        //Flush the related entries cache
+        reger.cache.RelatedLinksCache.flush(eventid);
 
         Debug.debug(4, "Entry.java", "Entry edited: eventid=" + eventid);
 
     }
 
     private void addGroups(){
-        if (groupids !=null){
+        if (groupids !=null && !groupids.isEmpty()){
             //Clean out groupids not checked any more
             StringBuffer sql = new StringBuffer();
             for (Iterator it = groupids.iterator(); it.hasNext(); ) {
                 Integer groupid = (Integer)it.next();
-                sql.append(" groupid<>'"+groupid+"' ");
-                if(it.hasNext()){
-                    sql.append(" AND ");
-                }
+                sql.append(" AND groupid<>'"+groupid+"' ");
             }
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("DELETE FROM eventtogroup WHERE eventid='"+eventid+"' AND "+sql);
+            int count = Db.RunSQLUpdate("DELETE FROM eventtogroup WHERE eventid='"+eventid+"' "+sql);
             //-----------------------------------
             //-----------------------------------
 
@@ -566,6 +566,12 @@ public class Entry {
                     eventToGroup.save();
                 }
             }
+        } else {
+            //-----------------------------------
+            //-----------------------------------
+            int count = Db.RunSQLUpdate("DELETE FROM eventtogroup WHERE eventid='"+eventid+"'");
+            //-----------------------------------
+            //-----------------------------------
         }
 
     }
@@ -633,7 +639,7 @@ public class Entry {
             // Get all tags with links
             try{
                 entryKeywordTagsWithLinks =  (String) vec.get(1);
-            } catch (Exception e    ){
+            } catch (Exception e){
                 entryKeywordTagsWithLinks = "";
             }
         }

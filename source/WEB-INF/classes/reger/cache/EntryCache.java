@@ -14,17 +14,17 @@ public class EntryCache {
 
 
     public static Entry get(int eventid){
-        Debug.debug(5, "", "EntryCache.get("+eventid+") called.");
+        Debug.debug(3, "", "EntryCache.get("+eventid+") called.");
         if (admin==null){
             admin = new GeneralCacheAdministrator();
         }
 
         try {
-            Debug.debug(5, "", "EntryCache.get("+eventid+") trying to return from cache.");
+            Debug.debug(3, "", "EntryCache.get("+eventid+") trying to return from cache.");
             return (Entry) admin.getFromCache(String.valueOf(eventid));
         } catch (NeedsRefreshException nre) {
             try {
-                Debug.debug(5, "", "EntryCache.get("+eventid+") refreshing object from database.");
+                Debug.debug(3, "", "EntryCache.get("+eventid+") refreshing object from database.");
                 Entry ent = new Entry(eventid);
                 admin.putInCache(String.valueOf(eventid), ent);
                 return ent;

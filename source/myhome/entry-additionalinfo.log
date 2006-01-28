@@ -4,6 +4,7 @@
 <%@ page import="reger.Log"%>
 <%@ page import="reger.cache.LogCache"%>
 <%@ page import="reger.core.ValidationException"%>
+<%@ page import="java.util.ArrayList"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -34,13 +35,26 @@ if(request.getParameter("eventid")==null || !reger.core.Util.isinteger(request.g
     return;
 }
 
-Entry entry = EntryCache.get(Integer.parseInt(request.getParameter("eventid")));
+Entry entry = new Entry(Integer.parseInt(request.getParameter("eventid")));
 Log log = LogCache.get(entry.logid);
 
 if (pageProps.action.equals("submit")){
-    entry.populate(log.getLogid(), request, userSession.getAccountuser().getUsertimezoneid());
+    //Groups
+    ArrayList<Integer> groupids = new ArrayList<Integer>();
+    if (request.getParameterValues("groupid") != null) {
+        String[] inGroups = request.getParameterValues("groupid");
+        for (int i = 0; i < inGroups.length; i++) {
+            if (reger.core.Util.isinteger(inGroups[i])) {
+                groupids.add(Integer.parseInt(inGroups[i]));
+            }
+        }
+    }
+    entry.groupids = groupids;
+
+    //Try the save
     try{
         entry.editEntryAll(userSession.getAccount(), userSession.getAccountuser(), userSession.getPl());
+        EntryCache.flush(entry.eventid);
         response.sendRedirect("index.log?msg=entryedited&eventid="+entry.eventid+"&logid="+entry.logid);
         return;
     } catch (ValidationException vex){
