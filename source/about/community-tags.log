@@ -56,7 +56,8 @@
                 if (maxNumberOfItems != minNumberOfItems) {
                     howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / (maxNumberOfItems - minNumberOfItems);
                 } else {
-                    howFarInNumberOfItemsRange = numberOfItemsInCurrentTag / 1;
+                    //All tags are going to be the same size anyway so I can just p
+                    howFarInNumberOfItemsRange = .25;
                 }
                 debug.append("<br>howFarInNumberOfItemsRange = " + howFarInNumberOfItemsRange);
                 double howFarInFontSizeRange = fontSizeRange * howFarInNumberOfItemsRange;
