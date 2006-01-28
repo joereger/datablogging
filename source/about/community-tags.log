@@ -58,7 +58,7 @@
                 if (howFarInFontSizeRange != 0 || howFarInFontSizeRange != 1) {
                     finalSizeOfTag = Math.log(howFarInFontSizeRange) * minSize;
                 } else {
-                    finalSizeOfTag = howFarInFontSizeRange + minSize;                    
+                    finalSizeOfTag = howFarInFontSizeRange + minSize;
                 }
                 tagId = (String) tempTagMap.get((String)tempTagMap.firstKey());
                 qs.append("<a href=community-tag-detail.log?tagid=" + tagId + "&tag=" + tag + " style=font-size:" + finalSizeOfTag + "px; class=SmartTag>" + tag + "</a>");
