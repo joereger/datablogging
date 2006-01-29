@@ -67,7 +67,7 @@ if (pageProps.action.equals("newgroup")){
     groupMembership.setSharemembershippublicly(true);
     try{
         newgroup.save();
-        groupMembership.setGroupid(newgroup.getGroupid());
+        groupMembership.setGroupid(newgroup.getComment());
         groupMembership.save();
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your new group called '"+newgroup.getName()+"' has been saved!"));
     } catch (ValidationException vex){
@@ -215,7 +215,7 @@ if (rstGroups!=null && rstGroups.length>0){
 	    mb.append("<tr>");
 
         mb.append("<td valign=top>");
-        mb.append("<a href='group-view.log?groupid="+group.getGroupid()+"'>");
+        mb.append("<a href='group-view.log?groupid="+group.getComment()+"'>");
         mb.append("<font face=arial size=-1>");
         mb.append("<b>");
         mb.append(group.getName());
@@ -260,7 +260,7 @@ if (rstGroups!=null && rstGroups.length>0){
 
         mb.append("<td valign=top align=center>");
         mb.append("<font face=arial size=-2>");
-        mb.append("<a href='people-friends-invite.log?groupid="+group.getGroupid()+"'>");
+        mb.append("<a href='people-friends-invite.log?groupid="+group.getComment()+"'>");
         mb.append("Invite Friends");
         mb.append("</a>");
         mb.append("</font>");
@@ -288,7 +288,7 @@ if (rstGroups!=null && rstGroups.length>0){
 
 //        mb.append("<td valign=top align=center>");
 //        mb.append("<font face=arial size=-2>");
-//        mb.append("<a href='"+pageProps.pathToAppRoot+"groups/rss-group.log?groupid="+group.getGroupid()+"'>");
+//        mb.append("<a href='"+pageProps.pathToAppRoot+"groups/rss-group.log?groupid="+group.getComment()+"'>");
 //        mb.append("<img src='../images/xml-newsfeed.png' alt='' border='0'>");
 //        mb.append("</a>");
 //        mb.append("</font>");
