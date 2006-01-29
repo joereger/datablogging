@@ -100,7 +100,7 @@ public class LogTypeCreator {
             //Debug
             reger.core.Debug.debug(5, "LogTypeCreator.java", "createField() called for fieldname="+fieldname+":<br><br>" + JdomElementInspector.inspect(e, "<br>"));
 
-            Field field = new Field(Field.FIELDTYPETEXTBOX, logType.getEventtypeid(), 0, fieldname, "", reger.mega.DataTypeString.DATATYPEID, 0);
+            Field field = new Field(Field.FIELDTYPETEXTBOX, logType.getEventtypeid(), fieldname, "", reger.mega.DataTypeString.DATATYPEID, 0);
             field.saveField();
         }
 

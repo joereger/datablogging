@@ -35,12 +35,7 @@ if (request.getParameter("eventtypeid")!=null && reger.core.Util.isinteger(reque
 }
 reger.core.Debug.debug(4, "logs-field.log", "eventtypeid=" + eventtypeid);
 
-//Determine whether this field is being edited for a log or for an eventtypeid
-int EDITFIELDFOR = reger.mega.Field.EDITFIELDFORLOG;
-if (eventtypeid>0){
-    EDITFIELDFOR = reger.mega.Field.EDITFIELDFOREVENTTYPE;
-}
-reger.core.Debug.debug(4, "logs-field.log", "EDITFIELDFOR=" + EDITFIELDFOR);
+
 
 
 //This Field variable represents the field that we're working with on this page
@@ -89,13 +84,7 @@ if (!field.isFieldOwnedByAccountuser(userSession.getAccountuser()) && field.getM
 //Get the page to redirect to after a successful request
 String pageToRedirectToAfterEdit = request.getParameter("returntopage");
 if (request.getParameter("returntopage")==null || request.getParameter("returntopage").equals("") || request.getParameter("returntopage").equals("null")){
-    if (EDITFIELDFOR == reger.mega.Field.EDITFIELDFORLOG){
-        pageToRedirectToAfterEdit = "logs-log-fieldlayout.log";
-    } else if (EDITFIELDFOR ==reger.mega.Field.EDITFIELDFOREVENTTYPE){
-        pageToRedirectToAfterEdit = "logs-type-fieldlayout.log";
-    } else {
-        pageToRedirectToAfterEdit = "logs-log-list.log";
-    }
+    pageToRedirectToAfterEdit = "logs-type-fieldlayout.log";
 }
 Debug.debug(4, "logs-field.log", "logs-field.log - pageToRedirectToAfterEdit = " + pageToRedirectToAfterEdit);
 
@@ -143,7 +132,7 @@ Debug.debug(4, "logs-field.log", "pageProps.action="+pageProps.action+"");
 //Edit field
 String errortext="";
 if (pageProps.action.equals("editfield")) {
-    if (field.getEventtypeid()>0 || field.getLogid()>0){
+    if (field.getEventtypeid()>0){
         //Save the field data
         field.saveField();
         //Check the parameters
@@ -175,19 +164,15 @@ if (pageProps.action.equals("finishaddfield")) {
     //Save the field data
     if (eventtypeid>0){
         field.setEventtypeid(eventtypeid);
-        field.setLogid(0);
-    } else if (pageProps.logProps.logid>0){
-        field.setEventtypeid(0);
-        field.setLogid(pageProps.logProps.logid);
     }
-    if (field.getEventtypeid()>0 || field.getLogid()>0){
+    if (field.getEventtypeid()>0){
         field.saveField();
         //Set the megafieldid on all parameter objects. I get megafieldid from insert identity from DB which is saved in field.
         fieldAllParams.setMegafieldidOnAll(field.getMegafieldid());
         //Check the parameters
         errortext = errortext + fieldAllParams.saveParams();
     } else {
-        errortext = errortext + "No log or log type specified for this field.  Please use your browser's back button and try again.";
+        errortext = errortext + "No log type specified for this field.  Please use your browser's back button and try again.";
     }
     //If no errors, redirect
     if (errortext.equals("")) {

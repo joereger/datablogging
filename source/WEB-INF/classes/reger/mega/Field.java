@@ -28,14 +28,10 @@ public class Field implements Cloneable, FieldInterface {
     public static final int EDITFIELDASUSER = 1;
     public static final int EDITFIELDASSYSTEM = 2;
 
-    public static final int EDITFIELDFORLOG = 1;
-    public static final int EDITFIELDFOREVENTTYPE = 2;
-
     //Database values for field
     public int megafieldid = 0;
     public int fieldtype = 0;
     public int eventtypeid = 0;
-    public int logid = 0;
     public String fieldname = "";
     public String fielddescription = "";
     public int megadatatypeid = 0;
@@ -63,14 +59,13 @@ public class Field implements Cloneable, FieldInterface {
         return null;
     }
 
-    public Field(int fieldtype, int eventtypeid, int logid, String fieldname, String fielddescription, int megadatatypeid, int isrequired){
+    public Field(int fieldtype, int eventtypeid, String fieldname, String fielddescription, int megadatatypeid, int isrequired){
         this.fieldtype = fieldtype;
         this.eventtypeid = eventtypeid;
         this.fieldname = fieldname;
         this.fielddescription = fielddescription;
         this.megadatatypeid = megadatatypeid;
         this.isrequired = isrequired;
-        this.logid = logid;
     }
 
     public void populateFromAnotherField(Field field){
@@ -81,7 +76,6 @@ public class Field implements Cloneable, FieldInterface {
         this.fielddescription = field.fielddescription;
         this.megadatatypeid = field.megadatatypeid;
         this.isrequired = field.isrequired;
-        this.logid = field.logid;
     }
 
 
@@ -89,7 +83,7 @@ public class Field implements Cloneable, FieldInterface {
         Debug.debug(5, "", "Field.java - megafieldid=" + megafieldid);
         //-----------------------------------
         //-----------------------------------
-        String[][] rstField= Db.RunSQL("SELECT megafieldid, fieldtype, eventtypeid, fieldname, fielddescription, megadatatypeid, isrequired, logid FROM megafield WHERE megafieldid='"+megafieldid+"'");
+        String[][] rstField= Db.RunSQL("SELECT megafieldid, fieldtype, eventtypeid, fieldname, fielddescription, megadatatypeid, isrequired FROM megafield WHERE megafieldid='"+megafieldid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstField!=null && rstField.length>0){
@@ -112,12 +106,6 @@ public class Field implements Cloneable, FieldInterface {
                 if (reger.core.Util.isinteger(rstField[i][6])){
                     isrequired = Integer.parseInt(rstField[i][6]);
                 }
-
-                if (reger.core.Util.isinteger(rstField[i][7])){
-                    logid = Integer.parseInt(rstField[i][7]);
-                }
-
-                
 
                 Debug.debug(5, "", "Field.java - found and populated field.<br>this.megafieldid=" + this.megafieldid + "<br>fieldname=" + fieldname);
         	}
@@ -144,23 +132,8 @@ public class Field implements Cloneable, FieldInterface {
 
         StringBuffer debug = new StringBuffer();
         debug.append("Field.java - saveField() called on: " + fieldname + "<br>");
-        debug.append("this.logid=" + this.logid + "<br>");
         debug.append("this.eventtypeid=" + this.eventtypeid + "<br>");
-        debug.append("logid=" + logid + "<br>");
         debug.append("eventtypeid=" + eventtypeid + "<br>");
-
-        //Determine ownership of eventtype
-//        boolean isEventTypeOwnedByUser = false;
-//        MegaLogType mlt = AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(this.eventtypeid);
-//        if (mlt!=null && mlt.getAccountuserid()==userSessionOfSaver.getAccountuser().getAccountuserid()){
-//            isEventTypeOwnedByUser = true;
-//        }
-//        debug.append("isEventTypeOwnedByUser="+isEventTypeOwnedByUser+"<br>");
-
-        //Determine ownership of field
-//        boolean isFieldOwnedByUser = isFieldOwnedByAccountuser(userSessionOfSaver.getAccountuser());
-//        debug.append("isFieldOwnedByUser="+isFieldOwnedByUser+"<br>");
-
 
         if (fieldname==null || fieldname.equals("")) {
             fieldname="New Field";
@@ -171,57 +144,6 @@ public class Field implements Cloneable, FieldInterface {
         }
 
         saveMegafieldid();
-
-        //User editing
-//        if (EDITFIELDAS==EDITFIELDASUSER){
-//            debug.append("Field will be edited as USER.<br>");
-//            //Determine whether to attach this field to a log or to an eventtype
-//            if (EDITFIELDFOR==EDITFIELDFORLOG){
-//                debug.append("Field will be edited for LOG.<br>");
-//                this.logid=logid;
-//                this.eventtypeid=0;
-//                debug.append("this.logid=" + this.logid + "<br>");
-//                debug.append("this.eventtypeid=" + this.eventtypeid + "<br>");
-//                debug.append("logid=" + logid + "<br>");
-//                debug.append("eventtypeid=" + eventtypeid + "<br>");
-//                if (megafieldid==-1){
-//                    //Create a new field for this user which they'll own
-//                    saveMegafieldid();
-//                } else if (isFieldOwnedByUser){
-//                    //Even though the user owns the field, they may also own the eventtypeid and since they're editing for LOG, they should then override
-//                    saveMegafieldid();
-//                } else {
-//                    //The user doesn't own the field so they should override it
-//
-//                }
-//            } else if (EDITFIELDFOR==EDITFIELDFOREVENTTYPE){
-//                debug.append("Field will be edited for EVENTTYPE.<br>");
-//                this.logid=0;
-//                this.eventtypeid=eventtypeid;
-//                debug.append("this.logid=" + this.logid + "<br>");
-//                debug.append("this.eventtypeid=" + this.eventtypeid + "<br>");
-//                debug.append("logid=" + logid + "<br>");
-//                debug.append("eventtypeid=" + eventtypeid + "<br>");
-//                if (isFieldOwnedByUser || megafieldid==-1){
-//                    saveMegafieldid();
-//                } else {
-//                    //Do nothing... shouldn't ever happen that you're editing an eventtype where the fields don't belong to you
-//                }
-//            }
-//        //Sysadmin editing
-//        } else if (EDITFIELDAS==EDITFIELDASSYSTEM){
-//            debug.append("Field will be edited as SYSTEM.<br>");
-//            if (EDITFIELDFOR==EDITFIELDFORLOG){
-//                this.logid=logid;
-//                this.eventtypeid=0;
-//                //Can't happen right now
-//            } else if (EDITFIELDFOR==EDITFIELDFOREVENTTYPE){
-//                this.logid=0;
-//                this.eventtypeid=eventtypeid;
-//                saveMegafieldid();
-//            }
-//        }
-
 
         //Record debug
         Debug.debug(5, "", debug.toString());
@@ -234,18 +156,18 @@ public class Field implements Cloneable, FieldInterface {
     private void saveMegafieldid(){
         //Try to update.
         StringBuffer debug = new StringBuffer();
-        debug.append("Field.java - saveMegafieldid() trying to update megafield " + fieldname + "<br>this.logid=" + this.logid + "<br>this.eventtypeid=" + this.eventtypeid + "<br>");
+        debug.append("Field.java - saveMegafieldid() trying to update megafield " + fieldname + "<br>this.eventtypeid=" + this.eventtypeid + "<br>");
 
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstChk= Db.RunSQL("SELECT count(*) FROM megafield WHERE megafieldid='"+ megafieldid +"' AND logid='"+logid+"' AND eventtypeid='"+eventtypeid+"'");
+        String[][] rstChk= Db.RunSQL("SELECT count(*) FROM megafield WHERE megafieldid='"+ megafieldid +"' AND eventtypeid='"+eventtypeid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstChk!=null && rstChk.length>0 && Integer.parseInt(rstChk[0][0])>0){
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE megafield SET fieldname='"+ reger.core.Util.cleanForSQL(fieldname) +"', fielddescription='"+ reger.core.Util.cleanForSQL(fielddescription) +"', fieldtype='"+ fieldtype +"', eventtypeid='"+ this.eventtypeid +"',  isrequired='"+ isrequired +"', megadatatypeid='"+ megadatatypeid +"', logid='"+this.logid+"' WHERE megafieldid='"+ megafieldid +"' AND logid='"+logid+"' AND eventtypeid='"+eventtypeid+"'");
+            int count = Db.RunSQLUpdate("UPDATE megafield SET fieldname='"+ reger.core.Util.cleanForSQL(fieldname) +"', fielddescription='"+ reger.core.Util.cleanForSQL(fielddescription) +"', fieldtype='"+ fieldtype +"', eventtypeid='"+ this.eventtypeid +"',  isrequired='"+ isrequired +"', megadatatypeid='"+ megadatatypeid +"' WHERE megafieldid='"+ megafieldid +"' AND eventtypeid='"+eventtypeid+"'");
             //-----------------------------------
             //-----------------------------------
         } else {
@@ -253,7 +175,7 @@ public class Field implements Cloneable, FieldInterface {
             //Create the new field in the database
             //-----------------------------------
             //-----------------------------------
-            int identity = Db.RunSQLInsert("INSERT INTO megafield(fieldtype, fieldname, fielddescription, isrequired, megadatatypeid, eventtypeid, logid) VALUES('"+ fieldtype +"', '"+ reger.core.Util.cleanForSQL(fieldname) +"', '"+ reger.core.Util.cleanForSQL(fielddescription) +"', '"+ isrequired +"', '"+ megadatatypeid +"', '"+ this.eventtypeid +"', '"+this.logid+"')");
+            int identity = Db.RunSQLInsert("INSERT INTO megafield(fieldtype, fieldname, fielddescription, isrequired, megadatatypeid, eventtypeid) VALUES('"+ fieldtype +"', '"+ reger.core.Util.cleanForSQL(fieldname) +"', '"+ reger.core.Util.cleanForSQL(fielddescription) +"', '"+ isrequired +"', '"+ megadatatypeid +"', '"+ this.eventtypeid +"')");
             //-----------------------------------
             //-----------------------------------
 
@@ -268,7 +190,6 @@ public class Field implements Cloneable, FieldInterface {
         AllMegaLogTypesInSystem.refresh(eventtypeid);
         LogCache.flushByMegafieldid(megafieldid);
         LogCache.flushByEventtypeid(eventtypeid);
-        LogCache.flushByLogid(logid);
 
         debug.append("this.megafieldid=" + this.megafieldid);
 
@@ -297,20 +218,7 @@ public class Field implements Cloneable, FieldInterface {
                     return true;
                 }
             }
-        } else if (logid>0){
-            //This field is part of a log so I look to the account that the log belongs to
-            Log logByLogid = LogCache.get(logid);
-            if (logByLogid!=null){
-                if (au.getAccountid()==logByLogid.getAccountid()){
-                    if (au.userCanDoAcl("CUSTOMIZELOG", au.getAccountid())){
-                        return true;
-                    }
-                }
-            }
-        } else {
-            //Field isn't (yet) associated with a logid or eventtypeid
         }
-
 
         return false;
     }
@@ -335,7 +243,6 @@ public class Field implements Cloneable, FieldInterface {
         AllFieldsInSystem.refresh(megafieldid);
         AllMegaLogTypesInSystem.refresh(eventtypeid);
         LogCache.flushByMegafieldid(megafieldid);
-        LogCache.flushByLogid(logid);
     }
 
 
@@ -459,15 +366,6 @@ public class Field implements Cloneable, FieldInterface {
     public void setFieldtype(int fieldtype) {
         this.fieldtype = fieldtype;
     }
-
-    public int getLogid() {
-        return logid;
-    }
-
-    public void setLogid(int logid) {
-        this.logid = logid;
-    }
-
 
     public void setMegafieldid(int megafieldid) {
         this.megafieldid = megafieldid;

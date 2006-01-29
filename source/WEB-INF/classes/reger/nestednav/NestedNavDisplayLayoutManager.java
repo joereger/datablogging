@@ -88,8 +88,6 @@ public class NestedNavDisplayLayoutManager implements NestedNavDisplay{
                 mb.append("<td valign=top align=left bgcolor="+ cellbgcolor +" nowrap>");
                 mb.append("<a href='logs-log-properties.log?logid="+ navItem.getThisNestedNavId() +"'><font face=arial size=-2>Properties</a>");
                 mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
-                mb.append("<a href='logs-log-fieldlayout.log?logid="+ navItem.getThisNestedNavId() +"'><font face=arial size=-2>datablogging Fields</a>");
-                mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
                 mb.append("<a href='logs-log-templates.log?logid="+ navItem.getThisNestedNavId() +"'><font face=arial size=-2>Look & Feel</a>");
                 mb.append("&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;");
                 mb.append("<a href='logs-log-move.log?logid="+ navItem.getThisNestedNavId() +"&action=movestart&nestednavtype="+navItem.getThisNestedNavType()+"&nestednavid="+navItem.getThisNestedNavId()+"'><font face=arial size=-2>Move</font></a>");

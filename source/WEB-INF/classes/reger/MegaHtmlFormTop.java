@@ -372,7 +372,7 @@ public class MegaHtmlFormTop {
             try{
                 mb.append("<tr><td colspan=3 bgcolor=#cccccc valign=top class=logentryheader>");
                 //mb.append("<font face=arial size=-2 class=smallfont>Author: <b><a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"' onclick=\"leaveEntryPage(this.href); return false;\">"+pageProps.entry.author+"</b></font>");
-                if (!editLayout){
+                if (!editLayout && pageProps.entry.accountuserid>0){
                     Accountuser au = new Accountuser(pageProps.entry.accountuserid, true);
                     mb.append("<font face=arial size=-2 class=smallfont>");
                     mb.append("Author:<br>");

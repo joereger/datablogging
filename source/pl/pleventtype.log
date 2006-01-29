@@ -80,13 +80,13 @@ if (pageProps.action.equals("delete")){
 
 mb.append("<br><br>");
 
-mb.append("<table cellpadding=5 cellspacing=0 border=0>");
+mb.append("<table cellpadding=5 cellspacing=0 border=0 align=center>");
 mb.append("<tr>");
 mb.append("<td valign=top bgcolor=#ffffff>");
 mb.append("<DIV class=greybox>");
 //List all event types not currently in this plid
 mb.append("<font face=arial size=+1>");
-mb.append("Event Types Not In This PL");
+mb.append("System Event Types Not In This PL");
 mb.append("</font>");
 mb.append("<br>");
 mb.append("<font face=arial size=-2>");
@@ -100,6 +100,31 @@ if (rstNotIn!=null && rstNotIn.length>0){
         mb.append("<DIV class=greybox align=right>");
         mb.append(rstNotIn[i][1]);
         mb.append(" <a href='pleventtype.log?action=add&eventtypeid="+rstNotIn[i][0]+"&plid="+request.getParameter("plid")+"'>");
+	    mb.append("Add >>");
+	    mb.append("</a>");
+	    mb.append("</DIV>");
+	}
+}
+mb.append("</font>");
+mb.append("</DIV>");
+mb.append("<br><br>");
+mb.append("<DIV class=greybox>");
+//List all event types not currently in this plid
+mb.append("<font face=arial size=+1>");
+mb.append("User Event Types Not In This PL");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstUserNotIn = Db.RunSQL("SELECT megalogtype.eventtypeid, megalogtype.megalogname FROM account, accountuser, megalogtype LEFT JOIN pleventtypeid ON pleventtypeid.eventtypeid=megalogtype.eventtypeid AND pleventtypeid.plid='"+request.getParameter("plid")+"' WHERE pleventtypeid.eventtypeid IS NULL AND megalogtype.issystemlogtype='0' AND megalogtype.accountuserid>'0' AND isprivate='0' AND megalogtype.accountuserid=accountuser.accountuserid AND accountuser.accountid=account.accountid AND account.plid='"+plid+"' ORDER BY megalogtype.megalogname ASC");
+//-----------------------------------
+//-----------------------------------
+if (rstUserNotIn !=null && rstUserNotIn.length>0){
+	for(int i=0; i<rstUserNotIn.length; i++){
+        mb.append("<DIV class=greybox align=right>");
+        mb.append(rstUserNotIn[i][1]);
+        mb.append(" <a href='pleventtype.log?action=add&eventtypeid="+rstUserNotIn[i][0]+"&plid="+request.getParameter("plid")+"'>");
 	    mb.append("Add >>");
 	    mb.append("</a>");
 	    mb.append("</DIV>");

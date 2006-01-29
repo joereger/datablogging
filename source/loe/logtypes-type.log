@@ -5,6 +5,8 @@
                  reger.mega.FieldLayout,
                  reger.mega.FieldType,
                  reger.MegaLogType" %>
+<%@ page import="reger.AllFieldsInSystem"%>
+<%@ page import="reger.AllMegaLogTypesInSystem"%>
 
 <%
 /*----------------------------------------------------*/
@@ -88,12 +90,14 @@ if (pageProps.action.equals("endadd")){
     megaLogType.setIssystemlogtype(1);
     megaLogType.setAccountuserid(0);
     megaLogType.save();
+    AllMegaLogTypesInSystem.refresh();
     response.sendRedirect("logtypes-list-system.log");
     return;
 }
 
 if (pageProps.action.equals("go")) {
     megaLogType.save();
+    AllMegaLogTypesInSystem.refresh();
     response.sendRedirect("logtypes-list-system.log");
     return;
 }
@@ -201,7 +205,9 @@ mb.append("<tr>");
 mb.append("<td bgcolor=#ffffff align=left colspan=2>");
 
 //Display the fields
+if (eventtypeid>0){
 mb.append(FieldLayout.getHtml(eventtypeid, 0, FieldLayout.LAYOUTMODEEDIT, userSession, "logtypes-type.log", "logtypes-field.log", "logtypes-choosefieldtype.log", pageProps));
+}
 mb.append("</td>");
 mb.append("</tr>");
 

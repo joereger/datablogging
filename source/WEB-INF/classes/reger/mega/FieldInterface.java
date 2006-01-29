@@ -58,10 +58,6 @@ public interface FieldInterface {
 
     public int getIsrequired();
 
-    public int getLogid();
-
-    public void setLogid(int logid);
-
     public void setIsrequired(int isrequired);
 
     public void setFielddescription(String fielddescription);

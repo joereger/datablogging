@@ -24,6 +24,7 @@ public class Poll {
 
     public Poll(){
 
+
     }
 
     public void load(){

@@ -8,7 +8,7 @@ import reger.Log;
 /**
  * This creates the base database if none exists.
  */
-public class Version181ToVersion182TMP implements UpgradeDatabaseOneVersion{
+public class Version181ToVersion182 implements UpgradeDatabaseOneVersion{
 
 
 

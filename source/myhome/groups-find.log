@@ -134,7 +134,7 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
             }
         }
 
-
+        mb.append("</table>");
 
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 

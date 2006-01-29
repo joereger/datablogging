@@ -106,7 +106,7 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new MarketingHpTemplateTag[9];
+        tags = new MarketingHpTemplateTag[10];
         tags[0] = new MarketingHpTemplateTagLogInBox();
         tags[1] = new MarketingHpTemplateTagLogTypeList();
         tags[2] = new MarketingHpTemplateTagVersionNumber();
@@ -116,6 +116,7 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
         tags[6] = new MarketingHpTemplateTagRecentEntries();
         tags[7] = new MarketingHpTemplateTagSitesMostRead();
         tags[8] = new MarketingHpTemplateTagSitesMostReadAllTime();
+        tags[9] = new MarketingHpTemplateTagRecentEntriesPlusSummary();
     }
 
     public TemplateTag[] getTagsThisProcessorCanHandle(){

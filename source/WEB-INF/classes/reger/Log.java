@@ -110,51 +110,9 @@ public class Log implements NestedNavItem {
     }
 
     private void loadFields(){
-        //reger.core.Util.debug(5, "Log.java - logid="+this.logid+" - Start combining fields.");
-        //fields = AllFieldsInSystem.allMegaFieldsForLog(this.logid, this.eventtypeid);
-        //reger.core.Util.debug(5, "Log.java - logid="+this.logid+" - Done combining fields.<br>fields.length=" + fields.length);
-
-        //Set this to watch a specific megafieldid.  0 to watch all.
-        int debugMegafieldidToWatch = 130;
-
         //Get the system fields for this megalogtype
-        Debug.debug(5, "", "Log.allMegaFieldsForLog() - logid="+logid+" eventtypeid=" + eventtypeid);
         ArrayList<FieldType> systemFields = AllFieldsInSystem.allMegaFieldsForEventtypeid(eventtypeid, true);
-
-        //Get the log fields for this logid
-        ArrayList<FieldType> logFields = AllFieldsInSystem.getFieldsExplicitylAssignedToLogid(logid, true);
-
-        //Combine systemFields and logFields into interimFields
-        //Start with systemFields as a base and then iterate logFields.
-        //A logField can either a) overwrite a systemField or b) be added to the list of fields
         fields = systemFields;
-        if (logFields!=null){
-            //Iterate log fields
-            for (Iterator it = logFields.iterator(); it.hasNext(); ) {
-                FieldType ft = (FieldType)it.next();
-                boolean logFieldOverridesSystemField = false;
-                //Iterate interimFields
-                for (Iterator itA = fields.iterator(); itA.hasNext(); ) {
-                    FieldType ftA = (FieldType)itA.next();
-                    if (ft.getMegafieldid()==ftA.getMegafieldid()){
-                        //Replace systemField with the userField
-                        if (ft.getMegafieldid()==debugMegafieldidToWatch){
-                            Debug.debug(5, "", "Log.java - Replacing megafieldid=" + ft.getMegafieldid());
-                        }
-                        ftA = ft;
-                        logFieldOverridesSystemField=true;
-                    }
-                }
-                //If, after looking for a field this logField, there isn't one, add it
-                if (!logFieldOverridesSystemField){
-                    if (ft.getMegafieldid()==debugMegafieldidToWatch){
-                        Debug.debug(5, "", "Log.java - logid="+logid+" - Adding userField.megafieldid=" + ft.getMegafieldid());
-                    }
-                    fields.add(ft);
-                }
-            }
-        }
-
 
         //Debug
         StringBuffer tmp0 = new StringBuffer();

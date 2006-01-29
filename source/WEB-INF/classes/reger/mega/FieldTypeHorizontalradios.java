@@ -497,7 +497,7 @@ public class FieldTypeHorizontalradios extends Field implements FieldType, Chart
         return fieldData.get(0).getValue();
     }
 
-    /**
+        /**
          * Determines whether or not this field fulfills the query
          */
         public boolean fulfillsQuery(FieldQueryElement[] fieldQueryElements, int logidOrEtid) {

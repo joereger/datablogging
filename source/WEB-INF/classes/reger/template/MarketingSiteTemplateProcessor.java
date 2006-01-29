@@ -161,7 +161,7 @@ public class MarketingSiteTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new MarketingSiteTemplateTag[9];
+        tags = new MarketingSiteTemplateTag[10];
         tags[0] = new MarketingSiteTemplateTagMainBody();
         tags[1] = new MarketingSiteTemplateTagNavBar();
         tags[2] = new MarketingSiteTemplateTagPageTitle();
@@ -171,6 +171,7 @@ public class MarketingSiteTemplateProcessor implements TemplateProcessor {
         tags[6] = new MarketingSiteTemplateTagRecentEntries();
         tags[7] = new MarketingSiteTemplateTagSitesMostRead();
         tags[8] = new MarketingSiteTemplateTagSitesMostReadAllTime();
+        tags[9] = new MarketingSiteTemplateTagRecentEntriesPlusSummary();
     }
 
 

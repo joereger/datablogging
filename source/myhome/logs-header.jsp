@@ -17,7 +17,6 @@ if (pageProps.logProps.logid>0){
 
         NavButton[] logNavButtons = new NavButton[0];
         logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-log-properties", "", "PROPERTIES", "myhome/logs-log-properties.log?logid="+pageProps.logProps.logid, false, "", null));
-        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-fieldlayout", "", "DATABLOGGING FIELDS", "myhome/logs-log-fieldlayout.log?logid="+pageProps.logProps.logid, false, "", null));
         logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-log-templates", "", "LOG LOOK & FEEL TEMPLATES", "myhome/logs-log-templates.log?logid="+pageProps.logProps.logid, false, "", null));
         logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-log-permissions", "", "PERMISSIONS", "myhome/logs-log-permissions.log?logid="+pageProps.logProps.logid, false, "", null));
         logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-log-move", "", "MOVE LOG", "myhome/logs-log-move.log?logid="+pageProps.logProps.logid+"&action=movestart&nestednavtype="+logForHeader.getThisNestedNavType()+"&nestednavid="+logForHeader.getThisNestedNavId()+"", false, "", null));

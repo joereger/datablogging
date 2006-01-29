@@ -226,7 +226,7 @@ public class MegaLogType {
 
         //-----------------------------------
         //-----------------------------------
-        eventtypeid = Db.RunSQLInsert("INSERT INTO megalogtype(accountuserid, megalogname, description, showlocation, showonhomepage, isprivate) VALUES('"+accountuserid+"', '"+Util.cleanForSQL(megalogname)+"', '"+Util.cleanForSQL(description)+"', '"+Util.cleanForSQL(showLocationTxt)+"', '"+showOnHomePageTxt+"', '"+reger.core.Util.booleanAsSQLText(isprivate)+"')");
+        eventtypeid = Db.RunSQLInsert("INSERT INTO megalogtype(accountuserid, megalogname, description, showlocation, showonhomepage, isprivate, issystemlogtype) VALUES('"+accountuserid+"', '"+Util.cleanForSQL(megalogname)+"', '"+Util.cleanForSQL(description)+"', '"+Util.cleanForSQL(showLocationTxt)+"', '"+showOnHomePageTxt+"', '"+reger.core.Util.booleanAsSQLText(isprivate)+"', '"+issystemlogtype+"')");
         //-----------------------------------
         //-----------------------------------
 
