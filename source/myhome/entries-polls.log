@@ -1,0 +1,35 @@
+<%@ page import="reger.core.Util,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+    reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+    pageProps.siteSection=pageProps.ADMINSITE;
+    pageProps.title = "Polls";
+    pageProps.isPasswordProtected = true;
+    pageProps.navButtonName = "entriespolls";
+    pageProps.aclObjectName = "ADDEDITENTRIES";
+    pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+    pageProps.pathToAppRoot="../";
+    //pageProps.helpText="This page helps you find old entries so that you can edit, delete or move them.<br><br>Enter a search term and click Search or browse your most recent entries.";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+mb.append("Hellooooooooooooooo");
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalfooter.jsp" %>
