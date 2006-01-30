@@ -134,7 +134,7 @@ public class RssRome {
                 String entryurl=reger.Entry.entryFileNameStatic(entry.logid, entry.eventid, entry.title);
                 String itemLink="" +userSession.getAccount().getSiteRootUrl(userSession) +"/" + entryurl;
                 if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
-                    if (!log.getPassword().equals("")){
+                    if (log.getPassword()!=null && !log.getPassword().equals("")){
                         itemLink = itemLink + "?qpass=" + log.getPassword();
                     }
                 }
@@ -510,7 +510,7 @@ public class RssRome {
                 String entryurl=reger.Entry.entryFileNameStatic(entry.logid, entry.eventid, entry.title);
                 String itemLink="" + userSession.getAccount().getSiteRootUrl(userSession) +"/" + entryurl;
                 if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
-                    if (!log.getPassword().equals("")){
+                    if (log.getPassword()!=null && !log.getPassword().equals("")){
                         itemLink = itemLink + "?qpass=" + log.getPassword();
                     }
                 }
