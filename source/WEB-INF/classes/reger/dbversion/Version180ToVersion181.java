@@ -15,7 +15,7 @@ public class Version180ToVersion181 implements UpgradeDatabaseOneVersion{
 
         //-----------------------------------
         //-----------------------------------
-        int count7 = Db.RunSQLUpdate("CREATE TABLE `poll` (`pollid` int(11) NOT NULL auto_increment, eventid int(11), question varchar(255), readerscanaddownanswer int(11), readerscanaddcomments int(11), readerscanvoteonreaderanswers int(11), readerinputismoderated int(11), PRIMARY KEY  (`pollid`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+        int count7 = Db.RunSQLUpdate("CREATE TABLE `poll` (`pollid` int(11) NOT NULL auto_increment, eventid int(11), question varchar(255), readerscanaddownanswer int(11), readerscanaddcomments int(11), readerscanvoteonreaderanswers int(11), readerinputismoderated int(11), isopen int(11), PRIMARY KEY  (`pollid`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         //-----------------------------------
         //-----------------------------------
 
