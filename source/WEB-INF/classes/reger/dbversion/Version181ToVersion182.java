@@ -25,9 +25,12 @@ public class Version181ToVersion182 implements UpgradeDatabaseOneVersion{
         //All those we'll keep
         //select DISTINCT megafield.megafieldid, megalog.logid from megafield, megavalue, event, account, accountuser, megalog where event.logid=megalog.logid AND megafield.megafieldid=megavalue.megafieldid AND megavalue.eventid=event.eventid AND megafield.logid>'0' AND event.accountid=account.accountid AND account.accountid=accountuser.accountid AND accountuser.lastlogindate>'2006-01-01 12:00:00' AND (accounturl='particleman' OR accounturl='hunter' OR accounturl='brentifer' OR accounturl='joelsef' OR accounturl='cannabisbratt' OR accounturl='misterp' or accounturl='anju') ORDER BY event.date DESC;
 
+        StringBuffer debug = new StringBuffer();
+        debug.append("<b>Converting Log-specific Fields to Log Type Fields</b><br>");
+
         //-----------------------------------
         //-----------------------------------
-        String[][] rstData= Db.RunSQL("select DISTINCT megafield.megafieldid, megalog.logid from megafield, megavalue, event, account, accountuser, megalog where event.logid=megalog.logid AND megafield.megafieldid=megavalue.megafieldid AND megavalue.eventid=event.eventid AND megafield.logid>'0' AND event.accountid=account.accountid AND account.accountid=accountuser.accountid AND accountuser.lastlogindate>'2006-01-01 12:00:00' AND (accounturl='particleman' OR accounturl='hunter' OR accounturl='brentifer' OR accounturl='joelsef' OR accounturl='cannabisbratt' OR accounturl='misterp' or accounturl='anju') ORDER BY event.date DESC;");
+        String[][] rstData= Db.RunSQL("select DISTINCT megafield.megafieldid, megalog.logid FROM megafield, megavalue, event, account, accountuser, megalog where event.logid=megalog.logid AND megafield.megafieldid=megavalue.megafieldid AND megavalue.eventid=event.eventid AND megafield.logid>'0' AND event.accountid=account.accountid AND account.accountid=accountuser.accountid AND accountuser.lastlogindate>'2006-01-01 12:00:00' AND (accounturl='particleman' OR accounturl='hunter' OR accounturl='brentifer' OR accounturl='joelsef' OR accounturl='cannabisbratt' OR accounturl='misterp' or accounturl='anju') ORDER BY event.date DESC;");
         //-----------------------------------
         //-----------------------------------
         if (rstData!=null && rstData.length>0){
@@ -51,8 +54,13 @@ public class Version181ToVersion182 implements UpgradeDatabaseOneVersion{
                 //-----------------------------------
                 //-----------------------------------
 
+                debug.append("<br>UPDATE megafield SET eventtypeid='"+eventtypeid+"' WHERE megafieldid='"+megafieldid+"'");
+
             }
         }
+
+        //Save a record of what happened
+        reger.core.Debug.logtodb(debug.toString(), "Version181ToVersion182.java");
 
     }
 
