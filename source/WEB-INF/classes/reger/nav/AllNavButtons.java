@@ -56,6 +56,7 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entrieslocations", "entries", "LOCATIONS", "myhome/entries-locations.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodes", "entries", "EPISODES", "myhome/episodes.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiods", "entries", "PERIODS", "myhome/timeperiods.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriespolls", "entries", "POLLS", "myhome/entries-polls.log", false, "", null));
 
         //Entries Search
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessimplesearch", "entriessearchtop", "SIMPLE SEARCH", "myhome/entries-simplesearch.log", false, "", null));
