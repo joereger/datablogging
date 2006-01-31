@@ -24,6 +24,7 @@
     if (request.getParameter("eventid") != null && reger.core.Util.isinteger(request.getParameter("eventid"))) {
         pageProps.entry.getEntryAll(Integer.parseInt(request.getParameter("eventid")));
     }
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
     mb.append("<center><table>");
     mb.append("<tr><td>Question:</td>");
     mb.append("<td><input type=text name=question></td>");
@@ -57,6 +58,7 @@
     mb.append("<td><input type=checkbox name=readerinputismoderated> Readers comments and answers must be approved.</td>");
     mb.append("</tr>");
     mb.append("</table></center>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 %>
 
 <%
