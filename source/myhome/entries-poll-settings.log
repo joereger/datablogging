@@ -21,7 +21,42 @@
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-    
+    if (request.getParameter("eventid") != null && reger.core.Util.isinteger(request.getParameter("eventid"))) {
+        pageProps.entry.getEntryAll(Integer.parseInt(request.getParameter("eventid")));
+    }
+    mb.append("<center><table>");
+    mb.append("<tr><td>Question:</td>");
+    mb.append("<td><input type=text name=question></td>");
+    mb.append("<td>Poll is tied to entry called <a href=../entry.log?eventid=" + pageProps.entry.eventid + ">"+ pageProps.entry.title + "</a></td>");
+    mb.append("</tr>");
+    mb.append("<tr><td>Answers:</td>");
+    mb.append("<td><input type=text name=answer1></td>");
+    mb.append("<td><input type=submit name=open value=Open>&nbsp;<input type=submit name=closed value=Closed></td>");
+    mb.append("</tr>");
+    mb.append("<tr><td></td><td><input type=text name=answer2></td>");
+    mb.append("</tr>");
+    mb.append("<tr><td></td><td><input type=text name=answer3></td>");
+    mb.append("</tr>");
+    mb.append("<tr><td></td><td><input type=text name=answer4></td>");
+    mb.append("</tr>");
+    mb.append("<tr><td></td><td><input type=text name=answer5></td>");
+    mb.append("</tr>");
+    mb.append("<tr><td></td><td>add more >> </td>");
+    mb.append("</tr>");
+    mb.append("<tr><td>Reader Answers:</td>");
+    mb.append("<td><input type=checkbox name=readerscanaddownanswer> Yes, readers can add their own answers.</td>");
+    mb.append("<td><u>View Results</u></td>");
+    mb.append("</tr>");
+    mb.append("<tr><td>Reader Comments:</td>");
+    mb.append("<td><input type=checkbox name=readerscanaddcomments> Yes, readers can add comments.</td>");
+    mb.append("</tr>");
+    mb.append("<tr><td></td>");
+    mb.append("<td>If Yes: <input type=checkbox name=readerscanvoteonreadercomments> Readers can vote on each others answers.</td>");
+    mb.append("</tr>");
+    mb.append("<tr><td>Moderation:</td>");
+    mb.append("<td><input type=checkbox name=readerinputismoderated> Readers comments and answers must be approved.</td>");
+    mb.append("</tr>");
+    mb.append("</table></center>");
 %>
 
 <%
