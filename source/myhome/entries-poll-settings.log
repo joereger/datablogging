@@ -1,0 +1,34 @@
+<%@ page import="reger.core.Util,
+                 reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+    reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+    pageProps.siteSection=pageProps.ADMINSITE;
+    pageProps.title = "Edit Poll";
+    pageProps.isPasswordProtected = true;
+    pageProps.navButtonName = "entriespolls";
+    pageProps.aclObjectName = "ADDEDITENTRIES";
+    pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+    pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+    
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalfooter.jsp" %>
