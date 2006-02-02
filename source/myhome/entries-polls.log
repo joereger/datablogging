@@ -1,5 +1,9 @@
 <%@ page import="reger.core.Util,
                  reger.core.db.Db"%>
+<%@ page import="reger.poll.PollUtil"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.Iterator"%>
+<%@ page import="java.util.StringTokenizer"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -11,7 +15,6 @@
     pageProps.aclObjectName = "ADDEDITENTRIES";
     pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
     pageProps.pathToAppRoot="../";
-    //pageProps.helpText="This page helps you find old entries so that you can edit, delete or move them.<br><br>Enter a search term and click Search or browse your most recent entries.";
 /*----------------------------------------------------*/
 %>
 
@@ -22,7 +25,40 @@
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-mb.append("Hellooooooooooooooo");
+    PollUtil pollUtil = new PollUtil();
+    ArrayList dataList = pollUtil.getPollData(userSession);
+    StringTokenizer stkr = null;
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+    mb.append("<table>");
+    if (dataList != null && dataList.size() > 0) {
+        Iterator iter = dataList.iterator();
+        while (iter.hasNext()) {
+            String value = (String) iter.next();
+            stkr = new StringTokenizer(value, "~");
+            while (stkr.hasMoreElements()) {
+                String s1 = (String) stkr.nextElement();
+                String s2 = (String) stkr.nextElement();
+                String s3 = (String) stkr.nextElement();
+                mb.append("<tr><td>");
+                mb.append( (String) stkr.nextElement());
+                mb.append("</td><td>");
+                if ( ((String) stkr.nextElement()).equalsIgnoreCase("1")) {
+                    mb.append("Open");
+                } else {
+                    mb.append("Closed");
+                }
+                mb.append("</td><tr><td> Total Votes : ");
+                mb.append( (String) stkr.nextElement());
+                mb.append("</td></tr><tr><td>Total Comments : ");
+                mb.append( (String) stkr.nextElement());
+                mb.append("</td></tr><tr><td>Unapproved Answers / Comments : ");
+                mb.append( (String) stkr.nextElement());
+                mb.append("</td></tr>");
+            }
+        }
+    }
+    mb.append("</table>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 %>
 
 <%
