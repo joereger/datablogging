@@ -90,11 +90,11 @@ public class EmailApi {
 
     private void startWorking(){
         //Set some vars
-        Debug.debug(5, "EmailApi", "Starting to process mail message.");
+        Debug.debug(4, "EmailApi", "Starting to process mail message.");
 
         //Parse the message
         boolean parseIn = parseIncomingMessage();
-        Debug.debug(5, "EmailApi", "Result of parsing incoming raw message:" + parseIn);
+        Debug.debug(4, "EmailApi", "Result of parsing incoming raw message:" + parseIn);
 
         //Iterate all recipients, looking for valid logs
         if (parseIn){
@@ -102,7 +102,7 @@ public class EmailApi {
                 for (int i = 0; i < allRecipients.length; i++) {
                     //Parse the to address
                     boolean parseTo = parseToAddress(allRecipients[i]);
-                    Debug.debug(5, "", "Result of parsing to address:" + parseTo);
+                    Debug.debug(4, "", "Result of parsing to address:" + parseTo);
 
                     //If we have what appears to be good incoming data, let's try for a post
                     if (parseIn && parseTo){
@@ -114,7 +114,7 @@ public class EmailApi {
     }
 
     public static javax.mail.internet.MimeMessage turnStringIntoEmail(String rawMailMessage){
-        Debug.debug(5, "EmailApi", "rawMailMessage:<br>" + rawMailMessage);
+        Debug.debug(4, "EmailApi", "rawMailMessage:<br>" + rawMailMessage);
         javax.mail.internet.MimeMessage mimeMessage = null;
         try{
             //Turn the raw message into a mimeMessage using an inputstream
@@ -125,10 +125,10 @@ public class EmailApi {
             in.close();
         } catch (java.io.UnsupportedEncodingException e){
             //Do nothing... the user sent something like CHINESEBIG5 or BIG5
-            Debug.debug(5, "EmailApi", e);
+            Debug.debug(4, "EmailApi", e);
         } catch (javax.mail.MessagingException e){
             //Some sort of message formatting problem on the part of the sender
-            Debug.debug(5, "EmailApi", e);
+            Debug.debug(4, "EmailApi", e);
         } catch (Exception e) {
             Debug.errorsave(e, "EmailApi");
         }
@@ -173,17 +173,17 @@ public class EmailApi {
                 //If in debug mode, list the parts
                 if (reger.core.DegubLevel.getDebugLevel()>=3){
                     try{
-                        Debug.debug(5, "EmailApi", "Number of Multiparts = " + multiPart.getCount());
+                        Debug.debug(4, "EmailApi", "Number of Multiparts = " + multiPart.getCount());
                         for(int i=0; i<multiPart.getCount(); i++){
-                            Debug.debug(5, "EmailApi", "Multipart #" + i + "<br>" + multiPart.getBodyPart(i).getContent() + "<br>class.getName()=" + multiPart.getBodyPart(i).getContent().getClass().getName());
+                            Debug.debug(4, "EmailApi", "Multipart #" + i + "<br>" + multiPart.getBodyPart(i).getContent() + "<br>class.getName()=" + multiPart.getBodyPart(i).getContent().getClass().getName());
                             if (multiPart.getBodyPart(i).getContent().getClass().getName().equals("com.sun.mail.Util.BASE64DecoderStream")){
                                 String filename = multiPart.getBodyPart(i).getFileName();
                                 String contenttype = multiPart.getBodyPart(i).getContentType();
-                                Debug.debug(5, "EmailApi", "We have an attachment called: " + filename + "<br>contenttype=" + contenttype);
+                                Debug.debug(4, "EmailApi", "We have an attachment called: " + filename + "<br>contenttype=" + contenttype);
                             }
                         }
                     } catch (Exception e){
-                        Debug.debug(5, "EmailApi", e);
+                        Debug.debug(4, "EmailApi", e);
                     }
                 }
             }
@@ -196,13 +196,13 @@ public class EmailApi {
                 allRecipients = new String[addresses.length];
                 for (int i = 0; i < addresses.length; i++) {
                     allRecipients[i] = addresses[i].toString();
-                    Debug.debug(5, "EmailApi", "To:" + addresses[i]);
+                    Debug.debug(4, "EmailApi", "To:" + addresses[i]);
                 }
             }
 
             //Get the subject
             subject = mimeMessage.getSubject();
-            Debug.debug(5, "EmailApi", "Subject:" + subject);
+            Debug.debug(4, "EmailApi", "Subject:" + subject);
 
             //Get the body
             getBody();
@@ -214,7 +214,7 @@ public class EmailApi {
         //    return false;
         } catch (javax.mail.MessagingException e){
             //Some sort of message formatting problem on the part of the sender
-            Debug.debug(5, "EmailApi", e);
+            Debug.debug(4, "EmailApi", e);
             return false;
         } catch (Exception e) {
             Debug.errorsave(e, "EmailApi");
@@ -232,12 +232,12 @@ public class EmailApi {
 
             } else {
                 body = body + String.valueOf(mimeMessage.getContent());
-                Debug.debug(5, "EmailApi", "Body found as non multipart message:" + body);
+                Debug.debug(4, "EmailApi", "Body found as non multipart message:" + body);
             }
         } catch (Exception e){
-            Debug.debug(5, "EmailApi", e);
+            Debug.debug(4, "EmailApi", e);
         }
-        Debug.debug(5, "EmailApi", "Final Body:" + body);
+        Debug.debug(4, "EmailApi", "Final Body:" + body);
     }
 
     private void tryToGetBodyOfEmailFromAPart(MimeMultipart bodyPart){
@@ -246,9 +246,9 @@ public class EmailApi {
             boolean foundBodyFromPlain = false;
             boolean foundBodyFromHtml = false;
             boolean foundBodyFromElse = false;
-            //reger.core.Util.debug(5, "Iterating all parts of a bodyPart.");
+            reger.core.Debug.debug(4, "EmailApi", "Iterating all parts of a bodyPart in tryToGetBodyOfEmailFromAPart()");
             for(int i=0; i<bodyPart.getCount(); i++){
-                //reger.core.Util.debug(5, "Starting new bodyPart.");
+                reger.core.Debug.debug(4, "EmailApi","Starting new bodyPart.");
                 if (bodyPart.getBodyPart(i).getContentType().toLowerCase().indexOf("multipart")>-1){
                     //It's a part. Send it back to this function, recursively
                     try{
@@ -256,13 +256,15 @@ public class EmailApi {
                     } catch (Exception e){
                         Debug.errorsave(e, "EmailApi");
                     }
+                } else if (bodyPart.getBodyPart(i).getContentType().toLowerCase().indexOf("image")>-1){
+                    //Do nothing
                 } else if (bodyPart.getBodyPart(i).getContentType().toLowerCase().indexOf("message")>-1){
                     //It's a message
                     MimeMessage nestedMsg = null;
                     try{
                         nestedMsg = (MimeMessage)bodyPart.getBodyPart(i).getContent();
                     } catch (java.lang.ClassCastException ex){
-                        Debug.debug(5, "EmailApi", ex);
+                        Debug.debug(4, "EmailApi", ex);
                     }
                     if (nestedMsg!=null && nestedMsg.getContentType().toLowerCase().indexOf("multipart")>-1){
                         //Convert it from a message to a multipart
@@ -271,7 +273,7 @@ public class EmailApi {
                     } else {
                         if (nestedMsg!=null){
                             body = body + String.valueOf(nestedMsg.getContent());
-                            Debug.debug(5, "EmailApi", "Body found as nested message content:" + String.valueOf(nestedMsg.getContent()));
+                            Debug.debug(4, "EmailApi", "Body found as nested message content:" + String.valueOf(nestedMsg.getContent()));
                         } else {
                             body = body + bodyPart.getBodyPart(i).getContent();
                         }
@@ -280,26 +282,26 @@ public class EmailApi {
                     if (!foundBodyFromHtml && !foundBodyFromPlain){
                         body = body + String.valueOf(bodyPart.getBodyPart(i).getContent());
                         foundBodyFromPlain = true;
-                        Debug.debug(5, "EmailApi", "Body found as text/plain:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                        Debug.debug(4, "EmailApi", "Body found as text/plain:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
                     } else {
-                        Debug.debug(5, "EmailApi", "Body found as text/plain but not added because previous body was found:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                        Debug.debug(4, "EmailApi", "Body found as text/plain but not added because previous body was found:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
                     }
                 } else if (bodyPart.getBodyPart(i).getContentType().toLowerCase().indexOf("text/html")>-1){
                     if (!foundBodyFromHtml && !foundBodyFromPlain){
                         body = body + String.valueOf(bodyPart.getBodyPart(i).getContent());
                         foundBodyFromHtml = true;
-                        Debug.debug(5, "EmailApi", "Body found as text/html:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                        Debug.debug(4, "EmailApi", "Body found as text/html:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
                     } else {
-                        Debug.debug(5, "EmailApi", "Body found as text/html but not added because previous body was found:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                        Debug.debug(4, "EmailApi", "Body found as text/html but not added because previous body was found:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
                     }
                 } else {
                     //body = body + String.valueOf(bodyPart.getBodyPart(i).getContent());
                     //foundBodyFromElse = true;
-                    //reger.core.Util.debug(5, "Body found as else:" + String.valueOf(bodyPart.getBodyPart(i).getContent()));
+                    reger.core.Debug.debug(4, "EmailApi", "Body found as else");
                 }
             }
         } catch (javax.mail.MessagingException e){
-            Debug.debug(5, "EmailApi", e);
+            Debug.debug(4, "EmailApi", e);
         } catch (Exception e){
             Debug.errorsave(e, "EmailApi", "EmailApi.java");
         }
@@ -323,7 +325,7 @@ public class EmailApi {
             //Right half has little to do with it and can generally be anything as long as it gets to the server
             right = emailSplitInHalf[1];
         } else {
-            Debug.debug(5, "EmailApi", "Failed parseToAddress because emailSplitInHalf.length is not == 2.  It equals:" + emailSplitInHalf.length);
+            Debug.debug(4, "EmailApi", "Failed parseToAddress because emailSplitInHalf.length is not == 2.  It equals:" + emailSplitInHalf.length);
             return false;
         }
 
@@ -334,10 +336,10 @@ public class EmailApi {
             uniquekey = leftSplitOnDot[0].toLowerCase();
             emailsecret = leftSplitOnDot[1].toLowerCase();
 
-            Debug.debug(5, "EmailApi", "EmailApi.ParseTo() - uniquekey:" + uniquekey);
-            Debug.debug(5, "EmailApi", "EmailApi.ParseTo() - emailsecret:" + emailsecret);
+            Debug.debug(4, "EmailApi", "EmailApi.ParseTo() - uniquekey:" + uniquekey);
+            Debug.debug(4, "EmailApi", "EmailApi.ParseTo() - emailsecret:" + emailsecret);
         } else {
-            Debug.debug(5, "EmailApi", "Failed parseToAddress because leftSplitOnDot.length is not >= 2.  It equals:" + leftSplitOnDot.length);
+            Debug.debug(4, "EmailApi", "Failed parseToAddress because leftSplitOnDot.length is not >= 2.  It equals:" + leftSplitOnDot.length);
             return false;
         }
         return true;
@@ -384,13 +386,13 @@ public class EmailApi {
         reger.Entry entry = new reger.Entry();
 
         try {
-            Debug.debug(5, "EmailApi", "EmailApi - newPost() - uniquekey: " + uniquekey);
+            Debug.debug(4, "EmailApi", "EmailApi - newPost() - uniquekey: " + uniquekey);
 
             //See if we have a valid account in the hizzouse
             EmailApiAddress emaddr = new EmailApiAddress(uniquekey);
             if (emaddr.getEmailapiaddressid()>0){
 
-                Debug.debug(5, "EmailApi", "EmailApi - newPost() - emaddr.getUniquekey(): " + emaddr.getUniquekey() + "<br>emaddr.getAccountid():" + emaddr.getAccountid() + "<br>emaddr.getAccountuserid():" + emaddr.getAccountuserid());
+                Debug.debug(4, "EmailApi", "EmailApi - newPost() - emaddr.getUniquekey(): " + emaddr.getUniquekey() + "<br>emaddr.getAccountid():" + emaddr.getAccountid() + "<br>emaddr.getAccountuserid():" + emaddr.getAccountuserid());
 
 
                 //Get the emailapi settings
@@ -401,7 +403,7 @@ public class EmailApi {
                 //-----------------------------------
                 if (rstApisettings!=null && rstApisettings.length>0){
 
-                    Debug.debug(5, "EmailApi", "EmailApi - newPost() loading emailapi settings.");
+                    Debug.debug(4, "EmailApi", "EmailApi - newPost() loading emailapi settings.");
 
                     if (!rstApisettings[0][0].equals("") && reger.core.Util.isinteger(rstApisettings[0][0])){
                         overridecamphonesubject = Integer.parseInt(rstApisettings[0][0]);
@@ -427,7 +429,7 @@ public class EmailApi {
                     if (!rstApisettings[0][7].equals("")){
                         emailsecret = rstApisettings[0][7];
                     }
-                    Debug.debug(5, "EmailApi", "EmailApi - newPost() - found emailsecret=" + emailsecret);
+                    Debug.debug(4, "EmailApi", "EmailApi - newPost() - found emailsecret=" + emailsecret);
                 }
 
                 //Get this user's timezone
@@ -442,7 +444,7 @@ public class EmailApi {
                 accountuserid = emaddr.getAccountuserid();
                 mailtype = emaddr.getEmailtype();
 
-                Debug.debug(5, "EmailApi", "EmailApi newPost() - accountuserOfPersonAccessing.getAccountuserid()=" + accountuserOfPersonAccessing.getAccountuserid());
+                Debug.debug(4, "EmailApi", "EmailApi newPost() - accountuserOfPersonAccessing.getAccountuserid()=" + accountuserOfPersonAccessing.getAccountuserid());
 
                 //Create the entry
                 entry = new reger.Entry();
@@ -507,7 +509,7 @@ public class EmailApi {
                         entry.editEntryAll(accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
                     } catch (ValidationException error){
                         //@todo Handle the exception and send it back to user via email?
-                        Debug.debug(5, "EmailApi", "EmailApi Error:" + error.getErrorsAsSingleString());
+                        Debug.debug(4, "EmailApi", "EmailApi Error:" + error.getErrorsAsSingleString());
                     }
 
                 } else {
@@ -536,7 +538,7 @@ public class EmailApi {
                     //And then convert that value to GMT.
                     Calendar endOfDayGMT = reger.core.TimeUtils.usertogmttime(endOfDay, timezoneid);
 
-                    Debug.debug(5, "EmailApi", "timezoneid:"+timezoneid+"<br>reger.core.TimeUtils.dateformatfordb(tmpCal): " +reger.core.TimeUtils.dateformatfordb(tmpCal)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDay): " +reger.core.TimeUtils.dateformatfordb(startOfDay)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDayGMT):" + reger.core.TimeUtils.dateformatfordb(startOfDayGMT) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDay): " + reger.core.TimeUtils.dateformatfordb(endOfDay) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDayGMT): " + reger.core.TimeUtils.dateformatfordb(endOfDayGMT));
+                    Debug.debug(4, "EmailApi", "timezoneid:"+timezoneid+"<br>reger.core.TimeUtils.dateformatfordb(tmpCal): " +reger.core.TimeUtils.dateformatfordb(tmpCal)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDay): " +reger.core.TimeUtils.dateformatfordb(startOfDay)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDayGMT):" + reger.core.TimeUtils.dateformatfordb(startOfDayGMT) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDay): " + reger.core.TimeUtils.dateformatfordb(endOfDay) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDayGMT): " + reger.core.TimeUtils.dateformatfordb(endOfDayGMT));
 
                     //And then search for an eventid within this range.
                     //-----------------------------------
@@ -554,10 +556,10 @@ public class EmailApi {
                             //And if there isn't one, create one with a call to entry.newEntryAll();
                             entry.newEntryTemporary(accountOfEntry, accountuserOfPersonAccessing);
                             entry.editEntryAll(accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
-                            Debug.debug(5, "EmailApi", "EmailApi.java - New eventid:" + entry.eventid);
+                            Debug.debug(4, "EmailApi", "EmailApi.java - New eventid:" + entry.eventid);
                         } catch (ValidationException error){
                             //@todo Handle the exception and send it back to user via email?
-                            Debug.debug(5, "EmailApi", "EmailApi.java - There was an error in EmailApi.java:" + error.getErrorsAsSingleString());
+                            Debug.debug(4, "EmailApi", "EmailApi.java - There was an error in EmailApi.java:" + error.getErrorsAsSingleString());
                             return;
                         }
                     }
@@ -570,7 +572,7 @@ public class EmailApi {
                     //reger.core.Util.debug(5, "EmailApi.java<br>bodyPart.getContentType()="+bodyPart.getContentType()+"<br>(String)bodyPart.getContent()="+(String)bodyPart.getContent());
                 //}
 
-                Debug.debug(5, "EmailApi", "EmailApi.java - newPost() Ready to start processing attachments.");
+                Debug.debug(4, "EmailApi", "EmailApi.java - newPost() Ready to start processing attachments.");
 
                 //Deal with attachments
                 if (isMultipart){
@@ -579,7 +581,7 @@ public class EmailApi {
                     }
                 }
 
-                Debug.debug(5, "EmailApi", "EmailApi.java - newPost() Done processing attachments.");
+                Debug.debug(4, "EmailApi", "EmailApi.java - newPost() Done processing attachments.");
             }
 
         } catch (Exception e) {
@@ -590,18 +592,24 @@ public class EmailApi {
 
     private void findAttachments(BodyPart bodyPart, int eventid){
         try {
-            Debug.debug(5, "EmailApi", "EmailApi.java<br>Deciding whether to treat bodyPart as an attachment.");
+            Debug.debug(4, "EmailApi", "bodyPart.getContentType()=" + bodyPart.getContentType() + "<br>Deciding whether to treat as an attachment.");
             if (bodyPart.getFileName()!=null && !bodyPart.getFileName().equals("")){
+                Debug.debug(4, "EmailApi", "Filename is not null");    
                 treatBodyPartAsAttachment(eventid, bodyPart);
             } else if (bodyPart.getContentType().toLowerCase().indexOf("multipart")>-1){
+                Debug.debug(4, "EmailApi", "Is multipart");
                 MimeMultipart nestedMultiPart = (MimeMultipart)bodyPart.getContent();
                 for(int i=0; i<nestedMultiPart.getCount(); i++){
                     findAttachments(nestedMultiPart.getBodyPart(i), eventid);
                 }
+            } else if (bodyPart.getContentType().toLowerCase().indexOf("image")>-1){
+                Debug.debug(4, "EmailApi", "Is image... will treat as a body part");
+                treatBodyPartAsAttachment(eventid, bodyPart);
             } else if (bodyPart.getContentType().toLowerCase().indexOf("message")>-1){
-                //It's a message
+                Debug.debug(4, "EmailApi", "Is message");
                 MimeMessage nestedMsg = (MimeMessage)bodyPart.getContent();
                 if (nestedMsg.getContentType().toLowerCase().indexOf("multipart")>-1){
+                    Debug.debug(4, "EmailApi", "Is message with multipart");
                     javax.mail.internet.MimePartDataSource mpds = new javax.mail.internet.MimePartDataSource(nestedMsg);
                     MimeMultipart nestedMultiPart = new javax.mail.internet.MimeMultipart(mpds);
                     for(int i=0; i<nestedMultiPart.getCount(); i++){
@@ -609,7 +617,7 @@ public class EmailApi {
                     }
                 }
             } else {
-                Debug.debug(5, "EmailApi", "EmailApi.java<br>Not treating bodyPart as an attachment.");
+                Debug.debug(4, "EmailApi", "Not treating bodyPart as an attachment.");
             }
         } catch (Exception e){
             Debug.errorsave(e, "EmailApi");
@@ -623,9 +631,6 @@ public class EmailApi {
     public boolean treatBodyPartAsAttachment(int eventid, BodyPart bodyPart) {
 
         try {
-
-
-
             //Start with the #1, not #0 (which is the main body)
             //for(int i=1; i<multiPart.getCount(); i++){
                 //if (bodyPart.equals()){
@@ -637,7 +642,7 @@ public class EmailApi {
                     //Get the filename
                     filename = bodyPart.getFileName();
 
-                    Debug.debug(5, "EmailApi", "About to decode multipart.bodyPart with filename=" + filename);
+                    Debug.debug(4, "EmailApi", "About to decode multipart.bodyPart with filename=" + filename);
 
 
 
@@ -648,7 +653,7 @@ public class EmailApi {
                     reger.Account acct = new reger.Account(accountid);
                     long freespace = acct.getFreespace();
                     if ((long)contentlength>freespace) {
-                        Debug.debug(5, "EmailApi", "Failed due to freeSpace limitations.<br>contentlength=" + contentlength + "<br>freeSpace=" + freespace);
+                        Debug.debug(4, "EmailApi", "Failed due to freeSpace limitations.<br>contentlength=" + contentlength + "<br>freeSpace=" + freespace);
 
                         return false;
                     }
@@ -676,7 +681,7 @@ public class EmailApi {
                     }
                     String finalfilename = stamp+incomingnamebase+incrementerstring+"."+incomingnameext;
 
-                    Debug.debug(5, "EmailApi", "finalfilename="+finalfilename);
+                    Debug.debug(4, "EmailApi", "finalfilename="+finalfilename);
 
 
                      //Save the file with the updated filename
@@ -695,7 +700,7 @@ public class EmailApi {
                      is.close();
                      fileOut.close();
 
-                    Debug.debug(5, "EmailApi", "File should be saved to filesystem now.="+finalfilename);
+                    Debug.debug(4, "EmailApi", "File should be saved to filesystem now.="+finalfilename);
 
 
 
@@ -714,11 +719,6 @@ public class EmailApi {
                     }
                     finalsubject=finalsubject + authtimestamp;
 
-
-                    //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???
-
-                    //@todo Not correctly getting size of file in
-
                     //-----------------------------------
                     //-----------------------------------
                     int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename, accountid) VALUES('"+eventid+"', '"+finalfilename+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(finalsubject)+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"')");
@@ -735,7 +735,7 @@ public class EmailApi {
                     //Do the imagetags
                     reger.Tag.addMultipleTagsToImage(camphoneimagetags, imageid);
 
-                    Debug.debug(5, "EmailApi", "Imageid="+imageid);
+                    Debug.debug(4, "EmailApi", "Imageid="+imageid);
                 //}
             //}
 
@@ -747,5 +747,5 @@ public class EmailApi {
 
     }
 
-    
+
 }

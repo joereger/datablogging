@@ -36,14 +36,26 @@ public class StartSmtpListener implements ScheduledTask{
 
     private void startListener(){
         try{
+            System.out.println("REGER: Starting smtp listener.");
             if (mySmtpListener!=null){
+                System.out.println("REGER: Shutting down smtp listener for a clean startup.");
                 mySmtpListener.shutDownSmtpListener();
                 mySmtpListener = null;
             }
             mySmtpListener = new reger.core.scheduler.SmtpListener();
         } catch (Exception e){
             Debug.errorsave(e, "");
+            System.out.println("REGER: Unable to start smtp listener:"+e.getMessage());
             result = "Unable to start SMTPListener.  Check event log for details.";
+        }
+    }
+
+    public static void shutdownListener(){
+        System.out.println("REGER: Shutting down smtp listener.");
+        if (mySmtpListener!=null){
+            System.out.println("REGER: Listener not null so will shut down.");
+            mySmtpListener.shutDownSmtpListener();
+            mySmtpListener = null;
         }
     }
 

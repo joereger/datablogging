@@ -54,7 +54,7 @@
     </servlet>
     <!-- End Chiba Additions -->
     <listener>
-        <listener-class>reger.exist.ExistManager</listener-class>
+        <listener-class>reger.scheduledtasks.AppStartupAndShutdown</listener-class>
     </listener>
     <listener>
         <listener-class>reger.hibernate.HibernateListener</listener-class>
