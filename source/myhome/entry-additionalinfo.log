@@ -28,11 +28,14 @@
 /*                  Main Body                         */
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
+    String eventid = request.getParameter("eventid");
     if (request.getParameter("poll") != null && request.getParameter("poll").equals("on")) {
-        response.sendRedirect("entries-polls.log");
-        return;
+        if (eventid != null && reger.core.Util.isinteger(eventid)) {
+            response.sendRedirect("entries-poll-settings.log?eventid="+eventid+"&action=add ");
+            return;
+        }
     }
-    if (request.getParameter("eventid") == null || !reger.core.Util.isinteger(request.getParameter("eventid"))) {
+    if (eventid == null || !reger.core.Util.isinteger(eventid)) {
         response.sendRedirect("index.log");
         return;
     }
