@@ -24,15 +24,14 @@
     if (request.getParameter("eventid") != null && reger.core.Util.isinteger(request.getParameter("eventid"))) {
         pageProps.entry.getEntryAll(Integer.parseInt(request.getParameter("eventid")));
     }
+    mb.append("<table><tr><td>");
     mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
     mb.append("<center><table>");
     mb.append("<tr><td>Question:</td>");
     mb.append("<td><input type=text name=question></td>");
-    mb.append("<td>Poll is tied to entry called <a href=../entry.log?eventid=" + pageProps.entry.eventid + ">"+ pageProps.entry.title + "</a></td>");
     mb.append("</tr>");
     mb.append("<tr><td>Answers:</td>");
     mb.append("<td><input type=text name=answer1></td>");
-    mb.append("<td><input type=submit name=open value=Open>&nbsp;<input type=submit name=closed value=Closed></td>");
     mb.append("</tr>");
     mb.append("<tr><td></td><td><input type=text name=answer2></td>");
     mb.append("</tr>");
@@ -46,7 +45,6 @@
     mb.append("</tr>");
     mb.append("<tr><td>Reader Answers:</td>");
     mb.append("<td><input type=checkbox name=readerscanaddownanswer> Yes, readers can add their own answers.</td>");
-    mb.append("<td><u>View Results</u></td>");
     mb.append("</tr>");
     mb.append("<tr><td>Reader Comments:</td>");
     mb.append("<td><input type=checkbox name=readerscanaddcomments> Yes, readers can add comments.</td>");
@@ -59,6 +57,36 @@
     mb.append("</tr>");
     mb.append("</table></center>");
     mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    mb.append("</td>");
+
+    mb.append("<td>");
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+    mb.append("Poll is tied to entry called <a href=../entry.log?eventid=" + pageProps.entry.eventid + ">"+ pageProps.entry.title + "</a>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    mb.append("<br>");
+
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+    mb.append("<input type=submit name=open value=Open>&nbsp;<input type=submit name=closed value=Closed>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    mb.append("<br>");
+
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+    mb.append("<u>View Results</u>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    mb.append("<br>");
+
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+    mb.append("Moderation<br>");
+    mb.append("These answers from users need to be approved");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    mb.append("<br>");
+
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+    mb.append("These comments need to be approved");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    mb.append("</td></tr>");
+    mb.append("<tr><td><input type=submit value=Save></td></tr>");
+    mb.append("</table>");
 %>
 
 <%
