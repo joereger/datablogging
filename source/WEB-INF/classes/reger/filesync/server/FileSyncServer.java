@@ -21,6 +21,7 @@ import org.apache.xmlrpc.Base64;
 public class FileSyncServer {
 
     public Hashtable getFileStatus(String email, String password, String file)  {
+        reger.core.Debug.debug(3, "FileSyncServer.java", "getFileStatus("+email+", "+password+", "+file+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
             Account account = AccountCache.get(au.getAccountid());
@@ -46,31 +47,47 @@ public class FileSyncServer {
     }
 
     public Hashtable saveFileOnServer(String email, String password, String file, String filebase64encoded) {
+        reger.core.Debug.debug(3, "FileSyncServer.java", "saveFileOnServer("+email+", "+password+", "+file+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
+            reger.core.Debug.debug(3, "FileSyncServer.java", "au.isLoggedIn=true");
             Account account = AccountCache.get(au.getAccountid());
             PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
-                byte[] bits = filebase64encoded.getBytes();
-                bits = Base64.decode(bits);
-                int contentlength=bits.length - 1;
-                long freespace = account.getFreespace();
-                if ((long)contentlength>freespace) {
-                    return error("Not enough free storage space available for this account.");
-                } else {
-                    File fileObj = new File(Util.getFilenameMinusDirectoryName(file, au));
-                    if (fileObj.exists() && fileObj.canRead() && fileObj.canWrite()){
-                        try{
-                            FileOutputStream fileOut = new FileOutputStream(fileObj);
-                            fileOut.write(bits);
-                            //@todo Update accountspace calculation
-                            Hashtable out = new Hashtable();
-                            out.put("success", "1");
-                            return out;
-                        } catch (Exception e){
-                            return error("Error: " + e.getMessage());
-                        }
+            byte[] bits = filebase64encoded.getBytes();
+            bits = Base64.decode(bits);
+            int contentlength=bits.length - 1;
+            long freespace = account.getFreespace();
+            if ((long)contentlength>freespace) {
+                reger.core.Debug.debug(3, "FileSyncServer.java", "returning error: not enough free space");
+                return error("Not enough free storage space available for this account.");
+            } else {
+                reger.core.Debug.debug(3, "FileSyncServer.java", "there's enough free space, will try to create file");
+                File fileObj = new File(Util.getFilenameMinusDirectoryName(file, au));
+                try{
+                    if (fileObj.isFile()){
+                        fileObj.createNewFile();
+                    } else if (fileObj.isDirectory()){
+                        fileObj.mkdirs();
+                    }
+                } catch (Exception e){
+                    reger.core.Debug.debug(3, "FileSyncServer.java", "fileObj.createNewFile() error: " + e.getMessage());
+                }
+                if (fileObj.canWrite()){
+                    reger.core.Debug.debug(3, "FileSyncServer.java", "fileObj.canWrite()=true");
+                    try{
+                        FileOutputStream fileOut = new FileOutputStream(fileObj);
+                        fileOut.write(bits);
+                        //@todo Update accountspace calculation
+                        Hashtable out = new Hashtable();
+                        out.put("success", "1");
+                        reger.core.Debug.debug(3, "FileSyncServer.java", "returning success");
+                        return out;
+                    } catch (Exception e){
+                        reger.core.Debug.debug(3, "FileSyncServer.java", "returning error: " + e.getMessage());
+                        return error("Error: " + e.getMessage());
                     }
                 }
+            }
             return new Hashtable();
         } else {
             return error("Login failed.");
@@ -78,6 +95,7 @@ public class FileSyncServer {
     }
 
     public Hashtable getStorageRemainingOnAccount(String email, String password) {
+        reger.core.Debug.debug(3, "FileSyncServer.java", "getStorageRemainingOnAccount("+email+", "+password+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
             Account account = AccountCache.get(au.getAccountid());
