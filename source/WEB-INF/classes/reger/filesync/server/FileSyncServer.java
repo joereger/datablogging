@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import org.apache.xmlrpc.Base64;
-
+import org.apache.commons.io.FileUtils;
 
 
 /**
@@ -64,11 +64,7 @@ public class FileSyncServer {
                 reger.core.Debug.debug(3, "FileSyncServer.java", "there's enough free space, will try to create file");
                 File fileObj = new File(Util.getFilenameMinusDirectoryName(file, au));
                 try{
-                    if (fileObj.isFile()){
-                        fileObj.createNewFile();
-                    } else if (fileObj.isDirectory()){
-                        fileObj.mkdirs();
-                    }
+                    fileObj.createNewFile();
                 } catch (Exception e){
                     reger.core.Debug.debug(3, "FileSyncServer.java", "fileObj.createNewFile() error: " + e.getMessage());
                 }
@@ -88,7 +84,37 @@ public class FileSyncServer {
                     }
                 }
             }
-            return new Hashtable();
+            //return new Hashtable();
+        } else {
+            return error("Login failed.");
+        }
+        return error("Unspecified error.");
+    }
+
+    public Hashtable saveDirectoryOnServer(String email, String password, String file) {
+        reger.core.Debug.debug(3, "FileSyncServer.java", "saveDirectoryOnServer("+email+", "+password+", "+file+") called");
+        Accountuser au = new reger.Accountuser(email, password);
+        if (au.isLoggedIn){
+            reger.core.Debug.debug(3, "FileSyncServer.java", "au.isLoggedIn=true");
+            Account account = AccountCache.get(au.getAccountid());
+            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+            reger.core.Debug.debug(3, "FileSyncServer.java", "there's enough free space, will try to create file");
+            File fileObj = new File(Util.getFilenameMinusDirectoryName(file, au));
+            try{
+                fileObj.mkdirs();
+            } catch (Exception e){
+                reger.core.Debug.debug(3, "FileSyncServer.java", "fileObj.mkdirs() error: " + e.getMessage());
+            }
+            try{
+                Hashtable out = new Hashtable();
+                out.put("success", "1");
+                reger.core.Debug.debug(3, "FileSyncServer.java", "returning success");
+                return out;
+            } catch (Exception e){
+                reger.core.Debug.debug(3, "FileSyncServer.java", "returning error: " + e.getMessage());
+                return error("Error: " + e.getMessage());
+            }
+            //return new Hashtable();
         } else {
             return error("Login failed.");
         }
