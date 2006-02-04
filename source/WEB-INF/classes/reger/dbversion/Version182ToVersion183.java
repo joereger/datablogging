@@ -1,0 +1,146 @@
+package reger.dbversion;
+
+import reger.core.db.Db;
+import reger.core.dbupgrade.UpgradeDatabaseOneVersion;
+import reger.core.Debug;
+import reger.Log;
+import reger.systemproperties.AllSystemProperties;
+
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
+
+/**
+ * This creates the base database if none exists.
+ */
+public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
+
+
+
+    public void doUpgrade(){
+
+
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate("ALTER TABLE image ADD filename longtext");
+        //-----------------------------------
+        //-----------------------------------
+
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstUlDir= Db.RunSQL("SELECT propertyvalue FROM systemproperty WHERE propertyname='PATHUPLOADMEDIA'");
+        //-----------------------------------
+        //-----------------------------------
+        String pathuploadmedia = "C:\\blogserver-data\\";
+        if (rstUlDir!=null && rstUlDir.length>0){
+            pathuploadmedia = rstUlDir[0][0];
+        }
+        if(pathuploadmedia.length()>1){
+            if (pathuploadmedia.substring(pathuploadmedia.length()-1).equals("/") || pathuploadmedia.substring(pathuploadmedia.length()-1).equals("\\")){
+                pathuploadmedia =  pathuploadmedia.substring(0, pathuploadmedia.length()-1);
+            }
+        }
+
+
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstImage= Db.RunSQL("SELECT imageid, accountid, image, originalfilename FROM image ORDER BY imageid ASC", 500000);
+        //-----------------------------------
+        //-----------------------------------
+        if (rstImage!=null && rstImage.length>0){
+            for(int i=0; i<rstImage.length; i++){
+                int imageid = Integer.parseInt(rstImage[i][0]);
+                int accountid = Integer.parseInt(rstImage[i][1]);
+                String currentFilename = rstImage[i][2];
+                String originalFilename = rstImage[i][3];
+
+                //Load the old file
+                File oldFile = new File(pathuploadmedia + "/" + currentFilename);
+                File oldFileThumbnail = new File(pathuploadmedia + "/thumbnails/" + currentFilename);
+                reger.core.Debug.debug(3, "Version182ToVersion183.java", "Tried to create oldFile with<br>" + pathuploadmedia + "/" + currentFilename);
+                if (oldFile.exists() && oldFile.canRead()){
+
+                    //Create directory
+                    String filesdirectory = pathuploadmedia + "/files/" + accountid + "/";
+                    File dir = new File(filesdirectory);
+                    dir.mkdirs();
+                    File dirThumbs = new File(filesdirectory+".thumbnails/");
+                    dirThumbs.mkdirs();
+
+                    //Name of new file
+                    String newFilename = originalFilename;
+                    if(originalFilename.equals("")){
+                        newFilename = currentFilename;
+                    }
+
+                    //Make sure file doesn't already exist
+                    int index = 0;
+                    String finalNewFileName = newFilename;
+                    File newFile = new File(filesdirectory+finalNewFileName);
+                    File newFileThumbnail = new File(filesdirectory+".thumbnails/"+finalNewFileName);
+                    while(newFile.exists()){
+                        index=index+1;
+                        finalNewFileName = index + "-" + newFilename;
+                        newFile = new File(filesdirectory+finalNewFileName);
+                        newFileThumbnail = new File(filesdirectory+".thumbnails/"+finalNewFileName);
+                    }
+
+                    //Do the copy
+                    try{
+                        FileUtils.copyFile(oldFile, newFile, true);
+                        FileUtils.copyFile(oldFileThumbnail, newFileThumbnail, true);
+                    } catch (Exception e){
+                        reger.core.Debug.errorsave(e, "Version182ToVersion183.java", "Problem copying:<br>oldFile=" +oldFile.getAbsolutePath()+"<br>newFile="+newFile.getAbsolutePath());
+                    }
+
+                    //Update the image table
+                    //-----------------------------------
+                    //-----------------------------------
+                    int count2 = Db.RunSQLUpdate("UPDATE image SET filename='"+finalNewFileName+"' WHERE imageid='"+imageid+"'");
+                    //-----------------------------------
+                    //-----------------------------------
+                }
+            }
+        }
+    }
+
+    //Sample sql statements
+
+    //-----------------------------------
+    //-----------------------------------
+    //int count = Db.RunSQLUpdate("CREATE TABLE `pltemplate` (`pltemplateid` int(11) NOT NULL auto_increment, logid int(11), plid int(11), type int(11), templateid int(11), PRIMARY KEY  (`pltemplateid`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+    //-----------------------------------
+    //-----------------------------------
+
+    //-----------------------------------
+    //-----------------------------------
+    //int count = Db.RunSQLUpdate("ALTER TABLE megachart CHANGE daterangesavedsearchid daterangesavedsearchid int(11) NOT NULL default '0'");
+    //-----------------------------------
+    //-----------------------------------
+
+    //-----------------------------------
+    //-----------------------------------
+    //int count = Db.RunSQLUpdate("ALTER TABLE account DROP gps");
+    //-----------------------------------
+    //-----------------------------------
+
+    //-----------------------------------
+    //-----------------------------------
+    //int count = Db.RunSQLUpdate("ALTER TABLE megalogtype ADD isprivate int(11) NOT NULL default '0'");
+    //-----------------------------------
+    //-----------------------------------
+
+    //-----------------------------------
+    //-----------------------------------
+    //int count = Db.RunSQLUpdate("DROP TABLE megafielduser");
+    //-----------------------------------
+    //-----------------------------------
+
+    //-----------------------------------
+    //-----------------------------------
+    //int count = Db.RunSQLUpdate("CREATE INDEX name_of_index ON table (field1, field2)");
+    //-----------------------------------
+    //-----------------------------------
+
+
+}

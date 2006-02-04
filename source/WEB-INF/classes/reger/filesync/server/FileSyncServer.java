@@ -3,15 +3,17 @@ package reger.filesync.server;
 import reger.Accountuser;
 import reger.Account;
 import reger.PrivateLabel;
+import reger.systemproperties.AllSystemProperties;
+import reger.core.TimeUtils;
 import reger.cache.AccountCache;
 
 import java.util.Hashtable;
 import java.util.Calendar;
+import java.util.Vector;
 import java.io.File;
 import java.io.FileOutputStream;
 
 import org.apache.xmlrpc.Base64;
-import org.apache.commons.io.FileUtils;
 
 
 /**
@@ -26,7 +28,7 @@ public class FileSyncServer {
         if (au.isLoggedIn){
             Account account = AccountCache.get(au.getAccountid());
             PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
-            File fileObj = new File(Util.getFilenameMinusDirectoryName(file, au));
+            File fileObj = new File(Util.getFilenamePlusDirectoryName(file, account));
             if (fileObj.exists() && fileObj.canRead() && fileObj.canWrite()){
                 Calendar lastmodifieddategmtCal = Calendar.getInstance();
                 lastmodifieddategmtCal.setTimeInMillis(fileObj.lastModified());
@@ -46,7 +48,7 @@ public class FileSyncServer {
         }
     }
 
-    public Hashtable saveFileOnServer(String email, String password, String file, String filebase64encoded) {
+    public Hashtable saveFileOnServer(String email, String password, String file, String filebase64encoded, String lastmodifieddateinmillis) {
         reger.core.Debug.debug(3, "FileSyncServer.java", "saveFileOnServer("+email+", "+password+", "+file+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
@@ -62,7 +64,7 @@ public class FileSyncServer {
                 return error("Not enough free storage space available for this account.");
             } else {
                 reger.core.Debug.debug(3, "FileSyncServer.java", "there's enough free space, will try to create file");
-                File fileObj = new File(Util.getFilenameMinusDirectoryName(file, au));
+                File fileObj = new File(Util.getFilenamePlusDirectoryName(file, account));
                 try{
                     fileObj.createNewFile();
                 } catch (Exception e){
@@ -71,8 +73,10 @@ public class FileSyncServer {
                 if (fileObj.canWrite()){
                     reger.core.Debug.debug(3, "FileSyncServer.java", "fileObj.canWrite()=true");
                     try{
+
                         FileOutputStream fileOut = new FileOutputStream(fileObj);
                         fileOut.write(bits);
+                        fileObj.setLastModified(new Long(lastmodifieddateinmillis));
                         //@todo Update accountspace calculation
                         Hashtable out = new Hashtable();
                         out.put("success", "1");
@@ -99,7 +103,7 @@ public class FileSyncServer {
             Account account = AccountCache.get(au.getAccountid());
             PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
             reger.core.Debug.debug(3, "FileSyncServer.java", "there's enough free space, will try to create file");
-            File fileObj = new File(Util.getFilenameMinusDirectoryName(file, au));
+            File fileObj = new File(Util.getFilenamePlusDirectoryName(file, account));
             try{
                 fileObj.mkdirs();
             } catch (Exception e){
@@ -133,6 +137,52 @@ public class FileSyncServer {
         } else {
             return error("Login failed.");
         }
+    }
+
+    public Vector getListOfFilesOnServer(String email, String password) {
+        reger.core.Debug.debug(3, "FileSyncServer.java", "getListOfFilesOnServer("+email+", "+password+") called");
+        Accountuser au = new reger.Accountuser(email, password);
+        if (au.isLoggedIn){
+            Account account = AccountCache.get(au.getAccountid());
+            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+
+            String filesdirectory = AllSystemProperties.getProp("PATHUPLOADMEDIA");
+            filesdirectory = filesdirectory + "files/" + account.getAccountid() + "/";
+            filesdirectory = Util.getNormalizedFilename(filesdirectory);
+
+            return getAllFiles(new File(filesdirectory), account);
+        } else {
+            Vector err = new Vector();
+            err.add(error("Login failed."));
+            return err;
+        }
+    }
+
+    private static Vector getAllFiles(File in, Account account) {
+        Vector out = new Vector();
+        Calendar lastmodifieddategmt = Calendar.getInstance();
+        lastmodifieddategmt.setTimeInMillis(in.lastModified());
+        lastmodifieddategmt = TimeUtils.convertFromOneTimeZoneToAnother(lastmodifieddategmt, lastmodifieddategmt.getTimeZone().getID(), "GMT");
+
+        if (in.isDirectory()) {
+            Hashtable hash = new Hashtable();
+            hash.put(String.valueOf("filename"), Util.getFilenameMinusDirectoryName(in, account));
+            hash.put(String.valueOf("lastmodifieddategmt"), lastmodifieddategmt);
+            hash.put(String.valueOf("isdirectory"), "1");
+            out.add(hash);
+
+            String[] children = in.list();
+            for (int i=0; i<children.length; i++) {
+                out.addAll(getAllFiles(new File(in, children[i]), account));
+            }
+        } else {
+            Hashtable hash = new Hashtable();
+            hash.put(String.valueOf("filename"), Util.getFilenameMinusDirectoryName(in, account));
+            hash.put(String.valueOf("lastmodifieddategmt"), lastmodifieddategmt);
+            hash.put(String.valueOf("isdirectory"), "0");
+            out.add(hash);
+        }
+        return out;
     }
 
     private static Hashtable error(String error){
