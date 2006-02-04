@@ -5,15 +5,17 @@ import reger.Account;
 import reger.PrivateLabel;
 import reger.systemproperties.AllSystemProperties;
 import reger.core.TimeUtils;
+import reger.core.ValidationException;
 import reger.cache.AccountCache;
 
 import java.util.Hashtable;
 import java.util.Calendar;
 import java.util.Vector;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 
 import org.apache.xmlrpc.Base64;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
 
 
 /**
@@ -66,33 +68,38 @@ public class FileSyncServer {
                 reger.core.Debug.debug(3, "FileSyncServer.java", "there's enough free space, will try to create file");
                 File fileObj = new File(Util.getFilenamePlusDirectoryName(file, account));
                 try{
+                    fileObj = new File(Util.getFilenamePlusDirectoryName(file, account));
                     fileObj.createNewFile();
                 } catch (Exception e){
                     reger.core.Debug.debug(3, "FileSyncServer.java", "fileObj.createNewFile() error: " + e.getMessage());
                 }
-                if (fileObj.canWrite()){
-                    reger.core.Debug.debug(3, "FileSyncServer.java", "fileObj.canWrite()=true");
-                    try{
 
-                        FileOutputStream fileOut = new FileOutputStream(fileObj);
-                        fileOut.write(bits);
-                        fileObj.setLastModified(new Long(lastmodifieddateinmillis));
-                        //@todo Update accountspace calculation
-                        Hashtable out = new Hashtable();
-                        out.put("success", "1");
-                        reger.core.Debug.debug(3, "FileSyncServer.java", "returning success");
-                        return out;
-                    } catch (Exception e){
-                        reger.core.Debug.debug(3, "FileSyncServer.java", "returning error: " + e.getMessage());
-                        return error("Error: " + e.getMessage());
+                reger.core.Debug.debug(3, "FileSyncServer.java", "fileObj.canWrite()=true");
+                try{
+                    FileOutputStream fileOut = new FileOutputStream(fileObj);
+                    fileOut.write(bits);
+                    try{
+                        if (lastmodifieddateinmillis!=null && !lastmodifieddateinmillis.equals("")){
+                            fileObj.setLastModified(new Long(lastmodifieddateinmillis));
+                        }
+                    } catch(Exception e){
+                        reger.core.Debug.debug(5, "FileSyncServer.java", e);
                     }
+                    //@todo Update accountspace calculation
+                    Hashtable out = new Hashtable();
+                    out.put("success", "1");
+                    reger.core.Debug.debug(3, "FileSyncServer.java", "returning success");
+                    return out;
+                } catch (Exception e){
+                    reger.core.Debug.debug(3, "FileSyncServer.java", "returning error: " + e.getMessage());
+                    return error("Error: " + e.getMessage());
                 }
+
             }
             //return new Hashtable();
         } else {
             return error("Login failed.");
         }
-        return error("Unspecified error.");
     }
 
     public Hashtable saveDirectoryOnServer(String email, String password, String file) {
@@ -122,6 +129,45 @@ public class FileSyncServer {
         } else {
             return error("Login failed.");
         }
+    }
+
+    public Hashtable renameFile(String email, String password, String file) {
+        reger.core.Debug.debug(3, "FileSyncServer.java", "renameFile("+email+", "+password+", "+file+") called");
+        Accountuser au = new reger.Accountuser(email, password);
+        if (au.isLoggedIn){
+            Account account = AccountCache.get(au.getAccountid());
+            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+
+            int i = 0;
+            String finalFilename = file;
+            File oldFile = new File(Util.getFilenamePlusDirectoryName(file, account));
+            File newFile = new File(Util.getFilenamePlusDirectoryName(finalFilename, account));
+            while(newFile.exists()){
+                i=i+1;
+                finalFilename = addIndexToFilename(file, String.valueOf(i));
+                newFile = new File(Util.getFilenamePlusDirectoryName(finalFilename, account));
+            }
+            try{
+                FileUtils.copyFile(oldFile, newFile, true);
+            } catch (Exception e){
+                return error("Error: "+e.getMessage());
+            }
+            Hashtable out = new Hashtable();
+            out.put("success", String.valueOf("1"));
+            out.put("newfilename", String.valueOf(finalFilename));
+            return out;
+        } else {
+            return error("Login failed.");
+        }
+    }
+
+    private static String addIndexToFilename(String file, String index){
+        String pathAndFilenameNoExtension = FilenameUtils.removeExtension(file);
+        String finalFilename = pathAndFilenameNoExtension + index;
+        if (!FilenameUtils.getExtension(file).equals("")){
+            finalFilename = finalFilename+"."+FilenameUtils.getExtension(file);
+        }
+        return finalFilename;
     }
 
     public Hashtable getStorageRemainingOnAccount(String email, String password) {
@@ -189,6 +235,83 @@ public class FileSyncServer {
         Hashtable out = new Hashtable();
         out.put("error", error);
         return out;
+    }
+
+    public Hashtable downloadFileFromServer(String email, String password, String file) {
+        reger.core.Debug.debug(3, "FileSyncServer.java", "downloadFileFromServer("+email+", "+password+", "+file+") called");
+        Accountuser au = new reger.Accountuser(email, password);
+        if (au.isLoggedIn){
+            Account account = AccountCache.get(au.getAccountid());
+            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+
+            File fileToSend = new File(Util.getFilenamePlusDirectoryName(file, account));
+            if (fileToSend.exists()){
+                try{
+                    Hashtable out = new Hashtable();
+                    out.put("success", "1");
+                    out.put("file", file);
+                    out.put("filebase64encoded", base64EncodeFile(fileToSend));
+                    return out;
+                } catch (ValidationException vex){
+                    return error("Error encoding file: "+vex.getErrorsAsSingleString());
+                } catch (Exception e){
+                    return error("Error encoding file: "+e.getMessage());
+                }
+            } else {
+                return error("File not found.");
+            }
+        } else {
+            return error("Login failed.");
+        }
+    }
+
+    public static String base64EncodeFile(File in) throws ValidationException {
+        if (in.canRead() && !in.isDirectory()){
+            try{
+                String out = new String(Base64.encode(getBytesFromFile(in)));
+                return out;
+            } catch (IOException ioex){
+                ValidationException vex = new ValidationException();
+                vex.addValidationError(ioex.getMessage());
+                throw vex;
+            }
+        }
+        return "";
+    }
+
+    private static byte[] getBytesFromFile(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+
+        // Get the size of the file
+        long length = file.length();
+
+        // You cannot create an array using a long type.
+        // It needs to be an int type.
+        // Before converting to an int type, check
+        // to ensure that file is not larger than Integer.MAX_VALUE.
+        if (length > Integer.MAX_VALUE) {
+            // File is too large
+        }
+
+        // Create the byte array to hold the data
+        byte[] bytes = new byte[(int)length];
+
+        // Read in the bytes
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+            offset += numRead;
+        }
+
+        // Ensure all the bytes have been read in
+        if (offset < bytes.length) {
+            throw new IOException("Could not completely read file "+file.getName());
+        }
+
+        // Close the input stream and return bytes
+        is.close();
+        return bytes;
     }
 
 
