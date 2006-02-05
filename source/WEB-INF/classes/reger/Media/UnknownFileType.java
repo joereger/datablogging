@@ -19,7 +19,7 @@ public class UnknownFileType implements MediaType {
     /**
      * Creates a thumbnail for this media type and saves it to the thumbnail directory.
      */
-    public void createThumbnail(String pathToFile, String pathToThumbnail, int imageid) {
+    public void createThumbnail(String pathToFile, String pathToThumbnail) {
         try{
             //Copy a generic thumbnail over
             reger.core.Util.copyFile(reger.Vars.THUMBNAILGENERIC + "", pathToThumbnail);

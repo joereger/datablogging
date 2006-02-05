@@ -19,7 +19,7 @@ public class MsExcel implements MediaType {
     /**
      * Creates a thumbnail for this media type and saves it to the thumbnail directory.
      */
-    public void createThumbnail(String pathToFile, String pathToThumbnail, int imageid) {
+    public void createThumbnail(String pathToFile, String pathToThumbnail) {
         try{
             reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images\\mediatypeicons\\icon-excel.gif", pathToThumbnail);
         } catch (Throwable e) {

@@ -56,6 +56,6 @@ outStream.close();
 //Record the size of the output
 //@todo Decode accountid from username and password so that api.log traffic is properly applied
 reger.Bandwidth.addActivity(0, result.length);
-Debug.debug(5, "", "api.log<br>Output Length: "+result.length);
+Debug.debug(3, "api.log", new String(result));
 
 %>

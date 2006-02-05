@@ -8,6 +8,9 @@ import java.io.*;
 import java.util.regex.*;
 import javax.servlet.http.*;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
+
 public class Util {
 
     /**
@@ -16,12 +19,12 @@ public class Util {
     * of form elements and other html
     */
     public static String cleanForHtml(String instring){
-		if (instring!=null){
-	    	instring=instring.replaceAll("\"", "&quot;");
-	    	instring=instring.replaceAll("<", "&lt;");
-	    	return instring;
-		}
-		return "";
+        if (instring!=null){
+            instring=instring.replaceAll("\"", "&quot;");
+            instring=instring.replaceAll("<", "&lt;");
+            return instring;
+        }
+        return "";
     }
 
     public static String cleanDirectorySlashesUseSystemFileSeparator(String directoryOrFileName){
@@ -39,11 +42,11 @@ public class Util {
     }
 
     public static String escapeBackslash(String instring){
-		if (instring!=null){
-	    	instring=instring.replaceAll("\\\\", "\\\\\\\\");
-	    	return instring;
-		}
-		return "";
+        if (instring!=null){
+            instring=instring.replaceAll("\\\\", "\\\\\\\\");
+            return instring;
+        }
+        return "";
     }
 
     /**
@@ -52,13 +55,13 @@ public class Util {
     * of form elements and other javascript
     */
     public static String cleanForjavascript(String instring){
-		if (instring!=null){
-	    	instring=instring.replaceAll("\"", "&quot;");
-	    	instring=instring.replaceAll("'", "\\\\'");
-	    	//instring=instring.replaceAll("<", "&lt;");
-	    	return instring;
-		}
-		return "";
+        if (instring!=null){
+            instring=instring.replaceAll("\"", "&quot;");
+            instring=instring.replaceAll("'", "\\\\'");
+            //instring=instring.replaceAll("<", "&lt;");
+            return instring;
+        }
+        return "";
     }
 
     /**
@@ -66,15 +69,15 @@ public class Util {
     */
     public static String truncateString(String instring, int maxlength){
         String outstring="";
-		try{
+        try{
             outstring = instring.substring(0,maxlength-1);
         } catch (Exception e) {
             outstring = instring;
         }
-		return outstring;
+        return outstring;
     }
 
-	/**
+    /**
     * This function accepts a string and removes/replaces special
     * characters to make sure that the string can be displayed inside
     * of form elements and other html
@@ -119,92 +122,92 @@ public class Util {
         return uri;
     }
 
-	/*
-	 * Determines whether a string can be converted to an int
-	 */
-	public static boolean isinteger(String str){
-	    if (str==null){
-            return false;   
-        }
-		try{
-			Integer.parseInt(str);
-			return true;
-		}catch(Exception e){
-			return false;
-		}
-	}
-
-	/*
-	 * Determines whether a string can be converted to a long
-	 */
-	public static boolean islong(String str){
-		try{
-			Long.parseLong(str);
-			return true;
-		}catch(NumberFormatException e){
-			return false;
-		}
-	}
-
-	/*
-	 * Determines whether a string is numeric.
-	 */
-	public static boolean isnumeric(String str){
-		try{
-			Double.parseDouble(str);
-			return true;
-		}catch(NumberFormatException e){
-			return false;
-		}catch(Exception e){
+    /*
+      * Determines whether a string can be converted to an int
+      */
+    public static boolean isinteger(String str){
+        if (str==null){
             return false;
         }
-	}
+        try{
+            Integer.parseInt(str);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
 
-	/*
-	 * Determines whether a particular int value is in an array.
-	 */
-	public static boolean intIsInArray(int[] myArray, int value){
-		for(int i=0; i<myArray.length; i++){
-			if (myArray[i]==value){
-				return true;
-			}
-		}
-		return false;
-	}
+    /*
+      * Determines whether a string can be converted to a long
+      */
+    public static boolean islong(String str){
+        try{
+            Long.parseLong(str);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        }
+    }
 
-	/*
-	 * Accepts possibly null request.getParameter("page") and returns the correct
-	 * page number as an int
-	 */
-	public static int getCurrentPage(String currpagein){
-		int result=1;
-		try {
-			if (currpagein!=null){
-				result=Integer.parseInt(currpagein);
-			}
-		} catch (Exception e) {
-			result=1;
-		}
-		return result;
-	}
+    /*
+      * Determines whether a string is numeric.
+      */
+    public static boolean isnumeric(String str){
+        try{
+            Double.parseDouble(str);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        }catch(Exception e){
+            return false;
+        }
+    }
 
-	/*
-	 * Accepts possibly null request.getParameter("xxx") and returns the correct
-	 * page number as an int
-	 */
-	public static int stringToInt(String in){
-		int result=0;
-		try {
-			if (in!=null){
-				result=Integer.parseInt(in);
-			}
-		} catch (Exception e) {
-			result=0;
-		}
-		return result;
-	}
+    /*
+      * Determines whether a particular int value is in an array.
+      */
+    public static boolean intIsInArray(int[] myArray, int value){
+        for(int i=0; i<myArray.length; i++){
+            if (myArray[i]==value){
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public static boolean arrayContainsValue(int[] array, int value){
+    /*
+      * Accepts possibly null request.getParameter("page") and returns the correct
+      * page number as an int
+      */
+    public static int getCurrentPage(String currpagein){
+        int result=1;
+        try {
+            if (currpagein!=null){
+                result=Integer.parseInt(currpagein);
+            }
+        } catch (Exception e) {
+            result=1;
+        }
+        return result;
+    }
+
+    /*
+      * Accepts possibly null request.getParameter("xxx") and returns the correct
+      * page number as an int
+      */
+    public static int stringToInt(String in){
+        int result=0;
+        try {
+            if (in!=null){
+                result=Integer.parseInt(in);
+            }
+        } catch (Exception e) {
+            result=0;
+        }
+        return result;
+    }
+
+    public static boolean arrayContainsValue(int[] array, int value){
        if (array!=null){
             for (int i = 0; i < array.length; i++) {
                 if (array[i]==value){
@@ -216,55 +219,55 @@ public class Util {
     }
 
 
-	/*
-	 * Determines whether yyyy, mm, dd is a valid date.
-	 */
-	public static boolean isDate(int yyyy, int mm, int dd){
-		try{
-			Calendar cal = Calendar.getInstance();
-			cal.set(yyyy,mm,dd);
-			return true;
-		}catch(Exception e){
-			return false;
-		}
-	}
+    /*
+      * Determines whether yyyy, mm, dd is a valid date.
+      */
+    public static boolean isDate(int yyyy, int mm, int dd){
+        try{
+            Calendar cal = Calendar.getInstance();
+            cal.set(yyyy,mm,dd);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
 
-	/*
-	 * Overridde of isDate to accept strings
-	 */
-	public static boolean isDate(String yyyy, String mm, String dd){
-			int yyyyInt=Integer.parseInt(yyyy);
-			int mmInt=Integer.parseInt(mm);
-			int ddInt=Integer.parseInt(dd);
-			return isTime(yyyyInt, mmInt, ddInt);
-	}
-
-	
+    /*
+      * Overridde of isDate to accept strings
+      */
+    public static boolean isDate(String yyyy, String mm, String dd){
+            int yyyyInt=Integer.parseInt(yyyy);
+            int mmInt=Integer.parseInt(mm);
+            int ddInt=Integer.parseInt(dd);
+            return isTime(yyyyInt, mmInt, ddInt);
+    }
 
 
-	/*
-	 * Determines whether hour, min, sec is a valid time.
-	 */
-	public static boolean isTime(int hour, int min, int sec){
-		try{
-			if(hour<0 || hour>23)return false;
-			if(min<0 || min>59)return false;
-			if(sec<0 || sec>59)return false;
-			return true;
-		}catch(RuntimeException e){
-			return false;
-		}
-	}
 
-	/*
-	 * Overridde of isTime to accept strings
-	 */
-	public static boolean isTime(String hourStr, String minStr, String secStr){
-			int hour=Integer.parseInt(hourStr);
-			int min=Integer.parseInt(minStr);
-			int sec=Integer.parseInt(secStr);
-			return isTime(hour, min, sec);
-	}
+
+    /*
+      * Determines whether hour, min, sec is a valid time.
+      */
+    public static boolean isTime(int hour, int min, int sec){
+        try{
+            if(hour<0 || hour>23)return false;
+            if(min<0 || min>59)return false;
+            if(sec<0 || sec>59)return false;
+            return true;
+        }catch(RuntimeException e){
+            return false;
+        }
+    }
+
+    /*
+      * Overridde of isTime to accept strings
+      */
+    public static boolean isTime(String hourStr, String minStr, String secStr){
+            int hour=Integer.parseInt(hourStr);
+            int min=Integer.parseInt(minStr);
+            int sec=Integer.parseInt(secStr);
+            return isTime(hour, min, sec);
+    }
 
 
 
@@ -281,117 +284,117 @@ public class Util {
    }
 
 
-	/*
-	* Count images for a particular event
-	*/
-	public static int imageCount(int eventid){
-		int imagecount=0;
-		//-----------------------------------
-		//-----------------------------------
-		String[][] rs= reger.core.db.Db.RunSQL("SELECT count(*) FROM image WHERE eventid='" + eventid + "'");
-		//-----------------------------------
-		//-----------------------------------
-		if(rs.length>0){
-			imagecount=Integer.parseInt(rs[0][0]);
-		}
-		return imagecount;
-	}
+    /*
+     * Count images for a particular event
+     */
+    public static int imageCount(int eventid){
+        int imagecount=0;
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rs= reger.core.db.Db.RunSQL("SELECT count(*) FROM image WHERE eventid='" + eventid + "'");
+        //-----------------------------------
+        //-----------------------------------
+        if(rs.length>0){
+            imagecount=Integer.parseInt(rs[0][0]);
+        }
+        return imagecount;
+    }
 
-	/*
-	* Count messages for a particular event
-	*/
-	public static int messageCount(int eventid){
-		int messagecount=0;
-		//-----------------------------------
-		//-----------------------------------
-		String[][] rs= reger.core.db.Db.RunSQL("SELECT count(*) FROM message WHERE eventid='" + eventid + "'");
-		//-----------------------------------
-		//-----------------------------------
-		if(rs.length>0){
-			messagecount=Integer.parseInt(rs[0][0]);
-		}
-		return messagecount;
-	}
+    /*
+     * Count messages for a particular event
+     */
+    public static int messageCount(int eventid){
+        int messagecount=0;
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rs= reger.core.db.Db.RunSQL("SELECT count(*) FROM message WHERE eventid='" + eventid + "'");
+        //-----------------------------------
+        //-----------------------------------
+        if(rs.length>0){
+            messagecount=Integer.parseInt(rs[0][0]);
+        }
+        return messagecount;
+    }
 
 
-	/*
-	* Get a logid from an eventid
-	*/
-	public static int getLogidFromEventid(int eventid, int accountid){
-		int logid=-1;
-		//-----------------------------------
-		//-----------------------------------
-		String[][] rs= reger.core.db.Db.RunSQL("SELECT logid FROM event WHERE eventid='"+ eventid +"' AND accountid='"+ accountid +"'");
-		//-----------------------------------
-		//-----------------------------------
-		if (rs!=null && rs.length>0){
-			if (isinteger(rs[0][0])) {
-				logid=Integer.parseInt(rs[0][0]);
-			}
-		}
-		return logid;
-	}
+    /*
+     * Get a logid from an eventid
+     */
+    public static int getLogidFromEventid(int eventid, int accountid){
+        int logid=-1;
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rs= reger.core.db.Db.RunSQL("SELECT logid FROM event WHERE eventid='"+ eventid +"' AND accountid='"+ accountid +"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rs!=null && rs.length>0){
+            if (isinteger(rs[0][0])) {
+                logid=Integer.parseInt(rs[0][0]);
+            }
+        }
+        return logid;
+    }
 
-	/*
-	* Get a logid from an imageid
-	*/
-	public static int getLogidFromImageid(int imageid, int accountid){
-		int logid=-1;
-		//-----------------------------------
-		//-----------------------------------
-		String[][] rs= reger.core.db.Db.RunSQL("SELECT logid FROM event, image WHERE event.eventid=image.eventid AND event.accountid='"+ accountid +"' AND image.imageid='"+imageid+"'");
-		//-----------------------------------
-		//-----------------------------------
-		if (rs!=null){
-			if (isinteger(rs[0][0])) {
-				logid=Integer.parseInt(rs[0][0]);
-			}
-		}
-		return logid;
-	}
-
-	
-
-	/*
-	* Convert a database 0/1 to a boolean
-	*/
-	public static boolean dbToBoolean(String str){
-		if (str.equals("1")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    /*
+     * Get a logid from an imageid
+     */
+    public static int getLogidFromImageid(int imageid, int accountid){
+        int logid=-1;
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rs= reger.core.db.Db.RunSQL("SELECT logid FROM event, image WHERE event.eventid=image.eventid AND event.accountid='"+ accountid +"' AND image.imageid='"+imageid+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rs!=null){
+            if (isinteger(rs[0][0])) {
+                logid=Integer.parseInt(rs[0][0]);
+            }
+        }
+        return logid;
+    }
 
 
 
+    /*
+     * Convert a database 0/1 to a boolean
+     */
+    public static boolean dbToBoolean(String str){
+        if (str.equals("1")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
-	/*
-	* Get a permission friendly name from a permission string
-	*/
-	public static String getFriendlyNameFromAclobjectname(String aclobjectname){
-		return reger.acl.AllAclObjects.getAclFriendlyNameByName(aclobjectname);
-	}
 
 
-	/*
-	 * Adds a row to the String array src with the value of String str
-	 */
-	public static String[] addToStringArray(String[] src, String str){
-		if (src==null){
+
+    /*
+     * Get a permission friendly name from a permission string
+     */
+    public static String getFriendlyNameFromAclobjectname(String aclobjectname){
+        return reger.acl.AllAclObjects.getAclFriendlyNameByName(aclobjectname);
+    }
+
+
+    /*
+      * Adds a row to the String array src with the value of String str
+      */
+    public static String[] addToStringArray(String[] src, String str){
+        if (src==null){
             src=new String[0];
         }
 
-		String[] outArr = new String[src.length+1];
-		for(int i=0; i < src.length; i++) {
-			outArr[i]=src[i];
-		}
-		outArr[src.length]=str;
-		return outArr;
-	}
+        String[] outArr = new String[src.length+1];
+        for(int i=0; i < src.length; i++) {
+            outArr[i]=src[i];
+        }
+        outArr[src.length]=str;
+        return outArr;
+    }
 
-	/**
+    /**
      * reverses the contents of an array
      */
     public static String[] reverseStringArray(String[] src){
@@ -409,44 +412,44 @@ public class Util {
     /*
 	 * Adds a row to the Object array src with the value of String str
 	 */
-	public static Object[] addToObjectArray(Object[] src, Object str){
-		if (src==null){
+    public static Object[] addToObjectArray(Object[] src, Object str){
+        if (src==null){
             src=new Object[0];
         }
 
-		Object[] outArr = new Object[src.length+1];
-		for(int i=0; i < src.length; i++) {
-			outArr[i]=src[i];
-		}
-		outArr[src.length]=str;
-		return outArr;
-	}
+        Object[] outArr = new Object[src.length+1];
+        for(int i=0; i < src.length; i++) {
+            outArr[i]=src[i];
+        }
+        outArr[src.length]=str;
+        return outArr;
+    }
 
 
     /*
 	 * Adds a row to the Object array src with the value of String str
 	 */
-	public static Cookie[] addToCookieArray(Cookie[] src, Cookie str){
-		if (src==null){
+    public static Cookie[] addToCookieArray(Cookie[] src, Cookie str){
+        if (src==null){
             src=new Cookie[0];
         }
 
-		Cookie[] outArr = new Cookie[src.length+1];
-		for(int i=0; i < src.length; i++) {
-			outArr[i]=src[i];
-		}
-		outArr[src.length]=str;
-		return outArr;
-	}
+        Cookie[] outArr = new Cookie[src.length+1];
+        for(int i=0; i < src.length; i++) {
+            outArr[i]=src[i];
+        }
+        outArr[src.length]=str;
+        return outArr;
+    }
 
 
 
-	/*
-	 * Adds a row to the String array src with the value of String str
-	 */
-	public static int[] addToIntArray(int[] src, int str){
-		//If the source isn't null
-		if (src!=null){
+    /*
+      * Adds a row to the String array src with the value of String str
+      */
+    public static int[] addToIntArray(int[] src, int str){
+        //If the source isn't null
+        if (src!=null){
             int[] outArr = new int[src.length+1];
             for(int i=0; i < src.length; i++) {
                 outArr[i]=src[i];
@@ -459,7 +462,7 @@ public class Util {
             outArr[0]=str;
             return outArr;
         }
-	}
+    }
 
 //	public static NewLogHolder[] addToNewLogHolderArray(NewLogHolder[] src, NewLogHolder str){
 //		//If the source isn't null
@@ -481,10 +484,10 @@ public class Util {
     /*
 	 * Contract an int array
 	 */
-	public static int[] contractIntArray(int[] src, int amounttocontract){
-		//If the source isn't null
-		if (src!=null){
-		    //Make sure we're not contracting too much
+    public static int[] contractIntArray(int[] src, int amounttocontract){
+        //If the source isn't null
+        if (src!=null){
+            //Make sure we're not contracting too much
             if (amounttocontract>src.length){
                 amounttocontract=src.length;
             }
@@ -498,12 +501,12 @@ public class Util {
             int[] outArr = new int[0];
             return outArr;
         }
-	}
+    }
 
-	
 
-	public static boolean isIntInIntArray(int lookingfor, int[] arraytosearch){
-	    if (arraytosearch!=null){
+
+    public static boolean isIntInIntArray(int lookingfor, int[] arraytosearch){
+        if (arraytosearch!=null){
             for (int i = 0; i < arraytosearch.length; i++) {
                 if (arraytosearch[i]==lookingfor){
                     return true;
@@ -513,10 +516,10 @@ public class Util {
         return false;
     }
 
-	/*
-	 * Appends to a hashmap value.  Assumes strings.
-	 */
-	public static HashMap hashMapAppendValue(HashMap inHash, String key, String valuetoappend) {
+    /*
+      * Appends to a hashmap value.  Assumes strings.
+      */
+    public static HashMap hashMapAppendValue(HashMap inHash, String key, String valuetoappend) {
         if (inHash.get(key)!=null) {
             //We must append
             inHash.put(key, inHash.get(key) + valuetoappend);
@@ -525,13 +528,13 @@ public class Util {
             inHash.put(key, valuetoappend);
         }
         return inHash;
-	}
+    }
 
-	/*
-	 * Prefill zeroes.  Example: 1 becomes 001.
-	 */
-	public static String prefillZeroes(String inString, int finalLength) {
-	    String outString = "";
+    /*
+      * Prefill zeroes.  Example: 1 becomes 001.
+      */
+    public static String prefillZeroes(String inString, int finalLength) {
+        String outString = "";
         if (inString.length()<finalLength) {
             int zeroesToAdd = finalLength - inString.length();
             for(int i=1; i<=zeroesToAdd; i++){
@@ -539,20 +542,20 @@ public class Util {
             }
         }
         return outString + inString;
-	}
+    }
 
-	/*
-	 * Adds a row to the array, preserving existing data
-	 */
-	public static byte[] extendByteArray(byte[] in){
-		byte[] out = new byte[in.length+1];
-		for(int i=0; i < in.length; i++){
-			out[i]=in[i];
+    /*
+      * Adds a row to the array, preserving existing data
+      */
+    public static byte[] extendByteArray(byte[] in){
+        byte[] out = new byte[in.length+1];
+        for(int i=0; i < in.length; i++){
+            out[i]=in[i];
         }
-		return out;
-	}
+        return out;
+    }
 
-	/**
+    /**
      * Add single byte to a byte array
      */
     public static byte[] addByteToByteArray(byte[] in, byte newbyte){
@@ -561,29 +564,29 @@ public class Util {
         return out;
     }
 
-	/*
-	 * Adds a row to the double array src, which is indexed as [row][column]
-	 */
-	public static String[][] extendArray(String[][] src, int columnCount){
-		String[][] dest = new String[src.length+1][];
-		for(int i=0; i < src.length; i++){
-			dest[i]=src[i];
+    /*
+      * Adds a row to the double array src, which is indexed as [row][column]
+      */
+    public static String[][] extendArray(String[][] src, int columnCount){
+        String[][] dest = new String[src.length+1][];
+        for(int i=0; i < src.length; i++){
+            dest[i]=src[i];
         }
 
-		dest[dest.length-1]= new String[columnCount];
-		for(int i=0; i < columnCount; i++){
-			dest[dest.length-1][i]="";
+        dest[dest.length-1]= new String[columnCount];
+        for(int i=0; i < columnCount; i++){
+            dest[dest.length-1][i]="";
         }
 
-		return dest;
-	}
+        return dest;
+    }
 
-	/*
-	 * Adds a row to the double array src, which is indexed as [row][column]
-	 */
-	public static int[][] extendArray(int[][] src, int rowsToAdd){
-	    int[][] dest = new int[0][0];
-	    if (src!=null){
+    /*
+      * Adds a row to the double array src, which is indexed as [row][column]
+      */
+    public static int[][] extendArray(int[][] src, int rowsToAdd){
+        int[][] dest = new int[0][0];
+        if (src!=null){
             dest = new int[src.length+rowsToAdd][];
             for(int i=0; i < src.length; i++){
                 dest[i]=src[i];
@@ -594,10 +597,10 @@ public class Util {
         } else {
             dest = new int[rowsToAdd][0];
         }
-		return dest;
-	}
+        return dest;
+    }
 
-	/**
+    /**
      * Combines two double int arrays by appending b to a.
      */
     public static int[][] combineTwoDoubleIntArrays(int[][] a, int[][] b){
@@ -627,69 +630,69 @@ public class Util {
         return a;
     }
 
-	/*
-	 * Removes a row from the double array src, which is indexed as [row][column]
-	 */
-	public static String[][] contractArray(String[][] src, int rowToRemove)
-	{
-		if(src.length>0 && rowToRemove <= src.length){
-			String[][] dest = new String[src.length-1][];
-			int offset=0;
-			for(int i=0; i < dest.length; i++){
-				if(i==rowToRemove)
-					offset =1;
-				dest[i]=src[i+offset];
-			}
+    /*
+      * Removes a row from the double array src, which is indexed as [row][column]
+      */
+    public static String[][] contractArray(String[][] src, int rowToRemove)
+    {
+        if(src.length>0 && rowToRemove <= src.length){
+            String[][] dest = new String[src.length-1][];
+            int offset=0;
+            for(int i=0; i < dest.length; i++){
+                if(i==rowToRemove)
+                    offset =1;
+                dest[i]=src[i+offset];
+            }
 
-			return dest;
-		}
-		return src;
-	}
+            return dest;
+        }
+        return src;
+    }
 
-	/*
-	 Takes aray and removes any spaces between rows
-	*/
-	public static String[][] crunchArray(String[][] aray)
-	{
-	  if (aray == null)
-	    return null;
-	  int x = 0;
-	  int y = 0;
-	  String[][] temp = new String[aray.length][aray[0].length];
-	  temp = cleanArray(temp);
+    /*
+      Takes aray and removes any spaces between rows
+     */
+    public static String[][] crunchArray(String[][] aray)
+    {
+      if (aray == null)
+        return null;
+      int x = 0;
+      int y = 0;
+      String[][] temp = new String[aray.length][aray[0].length];
+      temp = cleanArray(temp);
 
-	  for (int i = 0; i < aray.length; i++){
-	    boolean doCopy = false;
+      for (int i = 0; i < aray.length; i++){
+        boolean doCopy = false;
 
-	    for (int j = 0; j < aray[i].length; j++){
-	      if (aray[i][j].trim().length() > 0)
-	        doCopy = true;
-	    }
+        for (int j = 0; j < aray[i].length; j++){
+          if (aray[i][j].trim().length() > 0)
+            doCopy = true;
+        }
 
-	    if (doCopy){
+        if (doCopy){
         for (int j = 0; j < aray[i].length; j++){
           temp[x][y] = aray[i][j];
           y++;
         }
         x++;
       }
-	    y=0;
-	  }
-	  return temp;
-	}
+        y=0;
+      }
+      return temp;
+    }
 
-	/**
+    /**
      * Cleans an array.
      */
-	public static String[][] cleanArray(String[][] aray)
-	{
-	  if (aray == null)
-	    return null;
+    public static String[][] cleanArray(String[][] aray)
+    {
+      if (aray == null)
+        return null;
     for (int i = 0; i < aray.length; i++)
       for (int j = 0; j < aray[i].length; j++)
         aray[i][j]="";
     return aray;
-	}
+    }
 
     /**
      * Gets the string representation of a day of the week from a number
@@ -745,36 +748,40 @@ public class Util {
     /**
      * Returns the last file extension of a file.
      */
-	public static String getFilenameExtension(String infilename){
-	    if (infilename!=null){
-            String[] parts=infilename.split("\\.");
-            int numofparts=parts.length;
-            if (numofparts>0){
-                String lastextension=parts[parts.length-1];
-                return lastextension;
-            }
-        }
-        return "";
-	}
+    public static String getFilenameExtension(String infilename){
+//        if (infilename!=null){
+//            String[] parts=infilename.split("\\.");
+//            int numofparts=parts.length;
+//            if (numofparts>0){
+//                String lastextension=parts[parts.length-1];
+//                return lastextension;
+//            }
+//        }
+//        return "";
+        return FilenameUtils.getExtension(infilename);
+    }
 
-	/**
+    /**
      * Returns the base filename of a file.  This is essentially the filename minus the extension.
      */
-	public static String getFilenameBase(String infilename){
-	    if (infilename!=null && !infilename.equals("")){
-            String parts[]=infilename.split("\\.");
-            int numofparts=parts.length;
-            if (numofparts>1 && infilename.length()>0){
-                String lastextension=parts[parts.length-1];
-                //Calculate the starting point of the extention by subtracting the extension from the entire string
-                int startcharofextension = infilename.length() - (lastextension.length() + 1);
-                //Get the substring extension
-                String out=infilename.substring(0, startcharofextension);
-                return out;
-            }
-        }
-        return infilename;
-	}
+    public static String getFilenameBase(String infilename){
+//	    if (infilename!=null && !infilename.equals("")){
+//            String parts[]=infilename.split("\\.");
+//            int numofparts=parts.length;
+//            if (numofparts>1 && infilename.length()>0){
+//                String lastextension=parts[parts.length-1];
+//                //Calculate the starting point of the extention by subtracting the extension from the entire string
+//                int startcharofextension = infilename.length() - (lastextension.length() + 1);
+//                //Get the substring extension
+//                String out=infilename.substring(0, startcharofextension);
+//                return out;
+//            }
+//        }
+//        return infilename;
+        String filename = FilenameUtils.getName(infilename);
+        String filenamebase = FilenameUtils.removeExtension(filename);
+        return filenamebase;
+    }
 
 
 
@@ -785,20 +792,21 @@ public class Util {
      */
     public static boolean copyFile(File source, File dest){
         try{
-             FileInputStream in = new FileInputStream(source);
-             FileOutputStream  out = new FileOutputStream(dest);
-             byte[] buffer = new byte[64000];
-
-             int read = 0;
-             while(read != -1){
-                read = in.read(buffer,0,buffer.length);
-                if(read!=-1){
-                    out.write(buffer,0,read);
-                }
-             }
-             out.flush();
-             in.close();
-             out.close();
+            FileUtils.copyFile(source, dest, true);
+//             FileInputStream in = new FileInputStream(source);
+//             FileOutputStream  out = new FileOutputStream(dest);
+//             byte[] buffer = new byte[64000];
+//
+//             int read = 0;
+//             while(read != -1){
+//                read = in.read(buffer,0,buffer.length);
+//                if(read!=-1){
+//                    out.write(buffer,0,read);
+//                }
+//             }
+//             out.flush();
+//             in.close();
+//             out.close();
         } catch (Exception e){
             Debug.errorsave(e, "");
             //@todo Uncomment this prior to production release.
@@ -1292,12 +1300,12 @@ public class Util {
         return sb;
     }
 
-  
 
 
 
 
-    
+
+
 
     /**
      * Verifies that a Email is of the correct form... not that it matches any account.
@@ -1374,7 +1382,7 @@ public class Util {
 
         return tmp;
     }
-    
+
 
     public static String cleanForHtmlAdvanced(String string) {
         StringBuffer sb = new StringBuffer(string.length());

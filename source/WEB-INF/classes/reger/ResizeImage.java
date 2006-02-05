@@ -14,6 +14,8 @@ public class ResizeImage{
 
     public static boolean resize(String inimagelocation, String outimagelocation, int maxwidth) throws IOException {
         try {
+          reger.core.Debug.debug(3, "ResizeImage.java", "resize() called<br>inimagelocation:"+inimagelocation+"<br>outimagelocation:"+outimagelocation);
+
           int targetWidth=0;
           int targetHeight=0;
 
@@ -36,7 +38,7 @@ public class ResizeImage{
           //Set some jpeg parameters
           JPEGEncodeParam param = encoder.
           getDefaultJPEGEncodeParam(resizedImage);
-          int quality = Integer.parseInt("75");
+          int quality = Integer.parseInt("90");
           quality = Math.max(0, Math.min(quality, 100));
           param.setQuality((float)quality / 100.0f, false);
           encoder.setJPEGEncodeParam(param);

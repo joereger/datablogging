@@ -76,11 +76,20 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                     //Make sure file doesn't already exist
                     int index = 0;
                     String finalNewFileName = newFilename;
+
+                    String incomingname = newFilename;
+                    String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
+                    String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
+
+
                     File newFile = new File(filesdirectory+finalNewFileName);
                     File newFileThumbnail = new File(filesdirectory+".thumbnails/"+finalNewFileName);
                     while(newFile.exists()){
                         index=index+1;
-                        finalNewFileName = index + "-" + newFilename;
+                        finalNewFileName = incomingnamebase + "-" + index;
+                        if (!incomingnameext.equals("")){
+                            finalNewFileName = finalNewFileName + "." + incomingnameext;    
+                        }
                         newFile = new File(filesdirectory+finalNewFileName);
                         newFileThumbnail = new File(filesdirectory+".thumbnails/"+finalNewFileName);
                     }

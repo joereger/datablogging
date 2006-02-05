@@ -129,29 +129,20 @@ public class Upload {
 
                             Debug.debug(4, "Upload.java", "reger.Upload.save() - incomingname=" + incomingname);
 
-                            //reger.core.Util.logtodb("incomingname=" + incomingname + "<br>incomingnamebase=" + incomingnamebase + "<br>incomingnameext=" + incomingnameext );
 
-                            //Here's the file naming convention I'm using:
-                            //(2003-10-23)18-43-32-accountid(76382)-eventid(6732234)-ver(incrementer)filename.ext
-                            String stamp = reger.core.TimeUtils.dateformatfilestamp(Calendar.getInstance());
-                            stamp=stamp+"-accountid("+userSession.getAccount().getAccountid()+")";
-                            if (eventid>0){
-                                stamp=stamp+"-eventid("+eventid+")";
-                            }
-                            if (accountuserid>0){
-                                stamp=stamp+"-accountuserid("+accountuserid+")";
-                            }
-                            stamp=stamp+"-";
                             //Test for file existence... if it exists does, add an incrementer
-                            File savedFile  = new File(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), stamp+incomingname);
+                            String finalfilename = incomingname;
+                            File savedFile  = new File(userSession.getAccount().getPathToAccountFiles(), finalfilename);
                             int incrementer = 0;
-                            String incrementerstring="";
                             while (savedFile.exists()){
                                 incrementer=incrementer+1;
-                                incrementerstring="("+incrementer+")";
-                                savedFile  = new File((String)reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), stamp+incomingnamebase+incrementerstring+"."+incomingnameext);
+                                finalfilename = incomingnamebase+"-"+incrementer;
+                                if (!incomingnameext.equals("")){
+                                    finalfilename = finalfilename + "." + incomingnameext;
+                                }
+                                savedFile  = new File(userSession.getAccount().getPathToAccountFiles(), finalfilename);
                             }
-                            String finalfilename = stamp+incomingnamebase+incrementerstring+"."+incomingnameext;
+
                             Debug.debug(4, "Upload.java", "reger.Upload.save() - finalfilename="+finalfilename);
 
                             Debug.debug(4, "Upload.java", "reger.Upload.save() - (first check)hasenoughfreespace=" + hasenoughfreespace);
@@ -177,6 +168,7 @@ public class Upload {
 
                                     //Do the actual file system write
                                     item.write(savedFile);
+                                    ThumbnailCreator.createThumbnail(savedFile);
 
                                     //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???
 
@@ -184,7 +176,7 @@ public class Upload {
 
                                     //-----------------------------------
                                     //-----------------------------------
-                                    int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename, accountid) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+userSession.getAccount().getAccountid()+"')");
+                                    int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"')");
                                     //-----------------------------------
                                     //-----------------------------------
 
@@ -192,10 +184,8 @@ public class Upload {
 
                                     //Get a MediaType handler
                                     MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
-                                    //Generate a thumbnail
-                                    mt.createThumbnail(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"thumbnails/"+finalfilename, 100);
                                     //Handle any parsing required
-                                    mt.saveToDatabase(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, identity);
+                                    mt.saveToDatabase(userSession.getAccount().getPathToAccountFiles()+finalfilename, identity);
 
                                     //Do the imagetags
                                     reger.Tag.addMultipleTagsToImage(manyimagetags, identity);

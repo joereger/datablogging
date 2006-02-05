@@ -418,17 +418,23 @@ public class Account implements java.io.Serializable {
    * Returns the number of bytes that the account has in media/images
    */
    private void updateImagespaceused(){
-        //Get used image space
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstImageSpace= Db.RunSQL("SELECT SUM(image.sizeinbytes) FROM event, image WHERE event.accountid='"+accountid+"' AND event.eventid=image.eventid");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstImageSpace!=null && rstImageSpace.length>0 && Util.isnumeric(rstImageSpace[0][0])){
-            this.imagespaceused=Long.parseLong(rstImageSpace[0][0]);
-        } else {
-            this.imagespaceused=0;
-        }
+//        //Get used image space
+//        //-----------------------------------
+//        //-----------------------------------
+//        String[][] rstImageSpace= Db.RunSQL("SELECT SUM(image.sizeinbytes) FROM event, image WHERE event.accountid='"+accountid+"' AND event.eventid=image.eventid");
+//        //-----------------------------------
+//        //-----------------------------------
+//        if (rstImageSpace!=null && rstImageSpace.length>0 && Util.isnumeric(rstImageSpace[0][0])){
+//            this.imagespaceused=Long.parseLong(rstImageSpace[0][0]);
+//        } else {
+//            this.imagespaceused=0;
+//        }
+        this.imagespaceused = AccountUtil.getSpaceOfAllFilesInADirectory(getPathToAccountFiles());
+
+  }
+
+  public String getPathToAccountFiles(){
+      return reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"files/"+accountid+"/";
   }
 
   /**

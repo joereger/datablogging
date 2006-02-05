@@ -19,9 +19,10 @@ public class JpegImage implements MediaType {
     /**
      * Creates a thumbnail for this media type and saves it to the thumbnail directory.
      */
-    public void createThumbnail(String pathToFile, String pathToThumbnail, int imageid) {
+    public void createThumbnail(String pathToFile, String pathToThumbnail) {
         try{
             //Just a general thumbnail
+            reger.core.Debug.debug(3, "JpegImage.java", "About to create thumbnail<br>pathToFile:"+pathToFile+"<br>pathToThumbnail:"+pathToThumbnail);
             reger.ResizeImage.resize(pathToFile, pathToThumbnail, 100);
         } catch (Throwable e) {
             Debug.errorsave(e, "");

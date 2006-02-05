@@ -19,7 +19,7 @@ public class AviVideo implements MediaType {
     /**
      * Creates a thumbnail for this media type and saves it to the thumbnail directory.
      */
-    public void createThumbnail(String pathToFile, String pathToThumbnail, int imageid) {
+    public void createThumbnail(String pathToFile, String pathToThumbnail) {
         try{
             //Simply copies the default thumbnail
             //@todo http://java.sun.com/developer/qow/archive/71/index.html

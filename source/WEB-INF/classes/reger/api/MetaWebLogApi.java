@@ -4,6 +4,7 @@ import reger.core.db.Db;
 import reger.Accountuser;
 import reger.Account;
 import reger.PrivateLabel;
+import reger.ThumbnailCreator;
 import reger.core.ValidationException;
 import reger.core.Debug;
 import reger.core.TimeUtils;
@@ -431,43 +432,39 @@ public class MetaWebLogApi {
                 String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
                 String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
 
-                //Here's the file naming convention I'm using:
-                //(2003-10-23)18-43-32-accountid(76382)-eventid(6732234)-ver(incrementer)filename.ext
-                String stamp = reger.core.TimeUtils.dateformatfilestamp(Calendar.getInstance());
-                stamp=stamp+"-accountid("+accountid+")";
-                stamp=stamp+"-eventid("+entry.eventid+")";
-                stamp=stamp+"-";
 
                 //Test for file existence... if it exists does, add an incrementer
-                File savedFile  = new File((String)reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), stamp+incomingname);
+                String finalfilename = incomingname;
+                File savedFile  = new File(account.getPathToAccountFiles(), finalfilename);
                 int incrementer = 0;
-                String incrementerstring="";
                 while (savedFile.exists()){
                     incrementer=incrementer+1;
-                    incrementerstring="("+incrementer+")";
-                    savedFile  = new File((String)reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), stamp+incomingnamebase+incrementerstring+"."+incomingnameext);
+                    finalfilename = incomingnamebase+"-"+incrementer;
+                    if (!incomingnameext.equals("")){
+                        finalfilename = finalfilename + "." + incomingnameext;
+                    }
+                    savedFile  = new File(account.getPathToAccountFiles(), finalfilename);
                 }
-                String finalfilename = stamp+incomingnamebase+incrementerstring+"."+incomingnameext;
 
                 //Save the file with the updated filename
                 FileOutputStream fileOut = new FileOutputStream(savedFile);
                 fileOut.write(bits);
+
+                ThumbnailCreator.createThumbnail(savedFile);
 
 
                 //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???
 
                 //-----------------------------------
                 //-----------------------------------
-                int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, originalfilename, accountid) VALUES('"+entry.eventid+"', '"+finalfilename+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"')");
+                int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, originalfilename, accountid, filename) VALUES('"+entry.eventid+"', '"+finalfilename+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"')");
                 //-----------------------------------
                 //-----------------------------------
 
                 //Get a MediaType handler
                 MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
-                //Generate a thumbnail
-                mt.createThumbnail(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"thumbnails/"+finalfilename, 100);
                 //Handle any parsing required
-                mt.saveToDatabase(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, imageid);
+                mt.saveToDatabase(account.getPathToAccountFiles()+finalfilename, imageid);
 
 
                 //Return the public URL where this can be accessed

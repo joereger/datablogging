@@ -96,7 +96,7 @@ public class PolarHRM implements MediaType{
     /**
      * Creates a thumbnail for this media type and saves it to the thumbnail directory.
      */
-    public void createThumbnail(String pathToFile, String pathToThumbnail, int imageid) {
+    public void createThumbnail(String pathToFile, String pathToThumbnail) {
 
         try{
             //reger.core.Util.logtodb("Copying file in polarhrm.");

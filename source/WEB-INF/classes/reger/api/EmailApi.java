@@ -5,6 +5,7 @@ import reger.core.ValidationException;
 import reger.core.Debug;
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
+import reger.ThumbnailCreator;
 
 import javax.mail.BodyPart;
 import javax.mail.internet.MimeMessage;
@@ -663,23 +664,18 @@ public class EmailApi {
                     String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
                     String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
 
-                    //Here's the file naming convention I'm using:
-                    //(2003-10-23)18-43-32-accountid(76382)-eventid(6732234)-ver(incrementer)filename.ext
-                    String stamp = reger.core.TimeUtils.dateformatfilestamp(Calendar.getInstance());
-                    stamp=stamp+"-accountid("+accountid+")";
-                    stamp=stamp+"-eventid("+eventid+")";
-                    stamp=stamp+"-";
-
                     //Test for file existence... if it exists does, add an incrementer
-                    File savedFile  = new File((String)reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), stamp+incomingname);
+                    String finalfilename = incomingname;
+                    File savedFile  = new File(acct.getPathToAccountFiles(), finalfilename);
                     int incrementer = 0;
-                    String incrementerstring="";
                     while (savedFile.exists()){
                         incrementer=incrementer+1;
-                        incrementerstring="("+incrementer+")";
-                        savedFile  = new File((String)reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), stamp+incomingnamebase+incrementerstring+"."+incomingnameext);
+                        finalfilename = incomingnamebase+"-"+incrementer;
+                        if (!incomingnameext.equals("")){
+                            finalfilename = finalfilename + "." + incomingnameext;
+                        }
+                        savedFile  = new File(acct.getPathToAccountFiles(), finalfilename);
                     }
-                    String finalfilename = stamp+incomingnamebase+incrementerstring+"."+incomingnameext;
 
                     Debug.debug(4, "EmailApi", "finalfilename="+finalfilename);
 
@@ -699,6 +695,9 @@ public class EmailApi {
                      fileOut.flush();
                      is.close();
                      fileOut.close();
+
+
+                    ThumbnailCreator.createThumbnail(savedFile);
 
                     Debug.debug(4, "EmailApi", "File should be saved to filesystem now.="+finalfilename);
 
@@ -721,16 +720,14 @@ public class EmailApi {
 
                     //-----------------------------------
                     //-----------------------------------
-                    int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename, accountid) VALUES('"+eventid+"', '"+finalfilename+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(finalsubject)+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"')");
+                    int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+finalfilename+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(finalsubject)+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"')");
                     //-----------------------------------
                     //-----------------------------------
 
                     //Get a MediaType handler
                     MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
-                    //Generate a thumbnail
-                    mt.createThumbnail(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"thumbnails/"+finalfilename, 100);
                     //Handle any parsing required
-                    mt.saveToDatabase(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+finalfilename, imageid);
+                    mt.saveToDatabase(acct.getPathToAccountFiles()+finalfilename, imageid);
 
                     //Do the imagetags
                     reger.Tag.addMultipleTagsToImage(camphoneimagetags, imageid);
