@@ -1,5 +1,3 @@
-<%@ page import="reger.core.Util,
-                 reger.core.db.Db"%>
 <%@ page import="reger.poll.PollUtil"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.Iterator"%>
