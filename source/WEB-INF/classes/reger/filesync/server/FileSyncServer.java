@@ -84,17 +84,22 @@ public class FileSyncServer {
                     FileOutputStream fileOut = new FileOutputStream(fileObj);
                     fileOut.write(bits);
                     fileOut.close();
-                    ThumbnailCreator.createThumbnail(fileObj);
                     try{
                         if (lastmodifieddateinmillis!=null && !lastmodifieddateinmillis.equals("")){
                             Calendar cal = Calendar.getInstance();
                             cal.setTimeInMillis(Long.parseLong(lastmodifieddateinmillis));
                             cal = TimeUtils.convertFromOneTimeZoneToAnother(cal, "GMT", cal.getTimeZone().getID());
-                            fileObj.setLastModified(cal.getTimeInMillis());
+                            //cal.set(2000, 2, 2, 2, 2, 2);
+                            if(fileObj.setLastModified(cal.getTime().getTime())){
+                                reger.core.Debug.debug(3, "FileSyncServer.java", "Success setting last modified date");
+                            } else {
+                                reger.core.Debug.debug(3, "FileSyncServer.java", "Success setting last modified date");
+                            }
                         }
                     } catch(Exception e){
                         reger.core.Debug.debug(5, "FileSyncServer.java", e);
                     }
+                    ThumbnailCreator.createThumbnail(fileObj);
                     account.updateSpaceused();
                     Hashtable out = new Hashtable();
                     out.put("success", "1");
