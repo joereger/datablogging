@@ -933,17 +933,17 @@ public class Util {
     public static StringBuffer poweredby(String pathToAppRoot){
         StringBuffer f = new StringBuffer();
 
-        f.append("<br clear=all>");
-
-        //f.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
-        //f.append("<tr>");
-        //f.append("<td align=right>");
-        //f.append("<a href='http://www.reger.com/'><img src=images/reger-poweredby.gif border=0 align=right></a>");
-        //f.append("</td>");
-        //f.append("</tr>");
-        //f.append("</table>");
-
-        f.append("<br><br>");
+//        f.append("<br clear=all>");
+//
+//        //f.append("<table cellspacing='0' cellpadding='0' width=100% border='0'>");
+//        //f.append("<tr>");
+//        //f.append("<td align=right>");
+//        //f.append("<a href='http://www.reger.com/'><img src=images/reger-poweredby.gif border=0 align=right></a>");
+//        //f.append("</td>");
+//        //f.append("</tr>");
+//        //f.append("</table>");
+//
+//        f.append("<br><br>");
 
         return f;
     }

@@ -664,9 +664,26 @@ public class EmailApi {
                     String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
                     String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
 
+                    //Calculate the new dated directory name
+                    Calendar cal = Calendar.getInstance();
+                    int year = cal.get(Calendar.YEAR);
+                    int month = cal.get(Calendar.MONTH)+1;
+                    String monthStr = String.valueOf(month);
+                    if (monthStr.length()==1){
+                        monthStr = "0"+monthStr;
+                    }
+                    String datedDirectoryName = year+"/"+monthStr;
+
+                    //Create directory
+                    String filesdirectory = acct.getPathToAccountFiles() + datedDirectoryName + "/";
+                    File dir = new File(filesdirectory);
+                    dir.mkdirs();
+                    File dirThumbs = new File(filesdirectory+".thumbnails/");
+                    dirThumbs.mkdirs();
+
                     //Test for file existence... if it exists does, add an incrementer
                     String finalfilename = incomingname;
-                    File savedFile  = new File(acct.getPathToAccountFiles(), finalfilename);
+                    File savedFile  = new File(filesdirectory, finalfilename);
                     int incrementer = 0;
                     while (savedFile.exists()){
                         incrementer=incrementer+1;
@@ -674,10 +691,10 @@ public class EmailApi {
                         if (!incomingnameext.equals("")){
                             finalfilename = finalfilename + "." + incomingnameext;
                         }
-                        savedFile  = new File(acct.getPathToAccountFiles(), finalfilename);
+                        savedFile  = new File(filesdirectory, finalfilename);
                     }
 
-                    Debug.debug(4, "EmailApi", "finalfilename="+finalfilename);
+                    Debug.debug(4, "EmailApi", "finalfilename="+datedDirectoryName+"/"+finalfilename);
 
 
                      //Save the file with the updated filename
@@ -702,8 +719,6 @@ public class EmailApi {
                     Debug.debug(4, "EmailApi", "File should be saved to filesystem now.="+finalfilename);
 
 
-
-
                     //Get now in user's timezone
                     Calendar tmpCal = Calendar.getInstance();
                     tmpCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(tmpCal, tmpCal.getTimeZone().getID(), timezoneid);
@@ -720,14 +735,14 @@ public class EmailApi {
 
                     //-----------------------------------
                     //-----------------------------------
-                    int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+finalfilename+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(finalsubject)+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"')");
+                    int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"', '"+bits.length+"', '"+reger.core.Util.cleanForSQL(finalsubject)+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"')");
                     //-----------------------------------
                     //-----------------------------------
 
                     //Get a MediaType handler
                     MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
                     //Handle any parsing required
-                    mt.saveToDatabase(acct.getPathToAccountFiles()+finalfilename, imageid);
+                    mt.saveToDatabase(filesdirectory+finalfilename, imageid);
 
                     //Do the imagetags
                     reger.Tag.addMultipleTagsToImage(camphoneimagetags, imageid);

@@ -465,6 +465,7 @@ This is a reference showing the jar file to module relationship:
 
 
 
+
 <b>Google API/Trouble Sending Email</b>
 Googleapi.jar includes problematic versions of mail.jar and activation.jar.  DO NOT USE the downloaded googleapi.jar file without fixing as below.
 

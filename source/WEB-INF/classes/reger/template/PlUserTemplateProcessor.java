@@ -2,6 +2,7 @@ package reger.template;
 
 import reger.pageFramework.PageProps;
 import reger.UserSession;
+import reger.HtmlParser;
 import reger.core.Debug;
 
 import java.util.regex.Pattern;
@@ -50,6 +51,13 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
             reger.core.Debug.debug(5, "PlUserTemplateProcessor.java", "templateMainBody:<br>"+templateMainBody.replaceAll("<", "&lt;"));
 
 
+            //Here's where I need to combing head contents and body contents
+            //mb holds the site template contents
+            //templateMainBody holds the plusertemplate
+            templateMainBody = HtmlParser.combineTagContentFromTwoHtmlDocs(templateMainBody, mb.toString(), "head");
+            templateMainBody = HtmlParser.combineTagContentFromTwoHtmlDocs(templateMainBody, mb.toString(), "title");
+            templateMainBody = HtmlParser.combineTagAttributesForOneTagFromTwoHtmlDocs(templateMainBody, mb.toString(), "body");
+
             //Whether or not we've found a body tag yet
             boolean foundbodytag = false;
 
@@ -60,26 +68,27 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
             StringBuffer pg = new StringBuffer();
 
             // Create a pattern to match cat
-            Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
+            //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
+            Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>)");
             // Create a matcher with an input string
             Matcher m = p.matcher(templateMainBody);
             // Loop through
             while(m!=null && m.find()) {
 
-                if (m.group().substring(0,5).equalsIgnoreCase("<body") || m.group().substring(0,6).equalsIgnoreCase("< body")) {
-                    //Body tag
-                    foundbodytag = true;
-                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group()));
-                } else if (m.group().substring(0,5).equalsIgnoreCase("<head") || m.group().substring(0,6).equalsIgnoreCase("< head")) {
-                    //Head tag
-                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group()));
-                } else {
+//                if (m.group().substring(0,5).equalsIgnoreCase("<body") || m.group().substring(0,6).equalsIgnoreCase("< body")) {
+//                    //Body tag
+//                    foundbodytag = true;
+//                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group()));
+//                } else if (m.group().substring(0,5).equalsIgnoreCase("<head") || m.group().substring(0,6).equalsIgnoreCase("< head")) {
+//                    //Head tag
+//                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group()));
+//                } else {
                     //Go get the tag that can handle this syntax
                     PlUserTemplateTag tag = getTagBySyntax(m.group());
                     if (tag!=null){
-                        m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(tag.getValue(mb, pageProps, userSession, request)));
+                        m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(tag.getValue(new StringBuffer(HtmlParser.getContentsOfHtmlTag(mb.toString(), "body")), pageProps, userSession, request)));
                     }
-                }
+//                }
 
             }
             // Add the last segment

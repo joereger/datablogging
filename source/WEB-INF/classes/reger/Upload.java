@@ -129,10 +129,26 @@ public class Upload {
 
                             Debug.debug(4, "Upload.java", "reger.Upload.save() - incomingname=" + incomingname);
 
+                            //Calculate the new dated directory name
+                            Calendar cal = Calendar.getInstance();
+                            int year = cal.get(Calendar.YEAR);
+                            int month = cal.get(Calendar.MONTH)+1;
+                            String monthStr = String.valueOf(month);
+                            if (monthStr.length()==1){
+                                monthStr = "0"+monthStr;
+                            }
+                            String datedDirectoryName = year+"/"+monthStr;
+
+                            //Create directory
+                            String filesdirectory = userSession.getAccount().getPathToAccountFiles() + datedDirectoryName + "/";
+                            File dir = new File(filesdirectory);
+                            dir.mkdirs();
+                            File dirThumbs = new File(filesdirectory+".thumbnails/");
+                            dirThumbs.mkdirs();
 
                             //Test for file existence... if it exists does, add an incrementer
                             String finalfilename = incomingname;
-                            File savedFile  = new File(userSession.getAccount().getPathToAccountFiles(), finalfilename);
+                            File savedFile  = new File(filesdirectory, finalfilename);
                             int incrementer = 0;
                             while (savedFile.exists()){
                                 incrementer=incrementer+1;
@@ -140,7 +156,7 @@ public class Upload {
                                 if (!incomingnameext.equals("")){
                                     finalfilename = finalfilename + "." + incomingnameext;
                                 }
-                                savedFile  = new File(userSession.getAccount().getPathToAccountFiles(), finalfilename);
+                                savedFile  = new File(filesdirectory, finalfilename);
                             }
 
                             Debug.debug(4, "Upload.java", "reger.Upload.save() - finalfilename="+finalfilename);
@@ -176,7 +192,7 @@ public class Upload {
 
                                     //-----------------------------------
                                     //-----------------------------------
-                                    int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(finalfilename)+"')");
+                                    int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"')");
                                     //-----------------------------------
                                     //-----------------------------------
 
@@ -185,7 +201,7 @@ public class Upload {
                                     //Get a MediaType handler
                                     MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
                                     //Handle any parsing required
-                                    mt.saveToDatabase(userSession.getAccount().getPathToAccountFiles()+finalfilename, identity);
+                                    mt.saveToDatabase(filesdirectory+finalfilename, identity);
 
                                     //Do the imagetags
                                     reger.Tag.addMultipleTagsToImage(manyimagetags, identity);

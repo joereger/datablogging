@@ -7,6 +7,7 @@ import reger.Log;
 import reger.systemproperties.AllSystemProperties;
 
 import java.io.File;
+import java.util.Calendar;
 
 import org.apache.commons.io.FileUtils;
 
@@ -44,7 +45,7 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImage= Db.RunSQL("SELECT imageid, accountid, image, originalfilename FROM image ORDER BY imageid ASC", 500000);
+        String[][] rstImage= Db.RunSQL("SELECT imageid, accountid, image, originalfilename, date FROM image, event WHERE image.eventid=event.eventid ORDER BY imageid ASC", 500000);
         //-----------------------------------
         //-----------------------------------
         if (rstImage!=null && rstImage.length>0){
@@ -53,6 +54,8 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                 int accountid = Integer.parseInt(rstImage[i][1]);
                 String currentFilename = rstImage[i][2];
                 String originalFilename = rstImage[i][3];
+                Calendar cal = reger.core.TimeUtils.dbstringtocalendar(rstImage[i][4]);
+                cal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(cal, "GMT", "EST");
 
                 //Load the old file
                 File oldFile = new File(pathuploadmedia + "/" + currentFilename);
@@ -60,8 +63,19 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                 reger.core.Debug.debug(3, "Version182ToVersion183.java", "Tried to create oldFile with<br>" + pathuploadmedia + "/" + currentFilename);
                 if (oldFile.exists() && oldFile.canRead()){
 
+                    //Calculate the new dated directory name
+                    //Calendar cal = Calendar.getInstance();
+                    //cal.setTimeInMillis(oldFile.lastModified());
+                    int year = cal.get(Calendar.YEAR);
+                    int month = cal.get(Calendar.MONTH)+1;
+                    String monthStr = String.valueOf(month);
+                    if (monthStr.length()==1){
+                        monthStr = "0"+monthStr;
+                    }
+                    String datedDirectoryName = year+"/"+monthStr;
+
                     //Create directory
-                    String filesdirectory = pathuploadmedia + "/files/" + accountid + "/";
+                    String filesdirectory = pathuploadmedia + "/files/" + accountid + "/" + datedDirectoryName + "/";
                     File dir = new File(filesdirectory);
                     dir.mkdirs();
                     File dirThumbs = new File(filesdirectory+".thumbnails/");
@@ -76,11 +90,9 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                     //Make sure file doesn't already exist
                     int index = 0;
                     String finalNewFileName = newFilename;
-
                     String incomingname = newFilename;
                     String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
                     String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
-
 
                     File newFile = new File(filesdirectory+finalNewFileName);
                     File newFileThumbnail = new File(filesdirectory+".thumbnails/"+finalNewFileName);
@@ -88,7 +100,7 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                         index=index+1;
                         finalNewFileName = incomingnamebase + "-" + index;
                         if (!incomingnameext.equals("")){
-                            finalNewFileName = finalNewFileName + "." + incomingnameext;    
+                            finalNewFileName = finalNewFileName + "." + incomingnameext;
                         }
                         newFile = new File(filesdirectory+finalNewFileName);
                         newFileThumbnail = new File(filesdirectory+".thumbnails/"+finalNewFileName);

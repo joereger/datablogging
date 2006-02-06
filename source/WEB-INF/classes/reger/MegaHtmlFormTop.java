@@ -330,7 +330,7 @@ public class MegaHtmlFormTop {
 
             mb.append("</td>");
 
-            //Comments
+            //Body
             mb.append("<td bgcolor='#ffffff' align=left valign=top rowspan=5 colspan=3 class=logentrycontent>");
 
             //Update the entrymode if necessary

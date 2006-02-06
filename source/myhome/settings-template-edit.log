@@ -88,7 +88,7 @@ mb.append("<table cellpadding=10 cellspacing=0 width=100% border=0>");
 mb.append("<tr>");
 mb.append("<td valign=top width=75% >");
 //Display the edit box
-mb.append("<textarea name='template' cols=45 rows=15 style='width: 100%;font: 12px monospace'>"+template.getTemplate()+"</textarea>");
+mb.append("<textarea name='template' cols=45 rows=15 style='width: 100%;font: 12px monospace'>"+template.getTemplate().replaceAll("<", "&lt;")+"</textarea>");
 mb.append("<br><br>");
 mb.append("<font face=arial size=-1>");
 mb.append("<b>");
