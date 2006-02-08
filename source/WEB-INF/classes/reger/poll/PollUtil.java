@@ -307,7 +307,7 @@ public class PollUtil extends Poll {
                             }
                             totalVotes = totalVotes.add(new BigInteger(readerAnswerVotes));
                             answerIsApproved = (String) stkr.nextElement();
-                            if (answerIsApproved.equalsIgnoreCase("1")) {
+                            if (answerIsApproved.equalsIgnoreCase("0")) {
                                 unApprovedCount = unApprovedCount.add(new BigInteger("1"));
                             }
                         }
@@ -321,7 +321,7 @@ public class PollUtil extends Poll {
                                 comment = (String) stkr.nextElement();
                                 commentReaderName = (String) stkr.nextElement();
                                 commentIsApproved = (String) stkr.nextElement();
-                                if (commentIsApproved.equalsIgnoreCase("1")) {
+                                if (commentIsApproved.equalsIgnoreCase("0")) {
                                     unApprovedCount = unApprovedCount.add(new BigInteger("1"));
                                 }
                             }
