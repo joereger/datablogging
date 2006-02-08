@@ -20,7 +20,7 @@
 /*                  Main Body                         */
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-    if (request.getParameter("save") != null && request.getParameter("save").equals("Save")) {
+    if (request.getParameter("submit") != null) {
           PollUtil pollUtil = new PollUtil();
           pollUtil.savePoll(request);
     } else {
@@ -110,7 +110,7 @@
         mb.append("<br>");
 
         mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("<input type=submit name=open value=Open>&nbsp;<input type=submit name=closed value=Closed>");
+        mb.append("<input type=submit name=submit value=Open>&nbsp;<input type=submit name=submit value=Closed>");
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         mb.append("<br>");
 
@@ -129,7 +129,7 @@
         mb.append("These comments need to be approved");
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         mb.append("</td></tr>");
-        mb.append("<tr><td><input type=submit value=Save name=save></td></tr>");
+        mb.append("<tr><td><input type=submit value=Save name=submit></td></tr>");
         mb.append("</table>");
         mb.append("</form>");
     }
