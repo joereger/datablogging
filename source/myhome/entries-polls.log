@@ -34,9 +34,9 @@
             String value = (String) iter.next();
             stkr = new StringTokenizer(value, "~");
             while (stkr.hasMoreElements()) {
-                String s1 = (String) stkr.nextElement();
-                String s2 = (String) stkr.nextElement();
-                String s3 = (String) stkr.nextElement();
+                String eventid = (String) stkr.nextElement();
+                String title = (String) stkr.nextElement();
+                String pollid = (String) stkr.nextElement();
                 mb.append("<tr><td>");
                 mb.append( (String) stkr.nextElement());
                 mb.append("</td><td>");
@@ -51,6 +51,8 @@
                 mb.append( (String) stkr.nextElement());
                 mb.append("</td></tr><tr><td>Unapproved Answers / Comments : ");
                 mb.append( (String) stkr.nextElement());
+                mb.append("</td></tr><tr><td>From Entry : ");
+                mb.append("<a href=../entry.log?eventid=" + eventid + ">"+title+"</a>");
                 mb.append("</td></tr>");
             }
         }
