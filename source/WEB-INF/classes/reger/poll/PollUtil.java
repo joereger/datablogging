@@ -47,170 +47,21 @@ public class PollUtil extends Poll {
     private Iterator ansIter = null;
     private Iterator commentIter = null;
     private Iterator iter = null;
+    private ArrayList dataList = new ArrayList();
 
     public ArrayList getPollData(UserSession userSession) {
         this.userSession = userSession;
-        ArrayList dataList = new ArrayList();
-        int index = 0;
-        try {
-            HashMap pollMap = getData("byAccountId");
-            if (orderdPollList != null && orderdPollList.size() > 0) {
-                iter = orderdPollList.iterator();
-                StringTokenizer stkr = null;
-                String key = null;
-                BigInteger totalVotes = null;
-                BigInteger unApprovedCount = null;
-                BigInteger commentCount = null;
-                while (iter.hasNext()) {
-                    totalVotes = new BigInteger("0");
-                    unApprovedCount = new BigInteger("0");
-                    commentCount =  new BigInteger("0");
-                    key = (String) iter.next();
-                    answerList = (ArrayList) pollMap.get(key);
-                    answerMap = (HashMap) answerList.get(0);
-                    readerAnswerMap = (HashMap) answerList.get(1);
-                    stkr = new StringTokenizer(key, "~");
-                    while (stkr.hasMoreElements()) {
-                        eventid = (String) stkr.nextElement();
-                        title = (String) stkr.nextElement();
-                        pollid = (String) stkr.nextElement();
-                        question = (String) stkr.nextElement();
-                        readersCanAddOwnAnswer = (String) stkr.nextElement();
-                        readersCanAddComments = (String) stkr.nextElement();
-                        readersCanVoteonReaderAnswers = (String) stkr.nextElement();
-                        readerInputIsModerated = (String) stkr.nextElement();
-                        isOpen = (String) stkr.nextElement();
-                    }
-                    ansIter = answerMap.keySet().iterator();
-                    while (ansIter.hasNext()) {
-                        key = (String) ansIter.next();
-                        stkr = new StringTokenizer(key,"~");
-                        pollAnswerId = (String) stkr.nextElement();
-                        ownerAnswer = (String) stkr.nextElement();
-                        ownerAnswerVotes = (String) stkr.nextElement();
-                        if (ownerAnswerVotes != null && ownerAnswerVotes.trim().equalsIgnoreCase("")) {
-                            ownerAnswerVotes = "0";
-                        }
-                        totalVotes = totalVotes.add(new BigInteger(ownerAnswerVotes));
-                    }
-                    ansIter = readerAnswerMap.keySet().iterator();
-                    while (ansIter.hasNext()) {
-                        key = (String) ansIter.next();
-                        stkr = new StringTokenizer(key, "~");
-                        while (stkr.hasMoreElements()) {
-                            pollReaderAnswerId = (String) stkr.nextElement();
-                            readerAnswer = (String) stkr.nextElement();
-                            readerName = (String) stkr.nextElement();
-                            readerAnswerVotes = (String) stkr.nextElement();
-                            if (readerAnswerVotes != null && readerAnswerVotes.trim().equalsIgnoreCase("")) {
-                                readerAnswerVotes = "0";
-                            }
-                            totalVotes = totalVotes.add(new BigInteger(readerAnswerVotes));
-                            answerIsApproved = (String) stkr.nextElement();
-                            if (answerIsApproved.equalsIgnoreCase("1")) {
-                                unApprovedCount = unApprovedCount.add(new BigInteger("1"));
-                            }
-                        }
-                        commentMap = (HashMap) readerAnswerMap.get(key);
-                        commentCount = commentCount.add(new BigInteger(new Integer(commentMap.size()).toString()));
-                        commentIter = commentMap.keySet().iterator();
-                        while (commentIter.hasNext()) {
-                            stkr = new StringTokenizer((String) commentIter.next(), "~");
-                            while (stkr.hasMoreElements()) {
-                                pollReaderCommentid = (String) stkr.nextElement();
-                                comment = (String) stkr.nextElement();
-                                commentReaderName = (String) stkr.nextElement();
-                                commentIsApproved = (String) stkr.nextElement();
-                                if (commentIsApproved.equalsIgnoreCase("1")) {
-                                    unApprovedCount = unApprovedCount.add(new BigInteger("1"));
-                                }
-                            }
-                        }
-                    }
-                    dataList.add(index++, eventid + "~" + title + "~" + pollid + "~" + question + "~" + isOpen + "~" + totalVotes + "~" + commentCount + "~" + unApprovedCount);
-                }
-            }
-        } catch (Exception e) {
-            Debug.errorsave(e, "Exception while getting poll data is " + e.getMessage());
-        }
+        pollMap = getData("byAccountId");
+        processData(pollMap);
         return dataList;
     }
 
-//    public ArrayList getPollData(UserSession userSession) {
-//        ArrayList dataList = new ArrayList();
-//        try {
-//            //-----------------------------------
-//            //-----------------------------------
-//            String[][] pollData = Db.RunSQL("SELECT event.eventid, event.title, poll.pollid, poll.question, poll.isopen FROM event, poll WHERE event.accountid='" + userSession.getAccount().getAccountid() + "' AND poll.eventid=event.eventid ORDER BY event.createdate");
-//            //-----------------------------------
-//            //-----------------------------------
-//            String eventid = null;
-//            String title = null;
-//            String pollid = null;
-//            String question = null;
-//            String isOpen = null;
-//            int totalVotes = 0;
-//            int unApprovedCount = 0;
-//            int commentCount = 0;
-//            int index = 0;
-//            if (pollData != null && pollData.length > 0) {
-//                for (int i = 0; i < pollData.length; i++) {
-//                    totalVotes = 0;
-//                    unApprovedCount = 0;
-//                    commentCount = 0;
-//                    eventid = pollData[i][0];
-//                    title = pollData[i][1];
-//                    pollid = pollData[i][2];
-//                    question = pollData[i][3];
-//                    isOpen = pollData[i][4];
-//                    //-----------------------------------
-//                    //-----------------------------------
-//                    String[][] pollAnswerData = Db.RunSQL("SELECT votes FROM pollanswer where pollid='" + pollid + "'");
-//                    //-----------------------------------
-//                    //-----------------------------------
-//                    if (pollAnswerData != null && pollAnswerData.length > 0) {
-//                        for (int j = 0; j < pollAnswerData.length; j++) {
-//                            // Total Votes
-//                            totalVotes += Integer.parseInt(pollAnswerData[j][0]);
-//                        }
-//                    }
-//                    //-----------------------------------
-//                    //-----------------------------------
-//                    String[][] pollReaderAnswerData = Db.RunSQL("SELECT votes, isapproved FROM pollreaderanswer where pollid='" + pollid + "'");
-//                    //-----------------------------------
-//                    //-----------------------------------
-//                    if (pollReaderAnswerData != null && pollReaderAnswerData.length > 0) {
-//                        for (int k = 0; k < pollReaderAnswerData.length; k++) {
-//                            totalVotes += Integer.parseInt(pollReaderAnswerData[k][0]);
-//                            // Un Approved Count
-//                            if (pollReaderAnswerData[k][1].equals("0")) {
-//                                unApprovedCount += 1;
-//                            }
-//                        }
-//                    }
-//                    //-----------------------------------
-//                    //-----------------------------------
-//                    String[][] pollReaderCOmmentData = Db.RunSQL("SELECT isapproved FROM pollreadercomment where pollid='" + pollid + "'");
-//                    //-----------------------------------
-//                    //-----------------------------------
-//                    if (pollReaderCOmmentData != null && pollReaderCOmmentData.length > 0) {
-//                        for (int l = 0; l < pollReaderCOmmentData.length; l++) {
-//                            // Total Comment Count
-//                            commentCount += 1;
-//                            if (pollReaderAnswerData[l][0].equals("0")) {
-//                                unApprovedCount += 1;
-//                            }
-//                        }
-//                    }
-//                    dataList.add(index, eventid + "~" + title + "~" + pollid + "~" + question + "~" + isOpen + "~" + totalVotes + "~" + commentCount + "~" + unApprovedCount);
-//                    index ++;
-//                }
-//            }
-//        } catch (Exception e) {
-//           Debug.errorsave(e, "Exception while getting poll data is " + e.getMessage());
-//        }
-//        return dataList;
-//    }
+    public HashMap getPollByEventId(int eventId) {
+        this.eventid = new Integer(eventId).toString();
+        pollMap = getData("byEventId");
+        processData(pollMap);
+        return this.pollMap;
+    }
 
     public void savePoll(HttpServletRequest request) {
         try {
@@ -267,36 +118,6 @@ public class PollUtil extends Poll {
         } catch (Exception e) {
             Debug.errorsave(e, "Exception while saving poll data is " + e.getMessage());
         }
-    }
-
-    public HashMap getPollByEventId(int eventId) {
-        this.eventid = new Integer(eventId).toString();
-        pollMap = new HashMap();
-        try {
-            //-----------------------------------
-            //-----------------------------------
-            String[][] pollData = Db.RunSQL("SELECT poll.pollid, poll.question, poll.readerscanaddownanswer, poll.readerscanaddcomments, poll.readerscanvoteonreaderanswers, poll.readerinputismoderated, poll.isopen, pollanswer.answer, pollanswer.votes FROM poll, pollanswer WHERE poll.eventid='" + eventId + "' AND pollanswer.pollid=poll.pollid");
-            //-----------------------------------
-            //-----------------------------------
-            HashMap answerMap = null;
-            if (pollData != null && pollData.length > 0) {
-                for (int i = 0; i < pollData.length; i++) {
-                    // Key is combination of pollid, question,readerscanaddownanswer, readerscanaddcomments, readerscanvoteonreaderanswers, readerinputismoderated,isOpen
-                    // Value is HashMap of answers for the question.
-                    if (pollMap.containsKey(pollData[i][0] + "~" + pollData[i][1] + "~" + pollData[i][2] + "~" + pollData[i][3] + "~" + pollData[i][4] + "~" + pollData[i][5] + "~" + pollData[i][6])) {
-                        answerMap = (HashMap) pollMap.get(pollData[i][0] + "~" + pollData[i][1] + "~" + pollData[i][2] + "~" + pollData[i][3] + "~" + pollData[i][4] + "~" + pollData[i][5] + "~" + pollData[i][6]);
-                    } else {
-                        answerMap = new HashMap();
-                    }
-                    answerMap.put(pollData[i][7] + "~" + pollData[i][8], pollData[i][7] + "~" + pollData[i][8]);
-                    pollMap.put(pollData[i][0] + "~" + pollData[i][1] + "~" + pollData[i][2] + "~" + pollData[i][3] + "~" + pollData[i][4] + "~" + pollData[i][5] + "~" + pollData[i][6], answerMap);
-                }
-            }
-
-        } catch (Exception e) {
-            Debug.errorsave(e, "Exception while retrieving poll data for a given event id is " + e.getMessage());
-        }
-        return pollMap;
     }
 
     private HashMap getData(String method) {
@@ -427,7 +248,90 @@ public class PollUtil extends Poll {
         if (method.equals("byEventId")) {
             query.append("poll.eventid=event.eventid AND event.eventid='" + eventid + "' ORDER BY event.createdate");
         }
-//        System.out.println("***** " + query.toString());
         return query.toString();
+    }
+
+    private void processData(HashMap pollMap) {
+        try {
+            int index = 0;
+            if (orderdPollList != null && orderdPollList.size() > 0) {
+                iter = orderdPollList.iterator();
+                StringTokenizer stkr = null;
+                String key = null;
+                BigInteger totalVotes = null;
+                BigInteger unApprovedCount = null;
+                BigInteger commentCount = null;
+                while (iter.hasNext()) {
+                    totalVotes = new BigInteger("0");
+                    unApprovedCount = new BigInteger("0");
+                    commentCount =  new BigInteger("0");
+                    key = (String) iter.next();
+                    answerList = (ArrayList) pollMap.get(key);
+                    answerMap = (HashMap) answerList.get(0);
+                    readerAnswerMap = (HashMap) answerList.get(1);
+                    stkr = new StringTokenizer(key, "~");
+                    while (stkr.hasMoreElements()) {
+                        eventid = (String) stkr.nextElement();
+                        title = (String) stkr.nextElement();
+                        pollid = (String) stkr.nextElement();
+                        question = (String) stkr.nextElement();
+                        readersCanAddOwnAnswer = (String) stkr.nextElement();
+                        readersCanAddComments = (String) stkr.nextElement();
+                        readersCanVoteonReaderAnswers = (String) stkr.nextElement();
+                        readerInputIsModerated = (String) stkr.nextElement();
+                        isOpen = (String) stkr.nextElement();
+                    }
+                    ansIter = answerMap.keySet().iterator();
+                    while (ansIter.hasNext()) {
+                        key = (String) ansIter.next();
+                        stkr = new StringTokenizer(key,"~");
+                        pollAnswerId = (String) stkr.nextElement();
+                        ownerAnswer = (String) stkr.nextElement();
+                        ownerAnswerVotes = (String) stkr.nextElement();
+                        if (ownerAnswerVotes != null && ownerAnswerVotes.trim().equalsIgnoreCase("")) {
+                            ownerAnswerVotes = "0";
+                        }
+                        totalVotes = totalVotes.add(new BigInteger(ownerAnswerVotes));
+                    }
+                    ansIter = readerAnswerMap.keySet().iterator();
+                    while (ansIter.hasNext()) {
+                        key = (String) ansIter.next();
+                        stkr = new StringTokenizer(key, "~");
+                        while (stkr.hasMoreElements()) {
+                            pollReaderAnswerId = (String) stkr.nextElement();
+                            readerAnswer = (String) stkr.nextElement();
+                            readerName = (String) stkr.nextElement();
+                            readerAnswerVotes = (String) stkr.nextElement();
+                            if (readerAnswerVotes != null && readerAnswerVotes.trim().equalsIgnoreCase("")) {
+                                readerAnswerVotes = "0";
+                            }
+                            totalVotes = totalVotes.add(new BigInteger(readerAnswerVotes));
+                            answerIsApproved = (String) stkr.nextElement();
+                            if (answerIsApproved.equalsIgnoreCase("1")) {
+                                unApprovedCount = unApprovedCount.add(new BigInteger("1"));
+                            }
+                        }
+                        commentMap = (HashMap) readerAnswerMap.get(key);
+                        commentCount = commentCount.add(new BigInteger(new Integer(commentMap.size()).toString()));
+                        commentIter = commentMap.keySet().iterator();
+                        while (commentIter.hasNext()) {
+                            stkr = new StringTokenizer((String) commentIter.next(), "~");
+                            while (stkr.hasMoreElements()) {
+                                pollReaderCommentid = (String) stkr.nextElement();
+                                comment = (String) stkr.nextElement();
+                                commentReaderName = (String) stkr.nextElement();
+                                commentIsApproved = (String) stkr.nextElement();
+                                if (commentIsApproved.equalsIgnoreCase("1")) {
+                                    unApprovedCount = unApprovedCount.add(new BigInteger("1"));
+                                }
+                            }
+                        }
+                    }
+                    dataList.add(index++, eventid + "~" + title + "~" + pollid + "~" + question + "~" + isOpen + "~" + totalVotes + "~" + commentCount + "~" + unApprovedCount);
+                }
+            }
+        } catch (Exception e) {
+            Debug.errorsave(e, "Exception while getting poll data is " + e.getMessage());
+        }
     }
 }
