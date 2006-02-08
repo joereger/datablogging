@@ -243,7 +243,11 @@ public class PollUtil extends Poll {
             } else {
                 poll.setReaderinputismoderated(false);
             }
-            poll.setIsopen(true);
+            if (request.getParameter("submit").equalsIgnoreCase("Open") || request.getParameter("submit").equalsIgnoreCase("Save")) {
+                poll.setIsopen(true);
+            } else if (request.getParameter("submit").equalsIgnoreCase("Closed")) {
+                poll.setIsopen(false);
+            }
             poll.save();
             // Saving Poll Answer
             PollAnswer pollAnswer = null;
