@@ -240,10 +240,9 @@ public class PollUtil extends Poll {
 
     private String getQuery(String method) {
         StringBuffer query = new StringBuffer();
-        query.append("SELECT event.eventid, event.title, poll.pollid, poll.question, poll.readerscanaddownanswer, poll.readerscanaddcomments, poll.readerscanvoteonreaderanswers, poll.readerinputismoderated, poll.isopen, pollanswer.pollanswerid, pollanswer.answer, pollanswer.votes, pollreaderanswer.pollreaderanswerid, pollreaderanswer.answer, pollreaderanswer.readername, pollreaderanswer.votes, pollreaderanswer.isapproved, pollreadercomment.pollreadercommentid, pollreadercomment.comment, pollreadercomment.readername, pollreadercomment.isapproved FROM poll, event, megalog LEFT JOIN pollanswer ON pollanswer.pollid = poll.pollid LEFT JOIN pollreaderanswer ON pollreaderanswer.pollid = poll.pollid LEFT JOIN pollreadercomment ON pollreadercomment.pollid = poll.pollid WHERE ");
+        query.append("SELECT event.eventid, event.title, poll.pollid, poll.question, poll.readerscanaddownanswer, poll.readerscanaddcomments, poll.readerscanvoteonreaderanswers, poll.readerinputismoderated, poll.isopen, pollanswer.pollanswerid, pollanswer.answer, pollanswer.votes, pollreaderanswer.pollreaderanswerid, pollreaderanswer.answer, pollreaderanswer.readername, pollreaderanswer.votes, pollreaderanswer.isapproved, pollreadercomment.pollreadercommentid, pollreadercomment.comment, pollreadercomment.readername, pollreadercomment.isapproved FROM event, megalog, poll LEFT JOIN pollanswer ON pollanswer.pollid = poll.pollid LEFT JOIN pollreaderanswer ON pollreaderanswer.pollid = poll.pollid LEFT JOIN pollreadercomment ON pollreadercomment.pollid = poll.pollid WHERE ");
         if (method.equals("byAccountId")) {
             query.append("poll.eventid = event.eventid AND event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY event.createdate");
-            //query.append("poll.eventid=event.eventid AND event.accountid='" + userSession.getAccount().getAccountid() + "'");
         }
         if (method.equals("byEventId")) {
             query.append("poll.eventid=event.eventid AND event.eventid='" + eventid + "' ORDER BY event.createdate");
