@@ -37,10 +37,17 @@
                 String eventid = (String) stkr.nextElement();
                 String title = (String) stkr.nextElement();
                 String pollid = (String) stkr.nextElement();
+                String question = (String) stkr.nextElement();
+                String isOpen = (String) stkr.nextElement();
                 mb.append("<tr><td>");
-                mb.append( (String) stkr.nextElement());
+                // Link poll question only if it is open
+                if (isOpen.equalsIgnoreCase("1")) {
+                    mb.append( "<a href=entries-poll-settings.log?pollid="+pollid+">"+question+"</a>");
+                } else {
+                    mb.append(question);
+                }
                 mb.append("</td><td>");
-                if ( ((String) stkr.nextElement()).equalsIgnoreCase("1")) {
+                if (isOpen.equalsIgnoreCase("1")) {
                     mb.append("Open");
                 } else {
                     mb.append("Closed");
