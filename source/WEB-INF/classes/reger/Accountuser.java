@@ -52,6 +52,7 @@ public class Accountuser implements java.io.Serializable {
     private boolean isactivatedbyemail = false;
     private String emailactivationkey = "";
     private Calendar emailactivationlastsent = Calendar.getInstance();
+    private int profileimageid = 0;
 
     //Accountuserfields
     private ArrayList<Accountuserfield> accountuserfields = new ArrayList<Accountuserfield>();
@@ -139,7 +140,7 @@ public class Accountuser implements java.io.Serializable {
     public void populate(){
         //-----------------------------------
         //-----------------------------------
-        String[][] rstAccountuser= Db.RunSQL("SELECT friendlyname, email, lastlogindate, entrymode, usertimezoneid, accountuser.isactive, accountuser.accountid, accountuser.createdate, onelinesummary, ishelpon, isactivatedbyemail, emailactivationkey, emailactivationlastsent FROM accountuser WHERE accountuser.accountuserid='"+accountuserid+"' LIMIT 0,1");
+        String[][] rstAccountuser= Db.RunSQL("SELECT friendlyname, email, lastlogindate, entrymode, usertimezoneid, accountuser.isactive, accountuser.accountid, accountuser.createdate, onelinesummary, ishelpon, isactivatedbyemail, emailactivationkey, emailactivationlastsent, profileimageid FROM accountuser WHERE accountuser.accountuserid='"+accountuserid+"' LIMIT 0,1");
         //-----------------------------------
         //-----------------------------------
         if (rstAccountuser!=null && rstAccountuser.length>0){
@@ -164,7 +165,11 @@ public class Accountuser implements java.io.Serializable {
             this.isactivatedbyemail = reger.core.Util.booleanFromSQLText(rstAccountuser[0][10]);
             this.emailactivationkey = rstAccountuser[0][11];
             this.emailactivationlastsent = reger.core.TimeUtils.dbstringtocalendar(rstAccountuser[0][12]);
-
+            if (reger.core.Util.isinteger(rstAccountuser[0][13])){
+                this.profileimageid = Integer.parseInt(rstAccountuser[0][13]);
+            } else {
+                this.profileimageid = 0;
+            }
         } else {
             this.accountuserid = -1;
         }
@@ -1233,7 +1238,7 @@ public class Accountuser implements java.io.Serializable {
         if (errortext.equals("")){
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE accountuser SET accountid='"+accountid+"',  friendlyname='"+reger.core.Util.cleanForSQL(this.friendlyname)+"', email='"+reger.core.Util.cleanForSQL(this.email)+"', entrymode='"+this.entrymode+"', usertimezoneid='"+reger.core.Util.cleanForSQL(this.usertimezoneid)+"', onelinesummary='"+reger.core.Util.cleanForSQL(this.onelinesummary)+"', isactive='"+isactivetext+"', isactivatedbyemail='"+reger.core.Util.booleanAsSQLText(isactivatedbyemail)+"', emailactivationkey='"+reger.core.Util.cleanForSQL(emailactivationkey)+"', emailactivationlastsent='"+reger.core.TimeUtils.dateformatfordb(emailactivationlastsent)+"' WHERE accountuserid='"+this.accountuserid+"'");
+            int count = Db.RunSQLUpdate("UPDATE accountuser SET accountid='"+accountid+"',  friendlyname='"+reger.core.Util.cleanForSQL(this.friendlyname)+"', email='"+reger.core.Util.cleanForSQL(this.email)+"', entrymode='"+this.entrymode+"', usertimezoneid='"+reger.core.Util.cleanForSQL(this.usertimezoneid)+"', onelinesummary='"+reger.core.Util.cleanForSQL(this.onelinesummary)+"', isactive='"+isactivetext+"', isactivatedbyemail='"+reger.core.Util.booleanAsSQLText(isactivatedbyemail)+"', emailactivationkey='"+reger.core.Util.cleanForSQL(emailactivationkey)+"', emailactivationlastsent='"+reger.core.TimeUtils.dateformatfordb(emailactivationlastsent)+"', profileimageid='"+profileimageid+"' WHERE accountuserid='"+this.accountuserid+"'");
             //-----------------------------------
             //-----------------------------------
 
@@ -1461,19 +1466,12 @@ public class Accountuser implements java.io.Serializable {
     }
 
     public String primaryImage(UserSession userSession, boolean isthumbnail){
-
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstImg= Db.RunSQL("SELECT imageid FROM image WHERE accountuserid='"+accountuserid+"' ORDER BY image.order ASC LIMIT 0,1");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstImg!=null && rstImg.length>0){
+        if (profileimageid>0){
             String isthumbnailtext = "yes";
             if (!isthumbnail){
                 isthumbnailtext = "no";
             }
-
-            return getSiteRootUrlOfPrimaryAccount(userSession) + "/mediaout.log?imageid=" + rstImg[0][0] + "&isProfileImage=true&isthumbnail=" + isthumbnailtext;
+            return getSiteRootUrlOfPrimaryAccount(userSession) + "/mediaout.log?imageid=" + profileimageid + "&isthumbnail=" + isthumbnailtext;
         } else {
             return getSiteRootUrlOfPrimaryAccount(userSession) + "/" +  reger.Vars.PROFILEGENERICIMAGE;
         }
@@ -1481,34 +1479,6 @@ public class Accountuser implements java.io.Serializable {
     }
 
 
-    public void deleteImage(int imageid, reger.Accountuser accountUserOfDoer){
-        //Only the user themselves can delete an image
-        if (accountUserOfDoer.getAccountuserid()==accountuserid){
-            String imagename = "blah.jpg";
-
-            //-----------------------------------
-            //-----------------------------------
-            String[][] rstImg= Db.RunSQL("SELECT image FROM image WHERE imageid='"+imageid+"'");
-            //-----------------------------------
-            //-----------------------------------
-            if (rstImg!=null && rstImg.length>0){
-                imagename = rstImg[0][0];
-            }
-
-            //-----------------------------------
-            //-----------------------------------
-            int count = Db.RunSQLUpdate("DELETE FROM image WHERE imageid='"+imageid+"' AND accountuserid='"+accountuserid+"'");
-            //-----------------------------------
-            //-----------------------------------
-
-
-            //Delete the file
-            reger.core.Util.deleteFile(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+imagename);
-            //Delete the thumbnail
-            reger.core.Util.deleteFile(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"thumbnails/"+imagename);
-
-        }
-    }
 
 
     public void updateAccountuserfieldsFromRequest(javax.servlet.http.HttpServletRequest request){
@@ -2285,5 +2255,13 @@ public class Accountuser implements java.io.Serializable {
 
     public void setEmailactivationlastsent(Calendar emailactivationlastsent) {
         this.emailactivationlastsent = emailactivationlastsent;
+    }
+
+    public int getProfileimageid() {
+        return profileimageid;
+    }
+
+    public void setProfileimageid(int profileimageid) {
+        this.profileimageid = profileimageid;
     }
 }

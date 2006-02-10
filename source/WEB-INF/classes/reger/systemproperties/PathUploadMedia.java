@@ -79,32 +79,32 @@ public class PathUploadMedia extends SystemProperty{
             }
 
             //Now check on on the thumbnails path
-            checkThumbnailsPath();
+            //checkThumbnailsPath();
         } catch (Exception e){
             e.printStackTrace();
         }
         reger.core.Debug.debug(5, "PathUploadMedia.java", "PathUploadMedia.getPropertyValue()=" + getPropertyValue());
     }
 
-    private void checkThumbnailsPath(){
-        try{
-            File testDir = new File(getPropertyValue()+File.separator+"thumbnails", "");
-            if (testDir !=null && testDir.exists() && testDir.canRead() && testDir.isDirectory() && testDir.canWrite()){
-                //Do nothing, the directory is good
-                reger.core.Debug.debug(5, "PathUploadMedia.java", "Thumbnails directory is OK.");
-            } else {
-                //Try to create it
-                if (!createDir(getPropertyValue()+File.separator+"thumbnails")){
-                    //Nothing to do... couldn't create
-                    reger.core.Debug.debug(5, "PathUploadMedia.java", "Could not create thumbnails directory:" + getPropertyValue()+File.separator+"thumbnails");
-                } else {
-                    reger.core.Debug.debug(5, "PathUploadMedia.java", "Created thumbnails directory:" + getPropertyValue()+File.separator+"thumbnails");
-                }
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    private void checkThumbnailsPath(){
+//        try{
+//            File testDir = new File(getPropertyValue()+File.separator+"thumbnails", "");
+//            if (testDir !=null && testDir.exists() && testDir.canRead() && testDir.isDirectory() && testDir.canWrite()){
+//                //Do nothing, the directory is good
+//                reger.core.Debug.debug(5, "PathUploadMedia.java", "Thumbnails directory is OK.");
+//            } else {
+//                //Try to create it
+//                if (!createDir(getPropertyValue()+File.separator+"thumbnails")){
+//                    //Nothing to do... couldn't create
+//                    reger.core.Debug.debug(5, "PathUploadMedia.java", "Could not create thumbnails directory:" + getPropertyValue()+File.separator+"thumbnails");
+//                } else {
+//                    reger.core.Debug.debug(5, "PathUploadMedia.java", "Created thumbnails directory:" + getPropertyValue()+File.separator+"thumbnails");
+//                }
+//            }
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
     private boolean createDir(String path){
         try{

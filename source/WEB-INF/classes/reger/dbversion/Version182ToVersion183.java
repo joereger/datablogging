@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.Calendar;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * This creates the base database if none exists.
@@ -45,7 +46,7 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImage= Db.RunSQL("SELECT imageid, accountid, image, originalfilename, date FROM image, event WHERE image.eventid=event.eventid ORDER BY imageid ASC", 500000);
+        String[][] rstImage= Db.RunSQL("SELECT imageid, event.accountid, image, originalfilename, event.date FROM image, event WHERE image.eventid=event.eventid ORDER BY imageid ASC", 500000);
         //-----------------------------------
         //-----------------------------------
         if (rstImage!=null && rstImage.length>0){
@@ -60,7 +61,7 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                 //Load the old file
                 File oldFile = new File(pathuploadmedia + "/" + currentFilename);
                 File oldFileThumbnail = new File(pathuploadmedia + "/thumbnails/" + currentFilename);
-                reger.core.Debug.debug(3, "Version182ToVersion183.java", "Tried to create oldFile with<br>" + pathuploadmedia + "/" + currentFilename);
+                reger.core.Debug.debug(5, "Version182ToVersion183.java", "Tried to create oldFile with<br>" + pathuploadmedia + "/" + currentFilename);
                 if (oldFile.exists() && oldFile.canRead()){
 
                     //Calculate the new dated directory name
@@ -75,7 +76,7 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                     String datedDirectoryName = year+"/"+monthStr;
 
                     //Create directory
-                    String filesdirectory = pathuploadmedia + "/files/" + accountid + "/" + datedDirectoryName + "/";
+                    String filesdirectory = pathuploadmedia + java.io.File.separator +"files" + java.io.File.separator + accountid + java.io.File.separator + datedDirectoryName + java.io.File.separator;
                     File dir = new File(filesdirectory);
                     dir.mkdirs();
                     File dirThumbs = new File(filesdirectory+".thumbnails/");
@@ -117,7 +118,7 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                     //Update the image table
                     //-----------------------------------
                     //-----------------------------------
-                    int count2 = Db.RunSQLUpdate("UPDATE image SET filename='"+finalNewFileName+"' WHERE imageid='"+imageid+"'");
+                    int count2 = Db.RunSQLUpdate("UPDATE image SET filename='"+ reger.core.Util.cleanForSQL(FilenameUtils.normalize(datedDirectoryName+java.io.File.separator+finalNewFileName))+"' WHERE imageid='"+imageid+"'");
                     //-----------------------------------
                     //-----------------------------------
                 }

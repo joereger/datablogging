@@ -8,6 +8,7 @@ import reger.core.licensing.License;
 import reger.core.licensing.RegerLicensingApiClient;
 import reger.cache.LogCache;
 import reger.cache.jboss.Cacheable;
+import reger.files.FileAcl;
 
 import java.util.*;
 
@@ -91,6 +92,9 @@ public class Account implements java.io.Serializable {
 
     //Whether the account space var has been called
     private boolean hasUpdateSpaceBeenCalled=false;
+
+    //Holds file permissions
+    private ArrayList<FileAcl> fileacls = new ArrayList<FileAcl>();
 
 
     public Account(int accountid){
@@ -235,7 +239,6 @@ public class Account implements java.io.Serializable {
             //Set the site root url
             siteRootUrl = setSiteRootUrlViaAccountid(accountid);
 
-
             //Set the maxspace and maxbandwidth vars
             loadMaxSpaceInBytesFromLicense();
             loadMaxBandwidthFromLicense();
@@ -255,9 +258,25 @@ public class Account implements java.io.Serializable {
             //Calculate isPro
             calculateIsPro();
 
+            //Load file acls
+            loadFileAcls();
+
         } else {
             //Fail to find an account
             this.accountid=0;
+        }
+    }
+
+    private void loadFileAcls(){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstData= Db.RunSQL("SELECT fileaclid FROM fileacl WHERE accountid='"+accountid+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstData!=null && rstData.length>0){
+            for(int i=0; i<rstData.length; i++){
+                fileacls.add(new FileAcl(Integer.parseInt(rstData[i][0])));
+            }
         }
     }
 
@@ -434,7 +453,7 @@ public class Account implements java.io.Serializable {
   }
 
   public String getPathToAccountFiles(){
-      return reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"files/"+accountid+"/";
+      return reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"files"+java.io.File.separator+accountid+java.io.File.separator;
   }
 
   /**
@@ -1269,7 +1288,13 @@ public class Account implements java.io.Serializable {
         return alllogsforaccountid;
     }
 
+    public ArrayList<FileAcl> getFileacls() {
+        return fileacls;
+    }
 
+    public void setFileacls(ArrayList<FileAcl> fileacls) {
+        this.fileacls = fileacls;
+    }
 
 
 }

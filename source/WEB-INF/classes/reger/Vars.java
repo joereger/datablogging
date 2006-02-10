@@ -163,10 +163,10 @@ public class Vars {
     public static final int CALENDARTYPEEMPTYEVENTLINKS = 2;
 
     //The generic thumbnail copied to create thumbnails for uploaded media that is not thumbnailable
-    public static final String THUMBNAILGENERIC = reger.core.WebAppRootDir.getWebAppRootPath() + "images\\mediatypeicons\\icon-unidentifiedfile.gif";
+    public static final String THUMBNAILGENERIC = reger.core.WebAppRootDir.getWebAppRootPath() + "images"+java.io.File.separator+"mediatypeicons"+java.io.File.separator+"icon-unidentifiedfile.gif";
 
     //The image to display if a user doesn't have permission or if the file is not found
-    public static final String ERRORIMAGE = reger.core.WebAppRootDir.getWebAppRootPath() + "images\\imageerror.jpg";
+    public static final String ERRORIMAGE = reger.core.WebAppRootDir.getWebAppRootPath() + "images"+java.io.File.separator+"imageerror.jpg";
 
     //The default profile image for users without image profiles
     public static final String PROFILEGENERICIMAGE = "images/profilegenericimage.gif";

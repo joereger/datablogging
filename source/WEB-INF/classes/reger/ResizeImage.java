@@ -14,7 +14,7 @@ public class ResizeImage{
 
     public static boolean resize(String inimagelocation, String outimagelocation, int maxwidth) throws IOException {
         try {
-          reger.core.Debug.debug(3, "ResizeImage.java", "resize() called<br>inimagelocation:"+inimagelocation+"<br>outimagelocation:"+outimagelocation);
+          reger.core.Debug.debug(5, "ResizeImage.java", "resize() called<br>inimagelocation:"+inimagelocation+"<br>outimagelocation:"+outimagelocation);
 
           int targetWidth=0;
           int targetHeight=0;

@@ -47,7 +47,6 @@ public class MegaHtmlFormCenterChiba {
         mb.append("</td>");
         mb.append("</tr>");
 
-
         return mb;
     }
 

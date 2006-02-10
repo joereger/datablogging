@@ -158,7 +158,7 @@
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImageList = Db.RunSQL("select image.imageid, image.image, image.description, image.sizeinbytes, image.originalfilename, account.accountid FROM image, tag, tagimagelink, account, event, megalog, pl WHERE account.plid=pl.plid AND "+userSession.getPl().getPeerSql()+" AND megalog.logid=event.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND event.accountid=account.accountid AND "+reger.Entry.sqlOfLiveEntry +" AND image.eventid=event.eventid AND "+tagSql+" AND tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid ORDER BY event.date DESC, image.imageid ASC  LIMIT " + limitMin + "," + limitMax);
+        String[][] rstImageList = Db.RunSQL("select image.imageid, image.filename, image.description, image.sizeinbytes, image.originalfilename, account.accountid FROM image, tag, tagimagelink, account, event, megalog, pl WHERE account.plid=pl.plid AND "+userSession.getPl().getPeerSql()+" AND megalog.logid=event.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND event.accountid=account.accountid AND "+reger.Entry.sqlOfLiveEntry +" AND image.eventid=event.eventid AND "+tagSql+" AND tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid ORDER BY event.date DESC, image.imageid ASC  LIMIT " + limitMin + "," + limitMax);
         //-----------------------------------
         //-----------------------------------
         //-----------------------------------

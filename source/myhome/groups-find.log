@@ -75,7 +75,7 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
 
 
                 mb.append("<td valign=top>");
-                mb.append("<a href='"+pageProps.pathToAppRoot+"groups/group.log?groupid="+group.getGroupid()+"'>");
+                mb.append("<a href='"+pageProps.pathToAppRoot+"myhome/group-view.log?groupid="+group.getGroupid()+"'>");
                 mb.append("<font face=arial size=-1>");
                 mb.append("<strong>");
                 mb.append(group.getName());
@@ -119,7 +119,7 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
 
                 mb.append("<td valign=top align=center>");
                 mb.append("<font face=arial size=-2>");
-                mb.append("<a href='groups-edit.log?action=join&groupid="+group.getGroupid()+"'>");
+                mb.append("<a href='groups-join.log?action=join&groupid="+group.getGroupid()+"'>");
                 mb.append("<img src='../images/plus-icon.gif' border=0>");
                 mb.append("<br>");
                 mb.append("Join Group");

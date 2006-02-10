@@ -66,7 +66,6 @@ public class SystemProperty {
             createSystemPropertyTable();
         }
 
-        propertyValue = reger.core.Util.escapeBackslash(propertyValue);
 
         //-----------------------------------
         //-----------------------------------

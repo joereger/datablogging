@@ -15,6 +15,7 @@ pageProps.pathToAppRoot="";
                  reger.Media.MediaTypeFactory,
                  reger.Help" %>
 <%@ page import="java.util.Calendar"%>
+<%@ page import="org.apache.commons.io.FilenameUtils"%>
 
 <%
 /*----------------------------------------------------*/
@@ -37,65 +38,49 @@ Calendar eventdategmt = null;
 //Set to false to be safe
 boolean showimage=false;
 
-if (request.getParameter("isProfileImage")==null || !request.getParameter("isProfileImage").equals("true")){
-    //Make sure the image exists in the database and make sure the user has access to it
-    if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))) {
-        //Set the imageid
-        imageid=Integer.parseInt(request.getParameter("imageid"));
 
-        //Get the logid and name of the image
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstImageData= Db.RunSQL("SELECT image, logid, image.description, event.eventid, event.title, event.date FROM image, event WHERE image.imageid='"+request.getParameter("imageid")+"' AND image.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstImageData!=null && rstImageData.length>0){
-            //Set the logid
+//Make sure the image exists in the database and make sure the user has access to it
+if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))) {
+    //Set the imageid
+    imageid=Integer.parseInt(request.getParameter("imageid"));
+
+    //Get the logid and name of the image
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstImageData= Db.RunSQL("SELECT image, logid, image.description, image.eventid, event.title, event.date FROM image LEFT JOIN event ON image.eventid=event.eventid WHERE image.imageid='"+request.getParameter("imageid")+"' AND image.accountid='"+userSession.getAccount().getAccountid()+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstImageData!=null && rstImageData.length>0){
+        //Set the logid
+        if (reger.core.Util.isinteger(rstImageData[0][1])){
             pageProps.logProps.logid=Integer.parseInt(rstImageData[0][1]);
-            //Get the image name
-            imagename=rstImageData[0][0];
-            //Get the description
-            description=rstImageData[0][2];
-            //Get the eventid
-            if (reger.core.Util.isinteger(rstImageData[0][3])){
-                eventid = Integer.parseInt(rstImageData[0][3]);
-            }
-            //Get the event title
-            entrytitle = rstImageData[0][4];
-            //Get the event date
-            eventdategmt = reger.core.TimeUtils.dbstringtocalendar(rstImageData[0][5]);
-            //Check to see if the user can view this logid
-            showimage=userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid);
-            //Now, check for the entrykey
-            if (!showimage){
-                if (request.getParameter("entrykey")!=null){
-                    if (reger.Entry.checkEntryKey(request.getParameter("entrykey"), Integer.parseInt(rstImageData[0][3]))){
-                        showimage = true;
-                    }
+        }
+        //Get the image name
+        imagename=rstImageData[0][0];
+        //Get the description
+        description=rstImageData[0][2];
+        //Get the eventid
+        if (reger.core.Util.isinteger(rstImageData[0][3])){
+            eventid = Integer.parseInt(rstImageData[0][3]);
+        }
+        //Get the event title
+        entrytitle = rstImageData[0][4];
+        //Get the event date
+        eventdategmt = reger.core.TimeUtils.dbstringtocalendar(rstImageData[0][5]);
+        //Check to see if the user can view this logid
+        showimage=userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid);
+        //Now, check for the entrykey
+        if (!showimage){
+            if (request.getParameter("entrykey")!=null){
+                if (reger.Entry.checkEntryKey(request.getParameter("entrykey"), Integer.parseInt(rstImageData[0][3]))){
+                    showimage = true;
                 }
             }
         }
-    }
-} else {
-    //It's a profile image
-    if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))) {
-        //Set the imageid
-        imageid=Integer.parseInt(request.getParameter("imageid"));
-
-        //Must make sure however... otherwise anybody can get to all images just by typing isprofileimage=true into querystring
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstProf= Db.RunSQL("SELECT imageid, eventid, accountuserid, image, description FROM image WHERE imageid='"+request.getParameter("imageid")+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstProf!=null && rstProf.length>0){
-            if (rstProf[0][1].equals("0") && !rstProf[0][2].equals("0")){
-                //Get the filename
-                imagename = rstProf[0][3];
-                //Get the description
-                description=rstProf[0][4];
-                //I now know that this is an image without an associated eventid (a profile image) and it has an accountuserid
-                showimage = true;
+        //Lame hack to display profileimages
+        if(!showimage){
+            if (rstImageData[0][3].equals("0") || rstImageData[0][3].equals("")){
+                showimage=true;
             }
         }
     }
@@ -121,8 +106,7 @@ mb.append("<table width=100% height=100% border=0><tr height=100% ><td valign=ce
 //Output the html that calls the image.
 if (showimage) {
     //Get the image file extension
-    String extension = reger.core.Util.getFilenameExtension(imagename);
-    MediaType mt = MediaTypeFactory.getHandlerByFileExtension(extension);
+    MediaType mt = MediaTypeFactory.getHandlerByFileExtension(FilenameUtils.getExtension(imagename));
     if (mt instanceof reger.Media.UnknownFileType){
         //The file is of an unknown type so we're just going to redirect to the file directly so that the user can decide what to do with it.
         response.sendRedirect("mediaout.log?imageid="+request.getParameter("imageid")+"&isProfileImage="+request.getParameter("isProfileImage"));
@@ -138,9 +122,11 @@ if (showimage) {
         mb.append("<font face=arial size=+1 color=#999999><b>"+agoText+"</b></font>");
     }
     //Link to entry
-    String entryurl = reger.Entry.entryFileNameStatic(eventid, entrytitle);
-    mb.append("<br>");
-    mb.append("<font face=arial size=-1 color=#cccccc><b>From Entry: </b></font><a href=\"javascript:openLocInParentAndCloseWindow('"+entryurl+"');\"><font face=arial size=-1 color=#0000ff><b>" + entrytitle + "</b></font></a>");
+    if(eventid>0){
+        String entryurl = reger.Entry.entryFileNameStatic(eventid, entrytitle);
+        mb.append("<br>");
+        mb.append("<font face=arial size=-1 color=#cccccc><b>From Entry: </b></font><a href=\"javascript:openLocInParentAndCloseWindow('"+entryurl+"');\"><font face=arial size=-1 color=#0000ff><b>" + entrytitle + "</b></font></a>");
+    }
     //Display Tag Links
     //String imageTags = reger.Tag.getStringOfAllTagsForImageAsLinks(imageid, "");
     String imageTags = "";

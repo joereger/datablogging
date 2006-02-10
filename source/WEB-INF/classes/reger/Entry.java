@@ -1121,25 +1121,6 @@ public class Entry {
         //-----------------------------------
         //-----------------------------------
 
-        //Go get image filenames and delete them from file system
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstImg = Db.RunSQL("SELECT image FROM image WHERE eventid='" + eventid + "'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstImg != null && rstImg.length > 0) {
-            for (int i = 0; i < rstImg.length; i++) {
-                try {
-                    //Delete the file
-                    reger.core.Util.deleteFile(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA") + rstImg[i][0]);
-                    //Delete the thumbnail
-                    reger.core.Util.deleteFile(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA") + "thumbnails/" + rstImg[i][0]);
-                } catch (Exception e) {
-                    Debug.logtodb("Failure to delete the image=" + rstImg[i][0] + " from the filesystem.", "");
-                }
-            }
-        }
-
         //Delete images from DB
         //-----------------------------------
         //-----------------------------------

@@ -66,7 +66,7 @@ if (ul.requestParams.get("eventid")!=null && reger.core.Util.isinteger(ul.reques
 if (ul.isMultipart) {
     //Note the false indicating that this is not a profile upload.
     //Note that accountuserid param is 0 because this is not a profile upload.
-    ul.save(localEventid, imagetags, 0, userSession);
+    ul.save(localEventid, imagetags, 0, userSession, "");
 }
 
 //Success message if upload was successful.

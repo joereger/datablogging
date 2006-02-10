@@ -70,14 +70,7 @@ public class MegaHtmlFormImageEdits {
 
                     //If we have deletes, let's delete them
                     if (request.getParameter("delete-" + rstImagelistUpdate[i][0])!=null && request.getParameter("delete-" + rstImagelistUpdate[i][0]).equals("yes")) {
-                        try {
-                            //Delete the file
-                            reger.core.Util.deleteFile(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+rstImagelistUpdate[i][2]);
-                            //Delete the thumbnail
-                            reger.core.Util.deleteFile(reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"thumbnails/"+rstImagelistUpdate[i][2]);
-                        } catch (Exception e) {
-                            Debug.logtodb("entry.bottom.jsp -- Failure to delete the imageid="+ rstImagelistUpdate[i][0] +" in the database.  Somebody was trying to delete it.  This may be a case of attempted hackery.  Accountid=" + userSession.getAccount().getAccountid(), "");
-                        }
+                        
 
                         //-----------------------------------
                         //-----------------------------------

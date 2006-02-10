@@ -3,6 +3,8 @@ package reger;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FilenameUtils;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Calendar;
@@ -25,6 +27,8 @@ public class Upload {
     public List items;
     public boolean hasenoughfreespace = true;
     public TreeMap requestParams = new TreeMap();
+    public int imageid = 0;
+    public String filenameandpath = "";
 
     public Upload(){
 
@@ -70,7 +74,7 @@ public class Upload {
     }
 
     public void save(int eventid, int accountuserid, reger.UserSession userSession){
-        save(eventid, "", accountuserid, userSession);
+        save(eventid, "", accountuserid, userSession, "");
     }
 
     public FileItem[] getFileItems(){
@@ -100,7 +104,7 @@ public class Upload {
         return out;
     }
 
-    public void save(int eventid, String manyimagetags, int accountuserid, reger.UserSession userSession){
+    public void save(int eventid, String manyimagetags, int accountuserid, reger.UserSession userSession, String path){
        Debug.debug(4, "Upload.java", "reger.Upload.save() - at top of method ");
        try{
             if (items!=null){
@@ -129,21 +133,30 @@ public class Upload {
 
                             Debug.debug(4, "Upload.java", "reger.Upload.save() - incomingname=" + incomingname);
 
-                            //Calculate the new dated directory name
-                            Calendar cal = Calendar.getInstance();
-                            int year = cal.get(Calendar.YEAR);
-                            int month = cal.get(Calendar.MONTH)+1;
-                            String monthStr = String.valueOf(month);
-                            if (monthStr.length()==1){
-                                monthStr = "0"+monthStr;
+                            if (path.equals("")){
+                                //Calculate the new dated directory name
+                                Calendar cal = Calendar.getInstance();
+                                int year = cal.get(Calendar.YEAR);
+                                int month = cal.get(Calendar.MONTH)+1;
+                                String monthStr = String.valueOf(month);
+                                if (monthStr.length()==1){
+                                    monthStr = "0"+monthStr;
+                                }
+                                String datedDirectoryName = year+java.io.File.separator+monthStr;
+                                path = datedDirectoryName;
                             }
-                            String datedDirectoryName = year+"/"+monthStr;
+
+                            path = FilenameUtils.normalize(path);
+                            if (path==null || path.equals(java.io.File.separator)){
+                                path = "";
+                            }
+
 
                             //Create directory
-                            String filesdirectory = userSession.getAccount().getPathToAccountFiles() + datedDirectoryName + "/";
+                            String filesdirectory = userSession.getAccount().getPathToAccountFiles() + path + java.io.File.separator;
                             File dir = new File(filesdirectory);
                             dir.mkdirs();
-                            File dirThumbs = new File(filesdirectory+".thumbnails/");
+                            File dirThumbs = new File(filesdirectory+".thumbnails"+java.io.File.separator);
                             dirThumbs.mkdirs();
 
                             //Test for file existence... if it exists does, add an incrementer
@@ -185,26 +198,31 @@ public class Upload {
                                     //Do the actual file system write
                                     item.write(savedFile);
                                     ThumbnailCreator.createThumbnail(savedFile);
+                                    filenameandpath = path+java.io.File.separator+finalfilename;
 
                                     //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???
 
                                     Debug.debug(4, "Upload.java", "reger.Upload.save() - file written to filesystem");
 
-                                    //-----------------------------------
-                                    //-----------------------------------
-                                    int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"')");
-                                    //-----------------------------------
-                                    //-----------------------------------
+                                    if(eventid>0){
+                                        //-----------------------------------
+                                        //-----------------------------------
+                                        int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(path+java.io.File.separator+finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(path+java.io.File.separator+finalfilename)+"')");
+                                        //-----------------------------------
+                                        //-----------------------------------
 
-                                    Debug.debug(4, "Upload.java", "reger.Upload.save() - file written to database.");
+                                        this.imageid = identity;
 
-                                    //Get a MediaType handler
-                                    MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
-                                    //Handle any parsing required
-                                    mt.saveToDatabase(filesdirectory+finalfilename, identity);
+                                        Debug.debug(4, "Upload.java", "reger.Upload.save() - file written to database.");
 
-                                    //Do the imagetags
-                                    reger.Tag.addMultipleTagsToImage(manyimagetags, identity);
+                                        //Get a MediaType handler
+                                        MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
+                                        //Handle any parsing required
+                                        mt.saveToDatabase(filesdirectory+finalfilename, identity);
+
+                                        //Do the imagetags
+                                        reger.Tag.addMultipleTagsToImage(manyimagetags, identity);
+                                    }
 
                                     //Update the AccountCounts cache
                                     reger.cache.AccountCountCache.flushByAccountid(userSession.getAccount().getAccountid());

@@ -27,7 +27,7 @@ import org.apache.commons.io.FileUtils;
 public class FileSyncServer {
 
     public Hashtable getFileStatus(String email, String password, String file)  {
-        reger.core.Debug.debug(3, "FileSyncServer.java", "getFileStatus("+email+", "+password+", "+file+") called");
+        reger.core.Debug.debug(5, "FileSyncServer.java", "getFileStatus("+email+", "+password+", "+file+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
             Account account = AccountCache.get(au.getAccountid());
@@ -53,13 +53,13 @@ public class FileSyncServer {
     }
 
     public Hashtable saveFileOnServer(String email, String password, String file, String filebase64encoded, String lastmodifieddateinmillis) {
-        reger.core.Debug.debug(3, "FileSyncServer.java", "saveFileOnServer("+email+", "+password+", "+file+") called");
+        reger.core.Debug.debug(5, "FileSyncServer.java", "saveFileOnServer("+email+", "+password+", "+file+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
             if (isProtectedDirectoryName(file)){
                 return error("Sorry, that file includes a protected directory name.");
             }
-            reger.core.Debug.debug(3, "FileSyncServer.java", "au.isLoggedIn=true");
+            reger.core.Debug.debug(5, "FileSyncServer.java", "au.isLoggedIn=true");
             Account account = AccountCache.get(au.getAccountid());
             PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
             byte[] bits = filebase64encoded.getBytes();
@@ -91,9 +91,9 @@ public class FileSyncServer {
                             cal = TimeUtils.convertFromOneTimeZoneToAnother(cal, "GMT", cal.getTimeZone().getID());
                             //cal.set(2000, 2, 2, 2, 2, 2);
                             if(fileObj.setLastModified(cal.getTime().getTime())){
-                                reger.core.Debug.debug(3, "FileSyncServer.java", "Success setting last modified date");
+                                reger.core.Debug.debug(5, "FileSyncServer.java", "Success setting last modified date");
                             } else {
-                                reger.core.Debug.debug(3, "FileSyncServer.java", "Success setting last modified date");
+                                reger.core.Debug.debug(5, "FileSyncServer.java", "Success setting last modified date");
                             }
                         }
                     } catch(Exception e){
@@ -118,7 +118,7 @@ public class FileSyncServer {
     }
 
     public Hashtable saveDirectoryOnServer(String email, String password, String file) {
-        reger.core.Debug.debug(3, "FileSyncServer.java", "saveDirectoryOnServer("+email+", "+password+", "+file+") called");
+        reger.core.Debug.debug(5, "FileSyncServer.java", "saveDirectoryOnServer("+email+", "+password+", "+file+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
             if (isProtectedDirectoryName(file)){
@@ -157,7 +157,7 @@ public class FileSyncServer {
     }
 
     public Hashtable renameFile(String email, String password, String file) {
-        reger.core.Debug.debug(3, "FileSyncServer.java", "renameFile("+email+", "+password+", "+file+") called");
+        reger.core.Debug.debug(5, "FileSyncServer.java", "renameFile("+email+", "+password+", "+file+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
             Account account = AccountCache.get(au.getAccountid());
@@ -202,7 +202,7 @@ public class FileSyncServer {
     }
 
     public Hashtable getStorageRemainingOnAccount(String email, String password) {
-        reger.core.Debug.debug(3, "FileSyncServer.java", "getStorageRemainingOnAccount("+email+", "+password+") called");
+        reger.core.Debug.debug(5, "FileSyncServer.java", "getStorageRemainingOnAccount("+email+", "+password+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
             Account account = AccountCache.get(au.getAccountid());
@@ -217,7 +217,7 @@ public class FileSyncServer {
     }
 
     public Vector getListOfFilesOnServer(String email, String password) {
-        reger.core.Debug.debug(3, "FileSyncServer.java", "getListOfFilesOnServer("+email+") called");
+        reger.core.Debug.debug(5, "FileSyncServer.java", "getListOfFilesOnServer("+email+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
             Account account = AccountCache.get(au.getAccountid());
@@ -227,7 +227,7 @@ public class FileSyncServer {
             filesdirectory = filesdirectory + "files/" + account.getAccountid() + "/";
             filesdirectory = Util.getNormalizedFilename(filesdirectory);
 
-            reger.core.Debug.debug(3, "FileSyncServer.java", "getListOfFilesOnServer() about to call getAllFiles on:"+filesdirectory);
+            reger.core.Debug.debug(5, "FileSyncServer.java", "getListOfFilesOnServer() about to call getAllFiles on:"+filesdirectory);
 
             return getAllFiles(new File(filesdirectory), account);
         } else {
@@ -238,7 +238,7 @@ public class FileSyncServer {
     }
 
     private static Vector getAllFiles(File in, Account account) {
-        reger.core.Debug.debug(3, "FileSyncServer.java", "getAllFiles() called: "+ in.getAbsolutePath());
+        reger.core.Debug.debug(5, "FileSyncServer.java", "getAllFiles() called: "+ in.getAbsolutePath());
         Vector out = new Vector();
         Calendar lastmodifieddategmt = Calendar.getInstance();
         lastmodifieddategmt.setTimeInMillis(in.lastModified());
@@ -274,7 +274,7 @@ public class FileSyncServer {
     }
 
     public Hashtable downloadFileFromServer(String email, String password, String file) {
-        reger.core.Debug.debug(3, "FileSyncServer.java", "downloadFileFromServer("+email+", "+password+", "+file+") called");
+        reger.core.Debug.debug(5, "FileSyncServer.java", "downloadFileFromServer("+email+", "+password+", "+file+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
             Account account = AccountCache.get(au.getAccountid());

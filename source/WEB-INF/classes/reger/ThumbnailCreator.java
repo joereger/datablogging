@@ -20,7 +20,7 @@ public class ThumbnailCreator {
         String extension = FilenameUtils.getExtension(filename);
         String thumbnailPath = path+".thumbnails/";
 
-        reger.core.Debug.debug(3, "ThumbnailCreator.java", "createThumbnail("+filename+") called<br>name="+name+"<br>thumbnailpath:"+thumbnailPath+"<br>extension:"+extension);
+        reger.core.Debug.debug(5, "ThumbnailCreator.java", "createThumbnail("+filename+") called<br>name="+name+"<br>thumbnailpath:"+thumbnailPath+"<br>extension:"+extension);
 
         File dir = new File(thumbnailPath);
         dir.mkdirs();
@@ -29,16 +29,16 @@ public class ThumbnailCreator {
         try{
             thumbnail.createNewFile();
         } catch (Exception e){
-            reger.core.Debug.debug(3, "ThumbnailCreator.java", e);
+            reger.core.Debug.debug(5, "ThumbnailCreator.java", e);
         }
         if (thumbnail.canWrite()){
-            reger.core.Debug.debug(3, "ThumbnailCreator.java", "thumbnail.canWrite("+filename+") true");
+            reger.core.Debug.debug(5, "ThumbnailCreator.java", "thumbnail.canWrite("+filename+") true");
             //Get a MediaType handler
             MediaType mt = MediaTypeFactory.getHandlerByFileExtension(extension);
             //Generate a thumbnail
             mt.createThumbnail(file.getAbsolutePath(), thumbnail.getAbsolutePath());
         } else {
-            reger.core.Debug.debug(3, "ThumbnailCreator.java", "thumbnail.canWrite("+filename+") false");
+            reger.core.Debug.debug(5, "ThumbnailCreator.java", "thumbnail.canWrite("+filename+") false");
         }
     }
 

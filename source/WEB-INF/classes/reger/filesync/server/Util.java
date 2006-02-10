@@ -22,13 +22,10 @@ public class Util {
 
     public static String getFilenameMinusDirectoryName(File file, Account account){
         String out = "";
-        String filesdirectory = AllSystemProperties.getProp("PATHUPLOADMEDIA");
-        filesdirectory = filesdirectory + "files/" + account.getAccountid() + "/";
-        String absPath = file.getAbsolutePath();
-        absPath = getNormalizedFilename(absPath);
-        filesdirectory = getNormalizedFilename(filesdirectory);
+        String filesdirectory = FilenameUtils.normalize(AllSystemProperties.getProp("PATHUPLOADMEDIA") + "files" + java.io.File.separator + account.getAccountid() + java.io.File.separator);
+        String absPath = FilenameUtils.normalize(file.getAbsolutePath());
         if (absPath.length() > filesdirectory.length()){
-            out = absPath.substring(filesdirectory.length());
+            out = absPath.substring(filesdirectory.length(), absPath.length());
         }
         return out;
     }

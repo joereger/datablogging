@@ -26,6 +26,8 @@ if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbna
                  reger.Media.MediaTypeFactory,
                  reger.core.db.Db" %>
 <%@ page import="reger.core.Debug"%>
+<%@ page import="reger.systemproperties.AllSystemProperties"%>
+<%@ page import="org.apache.commons.io.FilenameUtils"%>
 
 <%
 /*----------------------------------------------------*/
@@ -34,80 +36,59 @@ if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbna
 /*----------------------------------------------------*/
 
 
-reger.core.Debug.debug(5, "mediaout.log", "Made it to mediaout.log imageid=" + request.getParameter("imageid"));
+reger.core.Debug.debug(5, "mediaout.log", "Made it to mediaout.log<br>imageid=" + request.getParameter("imageid") + "<br>file="+request.getParameter("file"));
 
 int bytesOutput = 0;
-
-String fileName = reger.Vars.THUMBNAILGENERIC;
-String baseFileName = "";
-String thumbnailpath="";
-String originalfilename = "";
-int imageid=-1;
-//Set to false to be safe
 boolean showactualimage=false;
+String fileName = reger.Vars.THUMBNAILGENERIC;
+int imageid=0;
+if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))) {
+    imageid=Integer.parseInt(request.getParameter("imageid"));
+}
+String imageSql = "image.imageid='-1'";
+if (imageid>0){
+    imageSql = "image.imageid='"+imageid+"'";
+} else if (request.getParameter("file")!=null) {
+    imageSql = "image.filename='"+reger.core.Util.cleanForSQL(FilenameUtils.normalize(request.getParameter("file")))+"'";
+}
 
-if (request.getParameter("isProfileImage")==null || !request.getParameter("isProfileImage").equals("true")){
-    //Make sure the image exists in the database and make sure the user has access to it
-    if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))) {
-        //Get the logid and name of the image
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstImageData= Db.RunSQL("SELECT image, logid, originalfilename, event.eventid FROM image, event WHERE image.imageid='"+request.getParameter("imageid")+"' AND image.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstImageData!=null && rstImageData.length>0){
-            for(int i=0; i<rstImageData.length; i++){
-                //Get the filename
-                baseFileName = rstImageData[i][0];
-                //Set the logid
-                pageProps.logProps.logid=Integer.parseInt(rstImageData[i][1]);
-                //Check to see if the user can view this logid
-                showactualimage=userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid);
-                //Originalfilename
-                originalfilename = rstImageData[i][2];
-                //Now, check for the entrykey
-                if (!showactualimage){
-                    if (request.getParameter("entrykey")!=null){
-                        if (reger.Entry.checkEntryKey(request.getParameter("entrykey"), Integer.parseInt(rstImageData[0][3]))){
-                            showactualimage = true;
-                        }
-                    }
+//-----------------------------------
+//-----------------------------------
+String[][] rstImageData= Db.RunSQL("SELECT logid, filename, image.eventid FROM image LEFT JOIN event ON image.eventid=event.eventid WHERE "+imageSql+" AND image.accountid='"+userSession.getAccount().getAccountid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstImageData!=null && rstImageData.length>0){
+    for(int i=0; i<rstImageData.length; i++){
+        fileName = rstImageData[i][1];
+        if (reger.core.Util.isinteger(rstImageData[i][0])){
+            pageProps.logProps.logid=Integer.parseInt(rstImageData[i][0]);
+            showactualimage=userSession.getAccountuser().userCanViewLog(pageProps.logProps.logid);
+        }
+        if (!showactualimage){
+            if (request.getParameter("entrykey")!=null){
+                if (reger.Entry.checkEntryKey(request.getParameter("entrykey"), Integer.parseInt(rstImageData[0][2]))){
+                    showactualimage = true;
                 }
             }
         }
-    }
-} else {
-    //It's a profile image
-    if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))) {
-        //Must make sure however... otherwise anybody can get to all images just by typing isprofileimage=true into querystring
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstProf= Db.RunSQL("SELECT imageid, eventid, accountuserid, image FROM image WHERE imageid='"+request.getParameter("imageid")+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstProf!=null && rstProf.length>0){
-            if (rstProf[0][1].equals("0") && !rstProf[0][2].equals("0")){
-                //Get the filename
-                baseFileName = rstProf[0][3];
-                //I now know that this is an image without an associated eventid (a profile image) and it has an accountuserid
-                showactualimage = true;
+        //Lame hack to display profileimages
+        if(!showactualimage){
+            if (rstImageData[i][2].equals("0") || rstImageData[i][2].equals("")){
+                showactualimage=true;
             }
         }
     }
 }
 
-//Do the pathing for thumbnails, etc
-if (showactualimage){
-    //Set the thumbnail path if we need to
-    if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbnail").equals("yes")) {
-        thumbnailpath="thumbnails\\";
-    }
-    //Set the filename appropriately
-    fileName = reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA") + thumbnailpath + baseFileName;
+
+
+if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbnail").equals("yes")) {
+    fileName = FilenameUtils.normalize(FilenameUtils.normalize(FilenameUtils.getPath(fileName))+".thumbnails"+java.io.File.separator+FilenameUtils.getName(fileName));
 }
 
-//Make sure the image exists on the filesystem
-File testimage = new File(fileName);
+reger.core.Debug.debug(5, "mediaout.log", "fileName="+fileName+"<br>showactualimage="+showactualimage);
+
+File testimage = new File(userSession.getAccount().getPathToAccountFiles() + fileName);
 if (!testimage.canRead()) {
     showactualimage=false;
 }
@@ -119,27 +100,25 @@ try{
 
     if (showactualimage){
         try{
-            //Get the image file extension
-            String extension = reger.core.Util.getFilenameExtension(baseFileName);
 
             //Get the image file extension
-            MediaType mt = MediaTypeFactory.getHandlerByFileExtension(extension);
+            MediaType mt = MediaTypeFactory.getHandlerByFileExtension(FilenameUtils.getExtension(fileName));
 
             //Override the content type
             response.setContentType(mt.getMimeType());
 
             //Set the file name
             //See: http://www.onjava.com/pub/a/onjava/excerpt/jebp_3/index3.html
-            String filenameToShow = originalfilename;
-            if (filenameToShow.equals("")){
-                filenameToShow = baseFileName;
+            String filenameToShow = FilenameUtils.getName(fileName);
+            if (filenameToShow==null || filenameToShow.equals("")){
+                filenameToShow = fileName;
             }
             response.setHeader("Content-Disposition", "attachment; filename=" + filenameToShow);
 
 
 
             // Creating a new FileInputStream object
-            FileInputStream fis = new FileInputStream(fileName);
+            FileInputStream fis = new FileInputStream(testimage);
 
             if (fis != null){
                 byte[] data = new byte[4096];
@@ -220,7 +199,7 @@ try{
     Debug.debug(5, "", e);
 }
 
-Debug.debug(5, "", "mediaout.log<br>bytesOutput=" + bytesOutput + "<br>baseFileName=" + baseFileName);
+Debug.debug(5, "mediaout.log", "bytesOutput=" + bytesOutput + "<br>fileName=" + fileName);
 
 //---------------------------------------------------------------
 //Record traffic.  Use pageProps.trafficType

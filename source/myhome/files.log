@@ -1,48 +1,40 @@
-
+<%@ page import="reger.core.db.Db,
+                 org.apache.xmlrpc.XmlRpcClient,
+                 java.util.Vector,
+                 java.util.Hashtable,
+                 reger.PrivateLabel,
+                 reger.core.db.Db"%>
+<%@ page import="reger.groups.Group"%>
+<%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.groups.GroupMembership"%>
+<%@ page import="reger.files.*"%>
+<%@ page import="java.io.*"%>
+<%@ page import="reger.files.File"%>
+<%@ page import="org.apache.commons.io.FilenameUtils"%>
+<%@ page import="java.util.Calendar"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "Add Images/Media";
+pageProps.title = "";
 pageProps.isPasswordProtected = true;
-pageProps.navButtonName = "entries";
-pageProps.aclObjectName = "ADDMEDIA";
-pageProps.onunloadJavascriptMethod = "returnToEntryPage()";
-pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
+pageProps.navButtonName = "filesbrowse";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
 pageProps.pathToAppRoot="../";
+pageProps.helpText="";
 /*----------------------------------------------------*/
 %>
 
 <%@ include file="../globalheader.jsp" %>
 
-<%@ page import="reger.core.Debug"%>
-<%@ page import="org.apache.commons.io.FilenameUtils"%>
-<%@ page import="java.util.Calendar"%>
-<%@ page import="reger.files.*"%>
-<%@ page import="reger.core.db.Db"%>
-
 <%
+
 /*----------------------------------------------------*/
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-
-
-
-//Return to entry javascript
-mb.append(reger.core.Util.popupCloseReturnToEntryJavascript());
-mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-mb.append("<center>");
-mb.append("<font face=arial size=-1>");
-mb.append("<a href=\"javascript:returnToEntryPage()\">");
-mb.append("Back to the entry.");
-mb.append("</a>");
-mb.append("</font>");
-mb.append("</center>");
-mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-mb.append("<br>");
-
 
 boolean showFileBrowser = true;
 String thispagename = FilenameUtils.getName(request.getServletPath());
@@ -234,7 +226,7 @@ if (request.getParameter("action")!=null){
         }
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Please browse for files to upload to \\My Files\\"+path+"\\"));
         mb.append("<form action='upload-requestprocessor.log' method=post enctype='multipart/form-data'>");
-        mb.append("<input type=hidden name=returnurl value=\""+thispagename+"?eventid="+eventid+"&path="+reger.core.Util.cleanForHtml(path)+"\">");
+        mb.append("<input type=hidden name=returnurl value=\""+thispagename+"?path="+reger.core.Util.cleanForHtml(path)+"\">");
         mb.append("<input type=hidden name='path' value=\""+reger.core.Util.cleanForHtml(path)+"\">");
         mb.append("<input type=submit value='Upload Files'>");
         mb.append("<br><br>");
@@ -332,13 +324,12 @@ if (request.getParameter("action")!=null){
 }
 
 if(showFileBrowser){
-    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
     //Output the current browser html
-    FileBrowser fb = new FileBrowser(userSession, path, pageProps, thispagename, eventid);
-    fb.addActionForAllCheckedFiles(new FileBrowserFileAction("addfilestoentrystart", thispagename, "Add Checked To Entry"));
+    FileBrowser fb = new FileBrowser(userSession, path, pageProps, "files.log", eventid);
     fb.addActionForAllCheckedFiles(new FileBrowserFileAction("deletefilesstart", thispagename, "Delete Checked"));
     fb.addActionForAllCheckedFiles(new FileBrowserFileAction("movefilesstart", thispagename, "Move Checked"));
     fb.addActionForAllCheckedFiles(new FileBrowserFileAction("renamefilesstart", thispagename, "Rename Checked"));
+    fb.addActionForAllCheckedFiles(new FileBrowserFileAction("addfilestoentrystart", thispagename, "Add Checked To Entry"));
     fb.addLinkToCurrentDirectory(new FileBrowserDirectoryLink("New Directory", thispagename+"?action=newdirectorystart&path=", "add.gif"));
     fb.addLinkToCurrentDirectory(new FileBrowserDirectoryLink("Upload Files", thispagename+"?action=uploadstart&path=", "upload.gif"));
     fb.addLinkToCurrentDirectory(new FileBrowserDirectoryLink("Rename", thispagename+"?action=renamedirectorystart&path=", "rename.gif"));
@@ -346,73 +337,19 @@ if(showFileBrowser){
     fb.addLinkToCurrentDirectory(new FileBrowserDirectoryLink("Delete", thispagename+"?action=deletedirectorystart&path=", "delete.gif"));
     fb.process();
     mb.append(fb.getHtml());
-    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
 }
 
 
 
 
 
-
-
-
-
-
-
-
-//debug
-Debug.debug(5, "", reger.core.ErrorDissect.ServletUtilsdissect(request));
-
-
-
-
-
-
-
-
-
-mb.append("<br><br>");
-
-
-//if (!reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
-//    mb.append(reger.ui.BubbleBox.start("Advanced Upload", pageProps.pathToAppRoot));
-//
-//    mb.append("<center>");
-//    mb.append("<br><font face=arial size=-1>");
-//    mb.append("Or, you can use the Advanced Upload Tool.");
-//    mb.append("</font>");
-//
-//    mb.append("<form action=entry-addmedia-advanced.log method=get>");
-//    mb.append("<input type=hidden name=eventid value="+localEventid+">");
-//
-//    mb.append("<font face=arial size=-2>");
-//    mb.append("Choose a category to upload to:");
-//    mb.append("</font>");
-//    mb.append("<br>");
-//
-//    String helpImagetags2 = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.", false, pageProps.pathToAppRoot);
-//    mb.append("<br>");
-//    mb.append("<font face=arial size=-2>Optional Keyword Tags "+helpImagetags2+":</font><br><input type='text' name='imagetags' value=\"\" size='35' maxlength='254' style=\"font-size: 10px;\">");
-//    mb.append("<br>");
-//    mb.append("<input type='submit' name='Submit' value='Start Advanced Upload'/>");
-//    mb.append("</form>");
-//
-//    mb.append("</center>");
-//
-//    //End the page
-//    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-//}
-
-
-//Output the page
-out.println(mb.toString());
-
 %>
 
 <%
 /*----------------------------------------------------*/
 /*                  Side Column                       */
-        StringBuffer sc = new StringBuffer();
+    StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
 
 //sc.append("This is a ");
@@ -420,4 +357,4 @@ out.println(mb.toString());
 %>
 
 
-<%//@ include file="../globalfooter.jsp" %>
+<%@ include file="../globalfooter.jsp" %>

@@ -115,7 +115,7 @@ if (pageProps.action.equals("searchgroups") && request.getParameter("searchterms
                 if(userSession.getAccountuser().isLoggedIn){
                     mb.append("<td valign=top align=center>");
                     mb.append("<font face=arial size=-2>");
-                    mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/groups-edit.log?action=join&groupid="+group.getGroupid()+"'>");
+                    mb.append("<a href='"+userSession.getAccountuser().getSiteRootUrlOfPrimaryAccount(userSession)+"/myhome/groups-join.log?action=join&groupid="+group.getGroupid()+"'>");
                     mb.append("<img src='../images/plus-icon.gif' border=0>");
                     mb.append("<br>");
                     mb.append("Join Group");

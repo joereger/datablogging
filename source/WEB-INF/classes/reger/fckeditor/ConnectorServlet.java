@@ -113,7 +113,7 @@ public class ConnectorServlet extends HttpServlet {
             }
         }
 
-        
+
         document.getDocumentElement().normalize();
         try {
             TransformerFactory tFactory = TransformerFactory.newInstance();
@@ -194,7 +194,7 @@ public class ConnectorServlet extends HttpServlet {
                          localEventid = Integer.parseInt(rstHighEvent[0][0]);
                     }
                 }
-                ul.save(localEventid, "", 0, userSession);
+                ul.save(localEventid, "", 0, userSession, "");
             } else {
                 retVal = "203";
             }
@@ -286,7 +286,7 @@ public class ConnectorServlet extends HttpServlet {
 
                     //myEl.setAttribute("name","mediaout.log?imageid="+rstImg[i][0]+java.net.URLEncoder.encode("&", "UTF-8")+"name="+rstImg[i][1]);
                     //myEl.setAttribute("name","mediaout.log?imageid="+rstImg[i][0]);
-                    myEl.setAttribute("name","mediaout.log?imageid="+rstImg[i][0]+"&file="+rstImg[i][1]);
+                    myEl.setAttribute("name","mediaout.log?imageid="+rstImg[i][0]+"&filename="+rstImg[i][1]);
                     myEl.setAttribute("size",""+Long.parseLong(rstImg[i][2])/1024);
 
 

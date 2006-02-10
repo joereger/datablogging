@@ -1,4 +1,6 @@
 <%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.files.File"%>
+<%@ page import="reger.cache.AccountCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -24,10 +26,20 @@ pageProps.pathToAppRoot="../";
 
 
 //Delete the image if it's called for... don't worry... it'll only be deleted if the account owner themselves is asking for it to be deleted.
-if (pageProps.action.equals("deleteimage")){
-    if (request.getParameter("imageid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))){
-        userSession.getAccountuser().deleteImage(Integer.parseInt(request.getParameter("imageid")), userSession.getAccountuser());
+if (pageProps.action.equals("deleteprofileimage")){
+    if(userSession.getAccountuser().getProfileimageid()>0){            
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstImg= Db.RunSQL("SELECT filename FROM image WHERE imageid='"+userSession.getAccountuser().getProfileimageid()+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstImg!=null && rstImg.length>0){
+            String filename = rstImg[0][0];
+            File file = new File(AccountCache.get(userSession.getAccountuser().getAccountid()), filename);
+            file.delete();
+        }
     }
+
 }
 
 //Delete the image if it's called for...

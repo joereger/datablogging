@@ -53,6 +53,21 @@
         <to type="redirect" last="true">/$1$2/myhome/</to>
     </rule>
 
+    <!--
+    <rule>
+        <name>Forgotten Trailing Slash on Virtual Directory</name>
+        <note>When users type just the virtual directory and forget the slash</note>
+        <from>/(~|\%7e)([a-zA-Z0-9\-]*)/files/(.*)</from>
+        <to type="redirect" last="true">/$1$2/mediaout.log?file=$3</to>
+    </rule>
+    -->
+
+    <rule>
+        <name>Forgotten Trailing Slash on Virtual Directory</name>
+        <note>When users type just the virtual directory and forget the slash</note>
+        <from>/(~|\%7e)([a-zA-Z0-9\-]*)/files/(.*)</from>
+        <to last="false">/$1$2/mediaout.log?file=$3</to>
+    </rule>
 
     <rule>
         <name>Virtual Directories With Querystring</name>
@@ -126,13 +141,6 @@
         <to>/contentpage.log?contentpageid=$1&amp;$3</to>
     </rule>
 
-    <!-- Group Rules -->
-    <rule>
-        <name>Group</name>
-        <note>The group redirect.</note>
-        <from>/groups/group([0-9]+).log(\?)*(.*)</from>
-        <to>/groups/group.log?groupid=$1&amp;$3</to>
-    </rule>
 
     <!-- Graph Pages -->
     <rule>
@@ -201,30 +209,6 @@
         <to>/rss-rome.log?logid=-1&amp;type=$1&amp;$3</to>
     </rule>
 
-    <!-- Google Maps XML -->
-    <!--
-    <rule>
-        <name>GoogleMapsTestXML</name>
-        <note>The google maps url.</note>
-        <from>/test/googlemap-locationid([0-9]+).xml(\?)*(.*)</from>
-        <to>/test/googlemapxml.log?locationid=$1&amp;$3</to>
-    </rule>
-
-    <rule>
-        <name>GoogleMapsXML</name>
-        <note>The google maps url.</note>
-        <from>/googlemap-locationid([0-9]+).xml(\?)*(.*)</from>
-        <to>/googlemapxml.log?locationid=$1&amp;$3</to>
-    </rule>
-    -->
-
-    <!-- Rss Groups -->
-    <rule>
-        <name>Rss Groups</name>
-        <note>The rss url.</note>
-        <from>/groups/group([0-9]+).xml(\?)*(.*)</from>
-        <to>/groups/rss-groups.log?groupid=$1&amp;type=rss_2.0&amp;$3</to>
-    </rule>
 
     <!-- Invitation -->
     <rule>
@@ -251,7 +235,12 @@
     </rule>
 
 
-
+    <rule>
+        <name>File Access</name>
+        <note>Allows access to the files in user's file dir.</note>
+        <from>/files/(.*)(\?)*(.*)</from>
+        <to>/mediaout.log?file=$2&amp;$4</to>
+    </rule>
 
 
 

@@ -5,6 +5,8 @@ import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
  *
  */
@@ -39,7 +41,7 @@ public class ImageListHtml {
             }
         }
 
-        String sqlSelect = "SELECT DISTINCT image.imageid, description, title, title, event.eventid, date, originalfilename, image.sizeinbytes, megalog.logid, image.image ";
+        String sqlSelect = "SELECT DISTINCT image.imageid, description, title, title, event.eventid, date, originalfilename, image.sizeinbytes, megalog.logid, image.image, image.filename ";
 
         String sqlSelectCount = "SELECT count(*) ";
 
@@ -210,7 +212,7 @@ public class ImageListHtml {
                     mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + entrykeyQueryString + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
                     mb.append("<img src='" + mediaoutPath + "mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "' border=0></a>");
                     if (!rstImagelist[i][6].equals("")) {
-                        mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + rstImagelist[i][6] + "</font>");
+                        mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + FilenameUtils.getName(rstImagelist[i][10]) + "</font>");
                     }
                     if (!rstImagelist[i][7].equals("")) {
                         mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImagelist[i][7] + " bytes</font>");
@@ -307,19 +309,23 @@ public class ImageListHtml {
             }
         }
 
+        String sql = "image LEFT JOIN tagimagelink ON image.imageid=tagimagelink.imageid LEFT JOIN tag ON tagimagelink.tagid=tag.tagid, event, megalog WHERE event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid(), true)+" AND image.eventid=event.eventid "+tagSql+" AND "+reger.Entry.sqlOfLiveEntry+" AND image.accountid='" + userSession.getAccount().getAccountid() + "'";
+
+        reger.core.Debug.debug(3, "ImageListHtml.java", sql);
+
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImageList = Db.RunSQL("SELECT DISTINCT image.imageid, image.image, image.description FROM image, tag, tagimagelink, event, megalog WHERE event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid(), true)+" AND image.eventid=event.eventid "+tagSql+" AND "+reger.Entry.sqlOfLiveEntry+" AND tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "' ORDER BY event.date DESC, image.imageid ASC LIMIT " + limitMin +"," + limitMax);
+        String[][] rstImageList = Db.RunSQL("SELECT DISTINCT image.imageid, image.image, image.description FROM "+sql+" ORDER BY event.date DESC, image.imageid ASC LIMIT " + limitMin +"," + limitMax);
         //-----------------------------------
         //-----------------------------------
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImageCount = Db.RunSQL("SELECT count(DISTINCT image.imageid) FROM image, tag, tagimagelink, event, megalog WHERE event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid(), true)+" AND image.eventid=event.eventid "+tagSql+" AND "+reger.Entry.sqlOfLiveEntry+" AND tagimagelink.tagid=tag.tagid and image.imageid=tagimagelink.imageid and image.accountid='" + userSession.getAccount().getAccountid() + "'");
+        String[][] rstImageCount = Db.RunSQL("SELECT count(DISTINCT image.imageid) FROM "+sql);
         //-----------------------------------
         //-----------------------------------
 
 
-       
+
         int recordcount = Integer.parseInt(rstImageCount[0][0]);
         mb.append("<table border=0 cellspacing=3 cellpadding=5>");
         mb.append("<tr>");

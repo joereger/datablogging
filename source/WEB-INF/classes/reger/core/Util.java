@@ -28,26 +28,21 @@ public class Util {
     }
 
     public static String cleanDirectorySlashesUseSystemFileSeparator(String directoryOrFileName){
-        reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator=" + File.separator);
-        reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName before replace="+directoryOrFileName);
-        if (File.separator.equals("\\\\")){
-            reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is backslash.");
-            directoryOrFileName.replaceAll("/", "\\\\");
-        } else if (File.separator.equals("/")){
-            reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is forwardslash.");
-            directoryOrFileName.replaceAll("\\\\", "/");
-        }
-        reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName after replace="+directoryOrFileName);
-        return directoryOrFileName;
+        return FilenameUtils.normalize(directoryOrFileName);
+//        reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator=" + File.separator);
+//        reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName before replace="+directoryOrFileName);
+//        if (File.separator.equals("\\\\")){
+//            reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is backslash.");
+//            directoryOrFileName.replaceAll("/", "\\\\");
+//        } else if (File.separator.equals("/")){
+//            reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "File.separator is forwardslash.");
+//            directoryOrFileName.replaceAll("\\\\", "/");
+//        }
+//        reger.core.Debug.debug(5, "Util.cleanDirectorySlashesUseSystemFileSeparator()", "directoryOrFileName after replace="+directoryOrFileName);
+//        return directoryOrFileName;
     }
 
-    public static String escapeBackslash(String instring){
-        if (instring!=null){
-            instring=instring.replaceAll("\\\\", "\\\\\\\\");
-            return instring;
-        }
-        return "";
-    }
+  
 
     /**
     * This function accepts a string and removes/replaces special
@@ -85,6 +80,7 @@ public class Util {
     public static String cleanForSQL(String instring){
         if (instring!=null && !instring.equals("")) {
             instring=instring.replaceAll("'", "''");
+            instring=instring.replaceAll("\\\\", "\\\\\\\\");
             return instring;
         } else {
             return "";
@@ -831,18 +827,18 @@ public class Util {
     /**
      * Delete a file and fail with an error if necessary
      */
-     public static void deleteFile(String filePath) {
-        try {
-            //This is just a safety check to make sure I don't try to delete root or something crazy like that
-            if (!filePath.equals("") && !filePath.equals("thumbnails") && !filePath.equals("\\")){
-                //Get a file handler
-                File filehandler = new File(filePath);
-                filehandler.delete();
-            }
-        } catch (Exception e) {
-            Debug.errorsave(e, "");
-        }
-    }
+//     public static void deleteFile(String filePath) {
+//        try {
+//            //This is just a safety check to make sure I don't try to delete root or something crazy like that
+//            if (!filePath.equals("") && !filePath.equals("thumbnails") && !filePath.equals("\\")){
+//                //Get a file handler
+//                File filehandler = new File(filePath);
+//                filehandler.delete();
+//            }
+//        } catch (Exception e) {
+//            Debug.errorsave(e, "");
+//        }
+//    }
 
     /**
      * Return the size in bytes of an incoming String.

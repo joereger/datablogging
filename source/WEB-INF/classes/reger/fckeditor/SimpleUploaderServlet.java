@@ -102,7 +102,7 @@ public class SimpleUploaderServlet extends HttpServlet {
                      localEventid = Integer.parseInt(rstHighEvent[0][0]);
                 }
             }
-            ul.save(localEventid, "", userSession.getAccountuser().getAccountuserid(), userSession);
+            ul.save(localEventid, "", userSession.getAccountuser().getAccountuserid(), userSession, currentPath);
         }
         //Reger.com work end
 

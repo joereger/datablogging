@@ -1,0 +1,94 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Add Images/Media";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDMEDIA";
+//pageProps.onunloadJavascriptMethod = "returnToEntryPage()";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
+pageProps.pathToAppRoot="../";
+pageProps.isUploadPage = true;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%@ page import="org.apache.commons.fileupload.*,
+                 reger.core.db.Db,
+                 reger.Help" %>
+<%@ page import="java.io.*" %>
+<%@ page import="reger.core.Debug"%>
+<%@ page import="org.apache.commons.io.FilenameUtils"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Note that the ul Upload object is available as long as pageProps.isUploadPage=true
+
+
+//Return to entry javascript
+//mb.append(reger.core.Util.popupCloseReturnToEntryJavascript());
+
+//debug
+Debug.debug(5, "upload-requestprocessor.log", reger.core.ErrorDissect.ServletUtilsdissect(request));
+
+//Parse the upload
+//reger.Upload ul = new reger.Upload(request);
+
+int localEventid=0;
+if (ul.requestParams.get("eventid")!=null && reger.core.Util.isinteger(ul.requestParams.get("eventid").toString())){
+    localEventid = Integer.parseInt(ul.requestParams.get("eventid").toString());
+}
+
+String path="";
+if (ul.requestParams.get("path")!=null){
+    path = FilenameUtils.normalize((String)ul.requestParams.get("path"));
+}
+if (path==null || path.equals(java.io.File.separator)){
+    path = "";
+}
+
+String imagetags = "";
+if (ul.requestParams.get("imagetags")!=null){
+    imagetags = ul.requestParams.get("imagetags").toString();
+}
+
+String returnurl="files.log";
+if (ul.requestParams.get("returnurl")!=null){
+    returnurl = (String)ul.requestParams.get("returnurl");
+}
+
+//Save the upload
+if (ul.isMultipart) {
+    //Note the false indicating that this is not a profile upload.
+    //Note that accountuserid param is 0 because this is not a profile upload.
+    Debug.debug(5, "upload-requestprocessor.log", "Before ul.save()");
+    ul.save(localEventid, imagetags, 0, userSession, path);
+    Debug.debug(5, "upload-requestprocessor.log", "After ul.save()");
+}
+
+//Redirect if upload was successful
+String msg = "";
+if (ul.hasenoughfreespace) {
+    if (ul.isMultipart){
+        //Flush cache
+        reger.cache.EntryCache.flush(localEventid);
+        msg = "Upload successful.";
+    }
+} else {
+    //@todo Be a better salesman... the user just hit an account limit.  Love them.  Feel their pain.  Offer a fix... for a small fee.
+    msg = "Not enough storage space available on this account";
+}
+
+response.sendRedirect(returnurl+"&msg="+msg);
+return;
+%>

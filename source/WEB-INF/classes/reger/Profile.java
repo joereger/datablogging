@@ -38,11 +38,11 @@ public class Profile {
         if (userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
             mb.append("<font face=arial size=-1 color=#0000ff>");
             if (!iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
-                mb.append(" (<a href='settings-profile.log?iseditable=1'>");
+                mb.append(" (<a href='"+pathToAppRoot+"myhome/settings-profile.log?iseditable=1'>");
                 mb.append("Edit Profile");
                 mb.append("</a>)");
             } else {
-                mb.append(" (<a href='settings-profile.log?iseditable=0'>");
+                mb.append(" (<a href='"+pathToAppRoot+"myhome/settings-profile.log?iseditable=0'>");
                 mb.append("View Profile");
                 mb.append("</a>)");
             }
@@ -69,9 +69,9 @@ public class Profile {
         mb.append("<td valign=top bgcolor=#cccccc>");
         mb.append("<font face=arial size=-1>");
         mb.append("<strong>");
-        mb.append("My Pictures");
+        //mb.append("My Pictures");
         if (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
-            mb.append(" (<a href='settings-addprofileimage.log'>");
+            mb.append(" (<a href='"+pathToAppRoot+"myhome/settings-addprofileimage.log'>");
             mb.append("Add Photo");
             mb.append("</a>)");
         }
@@ -82,52 +82,30 @@ public class Profile {
         mb.append("</table>");
 
 
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstImg= Db.RunSQL("SELECT imageid FROM image WHERE accountuserid='"+accountuser.getAccountuserid()+"' ORDER BY image.order ASC");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstImg!=null && rstImg.length>0){
-        	for(int i=0; i<rstImg.length; i++){
-        	    String bgcolor="#ffffff";
-        	    String isThumbnail = "yes";
-        	    String width = "75";
-        	    if (i==0){
-                    bgcolor="#e6e6e6";
-                    isThumbnail="no";
-                    width="200";
-                }
 
-        	    mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0>");
-                mb.append("<tr>");
-                mb.append("<td valign=top align=center bgcolor="+bgcolor+">");
-                mb.append("<a href='"+pathToAppRoot + "mediaouthtml.log?imageid=" + rstImg[i][0] + "&isProfileImage=true' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
-                mb.append("<img src='"+pathToAppRoot + "mediaout.log?imageid=" + rstImg[i][0] + "&isProfileImage=true&isthumbnail="+isThumbnail+"' width="+width+" border=0>");
-                mb.append("</a>");
-                if (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
-                    mb.append("<br>");
-                    mb.append("<font face=arial size=-2>");
-                    mb.append("<a href='settings-profile.log?imageid="+rstImg[i][0]+"&action=deleteimage'>");
-                    mb.append("Delete");
-                    mb.append("</a>");
-                    mb.append("</font>");
-                }
-                mb.append("</td>");
-                mb.append("</tr>");
-                mb.append("</table>");
-        	}
-        } else {
-
-            //No picture used at all
-            mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0>");
-            mb.append("<tr>");
-            mb.append("<td valign=top align=center bgcolor=#e6e6e6>");
-            mb.append("<img src='"+pathToAppRoot + reger.Vars.PROFILEGENERICIMAGE +"' border=0>");
-            mb.append("</td>");
-            mb.append("</tr>");
-            mb.append("</table>");
-
+        String profileImageUrl = accountuser.primaryImage(userSession, true);
+        mb.append("<table cellpadding=10 cellspacing=2 width=100% border=0>");
+        mb.append("<tr>");
+        mb.append("<td valign=top align=center bgcolor=#cccccc>");
+        if (accountuser.getProfileimageid()>0){
+            mb.append("<a href='"+pathToAppRoot + "mediaouthtml.log?imageid=" + accountuser.getProfileimageid() + "&isProfileImage=true' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
         }
+        mb.append("<img src='"+profileImageUrl+"' width=100 border=0>");
+        if (accountuser.getProfileimageid()>0){
+            mb.append("</a>");
+        }
+        if (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid() && userSession.getAccountuser().getProfileimageid()>0){
+            mb.append("<br>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("<a href='settings-profile.log?action=deleteprofileimage'>");
+            mb.append("Delete");
+            mb.append("</a>");
+            mb.append("</font>");
+        }
+        mb.append("</td>");
+        mb.append("</tr>");
+        mb.append("</table>");
+
 
         //End main image table
 
@@ -242,60 +220,62 @@ public class Profile {
 
     public static StringBuffer getAccountuserfieldsHtml(reger.Accountuser accountuser, reger.UserSession userSession, boolean iseditable){
         StringBuffer mb = new StringBuffer();
-        mb.append("<table cellpadding=5 cellspacing=2 width=100% border=0>");
-        mb.append("<tr>");
-        mb.append("<td valign=top bgcolor=#cccccc>");
-        mb.append("<font face=arial size=-1>");
-        mb.append("<strong>");
-        mb.append("About Me");
-        if (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
-            mb.append(" (<a href='settings-addaccountuserfield.log'>");
-            mb.append("Add Information to My Profile");
-            mb.append("</a>)");
-        }
-        mb.append("</strong>");
-        mb.append("</font>");
-        mb.append("</td>");
-        mb.append("</tr>");
-        //Iterate the accountuserfields
-        for (int i = 0; i < accountuser.getAccountuserfields().size(); i++) {
-            //Get the field
-            reger.Accountuserfield field = (reger.Accountuserfield) accountuser.getAccountuserfields().get(i);
+        if(accountuser.getAccountuserfields().size()>0 || (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid())){
+            mb.append("<table cellpadding=5 cellspacing=2 width=100% border=0>");
             mb.append("<tr>");
-            mb.append("<td valign=top bgcolor=#e6e6e6>");
+            mb.append("<td valign=top bgcolor=#cccccc>");
+            mb.append("<font face=arial size=-1>");
+            mb.append("<strong>");
+            mb.append("About Me");
             if (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
-                mb.append("<font face=arial size=-2>");
-                mb.append("<a href='settings-profile.log?action=deleteaccountuserfield&accountuserfieldid="+field.accountuserfieldid+"'>");
-                mb.append("Delete");
-                mb.append("</a>");
-                mb.append("</font>");
-                mb.append("<br>");
-                mb.append("<input type=text name=title-accountuserfieldid-"+field.accountuserfieldid+" size=35 maxlength=255 value=\""+reger.core.Util.cleanForHtml(field.fieldtitle)+"\">");
-            } else {
-                mb.append("<font face=arial size=-2>");
-                mb.append("<strong>");
-                mb.append(field.fieldtitle);
-                mb.append("</strong>");
-                mb.append("</font>");
+                mb.append(" (<a href='settings-addaccountuserfield.log'>");
+                mb.append("Add Information to My Profile");
+                mb.append("</a>)");
             }
+            mb.append("</strong>");
+            mb.append("</font>");
             mb.append("</td>");
             mb.append("</tr>");
-            mb.append("<tr>");
-            mb.append("<td valign=top>");
-            if (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
-                mb.append("<textarea name=fielddata-accountuserfieldid-"+field.accountuserfieldid+" cols=45 rows=3 style=\"font-size: 11px;font-family: arial;\">");
-                mb.append(field.fielddata);
-                mb.append("</textarea>");
+            //Iterate the accountuserfields
+            for (int i = 0; i < accountuser.getAccountuserfields().size(); i++) {
+                //Get the field
+                reger.Accountuserfield field = (reger.Accountuserfield) accountuser.getAccountuserfields().get(i);
+                mb.append("<tr>");
+                mb.append("<td valign=top bgcolor=#e6e6e6>");
+                if (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
+                    mb.append("<font face=arial size=-2>");
+                    mb.append("<a href='settings-profile.log?action=deleteaccountuserfield&accountuserfieldid="+field.accountuserfieldid+"'>");
+                    mb.append("Delete");
+                    mb.append("</a>");
+                    mb.append("</font>");
+                    mb.append("<br>");
+                    mb.append("<input type=text name=title-accountuserfieldid-"+field.accountuserfieldid+" size=35 maxlength=255 value=\""+reger.core.Util.cleanForHtml(field.fieldtitle)+"\">");
+                } else {
+                    mb.append("<font face=arial size=-2>");
+                    mb.append("<strong>");
+                    mb.append(field.fieldtitle);
+                    mb.append("</strong>");
+                    mb.append("</font>");
+                }
+                mb.append("</td>");
+                mb.append("</tr>");
+                mb.append("<tr>");
+                mb.append("<td valign=top>");
+                if (iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
+                    mb.append("<textarea name=fielddata-accountuserfieldid-"+field.accountuserfieldid+" cols=45 rows=3 style=\"font-size: 11px;font-family: arial;\">");
+                    mb.append(field.fielddata);
+                    mb.append("</textarea>");
 
-            } else {
-                mb.append("<font face=arial size=-2>");
-                mb.append(field.fielddata);
-                mb.append("</font>");
+                } else {
+                    mb.append("<font face=arial size=-2>");
+                    mb.append(field.fielddata);
+                    mb.append("</font>");
+                }
+                mb.append("</td>");
+                mb.append("</tr>");
             }
-            mb.append("</td>");
-            mb.append("</tr>");
+            mb.append("</table>");
         }
-        mb.append("</table>");
         return mb;
     }
 
