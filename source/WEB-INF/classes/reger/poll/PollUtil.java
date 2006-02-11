@@ -119,6 +119,26 @@ public class PollUtil extends Poll {
                             pollAnswer.save();
                         }
                     }
+                    // Save approved Answers, if owner approves any.
+                    String[] unApprovedAnswers = request.getParameterValues("unApprovedAnswers");
+                    if (unApprovedAnswers != null && unApprovedAnswers.length > 0) {
+                        PollReaderAnswer pollReaderAnswer = null;
+                        for (int i=0;i<unApprovedAnswers.length;i++) {
+                            pollReaderAnswer = new PollReaderAnswer(Integer.parseInt(unApprovedAnswers[i]));
+                            pollReaderAnswer.setIsapproved(true);
+                            pollReaderAnswer.save();
+                        }
+                    }
+                    // Save approved comments, if owner approves any.
+                    String[] unApprovedComments = request.getParameterValues("unApprovedComments");
+                    if (unApprovedAnswers != null && unApprovedAnswers.length > 0) {
+                        PollReaderComment pollReaderComment = null;
+                        for (int i=0;i<unApprovedAnswers.length;i++) {
+                            pollReaderComment = new PollReaderComment(Integer.parseInt(unApprovedComments[i]));
+                            pollReaderComment.setIsapproved(true);
+                            pollReaderComment.save();
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
