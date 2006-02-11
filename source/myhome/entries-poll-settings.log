@@ -211,7 +211,9 @@
                 if (!key.substring(0, key.indexOf("~")).trim().equalsIgnoreCase("")) {
                     mb.append("<br>");
                     mb.append(key.substring(0, key.indexOf("~")));
-                    mb.append("<input type=checkbox name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+">");
+                    //mb.append("<input type=checkbox name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+">");
+                    mb.append("<input type=radio name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+"_YES> Yes");
+                    mb.append("<input type=radio name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+"_NO>No");
                 }
             }
         }
@@ -228,7 +230,9 @@
                 if (!key.substring(0, key.indexOf("~")).trim().equalsIgnoreCase("")) {
                     mb.append("<br>");
                     mb.append(key.substring(0, key.indexOf("~")));
-                    mb.append("<input type=checkbox name=unApprovedComments value="+key.substring(key.indexOf("~")+1, key.length())+">");
+                    //mb.append("<input type=checkbox name=unApprovedComments value="+key.substring(key.indexOf("~")+1, key.length())+">");
+                    mb.append("<input type=radio name=unApprovedComments value="+key.substring(key.indexOf("~")+1, key.length())+"_YES>Yes");
+                    mb.append("<input type=radio name=unApprovedComments value="+key.substring(key.indexOf("~")+1, key.length())+"_NO>No");
                 }
             }
         }
