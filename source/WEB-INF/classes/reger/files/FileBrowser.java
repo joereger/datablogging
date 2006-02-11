@@ -59,7 +59,7 @@ public class FileBrowser {
     public String getHtml(){
         StringBuffer mb = new StringBuffer();
 
-        mb.append("<table cellpadding=10 cellspacing=10 border=0>");
+        mb.append("<table cellpadding=10 cellspacing=0 border=0>");
         mb.append("<tr>");
         mb.append("<td valign=top colspan=3>");
         //Current folder start
@@ -111,7 +111,7 @@ public class FileBrowser {
         mb.append("</tr>");
         mb.append("<tr>");
         mb.append("<td valign=top nowrap>");
-        mb.append("<img src='"+pageProps.pathToAppRoot+"images/clear.gif' width=10 height=1 border=0 align=middle>");
+        mb.append("<img src='"+pageProps.pathToAppRoot+"images/clear.gif' width=1 height=1 border=0 align=middle>");
         mb.append("</td>");
         mb.append("<td valign=top nowrap>");
         //Directory list start

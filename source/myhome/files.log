@@ -350,10 +350,10 @@ if (request.getParameter("action")!=null){
 if(showFileBrowser){
     //Output the current browser html
     FileBrowser fb = new FileBrowser(userSession, path, pageProps, "files.log", eventid);
+    fb.addActionForAllCheckedFiles(new FileBrowserFileAction("addfilestoentrystart", thispagename, "Add Checked To Entry"));
     fb.addActionForAllCheckedFiles(new FileBrowserFileAction("deletefilesstart", thispagename, "Delete Checked"));
     fb.addActionForAllCheckedFiles(new FileBrowserFileAction("movefilesstart", thispagename, "Move Checked"));
     fb.addActionForAllCheckedFiles(new FileBrowserFileAction("renamefilesstart", thispagename, "Rename Checked"));
-    fb.addActionForAllCheckedFiles(new FileBrowserFileAction("addfilestoentrystart", thispagename, "Add Checked To Entry"));
     fb.addLinkToCurrentDirectory(new FileBrowserDirectoryLink("New Directory", thispagename+"?action=newdirectorystart&path=", "add.gif"));
     fb.addLinkToCurrentDirectory(new FileBrowserDirectoryLink("Upload Files", thispagename+"?action=uploadstart&path=", "upload.gif"));
     fb.addLinkToCurrentDirectory(new FileBrowserDirectoryLink("Rename", thispagename+"?action=renamedirectorystart&path=", "rename.gif"));

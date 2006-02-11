@@ -4,16 +4,16 @@
 <%@ page import="java.util.Iterator"%>
 <%@ page import="java.util.ArrayList"%>
 <%
-    /*----------------------------------------------------*/
+/*----------------------------------------------------*/
 /*                  Page Config                       */
-    reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-    pageProps.siteSection = pageProps.ADMINSITE;
-    pageProps.title = "Edit Poll";
-    pageProps.isPasswordProtected = true;
-    pageProps.navButtonName = "entriespolls";
-    pageProps.aclObjectName = "ADDEDITENTRIES";
-    pageProps.trafficType = reger.Vars.TRAFFICTYPEADMINMISC;
-    pageProps.pathToAppRoot = "../";
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection = pageProps.ADMINSITE;
+pageProps.title = "Edit Poll";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entriespolls";
+pageProps.aclObjectName = "ADDEDITENTRIES";
+pageProps.trafficType = reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot = "../";
 /*----------------------------------------------------*/
 %>
 

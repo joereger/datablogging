@@ -29,12 +29,6 @@
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
     String eventid = request.getParameter("eventid");
-    if (request.getParameter("poll") != null && request.getParameter("poll").equals("on")) {
-        if (eventid != null && reger.core.Util.isinteger(eventid)) {
-            response.sendRedirect("entries-poll-settings.log?eventid="+eventid+"&action=add ");
-            return;
-        }
-    }
     if (eventid == null || !reger.core.Util.isinteger(eventid)) {
         response.sendRedirect("index.log");
         return;
@@ -45,26 +39,31 @@
 
     if (pageProps.action.equals("submit")) {
         //Groups
-        ArrayList<Integer> groupids = new ArrayList<Integer>();
-        if (request.getParameterValues("groupid") != null) {
-            String[] inGroups = request.getParameterValues("groupid");
-            for (int i = 0; i < inGroups.length; i++) {
-                if (reger.core.Util.isinteger(inGroups[i])) {
-                    groupids.add(Integer.parseInt(inGroups[i]));
+        try {
+            ArrayList<Integer> groupids = new ArrayList<Integer>();
+            if (request.getParameterValues("groupid") != null) {
+                String[] inGroups = request.getParameterValues("groupid");
+                for (int i = 0; i < inGroups.length; i++) {
+                    if (reger.core.Util.isinteger(inGroups[i])) {
+                        groupids.add(Integer.parseInt(inGroups[i]));
+                    }
                 }
             }
-        }
-        entry.groupids = groupids;
-
-        //Try the save
-        try {
+            entry.groupids = groupids;
             entry.editEntryAll(userSession.getAccount(), userSession.getAccountuser(), userSession.getPl());
             EntryCache.flush(entry.eventid);
-            response.sendRedirect("index.log?msg=entryedited&eventid=" + entry.eventid + "&logid=" + entry.logid);
-            return;
         } catch (ValidationException vex) {
             mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br><br>" + vex.getErrorsAsSingleString()));
         }
+
+        //Polls
+        if (request.getParameter("poll")!=null && request.getParameter("poll").equals("1")){
+            response.sendRedirect("entries-poll-settings.log?eventid=" + entry.eventid + "&action=add");
+            return;
+        }
+
+        response.sendRedirect("index.log?msg=entryedited&eventid=" + entry.eventid + "&logid=" + entry.logid);
+        return;
     }
 
 
@@ -76,19 +75,29 @@
         mb.append("<input type=hidden name=eventid value='" + entry.eventid + "'>");
         mb.append("<input type=hidden name=logid value='" + entry.logid + "'>");
 
-        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  Your entry has been saved.  You can now add optional information below."));
-        mb.append("<br>");
-        mb.append("<center>");
+        //mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  Your entry has been saved.  You can now add optional information below."));
+        mb.append("<table cellpadding=10 cellspacing=0 border=0>");
+        mb.append("<tr>");
+        mb.append("<td align=left valign=top>");
+        //mb.append("<img src='../images/groups-lg.gif' align=left>");
+        mb.append("</td>");
+        mb.append("<td align=right valign=top>");
+        mb.append("<font face=arial size=+2 color=#cccccc><b>");
+        mb.append("Optional Features");
+        mb.append("</b></font><br><font face=arial size=-2><b>");
+        mb.append("</b></font></td>");
+        mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
         mb.append("<input type=submit value='Continue'>");
-        mb.append("</center>");
-        mb.append("<br>");
-        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+        mb.append("</td>");
+        mb.append("</tr>");
+        //mb.append("</table>");
+        //mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
 
         //Begin Groups
         if (userSession.getAccountuser().userCanDoAcl("POSTENTRYTOGROUP", userSession.getAccount().getAccountid())) {
             haveSomethingToAdd = true;
-            mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-            mb.append("<table cellpadding=10 cellspacing=0 border=0>");
+            //mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+            //mb.append("<table cellpadding=10 cellspacing=0 border=0>");
             mb.append("<tr>");
             mb.append("<td align=left valign=top>");
             mb.append("<img src='../images/groups-lg.gif' align=left>");
@@ -140,37 +149,58 @@
             }
             mb.append("</td>");
             mb.append("</tr>");
-            mb.append("</table>");
-            mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+            //mb.append("</table>");
+            //mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         }
         //End Groups
 
         // Begin Poll
         mb.append("<br>");
-        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("<table cellpadding=10 cellspacing=0 border=0>");
+        //mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+        //mb.append("<table cellpadding=10 cellspacing=0 border=0>");
         mb.append("<tr>");
         mb.append("<td align=left valign=top>");
         mb.append("<img src='../images/groups-lg.gif' align=left>");
-        mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>");
+        mb.append("</td>");
         mb.append("<td align=right valign=top>");
         mb.append("<font face=arial size=+2><b>");
-        mb.append("Poll");
+        mb.append("Polls");
+        mb.append("</b></font><br><font face=arial size=-2><b>");
+        mb.append("Create a poll with this entry:");
         mb.append("</b></font></td>");
         mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
-        mb.append("");
-        mb.append("<input type=checkbox name=poll> ");
-        mb.append("<font face=arial size=-1><b>Click here to add a Poll to this entry</b></font>");
+        mb.append("<input type=checkbox name=poll value=1> ");
+        mb.append("<font face=arial size=-1><b>");
+        mb.append("Yes, create/edit a poll.");
+        mb.append("</b></font>");
         mb.append("</td>");
         mb.append("</tr>");
-        mb.append("</table>");
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+        //mb.append("</table>");
+        //mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         // End Poll
+
+
+        //mb.append("<table cellpadding=10 cellspacing=0 border=0>");
+        mb.append("<tr>");
+        mb.append("<td align=left valign=top>");
+        //mb.append("<img src='../images/groups-lg.gif' align=left>");
+        mb.append("</td>");
+        mb.append("<td align=right valign=top>");
+        mb.append("<font face=arial size=+2><b>");
+        mb.append("</b></font></td>");
+        mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
+        mb.append("<input type=submit value='Continue'>");
+        mb.append("</td>");
+        mb.append("</tr>");
+
+
+
+        mb.append("</table>");
+
 
         mb.append("</form>");
 
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+        //mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 
 
         if (!haveSomethingToAdd) {
