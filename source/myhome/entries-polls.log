@@ -40,12 +40,7 @@
                 String question = (String) stkr.nextElement();
                 String isOpen = (String) stkr.nextElement();
                 mb.append("<tr><td>");
-                // Link poll question only if it is open
-                if (isOpen.equalsIgnoreCase("1")) {
-                    mb.append( "<a href=entries-poll-settings.log?pollid="+pollid+">"+question+"</a>");
-                } else {
-                    mb.append(question);
-                }
+                mb.append( "<a href=entries-poll-settings.log?pollid="+pollid+">"+question+"</a>");
                 mb.append("</td><td>");
                 if (isOpen.equalsIgnoreCase("1")) {
                     mb.append("Open");
