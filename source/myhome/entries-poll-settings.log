@@ -1,4 +1,8 @@
 <%@ page import="reger.poll.PollUtil"%>
+<%@ page import="reger.poll.Poll"%>
+<%@ page import="java.util.HashMap"%>
+<%@ page import="java.util.Iterator"%>
+<%@ page import="java.util.ArrayList"%>
 <%
     /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -20,12 +24,28 @@
 /*                  Main Body                         */
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-    if (request.getParameter("submit") != null) {
-          PollUtil pollUtil = new PollUtil();
-          pollUtil.savePoll(request);
+    if (request.getParameter("submitPoll") != null) {
+          if (request.getParameter("submitPoll").equalsIgnoreCase("Save") || request.getParameter("submitPoll").equalsIgnoreCase("Open") || request.getParameter("submitPoll").equalsIgnoreCase("Closed") || request.getParameter("submitPoll").equalsIgnoreCase("Delete") || request.getParameter("submitPoll").equalsIgnoreCase("Reset")) {
+            PollUtil pollUtil = new PollUtil();
+            pollUtil.savePoll(request);
+          }
     } else {
+        Poll poll = null;
+        HashMap answerMap = null;
+        ArrayList dataList = null;
+        HashMap eventMap = null;
+        HashMap unApprovedAnswersMap = null;
+        HashMap unApprovedCommentsMap = null;
         if (request.getParameter("eventid") != null && reger.core.Util.isinteger(request.getParameter("eventid"))) {
             pageProps.entry.getEntryAll(Integer.parseInt(request.getParameter("eventid")));
+        }  if (request.getParameter("pollid") != null && !request.getParameter("pollid").trim().equalsIgnoreCase("")) {
+            poll = new Poll(Integer.parseInt(request.getParameter("pollid")));
+            PollUtil pollUtil = new PollUtil();
+            dataList = pollUtil.getAnswersByPollId(Integer.parseInt(request.getParameter("pollid")));
+            answerMap = (HashMap) dataList.get(0);
+            eventMap = (HashMap) dataList.get(1);
+            unApprovedAnswersMap = (HashMap) dataList.get(2);
+            unApprovedCommentsMap = (HashMap) dataList.get(3);
         }
         mb.append("<SCRIPT language=JavaScript>");
         mb.append("function submitForm() {");
@@ -36,81 +56,141 @@
         mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
         mb.append("<center><table>");
         mb.append("<tr><td>Question:</td>");
-        String value = request.getParameter("question");
-        if (value == null) {
+        String question = null;
+        if (poll != null && poll.getQuestion() != null && !poll.getQuestion().trim().equalsIgnoreCase("")) {
+            question = poll.getQuestion();
+        } else if (request.getParameter("question") != null && !request.getParameter("question").trim().equals("")) {
+            question = request.getParameter("question");
+        }
+        if (question == null) {
             mb.append("<td><input type=text name=question></td>");
         } else {
-            mb.append("<td><input type=text name=question value="+value+"></td>");
+            mb.append("<td><input type=text name=question value='"+question+"'></td>");
         }
         mb.append("</tr>");
         mb.append("<tr><td>Answers:</td>");
         int noOfTextFields = 0;
-        if (request.getParameter("noOfTextFields") == null) {
-            noOfTextFields = 0;
-        } else {
+        if (answerMap != null) {
+           noOfTextFields = answerMap.size();
+        } else if (request.getParameter("noOfTextFields") != null) {
             noOfTextFields = Integer.parseInt(request.getParameter("noOfTextFields"));
         }
         noOfTextFields += 5;
-        for (int i=1;i<=noOfTextFields;i++) {
-            value = request.getParameter("answer"+i);
-            if (i != 1) {
-               mb.append("<tr><td></td>");
+        String answer = null;
+        if (answerMap != null) {
+            Iterator iter = answerMap.keySet().iterator();
+            int count = 0;
+            while (iter.hasNext()) {
+               count ++;
+               answer = (String) iter.next();
+                if (count != 1) {
+                   mb.append("<tr><td></td>");
+                }
+                if (answer == null) {
+                    mb.append("<td><input type=text name=answer"+count+"></td>");
+                } else {
+                    mb.append("<td><input type=text name=answer"+count+" value='"+answer+"'></td>");
+                }
+                mb.append("</tr>");
             }
-            if (value == null) {
-                mb.append("<td><input type=text name=answer"+i+"></td>");
-            } else {
-                mb.append("<td><input type=text name=answer"+i+" value="+value+"></td>");
+            if (count != noOfTextFields) {
+                while (count < noOfTextFields) {
+                    count ++;
+                    mb.append("<tr><td></td><td><input type=text name=answer"+count+"></td></tr>");
+                }
             }
-            mb.append("</tr>");
+        } else {
+            for (int i=1;i<=noOfTextFields;i++) {
+                answer = request.getParameter("answer"+i);
+                if (i != 1) {
+                   mb.append("<tr><td></td>");
+                }
+                if (answer == null) {
+                    mb.append("<td><input type=text name=answer"+i+"></td>");
+                } else {
+                    mb.append("<td><input type=text name=answer"+i+" value='"+answer+"'></td>");
+                }
+                mb.append("</tr>");
+            }
         }
-        mb.append("<input type=hidden name=noOfTextFields value="+noOfTextFields+">");
-        mb.append("<input type=hidden name=eventid value="+request.getParameter("eventid")+">");
+        if (request.getParameter("pollid") != null) {
+            mb.append("<input type=hidden name=pollid value="+request.getParameter("pollid")+">");
+        }
         mb.append("<tr><td></td><td><a href=\"javascript: submitForm()\">add more >> </a></td>");
         mb.append("</tr>");
         mb.append("<tr><td>Reader Answers:</td>");
-        value = request.getParameter("readerscanaddownanswer");
-        if (value == null) {
+        String value = null;
+        if (request.getParameter("readerscanaddownanswer") != null && !request.getParameter("readerscanaddownanswer").trim().equals("")) {
+            value = request.getParameter("readerscanaddownanswer");
+        } else if (poll != null) {
+             value = new Boolean(poll.getReaderscanaddownanswer()).toString();
+        }
+        if (value == null || value != null && value.equalsIgnoreCase("false")) {
             mb.append("<td><input type=checkbox name=readerscanaddownanswer> Yes, readers can add their own answers.</td>");
-        } else if (value.equalsIgnoreCase("on")) {
-            mb.append("<td><input type=checkbox name=readerscanaddownanswer value=checked> Yes, readers can add their own answers.</td>");
+        } else if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
+            mb.append("<td><input type=checkbox name=readerscanaddownanswer value=\"yes\" checked> Yes, readers can add their own answers.</td>");
         }
         mb.append("</tr>");
         mb.append("<tr><td>Reader Comments:</td>");
-        value = request.getParameter("readerscanaddcomments");
-        if (value == null) {
+        if (request.getParameter("readerscanaddcomments") != null && !request.getParameter("readerscanaddcomments").trim().equals("")) {
+            value = request.getParameter("readerscanaddcomments");
+        } else if (poll != null) {
+             value = new Boolean(poll.getReaderscanaddcomments()).toString();
+        }
+        if (value == null || value != null && value.equalsIgnoreCase("false")) {
             mb.append("<td><input type=checkbox name=readerscanaddcomments> Yes, readers can add comments.</td>");
-        } else if (value.equalsIgnoreCase("on")) {
-            mb.append("<td><input type=checkbox name=readerscanaddcomments value=checked> Yes, readers can add comments.</td>");
+        } else if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
+            mb.append("<td><input type=checkbox name=readerscanaddcomments value=\"yes\" checked> Yes, readers can add comments.</td>");
         }
         mb.append("</tr>");
         mb.append("<tr><td></td>");
-        value = request.getParameter("readerscanvoteonreaderanswers");
-        if (value == null) {
+        if (request.getParameter("readerscanvoteonreaderanswers") != null && !request.getParameter("readerscanvoteonreaderanswers").trim().equals("")) {
+            value = request.getParameter("readerscanvoteonreaderanswers");
+        } else if (poll != null) {
+             value = new Boolean(poll.getReaderscanaddcomments()).toString();
+        }
+        if (value == null || value != null && value.equalsIgnoreCase("false")) {
             mb.append("<td>If Yes: <input type=checkbox name=readerscanvoteonreaderanswers> Readers can vote on each others answers.</td>");
-        } else if (value.equalsIgnoreCase("on")) {
-            mb.append("<td>If Yes: <input type=checkbox name=readerscanvoteonreaderanswers value=checked> Readers can vote on each others answers.</td>");
+        } else if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
+            mb.append("<td>If Yes: <input type=checkbox name=readerscanvoteonreaderanswers value=\"yes\" checked> Readers can vote on each others answers.</td>");
         }
         mb.append("</tr>");
         mb.append("<tr><td>Moderation:</td>");
-        value = request.getParameter("readerinputismoderated");
-        if (value == null) {
+        if (request.getParameter("readerinputismoderated") != null && !request.getParameter("readerinputismoderated").trim().equals("")) {
+            value = request.getParameter("readerinputismoderated");
+        } else if (poll != null) {
+             value = new Boolean(poll.getReaderscanaddcomments()).toString();
+        }
+        if (value == null || value != null && value.equalsIgnoreCase("false")) {
             mb.append("<td><input type=checkbox name=readerinputismoderated> Readers comments and answers must be approved.</td>");
-        } else if (value.equalsIgnoreCase("on")) {
-            mb.append("<td><input type=checkbox name=readerinputismoderated value=checked> Readers comments and answers must be approved.</td>");
+        } else if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
+            mb.append("<td><input type=checkbox name=readerinputismoderated value=\"yes\" checked> Readers comments and answers must be approved.</td>");
         }
         mb.append("</tr>");
         mb.append("</table></center>");
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         mb.append("</td>");
 
+        mb.append("<input type=hidden name=noOfTextFields value="+noOfTextFields+">");
         mb.append("<td>");
         mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("Poll is tied to entry called <a href=../entry.log?eventid=" + pageProps.entry.eventid + ">" + pageProps.entry.title + "</a>");
+        mb.append("Poll is tied to entry called ");
+        Iterator iter = eventMap.keySet().iterator();
+        while (iter.hasNext()) {
+            String eventid = (String) iter.next();
+            String eventTitle = (String) eventMap.get(eventid);
+            mb.append("<a href=../entry.log?eventid=" + eventid + ">" + eventTitle + "</a>");
+            if (request.getParameter("eventid") == null) {
+                mb.append("<input type=hidden name=eventid value="+eventid+">");
+            } else {
+                mb.append("<input type=hidden name=eventid value="+request.getParameter("eventid")+">");
+            }
+        }
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         mb.append("<br>");
 
         mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("<input type=submit name=submit value=Open>&nbsp;<input type=submit name=submit value=Closed>");
+        mb.append("<input type=submit name=submitPoll value=Open>&nbsp;<input type=submit name=submitPoll value=Closed>");
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         mb.append("<br>");
 
@@ -122,14 +202,36 @@
         mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
         mb.append("Moderation<br>");
         mb.append("These answers from users need to be approved");
+        if (unApprovedAnswersMap != null) {
+            iter = unApprovedAnswersMap.keySet().iterator();
+            String key = null;
+            while (iter.hasNext()) {
+                key = (String)iter.next();
+                mb.append("<br>");
+                mb.append(key.substring(0, key.indexOf("~")));
+                mb.append("<input type=checkbox name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+">");
+            }
+        }
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         mb.append("<br>");
 
         mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
         mb.append("These comments need to be approved");
+        if (unApprovedCommentsMap != null) {
+            iter = unApprovedCommentsMap.keySet().iterator();
+            String key = null;
+            while (iter.hasNext()) {
+                key = (String)iter.next();
+                mb.append("<br>");
+                mb.append(key.substring(0, key.indexOf("~")));
+                mb.append("<input type=checkbox name=unApprovedComments value="+key.substring(key.indexOf("~")+1, key.length())+">");
+            }
+        }
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         mb.append("</td></tr>");
-        mb.append("<tr><td><input type=submit value=Save name=submit></td></tr>");
+        mb.append("<tr><td><input type=submit value=Save name=submitPoll>");
+        mb.append("<input type=submit value=Delete name=submitPoll onClick=\"javascript: alert('Are you sure?')\">");
+        mb.append("<input type=submit value=Reset Poll name=submitPoll onClick=\"javascript: alert('Are you sure?')\"></td></tr>");
         mb.append("</table>");
         mb.append("</form>");
     }
