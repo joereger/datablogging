@@ -65,59 +65,106 @@ public class PollUtil extends Poll {
 
     public void savePoll(HttpServletRequest request) {
         try {
-            // Save Poll
-            Poll poll = new Poll();
-            if (request.getParameter("eventid") != null) {
-                poll.setEventid(Integer.parseInt(request.getParameter("eventid")));
-            } else {
-                Debug.errorsave(new Exception("No eventid"), "Eventid is null");
-                return;
-            }
-            poll.setQuestion(request.getParameter("question"));
-            if (request.getParameter("readerscanaddownanswer").equalsIgnoreCase("on")) {
-                poll.setReaderscanaddownanswer(true);
-            } else {
-                poll.setReaderscanaddownanswer(false);
-            }
-            if (request.getParameter("readerscanaddcomments").equalsIgnoreCase("on")) {
-                poll.setReaderscanaddcomments(true);
-            } else {
-                poll.setReaderscanaddcomments(false);
-            }
-            if (request.getParameter("readerscanvoteonreaderanswers").equalsIgnoreCase("on")) {
-                poll.setReaderscanvoteonreaderanswers(true);
-            } else {
-                poll.setReaderscanvoteonreaderanswers(false);
-            }
-            if (request.getParameter("readerinputismoderated").equalsIgnoreCase("on")) {
-                poll.setReaderinputismoderated(true);
-            } else {
-                poll.setReaderinputismoderated(false);
-            }
-            if (request.getParameter("submit").equalsIgnoreCase("Open") || request.getParameter("submit").equalsIgnoreCase("Save")) {
-                poll.setIsopen(true);
-            } else if (request.getParameter("submit").equalsIgnoreCase("Closed")) {
-                poll.setIsopen(false);
-            }
-            poll.save();
-            // Saving Poll Answer
-            PollAnswer pollAnswer = null;
-            int noOfTextFields = 0;
-            // noOfTextFields gives the total number of answer text fields present in the GUI.
-            if (request.getParameter("noOfTextFields") != null) {
-                noOfTextFields = Integer.parseInt(request.getParameter("noOfTextFields"));
-            }
-            for (int i = 0; i < noOfTextFields; i++) {
-                if (request.getParameter("answer" + i) != null && !request.getParameter("answer" + i).trim().equals("")) {
-                    pollAnswer = new PollAnswer();
-                    pollAnswer.setPollid(poll.getPollid());
-                    pollAnswer.setAnswer(request.getParameter("answer" + i));
-                    pollAnswer.save();
+            if (request.getParameter("submitPoll") != null) {
+                if (request.getParameter("submitPoll").equalsIgnoreCase("Save") || request.getParameter("submitPoll").equalsIgnoreCase("Open") || request.getParameter("submitPoll").equalsIgnoreCase("Closed")) {
+                    // Save Poll
+                    Poll poll = null;
+                    if (request.getParameter("pollid") != null) {
+                        poll = new Poll(Integer.parseInt(request.getParameter("pollid")));
+                    } else {
+                        poll = new Poll();
+                    }
+                    if (request.getParameter("eventid") != null) {
+                        poll.setEventid(Integer.parseInt(request.getParameter("eventid")));
+                    }
+                    poll.setQuestion(request.getParameter("question"));
+                    if (request.getParameter("readerscanaddownanswer") == null) {
+                        poll.setReaderscanaddownanswer(false);
+                    } else if (request.getParameter("readerscanaddownanswer").equalsIgnoreCase("on")) {
+                        poll.setReaderscanaddownanswer(true);
+                    }
+                    if (request.getParameter("readerscanaddcomments") == null) {
+                        poll.setReaderscanaddcomments(false);
+                    } else if (request.getParameter("readerscanaddcomments").equalsIgnoreCase("on")) {
+                        poll.setReaderscanaddcomments(true);
+                    }
+                    if (request.getParameter("readerscanvoteonreaderanswers") == null) {
+                        poll.setReaderscanvoteonreaderanswers(false);
+                    } else if (request.getParameter("readerscanvoteonreaderanswers").equalsIgnoreCase("on")) {
+                        poll.setReaderscanvoteonreaderanswers(true);
+                    }
+                    if (request.getParameter("readerinputismoderated") == null) {
+                        poll.setReaderinputismoderated(false);
+                    } else if (request.getParameter("readerinputismoderated").equalsIgnoreCase("on")) {
+                        poll.setReaderinputismoderated(true);
+                    }
+                    if (request.getParameter("submitPoll").equalsIgnoreCase("Open") || request.getParameter("submitPoll").equalsIgnoreCase("Save")) {
+                        poll.setIsopen(true);
+                    } else if (request.getParameter("submitPoll").equalsIgnoreCase("Closed")) {
+                        poll.setIsopen(false);
+                    }
+                    poll.save();
+                    // Saving Poll Answer
+                    PollAnswer pollAnswer = null;
+                    int noOfTextFields = 0;
+                    // noOfTextFields gives the total number of answer text fields present in the GUI.
+                    if (request.getParameter("noOfTextFields") != null) {
+                        noOfTextFields = Integer.parseInt(request.getParameter("noOfTextFields"));
+                    }
+                    for (int i = 0; i < noOfTextFields; i++) {
+                        if (request.getParameter("answer" + i) != null && !request.getParameter("answer" + i).trim().equals("")) {
+                            pollAnswer = new PollAnswer();
+                            pollAnswer.setPollid(poll.getPollid());
+                            pollAnswer.setAnswer(request.getParameter("answer" + i));
+                            pollAnswer.save();
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
             Debug.errorsave(e, "Exception while saving poll data is " + e.getMessage());
         }
+    }
+
+    public ArrayList getAnswersByPollId(int pollId) {
+        HashMap answerMap = null;
+        HashMap eventMap = null;
+        HashMap unApprovedAnswersMap = null;
+        HashMap unApprovedCommentsMap = null;
+        ArrayList dataList = null;
+        if (pollId != 0) {
+            //-----------------------------------
+            //-----------------------------------
+            //String[][] pollAnswerData = Db.RunSQL("SELECT poll.readerscanaddownanswer, pollanswer.answer, pollreaderanswer.answer, pollreaderanswer.isapproved, event.eventid, event.title FROM event, poll, pollanswer, pollreaderanswer WHERE poll.eventid=event.eventid AND poll.pollid='" + pollId + "' AND pollanswer.pollid=poll.pollid AND pollreaderanswer.pollid=poll.pollid");
+            String[][] pollAnswerData = Db.RunSQL("SELECT poll.readerscanaddownanswer, pollanswer.answer, pollreaderanswer.answer, pollreaderanswer.isapproved, event.eventid, event.title, pollreadercomment.comment, pollreadercomment.pollreadercommentid, pollreaderanswer.pollreaderanswerid FROM event, poll LEFT JOIN pollanswer ON pollanswer.pollid=poll.pollid LEFT JOIN pollreaderanswer ON  pollreaderanswer.pollid=poll.pollid  AND pollreaderanswer.isapproved = 0 LEFT JOIN pollreadercomment ON pollreadercomment.pollid=poll.pollid AND pollreadercomment.isapproved = 0 WHERE poll.eventid=event.eventid AND poll.pollid='" + pollId + "'");
+            //-----------------------------------
+            //-----------------------------------
+            if (pollAnswerData != null && pollAnswerData.length > 0) {
+                answerMap = new HashMap();
+                eventMap = new HashMap();
+                unApprovedAnswersMap = new HashMap();
+                unApprovedCommentsMap  = new HashMap();
+                dataList = new ArrayList(4);
+                for (int i = 0; i < pollAnswerData.length; i++) {
+                    answerMap.put(pollAnswerData[i][1], pollAnswerData[i][1]);
+                    // checking if readerscanaddownanswer is true or not. Considering 1 as true.
+                    if (pollAnswerData[i][0].equalsIgnoreCase("1") && pollAnswerData[i][3].equalsIgnoreCase("1")) {
+                        answerMap.put(pollAnswerData[i][2], pollAnswerData[i][2]);
+                    } if (pollAnswerData[i][3].equalsIgnoreCase("0")) {
+                        // reader answer and reader answer id
+                        unApprovedAnswersMap.put(pollAnswerData[i][2]+"~"+pollAnswerData[i][8], pollAnswerData[i][2]);
+                    }
+                    // comment and comment id
+                    unApprovedCommentsMap.put(pollAnswerData[i][6]+"~"+pollAnswerData[i][7], pollAnswerData[i][6]);
+                    eventMap.put(pollAnswerData[i][4], pollAnswerData[i][5]);
+                }
+                dataList.add(0, answerMap);
+                dataList.add(1, eventMap);
+                dataList.add(2, unApprovedAnswersMap);
+                dataList.add(3, unApprovedCommentsMap);
+            }
+        }
+        return dataList;
     }
 
     private HashMap getData(String method) {
@@ -242,7 +289,7 @@ public class PollUtil extends Poll {
         StringBuffer query = new StringBuffer();
         query.append("SELECT event.eventid, event.title, poll.pollid, poll.question, poll.readerscanaddownanswer, poll.readerscanaddcomments, poll.readerscanvoteonreaderanswers, poll.readerinputismoderated, poll.isopen, pollanswer.pollanswerid, pollanswer.answer, pollanswer.votes, pollreaderanswer.pollreaderanswerid, pollreaderanswer.answer, pollreaderanswer.readername, pollreaderanswer.votes, pollreaderanswer.isapproved, pollreadercomment.pollreadercommentid, pollreadercomment.comment, pollreadercomment.readername, pollreadercomment.isapproved FROM event, megalog, poll LEFT JOIN pollanswer ON pollanswer.pollid = poll.pollid LEFT JOIN pollreaderanswer ON pollreaderanswer.pollid = poll.pollid LEFT JOIN pollreadercomment ON pollreadercomment.pollid = poll.pollid WHERE ");
         if (method.equals("byAccountId")) {
-            query.append("poll.eventid = event.eventid AND event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY event.createdate");
+            query.append("poll.eventid = event.eventid AND event.logid=megalog.logid AND " + userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid()) + " ORDER BY event.createdate");
         }
         if (method.equals("byEventId")) {
             query.append("poll.eventid=event.eventid AND event.eventid='" + eventid + "' ORDER BY event.createdate");
@@ -263,7 +310,7 @@ public class PollUtil extends Poll {
                 while (iter.hasNext()) {
                     totalVotes = new BigInteger("0");
                     unApprovedCount = new BigInteger("0");
-                    commentCount =  new BigInteger("0");
+                    commentCount = new BigInteger("0");
                     key = (String) iter.next();
                     answerList = (ArrayList) pollMap.get(key);
                     answerMap = (HashMap) answerList.get(0);
@@ -283,7 +330,7 @@ public class PollUtil extends Poll {
                     ansIter = answerMap.keySet().iterator();
                     while (ansIter.hasNext()) {
                         key = (String) ansIter.next();
-                        stkr = new StringTokenizer(key,"~");
+                        stkr = new StringTokenizer(key, "~");
                         pollAnswerId = (String) stkr.nextElement();
                         ownerAnswer = (String) stkr.nextElement();
                         ownerAnswerVotes = (String) stkr.nextElement();
