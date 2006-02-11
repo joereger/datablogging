@@ -135,9 +135,15 @@ public class PollUtil extends Poll {
                         String[] unApprovedAnswers = request.getParameterValues("unApprovedAnswers");
                         if (unApprovedAnswers != null && unApprovedAnswers.length > 0) {
                             PollReaderAnswer pollReaderAnswer = null;
+                            String status = null;
                             for (int i=0;i<unApprovedAnswers.length;i++) {
-                                pollReaderAnswer = new PollReaderAnswer(Integer.parseInt(unApprovedAnswers[i]));
-                                pollReaderAnswer.setIsapproved(true);
+                                status = unApprovedAnswers[i];
+                                pollReaderAnswer = new PollReaderAnswer(Integer.parseInt(status.substring(0, status.indexOf("_"))));
+                                if (status.indexOf("YES") > -1) {
+                                    pollReaderAnswer.setIsapproved(true);
+                                } else if (status.indexOf("NO") > -1) {
+                                    pollReaderAnswer.setIsapproved(false);
+                                }
                                 pollReaderAnswer.save();
                             }
                         }
@@ -145,9 +151,15 @@ public class PollUtil extends Poll {
                         String[] unApprovedComments = request.getParameterValues("unApprovedComments");
                         if (unApprovedAnswers != null && unApprovedAnswers.length > 0) {
                             PollReaderComment pollReaderComment = null;
+                            String status = null;
                             for (int i=0;i<unApprovedAnswers.length;i++) {
-                                pollReaderComment = new PollReaderComment(Integer.parseInt(unApprovedComments[i]));
-                                pollReaderComment.setIsapproved(true);
+                                status = unApprovedComments[i];
+                                pollReaderComment = new PollReaderComment(Integer.parseInt(status.substring(0, status.indexOf("_"))));
+                                if (status.indexOf("YES") > -1) {
+                                    pollReaderComment.setIsapproved(true);
+                                } else if (status.indexOf("NO") > -1) {
+                                    pollReaderComment.setIsapproved(false);
+                                }
                                 pollReaderComment.save();
                             }
                         }
