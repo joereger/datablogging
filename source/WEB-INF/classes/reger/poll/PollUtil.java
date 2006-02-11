@@ -63,9 +63,11 @@ public class PollUtil extends Poll {
         return this.pollMap;
     }
 
+    //Used for saving poll, pollanswer, pollreaderanswer and comments from entries-poll-settings.log
     public void savePoll(HttpServletRequest request) {
         try {
             if (request.getParameter("submitPoll") != null) {
+                //*********************** SAVE, OPEN and CLOSED ****************************
                 if (request.getParameter("submitPoll").equalsIgnoreCase("Save") || request.getParameter("submitPoll").equalsIgnoreCase("Open") || request.getParameter("submitPoll").equalsIgnoreCase("Closed")) {
                     // Save Poll
                     Poll poll = null;
@@ -104,41 +106,67 @@ public class PollUtil extends Poll {
                         poll.setIsopen(false);
                     }
                     poll.save();
-                    // Saving Poll Answer
-                    PollAnswer pollAnswer = null;
-                    int noOfTextFields = 0;
-                    // noOfTextFields gives the total number of answer text fields present in the GUI.
-                    if (request.getParameter("noOfTextFields") != null) {
-                        noOfTextFields = Integer.parseInt(request.getParameter("noOfTextFields"));
-                    }
-                    for (int i = 0; i < noOfTextFields; i++) {
-                        if (request.getParameter("answer" + i) != null && !request.getParameter("answer" + i).trim().equals("")) {
-                            pollAnswer = new PollAnswer();
-                            pollAnswer.setPollid(poll.getPollid());
-                            pollAnswer.setAnswer(request.getParameter("answer" + i));
-                            pollAnswer.save();
+
+                    // Save pollanswer and pollreaderanswer only if Save is clicked.
+                    if (request.getParameter("submitPoll").equalsIgnoreCase("Save")) {
+                        // Saving Poll Answer
+                        PollAnswer pollAnswer = null;
+                        int noOfTextFields = 0;
+                        // noOfTextFields gives the total number of answer text fields present in the GUI.
+                        if (request.getParameter("noOfTextFields") != null) {
+                            noOfTextFields = Integer.parseInt(request.getParameter("noOfTextFields"));
+                        }
+                        for (int i = 0; i < noOfTextFields; i++) {
+                            if (request.getParameter("answer" + i) != null && !request.getParameter("answer" + i).trim().equals("")) {
+                                // checking if answer id is not null. As in GUI for answers, answerid are stored in
+                                // hidden fields with answers as hidden field names. If there is a hidden field set
+                                // the answerid in PollAnswer otherwise dont set it.
+                                if (request.getParameter(request.getParameter("answer" + i)) != null && !request.getParameter(request.getParameter("answer" + i)).trim().equalsIgnoreCase("")) {
+                                    pollAnswer = new PollAnswer(Integer.parseInt(request.getParameter(request.getParameter("answer" + i))));
+                                } else {
+                                    pollAnswer = new PollAnswer();
+                                }
+                                pollAnswer.setPollid(poll.getPollid());
+                                pollAnswer.setAnswer(request.getParameter("answer" + i));
+                                pollAnswer.save();
+                            }
+                        }
+                        // Save approved Answers, if owner approves any.
+                        String[] unApprovedAnswers = request.getParameterValues("unApprovedAnswers");
+                        if (unApprovedAnswers != null && unApprovedAnswers.length > 0) {
+                            PollReaderAnswer pollReaderAnswer = null;
+                            for (int i=0;i<unApprovedAnswers.length;i++) {
+                                pollReaderAnswer = new PollReaderAnswer(Integer.parseInt(unApprovedAnswers[i]));
+                                pollReaderAnswer.setIsapproved(true);
+                                pollReaderAnswer.save();
+                            }
+                        }
+                        // Save approved comments, if owner approves any.
+                        String[] unApprovedComments = request.getParameterValues("unApprovedComments");
+                        if (unApprovedAnswers != null && unApprovedAnswers.length > 0) {
+                            PollReaderComment pollReaderComment = null;
+                            for (int i=0;i<unApprovedAnswers.length;i++) {
+                                pollReaderComment = new PollReaderComment(Integer.parseInt(unApprovedComments[i]));
+                                pollReaderComment.setIsapproved(true);
+                                pollReaderComment.save();
+                            }
                         }
                     }
-                    // Save approved Answers, if owner approves any.
-                    String[] unApprovedAnswers = request.getParameterValues("unApprovedAnswers");
-                    if (unApprovedAnswers != null && unApprovedAnswers.length > 0) {
-                        PollReaderAnswer pollReaderAnswer = null;
-                        for (int i=0;i<unApprovedAnswers.length;i++) {
-                            pollReaderAnswer = new PollReaderAnswer(Integer.parseInt(unApprovedAnswers[i]));
-                            pollReaderAnswer.setIsapproved(true);
-                            pollReaderAnswer.save();
-                        }
-                    }
-                    // Save approved comments, if owner approves any.
-                    String[] unApprovedComments = request.getParameterValues("unApprovedComments");
-                    if (unApprovedAnswers != null && unApprovedAnswers.length > 0) {
-                        PollReaderComment pollReaderComment = null;
-                        for (int i=0;i<unApprovedAnswers.length;i++) {
-                            pollReaderComment = new PollReaderComment(Integer.parseInt(unApprovedComments[i]));
-                            pollReaderComment.setIsapproved(true);
-                            pollReaderComment.save();
-                        }
-                    }
+                }
+                //*********************** RESET ****************************
+                // To set votes to 0 in poll reader answer if reset is clicked.
+                if (request.getParameter("submitPoll").equalsIgnoreCase("Reset")) {
+                    resetPollReaderAnswer(Integer.parseInt(request.getParameter("pollid")), "pollanswer");
+                    resetPollReaderAnswer(Integer.parseInt(request.getParameter("pollid")), "pollreaderanswer");
+                }
+
+                //*********************** DELETE ****************************
+                // To delete from pollreadercomments, pollreanderanswer, pollanswer and poll.
+                if (request.getParameter("submitPoll").equalsIgnoreCase("Delete")) {
+                    deletePoll(Integer.parseInt(request.getParameter("pollid")), "pollreadercomment");
+                    deletePoll(Integer.parseInt(request.getParameter("pollid")), "pollreaderanswer");
+                    deletePoll(Integer.parseInt(request.getParameter("pollid")), "pollanswer");
+                    deletePoll(Integer.parseInt(request.getParameter("pollid")), "poll");
                 }
             }
         } catch (Exception e) {
@@ -146,6 +174,33 @@ public class PollUtil extends Poll {
         }
     }
 
+    // Reset pollreaderansewr and pollanswer tables
+    private void resetPollReaderAnswer (int pollId, String tableName) {
+        StringBuffer query = new StringBuffer();
+        query.append("UPDATE ");
+        query.append(tableName);
+        query.append("  set votes=0 WHERE pollid='" + pollId + "'");
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate(query.toString());
+        //-----------------------------------
+        //-----------------------------------
+    }
+
+    // Delete poll information from pollreadercomments, pollreanderanswer, pollanswer and poll tables
+    private void deletePoll (int pollId, String tableName) {
+        StringBuffer query = new StringBuffer();
+        query.append("DELETE FROM ");
+        query.append(tableName);
+        query.append("  WHERE pollid='" + pollId + "'");
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate(query.toString());
+        //-----------------------------------
+        //-----------------------------------
+    }
+
+    // Used for enries-poll-settings.log
     public ArrayList getAnswersByPollId(int pollId) {
         HashMap answerMap = null;
         HashMap eventMap = null;
@@ -156,7 +211,7 @@ public class PollUtil extends Poll {
             //-----------------------------------
             //-----------------------------------
             //String[][] pollAnswerData = Db.RunSQL("SELECT poll.readerscanaddownanswer, pollanswer.answer, pollreaderanswer.answer, pollreaderanswer.isapproved, event.eventid, event.title FROM event, poll, pollanswer, pollreaderanswer WHERE poll.eventid=event.eventid AND poll.pollid='" + pollId + "' AND pollanswer.pollid=poll.pollid AND pollreaderanswer.pollid=poll.pollid");
-            String[][] pollAnswerData = Db.RunSQL("SELECT poll.readerscanaddownanswer, pollanswer.answer, pollreaderanswer.answer, pollreaderanswer.isapproved, event.eventid, event.title, pollreadercomment.comment, pollreadercomment.pollreadercommentid, pollreaderanswer.pollreaderanswerid FROM event, poll LEFT JOIN pollanswer ON pollanswer.pollid=poll.pollid LEFT JOIN pollreaderanswer ON  pollreaderanswer.pollid=poll.pollid  AND pollreaderanswer.isapproved = 0 LEFT JOIN pollreadercomment ON pollreadercomment.pollid=poll.pollid AND pollreadercomment.isapproved = 0 WHERE poll.eventid=event.eventid AND poll.pollid='" + pollId + "'");
+            String[][] pollAnswerData = Db.RunSQL("SELECT poll.readerscanaddownanswer, pollanswer.answer, pollreaderanswer.answer, pollreaderanswer.isapproved, event.eventid, event.title, pollreadercomment.comment, pollreadercomment.pollreadercommentid, pollreaderanswer.pollreaderanswerid, pollanswer.pollanswerid FROM event, poll LEFT JOIN pollanswer ON pollanswer.pollid=poll.pollid LEFT JOIN pollreaderanswer ON  pollreaderanswer.pollid=poll.pollid  AND pollreaderanswer.isapproved = 0 LEFT JOIN pollreadercomment ON pollreadercomment.pollid=poll.pollid AND pollreadercomment.isapproved = 0 WHERE poll.eventid=event.eventid AND poll.pollid='" + pollId + "'");
             //-----------------------------------
             //-----------------------------------
             if (pollAnswerData != null && pollAnswerData.length > 0) {
@@ -166,10 +221,12 @@ public class PollUtil extends Poll {
                 unApprovedCommentsMap  = new HashMap();
                 dataList = new ArrayList(4);
                 for (int i = 0; i < pollAnswerData.length; i++) {
-                    answerMap.put(pollAnswerData[i][1], pollAnswerData[i][1]);
+                    // reader answer and reader answer id
+                    answerMap.put(pollAnswerData[i][1]+"~"+pollAnswerData[i][9], pollAnswerData[i][1]);
                     // checking if readerscanaddownanswer is true or not. Considering 1 as true.
                     if (pollAnswerData[i][0].equalsIgnoreCase("1") && pollAnswerData[i][3].equalsIgnoreCase("1")) {
-                        answerMap.put(pollAnswerData[i][2], pollAnswerData[i][2]);
+                        // readeranswer and readeranswer id
+                        answerMap.put(pollAnswerData[i][2]+"~"+pollAnswerData[i][8], pollAnswerData[i][2]);
                     } if (pollAnswerData[i][3].equalsIgnoreCase("0")) {
                         // reader answer and reader answer id
                         unApprovedAnswersMap.put(pollAnswerData[i][2]+"~"+pollAnswerData[i][8], pollAnswerData[i][2]);
