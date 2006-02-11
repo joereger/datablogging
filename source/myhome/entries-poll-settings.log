@@ -176,16 +176,22 @@ pageProps.pathToAppRoot = "../";
         mb.append("<td>");
         mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
         mb.append("Poll is tied to entry called ");
-        Iterator iter = eventMap.keySet().iterator();
-        while (iter.hasNext()) {
-            String eventid = (String) iter.next();
-            String eventTitle = (String) eventMap.get(eventid);
-            mb.append("<a href=../entry.log?eventid=" + eventid + ">" + eventTitle + "</a>");
-            if (request.getParameter("eventid") == null) {
-                mb.append("<input type=hidden name=eventid value="+eventid+">");
-            } else {
-                mb.append("<input type=hidden name=eventid value="+request.getParameter("eventid")+">");
+        Iterator iter = null;
+        if (eventMap != null) {
+            iter = eventMap.keySet().iterator();
+            while (iter.hasNext()) {
+                String eventid = (String) iter.next();
+                String eventTitle = (String) eventMap.get(eventid);
+                mb.append("<a href=../entry.log?eventid=" + eventid + ">" + eventTitle + "</a>");
+                if (request.getParameter("eventid") == null) {
+                    mb.append("<input type=hidden name=eventid value="+eventid+">");
+                } else {
+                    mb.append("<input type=hidden name=eventid value="+request.getParameter("eventid")+">");
+                }
             }
+        } else {
+            mb.append("<a href=../entry.log?eventid=" + pageProps.entry.eventid + ">" + pageProps.entry.title + "</a>");
+            mb.append("<input type=hidden name=eventid value="+pageProps.entry.eventid+">");
         }
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         mb.append("<br>");
@@ -212,7 +218,7 @@ pageProps.pathToAppRoot = "../";
                     mb.append("<br>");
                     mb.append(key.substring(0, key.indexOf("~")));
                     //mb.append("<input type=checkbox name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+">");
-                    mb.append("<input type=radio name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+"_YES> Yes");
+                    mb.append("<input type=radio name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+"_YES>Yes");
                     mb.append("<input type=radio name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+"_NO>No");
                 }
             }
