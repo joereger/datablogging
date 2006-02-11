@@ -106,7 +106,7 @@ public class File {
                 newFile = new java.io.File(account.getPathToAccountFiles()+newfilepath+newfilename);
             }
 
-            reger.core.Debug.debug(5, "File.java", "newfilepath+newfilename="+newfilepath+newfilename);
+            reger.core.Debug.debug(3, "File.java", "newfilepath+newfilename="+newfilepath+newfilename);
     
             if (file.isFile()){
                 String newthumbfilename = newfilename;
@@ -116,20 +116,20 @@ public class File {
                 java.io.File newthumbnail = new java.io.File(account.getPathToAccountFiles()+newthumbfilepath+newthumbfilename);
                 FileUtils.copyFile(file, newFile, true);
                 FileUtils.copyFile(getThumbnail(), newthumbnail, true);
-            } else if (file.isDirectory()){
-                FileUtils.copyDirectory(file, newFile, true);
-            }
-
-            if (file.isFile()){
+                FileUtils.forceDelete(file);
                 //-----------------------------------
                 //-----------------------------------
                 int count = Db.RunSQLUpdate("UPDATE image SET filename='"+reger.core.Util.cleanForSQL(newfilepath+newfilename)+"' WHERE accountid='"+account.getAccountid()+"' AND filename='"+reger.core.Util.cleanForSQL(filePathAndOrFilename)+"'");
                 //-----------------------------------
                 //-----------------------------------
             } else if (file.isDirectory()){
+                FileUtils.copyDirectory(file, newFile, true);
+                FileUtils.deleteDirectory(file);
+                String dirSql = "SELECT imageid, filename FROM image WHERE accountid='"+account.getAccountid()+"' AND LEFT(filename, "+FilenameUtils.normalize(filePathAndOrFilename).length()+")='"+reger.core.Util.cleanForSQL(FilenameUtils.normalize(filePathAndOrFilename))+"'";
+                reger.core.Debug.debug(3, "File.java", "dirSql=<br>"+dirSql);
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstImg= Db.RunSQL("SELECT imageid, filename FROM image WHERE accountid='"+account.getAccountid()+"' AND LEFT(filename, "+FilenameUtils.normalize(filePathAndOrFilename).length()+")='"+reger.core.Util.cleanForSQL(FilenameUtils.normalize(filePathAndOrFilename))+"'");
+                String[][] rstImg= Db.RunSQL(dirSql);
                 //-----------------------------------
                 //-----------------------------------
                 if (rstImg!=null && rstImg.length>0){
@@ -138,16 +138,19 @@ public class File {
                         String currFilenameAndPath = FilenameUtils.normalize(rstImg[i][1]);
                         String currFilename = FilenameUtils.getName(currFilenameAndPath);
                         String currPath = FilenameUtils.getPath(currFilenameAndPath);
+                        String currPathMinusPathOfRenamedDir = currPath.substring(FilenameUtils.normalize(filePathAndOrFilename).length(), currPath.length());
+                        if (currPathMinusPathOfRenamedDir.length()>0){
+                            currPathMinusPathOfRenamedDir = java.io.File.separator + currPathMinusPathOfRenamedDir;        
+                        }
+                        String newFilename = FilenameUtils.normalize(newfilepath+newfilename+currPathMinusPathOfRenamedDir+java.io.File.separator+currFilename);
                         //-----------------------------------
                         //-----------------------------------
-                        int count = Db.RunSQLUpdate("UPDATE image SET filename='"+reger.core.Util.cleanForSQL(newfilepath+currFilename)+"' WHERE imageid='"+imageid+"'");
+                        int count = Db.RunSQLUpdate("UPDATE image SET filename='"+reger.core.Util.cleanForSQL(newFilename)+"' WHERE imageid='"+imageid+"'");
                         //-----------------------------------
                         //-----------------------------------
                     }
                 }
             }
-
-            delete();
             this.filePathAndOrFilename = newfilepath + newfilename;
             file = new java.io.File(account.getPathToAccountFiles()+filePathAndOrFilename);
 

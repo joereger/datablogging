@@ -12,6 +12,8 @@
 <%@ page import="reger.files.File"%>
 <%@ page import="org.apache.commons.io.FilenameUtils"%>
 <%@ page import="java.util.Calendar"%>
+<%@ page import="java.text.NumberFormat"%>
+<%@ page import="java.text.DecimalFormat"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -133,6 +135,8 @@ if (request.getParameter("action")!=null){
             for(int i=0; i<numberoffiles; i++){
                 String filename = request.getParameter("file"+i);
                 String newname = request.getParameter("filename"+i);
+                newname = newname.replaceAll("\\\\", "");
+                newname = newname.replaceAll("/", "");
                 String dirname = FilenameUtils.getPath(filename);
                 File fileObj = new File(userSession.getAccount(), filename);
                 fileObj.move(FilenameUtils.normalize(dirname)+newname);
@@ -205,6 +209,8 @@ if (request.getParameter("action")!=null){
         mb.append("</form>");
     } else if (request.getParameter("action").equals("newdirectoryend")){
         String newdirname = FilenameUtils.normalize(request.getParameter("newdirname"));
+        newdirname = newdirname.replaceAll("\\\\", "");
+        newdirname = newdirname.replaceAll("/", "");
         java.io.File newDir = new java.io.File(userSession.getAccount().getPathToAccountFiles()+path+java.io.File.separator+newdirname);
         newDir.mkdirs();
         java.io.File newThumbsDir = new java.io.File(userSession.getAccount().getPathToAccountFiles()+path+java.io.File.separator+newdirname+java.io.File.separator+".thumbnails");
@@ -226,7 +232,7 @@ if (request.getParameter("action")!=null){
         }
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Please browse for files to upload to \\My Files\\"+path+"\\"));
         mb.append("<form action='upload-requestprocessor.log' method=post enctype='multipart/form-data'>");
-        mb.append("<input type=hidden name=returnurl value=\""+thispagename+"?path="+reger.core.Util.cleanForHtml(path)+"\">");
+        mb.append("<input type=hidden name=returnurl value=\""+thispagename+"?path="+reger.core.Util.cleanForHtml(path)+"&eventid="+eventid+"\">");
         mb.append("<input type=hidden name='path' value=\""+reger.core.Util.cleanForHtml(path)+"\">");
         mb.append("<input type=submit value='Upload Files'>");
         mb.append("<br><br>");
@@ -259,6 +265,8 @@ if (request.getParameter("action")!=null){
     } else if (request.getParameter("action").equals("renamedirectoryend")){
         if (!path.equals("")){
             String renameto = FilenameUtils.normalize(request.getParameter("renameto"));
+            renameto = renameto.replaceAll("\\\\", "");
+            renameto = renameto.replaceAll("/", "");
             File fileObj = new File(userSession.getAccount(), path);
             String parentdirectoryname = "";
             if (FilenameUtils.indexOfLastSeparator(path)>0){
@@ -322,6 +330,22 @@ if (request.getParameter("action")!=null){
 } else {
 
 }
+
+//mb.append("<div style=\"float: right; width: 200px; margin: 10px;\" class=greybox>");
+//mb.append("<font face=arial size=+1 color=#000000>");
+//mb.append("Storage Space:");
+//mb.append("</font>");
+//mb.append("<br>");
+//mb.append("<font face=arial size=-2>");
+//NumberFormat formatter = new DecimalFormat("####.##");
+//if (userSession.getAccount().getMaxspaceinbytes()>0){
+//    mb.append(reger.core.Util.getHtmlBarChart(userSession.getAccount().getSpaceused(), userSession.getAccount().getMaxspaceinbytes()));
+//    mb.append(formatter.format((double)userSession.getAccount().getSpaceused()/(double)1000000)+ "Mb / "+((double)userSession.getAccount().getMaxspaceinbytes()/(double)1000000)+"Mb Used (" + (100-(int)(((double)userSession.getAccount().getSpaceused()/(double)userSession.getAccount().getMaxspaceinbytes())*100)) + "% Free)");
+//} else {
+//    mb.append(formatter.format((double)userSession.getAccount().getSpaceused()/(double)1000000)+ "Mb");
+//}
+//mb.append("</font>");
+//mb.append("</div>");
 
 if(showFileBrowser){
     //Output the current browser html

@@ -72,62 +72,74 @@ if (pageProps.action.equals("editgroup")){
 
 if (pageProps.action.equals("revokemoderator")){
     GroupMembership gmActedOn = null;
-    if(request.getParameter("groupmembershipidtorevoke")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtorevoke")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+    if(request.getParameter("groupmembershipidtorevoke")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtorevoke"))){
         gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtorevoke")));
-        gmActedOn.setIsmoderator(false);
-        try{
-            gmActedOn.save();
-            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Moderator privileges revoked!"));
-        } catch (ValidationException vex){
-            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
+        if (group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+            gmActedOn.setIsmoderator(false);
+            try{
+                gmActedOn.save();
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Moderator privileges revoked!"));
+            } catch (ValidationException vex){
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
+            }
+        } else {
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  You can't remove group owner."));
         }
     }
 }
 
 if (pageProps.action.equals("grantmoderator")){
     GroupMembership gmActedOn = null;
-    if(request.getParameter("groupmembershipidtogrant")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtogrant")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+    if(request.getParameter("groupmembershipidtogrant")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtogrant"))){
         gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtogrant")));
-        gmActedOn.setIsmoderator(true);
-        try{
-            gmActedOn.save();
-            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Moderator privileges granted!"));
-        } catch (ValidationException vex){
-            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
+        if (group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+            gmActedOn.setIsmoderator(true);
+            try{
+                gmActedOn.save();
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Moderator privileges granted!"));
+            } catch (ValidationException vex){
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
+            }
         }
     }
 }
 
 if (pageProps.action.equals("approverequest")){
     GroupMembership gmActedOn = null;
-    if(request.getParameter("groupmembershipidtoapprove")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtoapprove")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+    if(request.getParameter("groupmembershipidtoapprove")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtoapprove"))){
         gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtoapprove")));
-        gmActedOn.setIsapproved(true);
-        try{
-            gmActedOn.save();
-            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Membership approved!"));
-        } catch (ValidationException vex){
-            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
+        if (group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+            gmActedOn.setIsapproved(true);
+            try{
+                gmActedOn.save();
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Membership approved!"));
+            } catch (ValidationException vex){
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  There was an error:<br>"+vex.getErrorsAsSingleString()));
+            }
         }
     }
 }
 
 if (pageProps.action.equals("declinerequest")){
     GroupMembership gmActedOn = null;
-    if(request.getParameter("groupmembershipidtodecline")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtodecline")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+    if(request.getParameter("groupmembershipidtodecline")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtodecline"))){
         gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtodecline")));
-        gmActedOn.delete();
-        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Membership declined!"));
+        if (group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+            gmActedOn.delete();
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Membership declined!"));
+        }
     }
 }
 
 if (pageProps.action.equals("removemember")){
     GroupMembership gmActedOn = null;
-    if(request.getParameter("groupmembershipidtoremove")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtoremove")) && group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+    if(request.getParameter("groupmembershipidtoremove")!=null && reger.core.Util.isinteger(request.getParameter("groupmembershipidtoremove"))){
         gmActedOn = new GroupMembership(Integer.parseInt(request.getParameter("groupmembershipidtoremove")));
-        gmActedOn.setIsmoderator(false);
-        gmActedOn.delete();
-        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Member removed!"));
+        if (group.getAccountuserid()!=gmActedOn.getAccountuserid()){
+            gmActedOn.setIsmoderator(false);
+            gmActedOn.delete();
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Member removed!"));
+        }
     }
 }
 
@@ -250,6 +262,7 @@ if(group.getMembershipismoderated()){
             mb.append("<td valign=top>");
             if (group.getAccountuserid()!=au.getAccountuserid()){
                 mb.append("<a href='groups-administer.log?action=declinerequest&groupmembershipid="+groupMembership.getGroupmembershipid()+"&groupmembershipidtodecline="+tmpGroupMembership.getGroupmembershipid()+"'>");
+                mb.append("<font face=arial size=-2>");
                 mb.append("Decline");
                 mb.append("</a>");
             }

@@ -6,6 +6,7 @@
 <%@ page import="reger.groups.Group"%>
 <%@ page import="reger.groups.GroupMembership"%>
 <%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.Accountuser"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -54,6 +55,17 @@ try{
     groupMembership.setGroupid(group.getGroupid());
     groupMembership.save();
     if(group.getMembershipismoderated()){
+        int ownerGroupMembershipId = 0;
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstOwner= reger.core.db.Db.RunSQL("SELECT groupmembershipid FROM groupmembership WHERE groupid='"+group.getGroupid()+"' AND accountuserid='"+group.getAccountuserid()+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstOwner!=null && rstOwner.length>0){
+            ownerGroupMembershipId = Integer.parseInt(rstOwner[0][0]);
+        }
+        reger.FriendMessage thisMessage = new reger.FriendMessage();
+        thisMessage.newMessage(userSession.getAccountuser().getAccountuserid(), new int[]{group.getAccountuserid()}, "Group membership request to: '"+group.getName()+"' from '"+userSession.getAccountuser().getFriendlyname()+"'", "There is a new group membership request for a group that you own.<br><br>Please click <a href='groups-administer.log?groupmembershipid="+ownerGroupMembershipId+"'>here</a> to approve or decline.");
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Membership in '"+group.getName()+"' is moderated.  A request for membership has been sent to the group administrators.<br><br>Click <a href='groups.log'>here</a> to continue."));
     } else {
         mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  You are now a member of '"+group.getName()+"'!<br><br>Click <a href='groups.log'>here</a> to continue."));

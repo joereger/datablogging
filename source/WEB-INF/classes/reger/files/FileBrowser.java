@@ -6,6 +6,8 @@ import reger.pageFramework.PageProps;
 
 import java.util.*;
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -61,7 +63,7 @@ public class FileBrowser {
         mb.append("<tr>");
         mb.append("<td valign=top colspan=3>");
         //Current folder start
-        mb.append("<table cellpadding=10 cellspacing=10 border=0>");
+        mb.append("<table cellpadding=0 cellspacing=0 border=0>");
         mb.append("<tr>");
         mb.append("<td valign=middle>");
         mb.append("<img src='"+pageProps.pathToAppRoot+"images/filebrowser/folder-lg.gif' border=0 align=middle>");
@@ -77,16 +79,28 @@ public class FileBrowser {
         mb.append("<br>");
         mb.append("<font face=arial size=-2>");
         if (linksForCurrentDirectory.size()>0){
+            mb.append("<style>#navlist li\n" +
+                    "{\n" +
+                    "display: inline;\n" +
+                    "list-style-type: none;\n" +
+                    "padding-right: 20px;\n" +
+                    "}</style>");
+            mb.append("<div id=navcontainer>");
+            mb.append("<ul id=navlist>");
             for (Iterator it = linksForCurrentDirectory.iterator(); it.hasNext(); ) {
                 FileBrowserDirectoryLink link = (FileBrowserDirectoryLink)it.next();
+                mb.append("<li>");
                 mb.append("<a href='"+link.getLinkUrl()+FilenameUtils.normalize(currentDirectory)+"&eventid="+eventid+"'>");
                 mb.append("<img src='"+pageProps.pathToAppRoot+"images/filebrowser/"+link.getLinkIcon()+"' border=0 align=middle>");
-                mb.append(" " + link.getLinkText());
+                mb.append("" + link.getLinkText());
                 mb.append("</a>");
                 if (it.hasNext()){
-                    mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+                    //mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
                 }
+                mb.append("<li>");
             }
+            mb.append("<ul>");
+            mb.append("</div>");
         }
         mb.append("</font>");
         mb.append("</td>");
@@ -108,25 +122,46 @@ public class FileBrowser {
         mb.append("</td>");
         mb.append("<td valign=top>");
         //File list start
+        mb.append("<div>");
+//        mb.append("<font face=arial size=+1 color=#cccccc>");
+//        mb.append("Storage Space:");
+//        mb.append("</font>");
+//        mb.append("<br>");
         mb.append("<font face=arial size=-2>");
-        if (actionsForAllFiles.size()>0){
-            mb.append("<form action='"+currentPageName+"' method=post>");
-            mb.append("<input type=hidden name=eventid value='"+eventid+"'>");
-            mb.append("<select name=action>");
-            for (Iterator it = actionsForAllFiles.iterator(); it.hasNext(); ) {
-                FileBrowserFileAction action = (FileBrowserFileAction)it.next();
-                mb.append("<option value='"+action.getActionName()+"'>"+action.getActionFriendlyName()+"</option>");
-            }
-            mb.append("</select>");
-            mb.append("<input type=submit value='Go'>");
-            mb.append("<br><br>");
+        NumberFormat formatter = new DecimalFormat("####.##");
+        if (userSession.getAccount().getMaxspaceinbytes()>0){
+            mb.append(reger.core.Util.getHtmlBarChart(userSession.getAccount().getSpaceused(), userSession.getAccount().getMaxspaceinbytes()));
+            mb.append(formatter.format((double)userSession.getAccount().getSpaceused()/(double)1000000)+ "Mb / "+((double)userSession.getAccount().getMaxspaceinbytes()/(double)1000000)+"Mb Used (" + (100-(int)(((double)userSession.getAccount().getSpaceused()/(double)userSession.getAccount().getMaxspaceinbytes())*100)) + "% Free)");
+        } else {
+            mb.append(formatter.format((double)userSession.getAccount().getSpaceused()/(double)1000000)+ "Mb");
         }
         mb.append("</font>");
-        mb.append("<font face=arial size=-2>");
-        mb.append(filesHtml.toString());
-        mb.append("</font>");
-        if (actionsForAllFiles.size()>0){
-            mb.append("</form>");
+        mb.append("</div>");
+        if(filesHtml.length()>0){
+            if (actionsForAllFiles.size()>0){
+                mb.append("<font face=arial size=-2>");
+                mb.append("<div class=yellowbox>");
+                mb.append("<form action='"+currentPageName+"' style=\"border: 0px; margin: 0px;\" method=post>");
+                mb.append("<input type=hidden name=eventid value='"+eventid+"'>");
+                mb.append("<select name=action>");
+                for (Iterator it = actionsForAllFiles.iterator(); it.hasNext(); ) {
+                    FileBrowserFileAction action = (FileBrowserFileAction)it.next();
+                    mb.append("<option value='"+action.getActionName()+"'>"+action.getActionFriendlyName()+"</option>");
+                }
+                mb.append("</select>");
+                mb.append("<input type=submit value='Go'>");
+                mb.append("</div>");
+                mb.append("<br><br>");
+                mb.append("</font>");
+            }
+            mb.append("<font face=arial size=-2>");
+            mb.append(filesHtml.toString());
+            mb.append("</font>");
+            if (actionsForAllFiles.size()>0){
+                mb.append("</form>");
+            }
+        } else {
+
         }
         //File list end
         mb.append("</td>");

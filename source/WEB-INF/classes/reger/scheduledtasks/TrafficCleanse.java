@@ -67,7 +67,7 @@ public class TrafficCleanse implements ScheduledTask{
                     numberofrecords=1;
                 }
 
-                //Select records older than 8 days but only some
+                //Select records older than 8 days but only numberperbatch
                 //-----------------------------------
                 //-----------------------------------
                 String[][] rstMd= Db.RunSQL("SELECT datetime, traffictypeid, plid, accountid, logid, eventid, imageid, trafficid, count FROM traffic WHERE datetime<'"+ sixtyDaysAgo +"' AND iscollapsed='0' LIMIT 0,"+numberperbatch);

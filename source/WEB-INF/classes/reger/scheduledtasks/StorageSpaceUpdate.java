@@ -17,7 +17,7 @@ public class StorageSpaceUpdate implements ScheduledTask{
     }
 
     public int getRunEveryXMinutes() {
-        return 60;
+        return 1600;
     }
 
     public boolean getOnlyRunOnceAtStartup() {

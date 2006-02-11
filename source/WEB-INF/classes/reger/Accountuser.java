@@ -1473,7 +1473,7 @@ public class Accountuser implements java.io.Serializable {
             }
             return getSiteRootUrlOfPrimaryAccount(userSession) + "/mediaout.log?imageid=" + profileimageid + "&isthumbnail=" + isthumbnailtext;
         } else {
-            return getSiteRootUrlOfPrimaryAccount(userSession) + "/" +  reger.Vars.PROFILEGENERICIMAGE;
+            return userSession.getPl().getPlBaseUrl(userSession) + "/" +  reger.Vars.PROFILEGENERICIMAGE;
         }
 
     }

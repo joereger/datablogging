@@ -530,7 +530,7 @@ public class MegaHtmlFormBottom {
                 //Get all groups this accountuser is subscribed to
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstGroups= Db.RunSQL("SELECT groups.groupid, groups.name FROM groupmembership, groups  WHERE groups.groupid=groupmembership.groupid AND groupmembership.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY name ASC");
+                String[][] rstGroups= Db.RunSQL("SELECT groups.groupid, groups.name FROM groupmembership, groups  WHERE groups.groupid=groupmembership.groupid AND groupmembership.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND groupmembership.isapproved='1' ORDER BY name ASC");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstGroups!=null && rstGroups.length>0){

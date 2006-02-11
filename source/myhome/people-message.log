@@ -22,6 +22,33 @@ pageProps.pathToAppRoot="../";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+//Get the details of the message
+reger.FriendMessage message = new reger.FriendMessage();
+if (request.getParameter("friendmessageid")!=null && reger.core.Util.isinteger(request.getParameter("friendmessageid"))){
+    message = new reger.FriendMessage(Integer.parseInt(request.getParameter("friendmessageid")));
+}
+
+//-----------------------------------
+//-----------------------------------
+String[][] rstRecip= reger.core.db.Db.RunSQL("SELECT friendmessagerecipientid FROM friendmessagerecipient WHERE friendmessageid='"+message.friendmessageid+"' AND accountuserid='"+userSession.getAccountuser().getAccountuserid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstRecip!=null && rstRecip.length>0){
+    for(int i=0; i<rstRecip.length; i++){
+        //-----------------------------------
+        //-----------------------------------
+        int count = Db.RunSQLUpdate("UPDATE friendmessagerecipient SET isread='1' WHERE friendmessagerecipientid='"+rstRecip[i][0]+"'");
+        //-----------------------------------
+        //-----------------------------------
+    }
+} else {
+    response.sendRedirect("people-inbox.log");
+    return;
+}
+
+
+
+
 
 
 //Display the page
@@ -43,29 +70,31 @@ mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 mb.append("</td>");
 mb.append("<td valign=top>");
 
-//Get the details of the message
-reger.FriendMessage message = new reger.FriendMessage();
-if (request.getParameter("friendmessageid")!=null && reger.core.Util.isinteger(request.getParameter("friendmessageid"))){
-    message = new reger.FriendMessage(Integer.parseInt(request.getParameter("friendmessageid")));
-}
 
 mb.append(reger.ui.BubbleBox.start("Subject:" + message.subject, pageProps.pathToAppRoot));
 
-mb.append(reger.ui.BubbleBox.start("Sent to You By:", pageProps.pathToAppRoot));
-//Create the accountuser who sent the message
+
+mb.append("<div class=yellowbox>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("From: ");
+mb.append("</font>");
 reger.Accountuser friend = new reger.Accountuser(message.accountuserid, true);
-mb.append("<br>");
 mb.append("<font face=arial size=-2 color=#666666>");
 mb.append("<img src='"+friend.primaryImage(userSession, true)+"' width=35 border=0 align=top>");
 mb.append(friend.getFriendlyname());
-mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("</div>");
+
 
 //Relationship
-mb.append(reger.ui.BubbleBox.start("Your Relationship to " + friend.getFriendlyname() + ":", pageProps.pathToAppRoot));
+//mb.append(reger.ui.BubbleBox.start("Your Relationship to " + friend.getFriendlyname() + ":", pageProps.pathToAppRoot));
 //Get the relationship between the two
-mb.append(userSession.getAccountuser().htmlAllRelationshipsToPerson(friend.getAccountuserid()));
-
-mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+mb.append("<div class=yellowbox>");
+mb.append("<font face=arial size=-2 color=#666666>");
+mb.append("Your Relationship:<br>");
+mb.append(userSession.getAccountuser().htmlAllRelationshipsToPerson(friend.getAccountuserid(), userSession));
+mb.append("</font>");
+mb.append("</div>");
+//mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 
 //mb.append(reger.ui.BubbleBox.start("Subject:", pageProps.pathToAppRoot));
 //mb.append("<br>");
@@ -74,12 +103,12 @@ mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 //mb.append("</font>");
 //mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 
-mb.append(reger.ui.BubbleBox.start("Message:", pageProps.pathToAppRoot));
+//mb.append(reger.ui.BubbleBox.start("Message:", pageProps.pathToAppRoot));
 mb.append("<br>");
 mb.append("<font face=arial size=-1 color=#666666>");
 mb.append(message.message);
 mb.append("</font>");
-mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+//mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 
 
 mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));

@@ -311,7 +311,7 @@ public class ImageListHtml {
 
         String sql = "image LEFT JOIN tagimagelink ON image.imageid=tagimagelink.imageid LEFT JOIN tag ON tagimagelink.tagid=tag.tagid, event, megalog WHERE event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid(), true)+" AND image.eventid=event.eventid "+tagSql+" AND "+reger.Entry.sqlOfLiveEntry+" AND image.accountid='" + userSession.getAccount().getAccountid() + "'";
 
-        reger.core.Debug.debug(3, "ImageListHtml.java", sql);
+        reger.core.Debug.debug(5, "ImageListHtml.java", sql);
 
         //-----------------------------------
         //-----------------------------------

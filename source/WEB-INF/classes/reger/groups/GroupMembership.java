@@ -61,7 +61,7 @@ public class GroupMembership {
         } else {
             //-----------------------------------
             //-----------------------------------
-            groupid = Db.RunSQLInsert("INSERT INTO groupmembership(accountuserid, groupid, sharemembershippublicly, isapproved, ismoderator) VALUES('"+accountuserid+"', '"+groupid+"', '"+reger.core.Util.booleanAsSQLText(sharemembershippublicly)+"', '"+reger.core.Util.booleanAsSQLText(isapproved)+"', '"+reger.core.Util.booleanAsSQLText(ismoderator)+"')");
+            groupmembershipid = Db.RunSQLInsert("INSERT INTO groupmembership(accountuserid, groupid, sharemembershippublicly, isapproved, ismoderator) VALUES('"+accountuserid+"', '"+groupid+"', '"+reger.core.Util.booleanAsSQLText(sharemembershippublicly)+"', '"+reger.core.Util.booleanAsSQLText(isapproved)+"', '"+reger.core.Util.booleanAsSQLText(ismoderator)+"')");
             //-----------------------------------
             //-----------------------------------    
         }
