@@ -89,7 +89,8 @@
                 if (answer == null) {
                     mb.append("<td><input type=text name=answer"+count+"></td>");
                 } else {
-                    mb.append("<td><input type=text name=answer"+count+" value='"+answer+"'></td>");
+                    mb.append("<td><input type=text name=answer"+count+" value='"+answer.substring(0, answer.indexOf("~"))+"'></td>");
+                    mb.append("<input type=hidden name='"+answer.substring(0, answer.indexOf("~"))+"' value='"+answer.substring(answer.indexOf("~")+1, answer.length())+"'>");
                 }
                 mb.append("</tr>");
             }
@@ -147,7 +148,7 @@
         if (request.getParameter("readerscanvoteonreaderanswers") != null && !request.getParameter("readerscanvoteonreaderanswers").trim().equals("")) {
             value = request.getParameter("readerscanvoteonreaderanswers");
         } else if (poll != null) {
-             value = new Boolean(poll.getReaderscanaddcomments()).toString();
+             value = new Boolean(poll.getReaderscanvoteonreaderanswers()).toString();
         }
         if (value == null || value != null && value.equalsIgnoreCase("false")) {
             mb.append("<td>If Yes: <input type=checkbox name=readerscanvoteonreaderanswers> Readers can vote on each others answers.</td>");
@@ -159,7 +160,7 @@
         if (request.getParameter("readerinputismoderated") != null && !request.getParameter("readerinputismoderated").trim().equals("")) {
             value = request.getParameter("readerinputismoderated");
         } else if (poll != null) {
-             value = new Boolean(poll.getReaderscanaddcomments()).toString();
+             value = new Boolean(poll.getReaderinputismoderated()).toString();
         }
         if (value == null || value != null && value.equalsIgnoreCase("false")) {
             mb.append("<td><input type=checkbox name=readerinputismoderated> Readers comments and answers must be approved.</td>");
