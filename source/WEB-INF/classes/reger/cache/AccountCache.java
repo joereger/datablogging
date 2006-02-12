@@ -12,7 +12,6 @@ public class AccountCache {
 
     private static GeneralCacheAdministrator admin;
 
-
     public static Account get(int accountid){
         Debug.debug(5, "", "AccountCache.get("+accountid+") called.");
         if (admin==null){

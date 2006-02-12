@@ -26,33 +26,33 @@ import org.apache.commons.io.FileUtils;
  */
 public class FileSyncServer {
 
-    public Hashtable getFileStatus(String email, String password, String file)  {
-        reger.core.Debug.debug(5, "FileSyncServer.java", "getFileStatus("+email+", "+password+", "+file+") called");
-        Accountuser au = new reger.Accountuser(email, password);
-        if (au.isLoggedIn){
-            Account account = AccountCache.get(au.getAccountid());
-            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
-            File fileObj = new File(Util.getFilenamePlusDirectoryName(file, account));
-            if (fileObj.exists() && fileObj.canRead() && fileObj.canWrite()){
-                Calendar lastmodifieddategmtCal = Calendar.getInstance();
-                lastmodifieddategmtCal.setTimeInMillis(fileObj.lastModified());
-                lastmodifieddategmtCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(lastmodifieddategmtCal, lastmodifieddategmtCal.getTimeZone().getID(), "GMT");
-                String lastmodifieddategmt = reger.core.TimeUtils.dateformatfordb(lastmodifieddategmtCal);
-                Hashtable out = new Hashtable();
-                out.put("exists", "1");
-                out.put("lastmodifieddategmt", lastmodifieddategmt);
-                return out;
-            } else {
-                Hashtable out = new Hashtable();
-                out.put("exists", "0");
-                return out;
-            }
-        } else {
-            return error("Login failed.");
-        }
-    }
+//    public Hashtable getFileStatus(String email, String password, String file)  {
+//        reger.core.Debug.debug(5, "FileSyncServer.java", "getFileStatus("+email+", "+password+", "+file+") called");
+//        Accountuser au = new reger.Accountuser(email, password);
+//        if (au.isLoggedIn){
+//            Account account = AccountCache.get(au.getAccountid());
+//            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+//            File fileObj = new File(Util.getFilenamePlusDirectoryName(file, account));
+//            if (fileObj.exists() && fileObj.canRead() && fileObj.canWrite()){
+//                Calendar lastmodifieddategmtCal = Calendar.getInstance();
+//                lastmodifieddategmtCal.setTimeInMillis(fileObj.lastModified());
+//                lastmodifieddategmtCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(lastmodifieddategmtCal, lastmodifieddategmtCal.getTimeZone().getID(), "GMT");
+//                String lastmodifieddategmt = reger.core.TimeUtils.dateformatfordb(lastmodifieddategmtCal);
+//                Hashtable out = new Hashtable();
+//                out.put("exists", "1");
+//                out.put("lastmodifieddategmt", lastmodifieddategmt);
+//                return out;
+//            } else {
+//                Hashtable out = new Hashtable();
+//                out.put("exists", "0");
+//                return out;
+//            }
+//        } else {
+//            return error("Login failed.");
+//        }
+//    }
 
-    public Hashtable saveFileOnServer(String email, String password, String file, String filebase64encoded, String lastmodifieddateinmillis) {
+    public Hashtable saveFileOnServer(String email, String password, String file, byte[] filebytes, String lastmodifieddateinmillis) {
         reger.core.Debug.debug(5, "FileSyncServer.java", "saveFileOnServer("+email+", "+password+", "+file+") called");
         Accountuser au = new reger.Accountuser(email, password);
         if (au.isLoggedIn){
@@ -62,8 +62,7 @@ public class FileSyncServer {
             reger.core.Debug.debug(5, "FileSyncServer.java", "au.isLoggedIn=true");
             Account account = AccountCache.get(au.getAccountid());
             PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
-            byte[] bits = filebase64encoded.getBytes();
-            bits = Base64.decode(bits);
+            byte[] bits = filebytes;
             int contentlength=bits.length - 1;
             long freespace = account.getFreespace();
             if ((long)contentlength>freespace) {
@@ -156,65 +155,65 @@ public class FileSyncServer {
         return false;
     }
 
-    public Hashtable renameFile(String email, String password, String file) {
-        reger.core.Debug.debug(5, "FileSyncServer.java", "renameFile("+email+", "+password+", "+file+") called");
-        Accountuser au = new reger.Accountuser(email, password);
-        if (au.isLoggedIn){
-            Account account = AccountCache.get(au.getAccountid());
-            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+//    public Hashtable renameFile(String email, String password, String file) {
+//        reger.core.Debug.debug(5, "FileSyncServer.java", "renameFile("+email+", "+password+", "+file+") called");
+//        Accountuser au = new reger.Accountuser(email, password);
+//        if (au.isLoggedIn){
+//            Account account = AccountCache.get(au.getAccountid());
+//            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+//
+//            int i = 0;
+//            String finalFilename = file;
+//            File oldFile = new File(Util.getFilenamePlusDirectoryName(file, account));
+//            File newFile = new File(Util.getFilenamePlusDirectoryName(finalFilename, account));
+//            while(newFile.exists()){
+//                i=i+1;
+//                finalFilename = addIndexToFilename(file, String.valueOf(i));
+//                newFile = new File(Util.getFilenamePlusDirectoryName(finalFilename, account));
+//            }
+//            try{
+//                FileUtils.copyFile(oldFile, newFile, true);
+//
+//                //-----------------------------------
+//                //-----------------------------------
+//                int count = Db.RunSQLUpdate("UPDATE image SET filename='"+reger.core.Util.cleanForSQL(finalFilename)+"' WHERE filename='"+reger.core.Util.cleanForSQL(file)+"' AND accountid='"+account.getAccountid()+"'");
+//                //-----------------------------------
+//                //-----------------------------------
+//            } catch (Exception e){
+//                return error("Error: "+e.getMessage());
+//            }
+//            Hashtable out = new Hashtable();
+//            out.put("success", String.valueOf("1"));
+//            out.put("newfilename", String.valueOf(finalFilename));
+//            return out;
+//        } else {
+//            return error("Login failed.");
+//        }
+//    }
 
-            int i = 0;
-            String finalFilename = file;
-            File oldFile = new File(Util.getFilenamePlusDirectoryName(file, account));
-            File newFile = new File(Util.getFilenamePlusDirectoryName(finalFilename, account));
-            while(newFile.exists()){
-                i=i+1;
-                finalFilename = addIndexToFilename(file, String.valueOf(i));
-                newFile = new File(Util.getFilenamePlusDirectoryName(finalFilename, account));
-            }
-            try{
-                FileUtils.copyFile(oldFile, newFile, true);
+//    private static String addIndexToFilename(String file, String index){
+//        String pathAndFilenameNoExtension = FilenameUtils.removeExtension(file);
+//        String finalFilename = pathAndFilenameNoExtension + "-" + index;
+//        if (!FilenameUtils.getExtension(file).equals("")){
+//            finalFilename = finalFilename+"."+FilenameUtils.getExtension(file);
+//        }
+//        return finalFilename;
+//    }
 
-                //-----------------------------------
-                //-----------------------------------
-                int count = Db.RunSQLUpdate("UPDATE image SET filename='"+reger.core.Util.cleanForSQL(finalFilename)+"' WHERE filename='"+reger.core.Util.cleanForSQL(file)+"' AND accountid='"+account.getAccountid()+"'");
-                //-----------------------------------
-                //-----------------------------------
-            } catch (Exception e){
-                return error("Error: "+e.getMessage());
-            }
-            Hashtable out = new Hashtable();
-            out.put("success", String.valueOf("1"));
-            out.put("newfilename", String.valueOf(finalFilename));
-            return out;
-        } else {
-            return error("Login failed.");
-        }
-    }
-
-    private static String addIndexToFilename(String file, String index){
-        String pathAndFilenameNoExtension = FilenameUtils.removeExtension(file);
-        String finalFilename = pathAndFilenameNoExtension + "-" + index;
-        if (!FilenameUtils.getExtension(file).equals("")){
-            finalFilename = finalFilename+"."+FilenameUtils.getExtension(file);
-        }
-        return finalFilename;
-    }
-
-    public Hashtable getStorageRemainingOnAccount(String email, String password) {
-        reger.core.Debug.debug(5, "FileSyncServer.java", "getStorageRemainingOnAccount("+email+", "+password+") called");
-        Accountuser au = new reger.Accountuser(email, password);
-        if (au.isLoggedIn){
-            Account account = AccountCache.get(au.getAccountid());
-            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
-            long freespace = account.getFreespace();
-            Hashtable out = new Hashtable();
-            out.put("freespace", String.valueOf(freespace));
-            return out;
-        } else {
-            return error("Login failed.");
-        }
-    }
+//    public Hashtable getStorageRemainingOnAccount(String email, String password) {
+//        reger.core.Debug.debug(5, "FileSyncServer.java", "getStorageRemainingOnAccount("+email+", "+password+") called");
+//        Accountuser au = new reger.Accountuser(email, password);
+//        if (au.isLoggedIn){
+//            Account account = AccountCache.get(au.getAccountid());
+//            PrivateLabel pl = reger.AllPrivateLabelsInSystem.getPrivateLabel(account.getPlid());
+//            long freespace = account.getFreespace();
+//            Hashtable out = new Hashtable();
+//            out.put("freespace", String.valueOf(freespace));
+//            return out;
+//        } else {
+//            return error("Login failed.");
+//        }
+//    }
 
     public Vector getListOfFilesOnServer(String email, String password) {
         reger.core.Debug.debug(5, "FileSyncServer.java", "getListOfFilesOnServer("+email+") called");
@@ -291,11 +290,9 @@ public class FileSyncServer {
                     Hashtable out = new Hashtable();
                     out.put("success", "1");
                     out.put("file", file);
-                    out.put("filebase64encoded", base64EncodeFile(fileToSend));
+                    out.put("filebytes", getBytesFromFile(fileToSend));
                     out.put("lastmodifieddateinmillis", String.valueOf(lastmodifieddategmt.getTimeInMillis()));
                     return out;
-                } catch (ValidationException vex){
-                    return error("Error encoding file: "+vex.getErrorsAsSingleString());
                 } catch (Exception e){
                     return error("Error encoding file: "+e.getMessage());
                 }
@@ -307,19 +304,19 @@ public class FileSyncServer {
         }
     }
 
-    public static String base64EncodeFile(File in) throws ValidationException {
-        if (in.canRead() && !in.isDirectory()){
-            try{
-                String out = new String(Base64.encode(getBytesFromFile(in)));
-                return out;
-            } catch (IOException ioex){
-                ValidationException vex = new ValidationException();
-                vex.addValidationError(ioex.getMessage());
-                throw vex;
-            }
-        }
-        return "";
-    }
+//    public static String base64EncodeFile(File in) throws ValidationException {
+//        if (in.canRead() && !in.isDirectory()){
+//            try{
+//                String out = new String(Base64.encode(getBytesFromFile(in)));
+//                return out;
+//            } catch (IOException ioex){
+//                ValidationException vex = new ValidationException();
+//                vex.addValidationError(ioex.getMessage());
+//                throw vex;
+//            }
+//        }
+//        return "";
+//    }
 
     private static byte[] getBytesFromFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);

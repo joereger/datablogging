@@ -461,6 +461,27 @@ This is a reference showing the jar file to module relationship:
        - commons-lang-2.1.jar
        - concurrent.jar
 
+15) Apache Axis 2  - * = existed already in project
+       - log4j *
+       - commons-httpclient *
+       - commons-logging *
+       - commons-codec *
+       - annogen
+       - axis2-adb
+       - axis2-core
+       - axis-wsdl4j
+       - backport-util-concurrent
+       - geronimo-spec-activation
+       - geronimo-spec-javamail
+       - geronimo-spec-jms
+       - jaxen
+       - maven-itest
+       - servletapi-2.3 *
+       - ws-policy
+       - wstx-asl
+       - xml-schema
+
+
 
 
 

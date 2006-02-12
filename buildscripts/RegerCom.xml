@@ -41,6 +41,7 @@
       <fileset dir="${tomcat.install.directory}/common/lib">
         <include name="**/*.jar" />
       </fileset>
+      <pathelement path="${javasrc}" />
   </path>
 
   <!-- Delete any files in the lastbuild folder... start fresh my friend... start fresh. -->
@@ -77,6 +78,10 @@
          </aopc>
    </target>
    -->
+
+ 
+
+
 
    <!-- Create reger.jar package -->
    <!-- This set of core functions is used in other Reger.com supporting apps. -->

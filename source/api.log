@@ -31,6 +31,8 @@ OutputStream outStream = response.getOutputStream();
 //reger.core.Util.logtodb("Made it to api.log.");
 
 XmlRpc.setDebug(true);
+XmlRpc.setDriver("org.apache.xerces.parsers.SAXParser");
+
 
 XmlRpcServer xmlrpc = new XmlRpcServer();
 xmlrpc.addHandler ("blogger", new reger.api.BloggerApi());

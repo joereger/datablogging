@@ -77,6 +77,20 @@
         <param-value>true</param-value>
         </init-param>
    </servlet>
+   <!-- Start filesync -->
+    <servlet>
+        <servlet-name>FileSyncSaveFileOnServer</servlet-name>
+        <servlet-class>reger.filesync.server.soap.SaveFileOnServer</servlet-class>
+   </servlet>
+   <servlet-mapping>
+        <servlet-name>FileSyncSaveFileOnServer</servlet-name>
+        <url-pattern>/soap/FileSyncSaveFileOnServer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileSyncSaveFileOnServer</servlet-name>
+        <url-pattern>/~*/soap/FileSyncSaveFileOnServer</url-pattern>
+    </servlet-mapping>
+   <!-- End filesync -->
    <!-- Start fckeditor -->
    <servlet>
         <servlet-name>ConnectorServlet</servlet-name>
