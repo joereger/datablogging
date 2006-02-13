@@ -764,8 +764,8 @@ public class MegaHtmlFormBottom {
                 //Display messages
                 mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()), "entry.log", pageProps.action, pageProps.logProps.logid, -1, request, true, response));
 
-
-                // Allowing the reader to vote. Part of Poll
+                // ******************** Allowing the reader to vote. Part of Poll *********************
+                mb.append("<form action=http://localhost/~pawan/myhome/entries-poll-votes.log method=post>");
                 PollUtil pollUtil = new PollUtil();
                 HashMap pollMap = pollUtil.getPollByEventId(pageProps.entry.eventid);
                 if (pollMap != null && pollMap.size() > 0) {
@@ -809,14 +809,14 @@ public class MegaHtmlFormBottom {
                                     stkr = new StringTokenizer(key,"~");
                                     pollAnswerId = (String) stkr.nextElement();
                                     ownerAnswer = (String) stkr.nextElement();
+                                    ownerAnswerVotes = (String) stkr.nextElement();
                                     if (ownerAnswer != null && !ownerAnswer.trim().equalsIgnoreCase("")) {
                                         mb.append("<br>");
-                                        mb.append("<input type=radio name=answer value="+ownerAnswer+">");
+                                        mb.append("<input type=radio name=answer value="+pollAnswerId+"~"+ownerAnswerVotes+"~owner>");
                                         mb.append(ownerAnswer);
                                     }
-                                    ownerAnswerVotes = (String) stkr.nextElement();
                                 }
-                                // Display only if readers can vote readers answers.
+                                // Display only answers that are approved only if readers can vote readers answers.
                                 if (Integer.parseInt(readersCanVoteonReaderAnswers) == 1) {
                                     answerIter = readerAnswerMap.keySet().iterator();
                                     while (answerIter.hasNext()) {
@@ -825,23 +825,24 @@ public class MegaHtmlFormBottom {
                                         while (stkr.hasMoreElements()) {
                                             pollReaderAnswerId = (String) stkr.nextElement();
                                             readerAnswer = (String) stkr.nextElement();
-                                            if (readerAnswer != null && !readerAnswer.trim().equalsIgnoreCase("")) {
-                                                mb.append("<br>");
-                                                mb.append("<input type=radio name=answer value="+readerAnswer+">");
-                                                mb.append(readerAnswer);
-                                            }
                                             readerName = (String) stkr.nextElement();
                                             readerAnswerVotes = (String) stkr.nextElement();
                                             answerIsApproved = (String) stkr.nextElement();
+                                            if (readerAnswer != null && !readerAnswer.trim().equalsIgnoreCase("") && answerIsApproved.equalsIgnoreCase("1")) {
+                                                mb.append("<br>");
+                                                // value is combination of pollanswerid and pollid as we need both for saving.
+                                                mb.append("<input type=radio name=answer value="+pollReaderAnswerId+"~"+readerAnswerVotes+"~reader>");
+                                                mb.append(readerAnswer);
+                                            }
                                         }
                                     }
                                 }
                                 // Allow readers to add own answers only if readers can add own answer.
                                 if (Integer.parseInt(readersCanAddOwnAnswer) == 1) {
                                     mb.append("<br>");
-                                    mb.append("<input type=radio name=answer value=MyOwnAnswer>Provide your own answer:<br>");
-                                    mb.append("Answer <input type=text name=ownAnswer><br>");
-                                    mb.append("Name <input type=text name=readername><br>");
+                                    mb.append("<input type=radio name=answer value=ReaderAnswer~"+pollid+"~ownAnswer>Provide your own answer:<br>");
+                                    mb.append("Answer <input type=text name=readerOwnAnswer><br>");
+                                    mb.append("Name <input type=text name=readerName><br>");
                                 }
                             }
                             // Display Vote button only if question is open.
@@ -851,6 +852,7 @@ public class MegaHtmlFormBottom {
                         }
                     }
                 } // End Poll
+                mb.append("</form>");
             }
             mb.append("<!-- End Messages -->");
 
