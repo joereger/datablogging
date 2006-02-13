@@ -1,0 +1,72 @@
+<%@ page import="reger.poll.PollAnswer"%>
+<%@ page import="reger.poll.PollReaderAnswer"%>
+<%@ page import="java.util.StringTokenizer"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+    reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+    pageProps.siteSection=pageProps.ADMINSITE;
+    pageProps.title = "Vote Result";
+    pageProps.isPasswordProtected = true;
+    //pageProps.navButtonName = "entriespolls";
+    pageProps.aclObjectName = "ADDEDITENTRIES";
+    pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+    pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+    String[] answers = request.getParameterValues("answer");
+    // PollAnswer
+    if (answers != null && answers.length > 0) {
+        PollAnswer pollAnswer = null;
+        PollReaderAnswer pollReaderAnswer = null;
+        StringTokenizer stkr = null;
+        String answerId = null;
+        String votes = null;
+        String answerBelongsTo = null;
+        // Update pollanswer by increasing votes by 1
+        for (int i=0;i<answers.length;i++) {
+            stkr = new StringTokenizer(answers[i], "~");
+            mb.append(answers[i]);
+            answerId = (String) stkr.nextElement();
+            votes = (String) stkr.nextElement();
+            answerBelongsTo = (String) stkr.nextElement();
+            if(answerBelongsTo.equals("owner")) {
+                // Update votes in for owner answer
+                pollAnswer = new PollAnswer(Integer.parseInt(answerId));
+                pollAnswer.setVotes(Integer.parseInt(votes) + 1);
+                pollAnswer.save();
+            } if(answerBelongsTo.equals("reader")) {
+                // Update votes in reader answer table
+                pollReaderAnswer = new PollReaderAnswer(Integer.parseInt(answerId));
+                pollReaderAnswer.setVotes(Integer.parseInt(votes) + 1);
+                pollReaderAnswer.save();
+            } if(answerBelongsTo.equals("ownAnswer")) {
+                // Save new reader answer
+                pollReaderAnswer = new PollReaderAnswer();
+                pollReaderAnswer.setPollid(Integer.parseInt(votes));
+                pollReaderAnswer.setAnswer(request.getParameter("readerOwnAnswer"));
+                pollReaderAnswer.setReadername(request.getParameter("readerName"));
+                pollReaderAnswer.setVotes(0);
+                pollReaderAnswer.setIsapproved(false);
+                pollReaderAnswer.save();
+            }
+        }
+    }
+    mb.append("<img src=images/reger-poweredby.gif width=30 height=60/>");
+%>
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalfooter.jsp" %>
