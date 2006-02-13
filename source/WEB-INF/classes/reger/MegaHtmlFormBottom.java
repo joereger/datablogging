@@ -812,7 +812,7 @@ public class MegaHtmlFormBottom {
                                     ownerAnswerVotes = (String) stkr.nextElement();
                                     if (ownerAnswer != null && !ownerAnswer.trim().equalsIgnoreCase("")) {
                                         mb.append("<br>");
-                                        mb.append("<input type=radio name=answer value="+pollAnswerId+"~"+ownerAnswerVotes+"~owner>");
+                                        mb.append("<input type=radio name=answer value="+pollAnswerId+"~"+ownerAnswerVotes+"~owner~"+pollid+">");
                                         mb.append(ownerAnswer);
                                     }
                                 }
@@ -831,7 +831,7 @@ public class MegaHtmlFormBottom {
                                             if (readerAnswer != null && !readerAnswer.trim().equalsIgnoreCase("") && answerIsApproved.equalsIgnoreCase("1")) {
                                                 mb.append("<br>");
                                                 // value is combination of pollanswerid and pollid as we need both for saving.
-                                                mb.append("<input type=radio name=answer value="+pollReaderAnswerId+"~"+readerAnswerVotes+"~reader>");
+                                                mb.append("<input type=radio name=answer value="+pollReaderAnswerId+"~"+readerAnswerVotes+"~reader~"+pollid+">");
                                                 mb.append(readerAnswer);
                                             }
                                         }
@@ -840,7 +840,7 @@ public class MegaHtmlFormBottom {
                                 // Allow readers to add own answers only if readers can add own answer.
                                 if (Integer.parseInt(readersCanAddOwnAnswer) == 1) {
                                     mb.append("<br>");
-                                    mb.append("<input type=radio name=answer value=ReaderAnswer~"+pollid+"~ownAnswer>Provide your own answer:<br>");
+                                    mb.append("<input type=radio name=answer value=ReaderAnswer~"+pollid+"~ownAnswer~"+pollid+">Provide your own answer:<br>");
                                     mb.append("Answer <input type=text name=readerOwnAnswer><br>");
                                     mb.append("Name <input type=text name=readerName><br>");
                                 }
