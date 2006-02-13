@@ -44,8 +44,6 @@ public class SaveFileOnServer extends HttpServlet {
             SOAPMessage message = messageFactory.createMessage(mimeHeaders, request.getInputStream());
             SOAPFactory soapFactory = SOAPFactory.newInstance();
             SOAPBody body = message.getSOAPBody();
-
-            //Get the base info
             Iterator filesyncfiles = body.getChildElements(soapFactory.createName("FileSyncFile", "fileSync", "http://www.reger.com/soap/FileSync"));
             SOAPElement filesyncfile = (SOAPElement)filesyncfiles.next();
             if (filesyncfile!=null){

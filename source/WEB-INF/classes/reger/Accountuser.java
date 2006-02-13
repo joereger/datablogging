@@ -89,16 +89,16 @@ public class Accountuser implements java.io.Serializable {
      */
     public Accountuser(String email, String password){
         Debug.debug(5, "", "Accountuser(email, password) constructor<br>email=" + email + "<br>password=" + password);
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstUser= Db.RunSQL("SELECT accountuserid FROM accountuser WHERE email='"+reger.core.Util.cleanForSQL(email)+"' AND password='"+reger.core.Util.cleanForSQL(PasswordHash.getHash(password))+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstUser!=null && rstUser.length>0){
-            this.accountuserid = Integer.parseInt(rstUser[0][0]);
-            populate();
+//        //-----------------------------------
+//        //-----------------------------------
+//        String[][] rstUser= Db.RunSQL("SELECT accountuserid FROM accountuser WHERE email='"+reger.core.Util.cleanForSQL(email)+"' AND password='"+reger.core.Util.cleanForSQL(PasswordHash.getHash(password))+"'");
+//        //-----------------------------------
+//        //-----------------------------------
+//        if (rstUser!=null && rstUser.length>0){
+//            this.accountuserid = Integer.parseInt(rstUser[0][0]);
+//            populate();
             userAuthenticate(email, password);
-        }
+//        }
     }
 
     /**
@@ -186,7 +186,7 @@ public class Accountuser implements java.io.Serializable {
         //Populate the private labels this user can administer
         populatePlsUserCanAdmin();
 
-        //Get the fields and store them in the Vector accountuserfields
+        //Get the fields and store them in the ArrayList accountuserfields
         if (this.accountuserid>0){
             accountuserfields = new ArrayList<Accountuserfield>();
             //-----------------------------------

@@ -90,6 +90,18 @@
         <servlet-name>FileSyncSaveFileOnServer</servlet-name>
         <url-pattern>/~*/soap/FileSyncSaveFileOnServer</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>FileSyncDownloadFileFromServer</servlet-name>
+        <servlet-class>reger.filesync.server.soap.DownloadFileFromServer</servlet-class>
+   </servlet>
+   <servlet-mapping>
+        <servlet-name>FileSyncDownloadFileFromServer</servlet-name>
+        <url-pattern>/soap/FileSyncDownloadFileFromServer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileSyncDownloadFileFromServer</servlet-name>
+        <url-pattern>/~*/soap/FileSyncDownloadFileFromServer</url-pattern>
+    </servlet-mapping>
    <!-- End filesync -->
    <!-- Start fckeditor -->
    <servlet>
