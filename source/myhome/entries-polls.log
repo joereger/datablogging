@@ -56,7 +56,7 @@
         if (!poll.getIsopen()){
             color = "ffffff";
         }
-        mb.append(reger.ui.RoundedCorners.start(color, "999999", 100));
+        mb.append(reger.ui.RoundedCorners.start("poll", color, "999999", 100));
         mb.append("<font face=arial size=-1><b>");
         mb.append( "<a href=entries-poll-settings.log?pollid="+poll.getPollid()+">"+poll.getQuestion()+"</a>");
         mb.append("</b></font>");
@@ -75,7 +75,7 @@
         mb.append("<br>From Entry : ");
         mb.append("<a href=../entry.log?eventid=" + entry.eventid + ">"+entry.title+"</a>");
         mb.append("</font>");
-        mb.append(reger.ui.RoundedCorners.end());
+        mb.append(reger.ui.RoundedCorners.end("poll"));
         mb.append("</td></tr>");
 
     }

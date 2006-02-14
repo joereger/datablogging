@@ -194,13 +194,13 @@ public class PollResultsHtml {
         StringBuffer mb = new StringBuffer();
 
 
-        mb.append(reger.ui.RoundedCorners.start("ffffff", "cccccc", 100));
+        mb.append(reger.ui.RoundedCorners.start("pollgraph"+poll.getPollid(), "ffffff", "cccccc", 100));
         mb.append(getResultsGraphOnly(poll, request, pageProps, userSession));
-        mb.append(reger.ui.RoundedCorners.end());
+        mb.append(reger.ui.RoundedCorners.end("pollgraph"+poll.getPollid()));
 
         //Display comments
         if (poll.getReaderscanaddcomments() && poll.getPollReaderComments().size()>0){
-            mb.append(reger.ui.RoundedCorners.start("ffffff", "cccccc", 100));
+            mb.append(reger.ui.RoundedCorners.start("pollcomments"+poll.getPollid(), "ffffff", "cccccc", 100));
             mb.append("<table cellpadding=10 cellspacing=3 border=0>");
             mb.append("<tr>");
             mb.append("<td valign=top align=left colspan=2>");
@@ -229,7 +229,7 @@ public class PollResultsHtml {
                 mb.append("</tr>");
             }
             mb.append("</table>");
-            mb.append(reger.ui.RoundedCorners.end());
+            mb.append(reger.ui.RoundedCorners.end("pollcomments"+poll.getPollid()));
         }
 
         if (poll.getIsopen() && poll.getReaderscanaddcomments()){
@@ -237,7 +237,7 @@ public class PollResultsHtml {
             mb.append("<input type=hidden name=action value='commentonpoll'>");
             mb.append("<input type=hidden name=pollid value='"+poll.getPollid()+"'>");
 
-            mb.append(reger.ui.RoundedCorners.start("ffffff", "cccccc", 100));
+            mb.append(reger.ui.RoundedCorners.start("polladdcomment"+poll.getPollid(), "ffffff", "cccccc", 100));
             mb.append("<table cellpadding=5 cellspacing=3 border=0>");
             mb.append("<tr>");
             mb.append("<td valign=top align=left colspan=2>");
@@ -277,7 +277,7 @@ public class PollResultsHtml {
             mb.append("</td>");
             mb.append("</tr>");
             mb.append("</table>");
-            mb.append(reger.ui.RoundedCorners.end());
+            mb.append(reger.ui.RoundedCorners.end("polladdcomment"+poll.getPollid()));
 
             mb.append("</form>");
         }

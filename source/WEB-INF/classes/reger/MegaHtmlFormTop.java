@@ -361,13 +361,13 @@ public class MegaHtmlFormTop {
                         mb.append("<div style=\"float: right; width: 200px;\">");
                         for (Iterator it = pageProps.entry.getPolls().iterator(); it.hasNext(); ) {
                             Poll poll = (Poll)it.next();
-                            mb.append(reger.ui.RoundedCorners.start("ffffff", "cccccc", 100));
+                            mb.append(reger.ui.RoundedCorners.start("poll"+poll.getPollid(), "ffffff", "cccccc", 100));
                             if(poll.getIsopen()){
                                 mb.append(PollFormHtml.getPollForm(poll));
                             } else {
                                 mb.append(PollResultsHtml.getResultsGraphOnly(poll, request, pageProps, userSession));
                             }
-                            mb.append(reger.ui.RoundedCorners.end());
+                            mb.append(reger.ui.RoundedCorners.end("poll"+poll.getPollid()));
                         }
                         mb.append("</div>");
                     }
