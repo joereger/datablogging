@@ -10,6 +10,7 @@ import reger.cache.jboss.Cacheable;
 import reger.xforms.EventXformData;
 import reger.mega.FieldType;
 import reger.groups.EventToGroup;
+import reger.poll.Poll;
 
 import java.util.Calendar;
 import java.util.ArrayList;
@@ -111,6 +112,8 @@ public class Entry {
     // Entry tags
     public String entryKeywordTags = "";
     public String entryKeywordTagsWithLinks = "";
+
+    private ArrayList<Poll> polls = new ArrayList<Poll>();
 
     /**
      * Constructor:
@@ -690,6 +693,8 @@ public class Entry {
             }
         }
 
+        loadPolls();
+
         //Go get the fields
         if (fields == null) {
             try {
@@ -721,6 +726,22 @@ public class Entry {
 
         return true;
 
+    }
+
+    public void loadPolls(){
+        polls = new ArrayList<Poll>();
+        //Polls
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstPolls = Db.RunSQL("SELECT pollid FROM poll WHERE eventid='" + eventid + "'");
+        //-----------------------------------
+        //-----------------------------------
+        groupids = new ArrayList<Integer>();
+        if (rstPolls != null && rstPolls.length > 0) {
+            for (int i = 0; i < rstPolls.length; i++) {
+                polls.add(new Poll(Integer.parseInt(rstPolls[i][0])));
+            }
+        }
     }
 
 
@@ -1467,5 +1488,9 @@ public class Entry {
 
     public EventXformData getEventXformData() {
         return eventXformData;
+    }
+
+    public ArrayList<Poll> getPolls() {
+        return polls;
     }
 }

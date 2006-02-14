@@ -5,6 +5,7 @@
 <%@ page import="reger.cache.LogCache" %>
 <%@ page import="reger.core.ValidationException" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="reger.InfoBox"%>
 <%
     /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -70,28 +71,33 @@
     if (pageProps.action.equals("")) {
         boolean haveSomethingToAdd = false;
 
+        mb.append("<br>");
+        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
+        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your entry has been saved!  You can now add optional features to your post.  <a href='index.log?msg=entryedited&eventid=" + entry.eventid + "&logid=" + entry.logid+"'>Skip</a>"));
+
         mb.append("<form action=entry-additionalinfo.log method=post>");
         mb.append("<input type=hidden name=action value='submit'>");
         mb.append("<input type=hidden name=eventid value='" + entry.eventid + "'>");
         mb.append("<input type=hidden name=logid value='" + entry.logid + "'>");
-
-        //mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  Your entry has been saved.  You can now add optional information below."));
         mb.append("<table cellpadding=10 cellspacing=0 border=0>");
-        mb.append("<tr>");
-        mb.append("<td align=left valign=top>");
-        //mb.append("<img src='../images/groups-lg.gif' align=left>");
-        mb.append("</td>");
-        mb.append("<td align=right valign=top>");
-        mb.append("<font face=arial size=+2 color=#cccccc><b>");
-        mb.append("Optional Features");
-        mb.append("</b></font><br><font face=arial size=-2><b>");
-        mb.append("</b></font></td>");
-        mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
-        mb.append("<input type=submit value='Continue'>");
-        mb.append("</td>");
-        mb.append("</tr>");
-        //mb.append("</table>");
-        //mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
+//        //mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  Your entry has been saved.  You can now add optional information below."));
+//        mb.append("<tr>");
+//        mb.append("<td align=left valign=top>");
+//        //mb.append("<img src='../images/groups-lg.gif' align=left>");
+//        mb.append("</td>");
+//        mb.append("<td align=right valign=top>");
+//        mb.append("<font face=arial size=+2 color=#cccccc><b>");
+//        //mb.append("Optional Features");
+//        mb.append("</b></font><br><font face=arial size=-2><b>");
+//        mb.append("</b></font></td>");
+//        mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
+//        mb.append("<input type=submit value='Continue'>");
+//        mb.append("</td>");
+//        mb.append("</tr>");
+//        //mb.append("</table>");
+//        //mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
 
         //Begin Groups
         if (userSession.getAccountuser().userCanDoAcl("POSTENTRYTOGROUP", userSession.getAccount().getAccountid())) {
@@ -106,7 +112,7 @@
             mb.append("<font face=arial size=+2><b>");
             mb.append("Groups");
             mb.append("</b></font><br><font face=arial size=-2><b>");
-            mb.append("Post this entry to these groups:");
+            mb.append("Groups allow you to share posts<br> with people who have common interests.<br>Groups can be public or private.");
             mb.append("</b></font></td>");
             mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
             mb.append("");
@@ -160,13 +166,13 @@
         //mb.append("<table cellpadding=10 cellspacing=0 border=0>");
         mb.append("<tr>");
         mb.append("<td align=left valign=top>");
-        mb.append("<img src='../images/groups-lg.gif' align=left>");
+        mb.append("<img src='../images/poll-icon.gif' align=left>");
         mb.append("</td>");
         mb.append("<td align=right valign=top>");
         mb.append("<font face=arial size=+2><b>");
         mb.append("Polls");
         mb.append("</b></font><br><font face=arial size=-2><b>");
-        mb.append("Create a poll with this entry:");
+        mb.append("Polls allow you to get feedback from your readers.");
         mb.append("</b></font></td>");
         mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
         mb.append("<input type=checkbox name=poll value=1> ");
@@ -200,11 +206,12 @@
 
         mb.append("</form>");
 
-        //mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 
 
         if (!haveSomethingToAdd) {
             response.sendRedirect("index.log?msg=entryedited&eventid=" + entry.eventid + "&logid=" + entry.logid);
+            return;
         }
     }
 

@@ -2,13 +2,10 @@ package reger;
 
 import reger.core.db.Db;
 import reger.core.Debug;
-import reger.poll.PollUtil;
+import reger.poll.Poll;
+import reger.poll.PollFormHtml;
 
 import java.util.Iterator;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-import java.util.ArrayList;
-import java.math.BigInteger;
 
 /**
  *
@@ -298,6 +295,8 @@ public class MegaHtmlFormBottom {
                     mb.append("</tr>");
                 }
             }
+
+            
 
             //Episodes
             if (displayasadmin) {
@@ -681,99 +680,6 @@ public class MegaHtmlFormBottom {
                 }
                 //Display messages
                 mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()), "entry.log", pageProps.action, pageProps.logProps.logid, -1, request, true, response));
-
-                // ******************** Allowing the reader to vote. Part of Poll *********************
-                mb.append("<form action=http://localhost/~pawan/myhome/entries-poll-votes.log method=post onSubmit=\"javascript: pollResults()\" target=\"Poll Results\">");
-                PollUtil pollUtil = new PollUtil();
-                HashMap pollMap = pollUtil.getPollByEventId(pageProps.entry.eventid);
-                if (pollMap != null && pollMap.size() > 0) {
-                    request.getSession().setAttribute("pollMap", pollMap);
-                    Iterator iter = pollMap.keySet().iterator();
-                    Iterator answerIter = null;
-                    String key = null;
-                    HashMap answerMap = null;
-                    HashMap readerAnswerMap = null;
-                    StringTokenizer stkr = null;
-                    ArrayList answerList = null;
-                    String eventid, title, pollid, question, readersCanAddOwnAnswer, readersCanAddComments,
-                            readersCanVoteonReaderAnswers, readerInputIsModerated, isOpen, pollAnswerId, ownerAnswer, ownerAnswerVotes,
-                            pollReaderAnswerId, readerAnswer, readerName, readerAnswerVotes, answerIsApproved = null;
-                    int totalVotes = 0;
-                    while (iter.hasNext()) {
-                        totalVotes = 0;
-                        key = (String) iter.next();
-                        answerList = (ArrayList) pollMap.get(key);
-                        answerMap = (HashMap) answerList.get(0);
-                        readerAnswerMap = (HashMap) answerList.get(1);
-                        stkr = new StringTokenizer(key, "~");
-                        eventid = (String) stkr.nextElement();
-                        title = (String) stkr.nextElement();
-                        pollid = (String) stkr.nextElement();
-                        question = (String) stkr.nextElement();
-                        readersCanAddOwnAnswer = (String) stkr.nextElement();
-                        readersCanAddComments = (String) stkr.nextElement();
-                        readersCanVoteonReaderAnswers = (String) stkr.nextElement();
-                        readerInputIsModerated = (String) stkr.nextElement();
-                        isOpen = (String) stkr.nextElement();
-                        // Display question only if it is open.
-                        if (isOpen.equalsIgnoreCase("1") && question.indexOf("?") > -1) {
-                            mb.append(question);
-                        } else if (isOpen.equalsIgnoreCase("1") && question.indexOf("?") == -1) {
-                            mb.append(question + "?");
-                        }
-                        // Display answers for questins only if questions are open.
-                        if (isOpen.equalsIgnoreCase("1")) {
-                            answerIter = answerMap.keySet().iterator();
-                            while (answerIter.hasNext()) {
-                                key = (String) answerIter.next();
-                                stkr = new StringTokenizer(key, "~");
-                                pollAnswerId = (String) stkr.nextElement();
-                                ownerAnswer = (String) stkr.nextElement();
-                                ownerAnswerVotes = (String) stkr.nextElement();
-                                if (ownerAnswer != null && !ownerAnswer.trim().equalsIgnoreCase("")) {
-                                    totalVotes += Integer.parseInt(ownerAnswerVotes);
-                                    mb.append("<br>");
-                                    mb.append("<input type=radio name=answer value=" + pollAnswerId + "~" + ownerAnswerVotes + "~owner~" + pollid + ">");
-                                    mb.append(ownerAnswer);
-                                }
-                            }
-                            // Display only answers that are approved only if readers can vote readers answers.
-                            if (Integer.parseInt(readersCanVoteonReaderAnswers) == 1) {
-                                answerIter = readerAnswerMap.keySet().iterator();
-                                while (answerIter.hasNext()) {
-                                    key = (String) answerIter.next();
-                                    stkr = new StringTokenizer(key, "~");
-                                    pollReaderAnswerId = (String) stkr.nextElement();
-                                    readerAnswer = (String) stkr.nextElement();
-                                    readerName = (String) stkr.nextElement();
-                                    readerAnswerVotes = (String) stkr.nextElement();
-                                    answerIsApproved = (String) stkr.nextElement();
-                                    if (readerAnswer != null && !readerAnswer.trim().equalsIgnoreCase("") && answerIsApproved.equalsIgnoreCase("1")) {
-                                        totalVotes += Integer.parseInt(readerAnswerVotes);
-                                        mb.append("<br>");
-                                        // value is combination of pollanswerid and pollid as we need both for saving.
-                                        mb.append("<input type=radio name=answer value=" + pollReaderAnswerId + "~" + readerAnswerVotes + "~reader~" + pollid + ">");
-                                        mb.append(readerAnswer);
-                                    }
-                                }
-                            }
-                            // Allow readers to add own answers only if readers can add own answer.
-                            if (Integer.parseInt(readersCanAddOwnAnswer) == 1) {
-                                mb.append("<br>");
-                                mb.append("<input type=radio name=answer value=ReaderAnswer~" + pollid + "~ownAnswer~" + pollid + ">Provide your own answer:<br>");
-                                mb.append("Answer <input type=text name=readerOwnAnswer><br>");
-                                mb.append("Name <input type=text name=readerName><br>");
-                            }
-                            mb.append("<input type=hidden name=totalVotes value="+pollid+"~"+totalVotes+">");
-                            mb.append("<input type=submit name=Vote value=Vote><br><br>");
-                        }
-                    }
-                } // End Poll
-                mb.append("</form>");
-                // Following is the script to open results in new window.
-                mb.append("<SCRIPT language=JavaScript>");
-                mb.append("function pollResults() { window.open(\"\",\"Poll Results\",\"toolbar=no\")return true}");
-                mb.append("</SCRIPT");
             }
             mb.append("<!-- End Messages -->");
 

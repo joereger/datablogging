@@ -84,16 +84,22 @@ public class MegaLogTypeListHtmlRenderer {
             mb.append("<br><br>");
             mb.append("</td>");
             mb.append("</tr>");
-            String sqlSubselectCountLogsEt = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
+            //String sqlSubselectCountLogsEt = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
             //-----------------------------------
             //-----------------------------------
-            String[][] rstEventtype= Db.RunSQL("SELECT pleventtypeid.eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogsEt+"  FROM pleventtypeid, megalogtype megalogtype WHERE pleventtypeid.plid='"+ userSession.getPl().getPlid() +"' AND pleventtypeid.eventtypeid=megalogtype.eventtypeid ORDER BY pleventtypeid.priority ASC");
+            //String[][] rstEventtype= Db.RunSQL("SELECT pleventtypeid.eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogsEt+"  FROM pleventtypeid, megalogtype megalogtype WHERE pleventtypeid.plid='"+ userSession.getPl().getPlid() +"' AND pleventtypeid.eventtypeid=megalogtype.eventtypeid ORDER BY pleventtypeid.priority ASC");
+            //-----------------------------------
+            //-----------------------------------
+
+            //-----------------------------------
+            //-----------------------------------
+            String[][] rstEventtype= Db.RunSQL("SELECT pleventtypeid.eventtypeid, megalogname, description, icon  FROM pleventtypeid, megalogtype megalogtype WHERE pleventtypeid.plid='"+ userSession.getPl().getPlid() +"' AND pleventtypeid.eventtypeid=megalogtype.eventtypeid ORDER BY pleventtypeid.priority ASC");
             //-----------------------------------
             //-----------------------------------
             if (rstEventtype!=null && rstEventtype.length>0){
                 for(int i=0; i<rstEventtype.length; i++){
 
-                    mb.append(compactLogTypeHtml(Integer.parseInt(rstEventtype[i][0]), rstEventtype[i][1], Integer.parseInt(rstEventtype[i][4]), rstEventtype[i][2], urlforAddLogForm, urlForMoreInfo));
+                    mb.append(compactLogTypeHtml(Integer.parseInt(rstEventtype[i][0]), rstEventtype[i][1], rstEventtype[i][2], urlforAddLogForm, urlForMoreInfo));
 
                 }
             }
@@ -147,15 +153,21 @@ public class MegaLogTypeListHtmlRenderer {
                     } else if (userSession.getAccountuser()!=null){
                         acctidtouse =  userSession.getAccountuser().getAccountid();
                     }
-                    String sqlSubselectCountLogsLt = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
+                    //String sqlSubselectCountLogsLt = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
                     //-----------------------------------
                     //-----------------------------------
-                    String[][] rstLogtype= Db.RunSQL("SELECT megalogtype.eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogsLt+" FROM megalogtype megalogtype, friendinvitation, friendinvitationeventtypeid, accountuser WHERE accountuser.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND accountuser.accountuserid=friendinvitation.accountuseridtarget AND friendinvitation.friendinvitationid=friendinvitationeventtypeid.friendinvitationid AND friendinvitationeventtypeid.eventtypeid=megalogtype.eventtypeid  ORDER BY logcount DESC LIMIT 0,25");
+                    //String[][] rstLogtype= Db.RunSQL("SELECT megalogtype.eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogsLt+" FROM megalogtype megalogtype, friendinvitation, friendinvitationeventtypeid, accountuser WHERE accountuser.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND accountuser.accountuserid=friendinvitation.accountuseridtarget AND friendinvitation.friendinvitationid=friendinvitationeventtypeid.friendinvitationid AND friendinvitationeventtypeid.eventtypeid=megalogtype.eventtypeid  ORDER BY logcount DESC LIMIT 0,25");
+                    //-----------------------------------
+                    //-----------------------------------
+
+                    //-----------------------------------
+                    //-----------------------------------
+                    String[][] rstLogtype= Db.RunSQL("SELECT megalogtype.eventtypeid, megalogname, description, icon FROM megalogtype megalogtype, friendinvitation, friendinvitationeventtypeid, accountuser WHERE accountuser.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND accountuser.accountuserid=friendinvitation.accountuseridtarget AND friendinvitation.friendinvitationid=friendinvitationeventtypeid.friendinvitationid AND friendinvitationeventtypeid.eventtypeid=megalogtype.eventtypeid  ORDER BY megalogtype.eventtypeid DESC LIMIT 0,25");
                     //-----------------------------------
                     //-----------------------------------
                     if (rstLogtype!=null && rstLogtype.length>0){
                         for(int i=0; i<rstLogtype.length; i++){
-                            mb.append(superCompactLogTypeHtml(Integer.parseInt(rstLogtype[i][0]), rstLogtype[i][1], Integer.parseInt(rstLogtype[i][4]), rstLogtype[i][2], urlforAddLogForm, urlForMoreInfo));
+                            mb.append(superCompactLogTypeHtml(Integer.parseInt(rstLogtype[i][0]), rstLogtype[i][1], rstLogtype[i][2], urlforAddLogForm, urlForMoreInfo));
                         }
                     } else {
                         mb.append("<tr><td valign=top align=left bgcolor=#ffffff nowrap><img src='../images/info-icon.gif' alt='' border='0'><font face=arial size=-2>None.</td><td valign=center align=left bgcolor=#ffffff><font face=arial size=-2>&nbsp;</td></tr>");
@@ -184,12 +196,12 @@ public class MegaLogTypeListHtmlRenderer {
                     String sqlSubselectCountLogsLt = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
                     //-----------------------------------
                     //-----------------------------------
-                    String[][] rstLogtype= Db.RunSQL("SELECT eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogsLt+" FROM megalogtype megalogtype WHERE megalogtype.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY logcount DESC");
+                    String[][] rstLogtype= Db.RunSQL("SELECT eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogsLt+" FROM megalogtype megalogtype WHERE megalogtype.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' ORDER BY megalogtype.eventtypeid DESC");
                     //-----------------------------------
                     //-----------------------------------
                     if (rstLogtype!=null && rstLogtype.length>0){
                         for(int i=0; i<rstLogtype.length; i++){
-                            mb.append(superCompactLogTypeHtml(Integer.parseInt(rstLogtype[i][0]), rstLogtype[i][1], Integer.parseInt(rstLogtype[i][4]), rstLogtype[i][2], urlforAddLogForm, urlForMoreInfo));
+                            mb.append(superCompactLogTypeHtml(Integer.parseInt(rstLogtype[i][0]), rstLogtype[i][1], rstLogtype[i][2], urlforAddLogForm, urlForMoreInfo));
                         }
                     } else {
                         mb.append("<tr><td valign=top align=left bgcolor=#ffffff nowrap><img src='../images/info-icon.gif' alt='' border='0'><font face=arial size=-2>None.</td><td valign=center align=left bgcolor=#ffffff><font face=arial size=-2>&nbsp;</td></tr>");
@@ -207,15 +219,21 @@ public class MegaLogTypeListHtmlRenderer {
                     mb.append("<br>");
                     mb.append("<font face=arial size=-2 color=#666666><b>These are the custom log types that people designated as your friends are using.</b></font>");
                     mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0 bgcolor=#ffffff>");
-                    String sqlSubselectCountLogsLt = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
+                    //String sqlSubselectCountLogsLt = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
                     //-----------------------------------
                     //-----------------------------------
-                    String[][] rstLogtype= Db.RunSQL("SELECT DISTINCT megalogtype.eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogsLt+" FROM megalogtype megalogtype, account, friend, event, megalog WHERE account.islistedindirectory='1' AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND friend.accountuseridsource='"+userSession.getAccountuser().getAccountuserid()+"' AND friend.accountuseridtarget=event.accountuserid AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.eventtypeid=megalogtype.eventtypeid ORDER BY logcount DESC LIMIT 0,50");
+                    //String[][] rstLogtype= Db.RunSQL("SELECT DISTINCT megalogtype.eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogsLt+" FROM megalogtype megalogtype, account, friend, event, megalog WHERE account.islistedindirectory='1' AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND friend.accountuseridsource='"+userSession.getAccountuser().getAccountuserid()+"' AND friend.accountuseridtarget=event.accountuserid AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.eventtypeid=megalogtype.eventtypeid ORDER BY logcount DESC LIMIT 0,50");
+                    //-----------------------------------
+                    //-----------------------------------
+
+                    //-----------------------------------
+                    //-----------------------------------
+                    String[][] rstLogtype= Db.RunSQL("SELECT DISTINCT megalogtype.eventtypeid, megalogname, description, icon FROM megalogtype megalogtype, account, friend, event, megalog WHERE account.islistedindirectory='1' AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND friend.accountuseridsource='"+userSession.getAccountuser().getAccountuserid()+"' AND friend.accountuseridtarget=event.accountuserid AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.eventtypeid=megalogtype.eventtypeid ORDER BY megalogtype.eventtypeid DESC LIMIT 0,50");
                     //-----------------------------------
                     //-----------------------------------
                     if (rstLogtype!=null && rstLogtype.length>0){
                         for(int i=0; i<rstLogtype.length; i++){
-                            mb.append(superCompactLogTypeHtml(Integer.parseInt(rstLogtype[i][0]), rstLogtype[i][1], Integer.parseInt(rstLogtype[i][4]), rstLogtype[i][2], urlforAddLogForm, urlForMoreInfo));
+                            mb.append(superCompactLogTypeHtml(Integer.parseInt(rstLogtype[i][0]), rstLogtype[i][1], rstLogtype[i][2], urlforAddLogForm, urlForMoreInfo));
                         }
                     } else {
                         mb.append("<tr><td valign=top align=left bgcolor=#ffffff nowrap><img src='../images/info-icon.gif' alt='' border='0'><font face=arial size=-2>None.</td><td valign=center align=left bgcolor=#ffffff><font face=arial size=-2>&nbsp;</td></tr>");
@@ -250,16 +268,22 @@ public class MegaLogTypeListHtmlRenderer {
                 mb.append("<br><br>");
                 mb.append("</td>");
                 mb.append("</tr>");
-                String sqlSubselectCountLogs = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
+                //String sqlSubselectCountLogs = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstUserLogType= Db.RunSQL("SELECT eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogs+" FROM megalogtype megalogtype, account, pl, accountuser WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND megalogtype.accountuserid=accountuser.accountuserid AND account.islistedindirectory='1' AND issystemlogtype='0' AND megalogtype.isprivate='0' AND accountuser.accountid=account.accountid ORDER BY logcount DESC LIMIT 0,25");
+                //String[][] rstUserLogType= Db.RunSQL("SELECT eventtypeid, megalogname, description, icon, "+sqlSubselectCountLogs+" FROM megalogtype megalogtype, account, pl, accountuser WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND megalogtype.accountuserid=accountuser.accountuserid AND account.islistedindirectory='1' AND issystemlogtype='0' AND megalogtype.isprivate='0' AND accountuser.accountid=account.accountid ORDER BY logcount DESC LIMIT 0,25");
+                //-----------------------------------
+                //-----------------------------------
+
+                //-----------------------------------
+                //-----------------------------------
+                String[][] rstUserLogType= Db.RunSQL("SELECT eventtypeid, megalogname, description, icon FROM megalogtype megalogtype, account, pl, accountuser WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND megalogtype.accountuserid=accountuser.accountuserid AND account.islistedindirectory='1' AND issystemlogtype='0' AND megalogtype.isprivate='0' AND accountuser.accountid=account.accountid ORDER BY megalogtype.eventtypeid DESC LIMIT 0,25");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstUserLogType!=null && rstUserLogType.length>0){
                     for(int i=0; i<rstUserLogType.length; i++){
 
-                        mb.append(compactLogTypeHtml(Integer.parseInt(rstUserLogType[i][0]), rstUserLogType[i][1], Integer.parseInt(rstUserLogType[i][4]), rstUserLogType[i][2], urlforAddLogForm, urlForMoreInfo));
+                        mb.append(compactLogTypeHtml(Integer.parseInt(rstUserLogType[i][0]), rstUserLogType[i][1], rstUserLogType[i][2], urlforAddLogForm, urlForMoreInfo));
 
                     }
                 }
@@ -399,7 +423,7 @@ public class MegaLogTypeListHtmlRenderer {
                 //Get number of logs of this type
                 int numOfLogs = LogCache.howManyOfThisTypeExist(mlt.getEventtypeid());
                 //Append the html
-                mb.append(compactLogTypeHtml(mlt.getEventtypeid(), mlt.getMegalogname(), numOfLogs, mlt.getDescription(), urlforAddLogForm, urlForMoreInfo));
+                mb.append(compactLogTypeHtml(mlt.getEventtypeid(), mlt.getMegalogname(), mlt.getDescription(), urlforAddLogForm, urlForMoreInfo));
 
             }
           
@@ -425,14 +449,14 @@ public class MegaLogTypeListHtmlRenderer {
         return mb.toString();
     }
 
-    private static String compactLogTypeHtml(int eventtypeid, String logtypename, int numberoflogsofthistype, String description, String urlforAddLogForm, String urlForMoreInfo){
+    private static String compactLogTypeHtml(int eventtypeid, String logtypename, String description, String urlforAddLogForm, String urlForMoreInfo){
         StringBuffer mb = new StringBuffer();
         mb.append("<!-- begin log type -->");
         mb.append("<tr>");
         mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=2>");
         mb.append("<font face=arial size=+1 color=#000000><b>"+logtypename+"</b></font>");
-        mb.append("<br>");
-        mb.append("<font face=arial size=-1 color=#333333><b>" + numberoflogsofthistype + " Logs of this Type Exist<b></font>");
+        //mb.append("<br>");
+        //mb.append("<font face=arial size=-1 color=#333333><b>" + numberoflogsofthistype + " Logs of this Type Exist<b></font>");
         mb.append("<br>");
         mb.append("<font face=arial size=-2 color=#333333>" + description + "</font>");
         mb.append("</td>");
@@ -461,7 +485,7 @@ public class MegaLogTypeListHtmlRenderer {
         return mb.toString();
     }
 
-    private static String superCompactLogTypeHtml(int eventtypeid, String logtypename, int numberoflogsofthistype, String description, String urlforAddLogForm, String urlForMoreInfo){
+    private static String superCompactLogTypeHtml(int eventtypeid, String logtypename, String description, String urlforAddLogForm, String urlForMoreInfo){
         StringBuffer mb = new StringBuffer();
         mb.append("<!-- begin log type -->");
         mb.append("<tr>");

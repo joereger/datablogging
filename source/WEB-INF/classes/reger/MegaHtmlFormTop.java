@@ -2,6 +2,11 @@ package reger;
 
 import reger.core.Debug;
 import reger.core.TimeUtils;
+import reger.poll.Poll;
+import reger.poll.PollFormHtml;
+import reger.poll.PollResultsHtml;
+
+import java.util.Iterator;
 
 /**
  *
@@ -340,8 +345,35 @@ public class MegaHtmlFormTop {
 
             //Show the editor or the post itself
             if (!editLayout){
+                if (displayasadmin){
+                    mb.append(reger.MegaHtmlFormEditor.getHtml(userSession, pageProps, request));
+                } else {
+                    //String commentsTmp = pageProps.entry.comments.replaceAll( reger.Vars.LINEBREAKCHAR, "<br><br>");
+                    //String commentsTmp = pageProps.entry.comments.replaceAll( reger.Vars.LINEBREAKCHAR, "<br>BTH:");
+                    //String commentsTmp = pageProps.entry.comments;
+                    //commentsTmp = commentsTmp.replaceAll( reger.Vars.LINEBREAK, "<br>LBR:");
+                    //commentsTmp = commentsTmp.replaceAll( reger.Vars.CARRIAGERETURN, "<br>CRT:");
+                    String commentsTmp = pageProps.entry.comments.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
 
-                mb.append(reger.MegaHtmlFormEditor.getHtml(userSession, pageProps, displayasadmin, request));
+
+                    //Polls
+                    if (!displayasadmin && pageProps.entry.getPolls().size()>0){
+                        mb.append("<div style=\"float: right; width: 200px;\">");
+                        for (Iterator it = pageProps.entry.getPolls().iterator(); it.hasNext(); ) {
+                            Poll poll = (Poll)it.next();
+                            mb.append(reger.ui.RoundedCorners.start("ffffff", "cccccc", 100));
+                            if(poll.getIsopen()){
+                                mb.append(PollFormHtml.getPollForm(poll));
+                            } else {
+                                mb.append(PollResultsHtml.getResultsGraphOnly(poll, request, pageProps, userSession));
+                            }
+                            mb.append(reger.ui.RoundedCorners.end());
+                        }
+                        mb.append("</div>");
+                    }
+
+                    mb.append("<font face=arial size=-1>"+commentsTmp+"</font>");
+                }
             }
 
             mb.append("</td>");

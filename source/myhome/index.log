@@ -221,8 +221,6 @@ sc.append("<!-- Start account stuff -->");
 sc.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
 sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
 //sc.append("<tr><td bgcolor=#cccccc colspan=2><font face=arial size=+1 color=#000000>Your Account</font></td></tr>");
-
-
 sc.append("<tr>");
 sc.append("<td bgcolor='#ffffff' align=left valign=top colspan=4>");
 if (userSession.getAccount().isPro()) {

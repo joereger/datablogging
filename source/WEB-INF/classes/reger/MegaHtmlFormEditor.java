@@ -1,16 +1,21 @@
 package reger;
 
+import reger.poll.Poll;
+import reger.poll.PollFormHtml;
+
+import java.util.Iterator;
+
 /**
  *
  */
 public class MegaHtmlFormEditor {
 
-    public static StringBuffer getHtml(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, boolean displayasadmin, javax.servlet.http.HttpServletRequest request){
+    public static StringBuffer getHtml(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, javax.servlet.http.HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
 
         //Spelling errors
-        if (displayasadmin && pageProps.entry.haveSpellingErrors){
+        if (pageProps.entry.haveSpellingErrors){
 
             //First, show a radio allowing user to choose to use recommendations or edit manually
             mb.append("<table width=100% cellpadding=5 cellspacing=0 border=0>");
@@ -66,41 +71,22 @@ public class MegaHtmlFormEditor {
         }
 
 
-        if (userSession.getAccountuser().getEntrymode()==reger.Vars.ENTRYMODESIMPLE || displayasadmin==false) {
+        if (userSession.getAccountuser().getEntrymode()==reger.Vars.ENTRYMODESIMPLE) {
             //Get the text-based editor
-            if (displayasadmin) {
-                mb.append("\n" + "<script language=\"JavaScript\"><!--" + "\n");
-                mb.append("function submitPost() {" + "\n");
-                //mb.append("    document.entryform.submit();" + "\n");
-                mb.append("    xGetElementById('entryform').submit();");
-                mb.append("}" + "\n");
-                mb.append("//--></script>" + "\n");
-                mb.append("<textarea cols='45' rows='10' name='comments' wrap='virtual' style='width: 75%;font: 10pt monospace'>"+pageProps.entry.comments+"</textarea>");
-            } else {
-                if (userSession!=null && userSession.getAccount()!=null && !userSession.getAccount().isPro()){
-                    mb.append("<div style=\"float: right;\">");
-                    mb.append(reger.Banner.getMediumRectangleGoogleBanner(userSession));
-                    mb.append("</div>");
-                }
-
-
-                //String commentsTmp = pageProps.entry.comments.replaceAll( reger.Vars.LINEBREAKCHAR, "<br><br>");
-                //String commentsTmp = pageProps.entry.comments.replaceAll( reger.Vars.LINEBREAKCHAR, "<br>BTH:");
-                String commentsTmp = pageProps.entry.comments.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
-                //String commentsTmp = pageProps.entry.comments;
-                //commentsTmp = commentsTmp.replaceAll( reger.Vars.LINEBREAK, "<br>LBR:");
-                //commentsTmp = commentsTmp.replaceAll( reger.Vars.CARRIAGERETURN, "<br>CRT:");
-
-
-                mb.append("<font face=arial size=-1>"+commentsTmp+"</font>");
-            }
+            mb.append("\n" + "<script language=\"JavaScript\"><!--" + "\n");
+            mb.append("function submitPost() {" + "\n");
+            //mb.append("    document.entryform.submit();" + "\n");
+            mb.append("    xGetElementById('entryform').submit();");
+            mb.append("}" + "\n");
+            mb.append("//--></script>" + "\n");
+            mb.append("<textarea cols='45' rows='10' name='comments' wrap='virtual' style='width: 75%;font: 10pt monospace'>"+pageProps.entry.comments+"</textarea>");
         } else {
             //Get the Wysiwyg editor
-            mb.append(reger.MegaHtmlFormFckeditor.getHtml(userSession, pageProps, displayasadmin, pageProps.entry.comments, request));
+            mb.append(reger.MegaHtmlFormFckeditor.getHtml(userSession, pageProps, true, pageProps.entry.comments, request));
         }
 
 
-        if (displayasadmin && pageProps.entry.haveSpellingErrors){
+        if (pageProps.entry.haveSpellingErrors){
             mb.append("</div>");
         }
 

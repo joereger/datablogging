@@ -1,0 +1,74 @@
+<%@ page import="reger.logProps"%>
+<%@ page import="reger.poll.PollResultsHtml"%>
+<%@ page import="reger.Entry"%>
+<%@ page import="reger.poll.Poll"%>
+<%@ page import="reger.cache.EntryCache"%>
+<%@ page import="reger.InfoBox"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired=false;
+pageProps.isEventidRequired=false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICENTRYDETAIL;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+//Security + loading
+Poll poll = null;
+Entry entry = null;
+if (request.getParameter("pollid")!=null && reger.core.Util.isinteger(request.getParameter("pollid"))){
+    poll = new Poll(Integer.parseInt(request.getParameter("pollid")));
+    entry = EntryCache.get(poll.getEventid());
+}
+if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid!=userSession.getAccount().getAccountid()){
+    mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry.  You don't appear to have permission to access this poll."));
+} else {
+    mb.append("<br><br>");
+    if (poll.getIsopen() && request.getParameter("answer")!=null){
+        String addNewTxt = "";
+        if (poll.getReaderscanaddownanswer() && poll.getReaderinputismoderated() && request.getParameter("answer").equals("newreaderanswer")){
+            addNewTxt = " It will appear once the owner approves it.";
+        }
+        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your vote has been added!"+addNewTxt));
+    }
+    if (poll.getIsopen() && request.getParameter("action").equals("commentonpoll")){
+        String addNewTxt = "";
+        if (poll.getReaderinputismoderated()){
+            addNewTxt = " It will appear once the owner approves it.";
+        }
+        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your comment has been added!"+addNewTxt));
+    }
+    PollResultsHtml.doVoting(poll, request, response, pageProps, userSession);
+    PollResultsHtml.doCommenting(poll, request, response, pageProps, userSession);
+    poll.load();
+    mb.append(PollResultsHtml.getResults(poll, request, response, pageProps, userSession));
+}
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+%>
+
+<%@ include file="globalfooter.jsp" %>
+

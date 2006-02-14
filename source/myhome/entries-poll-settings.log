@@ -1,8 +1,10 @@
-<%@ page import="reger.poll.PollUtil"%>
-<%@ page import="reger.poll.Poll"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.Iterator"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="reger.cache.EntryCache"%>
+<%@ page import="reger.InfoBox"%>
+<%@ page import="reger.Entry"%>
+<%@ page import="reger.poll.*"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -20,240 +22,326 @@ pageProps.pathToAppRoot = "../";
 <%@ include file="../globalheader.jsp" %>
 
 <%
-    /*----------------------------------------------------*/
+/*----------------------------------------------------*/
 /*                  Main Body                         */
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-    if (request.getParameter("submitPoll") != null) {
-          if (request.getParameter("submitPoll").equalsIgnoreCase("Save") || request.getParameter("submitPoll").equalsIgnoreCase("Open") || request.getParameter("submitPoll").equalsIgnoreCase("Closed") || request.getParameter("submitPoll").equalsIgnoreCase("Delete") || request.getParameter("submitPoll").equalsIgnoreCase("Reset")) {
-            PollUtil pollUtil = new PollUtil();
-            pollUtil.savePoll(request);
-          }
-    } else {
-        Poll poll = null;
-        HashMap answerMap = null;
-        ArrayList dataList = null;
-        HashMap eventMap = null;
-        HashMap unApprovedAnswersMap = null;
-        HashMap unApprovedCommentsMap = null;
-        if (request.getParameter("eventid") != null && reger.core.Util.isinteger(request.getParameter("eventid"))) {
-            pageProps.entry.getEntryAll(Integer.parseInt(request.getParameter("eventid")));
-        }  if (request.getParameter("pollid") != null && !request.getParameter("pollid").trim().equalsIgnoreCase("")) {
-            poll = new Poll(Integer.parseInt(request.getParameter("pollid")));
-            PollUtil pollUtil = new PollUtil();
-            dataList = pollUtil.getAnswersByPollId(Integer.parseInt(request.getParameter("pollid")));
-            answerMap = (HashMap) dataList.get(0);
-            eventMap = (HashMap) dataList.get(1);
-            unApprovedAnswersMap = (HashMap) dataList.get(2);
-            unApprovedCommentsMap = (HashMap) dataList.get(3);
-        }
-        mb.append("<SCRIPT language=JavaScript>");
-        mb.append("function submitForm() {");
-        mb.append("document.pollForm.submit()");
-        mb.append("}</SCRIPT>");
-        mb.append("<form name=pollForm action=entries-poll-settings.log method=post>");
-        mb.append("<table><tr><td>");
-        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("<center><table>");
-        mb.append("<tr><td>Question:</td>");
-        String question = null;
-        if (poll != null && poll.getQuestion() != null && !poll.getQuestion().trim().equalsIgnoreCase("")) {
-            question = poll.getQuestion();
-        } else if (request.getParameter("question") != null && !request.getParameter("question").trim().equals("")) {
-            question = request.getParameter("question");
-        }
-        if (question == null) {
-            mb.append("<td><input type=text name=question></td>");
-        } else {
-            mb.append("<td><input type=text name=question value='"+question+"'></td>");
-        }
-        mb.append("</tr>");
-        mb.append("<tr><td>Answers:</td>");
-        int noOfTextFields = 0;
-        if (answerMap != null) {
-           noOfTextFields = answerMap.size();
-        } else if (request.getParameter("noOfTextFields") != null) {
-            noOfTextFields = Integer.parseInt(request.getParameter("noOfTextFields"));
-        }
-        noOfTextFields += 5;
-        String answer = null;
-        if (answerMap != null) {
-            Iterator iter = answerMap.keySet().iterator();
-            int count = 0;
-            while (iter.hasNext()) {
-               count ++;
-               answer = (String) iter.next();
-                if (count != 1) {
-                   mb.append("<tr><td></td>");
-                }
-                if (answer == null) {
-                    mb.append("<td><input type=text name=answer"+count+"></td>");
-                } else {
-                    mb.append("<td><input type=text name=answer"+count+" value='"+answer.substring(0, answer.indexOf("~"))+"'></td>");
-                    mb.append("<input type=hidden name='"+answer.substring(0, answer.indexOf("~"))+"' value='"+answer.substring(answer.indexOf("~")+1, answer.length())+"'>");
-                }
-                mb.append("</tr>");
-            }
-            if (count != noOfTextFields) {
-                while (count < noOfTextFields) {
-                    count ++;
-                    mb.append("<tr><td></td><td><input type=text name=answer"+count+"></td></tr>");
-                }
-            }
-        } else {
-            for (int i=1;i<=noOfTextFields;i++) {
-                answer = request.getParameter("answer"+i);
-                if (i != 1) {
-                   mb.append("<tr><td></td>");
-                }
-                if (answer == null) {
-                    mb.append("<td><input type=text name=answer"+i+"></td>");
-                } else {
-                    mb.append("<td><input type=text name=answer"+i+" value='"+answer+"'></td>");
-                }
-                mb.append("</tr>");
-            }
-        }
-        if (request.getParameter("pollid") != null) {
-            mb.append("<input type=hidden name=pollid value="+request.getParameter("pollid")+">");
-        }
-        mb.append("<tr><td></td><td><a href=\"javascript: submitForm()\">add more >> </a></td>");
-        mb.append("</tr>");
-        mb.append("<tr><td>Reader Answers:</td>");
-        String value = null;
-        if (request.getParameter("readerscanaddownanswer") != null && !request.getParameter("readerscanaddownanswer").trim().equals("")) {
-            value = request.getParameter("readerscanaddownanswer");
-        } else if (poll != null) {
-             value = new Boolean(poll.getReaderscanaddownanswer()).toString();
-        }
-        if (value == null || value != null && value.equalsIgnoreCase("false")) {
-            mb.append("<td><input type=checkbox name=readerscanaddownanswer> Yes, readers can add their own answers.</td>");
-        } else if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
-            mb.append("<td><input type=checkbox name=readerscanaddownanswer value=\"yes\" checked> Yes, readers can add their own answers.</td>");
-        }
-        mb.append("</tr>");
-        mb.append("<tr><td>Reader Comments:</td>");
-        if (request.getParameter("readerscanaddcomments") != null && !request.getParameter("readerscanaddcomments").trim().equals("")) {
-            value = request.getParameter("readerscanaddcomments");
-        } else if (poll != null) {
-             value = new Boolean(poll.getReaderscanaddcomments()).toString();
-        }
-        if (value == null || value != null && value.equalsIgnoreCase("false")) {
-            mb.append("<td><input type=checkbox name=readerscanaddcomments> Yes, readers can add comments.</td>");
-        } else if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
-            mb.append("<td><input type=checkbox name=readerscanaddcomments value=\"yes\" checked> Yes, readers can add comments.</td>");
-        }
-        mb.append("</tr>");
-        mb.append("<tr><td></td>");
-        if (request.getParameter("readerscanvoteonreaderanswers") != null && !request.getParameter("readerscanvoteonreaderanswers").trim().equals("")) {
-            value = request.getParameter("readerscanvoteonreaderanswers");
-        } else if (poll != null) {
-             value = new Boolean(poll.getReaderscanvoteonreaderanswers()).toString();
-        }
-        if (value == null || value != null && value.equalsIgnoreCase("false")) {
-            mb.append("<td>If Yes: <input type=checkbox name=readerscanvoteonreaderanswers> Readers can vote on each others answers.</td>");
-        } else if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
-            mb.append("<td>If Yes: <input type=checkbox name=readerscanvoteonreaderanswers value=\"yes\" checked> Readers can vote on each others answers.</td>");
-        }
-        mb.append("</tr>");
-        mb.append("<tr><td>Moderation:</td>");
-        if (request.getParameter("readerinputismoderated") != null && !request.getParameter("readerinputismoderated").trim().equals("")) {
-            value = request.getParameter("readerinputismoderated");
-        } else if (poll != null) {
-             value = new Boolean(poll.getReaderinputismoderated()).toString();
-        }
-        if (value == null || value != null && value.equalsIgnoreCase("false")) {
-            mb.append("<td><input type=checkbox name=readerinputismoderated> Readers comments and answers must be approved.</td>");
-        } else if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
-            mb.append("<td><input type=checkbox name=readerinputismoderated value=\"yes\" checked> Readers comments and answers must be approved.</td>");
-        }
-        mb.append("</tr>");
-        mb.append("</table></center>");
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-        mb.append("</td>");
 
-        mb.append("<input type=hidden name=noOfTextFields value="+noOfTextFields+">");
-        mb.append("<td>");
-        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("Poll is tied to entry called ");
-        Iterator iter = null;
-        if (eventMap != null) {
-            iter = eventMap.keySet().iterator();
-            while (iter.hasNext()) {
-                String eventid = (String) iter.next();
-                String eventTitle = (String) eventMap.get(eventid);
-                mb.append("<a href=../entry.log?eventid=" + eventid + ">" + eventTitle + "</a>");
-                if (request.getParameter("eventid") == null) {
-                    mb.append("<input type=hidden name=eventid value="+eventid+">");
-                } else {
-                    mb.append("<input type=hidden name=eventid value="+request.getParameter("eventid")+">");
-                }
+//Security + loading
+Poll poll = null;
+Entry entry = null;
+if (request.getParameter("pollid")!=null && reger.core.Util.isinteger(request.getParameter("pollid")) && Integer.parseInt(request.getParameter("pollid"))>0){
+    poll = new Poll(Integer.parseInt(request.getParameter("pollid")));
+    entry = EntryCache.get(poll.getEventid());
+} else if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+    poll = new Poll(0);
+    entry = EntryCache.get(Integer.parseInt(request.getParameter("eventid")));
+}
+
+
+if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid!=userSession.getAccount().getAccountid()){
+    mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry.  You don't appear to have permission to access this poll."));
+} else {
+    if (request.getParameter("action")!=null && request.getParameter("action").equals("savepoll")){
+        poll.setQuestion(request.getParameter("question"));
+        poll.setEventid(entry.eventid);
+        poll.setReaderscanaddownanswer(reger.core.Util.booleanFromSQLText(request.getParameter("readerscanaddownanswer")));
+        poll.setReaderscanvoteonreaderanswers(reger.core.Util.booleanFromSQLText(request.getParameter("readerscanvoteonreaderanswers")));
+        poll.setReaderscanaddcomments(reger.core.Util.booleanFromSQLText(request.getParameter("readerscanaddcomments")));
+        poll.setReaderinputismoderated(reger.core.Util.booleanFromSQLText(request.getParameter("readerinputismoderated")));
+        poll.setIsopen(reger.core.Util.booleanFromSQLText(request.getParameter("isopen")));
+        poll.save();
+        //Check current answers for edits
+        for (Iterator it = poll.getPollAnswers().iterator(); it.hasNext(); ) {
+            PollAnswer answer = (PollAnswer)it.next();
+            if (request.getParameter("answer-"+answer.getPollanswerid())!=null && !request.getParameter("answer-"+answer.getPollanswerid()).equals("")){
+                answer.setAnswer(request.getParameter("answer-"+answer.getPollanswerid()));
+                answer.save();
             }
-        } else {
-            mb.append("<a href=../entry.log?eventid=" + pageProps.entry.eventid + ">" + pageProps.entry.title + "</a>");
-            mb.append("<input type=hidden name=eventid value="+pageProps.entry.eventid+">");
+            if (request.getParameter("answer-delete-"+answer.getPollanswerid())!=null && request.getParameter("answer-delete-"+answer.getPollanswerid()).equals("1")){
+                answer.delete();
+            }
         }
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-        mb.append("<br>");
-
-        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("<input type=submit name=submitPoll value=Open>&nbsp;<input type=submit name=submitPoll value=Closed>");
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-        mb.append("<br>");
-
-        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("<u>View Results</u>");
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-        mb.append("<br>");
-
-        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("Moderation<br>");
-        mb.append("These answers from users need to be approved");
-        if (unApprovedAnswersMap != null) {
-            iter = unApprovedAnswersMap.keySet().iterator();
-            String key = null;
-            while (iter.hasNext()) {
-                key = (String)iter.next();
-                if (!key.substring(0, key.indexOf("~")).trim().equalsIgnoreCase("")) {
-                    mb.append("<br>");
-                    mb.append(key.substring(0, key.indexOf("~")));
-                    //mb.append("<input type=checkbox name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+">");
-                    mb.append("<input type=radio name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+"_YES>Yes");
-                    mb.append("<input type=radio name=unApprovedAnswers value="+key.substring(key.indexOf("~")+1, key.length())+"_NO>No");
+        //Get new answers
+        if (request.getParameterValues("newanswer").length>0){
+            for (int i = 0; i < request.getParameterValues("newanswer").length; i++) {
+                String answer = request.getParameterValues("newanswer")[i];
+                if (!answer.equals("")){
+                    PollAnswer pollAnswer = new PollAnswer();
+                    pollAnswer.setPollid(poll.getPollid());
+                    pollAnswer.setAnswer(answer);
+                    pollAnswer.setVotes(0);
+                    pollAnswer.save();
                 }
             }
         }
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-        mb.append("<br>");
-
-        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("These comments need to be approved");
-        if (unApprovedCommentsMap != null) {
-            iter = unApprovedCommentsMap.keySet().iterator();
-            String key = null;
-            while (iter.hasNext()) {
-                key = (String)iter.next();
-                if (!key.substring(0, key.indexOf("~")).trim().equalsIgnoreCase("")) {
-                    mb.append("<br>");
-                    mb.append(key.substring(0, key.indexOf("~")));
-                    //mb.append("<input type=checkbox name=unApprovedComments value="+key.substring(key.indexOf("~")+1, key.length())+">");
-                    mb.append("<input type=radio name=unApprovedComments value="+key.substring(key.indexOf("~")+1, key.length())+"_YES>Yes");
-                    mb.append("<input type=radio name=unApprovedComments value="+key.substring(key.indexOf("~")+1, key.length())+"_NO>No");
-                }
+        //Check current reader answers for edits
+        for (Iterator it = poll.getPollReaderAnswers().iterator(); it.hasNext(); ) {
+            PollReaderAnswer answer = (PollReaderAnswer)it.next();
+            if (request.getParameter("readeranswer-"+answer.getPollreaderanswerid())!=null && !request.getParameter("answer-"+answer.getPollreaderanswerid()).equals("")){
+                answer.setAnswer(request.getParameter("readeranswer-"+answer.getPollreaderanswerid()));
+                answer.save();
+            }
+            if (request.getParameter("readeranswer-approve-"+answer.getPollreaderanswerid())!=null && request.getParameter("answer-approve-"+answer.getPollreaderanswerid()).equals("1")){
+                answer.setIsapproved(true);
+                answer.save();
+            } else {
+                answer.setIsapproved(false);
+                answer.save();
+            }
+            if (request.getParameter("readeranswer-delete-"+answer.getPollreaderanswerid())!=null && request.getParameter("answer-delete-"+answer.getPollreaderanswerid()).equals("1")){
+                answer.delete();
             }
         }
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-        mb.append("</td></tr>");
-        mb.append("<tr><td><input type=submit value=Save name=submitPoll>");
-        mb.append("<input type=submit value=Delete name=submitPoll onClick=\"javascript: alert('Are you sure?')\">");
-        mb.append("<input type=submit value=Reset Poll name=submitPoll onClick=\"javascript: alert('Are you sure?')\"></td></tr>");
-        mb.append("</table>");
-        mb.append("</form>");
+        //Refresh the poll
+        poll.load();
+        EntryCache.flush(entry.eventid);
+        entry.getEntryAll(entry.eventid);
+    } else if (request.getParameter("action")!=null && request.getParameter("action").equals("togglecommentapproval")){
+        //Toggle approval of a comment
+        if (request.getParameter("pollreadercommentid")!=null && reger.core.Util.isinteger(request.getParameter("pollreadercommentid"))){
+            PollReaderComment pollReaderComment = new PollReaderComment(Integer.parseInt(request.getParameter("pollreadercommentid")));
+            if (pollReaderComment.getIsapproved()){
+                pollReaderComment.setIsapproved(false);
+            } else {
+                pollReaderComment.setIsapproved(true);
+            }
+            pollReaderComment.save();
+            poll.load();
+        }
     }
+
+
+    mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
+    mb.append("<form action=entries-poll-settings.log method=post>");
+    mb.append("<input type=hidden name=action value=savepoll>");
+    mb.append("<input type=hidden name=pollid value="+poll.getPollid()+">");
+    mb.append("<input type=hidden name=eventid value="+entry.eventid+">");
+    mb.append("<table cellpadding=0 cellspacing=0 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+
+    mb.append("<tr>");
+    mb.append("<td>");
+    mb.append("Question:");
+    mb.append("</td>");
+    mb.append("<td>");
+    mb.append("<input type=text name=question size=40 maxlength=255 value=\""+reger.core.Util.cleanForHtml(poll.getQuestion())+"\">");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    mb.append("Answers:");
+    mb.append("</td>");
+    mb.append("<td valign=top nowrap>");
+    for (Iterator it = poll.getPollAnswers().iterator(); it.hasNext(); ) {
+        PollAnswer answer = (PollAnswer)it.next();
+        mb.append("<input type=text name='answer-"+answer.getPollanswerid()+"' size=25 maxlength=255 value=\""+reger.core.Util.cleanForHtml(answer.getAnswer())+"\">");
+        mb.append("<input type=checkbox name=answer-delete-"+answer.getPollanswerid()+" value=1>");
+        mb.append("<font face=arial size=-2>");
+        mb.append("Delete");
+        mb.append("</font>");
+        mb.append("<br>");
+    }
+    for(int i=0; i<5; i++){
+        mb.append("<input type=text name='newanswer' size=25 maxlength=255 value=\"\">");
+        mb.append("<br>");
+    }
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    mb.append("Reader Answers:");
+    mb.append("</td>");
+    mb.append("<td valign=top nowrap>");
+    for (Iterator it = poll.getPollReaderAnswers().iterator(); it.hasNext(); ) {
+        PollReaderAnswer answer = (PollReaderAnswer)it.next();
+        mb.append("<input type=text name='readeranswer-"+answer.getPollreaderanswerid()+"' size=25 maxlength=255 value=\""+reger.core.Util.cleanForHtml(answer.getAnswer())+"\">");
+        mb.append("<input type=checkbox name=readeranswer-delete-"+answer.getPollreaderanswerid()+" value=1>");
+        mb.append("<font face=arial size=-2>");
+        mb.append("Delete");
+        mb.append("</font>");
+        mb.append(" ");
+        String answerIsApprovedCheckbox = "";
+        if (answer.getIsapproved()){
+            answerIsApprovedCheckbox = "checked";
+        }
+        mb.append("<input type=checkbox name=readeranswer-approve-"+answer.getPollreaderanswerid()+" value=1 "+answerIsApprovedCheckbox+">");
+        mb.append("<font face=arial size=-2>");
+        mb.append("Approved");
+        mb.append("</font>");
+        mb.append("<br>");
+    }
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    mb.append("");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    String addOwnCheckbox = "";
+    if (poll.getReaderscanaddownanswer()){
+        addOwnCheckbox = "checked";
+    }
+    mb.append("<input type=checkbox name=readerscanaddownanswer value=1 "+addOwnCheckbox+">");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Readers can add their own answers");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    mb.append("");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    String voteOnOthersCheckbox = "";
+    if (poll.getReaderscanvoteonreaderanswers()){
+        voteOnOthersCheckbox = "checked";
+    }
+    mb.append("<input type=checkbox name=readerscanvoteonreaderanswers value=1 "+voteOnOthersCheckbox+">");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Readers can vote on each other's answers");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    mb.append("");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    String addCommentsCheckbox = "";
+    if (poll.getReaderscanaddcomments()){
+        addCommentsCheckbox = "checked";
+    }
+    mb.append("<input type=checkbox name=readerscanaddcomments value=1 "+addCommentsCheckbox+">");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Readers can comment on poll results");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    mb.append("");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    String isModeratedCheckbox = "";
+    if (poll.getReaderinputismoderated()){
+        isModeratedCheckbox = "checked";
+    }
+    mb.append("<input type=checkbox name=readerinputismoderated value=1 "+isModeratedCheckbox+">");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Readers comments and answers must be approved");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    mb.append("");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    String isOpenCheckbox = "";
+    if (poll.getIsopen()){
+        isOpenCheckbox = "checked";
+    }
+    mb.append("<input type=checkbox name=isopen value=1 "+isOpenCheckbox+">");
+    mb.append("<font face=arial size=-2>");
+    mb.append("Poll is open for voting");
+    mb.append("</font>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
+    mb.append("");
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    mb.append("<input type=submit value='Save Poll'>");
+    mb.append("</td>");
+    mb.append("</tr>");
+
+    mb.append("</table>");
+
+    mb.append("</form>");
+    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+
+
+    if (poll.getReaderscanaddcomments()){
+        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+        mb.append("<table cellpadding=10 cellspacing=3 border=0>");
+        mb.append("<tr>");
+        mb.append("<td valign=top align=left colspan=3>");
+        mb.append("<font face=arial size=+1>");
+        mb.append("Comments on this Poll");
+        mb.append("</font>");
+        mb.append("<td>");
+        mb.append("</tr>");
+        for (Iterator it = poll.getPollReaderComments().iterator(); it.hasNext(); ) {
+            PollReaderComment comment = (PollReaderComment)it.next();
+            mb.append("<tr>");
+            mb.append("<td valign=top align=right>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("<a href='entries-poll-settings.log?action=togglecommentapproval&pollid="+poll.getPollid()+"&pollreadercommentid="+comment.getPollreadercommentid()+"'>");
+            if (comment.getIsapproved()){
+                mb.append("Click to Hide");
+            } else {
+                mb.append("Click to Approve");
+            }
+            mb.append("</a>");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=right>");
+            mb.append("<font face=arial size=-2>");
+            if (!comment.getReadername().equals("")){
+                mb.append(comment.getReadername());
+            } else {
+                mb.append("Anonymous");
+            }
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<font face=arial size=-1>");
+            mb.append(comment.getComment().replaceAll("<", "&lt;"));
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+        mb.append("</table>");
+        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+    }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 %>
 
 <%
-    /*----------------------------------------------------*/
+/*----------------------------------------------------*/
 /*                  Side Column                       */
     StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
