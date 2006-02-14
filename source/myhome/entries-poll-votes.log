@@ -1,56 +1,64 @@
-<%@ page import="reger.poll.PollAnswer"%>
-<%@ page import="reger.poll.PollReaderAnswer"%>
-<%@ page import="java.util.StringTokenizer"%>
+<%@ page import="reger.poll.PollAnswer" %>
+<%@ page import="reger.poll.PollReaderAnswer" %>
+<%@ page import="java.util.StringTokenizer" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.ArrayList" %>
 <%
-/*----------------------------------------------------*/
+    /*----------------------------------------------------*/
 /*                  Page Config                       */
     reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-    pageProps.siteSection=pageProps.ADMINSITE;
+    pageProps.siteSection = pageProps.ADMINSITE;
     pageProps.title = "Vote Result";
     pageProps.isPasswordProtected = true;
     //pageProps.navButtonName = "entriespolls";
     pageProps.aclObjectName = "ADDEDITENTRIES";
-    pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
-    pageProps.pathToAppRoot="../";
+    pageProps.trafficType = reger.Vars.TRAFFICTYPEADMINMISC;
+    pageProps.pathToAppRoot = "../";
 /*----------------------------------------------------*/
 %>
 
 <%@ include file="../globalheader.jsp" %>
 
 <%
-/*----------------------------------------------------*/
+    /*----------------------------------------------------*/
 /*                  Main Body                         */
-        StringBuffer mb = new StringBuffer();
+    StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
+    // Saving data.
     String[] answers = request.getParameterValues("answer");
+    String[] totalVotesList = request.getParameterValues("totalVotes");
     // PollAnswer
     if (answers != null && answers.length > 0) {
         PollAnswer pollAnswer = null;
         PollReaderAnswer pollReaderAnswer = null;
-        StringTokenizer stkr = null;
         String answerId = null;
         String votes = null;
         String pollid = null;
         String answerBelongsTo = null;
+        StringTokenizer stkr = null;
+        String totalVotes = null;
+        int imageWidth = 400;
         // Update pollanswer by increasing votes by 1
-        for (int i=0;i<answers.length;i++) {
+        for (int i = 0; i < answers.length; i++) {
             stkr = new StringTokenizer(answers[i], "~");
-            mb.append(answers[i]);
             answerId = (String) stkr.nextElement();
             votes = (String) stkr.nextElement();
             answerBelongsTo = (String) stkr.nextElement();
             pollid = (String) stkr.nextElement();
-            if(answerBelongsTo.equals("owner")) {
+            if (answerBelongsTo.equals("owner")) {
                 // Update votes in for owner answer
                 pollAnswer = new PollAnswer(Integer.parseInt(answerId));
                 pollAnswer.setVotes(Integer.parseInt(votes) + 1);
                 pollAnswer.save();
-            } if(answerBelongsTo.equals("reader")) {
+            }
+            if (answerBelongsTo.equals("reader")) {
                 // Update votes in reader answer table
                 pollReaderAnswer = new PollReaderAnswer(Integer.parseInt(answerId));
                 pollReaderAnswer.setVotes(Integer.parseInt(votes) + 1);
                 pollReaderAnswer.save();
-            } if(answerBelongsTo.equals("ownAnswer")) {
+            }
+            if (answerBelongsTo.equals("ownAnswer")) {
                 // Save new reader answer
                 pollReaderAnswer = new PollReaderAnswer();
                 pollReaderAnswer.setPollid(Integer.parseInt(pollid));
@@ -60,12 +68,156 @@
                 pollReaderAnswer.setIsapproved(false);
                 pollReaderAnswer.save();
             }
+            for (int j=0;j<totalVotesList.length;j++) {
+                totalVotes = totalVotesList[j];
+                if (totalVotes.substring(0, totalVotes.indexOf("~")).equalsIgnoreCase(pollid)) {
+                    totalVotes = totalVotes.substring(totalVotes.indexOf("~")+1, totalVotes.length());
+                    if (totalVotes.equalsIgnoreCase("0")) {
+                        totalVotes = "1";
+                    }
+//                    Double percentage = Double.parseDouble(votes) / Double.parseDouble(totalVotes.substring(totalVotes.indexOf("~")+1, totalVotes.length()));
+//                    mb.append("<img src=../images/bar_blue.gif width="+percentage*imageWidth+" height=20/>");
+                }
+            }
         }
+        // Getting answers, comments and vote percentages for a poll.
+        HashMap pollMap = (HashMap) request.getSession().getAttribute("pollMap");
+        if (pollMap != null && pollMap.size() > 0) {
+            mb.append("<table>");
+            Iterator iter = pollMap.keySet().iterator();
+            Iterator answerIter = null;
+            Iterator commentIter = null;
+            String key = null;
+            HashMap answerMap = null;
+            HashMap readerAnswerMap = null;
+            HashMap commentMap = null;
+            ArrayList answerList = null;
+            StringBuffer comments = new StringBuffer();
+            String eventid, title, pollIdFromMap, question, readersCanAddOwnAnswer, readersCanAddComments,
+                    readersCanVoteonReaderAnswers, readerInputIsModerated,isOpen, pollAnswerId, ownerAnswer,
+                    ownerAnswerVotes, pollReaderAnswerId, readerAnswer, readerName, readerAnswerVotes,
+                    answerIsApproved, commentid,comment, isCmtApproved = null;
+            while (iter.hasNext()) {
+                key = (String) iter.next();
+                answerList = (ArrayList) pollMap.get(key);
+                answerMap = (HashMap) answerList.get(0);
+                readerAnswerMap = (HashMap) answerList.get(1);
+                stkr = new StringTokenizer(key, "~");
+                eventid = (String) stkr.nextElement();
+                title = (String) stkr.nextElement();
+                pollIdFromMap = (String) stkr.nextElement();
+                question = (String) stkr.nextElement();
+                readersCanAddOwnAnswer = (String) stkr.nextElement();
+                readersCanAddComments = (String) stkr.nextElement();
+                readersCanVoteonReaderAnswers = (String) stkr.nextElement();
+                readerInputIsModerated = (String) stkr.nextElement();
+                isOpen = (String) stkr.nextElement();
+                if (pollIdFromMap.equalsIgnoreCase(pollid)) {
+                    mb.append("<tr><td>");
+                    // Display question only if it is open.
+                    if (isOpen.equalsIgnoreCase("1") && question.indexOf("?") > -1) {
+                        mb.append(question);
+                    } else if (isOpen.equalsIgnoreCase("1") && question.indexOf("?") == -1) {
+                        mb.append(question + "?");
+                    }
+                    mb.append("</td></tr>");
+                    // Display answers for questins only if questions are open.
+                    if (isOpen.equalsIgnoreCase("1")) {
+                        answerIter = answerMap.keySet().iterator();
+                        while (answerIter.hasNext()) {
+                            key = (String) answerIter.next();
+                            stkr = new StringTokenizer(key, "~");
+                            pollAnswerId = (String) stkr.nextElement();
+                            ownerAnswer = (String) stkr.nextElement();
+                            ownerAnswerVotes = (String) stkr.nextElement();
+                            if (ownerAnswer != null && !ownerAnswer.trim().equalsIgnoreCase("")) {
+                                mb.append("<tr><td>");
+                                mb.append(ownerAnswer);
+                                mb.append("</td><td>");
+                                Double percentage = Double.parseDouble(ownerAnswerVotes) / Double.parseDouble(totalVotes);
+                                mb.append("<img src=../images/bar_blue.gif width="+percentage*imageWidth+" height=20/>");
+                                mb.append("</td></tr>");
+                            }
+                        }
+                        // Display only answers that are approved only if readers can vote readers answers.
+                        if (Integer.parseInt(readersCanVoteonReaderAnswers) == 1) {
+                            answerIter = readerAnswerMap.keySet().iterator();
+                            while (answerIter.hasNext()) {
+                                key = (String) answerIter.next();
+                                commentMap = (HashMap) readerAnswerMap.get(key);
+                                stkr = new StringTokenizer(key, "~");
+                                pollReaderAnswerId = (String) stkr.nextElement();
+                                readerAnswer = (String) stkr.nextElement();
+                                readerName = (String) stkr.nextElement();
+                                readerAnswerVotes = (String) stkr.nextElement();
+                                answerIsApproved = (String) stkr.nextElement();
+                                if (readerAnswer != null && !readerAnswer.trim().equalsIgnoreCase("") && answerIsApproved.equalsIgnoreCase("1")) {
+                                    mb.append("<tr><td>");
+                                    mb.append(readerAnswer);
+                                    mb.append("</td><td>");
+                                    // value is combination of pollanswerid and pollid as we need both for saving.
+                                    //mb.append("<input type=radio name=answer value=" + pollReaderAnswerId + "~" + readerAnswerVotes + "~reader~" + pollIdFromMap + ">");
+                                    Double percentage = Double.parseDouble(readerAnswerVotes) / Double.parseDouble(totalVotes);
+                                    mb.append("<img src=../images/bar_blue.gif width="+percentage*imageWidth+" height=20/>");
+                                    mb.append("</td></tr>");
+                                }
+                                if (commentMap != null && commentMap.size() > 0) {
+                                    commentIter = commentMap.keySet().iterator();
+                                    while (commentIter.hasNext()) {
+                                        key = (String) commentIter.next();
+                                        stkr = new StringTokenizer(key, "~");
+                                        commentid = (String) stkr.nextElement();
+                                        comment = (String) stkr.nextElement();
+                                        readerName = (String) stkr.nextElement();
+                                        isCmtApproved = (String) stkr.nextElement();
+                                        if (comment != null && !comment.trim().equalsIgnoreCase("") && isCmtApproved.equalsIgnoreCase("1")) {
+                                            if (comments.indexOf(comment) == -1) {
+                                                if (comments.length() == 0) {
+                                                    comments.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+                                                    comments.append("<table>");
+                                                }
+                                                comments.append("<tr><td>");
+                                                comments.append(comment);
+                                                comments.append("</td></tr>");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        mb.append("</table>");
+                        // Allow readers to add own comments only if readers can add own comments.
+                        if (Integer.parseInt(readersCanAddComments) == 1) {
+                            mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+                            mb.append("<table>");
+                            mb.append("<tr><td>");
+                            mb.append("What do you think?");
+                            mb.append("</td></tr><tr><td>");
+                            mb.append("Name");
+                            mb.append("</td><td>");
+                            mb.append("<input type=text name=readerName>");
+                            mb.append("</td></tr><tr><td>");
+                            mb.append("Answer");
+                            mb.append("</td><td>");
+                            mb.append(" <input type=text name=comments>");
+                            mb.append("</td></tr><tr><td></td><td>");
+                            mb.append("<input type=submit name=Send value=Send><br>");
+                            mb.append("</td></tr>");
+                            mb.append("</table>");
+                            mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+                        }
+
+                        comments.append("</table>");
+                        comments.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+                        mb.append(comments);
+                    }
+                }
+            }
+        } // End Poll
     }
-    mb.append("<img src=images/reger-poweredby.gif width=30 height=60/>");
 %>
 <%
-/*----------------------------------------------------*/
+    /*----------------------------------------------------*/
 /*                  Side Column                       */
     StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
