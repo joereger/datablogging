@@ -157,6 +157,16 @@ public class SiteTemplateTagQuickStats implements SiteTemplateTag{
             out.append(reger.SideColumn.sideColContentRow(qs.toString()));
         //}
 
+        qs.delete(0,qs.length());
+        qs.append("<a href='polls.log'><img src=images/imageavailable2.gif border=0 align=middle></a> <font face=arial size=-2 class=smallfont> <a href='polls.log'>" + acctCounts.getPollscount() + " Poll");
+        if (acctCounts.getPollscount() <= 1) {
+            qs.append("");
+        } else {
+            qs.append("s");
+        }
+        qs.append("</font>");
+        out.append(reger.SideColumn.sideColContentRow(qs.toString()));
+
 
         out.append(reger.SideColumn.sideColTableEnd("Quick Stats"));
 

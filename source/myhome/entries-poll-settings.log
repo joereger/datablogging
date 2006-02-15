@@ -5,12 +5,14 @@
 <%@ page import="reger.InfoBox"%>
 <%@ page import="reger.Entry"%>
 <%@ page import="reger.poll.*"%>
+<%@ page import="reger.cache.AccountCountCache"%>
+<%@ page import="reger.cache.HtmlCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection = pageProps.ADMINSITE;
-pageProps.title = "Edit Poll";
+pageProps.title = "Poll";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "entriespolls";
 pageProps.aclObjectName = "ADDEDITENTRIES";
@@ -78,18 +80,18 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
         //Check current reader answers for edits
         for (Iterator it = poll.getPollReaderAnswers().iterator(); it.hasNext(); ) {
             PollReaderAnswer answer = (PollReaderAnswer)it.next();
-            if (request.getParameter("readeranswer-"+answer.getPollreaderanswerid())!=null && !request.getParameter("answer-"+answer.getPollreaderanswerid()).equals("")){
+            if (request.getParameter("readeranswer-"+answer.getPollreaderanswerid())!=null && !request.getParameter("readeranswer-"+answer.getPollreaderanswerid()).equals("")){
                 answer.setAnswer(request.getParameter("readeranswer-"+answer.getPollreaderanswerid()));
                 answer.save();
             }
-            if (request.getParameter("readeranswer-approve-"+answer.getPollreaderanswerid())!=null && request.getParameter("answer-approve-"+answer.getPollreaderanswerid()).equals("1")){
+            if (request.getParameter("readeranswer-approve-"+answer.getPollreaderanswerid())!=null && request.getParameter("readeranswer-approve-"+answer.getPollreaderanswerid()).equals("1")){
                 answer.setIsapproved(true);
                 answer.save();
             } else {
                 answer.setIsapproved(false);
                 answer.save();
             }
-            if (request.getParameter("readeranswer-delete-"+answer.getPollreaderanswerid())!=null && request.getParameter("answer-delete-"+answer.getPollreaderanswerid()).equals("1")){
+            if (request.getParameter("readeranswer-delete-"+answer.getPollreaderanswerid())!=null && request.getParameter("readeranswer-delete-"+answer.getPollreaderanswerid()).equals("1")){
                 answer.delete();
             }
         }
@@ -97,6 +99,12 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
         poll.load();
         EntryCache.flush(entry.eventid);
         entry.getEntryAll(entry.eventid);
+        if (request.getParameter("pollid")!=null && reger.core.Util.isinteger(request.getParameter("pollid")) && Integer.parseInt(request.getParameter("pollid"))<=0){
+            AccountCountCache.flushByAccountid(userSession.getAccount().getAccountid());
+            String cachekey = "Polls-" + userSession.getAccount().getAccountid() + "-" + userSession.getAccountuser().getAccountuserid();
+            HtmlCache.flush(cachekey);   
+        }
+        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "The poll has been saved!"));
     } else if (request.getParameter("action")!=null && request.getParameter("action").equals("togglecommentapproval")){
         //Toggle approval of a comment
         if (request.getParameter("pollreadercommentid")!=null && reger.core.Util.isinteger(request.getParameter("pollreadercommentid"))){
@@ -108,11 +116,26 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
             }
             pollReaderComment.save();
             poll.load();
+            mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Comment status updated!"));
         }
     }
 
+    if (poll.getPollid()<=0){
+        //mb.append(InfoBox.get(InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Create your poll here and then click Save."));
+    }
+
+    if (poll.getPollid()>0){
+        pageProps.title = "<img src='../images/poll-icon.gif' align=middle border=0> Poll: " + poll.getQuestion();
+    } else {
+        pageProps.title = "<img src='../images/poll-icon.gif' align=middle border=0> New Poll";
+    }
+
+    mb.append("<table cellspacing=5 cellpadding=5 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top>");
 
     mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
 
     mb.append("<form action=entries-poll-settings.log method=post>");
     mb.append("<input type=hidden name=action value=savepoll>");
@@ -124,7 +147,9 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
 
     mb.append("<tr>");
     mb.append("<td>");
+    mb.append("<font face=arial size=-1>");
     mb.append("Question:");
+    mb.append("</font>");
     mb.append("</td>");
     mb.append("<td>");
     mb.append("<input type=text name=question size=40 maxlength=255 value=\""+reger.core.Util.cleanForHtml(poll.getQuestion())+"\">");
@@ -133,7 +158,12 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
 
     mb.append("<tr>");
     mb.append("<td valign=top>");
+    mb.append("<font face=arial size=-1>");
     mb.append("Answers:");
+    mb.append("</font>");
+    mb.append("<br><font face=arial size=-2>");
+    mb.append("(Save to add more)");
+    mb.append("</font>");
     mb.append("</td>");
     mb.append("<td valign=top nowrap>");
     for (Iterator it = poll.getPollAnswers().iterator(); it.hasNext(); ) {
@@ -153,31 +183,35 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
     mb.append("</tr>");
 
 
-    mb.append("<tr>");
-    mb.append("<td valign=top>");
-    mb.append("Reader Answers:");
-    mb.append("</td>");
-    mb.append("<td valign=top nowrap>");
-    for (Iterator it = poll.getPollReaderAnswers().iterator(); it.hasNext(); ) {
-        PollReaderAnswer answer = (PollReaderAnswer)it.next();
-        mb.append("<input type=text name='readeranswer-"+answer.getPollreaderanswerid()+"' size=25 maxlength=255 value=\""+reger.core.Util.cleanForHtml(answer.getAnswer())+"\">");
-        mb.append("<input type=checkbox name=readeranswer-delete-"+answer.getPollreaderanswerid()+" value=1>");
-        mb.append("<font face=arial size=-2>");
-        mb.append("Delete");
+    if (poll.getPollReaderAnswers().size()>0){
+        mb.append("<tr>");
+        mb.append("<td valign=top>");
+        mb.append("<font face=arial size=-1>");
+        mb.append("Reader Answers:");
         mb.append("</font>");
-        mb.append(" ");
-        String answerIsApprovedCheckbox = "";
-        if (answer.getIsapproved()){
-            answerIsApprovedCheckbox = "checked";
+        mb.append("</td>");
+        mb.append("<td valign=top nowrap>");
+        for (Iterator it = poll.getPollReaderAnswers().iterator(); it.hasNext(); ) {
+            PollReaderAnswer answer = (PollReaderAnswer)it.next();
+            mb.append("<input type=text name='readeranswer-"+answer.getPollreaderanswerid()+"' size=25 maxlength=255 value=\""+reger.core.Util.cleanForHtml(answer.getAnswer())+"\">");
+            mb.append("<input type=checkbox name=readeranswer-delete-"+answer.getPollreaderanswerid()+" value=1>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("Delete");
+            mb.append("</font>");
+            mb.append(" ");
+            String answerIsApprovedCheckbox = "";
+            if (answer.getIsapproved()){
+                answerIsApprovedCheckbox = "checked";
+            }
+            mb.append("<input type=checkbox name=readeranswer-approve-"+answer.getPollreaderanswerid()+" value=1 "+answerIsApprovedCheckbox+">");
+            mb.append("<font face=arial size=-2>");
+            mb.append("Approved");
+            mb.append("</font>");
+            mb.append("<br>");
         }
-        mb.append("<input type=checkbox name=readeranswer-approve-"+answer.getPollreaderanswerid()+" value=1 "+answerIsApprovedCheckbox+">");
-        mb.append("<font face=arial size=-2>");
-        mb.append("Approved");
-        mb.append("</font>");
-        mb.append("<br>");
+        mb.append("</td>");
+        mb.append("</tr>");
     }
-    mb.append("</td>");
-    mb.append("</tr>");
 
 
     mb.append("<tr>");
@@ -271,58 +305,85 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
     mb.append("</tr>");
 
     mb.append("</table>");
-
     mb.append("</form>");
     mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 
+    mb.append(reger.ui.RoundedCorners.start("pollfrom", "e6e6e6", "cccccc"));
+    mb.append("<font face=arial size=-2>");
+    mb.append("This poll appears on this entry: ");
+    mb.append("<br>");
+    mb.append("<a href='"+pageProps.pathToAppRoot+"entry.log?eventid="+entry.eventid+"'>");
+    mb.append(entry.title);
+    mb.append("</a>");
+    mb.append("</font>");
+    mb.append(reger.ui.RoundedCorners.end("pollfrom"));
 
-
-
-    if (poll.getReaderscanaddcomments()){
+    mb.append("</td>");
+    mb.append("<td valign=top>");
+    if (poll.getPollid()>0){
         mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        mb.append("<table cellpadding=10 cellspacing=3 border=0>");
-        mb.append("<tr>");
-        mb.append("<td valign=top align=left colspan=3>");
-        mb.append("<font face=arial size=+1>");
-        mb.append("Comments on this Poll");
-        mb.append("</font>");
-        mb.append("<td>");
-        mb.append("</tr>");
-        for (Iterator it = poll.getPollReaderComments().iterator(); it.hasNext(); ) {
-            PollReaderComment comment = (PollReaderComment)it.next();
+        //Results
+        mb.append(reger.ui.RoundedCorners.start("results", "ffffcc", "cccccc"));
+        mb.append(PollResultsHtml.getResultsGraphOnly(poll, request, pageProps, userSession, 150));
+        mb.append(reger.ui.RoundedCorners.end("results"));
+
+        //Comments
+        if (poll.getReaderscanaddcomments()){
+            mb.append("<table cellpadding=10 cellspacing=3 border=0>");
             mb.append("<tr>");
-            mb.append("<td valign=top align=right>");
-            mb.append("<font face=arial size=-2>");
-            mb.append("<a href='entries-poll-settings.log?action=togglecommentapproval&pollid="+poll.getPollid()+"&pollreadercommentid="+comment.getPollreadercommentid()+"'>");
-            if (comment.getIsapproved()){
-                mb.append("Click to Hide");
-            } else {
-                mb.append("Click to Approve");
-            }
-            mb.append("</a>");
+            mb.append("<td valign=top align=left colspan=3>");
+            mb.append("<font face=arial size=+1>");
+            mb.append("Comments on this Poll");
             mb.append("</font>");
-            mb.append("</td>");
-            mb.append("<td valign=top align=right>");
-            mb.append("<font face=arial size=-2>");
-            if (!comment.getReadername().equals("")){
-                mb.append(comment.getReadername());
-            } else {
-                mb.append("Anonymous");
-            }
-            mb.append("</font>");
-            mb.append("</td>");
-            mb.append("<td valign=top align=left>");
-            mb.append("<font face=arial size=-1>");
-            mb.append(comment.getComment().replaceAll("<", "&lt;"));
-            mb.append("</font>");
-            mb.append("</td>");
+            mb.append("<td>");
             mb.append("</tr>");
+            for (Iterator it = poll.getPollReaderComments().iterator(); it.hasNext(); ) {
+                PollReaderComment comment = (PollReaderComment)it.next();
+                mb.append("<tr>");
+                mb.append("<td valign=top align=right>");
+                mb.append("<font face=arial size=-2>");
+                mb.append("<a href='entries-poll-settings.log?action=togglecommentapproval&pollid="+poll.getPollid()+"&pollreadercommentid="+comment.getPollreadercommentid()+"'>");
+                if (comment.getIsapproved()){
+                    mb.append("Click to Hide");
+                } else {
+                    mb.append("<img src='../images/yellow-alert.gif' border=0><br>Click to Approve");
+                }
+                mb.append("</a>");
+                mb.append("</font>");
+                mb.append("</td>");
+                mb.append("<td valign=top align=right>");
+                mb.append("<font face=arial size=-2>");
+                if (!comment.getReadername().equals("")){
+                    mb.append(comment.getReadername());
+                } else {
+                    mb.append("Anonymous");
+                }
+                mb.append("</font>");
+                mb.append("</td>");
+                mb.append("<td valign=top align=left>");
+                mb.append("<font face=arial size=-1>");
+                mb.append(comment.getComment().replaceAll("<", "&lt;"));
+                mb.append("</font>");
+                mb.append("</td>");
+                mb.append("</tr>");
+            }
+            if (poll.getNumberOfComments()==0){
+                mb.append("<tr>");
+                mb.append("<td valign=top align=left colspan=3>");
+                mb.append("<font face=arial size=-2>");
+                mb.append("None");
+                mb.append("</font>");
+                mb.append("<td>");
+                mb.append("</tr>");
+            }
+            mb.append("</table>");
         }
-        mb.append("</table>");
+
         mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
     }
-
-
+    mb.append("</td>");
+    mb.append("</tr>");
+    mb.append("</table>");
 
 
 

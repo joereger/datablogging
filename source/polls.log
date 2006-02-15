@@ -1,0 +1,125 @@
+<%@ page import="reger.AccountCounts" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.TreeMap"%>
+<%@ page import="java.math.BigDecimal"%>
+<%@ page import="reger.poll.Poll"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="reger.InfoBox"%>
+<%@ page import="reger.cache.EntryCache"%>
+<%@ page import="reger.Entry"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection = reger.pageFramework.PageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.isLogidRequired = false;
+pageProps.isEventidRequired = false;
+pageProps.trafficType = reger.Vars.TRAFFICTYPEPUBLICMISC;
+pageProps.pathToAppRoot = "";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//HtmlCache
+String cachekey = "Polls-" + userSession.getAccount().getAccountid() + "-" + userSession.getAccountuser().getAccountuserid(); //Anything unique for the page
+int refreshintervalinseconds = 60*60*6;
+%><%@ include file="htmlcachestart.jsp" %><%
+
+    //Go get all polls for this account that this user can view
+    ArrayList<Poll> polls = new ArrayList<Poll>();
+    String sql = "SELECT poll.pollid FROM event, megalog, poll WHERE poll.eventid = event.eventid AND megalog.accountid='"+userSession.getAccount().getAccountid()+"' AND event.logid=megalog.logid AND " + userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid()) + " ORDER BY event.createdate DESC";
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstData= reger.core.db.Db.RunSQL(sql);
+    //-----------------------------------
+    //-----------------------------------
+    if (rstData!=null && rstData.length>0){
+        for(int i=0; i<rstData.length; i++){
+            polls.add(new Poll(Integer.parseInt(rstData[i][0])));
+        }
+    }
+
+
+    //Display the list of polls
+
+
+    mb.append("<table cellpadding=0 cellspacing=0 border=0 width=90% >");
+
+    for (java.util.Iterator it = polls.iterator(); it.hasNext(); ) {
+        Poll poll = (Poll)it.next();
+        Entry entry = EntryCache.get(poll.getEventid());
+
+        mb.append("<tr><td>");
+        String color = "ffffcc";
+        if (!poll.getIsopen()){
+            color = "ffffff";
+        }
+        mb.append(reger.ui.RoundedCorners.start("poll"+poll.getPollid(), color, "999999", 100));
+
+
+        mb.append(reger.ui.RoundedCorners.start("pollresults"+poll.getPollid(), "ffffff", "999999", 100));
+        mb.append(reger.poll.PollResultsHtml.getResultsGraphOnly(poll, request, pageProps, userSession, 200));
+        mb.append(reger.ui.RoundedCorners.end("pollresults"+poll.getPollid()));
+
+
+        mb.append("<center>");
+        mb.append("<font face=arial size=+1><b>");
+        mb.append( "<a href=entries-poll-votes.log?pollid="+poll.getPollid()+">Full Results</a>");
+        mb.append("</b></font>");
+        mb.append("<font face=arial size=-2>");
+        if (poll.getIsopen()) {
+            mb.append("<br>Poll is Open for Voting");
+        } else {
+            mb.append("<br>Poll is Closed");
+        }
+        mb.append("</font>");
+        mb.append("<font face=arial size=-2>");
+        mb.append("<br>Total Votes : ");
+        mb.append(poll.getTotalVotes());
+        if (poll.getReaderscanaddcomments()){
+            mb.append("<br>Total Comments : ");
+            mb.append(poll.getNumberOfComments());
+        }
+        mb.append("<br>From Entry : ");
+        mb.append("<a href=../entry.log?eventid=" + entry.eventid + ">"+entry.title+"</a>");
+        mb.append("</font>");
+        mb.append("</center>");
+
+
+
+
+        mb.append(reger.ui.RoundedCorners.end("poll"+poll.getPollid()));
+
+
+        mb.append("</td></tr>");
+
+    }
+
+    mb.append("</table>");
+
+//HtmlCache
+%><%@ include file="htmlcacheend.jsp" %><%
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+%>
+
+<%@ include file="globalfooter.jsp" %>

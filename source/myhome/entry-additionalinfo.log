@@ -6,6 +6,10 @@
 <%@ page import="reger.core.ValidationException" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="reger.InfoBox"%>
+<%@ page import="java.util.Iterator"%>
+<%@ page import="reger.poll.Poll"%>
+<%@ page import="reger.poll.PollFormHtml"%>
+<%@ page import="reger.poll.PollResultsHtml"%>
 <%
     /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -37,6 +41,10 @@
 
     Entry entry = new Entry(Integer.parseInt(request.getParameter("eventid")));
     Log log = LogCache.get(entry.logid);
+    if (!userSession.getAccountuser().userCanViewLog(log.getLogid())){
+        response.sendRedirect("index.log");
+        return;
+    }
 
     if (pageProps.action.equals("submit")) {
         //Groups
@@ -58,8 +66,8 @@
         }
 
         //Polls
-        if (request.getParameter("poll")!=null && request.getParameter("poll").equals("1")){
-            response.sendRedirect("entries-poll-settings.log?eventid=" + entry.eventid + "&action=add");
+        if (request.getParameter("pollid")!=null && reger.core.Util.isinteger(request.getParameter("pollid"))){
+            response.sendRedirect("entries-poll-settings.log?eventid=" + entry.eventid + "&pollid="+request.getParameter("pollid"));
             return;
         }
 
@@ -82,22 +90,6 @@
         mb.append("<input type=hidden name=logid value='" + entry.logid + "'>");
         mb.append("<table cellpadding=10 cellspacing=0 border=0>");
 
-//        //mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  Your entry has been saved.  You can now add optional information below."));
-//        mb.append("<tr>");
-//        mb.append("<td align=left valign=top>");
-//        //mb.append("<img src='../images/groups-lg.gif' align=left>");
-//        mb.append("</td>");
-//        mb.append("<td align=right valign=top>");
-//        mb.append("<font face=arial size=+2 color=#cccccc><b>");
-//        //mb.append("Optional Features");
-//        mb.append("</b></font><br><font face=arial size=-2><b>");
-//        mb.append("</b></font></td>");
-//        mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
-//        mb.append("<input type=submit value='Continue'>");
-//        mb.append("</td>");
-//        mb.append("</tr>");
-//        //mb.append("</table>");
-//        //mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
 
         //Begin Groups
         if (userSession.getAccountuser().userCanDoAcl("POSTENTRYTOGROUP", userSession.getAccount().getAccountid())) {
@@ -175,10 +167,20 @@
         mb.append("Polls allow you to get feedback from your readers.");
         mb.append("</b></font></td>");
         mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
-        mb.append("<input type=checkbox name=poll value=1> ");
+        mb.append("<input type=radio name=pollid value=0> ");
         mb.append("<font face=arial size=-1><b>");
-        mb.append("Yes, create/edit a poll.");
+        mb.append("Create a new poll");
         mb.append("</b></font>");
+        if (entry.getPolls().size()>0){
+            for (Iterator it = entry.getPolls().iterator(); it.hasNext(); ) {
+                Poll poll = (Poll)it.next();
+                mb.append("<br><input type=radio name=pollid value="+poll.getPollid()+"> ");
+                mb.append("<font face=arial size=-1><b>");
+                mb.append("Edit Poll: \""+poll.getQuestion()+"\"");
+                mb.append("</b></font>");
+            }
+
+        }
         mb.append("</td>");
         mb.append("</tr>");
         //mb.append("</table>");

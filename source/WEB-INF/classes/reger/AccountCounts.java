@@ -26,6 +26,7 @@ public class AccountCounts {
     private int tagCount;
     private TreeMap smartTagMap = new TreeMap();
     private TreeMap sizeMap = new TreeMap();
+    private int pollscount = 0;
 
     public AccountCounts() {
 
@@ -182,6 +183,20 @@ public class AccountCounts {
             tempTagMap = (TreeMap) smartTagMap.get(tag);
             sizeMap.put(new Integer(tempTagMap.size()), tag);
         }
+
+
+        //Go get all polls for this account that this user can view
+        String sql = "SELECT count(*) FROM event, megalog, poll WHERE poll.eventid = event.eventid AND megalog.accountid='"+accountuser.getAccountid()+"' AND event.logid=megalog.logid AND " + accountuser.LogsUserCanAdministerQueryend(account.getAccountid());
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstPoll= reger.core.db.Db.RunSQL(sql);
+        //-----------------------------------
+        //-----------------------------------
+        if (rstPoll!=null && rstPoll.length>0){
+            pollscount = Integer.parseInt(rstPoll[0][0]);
+        }
+
+
     }
 
     public TreeMap getSmartTagMap() {
@@ -272,4 +287,11 @@ public class AccountCounts {
         this.savedsearchescount = savedsearchescount;
     }
 
+    public int getPollscount() {
+        return pollscount;
+    }
+
+    public void setPollscount(int pollscount) {
+        this.pollscount = pollscount;
+    }
 }

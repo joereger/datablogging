@@ -4,6 +4,8 @@
 <%@ page import="reger.poll.Poll"%>
 <%@ page import="reger.cache.EntryCache"%>
 <%@ page import="reger.InfoBox"%>
+<%@ page import="reger.jcaptcha.CaptchaServiceSingleton"%>
+<%@ page import="com.octo.captcha.service.CaptchaServiceException"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -37,22 +39,42 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
 } else {
     mb.append("<br><br>");
     if (poll.getIsopen() && request.getParameter("answer")!=null){
-        String addNewTxt = "";
-        if (poll.getReaderscanaddownanswer() && poll.getReaderinputismoderated() && request.getParameter("answer").equals("newreaderanswer")){
-            addNewTxt = " It will appear once the owner approves it.";
+        if (!reger.poll.PollNoRevote.hasUserVotedBefore(poll.getPollid(), request, response)){
+            reger.poll.PollNoRevote.markUserAsVoted(poll.getPollid(), request, response);
+            String addNewTxt = "";
+            if (poll.getReaderscanaddownanswer() && poll.getReaderinputismoderated() && request.getParameter("answer").equals("newreaderanswer")){
+                addNewTxt = " It will appear once the owner approves it.";
+            }
+            mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your vote has been added!"+addNewTxt));
+            PollResultsHtml.doVoting(poll, request, response, pageProps, userSession);
+            poll.load();
+        } else {
+            mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  It appears that you've already voted on this poll."));
         }
-        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your vote has been added!"+addNewTxt));
     }
-    if (poll.getIsopen() && request.getParameter("action").equals("commentonpoll")){
-        String addNewTxt = "";
-        if (poll.getReaderinputismoderated()){
-            addNewTxt = " It will appear once the owner approves it.";
+    if (poll.getIsopen() && request.getParameter("action")!=null && request.getParameter("action").equals("commentonpoll")){
+        Boolean isResponseCorrect =Boolean.FALSE;
+        String captchaId = request.getSession().getId();
+        String resp = request.getParameter("j_captcha_response");
+        try {
+            isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
+        } catch (CaptchaServiceException e) {
+             isResponseCorrect = new Boolean(false);
+             Debug.debug(5, "jcaptcha - PollResultsHtml.java", e);
+             Debug.debug(5, "jcaptcha - PollResultsHtml.java", "captchaId on previous error="+ captchaId);
         }
-        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your comment has been added!"+addNewTxt));
+        if (isResponseCorrect.booleanValue()){
+            String addNewTxt = "";
+            if (poll.getReaderinputismoderated()){
+                addNewTxt = " It will appear once the owner approves it.";
+            }
+            mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your comment has been added!"+addNewTxt));
+            PollResultsHtml.doCommenting(poll, request, response, pageProps, userSession);
+            poll.load();
+        } else {
+            mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "The letters you typed did not match those in the box."));
+        }
     }
-    PollResultsHtml.doVoting(poll, request, response, pageProps, userSession);
-    PollResultsHtml.doCommenting(poll, request, response, pageProps, userSession);
-    poll.load();
     mb.append(PollResultsHtml.getResults(poll, request, response, pageProps, userSession));
 }
 

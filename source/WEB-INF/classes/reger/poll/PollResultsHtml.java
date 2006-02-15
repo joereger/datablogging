@@ -2,9 +2,13 @@ package reger.poll;
 
 import reger.pageFramework.PageProps;
 import reger.UserSession;
+import reger.jcaptcha.CaptchaServiceSingleton;
+import reger.core.Debug;
 import reger.cache.EntryCache;
 
 import java.util.Iterator;
+
+import com.octo.captcha.service.CaptchaServiceException;
 
 /**
  * Used to display poll results
@@ -87,16 +91,19 @@ public class PollResultsHtml {
         }
     }
 
-    public static int calculateWidthOfAnswerBar(int totalvotes, int votesforthisanswer, int maxvotesforasingleanswer){
-        double maxPossibleWidth = 300;
+    private static int calculateWidthOfAnswerBar(int totalvotes, int votesforthisanswer, int maxvotesforasingleanswer, int maxPossibleWidth){
         double percentageOfTotal = Double.parseDouble(String.valueOf(votesforthisanswer))/Double.parseDouble(String.valueOf(totalvotes));
         double percentageOfMaxVotes = Double.parseDouble(String.valueOf(votesforthisanswer))/Double.parseDouble(String.valueOf(maxvotesforasingleanswer));
         double widthTmp = percentageOfMaxVotes * maxPossibleWidth;
         reger.core.Debug.debug(5, "PollResultsHtml.java", "percentageOfMaxVotes="+percentageOfMaxVotes+"<br>percentageOfTotal="+percentageOfTotal+"<br>widthTmp="+widthTmp);
-        return (int)widthTmp;
+        int result = (int)widthTmp;
+        if (result==0){
+            result = 1;
+        }
+        return result;
     }
 
-    public static StringBuffer getResultsGraphOnly(Poll poll, javax.servlet.http.HttpServletRequest request, PageProps pageProps, UserSession userSession){
+    public static StringBuffer getResultsGraphOnly(Poll poll, javax.servlet.http.HttpServletRequest request, PageProps pageProps, UserSession userSession, int maxPossibleWidth){
         StringBuffer mb = new StringBuffer();
 
         int totalvotes = poll.getTotalVotes();
@@ -105,11 +112,11 @@ public class PollResultsHtml {
         mb.append("<table cellpadding=5 cellspacing=3 border=0>");
         //Display question
         mb.append("<tr>");
-        mb.append("<td valign=top align=left colspan=3>");
+        mb.append("<td valign=top align=left colspan=2>");
         mb.append("<font face=arial size=+1>");
         mb.append(poll.getQuestion());
         mb.append("</font>");
-        mb.append("<td>");
+        mb.append("</td>");
         mb.append("</tr>");
         //Display owner answers
         for (Iterator it = poll.getPollAnswers().iterator(); it.hasNext(); ) {
@@ -119,16 +126,11 @@ public class PollResultsHtml {
             mb.append("<font face=arial size=-2>");
             mb.append(answer.getAnswer());
             mb.append("</font>");
-            mb.append("<td>");
+            mb.append("</td>");
             mb.append("<td valign=top align=left nowrap>");
-            mb.append("<img src='"+pageProps.pathToAppRoot+"images/bar_blue.gif' border=0 width="+calculateWidthOfAnswerBar(totalvotes, answer.getVotes(), maxvotesforasingleanswer)+" height=10>");
+            mb.append("<img src='"+pageProps.pathToAppRoot+"images/bar_blue.gif' border=0 width="+calculateWidthOfAnswerBar(totalvotes, answer.getVotes(), maxvotesforasingleanswer, maxPossibleWidth)+" height=10>");
             mb.append("<font face=arial size=-2 style=\"font-size: 9px;\">");
             mb.append(" "+answer.getVotes() + "");
-            mb.append("</font>");
-            mb.append("</td>");
-            mb.append("<td valign=top align=right>");
-            mb.append("<font face=arial size=-2>");
-            mb.append(" ");
             mb.append("</font>");
             mb.append("</td>");
             mb.append("</tr>");
@@ -147,21 +149,20 @@ public class PollResultsHtml {
                         mb.append("<font face=arial size=-2>");
                         mb.append(answer.getAnswer());
                         mb.append("</font>");
-                        mb.append("<td>");
-                        mb.append("<td valign=top align=left nowrap>");
-                        mb.append("<img src='"+pageProps.pathToAppRoot+"images/bar_grey.gif' border=0 width="+calculateWidthOfAnswerBar(totalvotes, answer.getVotes(), maxvotesforasingleanswer)+" height=10>");
-                        mb.append("<font face=arial size=-2 style=\"font-size: 9px;\">");
-                        mb.append(" "+answer.getVotes() + " ");
-                        mb.append("</font>");
-                        mb.append("</td>");
-                        mb.append("<td valign=top align=left>");
-                        mb.append("<font face=arial size=-2 style=\"font-size: 9px;\">");
+                        mb.append("<br>");
+                        mb.append("<font face=arial size=-2 style=\"font-size: 7px;\">");
                         mb.append("Answer By: ");
                         if (!answer.getReadername().equals("")){
                             mb.append(answer.getReadername());
                         } else {
                             mb.append("Anonymous");
                         }
+                        mb.append("</font>");
+                        mb.append("</td>");
+                        mb.append("<td valign=top align=left nowrap>");
+                        mb.append("<img src='"+pageProps.pathToAppRoot+"images/bar_grey.gif' border=0 width="+calculateWidthOfAnswerBar(totalvotes, answer.getVotes(), maxvotesforasingleanswer, maxPossibleWidth)+" height=10>");
+                        mb.append("<font face=arial size=-2 style=\"font-size: 9px;\">");
+                        mb.append(" "+answer.getVotes() + " ");
                         mb.append("</font>");
                         mb.append("</td>");
                         mb.append("</tr>");
@@ -174,15 +175,10 @@ public class PollResultsHtml {
         mb.append("<font face=arial size=-2>");
         mb.append("");
         mb.append("</font>");
-        mb.append("<td>");
+        mb.append("</td>");
         mb.append("<td valign=top align=left>");
         mb.append("<font face=arial size=-2 style=\"font-size: 9px;\">");
         mb.append(totalvotes + " Total Votes");
-        mb.append("</font>");
-        mb.append("</td>");
-        mb.append("<td valign=top align=right>");
-        mb.append("<font face=arial size=-2>");
-        mb.append(" ");
         mb.append("</font>");
         mb.append("</td>");
         mb.append("</tr>");
@@ -195,7 +191,7 @@ public class PollResultsHtml {
 
 
         mb.append(reger.ui.RoundedCorners.start("pollgraph"+poll.getPollid(), "ffffff", "cccccc", 100));
-        mb.append(getResultsGraphOnly(poll, request, pageProps, userSession));
+        mb.append(getResultsGraphOnly(poll, request, pageProps, userSession, 300));
         mb.append(reger.ui.RoundedCorners.end("pollgraph"+poll.getPollid()));
 
         //Display comments
@@ -254,6 +250,20 @@ public class PollResultsHtml {
             mb.append("</td>");
             mb.append("<td valign=top align=left>");
             mb.append("<input type=text name=commentname size=45 maxsize=255>");
+            mb.append("</td>");
+            mb.append("</tr>");
+            mb.append("<tr>");
+            mb.append("<td valign=top align=right>");
+            mb.append("<font face=arial size=-2>");
+            mb.append("Prove that You're Human");
+            mb.append("</font>");
+            mb.append("</td>");
+            mb.append("<td valign=top align=left>");
+            mb.append("<input type='text' name='j_captcha_response' value=''>");
+            mb.append("<br>");
+            mb.append("<div style=\"background: #e6e6e6; padding: 8px;\">");
+            mb.append("<img src=\"/jcaptcha\" style=\"border-color: #e6e6e6; border-width: 10px;\">");
+            mb.append("</div>");
             mb.append("</td>");
             mb.append("</tr>");
             mb.append("<tr>");

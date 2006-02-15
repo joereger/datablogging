@@ -5,12 +5,13 @@
 <%@ page import="reger.poll.Poll"%>
 <%@ page import="reger.cache.EntryCache"%>
 <%@ page import="reger.Entry"%>
+<%@ page import="reger.InfoBox"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
     reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
     pageProps.siteSection=pageProps.ADMINSITE;
-    pageProps.title = "Polls";
+    pageProps.title = "<img src='../images/poll-icon.gif' align=middle border=0> Polls";
     pageProps.isPasswordProtected = true;
     pageProps.navButtonName = "entriespolls";
     pageProps.aclObjectName = "ADDEDITENTRIES";
@@ -44,6 +45,9 @@
 
 
     //Display the list of polls
+
+    mb.append(InfoBox.get(InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Create polls by editing entries.  Each poll must be tied to an entry."));
+
     mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
     mb.append("<table cellpadding=0 cellspacing=0 border=0 width=90% >");
 
@@ -56,26 +60,35 @@
         if (!poll.getIsopen()){
             color = "ffffff";
         }
-        mb.append(reger.ui.RoundedCorners.start("poll", color, "999999", 100));
-        mb.append("<font face=arial size=-1><b>");
+        if (poll.getNumberOfUnapprovedCommentsAndAnswers()>0){
+            color="ffcc00";
+        }
+        mb.append(reger.ui.RoundedCorners.start("poll"+poll.getPollid(), color, "999999", 100));
+        mb.append("<font face=arial size=+1><b>");
         mb.append( "<a href=entries-poll-settings.log?pollid="+poll.getPollid()+">"+poll.getQuestion()+"</a>");
         mb.append("</b></font>");
         mb.append("<font face=arial size=-2>");
         if (poll.getIsopen()) {
             mb.append("<br>Poll is Open for Voting");
+        } else {
+            mb.append("<br>Poll is Closed");
         }
         mb.append("</font>");
         mb.append("<font face=arial size=-2>");
         mb.append("<br>Total Votes : ");
         mb.append(poll.getTotalVotes());
-        mb.append("<br>Total Comments : ");
-        mb.append(poll.getNumberOfComments());
-        mb.append("<br>Unapproved Answers / Comments : ");
-        mb.append(poll.getNumberOfUnapprovedCommentsAndAnswers());
+        if (poll.getReaderscanaddcomments()){
+            mb.append("<br>Total Comments : ");
+            mb.append(poll.getNumberOfComments());
+        }
+        if (poll.getNumberOfUnapprovedCommentsAndAnswers()>0){
+            mb.append("<br><img src='../images/yellow-alert.gif' border=0> Unapproved Answers/Comments : ");
+            mb.append(poll.getNumberOfUnapprovedCommentsAndAnswers());
+        }
         mb.append("<br>From Entry : ");
         mb.append("<a href=../entry.log?eventid=" + entry.eventid + ">"+entry.title+"</a>");
         mb.append("</font>");
-        mb.append(reger.ui.RoundedCorners.end("poll"));
+        mb.append(reger.ui.RoundedCorners.end("poll"+poll.getPollid()));
         mb.append("</td></tr>");
 
     }

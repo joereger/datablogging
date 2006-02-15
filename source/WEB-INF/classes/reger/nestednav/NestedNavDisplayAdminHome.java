@@ -106,11 +106,33 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
         mb.append("</div>");
 
         //New Log Anybody?
-        mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffffff>");
+//        mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffffff>");
+//        mb.append("<tr>");
+//        mb.append("<td valign=top align=left bgcolor=#e6e6e6 colspan=5 nowrap><a href='logs-newlog.log'><img src='images/add_16.gif' width=16 height=16 border=0 align=middle><font face=arial size=-1 color=#0000ff><b>Create a New Log</b></a></td>");
+//        mb.append("</tr>");
+//        mb.append("</table><!-- End navigation -->");
+
+
+
+
+        mb.append("<table cellpadding=0 cellspacing=0 width=50% border=0>");
         mb.append("<tr>");
-        mb.append("<td valign=top align=left bgcolor=#e6e6e6 colspan=5 nowrap><a href='logs-newlog.log'><img src='images/add_16.gif' width=16 height=16 border=0 align=middle><font face=arial size=-1 color=#0000ff><b>Create a New Log</b></a></td>");
+        mb.append("<td valign=center background='images/accordion/greenbar-leftcap.gif' align=left width=13>");
+        mb.append("<img src='images/clear.gif' height=41 width=1 border=0>");
+        mb.append("</td>");
+        mb.append("<td valign=center background='images/accordion/greenbar-center.gif' align=left>");
+        mb.append("<a href='logs-newlog.log'><img src='images/add_16.gif' width=16 height=16 border=0 align=middle><font face=arial size=-1 color=#0000ff><b>Create a New Log</b></a>");
+        mb.append("</td>");
+        mb.append("<td valign=center background='images/accordion/greenbar-center.gif' align=right>");
+        //mb.append("<a href='entry.log?logid="+ log.getLogid() +"&action=add' style=\"text-decoration: none\"><font face=arial size=-1 style=\"font-face: arial; text-decoration: none; font-size: 10px; color: #ffffff; font-weight: bold;\">Add Entry</font><img src='../images/plus-icon.gif' width='15' height='15' alt='' border='0' align=top></a>");
+        mb.append("</td>");
+        mb.append("<td valign=center background='images/accordion/greenbar-rightcap.gif' align=right width=13>");
+        mb.append("<img src='images/clear.gif' height=1 width=1 border=0>");
+        mb.append("</td>");
         mb.append("</tr>");
-        mb.append("</table><!-- End navigation -->");
+        mb.append("</table>");
+
+
         mb.append(reger.ui.BubbleBox.end("../"));
 
 //        mb.append("<script type=\"text/javascript\">\n" +

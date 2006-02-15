@@ -139,6 +139,22 @@ public class HtmlCache {
         }
     }
 
+    public static void flush(String key){
+        try{
+            synchronized(htmlCache){
+                htmlCache.remove(key);
+            }
+            synchronized(lastUpdated){
+                lastUpdated.remove(key);
+            }
+            synchronized(refreshInterval){
+                refreshInterval.remove(key);
+            }
+        } catch (Exception e){
+            reger.core.Debug.debug(3, "HtmlCache.java", e);
+        }
+    }
+
     public static void clearCache(){
         synchronized(htmlCache){
             htmlCache=null;

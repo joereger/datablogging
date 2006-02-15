@@ -365,7 +365,12 @@ public class MegaHtmlFormTop {
                             if(poll.getIsopen()){
                                 mb.append(PollFormHtml.getPollForm(poll));
                             } else {
-                                mb.append(PollResultsHtml.getResultsGraphOnly(poll, request, pageProps, userSession));
+                                mb.append(PollResultsHtml.getResultsGraphOnly(poll, request, pageProps, userSession, 300));
+                                mb.append("<br>");
+                                mb.append("<font face=arial size=-2>");
+                                mb.append("<a href='entries-poll-votes.log?pollid="+poll.getPollid()+"'>");
+                                mb.append("View Results");
+                                mb.append("</a>");
                             }
                             mb.append(reger.ui.RoundedCorners.end("poll"+poll.getPollid()));
                         }
