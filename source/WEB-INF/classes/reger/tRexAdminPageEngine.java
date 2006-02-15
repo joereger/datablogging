@@ -14,6 +14,9 @@ public class tRexAdminPageEngine {
 
 
 
+        //ap.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">");
+
+        ap.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
 
         ap.append("<html><head><title>" + userSession.getAccount().getSiteRootUrl(userSession) + "/ Admin Section</title>");
 

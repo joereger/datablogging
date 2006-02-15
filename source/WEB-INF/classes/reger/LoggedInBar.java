@@ -22,7 +22,7 @@ public class LoggedInBar {
             mb.append("<div style=\"position: relative;\">");
             mb.append("<table width=100% cellpadding=0 cellspacing=0 border=0>");
             mb.append("<tr>");
-            mb.append("<td bgcolor=#000000 colspan=13><img src='"+pageProps.pathToAppRoot+"images/clear.gif' width=1 height=1></td>");
+            mb.append("<td bgcolor=#000000 colspan=4 height=1><img src='"+pageProps.pathToAppRoot+"images/clear.gif' width=1 height=1></td>");
             mb.append("</tr>");
             mb.append("<tr>");
 
@@ -94,7 +94,7 @@ public class LoggedInBar {
 
 
             mb.append("<tr>");
-            mb.append("<td bgcolor=#000000 colspan=13><img src='"+pageProps.pathToAppRoot+"images/clear.gif' width=1 height=1></td>");
+            mb.append("<td bgcolor=#000000 colspan=4><img src='"+pageProps.pathToAppRoot+"images/clear.gif' width=1 height=1></td>");
             mb.append("</tr>");
 
             //Start system message

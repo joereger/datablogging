@@ -20,10 +20,10 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
 
 
 
-        mb.append("<script type=\"text/javascript\" src=\"../js/moofx/prototype.lite.js\"></script>\n" +
+        mb.append("\n\n\t<script type=\"text/javascript\" src=\"../js/moofx/prototype.lite.js\"></script>\n" +
                 "\t<script type=\"text/javascript\" src=\"../js/moofx/moo.fx.js\"></script>\n" +
                 "\t<script type=\"text/javascript\" src=\"../js/moofx/moo.fx.pack.js\"></script>\n" +
-                "\t<script type=\"text/javascript\">\n" +
+                "\t<script language=\"JavaScript\" type=\"text/javascript\"><!--\n" +
                 "\t//the main function, call to the effect object\n" +
                 "\tfunction init(){\n" +
                 "\t\t\n" +
@@ -46,17 +46,36 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
                 "\t\t});\n" +
                 "\t\tif (!found) myAccordion.showThisHideOpen(stretchers[0]);\n" +
                 "\t}\n" +
-                "\t</script>\n" +
+                "\twindow.onload = function(){ Element.cleanWhitespace('content'); init(); };\n"+
+                "\t--></script>\n" +
+//                "\t<script language=\"JavaScript\" type=\"text/javascript\"><!--\n" +
+//                "\tfunction addLoadEvent(func) {\n"+
+//                "\tvar oldonload = window.onload;\n" +
+//                "\tif (typeof window.onload != 'function') {\n" +
+//                "\twindow.onload = func;\n" +
+//                "\t} else {\n" +
+//                "\twindow.onload = function() {\n" +
+//                "\toldonload();\n" +
+//                "\tfunc();\n" +
+//                "\t}\n" +
+//                "\t}\n" +
+//                "\t}\n" +
+//                "\t/* addLoadEvent(init()); */\n" +
+//                "\taddLoadEvent(function() {\n" +
+//                "\t/* more code to run on page load */\n" +
+//                "\tinit();\n"+
+//                "\t});\n" +
+//                "\t--></script>\n" +
                 "\t\n" +
                 "\t<style>\n" +
                 "\th3 {\n" +
-                "\t\tmargin: 5px;\n" +
+                "\t\tmargin: 1px;\n" +
                 "\t\twidth: 100%;\n" +
                 "\t\tcursor: pointer;\n" +
                 "\t\tfont-size: 0.99em;\n" +
                 "\t\tfont: verdana, arial, helvetica, sans-serif;\n" +
                 "\t\tcolor: #333333;\n" +
-                "\t\tbackground: #cccccc;\n" +
+                "\t\tbackground: #ffffff;\n" +
                 "\t}\n" +
                 "\t</style>");
 
@@ -94,10 +113,10 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
         mb.append("</table><!-- End navigation -->");
         mb.append(reger.ui.BubbleBox.end("../"));
 
-        mb.append("<script type=\"text/javascript\">\n" +
-                "\t\tElement.cleanWhitespace('content');\n" +
-                "\t\tinit();\n" +
-                "\t</script>");
+//        mb.append("<script type=\"text/javascript\">\n" +
+//                "\t\tElement.cleanWhitespace('content');\n" +
+//                "\t\tinit();\n" +
+//                "\t</script>");
 
         Debug.debug(5, "", "NestedNavDisplayAdminHome.java - Navbar end.");
 
@@ -127,7 +146,7 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
         //Output this item in html format
         if (navItem!=null && navItem.getThisNestedNavType()!=NestedNavItem.NESTEDNAVITEMBASE){
 
-            String divTitle = "tab-"+currentNestedLevel+"-"+navItem.getThisNestedNavType()+"-"+navItem.getThisNestedNavId();
+            String divTitle = "tab"+currentNestedLevel+""+navItem.getThisNestedNavType()+""+navItem.getThisNestedNavId();
 
             if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPEMEGALOG){
 
@@ -148,47 +167,63 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
                         logaccesstext="<img src='../images/icon-private.gif' width='16' height='16' alt='' border='0'>Private";
                     }
 
-
+                    //Top of accordion start
+                    mb.append("\n\n\n");
                     mb.append("<h3 class=\"display\" title=\""+divTitle+"\">");
-                    mb.append("<table width=100%><tr><td align=left><a href=\"#"+divTitle+"\" style=\"text-decoration: none\"><font face=arial size=-1 style=\"font-face: arial; text-decoration: none; font-size: 12px; color: #000000; font-weight: bold;\">"+log.getName()+"</font></a></td><td align=right><a href='entry.log?logid="+ log.getLogid() +"&action=add' style=\"text-decoration: none\"><font face=arial size=-1 style=\"font-face: arial; text-decoration: none; font-size: 10px; color: #666666; font-weight: bold;\">Add Entry</font><img src='../images/plus-icon.gif' width='15' height='15' alt='' border='0' align=top></a></td></tr></table>");
+
+                    mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
+                    mb.append("<tr>");
+                    mb.append("<td valign=center background='images/accordion/greenbar-leftcap.gif' align=left width=13>");
+                    mb.append("<img src='images/clear.gif' height=41 width=1 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/greenbar-center.gif' align=left>");
+                    mb.append("<font face=arial size=-1 style=\"font-face: arial; text-decoration: none; font-size: 10px; color: #ffffff; font-weight: bold;\">"+log.getName()+"</font></a>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/greenbar-center.gif' align=right>");
+                    mb.append("<a href='entry.log?logid="+ log.getLogid() +"&action=add' style=\"text-decoration: none\"><font face=arial size=-1 style=\"font-face: arial; text-decoration: none; font-size: 10px; color: #ffffff; font-weight: bold;\">Add Entry</font><img src='../images/plus-icon.gif' width='15' height='15' alt='' border='0' align=top></a>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/greenbar-rightcap.gif' align=right width=13>");
+                    mb.append("<img src='images/clear.gif' height=1 width=1 border=0>");
+                    mb.append("</td>");
+                    mb.append("</tr>");
+                    mb.append("</table>");
+
                     mb.append("</h3>\n");
+                    //Top of accordion end
+
+
+
                     mb.append("\t\t\t<div class=\"stretcher\">");
 
-                    //Top line
-                    mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffffff>");
-                    mb.append("<tr>");
-                    mb.append("<td valign=top align=left bgcolor=#999999 colspan=5><img src='../images/white.gif' border=0 width="+nestingPixels+" height=5></td>");
-                    mb.append("</tr>");
 
-                    //Each log type output
+
+                    mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
                     mb.append("<tr>");
-                    mb.append("<td align=left valign=top bgcolor=#ffffff class=adminhometopborder><img src='images/clear.gif' border=0 width="+nestingPixels+" height=1><!--<a href='entry.log?logid="+ log.getLogid() +"&action=add'><font face=arial size=-1 color=#0000ff style=\"font-size: 16px;\"><b>"+ log.getName() +"</b></a>--></td>");
-                    mb.append("<td align=center valign=top bgcolor=#ffffff nowrap class=adminhometopborder><font face=arial size=-2 color=#000000>"+ lastentrydate +"</td>");
-                    mb.append("<td align=center valign=top bgcolor=#ffffff nowrap class=adminhometopborder><font face=arial size=-2 color=#000000>"+ entrycount +"</td>");
-                    mb.append("<td valign=top align=left bgcolor='#e6e6e6' nowrap rowspan=2 class=adminhomelogactions>");
+                    mb.append("<td valign=center align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=1 width=25 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-leftside.gif' align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=100 width=12 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-centerbody.gif' align=left>");
+                    //Start accordion content
+                    mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
+                    mb.append("<tr>");
+                    mb.append("<td valign=top align=left>");
                     mb.append("<font face=arial size=-2 color=#000000>");
                     mb.append("<a href='entry.log?logid="+log.getLogid()+"&action=add'><img src='images/icon-edit.gif' border=0>Add an Entry</a><br>");
                     mb.append("<a href='../logmain"+log.getLogid()+".log'><img src='images/icon-post.gif' border=0>View this Log</a><br>");
                     mb.append("<a href='logs-log-properties.log?logid="+log.getLogid()+"'><img src='images/icon-configure.gif' border=0>Customize this Log</a><br>");
                     mb.append("<a href='people-friends-invite.log?logid="+log.getLogid()+"'><img src='images/icon-configure.gif' border=0>Invite Friends</a><br>");
-                    //mb.append("<br>");
-                    //mb.append("<a href='logs-log-delete.log?logid="+log.getLogid()+"'><img src='images/icon-delete.gif' border=0>Delete this Log</a><br>");
                     mb.append("</font>");
                     mb.append("</td>");
-                    mb.append("<td valign=center align=left bgcolor='#e6e6e6' class=adminhomeprivate><a href='logs-log-properties.log?logid="+log.getLogid()+"'><font face=arial size=-2 color=#0000ff>"+ logaccesstext +"</font></a></td>");
-                    mb.append("</tr>");
-
-
-
-                    mb.append("<tr>");
-                    mb.append("<td valign=top align=left bgcolor='#ffffff' colspan=3>");
-
-                    //mb.append("<a href='traffic.log'><font face=arial size=-2 color=#000000>Traffic Stats</font></a><br>");
-                    //mb.append("<a href='people-friends-invite.log'><font face=arial size=-2 color=#000000>Invite Friends</font></a><br>");
-                    mb.append("");
-                    mb.append("</td>");
-                    mb.append("<td valign=center align=left bgcolor='#e6e6e6' class=adminhomevisible>");
-                    //Create showonhomepagetext
+                    mb.append("<td valign=top align=left>");
+                    mb.append("<font face=arial size=-2 color=#000000>Total Entries: "+ entrycount+"</font>");
+                    mb.append("<br>");
+                    mb.append("<font face=arial size=-2 color=#000000>Last Entry: "+ lastentrydate+"</font>");
+                    mb.append("<br>");
+                    mb.append("<font face=arial size=-2 color=#0000ff>"+ logaccesstext +"</font></a>");
+                    mb.append("<br>");
                     mb.append("<font face=arial size=-2 color=#0000ff><a href='logs-log-properties.log?logid="+log.getLogid()+"'>");
                     String showonhomepagetext = "<img src='../images/home-visible.gif' border=0>Visible on Home";
                     if (!log.getShowonhomepage()){
@@ -198,12 +233,36 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
                     mb.append("</font></a>");
                     mb.append("</td>");
                     mb.append("</tr>");
-
-                    //Bottom White space
-                    mb.append("<tr>");
-                    mb.append("<td valign=top align=left bgcolor=#ffffff colspan=5><img src='images/clear.gif' border=0 width=1 height=15></td>");
-                    mb.append("</tr>");
                     mb.append("</table>");
+                    //End accordion content
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-rightside.gif' align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=100 width=12 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=1 width=25 border=0>");
+                    mb.append("</td>");
+                    mb.append("</tr>");
+                    mb.append("<tr>");
+                    mb.append("<td valign=center align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=1 width=25 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-leftcorner.gif' align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=13 width=12 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-centerbottom.gif' align=left>");
+                    mb.append(" ");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-rightcorner.gif' align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=13 width=12 border=0>");
+                    mb.append("</td>");
+                    mb.append("</tr>");
+                    mb.append("<td valign=center align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=1 width=25 border=0>");
+                    mb.append("</td>");
+                    mb.append("</table>");
+
+
 
                     mb.append("</div>");
 
@@ -212,38 +271,77 @@ public class NestedNavDisplayAdminHome implements NestedNavDisplay{
 
             } else if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPECONTENTPAGE){
 
-                    mb.append("<h3 class=\"display\" title=\""+divTitle+"\" style=\"background: #0f0\">");
-                    mb.append("<table width=100%><tr><td><a href=\""+divTitle+"\">A new moo.fx</a></td><td width=20><a href='http://www.yahoo.com'>Go</a></td></tr></table>");
+                    mb.append("<h3 class=\"display\" title=\""+divTitle+"\">");
+                    mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
+                    mb.append("<tr>");
+                    mb.append("<td valign=center background='images/accordion/greenbar-leftcap.gif' align=left width=13>");
+                    mb.append("<img src='images/clear.gif' height=41 width=1 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/greenbar-center.gif' align=left>");
+                    mb.append("<font face=arial size=-1 style=\"font-face: arial; text-decoration: none; font-size: 10px; color: #ffffff; font-weight: bold;\">"+navItem.getNestedNavLinkText()+"</font></a>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/greenbar-center.gif' align=right>");
+                    //mb.append("<a href='entry.log?logid="+ log.getLogid() +"&action=add' style=\"text-decoration: none\"><font face=arial size=-1 style=\"font-face: arial; text-decoration: none; font-size: 10px; color: #ffffff; font-weight: bold;\">Add Entry</font><img src='../images/plus-icon.gif' width='15' height='15' alt='' border='0' align=top></a>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/greenbar-rightcap.gif' align=right width=13>");
+                    mb.append("<img src='images/clear.gif' height=1 width=1 border=0>");
+                    mb.append("</td>");
+                    mb.append("</tr>");
+                    mb.append("</table>");
                     mb.append("</h3>\n");
                     mb.append("\t\t\t<div class=\"stretcher\">");
 
 
-                    //Top line
-                    mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffffff>");
-                    mb.append("<tr>");
-                    mb.append("<td valign=top align=left bgcolor=#999999 colspan=5><img src='../images/white.gif' border=0 width="+nestingPixels+" height=5></td>");
-                    mb.append("</tr>");
 
-                    //Each log type output
+                    //New
+                    mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
                     mb.append("<tr>");
-                    mb.append("<td align=left valign=top bgcolor=#ffffff class=adminhometopborder><img src='images/clear.gif' border=0 width="+nestingPixels+" height=1><a href='logs-contentpage-edit.log?contentpageid="+navItem.getThisNestedNavId()+"'><!--img src='../images/plus-icon.gif' width='15' height='15' alt='' border='0'--><font face=arial size=-1 color=#0000ff style=\"font-size: 16px;\"><b>"+ navItem.getNestedNavLinkText() +"</b></a></td>");
-                    mb.append("<td align=center valign=top bgcolor=#ffffff nowrap class=adminhometopborder><font face=arial size=-2 color=#000000>&nbsp;</td>");
-                    mb.append("<td align=center valign=top bgcolor=#ffffff nowrap class=adminhometopborder><font face=arial size=-2 color=#000000>&nbsp;</td>");
-                    mb.append("<td valign=top align=left bgcolor='#e6e6e6' nowrap colspan=2 class=adminhomecpactions>");
+                    mb.append("<td valign=center align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=1 width=25 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-leftside.gif' align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=100 width=12 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-centerbody.gif' align=left>");
+                    //Start accordion content
                     mb.append("<font face=arial size=-2 color=#000000>");
                     mb.append("<a href='logs-contentpage-edit.log?contentpageid="+navItem.getThisNestedNavId()+"'><img src='images/icon-edit.gif' border=0>Edit Static Content Page</a><br>");
                     mb.append("<a href='../contentpage"+navItem.getThisNestedNavId()+".log'><img src='images/icon-post.gif' border=0>View Static Content Page</a><br>");
                     mb.append("<a href='logs-contentpage-delete.log?contentpageid="+navItem.getThisNestedNavId()+"'><img src='images/icon-configure.gif' border=0>Delete</a><br>");
                     mb.append("</font>");
+                    //End accordion content
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-rightside.gif' align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=100 width=12 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=1 width=25 border=0>");
                     mb.append("</td>");
                     mb.append("</tr>");
-
-
-                    //Bottom White space
                     mb.append("<tr>");
-                    mb.append("<td valign=top align=left bgcolor=#ffffff colspan=5><img src='images/clear.gif' border=0 width=1 height=15></td>");
+                    mb.append("<td valign=center align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=1 width=25 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-leftcorner.gif' align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=13 width=12 border=0>");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-centerbottom.gif' align=left>");
+                    mb.append(" ");
+                    mb.append("</td>");
+                    mb.append("<td valign=center background='images/accordion/accordion-rightcorner.gif' align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=13 width=12 border=0>");
+                    mb.append("</td>");
                     mb.append("</tr>");
+                    mb.append("<td valign=center align=left width=12>");
+                    mb.append("<img src='images/clear.gif' height=1 width=25 border=0>");
+                    mb.append("</td>");
                     mb.append("</table>");
+                    //End new
+
+
+
+
+
 
                     mb.append("</div>");
 

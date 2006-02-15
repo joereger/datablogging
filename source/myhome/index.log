@@ -23,6 +23,7 @@ pageProps.navButtonName = "adminhome";
 pageProps.aclObjectName = "ADMINHOME";
 pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINHOMEPAGE;
 pageProps.pathToAppRoot="../";
+//pageProps.onloadJavascriptMethod="init();";
 pageProps.helpText="This is the control center of your site.  All of the tools you need to manage your weblog are at your fingertips.<br><br>To start blogging, click on a log and you'll be taken to a form where you can add an entry.";
 /*----------------------------------------------------*/
 %>
