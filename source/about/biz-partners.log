@@ -3,8 +3,8 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Platform Version History";
-pageProps.navButtonName = "aboutversions";
+pageProps.title = "Our Partners";
+pageProps.navButtonName = "aboutbiz-contactus";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
 pageProps.pathToAppRoot="../";
@@ -17,6 +17,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
+
 <%
 /*----------------------------------------------------*/
 /*                  Main Body                         */
@@ -25,28 +26,17 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
+mb.append("Below are some of our partners. If you would like to strike a relationship, please send an email to <a href='partner@reger.com'>partner@reger.com</a>.");
 
-mb.append("<blockquote>");
-mb.append("<font face=arial size=-1>");
-if (request.getParameter("versionid")==null || !reger.core.Util.isinteger(request.getParameter("versionid")) || reger.versioninfo.VersionInfo.getVersion(Integer.parseInt(request.getParameter("versionid")))==null){
-    mb.append(reger.versioninfo.VersionInfoRenderer.getVersionList("versions.log"));
-} else {
-    mb.append("<br>");
-    mb.append("<br>");
-    mb.append("<a href='versions.log'>");
-    mb.append("<font face=arial size=-2>");
-    mb.append("List All Versions");
-    mb.append("</font>");
-    mb.append("</a>");
-    mb.append("<br>");
-    mb.append("<br>");
-    mb.append(reger.versioninfo.VersionInfoRenderer.getVersionAsHtml(Integer.parseInt(request.getParameter("versionid"))));
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h2><a href='http://www.chibacon.de/'>Chibacon:</a></h2>");
+mb.append("Chibacon is a service company offering training, consulting and development of advanced XML and Java solutions.");
 
-}
-mb.append("</font>");
-mb.append("</blockquote>");
-mb.append("<br><br><br>");
-
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h2><a href='http://www.theblogstudio.com/'>The Blog Studio:</a></h2>");
+mb.append("A web design firm specializing in blogs" );
 
 
 
@@ -57,6 +47,7 @@ mb.append("<br><br><br>");
 /*                  Side Column                       */
         StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
+
 %>
 
 

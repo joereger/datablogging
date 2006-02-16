@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Tour";
+pageProps.title = "Take One of Our Tours";
 pageProps.navButtonName = "abouttour";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -28,11 +28,9 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 mb.append("<font face=arial size=-2>");
-mb.append("<br>");
 mb.append("<center>");
 mb.append("<img src=images/onlinejournals.gif border=0>");
 mb.append("</center>");
-mb.append("<br>");
 //mb.append("<ul>");
 //mb.append("<li><b>Web Logging</b> - Simple one-click publishing of thoughts, observations and ideas to the web.  You can password-protect any log or keep it public.  Web logging is your way to keep track of your life and share it with the world.</li>");
 //mb.append("<li><b>Activity-specific Web Log Types</b> - From Running and Biking logs to Caffeine and Headache logs, we allow you to track the quantifiable data from your personal life.  You then get to analyze that data with powerful charts and graphs.");

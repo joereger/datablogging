@@ -3,7 +3,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "More Info";
+pageProps.title = "Want to learn More?";
 pageProps.navButtonName = "aboutmoreinfo";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -25,7 +25,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
-mb.append("<br>");
+mb.append("For those of you seeking a comprehensive understanding of datablogging and our platform, we have provided detailed information below. For a quick definition of datablogging, go to <a href='http://en.wikipedia.org/wiki/Datablogging'> Wikipedia</a>. If you have any questions at all, please feel free to <a href='biz-contactus.log'>contact us</a>.");
 
 mb.append("<table cellpadding=10 cellspacing=5 border=0>");
 mb.append("<tr>");

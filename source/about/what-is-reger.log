@@ -51,7 +51,8 @@ mb.append("<img src='images/number-03.gif' align=left>");
 mb.append("<h1>A Company</h1>");
 mb.append("We write and support the software that powers datablogging.  We also engage business clients to power their blog offerings, intranets or whatever else they have in mind.  We're flexible and actively looking for business partnerships with consumer-oriented companies that would like to offer datablogging to their customers, users, employees or whoever else they deal with.");
 mb.append("<ul>");
-mb.append("<li><a href='biz-contactus.log'>Our Team/Contact Us</a> - The wonderful people behind all this great stuff.</li>");
+mb.append("<li><a href='biz-management.log'>Our Team</a> - The wonderful people behind all this great stuff.</li>");
+mb.append("<li><a href='biz-contactus.log'>Contact Us</a> - If you need to reach us for sales, service or support. </li>");
 mb.append("<li><a href='datablogging-business.log'>Business Use</a> - Examples of how a business might use datablogging.</li>");
 mb.append("</ul>");
 

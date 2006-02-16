@@ -3,7 +3,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Adding Custom Fields to a Log";
+pageProps.title = "Custom Log Type Creation";
 pageProps.navButtonName = "aboutwhatisdatablogging-newfield";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -29,7 +29,6 @@ mb.append(reger.marketingSite.Biz.getCss());
 
 
 
-mb.append("<br><br>");
 mb.append("<blockquote>");
 
 mb.append("<br clear=all>");

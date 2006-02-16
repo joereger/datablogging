@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
-pageProps.title = "Community: Entries";
+pageProps.title = "User Log Entries";
 pageProps.navButtonName = "aboutcommunity-entries";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -30,7 +30,7 @@ String cachekey = "CommunityPageEntries" + " URL:" + reger.cache.HtmlCache.getKe
 int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
-
+    mb.append("Users post hundreds of log entries to our platform each day. Below, we have provided a snapshot of some of the activity in our community.");
     mb.append("<br>");
     mb.append("<br>");
 

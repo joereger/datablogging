@@ -6,7 +6,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Community: Groups";
+pageProps.title = "Locate A User Group";
 pageProps.navButtonName = "aboutcommunity-groups";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -25,9 +25,9 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-mb.append(reger.ui.BubbleBox.start("Search Groups", pageProps.pathToAppRoot));
+mb.append(reger.ui.BubbleBox.start("Search Our Groups", pageProps.pathToAppRoot));
 if (request.getParameter("searchterms")==null || request.getParameter("searchterms").equals("")){
-    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Please provide search terms to search groups."));
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "This search tool is designed to locate datablog groups that may interest you. Please provide your search terms below to locate a potential group for you to join."));
 }
 mb.append("<br>");
 mb.append("<form action='community-groups.log' method=post>");
@@ -37,7 +37,7 @@ if (request.getParameter("searchterms")!=null){
     sbtext = request.getParameter("searchterms");
 }
 mb.append("<input type=textbox name=searchterms value=\""+reger.core.Util.cleanForHtml(sbtext)+"\" size=35 maxlength=255>");
-mb.append("<input type=submit value='Search for Groups'>");
+mb.append("<input type=submit value='Search Our Groups!'>");
 mb.append("</form>");
 mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 

@@ -3,7 +3,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Tour";
+pageProps.title = "Blogging Overview, Part 3";
 pageProps.navButtonName = "abouttour-overview";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -30,7 +30,7 @@ mb.append("<tr>");
 mb.append("<td width=33% valign=top>");
 mb.append("<font face=arial size=+4>");
 mb.append("<strong>");
-mb.append("Overview Tour");
+mb.append("Administration");
 mb.append("</strong>");
 mb.append("</font>");
 mb.append("<br>");

@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
-pageProps.title = "Community: Tell a Friend";
+pageProps.title = "Tell Your Friends About Datablogging!";
 pageProps.navButtonName = "aboutcommunity-tellfriend";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -33,16 +33,11 @@ int refreshintervalinseconds = 3600;
 
 
     mb.append("<br>");
-    mb.append("<br>");
-
-    mb.append("<br>");
-    mb.append("<form action='emailafriend.log' method=post><font face=arial size=-1><b>Tell a Friend.</b></font>");
-    mb.append("<br>");
-    mb.append("<font face=arial size=-2>Share this with a friend.</font>");
+    mb.append("<form action='emailafriend.log' method=post><font face=arial size=-1><b>Tell your friends about Reger.com and share your discovery of datablogging.</b></font>");
     mb.append("<br>");
     mb.append("<input type='text' name='friendemail' value='Friend's Email**' size=15 maxlength=100 style='font-size: 10px'>");
     mb.append("<br>");
-    mb.append("<input type='submit' value='Tell A Friend.' style='font-size: 10px'></form>");
+    mb.append("<input type='submit' value='Email Friend Now!' style='font-size: 10px'></form>");
 
 
 

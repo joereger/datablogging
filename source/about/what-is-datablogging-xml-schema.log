@@ -37,7 +37,6 @@ mb.append("<style>blockquote.quote {\n" +
 
 String lineBreak = "\n";
 
-mb.append("<br><br>");
 mb.append("<blockquote>");
 
 mb.append("<br clear=all>");

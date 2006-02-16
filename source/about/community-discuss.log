@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Community: Discussion";
+pageProps.title = "Discussion Forum";
 pageProps.navButtonName = "aboutcommunity-discuss";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -25,9 +25,9 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
 /*----------------------------------------------------*/
 
 
-
-
-
+    mb.append("Below is our discussion forum where our users post support questions and general comments. If you would like to view the forum without an iframe, <a href='http://www.reger.com/jforum'> click here</a>.");
+    mb.append("<br>");
+    mb.append("<br>");
     mb.append("<iframe src=\"http://www.reger.com/jforum/\" name=\"forum\" width=100% height=1000></iframe>");
 
 

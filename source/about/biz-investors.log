@@ -26,7 +26,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
-mb.append("We're privately funded and are always looking for the next growth-enabling infusion of cash.  Any time we raise money we do so with a very specified purpose and defined plan geared towards sustainable and smart growth. Let's talk.");
+mb.append("Presently, we are privately funded, but we are actively pursuing capital to expand our operations. If you are interested in speaking with us regarding investment opportunities, please <a href='biz-contactus.log'>contact Joe Reger</a>. ");
 
 
 

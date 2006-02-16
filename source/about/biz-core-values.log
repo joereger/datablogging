@@ -1,0 +1,104 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Our Core Values";
+pageProps.navButtonName = "aboutbiz-core-values";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("At Reger.com, our employees are our most valuable asset, as we would not exist without them. As such, each employee’s aim is to faithfully and ethically serve each other, and our customers and partners, as well as the communities we are a part of. We feel that by responding in this manner, the corporation will always be successful. To that end, we have created our company’s core values and beliefs. They are not simply ink on paper. Rather, they are read at all company meetings, and guide all of our actions. If we don't seem to be living up to them, contact us at <a href='mailto=cv&bs@reger.com'>cv&bs@reger.com</a>.");
+
+mb.append("<ul>• We require complete honesty and integrity in everything we do. This is our guiding doctrinal principal that guides all other beliefs.");
+mb.append("<br>");
+mb.append("• We are a new type of business community that respects all individuals, and we incorporate practices that seek to value the other, as individuals who are treated with kindness and respect, respond in a like manner, which in turn has an effect on the greater community.");
+mb.append("<br>");
+mb.append("• We are believers in the Golden Rule. In all our dealings we strive to be friendly and courteous, as well as fair and compassionate.");
+mb.append("<br>");
+mb.append("• We solve differences politely and directly with each other. We are not passive aggressive, and we do not seek collusion with others.");
+mb.append("<br>");
+mb.append("• We are frugal. We guard and conserve the company's resources. We do not seek inflated salaries, as we believe that in doing so we can provide enhanced benefits and longer vacations, and preserve our company’s financial position and jobs during bear markets.");
+mb.append("<br>");
+mb.append("• Life is short, and work should only be a part of our life, so it should be fun and compliment our family and community life. Being a good business person means balance and collaboration.");
+mb.append("<br>");
+mb.append("• We are nimble, and we create systems that reduce work and add value to the company, not paper trails that discuss work.");
+mb.append("<br>");
+mb.append("• We share information freely and deliberately, as we know that when we all understand our tasks than we increase company efficiency. ");
+mb.append("<br>");
+mb.append("• We have a clear vision and mission, as clarity in understanding our mission among all employees and what we expect from each other is critical to our success.");
+mb.append("<br>");
+mb.append("• We make commitments with care, and then live up to them. In all things, we do what we say we are going to do.");
+mb.append("<br>");
+mb.append("• We insist on giving our best effort in everything we undertake. Furthermore, we see a huge difference between 'good mistakes' (best effort, bad result) and 'bad mistakes' (sloppiness or lack of effort). ");
+mb.append("<br>");
+mb.append("• We feel a sense of urgency on any matters related to our customers. We own problems and we are always responsive. We are customer driven.");
+mb.append("<br>");
+mb.append("• We give back to our communities. We recognize that Reger.com is only a small part of this planet, but plays a role in developing it. As such, we each strive to give back in our own unique ways.");
+mb.append("<br>");
+mb.append("• We only hire people who truly believe in these Core Values and Beliefs.</ul>");
+
+mb.append("The above Core Values and Beliefs were adopted and modified from Charles Brewer’s original list at MindSpring.");
+mb.append("<br>");
+mb.append("<br>");
+
+mb.append("Additionally, we believe there are certain unethical actions that are detrimental both to our company’s governance, and also to the greater community which we are a part of. Below, are the corporate sins we seek to avoid.");
+mb.append("<br>");
+mb.append("<ol>");
+mb.append("1. Gossip, rumors or politicking.");
+mb.append("<br>");
+mb.append("2. Joke about employees, customers, partners, or vendors.");
+    mb.append("<br>");
+mb.append("3. Work for Reger.com and not have a personal datablog, or maintain it on a regular basis.");
+    mb.append("<br>");
+    mb.append("4. Rely on outside vendors, consultants and or developers that are overly priced and let us down.");
+    mb.append("<br>");
+    mb.append("5. Show up to meetings late or unprepared.");
+    mb.append("<br>");
+    mb.append("6. Provide poor customer service with no genuine concern for our customers.");
+    mb.append("<br>");
+    mb.append("7. Finger point at how other people or departments are not doing their job.");
+    mb.append("<br>");
+    mb.append("8. Poor planning and or poor coordination across departments.");
+    mb.append("<br>");
+    mb.append("9. Ignore the competition, as they are far inferior to us.");
+    mb.append("<br>");
+    mb.append("10. Miss deadlines that we commit to internally and externally.");
+    mb.append("<br>");
+    mb.append("11. Make recruiting, hiring, and training a lower priority because we are too busy doing other tasks.");
+    mb.append("<br>");
+    mb.append("12. Look for the next job assignment, instead of focusing on the current one.");
+mb.append("</ol>");
+mb.append("The above Corporate Sins were adopted and modified from Mike McQuary’s original list while he was the President of MindSpring.");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

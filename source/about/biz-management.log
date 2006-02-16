@@ -1,0 +1,140 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Our Team";
+pageProps.navButtonName = "aboutbiz-contactus";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+mb.append("<h1>Joe Reger, Jr.</h1>");
+mb.append("<b>Founder and CEO:</b>");
+mb.append("<br>");
+mb.append("Joe initially started Reger.com in 1997 and has spent the last three years soley dedicted to the company, writting over 100,000 lines of complex code to develop the first <a href='http://en.wikipedia.org/wiki/Datablogging'>datablogging platform,</a> which now has over 5,000 users (as of 02.01.2006). Reger.com is Joe's third technology venture, having started his first technology company over ten years ago which still continues today under different management. Most recently, he was one of the co-founders of BrightLane.com, which successfully raised over 30 Million in financing and later merged with TeamStaff, a publically traded company. While at BrightLane.com, Joe was responsible for the development of the company's core technology and oversaw the integration of disparate, mission-critical enterprise systems. Joe Graduated from Georgia Tech with a Physics degree, and he is a competitive triathelete.");
+mb.append("<br>");
+mb.append("email: <a href='mailto:joe@reger.com'>joe@reger.com</a>");
+mb.append("<br>");
+mb.append("datablog: <a href='http://www.joereger.com'>http://www.joereger.com</a>");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>Joe Reger, Sr.</h1>");
+mb.append("<b>EVP, Customer Strategies:</b>");
+mb.append("<br>");
+mb.append("Joe Sr. joined Reger.com after successfully co-founding and leading frogFire DIGITAL, a web design firm with Fortune 500 clients, including Motorola, Equifax, TBS and Sony. Prior to Frogfire, Joe spent 24 years in the United States Army focusing on personnel management for 7th Signal Command, a nationwide information and communication group. Additionally, he taught economics at West Point upon receiving his MBA from the University of Chicago. He retired a Litenant Colonel.");
+mb.append("<br>");
+mb.append("email: <a href='mailto:joesr@reger.com'>joesr@reger.com</a>");
+mb.append("<br>");
+mb.append("datablog: <a href='http://joesr.reger.com/'>http://joesr.reger.com/</a>");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>Duncan Freeman</h1>");
+mb.append("<b>EVP, Marketing:</b>");
+mb.append("<br>");
+mb.append("Prior to Reger.com, Duncan was involved with several technology initiatives in the health care and music industry, and was the President and Co-founder of Strio, a wireless ASP for the retail industry. Prior to Strio, Duncan worked for MindSpring from 1996 until 2000 in the Business Services division marketing its emerging technologies, and was responsible for the company's co-location service. He also managed the strategic relationships with companies such as Microsoft, Network Solutions and Intershop in Hamburg, Germany. Duncan received his BA from the University of Alabama and an MDiv. from Emory University concentrating in Ethics. Additionally, he is a LTJG in the United States Navy Reserves.");
+mb.append("<br>");
+mb.append("email: <a href='mailto:duncan@reger.com'>duncan@reger.com</a>");
+mb.append("<br>");
+mb.append("datablog: <a href='http://duncan.reger.com/'>http://duncan.reger.com/</a>");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>John Broadus</h1>");
+mb.append("<b>VP, Sales:</b>");
+mb.append("<br>");
+mb.append("Coming Soon...");
+mb.append("<br>");
+mb.append("email: <a href='mailto:jb@reger.com'>jb@reger.com</a>");
+mb.append("<br>");
+mb.append("datablog: <a href='http://jb.reger.com/'>http://jb.reger.com/</a>");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>John Elmore</h1>");
+mb.append("<b>General Counsel:</b>");
+mb.append("<br>");
+mb.append("Prior to Reger.com, John worked as a patent attorney in DC and was the CTO for Strio, Inc. John has worked in the technology industry for over ten years holding a variety of senior management positions. John has several degrees including a masters in both computer science and electrical engineering, as well as an MBA, and a JD. He has also conducted research for his PhD at Georgia Tech. His expertise includes business strategy, product development, patent law and artificial intelligence. ");
+mb.append("<br>");
+mb.append("email: <a href='mailto:john@reger.com'>john@reger.com</a>");
+mb.append("<br>");
+mb.append("datablog: <a href='http://john.reger.com/'>http://john.reger.com/</a>");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>Mark Lowman</h1>");
+mb.append("<b>Director of Military Sales:</b>");
+mb.append("<br>");
+mb.append("Mark joined Reger.com in January of 2005 to support ongoing sales in the Department of Defense. Previously, Mark worked with Booz Allen Hamilton from 1999 to 2004 working closely with the Department of Defense. He was directly responsible for forming corporate teams to respond to Requests For Proposals and services for the U.S. Army. Additionally, Mark is a Lieutenant Colonel in the Army Reserve in the Forces Command Augmentation Unit as Chief, Logistics Branch.");
+mb.append("<br>");
+mb.append("email: <a href='mailto:mark@reger.com'>mark@reger.com</a>");
+mb.append("<br>");
+mb.append("datablog: <a href='http://marklowman.reger.com/'>http://marklowman.reger.com/</a>");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>Kendra Van Mol</h1>");
+mb.append("<b>Director of Content and Account Services</b>");
+mb.append("<br>");
+mb.append("Kendra joined Reger in 2002 to manage content creation and account services. Prior to Reger, Kendra worked for frogFire Digital, Inc. as an account manager, working in all aspects in the client lifecyle, from requirements documentation, to project management and launch. Kendra graduated from the University of Georgia with a degree in English concentrating in Jorunalism, publishing several articles in <i>The Red and Black</i>. She attended the Westminster school in Atlanta and is expecting her first child.");
+mb.append("<br>");
+mb.append("email: <a href='mailto:kendy@reger.com'>kendy@reger.com</a>");
+mb.append("<br>");
+mb.append("datablog: <a href='http://kendy.reger.com/'>http://kendy.reger.com/</a>");
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>Pawan Lingala</h1>");
+mb.append("<b>Java Developer</b>");
+mb.append("<br>");
+mb.append("Pawan brings more than seven years of software application design and development in J2EE, XML, Java Beans, JavaScript, JSP Custom Libraries, EJB’s, Servlets, Apache Jakarta Struts and Jakarta Taglibs. Additionally, he has extensive experience with Object Oriented Design and Programming.");
+mb.append("<br>");
+mb.append("email: <a href='mailto:pawan@reger.com'>pawan@reger.com</a>");
+mb.append("<br>");
+mb.append("datablog: <a href='http://pawan.reger.com/'>http://pawan.reger.com/</a>");
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<h1>Marty Trujillo</h1>");
+mb.append("<b>Java Developer</b>");
+mb.append("<br>");
+mb.append("Marty is a seasoned web developer with fifteen years of software development experience and ten years of front-end web experience. Marty's web development experience ranges from highly structured enterprise level web applications for Fortune 500 corporations like Boeing and ADP to Internet start-ups.");
+mb.append("<br>");
+mb.append("email: <a href='mailto:marty@reger.com'>marty@reger.com</a>");
+mb.append("<br>");
+mb.append("datablog: <a href='http://marty.reger.com/'>http://marty.reger.com/</a>");
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+

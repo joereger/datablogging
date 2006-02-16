@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
-pageProps.title = "Community: Log Types";
+pageProps.title = "Log Types";
 pageProps.navButtonName = "aboutcommunity-logtypes";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;

@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
-pageProps.title = "Community: Find a Site";
+pageProps.title = "Find a Datablog Site";
 pageProps.navButtonName = "aboutcommunity-findsite";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -33,14 +33,13 @@ int refreshintervalinseconds = 3600;
 
 
     mb.append("<br>");
-    mb.append("<br>");
 
     //Find a site
     mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
     mb.append("<tr>");
     mb.append("<td bgcolor=#e6e6e6>");
     mb.append("<font face=arial size=-1>");
-    mb.append("Find a Site");
+    mb.append("Need to find a datablog site?");
     mb.append("</font>");
     mb.append("</td>");
     mb.append("</tr>");

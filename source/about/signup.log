@@ -15,7 +15,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Get Started";
+pageProps.title = "Create A Free Datablog!";
 pageProps.navButtonName = "aboutsignup";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -213,6 +213,9 @@ if (reger.core.Util.isinteger(request.getParameter("eventtypeid"))){
 }
 mb.append("<p align=right>");
 mb.append("<a href='login.log"+eventtypeidQueryString+"'><font face=arial size=-2 color=#666666>>><b>Existing Users Click Here to Log In</b></font></a>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2 color=#666666> <b>* All basic accounts are free.</b></font></a>");
 mb.append("</p>");
 
 //Display any errors
@@ -424,7 +427,7 @@ mb.append("<td bgcolor=#ffffff valign=top align=right>");
 mb.append(" ");
 mb.append("</td>");
 mb.append("<td bgcolor=#ffffff valign=top nowrap align=left colspan=2>");
-mb.append("<input type='submit' value='Create datablogging Account'>");
+mb.append("<input type='submit' value='Create Your Datablog Now!'>");
 mb.append("</td>");
 mb.append("</tr>");
 

@@ -3,7 +3,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Query Custom Data";
+pageProps.title = "Data Mining";
 pageProps.navButtonName = "aboutwhatisdatablogging-search";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -29,11 +29,10 @@ mb.append(reger.marketingSite.Biz.getCss());
 
 
 
-mb.append("<br><br>");
 mb.append("<blockquote>");
 
 mb.append("<br clear=all>");
-mb.append("<h1>Find Entries Based on Data Criteria</h1>");
+mb.append("<h1>Mine entries Based on Data Criteria</h1>");
 mb.append("You can build powerful data queries to locate entries that fulfill certain criteria.");
 
 mb.append("<br clear=all>");

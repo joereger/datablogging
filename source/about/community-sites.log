@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
-pageProps.title = "Community: Blogs";
+pageProps.title = "Our Community In Action";
 pageProps.navButtonName = "aboutcommunity-sites";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -30,6 +30,7 @@ int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
 
+    mb.append("Below is a quick glimpse of just some of our users and a sampling of their datablog sites. Have fun exploring!");
     mb.append("<br>");
     mb.append("<br>");
 

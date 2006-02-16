@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITEWITHUSERCONTENT;
-pageProps.title = "Community: Search";
+pageProps.title = "Complex Search";
 pageProps.navButtonName = "about-community-search";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -29,7 +29,7 @@ String cachekey = "CommunitySearchPage" + " URL:" + reger.cache.HtmlCache.getKey
 int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
-
+    mb.append("This is a complex search designed to help you find sites based on the keywords, data, dates, etc. that you enter below. Our search engine will look in the title, body, comments or file descriptions of all of our datablog sites, and return any matching results.");
 
     mb.append("<br>");
     mb.append("<br>");

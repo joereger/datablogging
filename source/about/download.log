@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.MARKETINGSITE;
-pageProps.title = "Download";
+pageProps.title = "Enterprise Edition Download";
 pageProps.navButtonName = "aboutdownload";
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
@@ -31,7 +31,9 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
     mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
 
     mb.append("<font face=arial size=-1>");
-    mb.append("<b>Sep 22nd, 2005: Available for immediate install!  This early BETA downloadable version of the Reger.com datablogging server includes the production-quality code used to run reger.com packaged in a way that allows you to run it on your own server.  We know the core code is solid but we need your help to make sure the distribution packaging and install process make sense.</b>");
+    mb.append("<b>Sep 22nd, 2005: Available for immediate install!</b>" );
+    mb.append("<br>");
+    mb.append("Please note: This is a limited free offering of the BETA version of our Enterprise Edition platform. It includes the production-quality code used to run reger.com, packaged in a way that allows you to run it on your own server. We are making it available for free in return for your feedback, comments and suggestions on how we might improve our software. If you would like to contact us with any questions regarding this release, please send an email to <a href='mailto:support@reger.com'>support@reger.com</a>.</b>");
     mb.append("<ul>");
     mb.append("<li>BETA status:  <font color=#ff0000>Danger!</font> The distributable form is new and may cause issues on various systems.  If you need a robust installed version please contact us directly... we can, and have, installed behind firewalls into enterprise environments.</li>");
     mb.append("<li>We need your feedback to make it work better.  Tell us what you like and don't like in the <a href='http://www.reger.com/jforum/'>support forum</a>.</li>");
@@ -39,13 +41,11 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
     mb.append("</ul>");
 
     mb.append("<br>");
-    mb.append("<br>");
     mb.append("<b>Not for you?  Don't want to download and install?</b>");
     mb.append("<ul>");
     mb.append("<li>No problem.  Use our hosted service.  You'll be <a href='http://localhost.com/about/signup.log'>blogging in minutes</a>!</li>");
     mb.append("</ul>");
 
-    mb.append("<br>");
     mb.append("<br>");
     mb.append("<b>Installation Overview:</b>");
     mb.append("<ul>");
@@ -56,7 +56,6 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
     mb.append("<li>Start datablogging!</li>");
     mb.append("</ul>");
 
-    mb.append("<br>");
     mb.append("<br>");
     mb.append("<b>Free Version Includes:</b>");
     mb.append("<ul>");
