@@ -6,6 +6,8 @@ import reger.pageFramework.PageProps;
 
 import java.util.Calendar;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
  *
  */
@@ -41,8 +43,23 @@ public class MarketingSiteTemplateTagMainBody implements MarketingSiteTemplateTa
      */
     public String getHtml(StringBuffer mb, PageProps pageProps, UserSession userSession, javax.servlet.http.HttpServletRequest request){
 
-        return mb.toString();
-        
+        StringBuffer hd = new StringBuffer();
+
+        if (!FilenameUtils.getName(request.getServletPath()).equals("signup.log")){
+            hd.append("<table cellpadding=0 width=150 align=right cellspacing=0 border=0>");
+            hd.append("<tr>");
+            hd.append("<td align=left>");
+            hd.append("</td>");
+            hd.append("<td align=right width=150>");
+            hd.append(reger.ui.GreenRoundedButton.get("../", "<a href='signup.log' style=\"color: #ffffff; text-decoration: none;\"><font face=arial size=-1 color=#ffffff><b>Sign Up Now!</b></font></a>"));
+            hd.append("</td>");
+            hd.append("</tr>");
+            hd.append("</table>");
+            hd.append("<br clear=all>");
+        }
+
+        return hd.toString() + mb.toString();
+
     }
 
     /**

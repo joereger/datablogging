@@ -136,7 +136,7 @@ int refreshintervalinseconds = 3600;
     alphas.add("8");
     alphas.add("9");
 
-    mb.append("<table align=center cellpadding=5 cellspacing=2 bgcolor=#e6e6e6>");
+    mb.append("<table align=center cellpadding=1 cellspacing=1 bgcolor=#e6e6e6>");
     mb.append("<tr>");
         for (int i = 0; i < alphas.size(); i++) {
             String s = (String) alphas.get(i);

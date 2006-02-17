@@ -205,7 +205,7 @@ DIV.bluebox {
 	font-weight: bold;
 }
 .episodefooter {
-	background: ffffff;
+	background: #ffffff;
     border-left: 1px solid #999;
     border-top: 3px solid #999;
     border-bottom: 0px solid #999;
@@ -219,7 +219,6 @@ DIV.bluebox {
     border-right: 1px solid #999;
 	margin: 0px;
 	padding: 0px;
-	align: center;
 }
 .episodeinnerwrapper {
 	margin: 10px;

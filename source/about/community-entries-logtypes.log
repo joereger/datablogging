@@ -53,6 +53,7 @@ int refreshintervalinseconds = 3600;
     //-----------------------------------
     //-----------------------------------
     String[][] rstEventtype= Db.RunSQL("SELECT megalogtype.eventtypeid, megalogname FROM megalogtype, pleventtypeid WHERE pleventtypeid.plid='"+userSession.getPl().getPlid()+"' AND pleventtypeid.eventtypeid=megalogtype.eventtypeid ORDER BY megalogtype.megalogname ASC");
+    //String[][] rstEventtype= Db.RunSQL("SELECT DISTINCT megalog.eventtypeid, megalog.megalogname FROM event, account, megalog, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND "+reger.Entry.sqlOfLiveEntry+" AND  megalog.eventtypeid='"+request.getParameter("eventtypeid")+"' AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"'  ORDER BY megalog.megalogname");
     //-----------------------------------
     //-----------------------------------
     if (rstEventtype!=null && rstEventtype.length>0){

@@ -21,6 +21,16 @@ public class NestedNavCollection  {
         Debug.debug(5, "NestedNavCollection", "NestedNavCollection.getChildrenUserCanView() - this.allNestedNavItems.length=" + this.allNestedNavItems.size());
     }
 
+    public NestedNavItem getNestedNavItemById(int id){
+        for (Iterator it = allNestedNavItems.iterator(); it.hasNext(); ) {
+            NestedNavItem navItem = (NestedNavItem)it.next();
+            if (navItem.getThisNestedNavId()==id){
+                return navItem;   
+            }
+        }
+        return null;
+    }
+
     public static ArrayList<NestedNavItem> getNavItemsUserCanView(ArrayList<NestedNavItem> inNestedNavItems, Accountuser accountuser){
         ArrayList<NestedNavItem> outItems = new ArrayList<NestedNavItem>();
         //Find those that the user can view
