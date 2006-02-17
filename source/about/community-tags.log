@@ -21,7 +21,7 @@
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-    mb.append("Below are some of the keyword tags our users have assigned to posts, files, photographs, movies, music and more. Click on a few and see what they are labeling.");
+    mb.append("Below are some of the keyword tags our users have assigned to posts, files, photographs, movies, music and more. Click on a few and see what's being labeled.");
     mb.append("<br>");
     mb.append("<br>");
 

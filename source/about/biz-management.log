@@ -40,7 +40,7 @@ mb.append("<br>");
 mb.append("<h1>Joe Reger, Sr.</h1>");
 mb.append("<b>EVP, Customer Strategies:</b>");
 mb.append("<br>");
-mb.append("Joe Sr. joined Reger.com after successfully co-founding and leading frogFire DIGITAL, a web design firm with Fortune 500 clients, including Motorola, Equifax, TBS and Sony. Prior to Frogfire, Joe spent 24 years in the United States Army focusing on personnel management for 7th Signal Command, a nationwide information and communication group. Additionally, he taught economics at West Point upon receiving his MBA from the University of Chicago. He retired a Litenant Colonel.");
+mb.append("Joe Sr. joined Reger.com after successfully co-founding and leading frogFire DIGITAL, a web design firm with Fortune 500 clients, including Motorola, Equifax, TBS and Sony. Prior to Frogfire, Joe spent 24 years in the United States Army focusing on the personnel management of 18,000 troops for the 7th Signal Command, a nationwide information and communication group. Additionally, he was a battalion commander for NATO overseas, and taught economics at West Point upon receiving his MBA from the University of Chicago. He retired a Lieutenant Colonel.");
 mb.append("<br>");
 mb.append("email: <a href='mailto:joesr@reger.com'>joesr@reger.com</a>");
 mb.append("<br>");
@@ -59,7 +59,7 @@ mb.append("datablog: <a href='http://duncan.reger.com/'>http://duncan.reger.com/
 
 mb.append("<br>");
 mb.append("<br>");
-mb.append("<h1>John Broadus</h1>");
+mb.append("<h1>John Broaddus</h1>");
 mb.append("<b>VP, Sales:</b>");
 mb.append("<br>");
 mb.append("Coming Soon...");
@@ -99,7 +99,7 @@ mb.append("Kendra joined Reger in 2002 to manage content creation and account se
 mb.append("<br>");
 mb.append("email: <a href='mailto:kendy@reger.com'>kendy@reger.com</a>");
 mb.append("<br>");
-mb.append("datablog: <a href='http://kendy.reger.com/'>http://kendy.reger.com/</a>");
+mb.append("datablog: <a href='http://babyvanmol.reger.com/'>http://kendy.reger.com/</a>");
 
 
 mb.append("<br>");

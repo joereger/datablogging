@@ -37,7 +37,7 @@ public class AllPlJspPages {
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-43, "Find a Datablog Site", "community-findsite.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 5)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-44, "Complex Search", "community-search.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 6)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-55, "Locate a User Group", "community-groups.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 7)));
-        nestedNavItems.add((NestedNavItem)(new PlJspPage(-47, "Discussion Forum", "community-discuss.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 8)));
+        nestedNavItems.add((NestedNavItem)(new PlJspPage(-47, "Discussion Forum", "http://www.reger.com/jforum", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 8)));
 
 
 

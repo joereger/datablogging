@@ -27,7 +27,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONCOMMUNITY;
 
 mb.append(reger.ui.BubbleBox.start("Search Our Groups", pageProps.pathToAppRoot));
 if (request.getParameter("searchterms")==null || request.getParameter("searchterms").equals("")){
-    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "This search tool is designed to locate datablog groups that may interest you. Please provide your search terms below to locate a potential group for you to join."));
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "This search tool is designed to locate datablog groups that may interest you. Please provide your search terms below."));
 }
 mb.append("<br>");
 mb.append("<form action='community-groups.log' method=post>");

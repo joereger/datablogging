@@ -30,7 +30,7 @@ String cachekey = "CommunityEntriesPageLogTypes" + " URL:" + reger.cache.HtmlCac
 int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 
-    mb.append("One of the unique features of our platform is that we allow our users to create their own log types with customized fields to track whatever they are interested in. Below are some of the personalized log types that our users have created within their datablog. Use the pull down menu to see the activity within a particular log type. To learn more about creating custom log types, <a href='what-is-datablogging-newfield.log'>click here</a>.");
+    mb.append("One of the unique features of our platform is that we allow our users to create their own log types with customized fields to track whatever they are interested in. Below are some of the personalized log types that our users have created. Use the pull down menu to see the activity within a particular log type. To learn more about creating custom log types, <a href='what-is-datablogging-newfield.log'>click here</a>.");
     mb.append("<br>");
     mb.append("<br>");
 

@@ -342,7 +342,7 @@ public class MegaHtmlFormTopChiba {
             //Show the editor or the post itself
             if (!editLayout){
 
-                mb.append(MegaHtmlFormEditor.getHtml(userSession, pageProps, displayasadmin, request));
+                mb.append(MegaHtmlFormEditor.getHtml(userSession, pageProps, request));
             }
 
             mb.append("</td>");
