@@ -62,7 +62,7 @@ public class MarketingSiteTemplateTagRecentEntries implements MarketingSiteTempl
             out.append("<font face=arial size=-2>");
             //-----------------------------------
             //-----------------------------------
-            String[][] rstEvent= Db.RunSQL("SELECT eventid, title, account.accountid, megalog.logid FROM event, account, megalog, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND "+reger.Entry.sqlOfLiveEntry+" AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"'  ORDER BY event.date DESC LIMIT 0,100");
+            String[][] rstEvent= Db.RunSQL("SELECT eventid, title, account.accountid, megalog.logid FROM event, account, megalog, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND "+reger.Entry.sqlOfLiveEntry+" AND event.accountid=account.accountid AND event.logid=megalog.logid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"' AND account.islistedindirectory='1' AND account.isactiveaccount='1' AND account.plid='"+userSession.getPl().getPlid()+"' AND event.date<Now() ORDER BY event.date DESC LIMIT 0,100");
             //-----------------------------------
             //-----------------------------------
             if (rstEvent!=null && rstEvent.length>0){

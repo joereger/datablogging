@@ -25,7 +25,7 @@ public class Version21 implements Version{
         desc.append("");
 
 
-        desc.append("Version Version 6.0.1");
+        desc.append("Version 6.0.1");
 
         desc.append("<h2>Bug</h2>");
         desc.append("<ul>");

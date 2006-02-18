@@ -156,7 +156,7 @@ public class EmailSubscription implements ScheduledTask{
                                         } else {
                                             //Create plain text event listing
                                             messagebody=messagebody + "=============================" + reger.Vars.LINEBREAKCHAR;
-                                            messagebody=messagebody + reger.core.TimeUtils.gmttousertime(rstEvents[j][3], rstSubs[i][5]) + reger.Vars.LINEBREAKCHAR;
+                                            messagebody=messagebody + reger.core.TimeUtils.dateformatfordb(reger.core.TimeUtils.gmttousertime(rstEvents[j][3], rstSubs[i][5])) + reger.Vars.LINEBREAKCHAR;
                                             messagebody=messagebody + rstEvents[j][1] + reger.Vars.LINEBREAKCHAR;
                                             messagebody=messagebody + url;
                                             messagebody=messagebody + reger.Entry.entryFileNameStatic(Integer.parseInt(rstEvents[j][4]), Integer.parseInt(rstEvents[j][0]), rstEvents[j][2]);

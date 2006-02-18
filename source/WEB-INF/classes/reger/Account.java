@@ -35,7 +35,7 @@ public class Account implements java.io.Serializable {
     private String homepagehtml="";
     private int admintools=0;
     private int pingweblogscom=1;
-    private int displaycharsinsummary=250;
+    private int displaycharsinsummary=0;
     private int displaynumberofentries=10;
     private int userelatedlinks=1;
     private Calendar createdate = Calendar.getInstance();
