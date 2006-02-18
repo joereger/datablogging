@@ -88,7 +88,7 @@ public class InvitationProcessor {
                 //-----------------------------------
                 //-----------------------------------
                 if (rstGroups!=null && rstGroups.length>0){
-                    mb.append("<br><br>You have been invited to the following groups, which you can find by clicking the Groups tab:<br><br>");
+                    mb.append("<br><br>You have been invited to the following groups, which you can find by clicking the <a href='groups.log'>Groups tab</a>:<br><br>");
                     for(int i=0; i<rstGroups.length; i++){
                         Group group = new Group(Integer.parseInt(rstGroups[i][0]));
                         mb.append("> "+group.getName()+"<br>");

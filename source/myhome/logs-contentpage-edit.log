@@ -96,6 +96,8 @@ mb.append("Page Content:");
 mb.append("</b></font>");
 mb.append("<br>");
 mb.append("<textarea name=content cols=45 rows=75 style=\"width: 100%;\">"+contentPage.getContent()+"</textarea>");
+mb.append("<br>");
+mb.append("<input type=submit value='Save the Page'>");
 mb.append("</td>");
 
 

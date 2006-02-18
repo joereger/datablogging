@@ -33,7 +33,7 @@ mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
 mb.append("<tr>");
 mb.append("<td bgcolor=#e6e6e6>");
 mb.append("<font face=arial size=-1>");
-mb.append("Find a Person or Site Alphabetically");
+mb.append("Find a Person Alphabetically");
 mb.append("</font>");
 mb.append("</td>");
 mb.append("</tr>");
@@ -109,7 +109,7 @@ mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
 mb.append("<tr>");
 mb.append("<td bgcolor=#e6e6e6>");
 mb.append("<font face=arial size=-1>");
-mb.append("Find a Person or Site by Searching");
+mb.append("Find a Person by Searching");
 mb.append("</font>");
 mb.append("</td>");
 mb.append("</tr>");
@@ -117,7 +117,14 @@ mb.append("<tr>");
 mb.append("<td bgcolor=#ffffff>");
 mb.append("<font face=arial size=-2>");
 mb.append("<form action=people-find.log method=post>");
-mb.append("Type a site's URL or title:<br>");
+mb.append("You can find people in a number of ways:<br>");
+mb.append("<ul>");
+mb.append("<li>Email address (joe@hotmail.com)</li>");
+mb.append("<li>Site Url (joe.reger.com)</li>");
+mb.append("<li>Friendly name (Joe)</li>");
+mb.append("<li>Homepage Title (Joe's Great Site)</li>");
+mb.append("</ul>");
+mb.append("It's often better to search on a portion of what you want.  For example, to find joe334.reger.com, search on joe334.<br>");
 mb.append("<input type=text name=searchsites maxlength=50 size=15>");
 mb.append("<input type=submit value='Go'>");
 mb.append("</font>");
@@ -145,9 +152,14 @@ if (request.getParameter("searchsites")!=null || request.getParameter("alpha")!=
     mb.append("<font face=arial size=-1>");
 
     String sql = "";
+    String searchTerms = request.getParameter("searchsites");
+    searchTerms = searchTerms.replaceAll("http://", "");
+    searchTerms = searchTerms.replaceAll("https://", "");
+    searchTerms = searchTerms.replaceAll(":80", "");
+    searchTerms = searchTerms.replaceAll("/", "");
 
     if (request.getParameter("searchsites")!=null && !request.getParameter("searchsites").equals("")){
-        sql = "SELECT account.accountid, homepagetitle, friendlyname, accountuserid FROM account, accountuser, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND accountuser.accountid=account.accountid AND (account.islistedindirectory='1') AND (  (friendlyname LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%') OR (accounturl LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%') OR (customservername LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%') OR (homepagetitle LIKE '%"+reger.core.Util.cleanForSQL(request.getParameter("searchsites"))+"%')  ) LIMIT 0,100";
+        sql = "SELECT account.accountid, homepagetitle, friendlyname, accountuserid FROM account, accountuser, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND accountuser.accountid=account.accountid AND (account.islistedindirectory='1') AND (  (friendlyname LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (CONCAT(account.accounturl, '.', pl.plbasedomain) LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%' ) OR (accounturl LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (customservername LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (customservername2 LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (customservername3 LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (accountuser.email LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (homepagetitle LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%')  ) LIMIT 0,100";
     }
 
 

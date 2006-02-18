@@ -142,7 +142,7 @@ if (pageProps.action.equals("sendemail")) {
             //Get each groupid that's checked
             //-----------------------------------
             //-----------------------------------
-            String[][] rstGp= Db.RunSQL("SELECT groupid FROM groupmembership WHERE accountuserid='"+ userSession.getAccountuser().getAccountuserid() +"' ORDER BY name ASC");
+            String[][] rstGp= Db.RunSQL("SELECT groupid FROM groupmembership WHERE accountuserid='"+ userSession.getAccountuser().getAccountuserid() +"'");
             //-----------------------------------
             //-----------------------------------
             if (rstGp!=null && rstGp.length>0){
