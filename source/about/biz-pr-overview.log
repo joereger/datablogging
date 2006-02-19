@@ -37,7 +37,7 @@ mb.append("<br><br>Web logging is also exciting because it touches so many new t
 
 mb.append("<br>");
 mb.append("<h1>Storylines</h1>");
-mb.append("We've even put together a list of <a href='pr-storylines.log'>storylines</a> to get your creative juices flowing.");
+mb.append("We've even put together a list of storylines below to get your creative juices flowing.");
 
 mb.append("<br>");
 mb.append("<h1>Invitation to review</h1>");
