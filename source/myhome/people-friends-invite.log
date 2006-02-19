@@ -213,7 +213,7 @@ mb.append("<input type=hidden name=action value=sendemail>");
 mb.append(reger.ui.BubbleBox.start("Friend's Email Addresses (required):", pageProps.pathToAppRoot));
 //mb.append("Friend's Email Addresses (required):<br>");
 mb.append("<font face=arial size=-2>");
-mb.append("Separate Email Addresses With A Comma.  At least one is required.  We will only use this email to send the invitation.");
+mb.append("Separate email addresses with a comma.  At least one is required.  We will only use this email to send the invitation.");
 mb.append("</font>");
 mb.append("<br>");
 mb.append("<textarea name=emailaddresses cols='50' rows='3' style=\"width:100%;\">");
