@@ -83,9 +83,9 @@ public class AllPlJspPages {
         //About Us
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-60, "Our Team", "biz-management.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 1)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-61, "Our Values", "biz-core-values.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 2)));
-        nestedNavItems.add((NestedNavItem)(new PlJspPage(-61, "Our Mission", "biz-mission.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 3)));
-        nestedNavItems.add((NestedNavItem)(new PlJspPage(-61, "Our Partners", "biz-partners.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 4)));
-        nestedNavItems.add((NestedNavItem)(new PlJspPage(-50, "Our Technology", "biz-technology.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 5)));
+        nestedNavItems.add((NestedNavItem)(new PlJspPage(-63, "Our Mission", "biz-mission.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 3)));
+        nestedNavItems.add((NestedNavItem)(new PlJspPage(-62, "Our Partners", "biz-partners.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 4)));
+        nestedNavItems.add((NestedNavItem)(new PlJspPage(-64, "Our Technology", "biz-technology.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 5)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-50, "Contact Us", "biz-contactus.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 6)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-51, "Press", "biz-pr-overview.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 7)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-52, "Investors", "biz-investors.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -28, 8)));
