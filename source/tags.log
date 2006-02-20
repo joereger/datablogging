@@ -72,10 +72,10 @@
                 qs.append(" ");
             }
         } else {
-            qs.append("No Community Tags Found.");
+            qs.append("No Tags Found.");
         }
     } catch (Exception e) {
-        Debug.errorsave(e, "Exception occurred in community-tags.log");
+        Debug.errorsave(e, "Exception occurred in tags.log");
     }
 
     qs.append("</td>");

@@ -38,6 +38,7 @@ public class OsCacheClusteredProvider implements CacheProvider {
         try {
             return OsCacheClusteredProvider.admin.getFromCache("/"+group+"/"+key);
         } catch (NeedsRefreshException nre) {
+            admin.cancelUpdate("/"+group+"/"+key);
             return null;
         } catch (Exception e){
             reger.core.Debug.errorsave(e, "OsCacheProvider.java");

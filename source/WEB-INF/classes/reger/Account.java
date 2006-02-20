@@ -599,6 +599,7 @@ public class Account implements java.io.Serializable {
      */
     public static int findAccountid(reger.UrlSplitter urlSplitter){
         if (!urlSplitter.getRawIncomingServername().equals("")){
+            reger.core.Debug.debug(4, "Account.java", "Callingn findAccountid() database search for account.");
             //-----------------------------------
             //-----------------------------------
             String[][] rstAccount= Db.RunSQL("SELECT DISTINCT accountid FROM account, pl "+

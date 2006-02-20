@@ -113,6 +113,8 @@ public class ImageListHtml {
             displayOnlyImagesFromLiveEntries = false;
         }
 
+
+
         //Make sure we're not in admin mode just about to create an entry
         if (!(eventid <= 0 && displayasadmin)) {
             //Start paging
@@ -301,26 +303,37 @@ public class ImageListHtml {
         int limitMax = perPage;
 
         String tagSql = "";
+        boolean isselectingtag = false;
         if (request.getParameter("tagid")!=null && reger.core.Util.isinteger(request.getParameter("tagid"))) {
+            isselectingtag = true;
             tagSql += " AND tag.tagid='" + reger.core.Util.cleanForSQL(request.getParameter("tagid")) + "' ";
         } else {
             if (request.getParameter("tag")!=null){
+                isselectingtag = true;
                 tagSql = " AND tag.tag='" +reger.core.Util.cleanForSQL(request.getParameter("tag"))+ "' ";
             }
         }
 
-        String sql = "image LEFT JOIN tagimagelink ON image.imageid=tagimagelink.imageid LEFT JOIN tag ON tagimagelink.tagid=tag.tagid, event, megalog WHERE event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid(), true)+" AND image.eventid=event.eventid "+tagSql+" AND "+reger.Entry.sqlOfLiveEntry+" AND image.accountid='" + userSession.getAccount().getAccountid() + "'";
 
-        reger.core.Debug.debug(5, "ImageListHtml.java", sql);
+        String fromSql = "FROM image, event, megalog ";
+        String whereSql = "WHERE event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid(), true)+" AND image.eventid=event.eventid AND "+reger.Entry.sqlOfLiveEntry+" AND image.accountid='" + userSession.getAccount().getAccountid() + "'";
+        if (isselectingtag){
+            fromSql = " FROM image, tagimagelink, tag, event, megalog ";
+            whereSql = " WHERE tagimagelink.tagid=tag.tagid AND image.imageid=tagimagelink.imageid AND event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid(), true)+" AND image.eventid=event.eventid "+tagSql+" AND "+reger.Entry.sqlOfLiveEntry+" AND image.accountid='" + userSession.getAccount().getAccountid() + "'";
+        }
+
+
+
+        reger.core.Debug.debug(5, "ImageListHtml.java", fromSql + whereSql);
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImageList = Db.RunSQL("SELECT DISTINCT image.imageid, image.image, image.description FROM "+sql+" ORDER BY event.date DESC, image.imageid ASC LIMIT " + limitMin +"," + limitMax);
+        String[][] rstImageList = Db.RunSQL("SELECT DISTINCT image.imageid, image.image, image.description "+fromSql+whereSql+" ORDER BY event.date DESC, image.imageid ASC LIMIT " + limitMin +"," + limitMax);
         //-----------------------------------
         //-----------------------------------
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImageCount = Db.RunSQL("SELECT count(DISTINCT image.imageid) FROM "+sql);
+        String[][] rstImageCount = Db.RunSQL("SELECT count(DISTINCT image.imageid) "+fromSql+whereSql);
         //-----------------------------------
         //-----------------------------------
 

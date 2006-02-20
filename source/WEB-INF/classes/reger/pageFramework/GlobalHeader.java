@@ -50,7 +50,7 @@ public class GlobalHeader {
 
             //Write request to DB
             if (reger.core.DegubLevel.getDebugLevel()>=5){
-                Debug.debug(5, "GlobalHeader", reger.core.ErrorDissect.ServletUtilsdissect(request));
+                Debug.debug(4, "GlobalHeader", reger.core.ErrorDissect.ServletUtilsdissect(request));
             }
 
             //If privatelabel requires login and this is a login-worthy page, redirect to the login page.
@@ -58,7 +58,7 @@ public class GlobalHeader {
                 if (pageProps.siteSection!=pageProps.MARKETINGSITE && pageProps.siteSection!=pageProps.API){
                     //If the account is null we know that we have a private label homepage.  Only an issue when user goes to main publicsite index.log but there's no account.
                     if ((userSession.getAccount()==null || userSession.getAccount().getAccountid()==0) && pageProps.siteSection==pageProps.PUBLICSITE){
-                        Debug.debug(5, "GlobalHeader", "globalheader.jsp - redirecting to a private label homepage inside of the forced login code.");
+                        Debug.debug(4, "GlobalHeader", "globalheader.jsp - redirecting to a private label homepage inside of the forced login code.");
                         response.sendRedirect(request.getScheme()+"://"+userSession.getPl().getPlBaseUrl()+"/about/index.log");
                         return;
                     }
@@ -66,7 +66,7 @@ public class GlobalHeader {
                     //If the user isn't logged in
                     //if ((userSession.getAccountuser()==null || userSession.getAccount().getAccountid()==0) || !userSession.getAccountuser().isLoggedIn) {
                     if ((userSession.getAccountuser()==null) || !userSession.getAccountuser().isLoggedIn) {
-                        Debug.debug(5, "GlobalHeader", "globalheader.jsp - redirecting to force a login because the user is not logged in.");
+                        Debug.debug(4, "GlobalHeader", "globalheader.jsp - redirecting to force a login because the user is not logged in.");
                         response.sendRedirect(request.getScheme()+"://"+userSession.getPl().getPlBaseUrl()+"/about/login.log?returnurl=" + java.net.URLEncoder.encode(request.getRequestURL()+"?"+request.getQueryString(), "UTF-8"));
                         return;
                     }
@@ -99,7 +99,7 @@ public class GlobalHeader {
                     //Append the  querystring
                     URL = URL + qs;
                     //Do the redirect
-                    Debug.debug(5, "GlobalHeader", "Redirecting to URL for https: "+URL);
+                    Debug.debug(4, "GlobalHeader", "Redirecting to URL for https: "+URL);
                     response.sendRedirect(URL);
                     return;
                 } catch (Exception e){
@@ -118,7 +118,7 @@ public class GlobalHeader {
                 //If the account object is null
                 if (userSession.getAccount()==null || userSession.getAccount().getAccountid()==0) {
                     try {
-                        Debug.debug(5, "GlobalHeader", "Redirecting to marketing site "+userSession.getPl().getPlBaseUrl()+" because it's a public or admin but we don't have an account.");
+                        Debug.debug(4, "GlobalHeader", "Redirecting to marketing site "+userSession.getPl().getPlBaseUrl()+" because it's a public or admin but we don't have an account.");
                         response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/index.log");
                         return;
                     } catch (Exception e){
@@ -138,7 +138,7 @@ public class GlobalHeader {
                         }
                     }
                     //Make sure this account has enough free bandwidth to be serving pages
-                    Debug.debug(5, "GlobalHeader", "globalheader.log<br>userSession.getAccount().getBandwidthused()=" + String.valueOf(new Long(userSession.getAccount().getBandwidthused())) + "<br>userSession.getAccount().getMaxbandwidth()=" + String.valueOf(new Long(userSession.getAccount().getMaxbandwidth())));
+                    Debug.debug(4, "GlobalHeader", "globalheader.log<br>userSession.getAccount().getBandwidthused()=" + String.valueOf(new Long(userSession.getAccount().getBandwidthused())) + "<br>userSession.getAccount().getMaxbandwidth()=" + String.valueOf(new Long(userSession.getAccount().getMaxbandwidth())));
                     if (userSession.getAccount().getMaxbandwidth()>0 && userSession.getAccount().getBandwidthused()>userSession.getAccount().getMaxbandwidth() && pageProps.siteSection==pageProps.PUBLICSITE && (pageProps.adminSection==null || !pageProps.adminSection.equals("LOGIN"))){
                         try {
                             response.sendRedirect(pageProps.pathToAppRoot + "notenoughbandwidthavailable.log");
@@ -155,7 +155,7 @@ public class GlobalHeader {
             //If this is not a marketing page or an LOE page and we don't have a valid account, redirect to the pl
             if (pageProps.siteSection!=pageProps.API && pageProps.siteSection!=pageProps.MARKETINGSITE && pageProps.siteSection!=pageProps.MARKETINGSITEWITHUSERCONTENT && pageProps.siteSection!=pageProps.GROUPSSITE && pageProps.siteSection!=pageProps.MASTERADMINSITE && pageProps.siteSection!=pageProps.PLADMINSITE && (userSession.getAccount()==null || userSession.getAccount().getAccountid()==0)){
                 try {
-                    Debug.debug(5, "GlobalHeader", "Bounced to /about/index.log 1.");
+                    Debug.debug(4, "GlobalHeader", "Bounced to /about/index.log 1.");
                     response.sendRedirect(userSession.getPl().getPlBaseUrl() + "/about/index.log");
                     return;
                 } catch (Exception e) {
@@ -183,21 +183,21 @@ public class GlobalHeader {
 
             //Mobile login
             if ((pageProps.siteSection==pageProps.MOBILEPRIVATE || pageProps.siteSection==pageProps.MOBILEPUBLIC)){
-                Debug.debug(5, "GlobalHeader", "Begin servicing a mobile request. pageProps.siteSection=" + pageProps.siteSection);
+                Debug.debug(4, "GlobalHeader", "Begin servicing a mobile request. pageProps.siteSection=" + pageProps.siteSection);
                 if (request.getHeader("x-up-subno")!=null){
-                    Debug.debug(5, "GlobalHeader", "Found x-up-subno for mobile.");
+                    Debug.debug(4, "GlobalHeader", "Found x-up-subno for mobile.");
                     userSession.setAccountuser(new reger.Accountuser(request.getHeader("x-up-subno")));
                 } else {
-                    Debug.debug(5, "GlobalHeader", "No x-up-subno found.");
+                    Debug.debug(4, "GlobalHeader", "No x-up-subno found.");
                     if (pageProps.siteSection==pageProps.MOBILEPRIVATE){
-                        Debug.debug(5, "GlobalHeader", "Redirecting mobile user to phone not supported page.");
+                        Debug.debug(4, "GlobalHeader", "Redirecting mobile user to phone not supported page.");
                         response.sendRedirect("mobilephonenotsupported.log");
                         return;
                     }
                 }
-                Debug.debug(5, "GlobalHeader", "Mobile User isLoggedIn=" + userSession.getAccountuser().isLoggedIn);
+                Debug.debug(4, "GlobalHeader", "Mobile User isLoggedIn=" + userSession.getAccountuser().isLoggedIn);
                 if (pageProps.siteSection==pageProps.MOBILEPRIVATE && !userSession.getAccountuser().isLoggedIn){
-                    Debug.debug(5, "GlobalHeader", "Redirecting mobile user to mobile login page.");
+                    Debug.debug(4, "GlobalHeader", "Redirecting mobile user to mobile login page.");
                     response.sendRedirect("mobilelogin.log");
                     return;
                 }
@@ -207,7 +207,7 @@ public class GlobalHeader {
             //Make sure the user is allowed to use this ACL object
             //reger.core.Util.logtodb("acl:" + pageProps.aclObjectName + "<br>userSession.getAccountuser().userCanDoAcl(pageProps.aclObjectName, userSession.getAccount().getAccountid())" + userSession.getAccountuser().userCanDoAcl(pageProps.aclObjectName, userSession.getAccount().getAccountid()));
             if ((pageProps.isPasswordProtected) && (!userSession.getAccountuser().userCanDoAcl(pageProps.aclObjectName, userSession.getAccount().getAccountid()))){
-                Debug.debug(5, "GlobalHeader", "Bounced to /login.log because user can't do acl.");
+                Debug.debug(4, "GlobalHeader", "Bounced to /login.log because user can't do acl.");
                 response.sendRedirect(pageProps.pathToAppRoot + "login.log");
                 return;
             }
@@ -232,14 +232,14 @@ public class GlobalHeader {
                 if (!passedvalidation) {
                     //reger.core.Util.logtodb("No logid or eventid found on the page.");
                     try {
-                        Debug.debug(5, "GlobalHeader", "Bounced to /login.log because pageProps.passedvalidation=FALSE.");
+                        Debug.debug(4, "GlobalHeader", "Bounced to /login.log because pageProps.passedvalidation=FALSE.");
                         response.sendRedirect("index.log?msg=invalid");
                         return;
                     } catch (Exception e){
                         Debug.errorsave(e, "GlobalHeader");
                     }
                     //out.println("<br>We're sorry.  That log and/or entry could not be found or you don't have permission to view it.  Please try again. Error: 9998");
-                    Debug.debug(5, "GlobalHeaderGlobalHeader", "GlobalHeader.java failed.  Error 9998.  Looks like user didn't have enough logid's and/or eventid's to get in.");
+                    Debug.debug(4, "GlobalHeaderGlobalHeader", "GlobalHeader.java failed.  Error 9998.  Looks like user didn't have enough logid's and/or eventid's to get in.");
                     //out.println(reger.debugInfo.monsterDebug(request, pageProps));
                     return;
                 }
@@ -257,13 +257,13 @@ public class GlobalHeader {
                     }
                     if (!reger.Entry.checkEntryKey(request.getParameter("entrykey"), tmpEventid)){
                         //Then send to permission denied
-                        Debug.debug(5, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because entrykey fails");
+                        Debug.debug(4, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because entrykey fails");
                         response.sendRedirect(pageProps.pathToAppRoot + "permissiondenied.log");
                         return;
                     }
                 } else {
                     //There's no entry key so send to permission denied
-                    Debug.debug(5, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because no entry key");
+                    Debug.debug(4, "GlobalHeader", "globalheader.jsp - sending to permissiondenied.log because no entry key");
                     response.sendRedirect(pageProps.pathToAppRoot + "permissiondenied.log");
                     return;
                 }
@@ -277,12 +277,12 @@ public class GlobalHeader {
                     try{
                         BasicEmails.newAccountEmailVerificationMessage(userSession.getAccountuser(), userSession.getAccountuser().getAccountid(), userSession.getPl(), "");
                     } catch (EmailSendException e){
-                        reger.core.Debug.debug(5, "GlobalHeader.java", "Error sending email on activation redirect: " + e.getErrorsAsSingleString());
+                        reger.core.Debug.debug(4, "GlobalHeader.java", "Error sending email on activation redirect: " + e.getErrorsAsSingleString());
                     } catch(Exception ex){
                         reger.core.Debug.errorsave(ex, "GlobalHeader.java");
                     }
                     userSession.getAccountuser().userLogout();
-                    Debug.debug(5, "GlobalHeader", "globalheader.jsp - sending to login-awaitingactivation.log");
+                    Debug.debug(4, "GlobalHeader", "globalheader.jsp - sending to login-awaitingactivation.log");
                     response.sendRedirect(pageProps.pathToAppRoot + "about/login-awaitingactivation.log");
                     return;
                 }

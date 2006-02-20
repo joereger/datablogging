@@ -15,22 +15,23 @@ public class UrlToAccountidLookupCache {
 
     public static int get(UrlSplitter urlSplitter){
 
-        Object obj = CacheFactory.getCacheProvider().get(urlSplitter.getUrlSplitterAsString(), GROUP);
-        if (obj!=null){
-            try{
-                int accountid = (Integer)obj;
-                return accountid;
-            } catch (Exception e){
-               reger.core.Debug.errorsave(e, "UrlToAccountidLookupCache.java");
-               return 0;
-            }
-        } else {
-            int accountid = reger.Account.findAccountid(urlSplitter);
-            if (accountid>0){
+        int accountid = reger.Account.findAccountid(urlSplitter);
+        if (accountid>0){
+            Object obj = CacheFactory.getCacheProvider().get(urlSplitter.getUrlSplitterAsString(), GROUP);
+            if (obj!=null){
+                try{
+                    accountid = ((Integer)obj).intValue();
+                    return accountid;
+                } catch (Exception e){
+                   reger.core.Debug.errorsave(e, "UrlToAccountidLookupCache.java");
+                   return 0;
+                }
+            } else {
                 CacheFactory.getCacheProvider().put(urlSplitter.getUrlSplitterAsString(), GROUP, new Integer(accountid));
+                return accountid;
             }
-            return accountid;
         }
+        return 0;
     }
 
     public static void put(UrlSplitter urlSplitter, int accountid){

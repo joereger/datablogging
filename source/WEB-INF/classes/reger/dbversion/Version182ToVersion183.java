@@ -43,6 +43,10 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
             }
         }
 
+        StringBuffer debug = new StringBuffer();
+        debug.append("Beginning file location change:");
+        debug.append("<br>pathuploadmedia="+pathuploadmedia);
+
 
         //-----------------------------------
         //-----------------------------------
@@ -115,6 +119,12 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                         reger.core.Debug.errorsave(e, "Version182ToVersion183.java", "Problem copying:<br>oldFile=" +oldFile.getAbsolutePath()+"<br>newFile="+newFile.getAbsolutePath());
                     }
 
+                    debug.append("<br>");
+                    debug.append("<br>currentFilename="+currentFilename);
+                    debug.append("<br>originalFilename="+originalFilename);
+                    debug.append("<br>filename="+FilenameUtils.normalize(datedDirectoryName+java.io.File.separator+finalNewFileName));
+                    debug.append("<br>UPDATE image SET filename='"+ reger.core.Util.cleanForSQL(FilenameUtils.normalize(datedDirectoryName+java.io.File.separator+finalNewFileName))+"' WHERE imageid='"+imageid+"'");
+
                     //Update the image table
                     //-----------------------------------
                     //-----------------------------------
@@ -124,6 +134,7 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                 }
             }
         }
+        reger.core.Debug.logtodb(debug.toString(), "Version182ToVersion183.java");
     }
 
     //Sample sql statements

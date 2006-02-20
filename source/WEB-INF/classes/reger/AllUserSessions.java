@@ -24,7 +24,9 @@ public class AllUserSessions {
     }
 
     private void addSession(String userSessionId, reger.UserSession userSession){
+        reger.core.Debug.debug(4, "AllUserSessions.java", "AllUserSessions.getUserSession() Starting to add session to cache.");
         UserSessionCache.put(userSessionId, userSession);
+        reger.core.Debug.debug(4, "AllUserSessions.java", "AllUserSessions.getUserSession() Done adding session to cache.");
     }
 
     public void removeSession(String userSessionId){

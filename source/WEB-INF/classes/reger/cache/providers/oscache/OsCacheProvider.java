@@ -37,6 +37,7 @@ public class OsCacheProvider implements CacheProvider {
         try {
             return admin.getFromCache("/"+group+"/"+key);
         } catch (NeedsRefreshException nre) {
+            admin.cancelUpdate("/"+group+"/"+key);
             return null;
         } catch (Exception e){
             reger.core.Debug.errorsave(e, "OsCacheProvider.java");
