@@ -26,88 +26,22 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
-mb.append("We love press. We love getting the word out so that more people can share in the web logging revolution.   Just let us know what we can do to get into your publication, tv show or radio show.");
-
-mb.append("<br>");
-mb.append("<h1>Weblogging Makes Good Press</h1>");
-mb.append("Weblogging is exciting because it's still somewhat underground.  While numerous articles have been written about it, it's still got its cool factor.  It's something that we wired people do.  Reger.com is trying to bring that excitement and value to everybody by adding the concept of activity-specific web logs.");
-mb.append("<br><br>Web logging is also exciting because it touches so many new trends like social networking and corporate knowledge management.");
-
-
-
-mb.append("<br>");
-mb.append("<h1>Storylines</h1>");
-mb.append("We've even put together a list of storylines below to get your creative juices flowing.");
-
-mb.append("<br>");
-mb.append("<h1>Invitation to review</h1>");
-mb.append("I'd like to invite you to review http://www.reger.com");
+mb.append("We love press. We love getting the word out so that more people can share in the web logging revolution.   Just let us know what we can do to help.  If you are with the media and have questions, please contact <a href='mailto:duncan@reger.com'>Duncan Freeman.</a>");
 mb.append("<br>");
 mb.append("<br>");
-mb.append("We've got all of the traditional web logging goodies but we also havesex, drugs and rock n' roll... well, maybe not rock n' roll, but definitely sex and drugs.");
+mb.append("Weblogging is also exciting because it's still somewhat underground.  While numerous articles have been written about it, it's still got a cool factor.  It's something that we geeky people do.  Reger.com is trying to bring that excitement and value to everybody by adding the concept of activity-specific web logs. Additionally, web logging is exciting because it touches so many new trends like social networking and corporate knowledge management.");
 mb.append("<br>");
 mb.append("<br>");
-mb.append("We host activity-specific web logs.  Things like Running Logs, Biking Logs and Swimming Logs help people stay in shape.  Urine Color Logs, Body Weight Logs and Bowel Movement Logs keep people healthy.");
+mb.append("<b>Press Releases:</b>");
+mb.append("<br>");
+mb.append("Coming Soon...");
 mb.append("<br>");
 mb.append("<br>");
-mb.append("And the sex log helps people, well, realize how slutty they are.  True story.  A woman exclaimed after a while \"Damn, I'm slutty\" when she looked at her pie chart of partners.");
+mb.append("<hr>");
 mb.append("<br>");
+mb.append("<b>In The News:</b>");
 mb.append("<br>");
-mb.append("We're also leveraging the moblogging with one of the richest moblogging featuresets out there for camera phones.  And we have a social networking component to keep you in touch with your friends.");
-mb.append("<br>");
-mb.append("<br>");
-mb.append("Our long-term vision is to be a platform for the collection of digital memories. By helping people to collect, organize, analyze and share personal data we fill a void in the market these days.  We have millions of devices to create personal data... but very few to organize and analyze it.");
-mb.append("<br>");
-mb.append("<br>");
-mb.append("Please let me know if there's anything I can do to help with any articlerelated to web logging.");
-mb.append("<br>");
-mb.append("<br>");
-mb.append("Best,");
-mb.append("<br>");
-mb.append("<br>");
-mb.append("Joe Reger, Jr.");
-mb.append("<br>");
-mb.append("Founder, CEO");
-mb.append("<br>");
-
-
-
-mb.append("<br>");
-mb.append("These are a few storylines to get you thinking.");
-
-mb.append("<br>");
-mb.append("<h1>Storyline: Personal Nostalgia Repository</h1>");
-mb.append("Increasingly people are collecting vast amounts of personal data.  But it's not being organized.  It's being stored in disconnected media... video tapes here... CD's there... hard drives... printed photos... email folders.  It's impossible to draw a sense of nostalgia from disconnected data.  That's where we come in.  Our tools allow individuals to create a personal information repository that collects, organizes and analyzes personal data.  The building blocks have been around for years in big business... data warehouses, OLAP engines and charting libraries.  But they've never been applied to personal data. What are the risks of increased personal data without a personal information repository?  How are privacy concerns met as more and more personal information is stored in the personal information repository?");
-
-
-mb.append("<br>");
-mb.append("<h1>Storyline: Skydiver Triathlete Turns Hobbies into Technology</h1>");
-mb.append("An ego-pumping rock-anthem story about Joe Reger with fluff-piece potential if not written and produced correctly.  This story follows the growth of joereger.com from its humble beginnings as a personal website to its eventual expansion to a public tool that anybody can use.  Joe's interest in skydiving, rockclimbing and driving fast are used to drive human interest in the piece.");
-
-
-mb.append("<br>");
-mb.append("<h1>Storyline: Keep Track of Sex, Running and Caffeine With One Tool</h1>");
-mb.append("Ever wanted to see which of your sex partners give you the best orgasms?  Or how far you ran last month?  Add quantified data to web logging and you get reger.com.  Log anything.  Sex.  Running.  Caffeine.  Skydiving.  Over thirty log types to choose from.");
-
-
-mb.append("<br>");
-mb.append("<h1>Storyline: Data Mining at the Personal Level</h1>");
-mb.append("Big business has leveraged data mining for years but individuals have been locked out of the technology... until now.");
-
-
-mb.append("<br>");
-mb.append("<h1>Storyline: The Government Wants Logging Technology</h1>");
-mb.append("The government is increasing its research into logging technology.  Many features are becoming commercially available via reger.com.");
-
-
-mb.append("<br>");
-mb.append("<h1>Storyline: What is Weblogging?</h1>");
-mb.append("An overcooked overdone fluff piece.  We're not above it.  Most people do not know what the world of web logging is all about and an intro to it via reger.com is actually a compelling story.  Our take on web logging is unique because it de-emphasizes the publishing/sharing component slightly and forces it to share the spotlight with personal knowledge growth and media organization.");
-
-
-mb.append("<br>");
-mb.append("<h1>Storyline: Personal Publishing Takes on Traditional Media</h1>");
-mb.append("Individuals now have a tool available that allows them to publish their every thought globally and with syndication technology creating an interconnected web of ideas and news.  Yes, we understand the irony of pitching this piece to traditional media.");
+mb.append("Coming Soon...");
 
 
 
