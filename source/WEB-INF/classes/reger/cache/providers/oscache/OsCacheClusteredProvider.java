@@ -53,6 +53,7 @@ public class OsCacheClusteredProvider implements CacheProvider {
             OsCacheClusteredProvider.groupKeyRelationships.add(new KeyGroupRelationship("/"+group+"/"+key, group));
             OsCacheClusteredProvider.admin.putInCache("/"+group+"/"+key, obj, new String[]{group});
         } catch (Exception ex){
+            admin.cancelUpdate("/"+group+"/"+key);
             reger.core.Debug.errorsave(ex, "OsCacheProvider.java");
         }
     }

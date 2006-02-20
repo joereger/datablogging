@@ -834,33 +834,28 @@ public class Accountuser implements java.io.Serializable {
             return " (megalog.accountid='"+accountid+"') ";
         }
         //Start the SQL out by making sure we only grab logs in this accountid
-        String queryend="(megalog.accountid='"+accountid+"' AND ( ";
+        String queryend="(megalog.accountid='"+accountid+"' ";
         //Add ORs to make sure any logs this user has been granted explicit permission to are included
-        if (logsUserHasExlicitPermissionToAuthor!=null){
-             if (logsUserHasExlicitPermissionToAuthor.size()>0){
-                int i = 0;
-                for (Iterator it = logsUserHasExlicitPermissionToAuthor.iterator(); it.hasNext(); ) {
-                    Integer tmpLogid = (Integer)it.next();
-                    queryend=queryend + " megalog.logid='"+ tmpLogid +"'";
-                    if (i<=(logsUserHasExlicitPermissionToAuthor.size()-2) && logsUserHasExlicitPermissionToAuthor.size()>1){
-                        queryend = queryend + " OR ";
-                    }
-                    if (i==(logsUserHasExlicitPermissionToAuthor.size()-1)){
-                        queryend = queryend + "))";
-                    }
-                    i++;
+        if (logsUserHasExlicitPermissionToAuthor!=null && logsUserHasExlicitPermissionToAuthor.size()>0){
+            int i = 0;
+            queryend = queryend + " AND ( ";
+            for (Iterator it = logsUserHasExlicitPermissionToAuthor.iterator(); it.hasNext(); ) {
+                Integer tmpLogid = (Integer)it.next();
+                queryend=queryend + " megalog.logid='"+ tmpLogid +"'";
+                if (i<=(logsUserHasExlicitPermissionToAuthor.size()-2) && logsUserHasExlicitPermissionToAuthor.size()>1){
+                    queryend = queryend + " OR ";
                 }
-            } else {
-                //There was nothing in the logaccess array so I need to close the string
-                queryend = queryend + "))";
+//                if (i==(logsUserHasExlicitPermissionToAuthor.size()-1)){
+//                    queryend = queryend + "))";
+//                }
+                i++;
             }
-        } else {
-            //There was nothing in the logaccess array so I need to close the string
-            queryend = queryend + " megalog.logid<'-1' ))";
+            queryend = queryend + ") ";
         }
+        queryend = queryend + ") ";
         //If, for some crazy reason it's still blank, then return this docile SQL
         if (queryend.equals("")){
-            return " (megalog.logid<'-1') ";
+            return " (megalog.logid='0') ";
         }
         return queryend;
     }
@@ -905,7 +900,7 @@ public class Accountuser implements java.io.Serializable {
         if (queryend.length()>0){
             return queryend.toString();
         } else {
-            return " (logid<'-1') ";
+            return " (logid='0') ";
         }
     }
 
