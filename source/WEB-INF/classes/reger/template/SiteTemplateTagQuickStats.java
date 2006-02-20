@@ -148,7 +148,7 @@ public class SiteTemplateTagQuickStats implements SiteTemplateTag{
         //if (userSession.getAccount().isPro() && userSession.getAccount().getIssearchmysiteon()==1) {
             qs.delete(0,qs.length());
             qs.append("<a href='tags.log'><img src=images/imageavailable2.gif border=0 align=middle></a> <font face=arial size=-2 class=smallfont> <a href='tags.log'>" + acctCounts.getTagCount() + " Smart Tag");
-            if (acctCounts.getTagCount() <= 1) {
+            if (acctCounts.getTagCount() == 1) {
                 qs.append("");
             } else {
                 qs.append("s");
@@ -159,7 +159,7 @@ public class SiteTemplateTagQuickStats implements SiteTemplateTag{
 
         qs.delete(0,qs.length());
         qs.append("<a href='polls.log'><img src=images/imageavailable2.gif border=0 align=middle></a> <font face=arial size=-2 class=smallfont> <a href='polls.log'>" + acctCounts.getPollscount() + " Poll");
-        if (acctCounts.getPollscount() <= 1) {
+        if (acctCounts.getPollscount() == 1) {
             qs.append("");
         } else {
             qs.append("s");
