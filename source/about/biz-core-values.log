@@ -26,7 +26,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
-mb.append("At Reger.com, our employees are our most valuable asset, as we would not exist without them. As such, each employee’s aim is to faithfully and ethically serve each other, and our customers and partners, as well as the communities we are a part of. We feel that by responding in this manner, the corporation will always be successful. To that end, we have created our company’s core values and beliefs. They are not simply ink on paper. Rather, they are read at all company meetings, and guide all of our actions. If we don't seem to be living up to them, contact us at <a href='mailto=cvbs@reger.com'>cvbs@reger.com</a>.");
+mb.append("At Reger.com, our employees are our most valuable asset, as we would not exist without them. As such, each employee’s aim is serve each other, and our customers and partners, as well as the communities we are a part of. We feel that by responding in this manner, the corporation will always be successful. To that end, we have created our company’s core values and beliefs. They are not simply ink on paper. Rather, they are read at all company meetings, and guide all of our actions. If we don't seem to be living up to them, contact us at <a href='mailto=cvbs@reger.com'>cvbs@reger.com</a>.");
 
 mb.append("<ol> <li>We respect the individual, and believe that individuals who are treated with respect and given responsibility respond by giving their best.");
 mb.append("<li>");
@@ -54,7 +54,7 @@ mb.append("We believe that all people are equal, irrespective of job title, skil
 mb.append("<li>");
 mb.append("We believe that all people have a personal mission and whenever possible we will help people fulfill and/or find that mission.");
 mb.append("<li>");
-mb.append("There’s a big difference between criticizing a person’s work (which is good) and criticizing a person (which is unacceptable).");
+mb.append("There’s a big difference between criticizing a person’s work (which is acceptable) and criticizing a person (which is unacceptable).");
 mb.append("<li>");
 mb.append("We give back to our communities in our own unique ways.");
 mb.append("<li>");
