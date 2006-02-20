@@ -10,7 +10,7 @@ pageProps.pathToAppRoot="";
 /*----------------------------------------------------*/
 %>
 
-<%@ include file="../globalheader.jsp" %>
+<%@ include file="globalheader.jsp" %>
 
 <%
 /*----------------------------------------------------*/
@@ -20,7 +20,7 @@ pageProps.pathToAppRoot="";
 
 
 mb.append("<font face=arial size=+1>");
-mb.append("Sorry, it doesn't appear that you have permission to view that resource.");
+mb.append("Sorry, it doesn't appear that you have permission to view that resource.  Please click <a href='login.log'>here</a> to log in.");
 mb.append("</font>");
 
 
@@ -37,5 +37,5 @@ mb.append("</font>");
 
 %>
 
-<%@ include file="../globalfooter.jsp" %>
+<%@ include file="globalfooter.jsp" %>
 

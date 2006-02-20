@@ -7,7 +7,8 @@ import reger.core.db.Db;
 import reger.core.Util;
 import reger.core.Debug;
 import reger.cache.LogCache;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
+
 import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.Iterator;

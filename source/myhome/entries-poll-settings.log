@@ -6,7 +6,8 @@
 <%@ page import="reger.Entry"%>
 <%@ page import="reger.poll.*"%>
 <%@ page import="reger.cache.AccountCountCache"%>
-<%@ page import="reger.cache.HtmlCache"%>
+<%@ page import="reger.cache.html.HtmlCache"%>
+<%@ page import="reger.cache.EntryCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -102,7 +103,7 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
         if (request.getParameter("pollid")!=null && reger.core.Util.isinteger(request.getParameter("pollid")) && Integer.parseInt(request.getParameter("pollid"))<=0){
             AccountCountCache.flushByAccountid(userSession.getAccount().getAccountid());
             String cachekey = "Polls-" + userSession.getAccount().getAccountid() + "-" + userSession.getAccountuser().getAccountuserid();
-            HtmlCache.flush(cachekey);   
+            HtmlCache.flush(cachekey);
         }
         mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "The poll has been saved!"));
     } else if (request.getParameter("action")!=null && request.getParameter("action").equals("togglecommentapproval")){

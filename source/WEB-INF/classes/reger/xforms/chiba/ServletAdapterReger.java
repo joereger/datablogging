@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import reger.xforms.chiba.adapter.servlet.HttpRequestHandler;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 /**
  * integrates XForms Processor into Web-applications and handles request processing. This is the default

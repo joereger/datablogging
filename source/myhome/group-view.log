@@ -13,6 +13,8 @@
 <%@ page import="reger.Account"%>
 <%@ page import="reger.cache.AccountCache"%>
 <%@ page import="reger.Log"%>
+<%@ page import="reger.cache.AccountCache"%>
+<%@ page import="reger.cache.EntryCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */

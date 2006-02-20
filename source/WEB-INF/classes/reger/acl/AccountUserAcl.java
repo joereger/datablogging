@@ -1,6 +1,6 @@
 package reger.acl;
 
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 /**
  * This class represents a single permission that an accountuser can do.

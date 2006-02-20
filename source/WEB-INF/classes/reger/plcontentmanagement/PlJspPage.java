@@ -2,7 +2,7 @@ package reger.plcontentmanagement;
 
 import reger.nestednav.NestedNavItem;
 import reger.Accountuser;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 import javax.servlet.http.HttpServletRequest;
 

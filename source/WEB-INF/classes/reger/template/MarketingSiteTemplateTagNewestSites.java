@@ -43,10 +43,10 @@ public class MarketingSiteTemplateTagNewestSites implements MarketingSiteTemplat
         StringBuffer out = new StringBuffer();
 
 
-        String cachekey = "MarketingSiteTemplateTagNewestSites" + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request);
+        String cachekey = "MarketingSiteTemplateTagNewestSites" + " URL:" + reger.cache.html.HtmlCache.getKeyFromRequest(request);
         int refreshintervalinseconds = 3600;
-        if (request.getMethod().equals("GET") && !reger.cache.HtmlCache.isStale(cachekey, refreshintervalinseconds)){
-            out.append(reger.cache.HtmlCache.getFromCache(cachekey));
+        if (request.getMethod().equals("GET") && !reger.cache.html.HtmlCache.isStale(cachekey, refreshintervalinseconds)){
+            out.append(reger.cache.html.HtmlCache.getFromCache(cachekey));
         } else {
             //Start Newest Sites
             out.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
@@ -88,17 +88,17 @@ public class MarketingSiteTemplateTagNewestSites implements MarketingSiteTemplat
 
             //Update cache
             if (request.getMethod().equals("GET")){
-                reger.cache.HtmlCache.updateCache(cachekey, refreshintervalinseconds, out.toString());
+                reger.cache.html.HtmlCache.updateCache(cachekey, refreshintervalinseconds, out.toString());
             }
         }
         if (request.getMethod().equals("GET")){
             //Tell user page was cached
             out.append("<font face=arial size=-2 color=#666666>");
             out.append("Last Updated: ");
-            Calendar calTmp = (Calendar)reger.cache.HtmlCache.getLastUpdated().get(cachekey);
+            Calendar calTmp = (Calendar)reger.cache.html.HtmlCache.getLastUpdated().get(cachekey);
             out.append(reger.core.TimeUtils.agoText(calTmp));
             out.append(". ");
-            out.append("Updates Every: "+reger.cache.HtmlCache.getRefreshInterval().get(cachekey)+" seconds.");
+            out.append("Updates Every: "+reger.cache.html.HtmlCache.getRefreshInterval().get(cachekey)+" seconds.");
             out.append("</font>");
             out.append("<br>");
         }

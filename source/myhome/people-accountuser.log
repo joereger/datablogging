@@ -3,6 +3,7 @@
                  java.util.Iterator,
                  java.util.TreeSet"%>
 <%@ page import="reger.cache.LogCache"%>
+<%@ page import="reger.cache.LogCache"%>
 
 <%
 /*----------------------------------------------------*/

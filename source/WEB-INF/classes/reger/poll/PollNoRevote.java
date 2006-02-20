@@ -15,20 +15,20 @@ public class PollNoRevote {
                 for (int i = 0; i < cookies.length; i++) {
                     if (cookies[i].getName().equals(POLLNOVOTECOOKIENAME)){
                         String cookievalue = cookies[i].getValue();
-                        reger.core.Debug.debug(3, "PollNoRevote.java", "hasUserVotedBefore() cookievalue="+cookievalue);
+                        reger.core.Debug.debug(5, "PollNoRevote.java", "hasUserVotedBefore() cookievalue="+cookievalue);
                         String[] pollsvotedon = cookievalue.split("-");
                         if (pollsvotedon.length>0){
                             for (int j = 0; j < pollsvotedon.length; j++) {
                                 String s = pollsvotedon[j];
-                                reger.core.Debug.debug(3, "PollNoRevote.java", "hasUserVotedBefore() found a value in the cookie of: "+s);
+                                reger.core.Debug.debug(5, "PollNoRevote.java", "hasUserVotedBefore() found a value in the cookie of: "+s);
                                 if (s.equals(String.valueOf(pollid))){
-                                    reger.core.Debug.debug(3, "PollNoRevote.java", "hasUserVotedBefore() returning true because s.equals(String.valueOf(pollid)="+s+".equals(String.valueOf("+pollid+"))");
+                                    reger.core.Debug.debug(5, "PollNoRevote.java", "hasUserVotedBefore() returning true because s.equals(String.valueOf(pollid)="+s+".equals(String.valueOf("+pollid+"))");
                                     return true;
                                 }
                             }
                         } else {
                             if (cookievalue.equals(String.valueOf(pollid))){
-                                reger.core.Debug.debug(3, "PollNoRevote.java", "hasUserVotedBefore() returning true because cookievalue.equals(String.valueOf(pollid))="+cookievalue+".equals(String.valueOf("+pollid+"))");
+                                reger.core.Debug.debug(5, "PollNoRevote.java", "hasUserVotedBefore() returning true because cookievalue.equals(String.valueOf(pollid))="+cookievalue+".equals(String.valueOf("+pollid+"))");
                                 return true;
                             }
                         }
@@ -50,12 +50,12 @@ public class PollNoRevote {
                     if (cookies[i].getName().equals(POLLNOVOTECOOKIENAME)){
                         valuetoset = "";
                         String cookievalue = cookies[i].getValue();
-                        reger.core.Debug.debug(3, "PollNoRevote.java", "markUserAsVoted() cookievalue="+cookievalue+"<br>using previously-created cookie");
+                        reger.core.Debug.debug(5, "PollNoRevote.java", "markUserAsVoted() cookievalue="+cookievalue+"<br>using previously-created cookie");
                         String[] pollsvotedon = cookievalue.split("-");
                         if (pollsvotedon.length>0){
                             for (int j = 0; j < pollsvotedon.length; j++) {
                                 String s = pollsvotedon[j];
-                                reger.core.Debug.debug(3, "PollNoRevote.java", "markUserAsVoted() found existing value in cookie s="+s);
+                                reger.core.Debug.debug(5, "PollNoRevote.java", "markUserAsVoted() found existing value in cookie s="+s);
                                 if (reger.core.Util.isinteger(s)){
                                     if (valuetoset.length()>0){
                                         valuetoset =  valuetoset + "-";
@@ -65,7 +65,7 @@ public class PollNoRevote {
                             }
                         }
 
-                        reger.core.Debug.debug(3, "PollNoRevote.java", "markUserAsVoted() finding valuetoset="+valuetoset+"<br>using previously-created cookie");
+                        reger.core.Debug.debug(5, "PollNoRevote.java", "markUserAsVoted() finding valuetoset="+valuetoset+"<br>using previously-created cookie");
                     }
                 }
             }
@@ -73,7 +73,7 @@ public class PollNoRevote {
                 valuetoset =  valuetoset + "-";
             }
             valuetoset =  valuetoset + pollid;
-            reger.core.Debug.debug(3, "PollNoRevote.java", "markUserAsVoted() setting final cookievalue="+valuetoset+"<br>using new cookie");
+            reger.core.Debug.debug(5, "PollNoRevote.java", "markUserAsVoted() setting final cookievalue="+valuetoset+"<br>using new cookie");
             Cookie cookieToSet = new Cookie(POLLNOVOTECOOKIENAME, valuetoset);
             cookieToSet.setMaxAge(-1);
             cookieToSet.setPath("/");

@@ -2,6 +2,7 @@ package reger.template;
 
 import reger.pageFramework.PageProps;
 import reger.UserSession;
+import reger.cache.TemplateTagCache;
 import reger.core.Debug;
 
 import java.util.regex.Pattern;
@@ -72,7 +73,8 @@ public class MarketingSiteTemplateProcessor implements TemplateProcessor {
         StringBuffer pg = new StringBuffer();
 
         // Create a pattern to match cat
-        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
+        //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
+        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>)");
         // Create a matcher with an input string
         Matcher m = p.matcher(templateMainBody);
         // Loop through
@@ -87,6 +89,8 @@ public class MarketingSiteTemplateProcessor implements TemplateProcessor {
                 MarketingSiteTemplateTag tag = getTagBySyntax(m.group());
                 if (tag!=null){
                     m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(tag.getHtml(mb, pageProps, userSession, request)));
+                } else {
+                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group()));
                 }
             }
 
@@ -131,7 +135,7 @@ public class MarketingSiteTemplateProcessor implements TemplateProcessor {
 
         //Try the cache
         try{
-            MarketingSiteTemplateTag tag = (MarketingSiteTemplateTag)MarketingSiteTemplateCacheTags.get(tagSyntax);
+            MarketingSiteTemplateTag tag = (MarketingSiteTemplateTag)TemplateTagCache.get(tagSyntax, "MarketingSiteTemplateTag", tags);
             if (tag!=null){
                 return tag;
             }

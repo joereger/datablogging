@@ -2,7 +2,7 @@ package reger.acl;
 
 import reger.core.db.Db;
 import reger.AddToArray;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 /**
  * A group.

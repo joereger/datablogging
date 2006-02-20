@@ -1,7 +1,7 @@
 package reger;
 
 import reger.core.Debug;
-import reger.cache.jcs.UserSessionCache;
+import reger.cache.UserSessionCache;
 
 import javax.servlet.http.Cookie;
 import java.util.*;
@@ -13,31 +13,26 @@ import java.util.*;
  * Sessions themselves are stored in the session cache.
  */
 public class AllUserSessions {
-        
+
 
     public AllUserSessions(){
 
     }
 
     public static void flushSessions(){
-        UserSessionCache.getInstance().flushUserSessions();
-        //UserSessionCache.flushUserSessions();
-
+        UserSessionCache.flush();
     }
 
     private void addSession(String userSessionId, reger.UserSession userSession){
-        UserSessionCache.getInstance().putUserSession(userSessionId, userSession);
-        //UserSessionCache.putUserSession(userSessionId, userSession);
+        UserSessionCache.put(userSessionId, userSession);
     }
 
     public void removeSession(String userSessionId){
-        UserSessionCache.getInstance().removeUserSession(userSessionId);
-        //UserSessionCache.removeUserSession(userSessionId);
+        UserSessionCache.flush(userSessionId);
     }
 
     private UserSession getUserSession(String userSessionId){
-        return UserSessionCache.getInstance().getUserSession(userSessionId);
-        //return UserSessionCache.getUserSession(userSessionId);
+        return UserSessionCache.get(userSessionId);
     }
 
     public static int numberOfSessionsCurrentlyLive(){

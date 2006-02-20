@@ -6,18 +6,12 @@ import reger.PrivateLabel;
 import reger.ThumbnailCreator;
 import reger.systemproperties.AllSystemProperties;
 import reger.core.TimeUtils;
-import reger.core.ValidationException;
-import reger.core.db.Db;
 import reger.cache.AccountCache;
 
 import java.util.Hashtable;
 import java.util.Calendar;
 import java.util.Vector;
 import java.io.*;
-
-import org.apache.xmlrpc.Base64;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.FileUtils;
 
 
 /**

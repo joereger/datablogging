@@ -1,7 +1,7 @@
 package reger.core.licensing;
 
 import reger.core.Debug;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 import java.util.*;
 

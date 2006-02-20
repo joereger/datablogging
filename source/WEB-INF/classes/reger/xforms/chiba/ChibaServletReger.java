@@ -20,7 +20,7 @@ import reger.systemproperties.PathUploadMedia;
 import reger.Entry;
 import reger.Log;
 import reger.AllMegaLogTypesInSystem;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 /**
  * The ChibaServlet handles all interactions between client and

@@ -1,3 +1,3 @@
 <aop>
-	<prepare expr="field(* $instanceof{@reger.cache.jboss.Cacheable}->*)"/>
+	<prepare expr="field(* $instanceof{@reger.cache.providers.jboss.Cacheable}->*)"/>
 </aop>

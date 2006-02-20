@@ -2,6 +2,7 @@ package reger.template;
 
 import reger.core.Debug;
 import reger.pageFramework.PageProps;
+import reger.cache.TemplateTagCache;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -74,7 +75,7 @@ public class HpTemplateProcessor implements TemplateProcessor {
 
         //Try the cache
         try{
-            HpTemplateTag tag = (HpTemplateTag)HpTemplateCacheTags.get(tagSyntax);
+            HpTemplateTag tag = (HpTemplateTag)TemplateTagCache.get(tagSyntax, "HpTemplateTag", tags);
             if (tag!=null){
                 return tag;
             }

@@ -9,7 +9,7 @@ import reger.core.PasswordHash;
 import reger.core.PasswordVerifier;
 import reger.core.Debug;
 import reger.cache.LogCache;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 import reger.groups.Group;
 
 import java.util.*;

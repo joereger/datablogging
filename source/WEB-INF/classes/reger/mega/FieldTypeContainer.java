@@ -1,8 +1,6 @@
 package reger.mega;
 
-import reger.AddToArray;
-import reger.cache.jboss.Cacheable;
-import reger.core.Debug;
+import reger.cache.providers.jboss.Cacheable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.TreeMap;

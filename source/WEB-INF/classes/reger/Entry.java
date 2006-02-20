@@ -6,7 +6,7 @@ import reger.core.Debug;
 import reger.core.TimeUtils;
 import reger.linkrot.AnchorFinder;
 import reger.cache.LogCache;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 import reger.xforms.EventXformData;
 import reger.mega.FieldType;
 import reger.groups.EventToGroup;

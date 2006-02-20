@@ -1,7 +1,7 @@
 package reger.nestednav;
 
 import reger.Accountuser;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 /**
  * An item that wants to appear on the nested navigation scheme must fulfill this interface.

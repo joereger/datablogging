@@ -3,11 +3,10 @@ package reger.cache;
 import reger.Log;
 import reger.LogNameComparator;
 import reger.Account;
-import reger.core.Debug;
+import reger.cache.AccountCache;
+import reger.cache.providers.CacheFactory;
 import reger.core.db.Db;
 import reger.mega.FieldType;
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
-import com.opensymphony.oscache.base.NeedsRefreshException;
 
 import java.util.*;
 
@@ -16,79 +15,74 @@ import java.util.*;
  */
 public class LogCache {
 
-    private static GeneralCacheAdministrator admin;
 
+    private static String GROUP = "log";
+    private static ArrayList<LogCacheKeyMegafieldidRelationship> logCacheKeyMegafieldidRelationship = new ArrayList<LogCacheKeyMegafieldidRelationship>();
+    private static ArrayList<LogCacheKeyEventtypeidRelationship> logCacheKeyEventtypeidRelationship = new ArrayList<LogCacheKeyEventtypeidRelationship>();
 
     public static Log get(int logid){
-        Debug.debug(5, "", "LogCache.get("+logid+") called.");
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
-        }
-
-        try {
-            Debug.debug(5, "", "LogCache.get("+logid+") trying to return from cache.");
-            return (Log) admin.getFromCache(String.valueOf(logid));
-        } catch (NeedsRefreshException nre) {
-            try {
-                Debug.debug(5, "", "LogCache.get("+logid+") refreshing object from database.");
+        if (logid>0){
+            Object obj = CacheFactory.getCacheProvider().get(String.valueOf(logid), GROUP);
+            if (obj!=null && (obj instanceof Log)){
+                return (Log)obj;
+            } else {
                 Log log = new Log(logid);
-                //Create groups for megafieldid and eventtypeid usage
-                String[] groups = new String[0];
-                groups = reger.AddToArray.addToStringArray(groups, "eventtypeid"+log.getEventtypeid());
-                ArrayList<FieldType> fields = log.getFields();
-                if (fields!=null){
-                    for (Iterator it = fields.iterator(); it.hasNext(); ) {
-                        FieldType fld = (FieldType)it.next();
-                        groups = reger.AddToArray.addToStringArray(groups, "megafieldid"+fld.getMegafieldid());
-                    }
-                }
-                //Put it in the cache and group
-                admin.putInCache(String.valueOf(logid), log, groups);
+                CacheFactory.getCacheProvider().put(String.valueOf(logid), GROUP, log);
+                handleLogAdd(log);
                 return log;
-            } catch (Exception ex) {
-                admin.cancelUpdate(String.valueOf(logid));
-                Debug.errorsave(ex, "");
-                return new Log(0);
             }
         }
+        return new Log(0);
     }
 
-    public static void flushAll(){
-        if (admin!=null){
-            try{
-                admin.flushAll();
-            } catch (Exception e){
-                Debug.errorsave(e, "");
-            }
-        }
+    public static void flush(){
+        CacheFactory.getCacheProvider().flush(GROUP);
+    }
+
+    public static void flush(int logid){
+        CacheFactory.getCacheProvider().flush(String.valueOf(logid), GROUP);
     }
 
     public static void flushByLogid(int logid){
-        if (admin!=null){
-            try{
-                admin.flushEntry(String.valueOf(logid));
-            } catch (Exception e){
-                Debug.errorsave(e, "");
+        flush(logid);
+        synchronized(logCacheKeyEventtypeidRelationship){
+            for (Iterator it = logCacheKeyEventtypeidRelationship.iterator(); it.hasNext(); ) {
+                LogCacheKeyEventtypeidRelationship rel = (LogCacheKeyEventtypeidRelationship)it.next();
+                if (rel.logid==logid){
+                    it.remove();
+                }
+            }
+        }
+        synchronized(logCacheKeyMegafieldidRelationship){
+            for (Iterator it = logCacheKeyMegafieldidRelationship.iterator(); it.hasNext(); ) {
+                LogCacheKeyMegafieldidRelationship rel = (LogCacheKeyMegafieldidRelationship)it.next();
+                if (rel.logid==logid){
+                    it.remove();
+                }
             }
         }
     }
 
     public static void flushByMegafieldid(int megafieldid){
-        if (admin!=null){
-            try{
-                admin.flushGroup("megafieldid"+megafieldid);
-            } catch (Exception e){
-                Debug.errorsave(e, "");
+        synchronized(logCacheKeyMegafieldidRelationship){
+            for (Iterator it = logCacheKeyMegafieldidRelationship.iterator(); it.hasNext(); ) {
+                LogCacheKeyMegafieldidRelationship rel = (LogCacheKeyMegafieldidRelationship)it.next();
+                if (rel.megafieldid==megafieldid){
+                    CacheFactory.getCacheProvider().flush(String.valueOf(rel.logid), GROUP);
+                    it.remove();
+                }
             }
         }
     }
 
     public static void flushByEventtypeid(int eventtypeid){
-        if (admin!=null){
-            try{
-                admin.flushGroup("eventtypeid"+eventtypeid);
-            } catch (Exception e){
-                Debug.errorsave(e, "");
+        synchronized(logCacheKeyEventtypeidRelationship){
+            for (Iterator it = logCacheKeyEventtypeidRelationship.iterator(); it.hasNext(); ) {
+                LogCacheKeyEventtypeidRelationship rel = (LogCacheKeyEventtypeidRelationship)it.next();
+                if (rel.eventtypeid==eventtypeid){
+                    CacheFactory.getCacheProvider().flush(String.valueOf(rel.logid), GROUP);
+                    it.remove();
+                }
             }
         }
     }
@@ -131,8 +125,6 @@ public class LogCache {
     public static Log[] allLogsForAccountAlphabetized(int accountid){
         Log[] out = new Log[0];
 
-
-
         Account acct = AccountCache.get(accountid);
         if (acct!=null){
             //Get a list of logs
@@ -152,6 +144,35 @@ public class LogCache {
         }
         return out;
     }
+
+
+
+
+
+    private static void handleLogAdd(Log log){
+        //Associate with eventtypeid
+        logCacheKeyEventtypeidRelationship.add(new LogCacheKeyEventtypeidRelationship(log.getLogid(),log.getEventtypeid()));
+        //Associate with megafieldid
+        ArrayList<FieldType> fields = log.getFields();
+        if (fields!=null){
+            for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                FieldType fld = (FieldType)it.next();
+                logCacheKeyMegafieldidRelationship.add(new LogCacheKeyMegafieldidRelationship(log.getLogid(),fld.getMegafieldid()));
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

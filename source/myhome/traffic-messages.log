@@ -1,5 +1,6 @@
 <%@ page import="reger.core.db.Db"%>
 <%@ page import="reger.cache.EntryCache"%>
+<%@ page import="reger.cache.EntryCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */

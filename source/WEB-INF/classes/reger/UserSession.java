@@ -1,7 +1,7 @@
 package reger;
 
 import reger.core.Debug;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 import javax.servlet.http.Cookie;
 import java.util.Calendar;

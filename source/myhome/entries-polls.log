@@ -6,6 +6,7 @@
 <%@ page import="reger.cache.EntryCache"%>
 <%@ page import="reger.Entry"%>
 <%@ page import="reger.InfoBox"%>
+<%@ page import="reger.cache.EntryCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */

@@ -2,6 +2,7 @@ package reger.template;
 
 import reger.pageFramework.PageProps;
 import reger.UserSession;
+import reger.cache.TemplateTagCache;
 import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,8 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         //Setup some vars and defaults
         String homepagetitle="My Site";
         String homepagehtml="";
+
+        reger.core.Debug.debug(5, "SiteTemplateProcessor.java", "Made it to SiteTemplateProcessor.");
 
         if (userSession.getAccount().getHomepagetitle()!=null && !userSession.getAccount().getHomepagetitle().equals("")) {
             homepagetitle=userSession.getAccount().getHomepagetitle();
@@ -88,7 +91,8 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         String allFlags = flag1+flag2;
         int allFlagsAsInt = Integer.parseInt(allFlags);
         //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)", allFlagsAsInt);
-        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.*?)\\>|\\<head(.*?)\\>|\\<\\/body>|\\<\\/head>)", allFlagsAsInt);
+        //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.*?)\\>|\\<head(.*?)\\>|\\<\\/body>|\\<\\/head>)", allFlagsAsInt);
+        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.*?)\\>|\\<head(.*?)\\>)", allFlagsAsInt);
         // Create a matcher with an input string
         Matcher m = p.matcher(templateMainBody);
         // Loop through
@@ -107,6 +111,8 @@ public class SiteTemplateProcessor implements TemplateProcessor {
                 SiteTemplateTag tag = getTagBySyntax(m.group());
                 if (tag!=null){
                     m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(tag.getValue(mb, sc, pageProps, userSession, request)));
+                } else {
+                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group()));
                 }
             }
 
@@ -140,6 +146,7 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         pg = wrapInPlUserTemplate(pg, pageProps, userSession, request);
 
         //Return the page
+        reger.core.Debug.debug(5, "SiteTemplateProcessor.java", "Leaving SiteTemplateProcessor.");
 	    return pg;
 
     }
@@ -150,10 +157,13 @@ public class SiteTemplateProcessor implements TemplateProcessor {
             loadTags();
         }
 
+        reger.core.Debug.debug(5, "SiteTemplateProcessor.java", "In getTagBySyntax("+tagSyntax.replaceAll("<", "&lt;")+")");
+
         //Try the cache
         try{
-            SiteTemplateTag tag = (SiteTemplateTag)SiteTemplateCacheTags.get(tagSyntax);
+            SiteTemplateTag tag = (SiteTemplateTag)TemplateTagCache.get(tagSyntax, "SiteTemplateTag", tags);
             if (tag!=null){
+                reger.core.Debug.debug(5, "SiteTemplateProcessor.java", "Returning tag from cache.");
                 return tag;
             }
         } catch (Exception e){
@@ -165,12 +175,13 @@ public class SiteTemplateProcessor implements TemplateProcessor {
             for (int i = 0; i < tags.length; i++) {
                 if (tags[i]!=null){
                     if (tags[i].acceptsParticularSyntax(tagSyntax)){
+                        reger.core.Debug.debug(5, "SiteTemplateProcessor.java", "Returning tag by finding it in tag array.");
                         return tags[i];
                     }
                 }
             }
         }
-
+        reger.core.Debug.debug(5, "SiteTemplateProcessor.java", "Returning null.");
         return null;
     }
 
@@ -261,7 +272,8 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         StringBuffer pg = new StringBuffer();
 
         // Create a pattern to match cat
-        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
+        //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
+        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>)");
         // Create a matcher with an input string
         Matcher m = p.matcher(template.getTemplate());
         // Loop through

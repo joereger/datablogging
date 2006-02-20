@@ -2,8 +2,6 @@ package reger;
 
 import reger.core.db.Db;
 import reger.core.Debug;
-import reger.poll.Poll;
-import reger.poll.PollFormHtml;
 
 import java.util.Iterator;
 

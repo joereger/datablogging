@@ -26,7 +26,7 @@ public class TrafficHitCacheRecording implements ScheduledTask{
     }
     
     public void doTask(){
-        reger.cache.TrafficHitCache.saveAndPurge();
+        reger.cache.html.TrafficHitCache.saveAndPurge();
         result = "Done.";
     }
     

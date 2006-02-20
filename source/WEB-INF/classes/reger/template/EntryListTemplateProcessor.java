@@ -1,6 +1,7 @@
 package reger.template;
 
 import reger.core.Debug;
+import reger.cache.TemplateTagCache;
 
 import java.util.Calendar;
 import java.util.regex.Pattern;
@@ -84,7 +85,7 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
 
         //Try the cache
         try{
-            EntryListTemplateTag tag = (EntryListTemplateTag)EntryListTemplateCacheTags.get(tagSyntax);
+            EntryListTemplateTag tag = (EntryListTemplateTag)TemplateTagCache.get(tagSyntax, "EntryListTemplateTag", tags);
             if (tag!=null){
                 return tag;
             }

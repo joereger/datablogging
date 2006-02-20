@@ -106,7 +106,7 @@ public class File {
                 newFile = new java.io.File(account.getPathToAccountFiles()+newfilepath+newfilename);
             }
 
-            reger.core.Debug.debug(3, "File.java", "newfilepath+newfilename="+newfilepath+newfilename);
+            reger.core.Debug.debug(5, "File.java", "newfilepath+newfilename="+newfilepath+newfilename);
     
             if (file.isFile()){
                 String newthumbfilename = newfilename;
@@ -126,7 +126,7 @@ public class File {
                 FileUtils.copyDirectory(file, newFile, true);
                 FileUtils.deleteDirectory(file);
                 String dirSql = "SELECT imageid, filename FROM image WHERE accountid='"+account.getAccountid()+"' AND LEFT(filename, "+FilenameUtils.normalize(filePathAndOrFilename).length()+")='"+reger.core.Util.cleanForSQL(FilenameUtils.normalize(filePathAndOrFilename))+"'";
-                reger.core.Debug.debug(3, "File.java", "dirSql=<br>"+dirSql);
+                reger.core.Debug.debug(5, "File.java", "dirSql=<br>"+dirSql);
                 //-----------------------------------
                 //-----------------------------------
                 String[][] rstImg= Db.RunSQL(dirSql);

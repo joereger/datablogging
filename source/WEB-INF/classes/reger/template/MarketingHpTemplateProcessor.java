@@ -2,6 +2,7 @@ package reger.template;
 
 import reger.core.Debug;
 import reger.pageFramework.PageProps;
+import reger.cache.TemplateTagCache;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -82,7 +83,7 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
 
         //Try the cache
         try{
-            MarketingHpTemplateTag tag = (MarketingHpTemplateTag)MarketingHpTemplateCacheTags.get(tagSyntax);
+            MarketingHpTemplateTag tag = (MarketingHpTemplateTag)TemplateTagCache.get(tagSyntax, "MarketingHpTemplateTag", tags);
             if (tag!=null){
                 return tag;
             }

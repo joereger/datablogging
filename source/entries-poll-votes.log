@@ -6,6 +6,7 @@
 <%@ page import="reger.InfoBox"%>
 <%@ page import="reger.jcaptcha.CaptchaServiceSingleton"%>
 <%@ page import="com.octo.captcha.service.CaptchaServiceException"%>
+<%@ page import="reger.cache.EntryCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */

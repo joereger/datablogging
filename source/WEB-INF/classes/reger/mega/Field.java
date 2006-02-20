@@ -2,7 +2,7 @@ package reger.mega;
 
 import reger.*;
 import reger.cache.LogCache;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 import reger.core.db.Db;
 import reger.core.Debug;
 import org.jdom.Element;

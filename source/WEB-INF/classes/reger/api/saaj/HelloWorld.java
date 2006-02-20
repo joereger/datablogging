@@ -24,7 +24,7 @@ public class HelloWorld extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         try{
-            reger.core.Debug.debug(3, "HelloWorld.java", "Made it to doPost()");
+            reger.core.Debug.debug(5, "HelloWorld.java", "Made it to doPost()");
 
             //Do SOAP Stuff... Clean Hands
             MimeHeaders mimeHeaders = new MimeHeaders();

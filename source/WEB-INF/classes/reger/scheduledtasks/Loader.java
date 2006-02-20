@@ -58,6 +58,7 @@ public class Loader extends HttpServlet {
         tThr.addScheduledTask(new RefreshTemplateCache());
         tThr.addScheduledTask(new BandwidthTest());
         tThr.addScheduledTask(new DeleteUnusedTags());
+        tThr.addScheduledTask(new RelatedLinksFlush());
         //@todo Allow plugin tasks here
         //Run the thread
         tThr.setPriority(Thread.MIN_PRIORITY);

@@ -22,7 +22,7 @@ pageProps.pathToAppRoot="../";
 
 
 //HtmlCache
-String cachekey = "MyhomeLogTypeDetail" + " PLID:" + userSession.getPl().getPlid() +  " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request, false); //Anything unique for the page
+String cachekey = "MyhomeLogTypeDetail" + " PLID:" + userSession.getPl().getPlid() +  " URL:" + reger.cache.html.HtmlCache.getKeyFromRequest(request, false); //Anything unique for the page
 int refreshintervalinseconds = 600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 

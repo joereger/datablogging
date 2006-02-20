@@ -1,6 +1,6 @@
 package reger;
 
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 /**
  * A single related entry

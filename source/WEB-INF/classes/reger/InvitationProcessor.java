@@ -96,7 +96,11 @@ public class InvitationProcessor {
                         groupMembership.setAccountuserid(au.getAccountuserid());
                         groupMembership.setGroupid(group.getGroupid());
                         if (group.getMembershipismoderated()){
-                            groupMembership.setIsapproved(false);
+                            if (group.getAccountuserid()==invitationSender.getAccountuserid()){
+                                groupMembership.setIsapproved(true);
+                            } else {
+                                groupMembership.setIsapproved(false);
+                            }
                         } else {
                             groupMembership.setIsapproved(true);
                         }

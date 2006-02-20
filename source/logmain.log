@@ -4,6 +4,7 @@
                  reger.template.HpTemplateProcessor,
                  reger.Log"%>
 <%@ page import="reger.cache.LogCache"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */

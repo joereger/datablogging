@@ -25,7 +25,7 @@ String trafficSection = "Home";
 
 
 //HtmlCache
-String cachekey = "TrafficMain ACCOUNTUSERID="+userSession.getAccountuser().getAccountuserid()+ " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+String cachekey = "TrafficMain ACCOUNTUSERID="+userSession.getAccountuser().getAccountuserid()+ " URL:" + reger.cache.html.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
 int refreshintervalinseconds = 300;
 %><%@ include file="../htmlcachestart.jsp" %><%
 

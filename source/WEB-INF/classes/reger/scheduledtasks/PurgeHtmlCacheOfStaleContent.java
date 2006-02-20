@@ -26,7 +26,7 @@ public class PurgeHtmlCacheOfStaleContent implements ScheduledTask{
     }
     
     public void doTask(){
-        reger.cache.HtmlCache.purgeStaleItems();
+        reger.cache.html.HtmlCache.purgeStaleItems();
         result = "Done.";
     }
     

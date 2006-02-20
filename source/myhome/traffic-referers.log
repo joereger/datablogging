@@ -24,7 +24,7 @@ pageProps.pathToAppRoot="../";
 String trafficSection = "Referers";
 
 //HtmlCache
-String cachekey = "TrafficReferers ACCOUNTUSERID="+userSession.getAccountuser().getAccountuserid() + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+String cachekey = "TrafficReferers ACCOUNTUSERID="+userSession.getAccountuser().getAccountuserid() + " URL:" + reger.cache.html.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
 int refreshintervalinseconds = 300;
 %><%@ include file="../htmlcachestart.jsp" %><%
 

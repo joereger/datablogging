@@ -1,9 +1,8 @@
 package reger;
 
 import reger.core.db.Db;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.Iterator;
 

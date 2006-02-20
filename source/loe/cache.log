@@ -1,7 +1,4 @@
 
-<%@ page import="java.util.*" %>
-<%@ page import="reger.cache.jboss.UserSessionCache"%>
-<%@ page import="reger.UserSession"%>
 
 <%
 /*----------------------------------------------------*/
@@ -24,21 +21,8 @@ pageProps.pathToAppRoot="../";
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-int levelsToDisplay = 1;
-if (request.getParameter("levelstodisplay")!=null && reger.core.Util.isinteger(request.getParameter("levelstodisplay"))){
-    levelsToDisplay = Integer.parseInt(request.getParameter("levelstodisplay"));
-}
-
-String fqn = "/";
-if (request.getParameter("fqn")!=null && !request.getParameter("fqn").equals("")){
-    fqn = request.getParameter("fqn");
-}
-
-//Display the fqn
-pageProps.title = "Cache: " + fqn;
-
 //Output the cache as html
-mb.append(reger.cache.jboss.CacheDumper.getHtml(fqn, levelsToDisplay));
+mb.append(reger.cache.providers.CacheFactory.getCacheProvider().getCacheStatsAsHtml());
 
 %>
 

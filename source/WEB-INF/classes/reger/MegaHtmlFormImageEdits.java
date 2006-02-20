@@ -2,7 +2,6 @@ package reger;
 
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
-import reger.core.Debug;
 
 
 public class MegaHtmlFormImageEdits {
@@ -70,7 +69,7 @@ public class MegaHtmlFormImageEdits {
 
                     //If we have deletes, let's delete them
                     if (request.getParameter("delete-" + rstImagelistUpdate[i][0])!=null && request.getParameter("delete-" + rstImagelistUpdate[i][0]).equals("yes")) {
-                        
+
 
                         //-----------------------------------
                         //-----------------------------------

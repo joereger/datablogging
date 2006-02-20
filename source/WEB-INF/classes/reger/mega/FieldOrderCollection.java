@@ -1,7 +1,7 @@
 package reger.mega;
 
 import reger.core.Debug;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 import java.util.HashMap;
 import java.util.Iterator;

@@ -1,6 +1,6 @@
 package reger.mega;
 
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 /**
  * Holds field location information

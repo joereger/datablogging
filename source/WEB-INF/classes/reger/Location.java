@@ -4,7 +4,7 @@ import reger.core.db.Db;
 import reger.core.Util;
 import reger.core.ValidationException;
 import reger.core.Debug;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 /**
  * This class models a content page.

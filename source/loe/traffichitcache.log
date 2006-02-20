@@ -1,7 +1,7 @@
 
 <%@ page import="java.util.*,
                  reger.core.db.Db,
-                 reger.cache.TrafficHitCache,
+                 reger.cache.html.TrafficHitCache,
                  reger.TrafficHit" %>
 
 <%
@@ -27,7 +27,7 @@ pageProps.pathToAppRoot="../";
 
 if (request.getParameter("action")!=null && request.getParameter("action").equals("reset")){
 
-    reger.cache.TrafficHitCache.saveAndPurge();
+    reger.cache.html.TrafficHitCache.saveAndPurge();
 
     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Traffic cache has been saved and purged."));
 }
@@ -47,18 +47,18 @@ mb.append("</font>");
 mb.append("<br><br>");
 
 mb.append("<font face=arial size=+1>");
-mb.append("The Traffic Hit Cache is holding " + reger.cache.TrafficHitCache.getNumberOfCachedTrafficHits() + " hits.");
+mb.append("The Traffic Hit Cache is holding " + reger.cache.html.TrafficHitCache.getNumberOfCachedTrafficHits() + " hits.");
 mb.append("</font>");
 mb.append("<br><br>");
 
 
 mb.append("<font face=arial size=+1>");
-mb.append("The Traffic Hit Cache is using an estimated " + reger.cache.TrafficHitCache.getEstimatedMemoryUsage() + " bytes of memory.");
+mb.append("The Traffic Hit Cache is using an estimated " + reger.cache.html.TrafficHitCache.getEstimatedMemoryUsage() + " bytes of memory.");
 mb.append("</font>");
 mb.append("<br><br>");
 
 mb.append("<pre>");
-mb.append(reger.cache.TrafficHitCache.getHitsAsBigLongUglyString());
+mb.append(reger.cache.html.TrafficHitCache.getHitsAsBigLongUglyString());
 mb.append("</pre>");
 
 

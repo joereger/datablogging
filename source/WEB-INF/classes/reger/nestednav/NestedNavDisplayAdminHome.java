@@ -1,7 +1,6 @@
 package reger.nestednav;
 
 import reger.UserSession;
-import reger.Help;
 import reger.core.Debug;
 import reger.cache.LogCache;
 

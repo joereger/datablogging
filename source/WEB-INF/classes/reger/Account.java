@@ -7,7 +7,7 @@ import reger.core.*;
 import reger.core.licensing.License;
 import reger.core.licensing.RegerLicensingApiClient;
 import reger.cache.LogCache;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 import reger.files.FileAcl;
 
 import java.util.*;

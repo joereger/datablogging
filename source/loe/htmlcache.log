@@ -25,7 +25,7 @@ pageProps.pathToAppRoot="../";
 
 
 if (request.getParameter("action")!=null && request.getParameter("action").equals("reset")){
-    reger.cache.HtmlCache.clearCache();
+    reger.cache.html.HtmlCache.clearCache();
     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Html Cache cleared."));
 }
 
@@ -71,7 +71,7 @@ mbTmp.append("</td>");
 mbTmp.append("</tr>");
 
 int totalbytes = 0;
-Map cache = reger.cache.HtmlCache.getHtmlCache();
+Map cache = reger.cache.html.HtmlCache.getHtmlCache();
 if (cache!=null){
     for (Iterator i=cache.entrySet().iterator(); i.hasNext(); ) {
         Map.Entry e = (Map.Entry) i.next();
@@ -86,13 +86,13 @@ if (cache!=null){
         mbTmp.append("<tr>");
         mbTmp.append("<td valign=top bgcolor=#ffffff>");
         mbTmp.append("<font face=arial size=-2>");
-        Calendar calTmp = (Calendar)reger.cache.HtmlCache.getLastUpdated().get(key);
+        Calendar calTmp = (Calendar)reger.cache.html.HtmlCache.getLastUpdated().get(key);
         mbTmp.append(reger.core.TimeUtils.agoText(calTmp));
         mbTmp.append("</font>");
         mbTmp.append("</td>");
         mbTmp.append("<td valign=top bgcolor=#ffffff>");
         mbTmp.append("<font face=arial size=-2>");
-        mbTmp.append(reger.cache.HtmlCache.getRefreshInterval().get(key));
+        mbTmp.append(reger.cache.html.HtmlCache.getRefreshInterval().get(key));
         mbTmp.append("</font>");
         mbTmp.append("</td>");
         mbTmp.append("<td valign=top bgcolor=#ffffff>");
@@ -116,17 +116,17 @@ mb.append("</font>");
 mb.append("<br>");
 
 mb.append("<font face=arial size=+1>");
-mb.append("Total Cache Requests:" + reger.cache.HtmlCache.getTotalcacherequests());
+mb.append("Total Cache Requests:" + reger.cache.html.HtmlCache.getTotalcacherequests());
 mb.append("</font>");
 mb.append("<br>");
 
 mb.append("<font face=arial size=+1>");
-mb.append("Total Cache Hits:" + reger.cache.HtmlCache.getTotalcachehits());
+mb.append("Total Cache Hits:" + reger.cache.html.HtmlCache.getTotalcachehits());
 mb.append("</font>");
 mb.append("<br>");
 
 //mb.append("<font face=arial size=+1>");
-//mb.append("Success Rate:" + new Double(reger.cache.HtmlCache.getTotalcachehits() / reger.cache.HtmlCache.getTotalcacherequests()));
+//mb.append("Success Rate:" + new Double(reger.cache.html.HtmlCache.getTotalcachehits() / reger.cache.html.HtmlCache.getTotalcacherequests()));
 //mb.append("</font>");
 //mb.append("<br>");
 

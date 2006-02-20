@@ -16,12 +16,10 @@ import javax.activation.FileDataSource;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.File;
-import java.io.ByteArrayOutputStream;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.Iterator;
 import java.util.Hashtable;
-import java.net.URL;
 
 /**
  *
@@ -45,7 +43,7 @@ public class DownloadFileFromServer extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         try{
-            reger.core.Debug.debug(3, "DownloadFileFromServer.java", "Made it to doPost()");
+            reger.core.Debug.debug(5, "DownloadFileFromServer.java", "Made it to doPost()");
 
             //Do SOAP Stuff... Clean Hands
             MimeHeaders mimeHeaders = new MimeHeaders();
@@ -88,7 +86,7 @@ public class DownloadFileFromServer extends HttpServlet {
                     file = fnEl.getValue();
                 }
 
-                reger.core.Debug.debug(3, "DownloadFileFromServer.java", "email:"+email+"<br>file:"+file);
+                reger.core.Debug.debug(5, "DownloadFileFromServer.java", "email:"+email+"<br>file:"+file);
 
                 //Go to the original XML-RPC API
                 FileSyncServer fss = new FileSyncServer();
@@ -137,7 +135,7 @@ public class DownloadFileFromServer extends HttpServlet {
 //                OutputStream os = response.getOutputStream();
 //                reply.writeTo(os);
 //                os.flush();
-//                reger.core.Debug.debug(3, "DownloadFileFromServer.java", "Successfully sent file, in theory.");
+//                reger.core.Debug.debug(5, "DownloadFileFromServer.java", "Successfully sent file, in theory.");
 //            } else {
 //                sendError((String)res.get("error"), response);
 //            }
@@ -169,7 +167,7 @@ public class DownloadFileFromServer extends HttpServlet {
                     reply.writeTo(os);
                     os.flush();
                     os.close();
-                    reger.core.Debug.debug(3, "DownloadFileFromServer.java", "Successfully sent file, in theory.");
+                    reger.core.Debug.debug(5, "DownloadFileFromServer.java", "Successfully sent file, in theory.");
                 } else {
                     sendError ("Problem writing output.", response);
                 }
@@ -207,7 +205,7 @@ public class DownloadFileFromServer extends HttpServlet {
 
             //ByteArrayOutputStream os = new ByteArrayOutputStream();
             //message.writeTo(os);
-            //reger.core.Debug.debug(3, "DownloadFileFromServer.java", os.toString().replaceAll("<", "&lt;"));
+            //reger.core.Debug.debug(5, "DownloadFileFromServer.java", os.toString().replaceAll("<", "&lt;"));
 
             return message;
         } catch (Exception e){
@@ -232,7 +230,7 @@ public class DownloadFileFromServer extends HttpServlet {
             OutputStream os = response.getOutputStream();
             reply.writeTo(os);
             os.flush();
-            reger.core.Debug.debug(3, "DownloadFileFromServer.java", "Fail, sending error message:" + error);
+            reger.core.Debug.debug(5, "DownloadFileFromServer.java", "Fail, sending error message:" + error);
         } catch (Exception e){
             reger.core.Debug.errorsave(e, "DownloadFileFromServer.java");
         }

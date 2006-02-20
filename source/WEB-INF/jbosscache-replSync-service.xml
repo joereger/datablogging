@@ -47,12 +47,12 @@
         <!--
         Just used for async repl: use a replication queue
         -->
-        <attribute name="UseReplQueue">false</attribute>
+        <attribute name="UseReplQueue">true</attribute>
 
         <!--
             Replication interval for replication queue (in ms)
         -->
-        <attribute name="ReplQueueInterval">0</attribute>
+        <attribute name="ReplQueueInterval">30000</attribute>
 
         <!--
             Max number of elements which trigger replication

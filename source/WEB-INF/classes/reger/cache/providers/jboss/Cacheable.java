@@ -1,4 +1,4 @@
-package reger.cache.jboss;
+package reger.cache.providers.jboss;
 
 import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;

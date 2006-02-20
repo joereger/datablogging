@@ -3,6 +3,7 @@ package reger.template;
 import reger.pageFramework.PageProps;
 import reger.UserSession;
 import reger.HtmlParser;
+import reger.cache.TemplateTagCache;
 import reger.core.Debug;
 
 import java.util.regex.Pattern;
@@ -116,7 +117,7 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
 
         //Try the cache
         try{
-            PlUserTemplateTag tag = (PlUserTemplateTag)PlUserTemplateCacheTags.get(tagSyntax);
+            PlUserTemplateTag tag = (PlUserTemplateTag)TemplateTagCache.get(tagSyntax, "PlUserTemplateTag", tags);
             if (tag!=null){
                 return tag;
             }
@@ -185,7 +186,8 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
         StringBuffer pg = new StringBuffer();
 
         // Create a pattern to match cat
-        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
+        //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)");
+        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>)");
         // Create a matcher with an input string
         Matcher m = p.matcher(template.getTemplate());
         // Loop through
@@ -196,6 +198,8 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
             PlUserTemplateTag tag = getTagBySyntax(m.group());
             if (tag!=null){
                 m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(tag.getPreview()));
+            } else {
+                m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group()));
             }
 
 

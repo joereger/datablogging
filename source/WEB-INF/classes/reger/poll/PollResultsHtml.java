@@ -2,13 +2,9 @@ package reger.poll;
 
 import reger.pageFramework.PageProps;
 import reger.UserSession;
-import reger.jcaptcha.CaptchaServiceSingleton;
-import reger.core.Debug;
 import reger.cache.EntryCache;
 
 import java.util.Iterator;
-
-import com.octo.captcha.service.CaptchaServiceException;
 
 /**
  * Used to display poll results

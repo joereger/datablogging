@@ -1,7 +1,7 @@
 package reger.mega;
 
 import reger.AddToArray;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;

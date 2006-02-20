@@ -27,7 +27,7 @@ public class SaveFileOnServer extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         try{
-            reger.core.Debug.debug(3, "SaveFileOnServer.java", "Made it to doPost()");
+            reger.core.Debug.debug(5, "SaveFileOnServer.java", "Made it to doPost()");
 
             //Do SOAP Stuff... Clean Hands
             MimeHeaders mimeHeaders = new MimeHeaders();
@@ -75,7 +75,7 @@ public class SaveFileOnServer extends HttpServlet {
                     lastmodifieddateinmillis = lmEl.getValue();
                 }
 
-                reger.core.Debug.debug(3, "SaveFileOnServer.java", "email:"+email+"<br>password:"+password+"<br>file:"+file+"<br>lastmod:"+lastmodifieddateinmillis);
+                reger.core.Debug.debug(5, "SaveFileOnServer.java", "email:"+email+"<br>password:"+password+"<br>file:"+file+"<br>lastmod:"+lastmodifieddateinmillis);
 
                 //Attachment
                 Iterator attachments = message.getAttachments();

@@ -1,65 +1,48 @@
 package reger.cache;
 
 import reger.UrlSplitter;
+import reger.Account;
+import reger.cache.providers.CacheFactory;
 import reger.core.Debug;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
-/**
- * Caches Account objects using OSCache
- */
+
 public class UrlToAccountidLookupCache {
 
-    public static GeneralCacheAdministrator admin;
 
+    private static String GROUP = "urltoaccountid";
 
     public static int get(UrlSplitter urlSplitter){
-        Debug.debug(5, "", "UrlToAccountidLookupCache.get("+urlSplitter.getRawIncomingServername()+") called.");
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
-        }
 
-        int accountid = reger.Account.findAccountid(urlSplitter);
-
-        if (accountid>0){
-            try {
-                Debug.debug(5, "", "UrlToAccountidLookupCache.get("+urlSplitter.getRawIncomingServername()+") trying to return from cache with urlSplitter.getUrlSplitterAsString()=" + urlSplitter.getUrlSplitterAsString());
-                return ((Integer)admin.getFromCache(urlSplitter.getUrlSplitterAsString())).intValue();
-            } catch (NeedsRefreshException nre) {
-                try {
-                    Debug.debug(5, "", "UrlToAccountidLookupCache.get("+urlSplitter.getRawIncomingServername()+") refreshing from database with urlSplitter.getUrlSplitterAsString()=" + urlSplitter.getUrlSplitterAsString());
-
-                    //if (accountid>0){
-                        Debug.debug(5, "", "UrlToAccountidLookupCache.get("+urlSplitter.getRawIncomingServername()+") refreshing from database with urlSplitter.getUrlSplitterAsString()=" + urlSplitter.getUrlSplitterAsString()+"<br>putting accountid="+accountid+" into cache.");
-                        admin.putInCache(urlSplitter.getUrlSplitterAsString(), new Integer(accountid));
-                        return accountid;
-    //                } else {
-    //                    reger.core.Util.debug(5, "UrlToAccountidLookupCache.get("+urlSplitter.getRawIncomingServername()+") No accountid>0 was found so not putting into cache and returning 0.");
-    //                    admin.cancelUpdate(String.valueOf(accountid));
-    //                    return 0;
-    //                }
-                } catch (Exception ex) {
-                    Debug.debug(5, "", "UrlToAccountidLookupCache.get("+urlSplitter.getRawIncomingServername()+") Exception so returning 0.");
-                    admin.cancelUpdate(urlSplitter.getUrlSplitterAsString());
-                    Debug.errorsave(ex, "");
-                    return 0;
-                }
+        Object obj = CacheFactory.getCacheProvider().get(urlSplitter.getUrlSplitterAsString(), GROUP);
+        if (obj!=null){
+            try{
+                int accountid = (Integer)obj;
+                return accountid;
+            } catch (Exception e){
+               reger.core.Debug.errorsave(e, "UrlToAccountidLookupCache.java");
+               return 0;
             }
+        } else {
+            int accountid = reger.Account.findAccountid(urlSplitter);
+            if (accountid>0){
+                CacheFactory.getCacheProvider().put(urlSplitter.getUrlSplitterAsString(), GROUP, new Integer(accountid));
+            }
+            return accountid;
         }
-        return 0;
     }
 
     public static void put(UrlSplitter urlSplitter, int accountid){
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
-        }
-
-        try{
-            admin.putInCache(urlSplitter.getUrlSplitterAsString(), new Integer(accountid));
-        } catch (Exception ex){
-            Debug.errorsave(ex, "");
-        }
+        CacheFactory.getCacheProvider().put(urlSplitter.getUrlSplitterAsString(), GROUP, new Integer(accountid));
     }
 
+    public static void flush(){
+        CacheFactory.getCacheProvider().flush(GROUP);
+    }
+
+    public static void flush(int accountid){
+        CacheFactory.getCacheProvider().flush(String.valueOf(accountid), GROUP);
+    }
 
 }

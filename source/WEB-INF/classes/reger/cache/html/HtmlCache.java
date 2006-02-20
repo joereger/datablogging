@@ -1,4 +1,4 @@
-package reger.cache;
+package reger.cache.html;
 
 import reger.core.Debug;
 
@@ -151,7 +151,7 @@ public class HtmlCache {
                 refreshInterval.remove(key);
             }
         } catch (Exception e){
-            reger.core.Debug.debug(3, "HtmlCache.java", e);
+            reger.core.Debug.debug(5, "HtmlCache.java", e);
         }
     }
 

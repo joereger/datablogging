@@ -1,5 +1,5 @@
 <%
-if (request.getMethod().equals("GET") && !reger.cache.HtmlCache.isStale(cachekey, refreshintervalinseconds)){
-    mb.append(reger.cache.HtmlCache.getFromCache(cachekey));
+if (request.getMethod().equals("GET") && !reger.cache.html.HtmlCache.isStale(cachekey, refreshintervalinseconds)){
+    mb.append(reger.cache.html.HtmlCache.getFromCache(cachekey));
 } else {
 %>

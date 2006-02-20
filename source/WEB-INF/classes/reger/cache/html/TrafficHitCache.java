@@ -1,4 +1,4 @@
-package reger.cache;
+package reger.cache.html;
 
 import reger.TrafficHit;
 import reger.core.Debug;

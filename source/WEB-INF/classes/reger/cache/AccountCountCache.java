@@ -3,6 +3,7 @@ package reger.cache;
 import reger.AccountCounts;
 import reger.Account;
 import reger.Accountuser;
+import reger.cache.providers.CacheFactory;
 import reger.core.Debug;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
@@ -14,69 +15,42 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  */
 public class AccountCountCache {
 
-    public static GeneralCacheAdministrator admin;
+    private static String GROUP = "accountcounts";
+
 
     public static AccountCounts get(Account account, Accountuser accountuser){
-        String key = account.getAccountid()+":"+accountuser.getAccountuserid();
-        String[] group = new String[2];
-        group[0] = String.valueOf(account.getAccountid());
-        group[1] = String.valueOf(accountuser.getAccountuserid());
-        Debug.debug(5, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") called.");
-
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
+        String key = "accountid"+account.getAccountid()+":"+"accountuserid"+accountuser.getAccountuserid();
+        Object obj = CacheFactory.getCacheProvider().get(key, GROUP);
+        if (obj!=null && (obj instanceof AccountCounts)){
+            return (AccountCounts)obj;
+        } else {
+            AccountCounts acctCounts = new AccountCounts(account, accountuser);
+            CacheFactory.getCacheProvider().put(key, GROUP, acctCounts);
+            return acctCounts;
         }
+    }
 
-        try {
-            Debug.debug(5, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") trying to return from cache.");
-            return (AccountCounts) admin.getFromCache(key);
-        } catch (NeedsRefreshException nre) {
-            try {
-                Debug.debug(5, "", "AccountCountsCache.get("+account.getAccountid()+", "+accountuser.getAccountuserid()+") refreshing object from database.");
-                AccountCounts acctCounts = new AccountCounts(account, accountuser);
-                admin.putInCache(key, acctCounts, group);
-                return acctCounts;
-            } catch (Exception ex) {
-                admin.cancelUpdate(key);
-                Debug.errorsave(ex, "");
-                return new AccountCounts();
+    public static void flush(){
+        CacheFactory.getCacheProvider().flush(GROUP);
+    }
+
+    public static void flush(int accountid, int accountuserid){
+        String key = "accountid"+accountid+":"+"accountuserid"+accountuserid;
+        CacheFactory.getCacheProvider().flush(key, GROUP);
+    }
+
+
+    public static void flushByAccountid(int accountid){
+        String[] keys = CacheFactory.getCacheProvider().getKeys(GROUP);
+        for (int i = 0; i < keys.length; i++) {
+            String key = keys[i];
+            if (key.indexOf("accountid"+accountid)>0){
+                CacheFactory.getCacheProvider().flush(key, GROUP);
             }
         }
     }
 
-    public static void flushByAccountid(int accountid){
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
-        }
-        try{
-            admin.flushGroup(String.valueOf(accountid));
-        } catch (Exception e){
-            Debug.errorsave(e, "");
-        }
-    }
 
-    public static void flushByAccountuserid(int accountuserid){
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
-        }
-        try{
-            admin.flushGroup(String.valueOf(accountuserid));
-        } catch (Exception e){
-            Debug.errorsave(e, "");
-        }
-    }
-
-    public static void put(String key, AccountCounts acctCounts, String[] group){
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
-        }
-
-        try{
-            admin.putInCache(key, acctCounts, group);
-        } catch (Exception ex){
-            Debug.errorsave(ex, "");
-        }
-    }
 
 
 }

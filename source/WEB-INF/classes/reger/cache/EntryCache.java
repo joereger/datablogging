@@ -1,6 +1,8 @@
 package reger.cache;
 
 import reger.Entry;
+import reger.Account;
+import reger.cache.providers.CacheFactory;
 import reger.core.Debug;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
@@ -10,52 +12,38 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  */
 public class EntryCache {
 
-    private static GeneralCacheAdministrator admin;
-
+    private static String GROUP = "entry";
 
     public static Entry get(int eventid){
-        Debug.debug(5, "", "EntryCache.get("+eventid+") called.");
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
-        }
-
-        try {
-            Debug.debug(5, "", "EntryCache.get("+eventid+") trying to return from cache.");
-            return (Entry) admin.getFromCache(String.valueOf(eventid));
-        } catch (NeedsRefreshException nre) {
-            try {
-                Debug.debug(5, "", "EntryCache.get("+eventid+") refreshing object from database.");
-                Entry ent = new Entry(eventid);
-                admin.putInCache(String.valueOf(eventid), ent);
-                return ent;
-            } catch (Exception ex) {
-                admin.cancelUpdate(String.valueOf(eventid));
-                Debug.errorsave(ex, "");
-                return new Entry(0);
+        if (eventid>0){
+            Object obj = CacheFactory.getCacheProvider().get(String.valueOf(eventid), GROUP);
+            if (obj!=null && (obj instanceof Entry)){
+                return (Entry)obj;
+            } else {
+                Entry entry = new Entry(eventid);
+                CacheFactory.getCacheProvider().put(String.valueOf(eventid), GROUP, entry);
+                return entry;
             }
         }
+        return new Entry(0);
+    }
+
+    public static void flush(){
+        CacheFactory.getCacheProvider().flush(GROUP);
     }
 
     public static void flush(int eventid){
-        if (admin!=null){
-            try{
-                admin.flushEntry(String.valueOf(eventid));
-            } catch (Exception e){
-                Debug.errorsave(e, "");
-            }
-        }
+        CacheFactory.getCacheProvider().flush(String.valueOf(eventid), GROUP);
     }
 
 
-    public static void flush(){
-        if (admin!=null){
-            try{
-                admin.flushAll();
-            } catch (Exception e){
-                Debug.errorsave(e, "");
-            }
-        }
-    }
+
+
+
+
+
+
+
 
 
 }

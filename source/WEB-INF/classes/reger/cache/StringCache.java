@@ -1,6 +1,8 @@
 package reger.cache;
 
 import reger.core.Debug;
+import reger.Account;
+import reger.cache.providers.CacheFactory;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 
@@ -9,40 +11,37 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  */
 public class StringCache {
 
-    public static GeneralCacheAdministrator admin;
-
+    private static String GROUP = "string";
 
     public static String get(String key){
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
-        }
-
-        try {
-            return (String) admin.getFromCache(key);
-        } catch (NeedsRefreshException nre) {
-            try {
-                String stuff = reger.core.RandomString.randomAlphanumeric(6);
-                admin.putInCache(key, stuff);
-                return stuff;
-            } catch (Exception ex) {
-                admin.cancelUpdate(key);
-                Debug.errorsave(ex, "");
-                return "";
-            }
+        Object obj = CacheFactory.getCacheProvider().get(key, GROUP);
+        if (obj!=null && (obj instanceof String)){
+            return (String)obj;
+        } else {
+            return "";
         }
     }
 
     public static void put(String key, String stuff){
-        if (admin==null){
-            admin = new GeneralCacheAdministrator();
-        }
-
-        try{
-            admin.putInCache(key, stuff);
-        } catch (Exception ex){
-            Debug.errorsave(ex, "");
-        }
+        CacheFactory.getCacheProvider().put(key, GROUP, stuff);
     }
+
+    public static void flush(){
+        CacheFactory.getCacheProvider().flush(GROUP);
+    }
+
+    public static void flush(String key){
+        CacheFactory.getCacheProvider().flush(key, GROUP);
+    }
+
+
+
+
+
+
+
+
+
 
 
 }

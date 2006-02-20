@@ -4,7 +4,7 @@ import reger.nestednav.NestedNavItem;
 import reger.core.db.Db;
 import reger.PrivateLabel;
 import reger.Accountuser;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

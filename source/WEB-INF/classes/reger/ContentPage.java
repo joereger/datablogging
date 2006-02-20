@@ -2,7 +2,7 @@ package reger;
 
 import reger.nestednav.NestedNavItem;
 import reger.core.db.Db;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

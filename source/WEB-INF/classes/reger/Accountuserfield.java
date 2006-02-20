@@ -1,7 +1,7 @@
 package reger;
 
 import reger.core.db.Db;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 /**
  * This object represents a field that an accountuser adds to their profile

@@ -2,8 +2,7 @@ package reger.nestednav;
 
 import reger.Accountuser;
 import reger.UserSession;
-import reger.AddToArray;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 import reger.core.Debug;
 
 import java.util.*;
@@ -37,7 +36,7 @@ public class NestedNavCollection  {
         for (Iterator it = inNestedNavItems.iterator(); it.hasNext(); ) {
             NestedNavItem navItem = (NestedNavItem)it.next();
             //Check permission
-            if (navItem.userCanViewNavItem(accountuser)){
+            if (navItem!=null && navItem.userCanViewNavItem(accountuser)){
                 outItems.add(navItem);
             }
         }

@@ -3,6 +3,7 @@
                  reger.Log,
                  reger.AddToArray"%>
 <%@ page import="reger.cache.LogCache"%>
+<%@ page import="reger.cache.LogCache"%>
 <%
 NavPanel navPanel=null;
 

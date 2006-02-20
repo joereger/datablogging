@@ -52,7 +52,7 @@ String cachekeyLoggedin = "";
 if (userSession.getAccountuser()!=null && userSession.getAccountuser().isLoggedIn){
     cachekeyLoggedin = " ACCOUNTUSERID=" + userSession.getAccountuser().getAccountuserid() + " ";
 }
-String cachekey = "CommunityLogDetail" + cachekeyLoggedin + " URL:" + reger.cache.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
+String cachekey = "CommunityLogDetail" + cachekeyLoggedin + " URL:" + reger.cache.html.HtmlCache.getKeyFromRequest(request); //Anything unique for the page
 int refreshintervalinseconds = 3600;
 %><%@ include file="../htmlcachestart.jsp" %><%
 

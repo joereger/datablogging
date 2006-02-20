@@ -1,7 +1,7 @@
 package reger.nestednav;
 
 import reger.Accountuser;
-import reger.cache.jboss.Cacheable;
+import reger.cache.providers.jboss.Cacheable;
 
 import javax.servlet.http.HttpServletRequest;
 
