@@ -28,7 +28,6 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
-mb.append("<br>");
 mb.append("Our technology is arguably our greatest strength and competitive advantage, as we have been building the Reger Platform for over six years with nearly 200,000 lines of code. Moreover, we built our architecture on proven enterprise quality components:");
 mb.append("<ul>");
 mb.append("<li>Apache Tomcat 5.5.x");
