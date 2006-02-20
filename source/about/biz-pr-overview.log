@@ -42,6 +42,13 @@ mb.append("<br>");
 mb.append("<b>In The News:</b>");
 mb.append("<br>");
 mb.append("Coming Soon...");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<hr>");
+mb.append("<br>");
+mb.append("<b>Events:</b>");
+mb.append("<br>");
+mb.append("Coming Soon...");
 
 
 
