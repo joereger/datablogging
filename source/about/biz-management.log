@@ -95,7 +95,7 @@ mb.append("Datablog: <a href='http://marklowman.reger.com/'>http://marklowman.re
 mb.append("<br>");
 mb.append("<br>");
 mb.append("<h1>Kendra Van Mol</h1>");
-mb.append("<b>Director of Content and Account Services</b>");
+mb.append("<b>Director of Content and Account Services:</b>");
 mb.append("<br>");
 mb.append("Kendra joined Reger in 2002 to manage content creation and account services. Prior to Reger, Kendra worked for frogFire Digital, Inc. as an account manager, working in all aspects in the client lifecyle, from requirements documentation, to project management and launch. Kendra graduated from the University of Georgia with a degree in English concentrating in Jorunalism, publishing several articles in <i>The Red and Black</i>. She attended the Westminster school in Atlanta and is expecting her first child.");
 mb.append("<br>");
@@ -107,7 +107,7 @@ mb.append("Datablog: <a href='http://babyvanmol.reger.com/'>http://kendy.reger.c
 mb.append("<br>");
 mb.append("<br>");
 mb.append("<h1>Pawan Lingala</h1>");
-mb.append("<b>Java Developer</b>");
+mb.append("<b>Java Developer:</b>");
 mb.append("<br>");
 mb.append("Pawan brings more than seven years of software application design and development in J2EE, XML, Java Beans, JavaScript, JSP Custom Libraries, EJB’s, Servlets, Apache Jakarta Struts and Jakarta Taglibs. Additionally, he has extensive experience with Object Oriented Design and Programming.");
 mb.append("<br>");
@@ -118,7 +118,7 @@ mb.append("Datablog: <a href='http://pawan.reger.com/'>http://pawan.reger.com/</
 mb.append("<br>");
 mb.append("<br>");
 mb.append("<h1>Marty Trujillo</h1>");
-mb.append("<b>Java Developer</b>");
+mb.append("<b>Java Developer:</b>");
 mb.append("<br>");
 mb.append("Marty is a seasoned web developer with fifteen years of software development experience and ten years of front-end web experience. Marty's web development experience ranges from highly structured enterprise level web applications for Fortune 500 corporations like Boeing and ADP to Internet start-ups.");
 mb.append("<br>");

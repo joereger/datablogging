@@ -1,0 +1,71 @@
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Joe's Welcome Letter";
+pageProps.navButtonName = "aboutpr-overview";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+
+mb.append("<br>");
+mb.append("<h1>Welcome</h1>");
+mb.append("I'd like to invite you to spend some time reviewing our product offering and playing with our service. Why not? Our entry level datablog accounts are free! Plus, we've got all of the traditional web logging goodies, as well as sex, drugs and rock n' roll...");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("So who are we, and what do we do? Well, we host activity-specific web logs. Things like Running Logs, Biking Logs and Swimming Logs help people stay in shape. Urine Color Logs, Body Weight Logs and Bowel Movement Logs to help keep people healthy. Some of our customers are even creating custom logs for tracking their personal behavior, such as sex, but this is just the beginning as our system has been designed to track any tangible or intangible thing he or she can think of.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("We're also leveraging the moblogging with one of the richest moblogging featuresets out there for camera phones. And we have a social networking component to keep you in touch with your friends.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Our long-term vision is to be the platform for collecting and storing digital memories, a life repository if you will. By helping people to collect, organize, analyze and share their personal data we fill a true void in the digital age. That is to say, we have millions of devices to create personal data, but very few ways to organize and analyze it.");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Again, thanks for visiting! We hope you enjoy your visit, and please let us know if you have any questions or comments!");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("All the best,");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("Joe Reger, Jr.");
+mb.append("<br>");
+mb.append("Founder, CEO");
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
