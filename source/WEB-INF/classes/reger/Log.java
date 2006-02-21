@@ -120,7 +120,8 @@ public class Log implements NestedNavItem {
         if (fields!=null){
             for (Iterator it = fields.iterator(); it.hasNext(); ) {
                FieldType ftC = (FieldType)it.next();
-                tmp0.append(ftC.getMegafieldid() + "<br>fieldname=" + ftC.getFieldname() + "<br>");
+               ftC.loadDefaultData(logid);
+               tmp0.append(ftC.getMegafieldid() + "<br>fieldname=" + ftC.getFieldname() + "<br>");
             }
         }
         Debug.debug(5, "", "Log.java - logid="+logid+" fields Before Assignment<br>" + tmp0.toString());

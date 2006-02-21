@@ -268,9 +268,9 @@ mb.append("<td valign=top nowrap align=right bgcolor=#e6e6e6><font face=arial si
 mb.append("<strong>Card Type:</strong>");
 mb.append("</font></td>");
 mb.append("<td valign=top>");
-mb.append("<input type='radio' name='cardtype' value='visa' checked><img src=images/visa.gif> <font face=arial size=-1>");
+mb.append("<input type='radio' name='cardtype' value='visa' checked><img src=../myhome/images/visa.gif> <font face=arial size=-1>");
 mb.append("<strong>Visa</strong></font><br>");
-mb.append("<input type='radio' name='cardtype' value='mastercard'><img src=images/mastercard.gif> <font face=arial size=-1>");
+mb.append("<input type='radio' name='cardtype' value='mastercard'><img src=../myhome/images/mastercard.gif> <font face=arial size=-1>");
 mb.append("<strong>MasterCard</strong></font><br>");
 mb.append("</td>");
 mb.append("</tr>");

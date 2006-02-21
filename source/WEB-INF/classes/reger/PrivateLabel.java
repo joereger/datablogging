@@ -80,7 +80,7 @@ public class PrivateLabel {
     private boolean isPasswordSentViaEmail = true;
 
     //The NestedNavItems for this account. Note that this is ALL of them.
-    private NestedNavCollection nestedNavCollection;
+    private NestedNavCollection nestedNavCollection = new NestedNavCollection(new ArrayList<NestedNavItem>());
 
     //Peers of this pl
     PrivateLabelPeerRelationship[] peers = new PrivateLabelPeerRelationship[0];
@@ -288,7 +288,11 @@ public class PrivateLabel {
                 staticJspPagesMinusHiddenOnes.add((NestedNavItem)plContPage);
             }
         }
-        nestedNavCollection = new NestedNavCollection(staticJspPagesMinusHiddenOnes);
+        if (nestedNavCollection!=null){
+            synchronized(nestedNavCollection){
+                nestedNavCollection = new NestedNavCollection(staticJspPagesMinusHiddenOnes);
+            }
+        }
     }
 
 

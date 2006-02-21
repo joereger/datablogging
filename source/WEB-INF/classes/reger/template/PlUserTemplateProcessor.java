@@ -34,9 +34,9 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
     }
 
     public static StringBuffer getValue(StringBuffer mb, UserSession userSession, PageProps pageProps, javax.servlet.http.HttpServletRequest request) {
-        reger.core.Debug.debug(5, "PlUserTemplateProcessor.java", "PlUserTemplateProcessor.getValue() called.");
+        reger.core.Debug.debug(3, "PlUserTemplateProcessor.java", "PlUserTemplateProcessor.getValue() called.");
         if ((!userSession.getAccount().isPro()) || (userSession.getAccount().isPro() && userSession.getPl().getDoapplyplusertemplatetopro())){
-            reger.core.Debug.debug(5, "PlUserTemplateProcessor.java", "Attempting to apply template.");
+            reger.core.Debug.debug(3, "PlUserTemplateProcessor.java", "Attempting to apply template.");
             //Get the template string to use
             String templateMainBody="";
 
@@ -49,7 +49,7 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
                 templateMainBody = stp.getDefaultTemplate();
             }
 
-            reger.core.Debug.debug(5, "PlUserTemplateProcessor.java", "templateMainBody:<br>"+templateMainBody.replaceAll("<", "&lt;"));
+            reger.core.Debug.debug(3, "PlUserTemplateProcessor.java", "templateMainBody:<br>"+templateMainBody.replaceAll("<", "&lt;") + "<br>mb.toString():"+mb.toString().replaceAll("<", "&lt;"));
 
 
             //Here's where I need to combing head contents and body contents
@@ -58,12 +58,6 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
             templateMainBody = HtmlParser.combineTagContentFromTwoHtmlDocs(templateMainBody, mb.toString(), "head");
             templateMainBody = HtmlParser.combineTagContentFromTwoHtmlDocs(templateMainBody, mb.toString(), "title");
             templateMainBody = HtmlParser.combineTagAttributesForOneTagFromTwoHtmlDocs(templateMainBody, mb.toString(), "body");
-
-            //Whether or not we've found a body tag yet
-            boolean foundbodytag = false;
-
-            //We'll need a navbar object
-            //reger.navBars navBars = new reger.navBars();
 
             //This is the main page output stringbuffer
             StringBuffer pg = new StringBuffer();
@@ -75,22 +69,14 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
             Matcher m = p.matcher(templateMainBody);
             // Loop through
             while(m!=null && m.find()) {
-
-//                if (m.group().substring(0,5).equalsIgnoreCase("<body") || m.group().substring(0,6).equalsIgnoreCase("< body")) {
-//                    //Body tag
-//                    foundbodytag = true;
-//                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group()));
-//                } else if (m.group().substring(0,5).equalsIgnoreCase("<head") || m.group().substring(0,6).equalsIgnoreCase("< head")) {
-//                    //Head tag
-//                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group()));
-//                } else {
-                    //Go get the tag that can handle this syntax
-                    PlUserTemplateTag tag = getTagBySyntax(m.group());
-                    if (tag!=null){
-                        m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(tag.getValue(new StringBuffer(HtmlParser.getContentsOfHtmlTag(mb.toString(), "body")), pageProps, userSession, request)));
+                PlUserTemplateTag tag = getTagBySyntax(m.group());
+                if (tag!=null){
+                    StringBuffer bodyOfPage = new StringBuffer(HtmlParser.getContentsOfHtmlTag(mb.toString(), "body"));
+                    if (bodyOfPage.toString().equals("")){
+                        bodyOfPage = mb;
                     }
-//                }
-
+                    m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(tag.getValue(bodyOfPage, pageProps, userSession, request)));
+                }
             }
             // Add the last segment
             try{

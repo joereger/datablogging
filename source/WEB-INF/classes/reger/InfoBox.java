@@ -29,7 +29,10 @@ public class InfoBox {
             fontcolor = "ffffff";
             bordercolor = "666666";
         }
-        mb.append(reger.ui.RoundedCorners.start("infobox", bgcolor, bordercolor, 100));
+
+        String randomString = reger.core.RandomString.randomAlphabetic(6);
+
+        mb.append(reger.ui.RoundedCorners.start("infobox"+randomString, bgcolor, bordercolor, 100));
 
 		mb.append("<table cellspacing=0 cellpadding=1 border=0>");
 		mb.append("<tr>");
@@ -49,7 +52,7 @@ public class InfoBox {
         }
 		mb.append("</td></tr></table>");
 
-        mb.append(reger.ui.RoundedCorners.end("infobox"));
+        mb.append(reger.ui.RoundedCorners.end("infobox"+randomString));
         mb.append("<br>");
 
 

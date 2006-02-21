@@ -10,12 +10,18 @@ public class HtmlParser {
 
 
     public static String combineTagContentFromTwoHtmlDocs(String htmlDoc1, String htmlDoc2, String tagName){
+        String contentsFromHtmlDoc1 = getContentsOfHtmlTag(htmlDoc1, tagName);
+        String contentsFromHtmlDoc2 = getContentsOfHtmlTag(htmlDoc2, tagName);
+        if (!contentsFromHtmlDoc1.equals("") && contentsFromHtmlDoc2.equals("")){
+            return htmlDoc1;
+        }
+        if (contentsFromHtmlDoc1.equals("") && !contentsFromHtmlDoc2.equals("")){
+            return htmlDoc2;
+        }
         StringBuffer out = new StringBuffer();
         Pattern p = getPatternForContentsOfTag(tagName);
         Matcher m = p.matcher(htmlDoc1);
         if(m!=null && m.find()) {
-            String contentsFromHtmlDoc1 = m.group(2).toString();
-            String contentsFromHtmlDoc2 = getContentsOfHtmlTag(htmlDoc2, tagName);
             String combinedContents = contentsFromHtmlDoc1 + " " + contentsFromHtmlDoc2;
             String attributesFromHtmlDoc1 = getAttributesOfTag(m.group().toString(), tagName);
             String attributesFromHtmlDoc2 = getAttributesOfTag(htmlDoc2, tagName);
@@ -26,6 +32,7 @@ public class HtmlParser {
             m.appendTail(out);
         } catch (Exception e){
         }
+        reger.core.Debug.debug(3, "HtmlParser.java", "After combining "+tagName+ " tags:<br>" + out.toString().replaceAll("<", "&lt;"));
         return out.toString();
     }
 
