@@ -7,6 +7,9 @@ import reger.cache.providers.CacheProvider;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Properties;
+import java.io.File;
+import java.io.FileInputStream;
 
 
 /**
@@ -22,8 +25,25 @@ public class OsCacheProvider implements CacheProvider {
     }
 
     private static void setupCache(){
+        //Initialize the groupKeyRelationships
         groupKeyRelationships = new ArrayList<KeyGroupRelationship>();
-        admin = new GeneralCacheAdministrator();
+        //Load props file
+        File internalFile = new File(reger.core.WebAppRootDir.getWebAppRootPath() + "/WEB-INF/classes/oscache.properties");
+        if (internalFile!=null && internalFile.exists() && internalFile.canRead() && internalFile.isFile()){
+            Properties properties = new Properties();
+            try{
+                properties.load(new FileInputStream(internalFile));
+                admin = new GeneralCacheAdministrator(properties);
+            } catch (Exception e){
+                reger.core.Debug.errorsave(e, "OsCacheProvider.java");
+                admin = new GeneralCacheAdministrator();
+            }
+        } else {
+            reger.core.Debug.debug(5, "OsCacheProvider.java", "Couldn't find oscache proerties file:<br>"+internalFile.getAbsolutePath());
+            admin = new GeneralCacheAdministrator();
+        }
+        //Manually set some properties
+        //admin.setCacheCapacity(4999);
     }
 
     public String getProviderName(){
@@ -133,11 +153,16 @@ public class OsCacheProvider implements CacheProvider {
     public String getCacheStatsAsHtml() {
         StringBuffer mb = new StringBuffer();
         mb.append("OsCacheProvider<br>");
-        String[] keys = getKeys();
-        mb.append(keys.length + " keys in cache<br>");
-        for (int i = 0; i < keys.length; i++) {
-            String key = keys[i];
-            mb.append("<br>"+key);
+        if (admin!=null){
+            mb.append("cache.capacity: "+admin.getProperty("cache.capacity")+"<br>");
+            String[] keys = getKeys();
+            mb.append(keys.length + " keys in cache<br>");
+            for (int i = 0; i < keys.length; i++) {
+                String key = keys[i];
+                mb.append("<br>"+key);
+            }
+        } else {
+            mb.append("Cache is null.");
         }
         return mb.toString();
     }

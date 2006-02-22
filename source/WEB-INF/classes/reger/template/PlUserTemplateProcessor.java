@@ -34,9 +34,9 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
     }
 
     public static StringBuffer getValue(StringBuffer mb, UserSession userSession, PageProps pageProps, javax.servlet.http.HttpServletRequest request) {
-        reger.core.Debug.debug(3, "PlUserTemplateProcessor.java", "PlUserTemplateProcessor.getValue() called.");
+        reger.core.Debug.debug(5, "PlUserTemplateProcessor.java", "PlUserTemplateProcessor.getValue() called.");
         if ((!userSession.getAccount().isPro()) || (userSession.getAccount().isPro() && userSession.getPl().getDoapplyplusertemplatetopro())){
-            reger.core.Debug.debug(3, "PlUserTemplateProcessor.java", "Attempting to apply template.");
+            reger.core.Debug.debug(5, "PlUserTemplateProcessor.java", "Attempting to apply template.");
             //Get the template string to use
             String templateMainBody="";
 
@@ -49,7 +49,7 @@ public class PlUserTemplateProcessor implements TemplateProcessor {
                 templateMainBody = stp.getDefaultTemplate();
             }
 
-            reger.core.Debug.debug(3, "PlUserTemplateProcessor.java", "templateMainBody:<br>"+templateMainBody.replaceAll("<", "&lt;") + "<br>mb.toString():"+mb.toString().replaceAll("<", "&lt;"));
+            reger.core.Debug.debug(5, "PlUserTemplateProcessor.java", "templateMainBody:<br>"+templateMainBody.replaceAll("<", "&lt;") + "<br>mb.toString():"+mb.toString().replaceAll("<", "&lt;"));
 
 
             //Here's where I need to combing head contents and body contents

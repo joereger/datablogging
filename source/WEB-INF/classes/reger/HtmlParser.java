@@ -32,7 +32,7 @@ public class HtmlParser {
             m.appendTail(out);
         } catch (Exception e){
         }
-        reger.core.Debug.debug(3, "HtmlParser.java", "After combining "+tagName+ " tags:<br>" + out.toString().replaceAll("<", "&lt;"));
+        reger.core.Debug.debug(5, "HtmlParser.java", "After combining "+tagName+ " tags:<br>" + out.toString().replaceAll("<", "&lt;"));
         return out.toString();
     }
 

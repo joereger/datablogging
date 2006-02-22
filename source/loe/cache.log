@@ -31,9 +31,6 @@ mb.append(reger.cache.providers.CacheFactory.getCacheProvider().getCacheStatsAsH
 /*                  Side Column                       */
     StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
-
-    //sc.append("This is a ");
-    //sc.append("side column section.");
 %>
 
 
