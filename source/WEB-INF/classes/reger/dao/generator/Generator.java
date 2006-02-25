@@ -9,29 +9,35 @@ import reger.dao.generator.dbcolumntypes.DbColumnTypeFactory;
  */
 public class Generator {
 
+    private String nameOfPrimaryKeyColumn = null;
+
     public String getDaoForTable(String tablename){
         StringBuffer mb = new StringBuffer();
 
         mb.append("package reger.dao;\n" +
                 "\n" +
                 "import reger.core.db.Db;\n" +
+                "import reger.cache.providers.CacheFactory;\n" +
                 "\n" +
                 "/**\n" +
                 " * DAO for "+tablename+" database table - DO NOT EDIT MANUALLY\n" +
                 " * \n" +
-                " *  ______             ____  _____         _     ________        __   _   _   \n" +
+                " *   ______             ____  _____         _     ________        __   _   _   \n" +
                 " *  |_   _ `.          |_   \\|_   _|       / |_  |_   __  |      |  ] (_) / |_ \n" +
                 " *    | | `. \\  .--.     |   \\ | |   .--. `| |-'   | |_ \\_|  .--.| |  __ `| |-'\n" +
                 " *    | |  | |/ .'`\\ \\   | |\\ \\| | / .'`\\ \\| |     |  _| _ / /'`\\' | [  | | |  \n" +
                 " *   _| |_.' /| \\__. |  _| |_\\   |_| \\__. || |,   _| |__/ || \\__/  |  | | | |, \n" +
                 " *  |______.'  '.__.'  |_____|\\____|'.__.' \\__/  |________| '.__.;__][___]\\__/\n" +
                 " * \n" +
+                " * Validator for this DAO: reger.dao.validators.Validator"+getFirstCharUpperCased(tablename)+"DAO.java\n" +
+                " * \n" +
                 " */\n" +
                 "\n" +
                 "public class "+getFirstCharUpperCased(tablename)+"DAO {\n" +
                 "\n" +
-                "" + getProperties(tablename) +
+                "    private static String CACHEGROUP = \""+tablename+"DAO\";\n" +
                 "\n" +
+                "" + getProperties(tablename) +
                 "\n" +
                 "    public "+getFirstCharUpperCased(tablename)+"DAO (int "+getNameOfPrimaryKeyColumn(tablename)+"){\n" +
                 "        this."+getNameOfPrimaryKeyColumn(tablename)+" = "+getNameOfPrimaryKeyColumn(tablename)+";\n" +
@@ -44,13 +50,21 @@ public class Generator {
                 "    }\n" +
                 "\n" +
                 "    public void load(){\n" +
-                "        //-----------------------------------\n" +
-                "        //-----------------------------------\n" +
-                "        String[][] rstData= Db.RunSQL(\"SELECT "+getCommaSeparatedListOfColumnsInTable(tablename)+" FROM "+tablename+" WHERE "+getNameOfPrimaryKeyColumn(tablename)+"='\"+"+getNameOfPrimaryKeyColumn(tablename)+"+\"'\");\n" +
-                "        //-----------------------------------\n" +
-                "        //-----------------------------------\n" +
-                "        if (rstData!=null && rstData.length>0){\n" +
-                "            " + getLoadSection(tablename) +
+                "        if ("+getNameOfPrimaryKeyColumn(tablename)+">0){\n" +
+                "            Object obj = CacheFactory.getCacheProvider().get(String.valueOf("+getNameOfPrimaryKeyColumn(tablename)+"), CACHEGROUP);\n" +
+                "            if (obj!=null && (obj instanceof "+getFirstCharUpperCased(tablename)+"DAO)){\n" +
+                "                setProperties(("+getFirstCharUpperCased(tablename)+"DAO)obj);\n" +
+                "            } else {\n" +
+                "                //-----------------------------------\n" +
+                "                //-----------------------------------\n" +
+                "                String[][] rstData= Db.RunSQL(\"SELECT "+getCommaSeparatedListOfColumnsInTable(tablename)+" FROM "+tablename+" WHERE "+getNameOfPrimaryKeyColumn(tablename)+"='\"+"+getNameOfPrimaryKeyColumn(tablename)+"+\"'\");\n" +
+                "                //-----------------------------------\n" +
+                "                //-----------------------------------\n" +
+                "                if (rstData!=null && rstData.length>0){\n" +
+                "                " + getLoadSection(tablename) +
+                "                }\n" +
+                "                CacheFactory.getCacheProvider().put(String.valueOf("+getNameOfPrimaryKeyColumn(tablename)+"), CACHEGROUP, this);\n" +
+                "            }\n" +
                 "        }\n" +
                 "    }\n" +
                 "\n" +
@@ -72,12 +86,14 @@ public class Generator {
                 "            int fsdfsdf = Db.RunSQLUpdate(\"UPDATE "+tablename+" SET "+getSaveSetStatement(tablename)+" WHERE "+getNameOfPrimaryKeyColumn(tablename)+"='\"+"+getNameOfPrimaryKeyColumn(tablename)+"+\"'\");\n" +
                 "            //-----------------------------------\n" +
                 "            //-----------------------------------\n" +
+                "            CacheFactory.getCacheProvider().flush(String.valueOf("+getNameOfPrimaryKeyColumn(tablename)+"), CACHEGROUP);\n" +
                 "        } else {\n" +
                 "            //-----------------------------------\n" +
                 "            //-----------------------------------\n" +
                 "            "+getNameOfPrimaryKeyColumn(tablename)+" = Db.RunSQLInsert(\"INSERT INTO "+tablename+"("+getCommaSeparatedListOfColumnsInTableWithoutPrimary(tablename)+") VALUES("+getSaveUpdateStatement(tablename)+")\");\n" +
                 "            //-----------------------------------\n" +
                 "            //-----------------------------------\n" +
+                "            CacheFactory.getCacheProvider().put(String.valueOf("+getNameOfPrimaryKeyColumn(tablename)+"), CACHEGROUP, this);\n" +
                 "        }\n" +
                 "    }\n" +
                 "\n" +
@@ -87,6 +103,7 @@ public class Generator {
                 "        int count = Db.RunSQLUpdate(\"DELETE FROM "+tablename+" WHERE "+getNameOfPrimaryKeyColumn(tablename)+"='\"+"+getNameOfPrimaryKeyColumn(tablename)+"+\"'\");\n" +
                 "        //-----------------------------------\n" +
                 "        //-----------------------------------\n" +
+                "        CacheFactory.getCacheProvider().flush(String.valueOf("+getNameOfPrimaryKeyColumn(tablename)+"), CACHEGROUP);\n" +
                 "    }\n" +
                 "\n" +
                 "    public void validate() throws reger.core.ValidationException{\n" +
@@ -101,8 +118,13 @@ public class Generator {
                 "            \n" +
                 "        } catch (Throwable e){\n" +
                 "            reger.core.Debug.errorsave(e, \""+tablename+"DAO.java\");\n" +
-                "            \n" +
                 "        }\n"+
+                "    }\n" +
+                "\n" +
+                "    public void setProperties("+getFirstCharUpperCased(tablename)+"DAO obj){\n" +
+                "        if(obj!=null){\n" +
+                         "" + getCopyFromObj(tablename) +
+                "        }\n" +
                 "    }\n" +
                 "\n" + getGettersAndSetters(tablename) +
                 "\n" +
@@ -134,19 +156,24 @@ public class Generator {
     }
 
     private String getNameOfPrimaryKeyColumn(String tablename){
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstData= Db.RunSQL("SHOW COLUMNS FROM "+tablename);
-        //-----------------------------------
-        //-----------------------------------
-        if (rstData!=null && rstData.length>0){
-            for(int i=0; i<rstData.length; i++){
-                String colname = rstData[i][0];
-                String type = rstData[i][1];
-                String key = rstData[i][3];
+        if (nameOfPrimaryKeyColumn!=null && !nameOfPrimaryKeyColumn.equals("")){
+            return nameOfPrimaryKeyColumn;
+        } else {
+            //-----------------------------------
+            //-----------------------------------
+            String[][] rstData= Db.RunSQL("SHOW COLUMNS FROM "+tablename);
+            //-----------------------------------
+            //-----------------------------------
+            if (rstData!=null && rstData.length>0){
+                for(int i=0; i<rstData.length; i++){
+                    String colname = rstData[i][0];
+                    String type = rstData[i][1];
+                    String key = rstData[i][3];
 
-                if (key.indexOf("PRI")>-1){
-                    return colname;
+                    if (key.indexOf("PRI")>-1){
+                        nameOfPrimaryKeyColumn = colname;
+                        return nameOfPrimaryKeyColumn;
+                    }
                 }
             }
         }
@@ -323,6 +350,24 @@ public class Generator {
             }
         }
         return in;
+    }
+
+    private String getCopyFromObj(String tablename){
+        StringBuffer mb = new StringBuffer();
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstData= Db.RunSQL("SHOW COLUMNS FROM "+tablename);
+        //-----------------------------------
+        //-----------------------------------
+        if (rstData!=null && rstData.length>0){
+            for(int i=0; i<rstData.length; i++){
+                String colname = rstData[i][0];
+                String type = rstData[i][1];
+                String key = rstData[i][3];
+                mb.append("            this."+colname+" = obj."+colname+";\n");
+            }
+        }
+        return mb.toString();
     }
 
 }

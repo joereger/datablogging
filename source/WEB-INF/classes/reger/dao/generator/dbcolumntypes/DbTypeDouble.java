@@ -16,11 +16,11 @@ public class DbTypeDouble implements DbColumnType {
 
     public String getValueFromDb(String colname, int rstDataIndex) {
         StringBuffer mb = new StringBuffer();
-        mb.append("\n            if (reger.core.Util.isnumeric(rstData[0]["+rstDataIndex+"])){");
-        mb.append("\n                "+colname+" = Double.parseDouble(rstData[0]["+rstDataIndex+"]);");
-        mb.append("\n            } else {");
-        mb.append("\n                "+colname+" = 0;");
-        mb.append("\n            }");
+        mb.append("\n                    if (reger.core.Util.isnumeric(rstData[0]["+rstDataIndex+"])){");
+        mb.append("\n                        "+colname+" = Double.parseDouble(rstData[0]["+rstDataIndex+"]);");
+        mb.append("\n                    } else {");
+        mb.append("\n                        "+colname+" = 0;");
+        mb.append("\n                    }");
         return mb.toString();
     }
 

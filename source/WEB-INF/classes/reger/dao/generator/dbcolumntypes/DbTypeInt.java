@@ -16,11 +16,11 @@ public class DbTypeInt implements DbColumnType {
 
     public String getValueFromDb(String colname, int rstDataIndex) {
         StringBuffer mb = new StringBuffer();
-        mb.append("\n            if (reger.core.Util.isinteger(rstData[0]["+rstDataIndex+"])){");
-        mb.append("\n                "+colname+" = Integer.parseInt(rstData[0]["+rstDataIndex+"]);");
-        mb.append("\n            } else {");
-        mb.append("\n                "+colname+" = 0;");
-        mb.append("\n            }");
+        mb.append("\n                    if (reger.core.Util.isinteger(rstData[0]["+rstDataIndex+"])){");
+        mb.append("\n                        "+colname+" = Integer.parseInt(rstData[0]["+rstDataIndex+"]);");
+        mb.append("\n                    } else {");
+        mb.append("\n                        "+colname+" = 0;");
+        mb.append("\n                    }");
         return mb.toString();
     }
 

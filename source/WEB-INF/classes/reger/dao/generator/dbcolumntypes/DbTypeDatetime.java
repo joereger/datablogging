@@ -16,7 +16,7 @@ public class DbTypeDatetime implements DbColumnType {
 
     public String getValueFromDb(String colname, int rstDataIndex) {
         StringBuffer mb = new StringBuffer();
-        mb.append("\n            "+colname+" = reger.core.TimeUtils.dbstringtocalendar(rstData[0]["+rstDataIndex+"]);");
+        mb.append("\n                    "+colname+" = reger.core.TimeUtils.dbstringtocalendar(rstData[0]["+rstDataIndex+"]);");
         return mb.toString();
     }
 
