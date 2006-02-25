@@ -31,7 +31,7 @@ pageProps.pathToAppRoot="../";
 
 Debug.debug(5, "", "episode.log");
 
-mb.append(reger.episodes.EpisodeRender.getHtml(new reger.episodes.Episode(1, userSession.getAccountuser()), userSession.getAccount(), false, ""));
+mb.append(reger.episodes.EpisodeRender.getHtml(new reger.episodes.EpisodeDAO(1, userSession.getAccountuser()), userSession.getAccount(), false, ""));
 
 
 mb.append("<br><br><br><br><br>");

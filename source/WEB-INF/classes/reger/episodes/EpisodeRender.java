@@ -8,7 +8,7 @@ import reger.Account;
  */
 public class EpisodeRender {
 
-    public static String getHtml(Episode episode, Account account, boolean displayasadmin, String saveEpisodeUrl){
+    public static String getHtml(EpisodeDAO episode, Account account, boolean displayasadmin, String saveEpisodeUrl){
         StringBuffer mb = new StringBuffer();
 
         int totalWidth = 95;
@@ -55,10 +55,6 @@ public class EpisodeRender {
             mb.append("</form>");
         }
 
-
-
-
-
         mb.append("<div class=episodeinnerwrapper>");
         mb.append("<table cellpadding=0 cellspacing=0 width="+totalWidth+"% border=0>");
         mb.append("<tr>");
@@ -70,7 +66,6 @@ public class EpisodeRender {
         } catch (java.lang.ArithmeticException e){
             Debug.debug(5, "", e);
         }
-
 
         //Loop on number of time periods in episode
         for(int i=0; i<episode.getNumberOfDefaultScalePeriodsInEpisode(); i++){

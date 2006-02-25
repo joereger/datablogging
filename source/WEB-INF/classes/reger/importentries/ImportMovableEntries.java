@@ -1,6 +1,6 @@
 package reger.importentries;
 
-import reger.Message;
+import reger.MessageDAO;
 import reger.TrackBack;
 import reger.UserSession;
 import reger.Entry;
@@ -198,7 +198,7 @@ public class ImportMovableEntries {
             int eventid = 0;
             Iterator entryIter = entryList.iterator();
             Entry entryDAO = null;
-            Message msgDAO = null;
+            MessageDAO msgDAO = null;
             TrackBack trackBackDAO = null;
             //Try to log the user in
             Accountuser au = userSession.getAccountuser();
@@ -226,7 +226,7 @@ public class ImportMovableEntries {
                 commentsIter = commentsList.iterator();
                 while (commentsIter.hasNext()) {
                     Comment c = (Comment) commentsIter.next();
-                    msgDAO = new Message();
+                    msgDAO = new MessageDAO();
                     msgDAO.setEventid(eventid);
                     msgDAO.setEmailnotify(0);
                     msgDAO.setSizeinbytes(reger.core.Util.sizeInBytes(c.getCommentText().toString()));

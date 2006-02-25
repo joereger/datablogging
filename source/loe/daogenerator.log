@@ -1,0 +1,135 @@
+
+<%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
+<%@ page import="org.apache.commons.io.FilenameUtils"%>
+<%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.dao.generator.dbcolumntypes.DbColumnType"%>
+<%@ page import="reger.dao.generator.dbcolumntypes.DbColumnTypeFactory"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "DAO Generator";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loedaogenerator";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "This page allows you to generate DAO objects from the database.<br>Make sure that the database has not been contaminated by unhealthy alters.<br>Make sure it includes the changes you want to capture.<br>Enter the source directory of the current DAOs and click Go.<br>Then test, test, test.<br><br>If you don't know what this page is for you probably shouldn't be using it."));
+
+
+if (request.getParameter("action")!=null && request.getParameter("action").equals("go")){
+    File dir = new File(FilenameUtils.normalize(request.getParameter("directory")));
+    if (dir.isDirectory()){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstData= reger.core.db.Db.RunSQL("SHOW TABLES");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstData!=null && rstData.length>0){
+            for(int i=0; i<rstData.length; i++){
+                String tablename = rstData[i][0];
+                reger.dao.generator.Generator gen = new reger.dao.generator.Generator();
+                String daotext = gen.getDaoForTable(tablename);
+                try{
+                    File file = new File(FilenameUtils.normalize(request.getParameter("directory")) + reger.dao.generator.Generator.getFirstCharUpperCased(tablename) + "DAO.java");
+                    reger.core.Debug.debug(3, "daogenerator.log", file.getAbsolutePath());
+                    BufferedWriter outBuf = new BufferedWriter(new FileWriter(file));
+                    outBuf.write(daotext);
+                    outBuf.close();
+                } catch (IOException ioex){
+                    reger.core.Debug.errorsave(ioex, "daogenerator.log", "Fail saving file to filesystem.");
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Fail saving file to filesystem for at least one table."));
+                }
+
+            }
+        }
+    }
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Done!"));
+}
+
+
+
+mb.append("<form action='daogenerator.log' method=post>");
+mb.append("<font face=arial size=+1>Generate all tables to file system directory:</font><br>");
+mb.append("<input type=hidden name=action value=go>");
+mb.append("<input type=text size=90 name=directory value='C:\\Superfly\\SourceSvn\\Reger\\trunk\\source\\WEB-INF\\classes\\reger\\dao\\'>");
+mb.append("<input type=submit value='Go'>");
+mb.append("</form>");
+
+mb.append("<br><br>");
+
+mb.append("<form action='daogenerator.log' method=post>");
+mb.append("<font face=arial size=+1>Generate a single table to the screen:</font><br>");
+mb.append("<input type=hidden name=action value=gotable>");
+mb.append("<select name=tablename>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstData= Db.RunSQL("SHOW TABLES");
+//-----------------------------------
+//-----------------------------------
+if (rstData!=null && rstData.length>0){
+    for(int i=0; i<rstData.length; i++){
+        String tablename = rstData[i][0];
+        mb.append("<option name=tablename value='"+tablename+"'>"+tablename+"</option>");
+
+    }
+}
+mb.append("</select>");
+mb.append("<input type=submit value='Go'><br>");
+if (request.getParameter("action")!=null && request.getParameter("action").equals("gotable")){
+    reger.dao.generator.Generator gen = new reger.dao.generator.Generator();
+    mb.append("<textarea name=dao wrap=off style=\"width: 100%\" rows=40>"+gen.getDaoForTable(request.getParameter("tablename"))+"</textarea>");
+}
+mb.append("</form>");
+
+
+
+//mb.append("<pre>");
+//reger.dao.generator.Generator gen = new reger.dao.generator.Generator();
+//mb.append(gen.getDaoForTable("poll"));
+//mb.append("</pre>");
+
+
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+
+
+%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

@@ -4,6 +4,7 @@ import reger.core.db.Db;
 import reger.core.Debug;
 
 import java.util.Vector;
+import java.util.ArrayList;
 
 public class EventTagLink {
 
@@ -114,7 +115,7 @@ public class EventTagLink {
                 tagsWithLinks.append("<font face=arial style=font-size: 12px;>" + rstTags[i][0] + "</font></a>");
                 tagsWithLinks.append(" ");
 
-                tags.append(rstTags[i][0].toLowerCase());                
+                tags.append(rstTags[i][0].toLowerCase());
                 tags.append(" ");
             }
             tagVector.add(0, tags.toString());
@@ -122,6 +123,8 @@ public class EventTagLink {
         }
         return tagVector;
     }
+
+ 
 
     public static void addTagsToEntry(String tags, int eventId) {
         //Delete the tags for a given eventid

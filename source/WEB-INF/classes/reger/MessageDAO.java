@@ -6,7 +6,7 @@ import reger.core.db.Db;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class Message {
+public class MessageDAO {
 
     private int messageid = 0;
     private int eventid;
@@ -20,12 +20,12 @@ public class Message {
     private String url;
     private int emailnotify;
 
-    public Message(int msgId) {
-        this.messageid = msgId;
+    public MessageDAO(int messageid) {
+        this.messageid = messageid;
         load();
     }
 
-    public Message() {
+    public MessageDAO() {
         
     }
 
@@ -127,5 +127,49 @@ public class Message {
 
     public void setEmailnotify(int emailnotify) {
         this.emailnotify = emailnotify;
+    }
+
+    public int getMessageid() {
+        return messageid;
+    }
+
+    public int getEventid() {
+        return eventid;
+    }
+
+    public Calendar getMessagedate() {
+        return messagedate;
+    }
+
+    public String getMessagefrom() {
+        return messagefrom;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public int getIsapproved() {
+        return isapproved;
+    }
+
+    public int getSizeinbytes() {
+        return sizeinbytes;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getIpaddress() {
+        return ipaddress;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public int getEmailnotify() {
+        return emailnotify;
     }
 }

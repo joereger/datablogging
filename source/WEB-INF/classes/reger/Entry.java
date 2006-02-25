@@ -1081,40 +1081,7 @@ public class Entry {
         return filename;
     }
 
-    /**
-     * This is the complete url including the base...
-     * Example, http://www.joereger.com/entry4343-softball-game.log
-     *
-     * @param eventid
-     * @param appendEntryKeyIfAvailable -  Security.  Will append the entrykey if there is one, to allow the event to be viewed.
-     */
-    public static String entryCompleteUrl(int eventid, boolean appendEntryKeyIfAvailable) {
-        String entryFileName = "";
-        String baseUrl = "";
-        String entryKeyString = "";
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstEvent = Db.RunSQL("SELECT title, date, comments, accountid, entrykey FROM event WHERE event.eventid='" + eventid + "'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstEvent != null && rstEvent.length > 0) {
-            entryFileName = reger.Entry.entryFileNameStatic(eventid, rstEvent[0][0]);
 
-            Account acct = reger.cache.AccountCache.get(Integer.parseInt(rstEvent[0][3]));
-            if (acct != null) {
-                baseUrl = acct.getSiteRootUrl();
-            }
-
-            if (appendEntryKeyIfAvailable) {
-                if (!rstEvent[0][4].equals("")) {
-                    entryKeyString = "?entrykey=" + rstEvent[0][4];
-                }
-            }
-
-            return baseUrl + "/" + entryFileName + entryKeyString;
-        }
-        return "";
-    }
 
 
     /**
@@ -1251,82 +1218,6 @@ public class Entry {
         return logaccess;
     }
 
-//    public void saveLocationGetLocationid(int eventid){
-//
-//        //Add new locations, if necessary
-//        if ( !newlocationname.equals("") ) {
-//
-//            if (!reger.core.Util.isinteger(latdeg)){
-//                latdeg = "";
-//            }
-//            if (!reger.core.Util.isinteger(latmin)){
-//                latmin = "";
-//            }
-//            if (!reger.core.Util.isinteger(latsec)){
-//                latsec = "";
-//            }
-//            if (!reger.core.Util.isinteger(latns)){
-//                latns = "";
-//            }
-//            if (!reger.core.Util.isinteger(londeg)){
-//                londeg = "";
-//            }
-//            if (!reger.core.Util.isinteger(lonmin)){
-//                lonmin = "";
-//            }
-//            if (!reger.core.Util.isinteger(lonsec)){
-//                lonsec = "";
-//            }
-//            if (!reger.core.Util.isinteger(lonew)){
-//                lonew = "";
-//            }
-//
-//
-//            //-----------------------------------
-//            //-----------------------------------
-//            String[][] rstCheckLoc= Db.RunSQL("SELECT locationid FROM location WHERE locationname='"+reger.core.Util.cleanForSQL(newlocationname)+"' AND accountid='"+accountid+"'");
-//            //-----------------------------------
-//            //-----------------------------------
-//            if (rstCheckLoc!=null && rstCheckLoc.length>0){
-//                locationid=Integer.parseInt(rstCheckLoc[0][0]);
-//            } else {
-//                //Add a new one
-//                //-------------------------------------------------
-//                //---------------------=======---------------------
-//                locationid = reger.core.Db.Db.RunSQLInsert("INSERT INTO location(locationname, accountid, latdeg, latmin, latsec, latns, londeg, lonmin, lonsec, lonew) VALUES('"+ reger.core.Util.cleanForSQL(newlocationname) +"','"+ accountid +"', '"+ latdeg +"', '"+ latmin +"', '"+ latsec +"', '"+ latns +"', '"+ londeg +"', '"+ lonmin +"', '"+ lonsec +"', '"+ lonew +"')");
-//                //---------------------=======---------------------
-//                //-------------------------------------------------
-//            }
-//
-//        }
-//
-//
-//        //If changing the location to another one that already exists, we don't want to overwrite the gps coordinates
-//        //First get the locationid for the existing eventid directly from the database
-//        //-----------------------------------
-//        //-----------------------------------
-//        String[][] rstGetcurrentlocationid= reger.core.Db.Db.RunSQL("SELECT locationid FROM event WHERE eventid='"+ eventid +"'");
-//        //-----------------------------------
-//        //-----------------------------------
-//        int currentlocationid=0;
-//        if(rstGetcurrentlocationid.length>0){
-//            currentlocationid = Integer.parseInt(rstGetcurrentlocationid[0][0]);
-//        }
-//
-//        //If this is the same as the one that we have in the database then we can assume that they're editing the GPS coordinates
-//        if (currentlocationid == locationid) {
-//
-//            //Edit record to the location table
-//            //-------------------------------------------------
-//            //---------------------=======---------------------
-//            int rs2 = reger.core.Db.Db.RunSQLUpdate("UPDATE location set latdeg='"+ latdeg +"', latmin='"+ latmin +"', latsec='"+ latsec +"', latns='"+ latns +"', londeg='"+ londeg +"', lonmin='"+ lonmin +"', lonsec='"+ lonsec +"', lonew='"+ lonew +"' WHERE accountid='"+ accountid +"' AND locationid='"+ locationid +"'");
-//            //---------------------=======---------------------
-//            //-------------------------------------------------
-//
-//        }
-//
-//
-//    }
 
 
     /**

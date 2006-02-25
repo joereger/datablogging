@@ -40,7 +40,7 @@ String[][] rstEpisode= Db.RunSQL("SELECT DISTINCT(episode.episodeid) FROM episod
 //-----------------------------------
 if (rstEpisode!=null && rstEpisode.length>0){
     for(int i=0; i<rstEpisode.length; i++){
-        reger.episodes.Episode episode = new reger.episodes.Episode(Integer.parseInt(rstEpisode[i][0]), userSession.getAccountuser());
+        reger.episodes.EpisodeDAO episode = new reger.episodes.EpisodeDAO(Integer.parseInt(rstEpisode[i][0]), userSession.getAccountuser());
         mb.append(reger.episodes.EpisodeRender.getHtml(episode, userSession.getAccount(), false, ""));
         mb.append("<br><br>");
     }

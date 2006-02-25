@@ -356,7 +356,7 @@ public class MegaHtmlFormBottom {
                     mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
                     for (Iterator it = pageProps.entry.episodesThisEntryBelongsTo.iterator(); it.hasNext();) {
                         Integer episodeid = (Integer) it.next();
-                        reger.episodes.Episode episode = new reger.episodes.Episode(episodeid, userSession.getAccountuser());
+                        reger.episodes.EpisodeDAO episode = new reger.episodes.EpisodeDAO(episodeid, userSession.getAccountuser());
                         mb.append(reger.episodes.EpisodeRender.getHtml(episode, userSession.getAccount(), false, ""));
                     }
                     mb.append("</td>");

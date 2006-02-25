@@ -10,35 +10,35 @@ import java.util.*;
 /**
  * Represents a single episode in the system
  */
-public class Episode {
+public class EpisodeDAO {
 
-    private int episodeid;
-    private String name;
-    private int accountid;
-    private String description;
-    private boolean isprivate;
-    private reger.Entry[] entriesInEpisode;
-    private Calendar startDateGMT;
-    private Calendar endDateGMT;
-    private int defaultScaleOfDisplay;
-    private int numberOfDefaultScalePeriodsInEpisode;
-    private ArrayList episodeTimePeriodBuckets;
+    protected int episodeid;
+    protected String name;
+    protected int accountid;
+    protected String description;
+    protected boolean isprivate;
+    protected reger.Entry[] entriesInEpisode;
+    protected Calendar startDateGMT;
+    protected Calendar endDateGMT;
+    protected int defaultScaleOfDisplay;
+    protected int numberOfDefaultScalePeriodsInEpisode;
+    protected ArrayList episodeTimePeriodBuckets;
 
-    public static final int SCALEMINUTES = 1;
-    public static final int SCALEHOURS = 2;
-    public static final int SCALEDAYS = 3;
-    public static final int SCALEWEEKS = 4;
-    public static final int SCALEMONTHS = 5;
-    public static final int SCALEYEARS = 6;
+    protected static final int SCALEMINUTES = 1;
+    protected static final int SCALEHOURS = 2;
+    protected static final int SCALEDAYS = 3;
+    protected static final int SCALEWEEKS = 4;
+    protected static final int SCALEMONTHS = 5;
+    protected static final int SCALEYEARS = 6;
 
-    private String timezoneid = "GMT";
+    protected String timezoneid = "GMT";
 
 
-    public Episode(int episodeid, reger.Accountuser accountUser){
+    public EpisodeDAO(int episodeid, reger.Accountuser accountUser){
         load(episodeid, accountUser);
     }
 
-    public Episode(Episode episode){
+    public EpisodeDAO(EpisodeDAO episode){
         this.episodeid = episode.episodeid;
         this.name = episode.name;
         this.accountid = episode.accountid;
@@ -52,7 +52,7 @@ public class Episode {
         this.episodeTimePeriodBuckets = episode.episodeTimePeriodBuckets;
     }
 
-    public Episode(String name, int accountid, String description, boolean isprivate, reger.Entry[] entriesInEpisode){
+    public EpisodeDAO(String name, int accountid, String description, boolean isprivate, reger.Entry[] entriesInEpisode){
         this.name = name;
         this.accountid = accountid;
         this.description = description;
@@ -265,9 +265,6 @@ public class Episode {
 
                 //Increment the bucket
                 timePeriodBucket = timePeriodBucket + 1;
-
-
-
             }
         }
 
