@@ -51,7 +51,7 @@ public class PlNestedNavDisplayVertical implements NestedNavDisplay {
 
 
 
-        mb.append("<!-- Start navigation--><table cellpadding=0 cellspacing=0 width=100% border=0 style=\"margin: 5px;\">");
+        mb.append("<!-- Start navigation--><table cellpadding=0 cellspacing=0 width=100% border=0>");
 
 
         //Do the nested items
@@ -97,7 +97,7 @@ public class PlNestedNavDisplayVertical implements NestedNavDisplay {
             if (navItem.getThisNestedNavType()!=NestedNavItem.NESTEDNAVITEMBASE){
                 mb.append("<!-- Begin Tab -->");
                 mb.append("<tr>");
-                mb.append("<td class=navcell"+ isOnText +" align=left valign=top>");
+                mb.append("<td class=navcell"+ isOnText +" align=left valign=top nowrap>");
                 if (1==2){
                     mb.append("(order="+navItem.getNestedNavOrder()+")(level="+currentNestedLevel+")(id="+navItem.getThisNestedNavId()+")");
                 }

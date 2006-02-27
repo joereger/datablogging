@@ -148,9 +148,9 @@ public class htmlListEvents {
         }
 
         //Append the paginglinks to the top of the page
-        if (displaypagingnumbers) {
-            list.append(pagingLinks);
-        }
+        //if (displaypagingnumbers) {
+            //list.append(pagingLinks);
+        //}
 
 
         String author = "";
@@ -175,17 +175,15 @@ public class htmlListEvents {
                     entryurladmin = "" + userSession.getAccount().getSiteRootUrl(userSession) + ":" + request.getLocalPort() + "/myhome/" + entryurladmin;
                 }
 
+
+                //The Entry body
+                String entrybody = entry.comments.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
                 //How many chars to display?
                 int displaycharsinsummary = userSession.getAccount().getDisplaycharsinsummary();
-                if ((displaycharsinsummary <= 0) || (displaycharsinsummary >= entry.comments.length())) {
-                    displaycharsinsummary = entry.comments.length();
+                if ((displaycharsinsummary <= 0) || (displaycharsinsummary >= entrybody.length())) {
+                    displaycharsinsummary = entrybody.length();
                 }
-                //The Entry body
-                String entrybody = "";
-                entrybody = entry.comments.substring(0, displaycharsinsummary);
-                //Put line breaks in there
-                //entrybody=replace(entrybody, VbCrlf  & VbCrlf, "<br><br>")
-                entrybody = entrybody.replaceAll(reger.Vars.LINEBREAKCHAR, "<br><br>");
+                entrybody = entrybody.substring(0, displaycharsinsummary);
                 //Add the More Link if needed
                 if (entry.comments.length() > displaycharsinsummary) {
                     entrybody = entrybody + " ...<a href=" + entryurl + ">More</a>";
@@ -217,9 +215,9 @@ public class htmlListEvents {
 
                 //If we're on edit.log and the logged-in user can't administer this logid then don't display the result.
                 if (!thispagename.equals("entries.log")) {
-                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, reger.core.Util.truncateString(entry.comments, userSession.getAccount().getDisplaycharsinsummary()), logname, entry.filecount, entry.messagecount, entry.accountuserid));
+                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid));
                 } else if ((thispagename.equals("entries.log") && userSession.getAccountuser().userCanViewLog(entry.logid))) {
-                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurladmin, reger.core.Util.truncateString(entry.comments, userSession.getAccount().getDisplaycharsinsummary()), logname, entry.filecount, entry.messagecount, entry.accountuserid));
+                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurladmin, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid));
                 }
             }
         } else {

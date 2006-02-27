@@ -624,9 +624,15 @@ public class Entry {
                 this.accountuserid = 0;
                 this.author = "";
             }
-            isflaggedformoderator = Integer.parseInt(rstEventdetails[0][10]);
-            ismoderatorapproved = Integer.parseInt(rstEventdetails[0][11]);
-            istemporary = Integer.parseInt(rstEventdetails[0][12]);
+            if (reger.core.Util.isinteger(rstEventdetails[0][10])){
+                isflaggedformoderator = Integer.parseInt(rstEventdetails[0][10]);
+            }
+            if (reger.core.Util.isinteger(rstEventdetails[0][11])){
+                ismoderatorapproved = Integer.parseInt(rstEventdetails[0][11]);
+            }
+            if (reger.core.Util.isinteger(rstEventdetails[0][12])){
+                istemporary = Integer.parseInt(rstEventdetails[0][12]);
+            }
             lastmodifiedbyuserdate = reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][13]);
             entryKey = rstEventdetails[0][14];
             if(reger.core.Util.isinteger(rstEventdetails[0][15])){

@@ -35,7 +35,7 @@ if (request.getParameter("type")!=null && reger.core.Util.isinteger(request.getP
 }
 
 //Get templateid
-int templateid = -1;
+int templateid = 0;
 if (request.getParameter("templateid")!=null && reger.core.Util.isinteger(request.getParameter("templateid"))){
     templateid = Integer.parseInt(request.getParameter("templateid"));
 }
@@ -71,8 +71,6 @@ if (pageProps.action.equals("edit")){
 
     return;
 }
-
-
 //@todo - Verify this user can edit this template . Actually, just verify that they're looking at one of their own or one of the system templates.
 
 

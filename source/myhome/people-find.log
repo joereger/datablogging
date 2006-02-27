@@ -152,19 +152,20 @@ if (request.getParameter("searchsites")!=null || request.getParameter("alpha")!=
     mb.append("<font face=arial size=-1>");
 
     String sql = "";
-    String searchTerms = request.getParameter("searchsites");
-    searchTerms = searchTerms.replaceAll("http://", "");
-    searchTerms = searchTerms.replaceAll("https://", "");
-    searchTerms = searchTerms.replaceAll(":80", "");
-    searchTerms = searchTerms.replaceAll("/", "");
+
 
     if (request.getParameter("searchsites")!=null && !request.getParameter("searchsites").equals("")){
-        sql = "SELECT account.accountid, homepagetitle, friendlyname, accountuserid FROM account, accountuser, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND accountuser.accountid=account.accountid AND (account.islistedindirectory='1') AND (  (friendlyname LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (CONCAT(account.accounturl, '.', pl.plbasedomain) LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%' ) OR (accounturl LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (customservername LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (customservername2 LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (customservername3 LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (accountuser.email LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (homepagetitle LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%')  ) LIMIT 0,100";
+        String searchTerms = request.getParameter("searchsites");
+        searchTerms = searchTerms.replaceAll("http://", "");
+        searchTerms = searchTerms.replaceAll("https://", "");
+        searchTerms = searchTerms.replaceAll(":80", "");
+        searchTerms = searchTerms.replaceAll("/", "");
+        sql = "SELECT account.accountid, homepagetitle, friendlyname, accountuserid FROM account, accountuser, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.isactiveaccount='1' AND account.plid=pl.plid AND accountuser.accountid=account.accountid AND (account.islistedindirectory='1') AND (  (friendlyname LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (CONCAT(account.accounturl, '.', pl.plbasedomain) LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%' ) OR (accounturl LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (customservername LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (customservername2 LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (customservername3 LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (accountuser.email LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%') OR (homepagetitle LIKE '%"+reger.core.Util.cleanForSQL(searchTerms)+"%')  ) LIMIT 0, 20";
     }
 
 
     if (request.getParameter("alpha")!=null && !request.getParameter("alpha").equals("")){
-        sql = "SELECT account.accountid, homepagetitle, friendlyname, accountuserid FROM account, accountuser, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.plid=pl.plid AND accountuser.accountid=account.accountid AND (account.islistedindirectory='1') AND (  (LCASE(SUBSTRING(accountuser.friendlyname, 1, 1))=LCASE('"+reger.core.Util.cleanForSQL(request.getParameter("alpha"))+"')) OR  (LCASE(SUBSTRING(account.accounturl, 1, 1))=LCASE('"+reger.core.Util.cleanForSQL(request.getParameter("alpha"))+"'))  ) ORDER BY friendlyname ASC";
+        sql = "SELECT account.accountid, homepagetitle, friendlyname, accountuserid FROM account, accountuser, pl WHERE "+userSession.getPl().getPeerSql()+" AND account.isactiveaccount='1' AND account.plid=pl.plid AND accountuser.accountid=account.accountid AND (account.islistedindirectory='1') AND (  (LCASE(SUBSTRING(accountuser.friendlyname, 1, 1))=LCASE('"+reger.core.Util.cleanForSQL(request.getParameter("alpha"))+"')) OR  (LCASE(SUBSTRING(account.accounturl, 1, 1))=LCASE('"+reger.core.Util.cleanForSQL(request.getParameter("alpha"))+"'))  ) ORDER BY friendlyname ASC LIMIT 0,40";
     }
 
     //-----------------------------------

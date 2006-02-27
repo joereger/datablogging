@@ -1,10 +1,57 @@
-<div class=entrywrapper>
-    <div class=entrytitle>
-        <div class=entryago>
-                <font face=arial size=-2><strong><$Ago.Text$> :: <$Log.Name$></strong></font>
-        </div>
-        <font face=arial size=-1><a href='<$Logentry.Url$>'><font face=arial size=+1><$Logentry.Title$></font></a>
-    </div>
-    <div class=entrybody><font face=arial size=-2><$Logentry.Body$></font></div>
-    <div class=entrydate><font face=arial size=-2><$Logentry.Datetime.Expanded$> | <$Messages.Count$> Comments | <$Images.Count$> Files</font></div>
+<style>
+h2 { /* Entry title */
+    padding: 20px 0 2px 0;
+    margin: 0;
+    font: bold 24px Avenir, "Trebuchet MS", "Tahoma", sans-serif;
+    color: #000; }
+
+h2 a,h2 a:hover {
+        text-decoration: none;
+        color: #17438d; }
+
+h2 a:hover { color: #000; }
+
+
+h4 { /* Entry body */
+    padding: 7px 0 7px 0;
+    margin: 0;
+	font: normal 12px "Lucida Grande", "Verdana", sans-serif;
+    color: #000; }
+
+h4 a,h4 a:hover {
+        text-decoration: none;
+        color: #17438d; }
+
+h4 a:hover { color: #000; }
+
+
+
+h5 { }
+
+    .post h5 { /* Category listing */
+        color: #416bb3;
+        font: normal 11px "Trebuchet MS", "Verdana", sans-serif;
+        padding: 0 0 0 0px;
+        margin: 0 0 0px 0px; }
+
+        .post h5 a {
+            color: #416bb3;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 0px 0px;
+            background: #e6f2ff; }
+
+        .post h5 a:hover {
+            color: #000;
+            text-decoration: underline; }
+</style>
+
+
+<!-- Begin Entry -->
+<div class="post">
+<h2><a href='<$Logentry.Url$>'><$Logentry.Title$></a></h2>
+<h5><$Ago.Text$> | Posted to: <$Log.Name$></h5>
+<h4><$Logentry.Body$></h4>
+<h5><$Messages.Count$> Comments | <$Images.Count$> Images</h5>
 </div>
+<!-- End Entry -->

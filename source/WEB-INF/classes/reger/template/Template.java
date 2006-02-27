@@ -117,10 +117,10 @@ public class Template {
             if (count<1){
                 //-----------------------------------
                 //-----------------------------------
-                int identity = Db.RunSQLInsert("INSERT INTO templatenew(template, type, accountid, issystemtemplate, name) VALUES('"+reger.core.Util.cleanForSQL(template)+"', '"+type+"', '"+accountid+"', '"+issystemtemplateText+"', '"+reger.core.Util.cleanForSQL(name)+"')");
+                templateid = Db.RunSQLInsert("INSERT INTO templatenew(template, type, accountid, issystemtemplate, name) VALUES('"+reger.core.Util.cleanForSQL(template)+"', '"+type+"', '"+accountid+"', '"+issystemtemplateText+"', '"+reger.core.Util.cleanForSQL(name)+"')");
                 //-----------------------------------
                 //-----------------------------------
-                reger.template.AllTemplatesInSystem.refresh(identity);
+                reger.template.AllTemplatesInSystem.refresh(templateid);
             }
         }
 
