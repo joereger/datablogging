@@ -14,13 +14,15 @@ public class Generator {
     public String getDaoForTable(String tablename){
         StringBuffer mb = new StringBuffer();
 
-        mb.append("package reger.dao;\n" +
+        mb.append("package reger.dao.db;\n" +
                 "\n" +
                 "import reger.core.db.Db;\n" +
                 "import reger.cache.providers.CacheFactory;\n" +
                 "\n" +
                 "/**\n" +
-                " * DAO for "+tablename+" database table - DO NOT EDIT MANUALLY\n" +
+                " * DAO for the '"+tablename+"' database table\n" +
+                " * \n" +
+                " * DO NOT EDIT MANUALLY\n" +
                 " * \n" +
                 " *   ______             ____  _____         _     ________        __   _   _   \n" +
                 " *  |_   _ `.          |_   \\|_   _|       / |_  |_   __  |      |  ] (_) / |_ \n" +
@@ -30,10 +32,11 @@ public class Generator {
                 " *  |______.'  '.__.'  |_____|\\____|'.__.' \\__/  |________| '.__.;__][___]\\__/\n" +
                 " * \n" +
                 " * Validator for this DAO: reger.dao.validators.Validator"+getFirstCharUpperCased(tablename)+"DAO.java\n" +
+                " * Finders for this DAO: reger.dao.finders."+getFirstCharUpperCased(tablename)+"Finder.java\n" +
                 " * \n" +
                 " */\n" +
                 "\n" +
-                "public class "+getFirstCharUpperCased(tablename)+"DAO {\n" +
+                "public class "+getFirstCharUpperCased(tablename)+"DAO implements reger.dao.DAO {\n" +
                 "\n" +
                 "    private static String CACHEGROUP = \""+tablename+"DAO\";\n" +
                 "\n" +
@@ -119,6 +122,18 @@ public class Generator {
                 "        } catch (Throwable e){\n" +
                 "            reger.core.Debug.errorsave(e, \""+tablename+"DAO.java\");\n" +
                 "        }\n"+
+                "    }\n" +
+                "\n" +
+                "    public int getPrimaryKeyValue(){\n" +
+                "        return "+getNameOfPrimaryKeyColumn(tablename)+";\n" +
+                "    }\n" +
+                "\n" +
+                "    public String getPrimaryKeyName(){\n" +
+                "        return \""+getNameOfPrimaryKeyColumn(tablename)+"\";\n" +
+                "    }\n" +
+                "\n" +
+                "    public String getTableName(){\n" +
+                "        return \""+tablename+"\";\n" +
                 "    }\n" +
                 "\n" +
                 "    public void setProperties("+getFirstCharUpperCased(tablename)+"DAO obj){\n" +

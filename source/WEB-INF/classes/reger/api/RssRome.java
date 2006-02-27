@@ -351,7 +351,7 @@ public class RssRome {
                 //String itemCommentsLink = "";
                 //if (userSession.getAccount().getMessagesstatus()==1) {
                     //itemCommentsLink = itemLink;
-                    //item.setComments(itemCommentsLink);
+                    //item.setMessages(itemCommentsLink);
                 //}
 
                 //Item Description
@@ -530,7 +530,7 @@ public class RssRome {
                 //String itemCommentsLink = "";
                 //if (userSession.getAccount().getMessagesstatus()==1) {
                 //    itemCommentsLink = itemLink;
-                //    item.setComments(itemCommentsLink);
+                //    item.setMessages(itemCommentsLink);
                 //}
 
                 //Item Description

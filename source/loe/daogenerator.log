@@ -50,10 +50,39 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
                     outBuf.write(daotext);
                     outBuf.close();
                 } catch (IOException ioex){
-                    reger.core.Debug.errorsave(ioex, "daogenerator.log", "Fail saving file to filesystem.");
-                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Fail saving file to filesystem for at least one table."));
+                    reger.core.Debug.errorsave(ioex, "daogenerator.log", "Fail saving DAO file to filesystem.");
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Fail saving DAO file to filesystem for at least one table."));
                 }
+            }
+        }
+    }
+    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Done!"));
+}
 
+
+if (request.getParameter("action")!=null && request.getParameter("action").equals("gofinder")){
+    File dir = new File(FilenameUtils.normalize(request.getParameter("directory")));
+    if (dir.isDirectory()){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstData= reger.core.db.Db.RunSQL("SHOW TABLES");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstData!=null && rstData.length>0){
+            for(int i=0; i<rstData.length; i++){
+                String tablename = rstData[i][0];
+                reger.dao.generator.FinderGenerator findgen = new reger.dao.generator.FinderGenerator();
+                String findertext = findgen.getDaoForTable(tablename);
+                try{
+                    File file = new File(FilenameUtils.normalize(request.getParameter("directory")) + reger.dao.generator.Generator.getFirstCharUpperCased(tablename) + "Finder.java");
+                    reger.core.Debug.debug(3, "daogenerator.log", file.getAbsolutePath());
+                    BufferedWriter outBuf = new BufferedWriter(new FileWriter(file));
+                    outBuf.write(findertext);
+                    outBuf.close();
+                } catch (IOException ioex){
+                    reger.core.Debug.errorsave(ioex, "daogenerator.log", "Fail saving finder file to filesystem.");
+                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Fail saving finder file to filesystem for at least one table."));
+                }
             }
         }
     }
@@ -63,16 +92,25 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 
 
 mb.append("<form action='daogenerator.log' method=post>");
-mb.append("<font face=arial size=+1>Generate all tables to file system directory:</font><br>");
+mb.append("<font face=arial size=+1>Generate DAO classes for all tables to file system directory:</font><br>");
 mb.append("<input type=hidden name=action value=go>");
-mb.append("<input type=text size=90 name=directory value='C:\\Superfly\\SourceSvn\\Reger\\trunk\\source\\WEB-INF\\classes\\reger\\dao\\'>");
+mb.append("<input type=text size=90 name=directory value='C:\\Superfly\\SourceSvn\\Reger\\trunk\\source\\WEB-INF\\classes\\reger\\dao\\db\\'>");
 mb.append("<input type=submit value='Go'>");
 mb.append("</form>");
 
 mb.append("<br><br>");
 
 mb.append("<form action='daogenerator.log' method=post>");
-mb.append("<font face=arial size=+1>Generate a single table to the screen:</font><br>");
+mb.append("<font face=arial size=+1>Generate finder classes for all tables to file system directory:</font><br>");
+mb.append("<input type=hidden name=action value=gofinder>");
+mb.append("<input type=text size=90 name=directory value='C:\\Superfly\\SourceSvn\\Reger\\trunk\\source\\WEB-INF\\classes\\reger\\dao\\finders\\'>");
+mb.append("<input type=submit value='Go'>");
+mb.append("</form>");
+
+mb.append("<br><br>");
+
+mb.append("<form action='daogenerator.log' method=post>");
+mb.append("<font face=arial size=+1>Generate a single DAO class to the screen:</font><br>");
 mb.append("<input type=hidden name=action value=gotable>");
 mb.append("<select name=tablename>");
 //-----------------------------------
@@ -91,6 +129,33 @@ mb.append("</select>");
 mb.append("<input type=submit value='Go'><br>");
 if (request.getParameter("action")!=null && request.getParameter("action").equals("gotable")){
     reger.dao.generator.Generator gen = new reger.dao.generator.Generator();
+    mb.append("<textarea name=dao wrap=off style=\"width: 100%\" rows=40>"+gen.getDaoForTable(request.getParameter("tablename"))+"</textarea>");
+}
+mb.append("</form>");
+
+
+mb.append("<br><br>");
+
+mb.append("<form action='daogenerator.log' method=post>");
+mb.append("<font face=arial size=+1>Generate a single finder class to the screen:</font><br>");
+mb.append("<input type=hidden name=action value=gofindertable>");
+mb.append("<select name=tablename>");
+//-----------------------------------
+//-----------------------------------
+String[][] rstDataFinder = Db.RunSQL("SHOW TABLES");
+//-----------------------------------
+//-----------------------------------
+if (rstDataFinder !=null && rstDataFinder.length>0){
+    for(int i=0; i<rstDataFinder.length; i++){
+        String tablename = rstDataFinder[i][0];
+        mb.append("<option name=tablename value='"+tablename+"'>"+tablename+"</option>");
+
+    }
+}
+mb.append("</select>");
+mb.append("<input type=submit value='Go'><br>");
+if (request.getParameter("action")!=null && request.getParameter("action").equals("gofindertable")){
+    reger.dao.generator.FinderGenerator gen = new reger.dao.generator.FinderGenerator();
     mb.append("<textarea name=dao wrap=off style=\"width: 100%\" rows=40>"+gen.getDaoForTable(request.getParameter("tablename"))+"</textarea>");
 }
 mb.append("</form>");

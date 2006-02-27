@@ -6,7 +6,9 @@ package reger.dao.generator.dbcolumntypes;
 public class DbColumnTypeFactory {
 
     public static DbColumnType getByMySqlTypeValue(String type){
-        if (type.indexOf("int")>-1){
+        if (type.indexOf("tinyint")>-1){
+            return new DbTypeTinyint();
+        } else if (type.indexOf("int")>-1){
             return new DbTypeInt();
         } else if (type.indexOf("varchar")>-1){
             return new DbTypeString();
@@ -18,8 +20,6 @@ public class DbColumnTypeFactory {
             return new DbTypeString();
         } else if (type.indexOf("datetime")>-1){
             return new DbTypeDatetime();
-        } else if (type.indexOf("tinyint")>-1){
-            return new DbTypeTinyint();
         } else if (type.indexOf("double")>-1){
             return new DbTypeDouble();
         } else if (type.indexOf("float")>-1){
