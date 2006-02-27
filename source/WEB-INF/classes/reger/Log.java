@@ -84,7 +84,6 @@ public class Log implements NestedNavItem {
                         Debug.errorsave(e, "");
                     }
                 }
-
                 //Get fieldOrderCollection
                 if (!fieldorder.equals("")){
                     fieldOrderCollection = new FieldOrderCollection(fieldorder);
@@ -118,11 +117,20 @@ public class Log implements NestedNavItem {
         //Debug
         StringBuffer tmp0 = new StringBuffer();
         if (fields!=null){
+            System.out.println("LOADING DEFAULT DATA " + logid);
             for (Iterator it = fields.iterator(); it.hasNext(); ) {
                FieldType ftC = (FieldType)it.next();
                ftC.loadDefaultData(logid);
                tmp0.append(ftC.getMegafieldid() + "<br>fieldname=" + ftC.getFieldname() + "<br>");
             }
+//            ArrayList tempFields = new ArrayList(fields.size());
+//            for (int i=0;i<fields.size();i++) {
+//                FieldType ftC = (FieldType) fields.get(i);
+//                ftC.loadDefaultData(logid);
+//                tmp0.append(ftC.getMegafieldid() + "<br>fieldname=" + ftC.getFieldname() + "<br>");
+//                tempFields.add(i, ftC);
+//            }
+//            fields = tempFields;
         }
         Debug.debug(5, "", "Log.java - logid="+logid+" fields Before Assignment<br>" + tmp0.toString());
 
