@@ -1,10 +1,7 @@
 package reger.spell;
 
 import com.swabunga.spell.engine.*;
-import com.swabunga.spell.event.SpellCheckEvent;
-import com.swabunga.spell.event.SpellCheckListener;
-import com.swabunga.spell.event.SpellChecker;
-import com.swabunga.spell.event.StringWordTokenizer;
+import com.swabunga.spell.event.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -57,7 +54,8 @@ public class RegerSpellCheck implements SpellCheckListener {
                 spellCheck = new SpellChecker(dictionary);
                 spellCheck.addSpellCheckListener(this);
 
-                spellCheck.checkSpelling(new StringWordTokenizer(textToSpellCheck));
+            spellCheck.checkSpelling(new StringWordTokenizer(new XMLWordFinder(textToSpellCheck)));
+            //spellCheck.checkSpelling(new StringWordTokenizer(textToSpellCheck));
 
         } catch (Exception e) {
                 Debug.errorsave(e, "RegerSpellCheck.java", "RegerSpellCheck error.");
