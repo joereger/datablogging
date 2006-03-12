@@ -50,7 +50,7 @@ public class AdminTools {
             mb.append("<td bgcolor=#e6e6e6 valign=top rowspan=2><font face=arial size=-2 style=\"font-size: 12px;\" class=admintoolstext>");
             mb.append("<strong>Site Actions:</strong><br>");
             mb.append("<a href='myhome/settings-siteprops.log?returntoadmintools=1' class=admintoolslink>Super-Important Properties</a><br>");
-            mb.append("<a href='myhome/settings-skin.log?returntoadmintools=1' class=admintoolslink>Change Site Template/Skin</a><br>");
+            mb.append("<a href='myhome/settings-template-main.log?returntoadmintools=1' class=admintoolslink>Change Site Template/Skin</a><br>");
             mb.append("<a href='myhome/logs-newlog.log' class=admintoolslink>Add a New Log</a><br>");
             //@todo Build a count like 4 Unapproved Messages
             mb.append("<a href='myhome/traffic-messages.log?view=messages' class=admintoolslink>Reader Messages</a><br>");
