@@ -41,6 +41,8 @@ if (request.getParameter("accountuserid")!=null && reger.core.Util.isinteger(req
 //Now create an accountuser object
 reger.Accountuser au = new reger.Accountuser(userSession.getAccount().getAccountid(), accountuserid);
 
+// To let Profile class know that request is coming from author.log. Based on this Edit Profile is hidden.
+reger.Profile.fromAuthorLog = true;
 //Now output the profile
 mb.append(reger.Profile.getHtmlProfile(au, userSession, false, pageProps.pathToAppRoot));
 
