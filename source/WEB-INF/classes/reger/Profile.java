@@ -7,13 +7,14 @@ import reger.core.db.Db;
  */
 public class Profile {
 
+    // To avoid displaying edit profile link, if coming from Author.log
+    public static boolean fromAuthorLog = false;
     /**
      *
      * @param accountuser -  The profile of the user who is being displayed
      */
     public static StringBuffer getHtmlProfile(reger.Accountuser accountuser, reger.UserSession userSession, boolean iseditable, String pathToAppRoot){
         StringBuffer mb = new StringBuffer();
-
         mb.append(reger.core.Util.popup());
 
         //Form start
@@ -38,9 +39,12 @@ public class Profile {
         if (userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
             mb.append("<font face=arial size=-1 color=#0000ff>");
             if (!iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
-                mb.append(" (<a href='"+pathToAppRoot+"myhome/settings-profile.log?iseditable=1'>");
-                mb.append("Edit Profile");
-                mb.append("</a>)");
+                // Following if condition is added to avoid displaying edit profile link, if coming from Author.log
+                if (!fromAuthorLog) {
+                    mb.append(" (<a href='"+pathToAppRoot+"myhome/settings-profile.log?iseditable=1'>");
+                    mb.append("Edit Profile");
+                    mb.append("</a>)");
+                }
             } else {
                 mb.append(" (<a href='"+pathToAppRoot+"myhome/settings-profile.log?iseditable=0'>");
                 mb.append("View Profile");
@@ -213,7 +217,8 @@ public class Profile {
         mb.append("</tr>");
 
         mb.append("</table>");
-
+        // To avoid displaying edit profile link, if coming from Author.log
+        fromAuthorLog = false;
         return mb;
     }
 
@@ -450,6 +455,4 @@ public class Profile {
             mb.append("</table>");
         return mb;
     }
-
-
 }
