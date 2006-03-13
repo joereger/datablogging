@@ -78,21 +78,38 @@ public class Location {
         } catch (ValidationException error){
             throw error;
         }
-
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstLoc= Db.RunSQL("SELECT locationid FROM location WHERE locationid='"+locationid+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstLoc!=null && rstLoc.length>0){
+        String[][] rstLoc = null;
+        // Flag to check if the record is updated or not.
+        boolean updated = false;
+        // select on locationid only if locationid is >0, because user could enter either location name or select location from drop down
+        // while creating an entry.
+        if (locationid > 0) {
+            //-----------------------------------
+            //-----------------------------------
+            rstLoc= Db.RunSQL("SELECT locationid FROM location WHERE locationid='"+locationid+"'");
+            //-----------------------------------
+            //-----------------------------------
+            // select on locationname only if locationname is not empty, because user could enter either location name or select location from
+            // drop down while creating an entry.
+        } else if (!locationname.equals("") && rstLoc == null || (rstLoc != null && rstLoc.length == 0)) {
+            //-----------------------------------
+            //-----------------------------------
+            rstLoc= Db.RunSQL("SELECT locationid FROM location WHERE locationname='"+locationname+"'");
+            //-----------------------------------
+            //-----------------------------------
+        } if (rstLoc!=null && rstLoc.length>0){
+            // location id is sent to the one retrieved, so that it can be displayed in drop down
+            locationid = Integer.parseInt(rstLoc[0][0]);
             //-----------------------------------
             //-----------------------------------
             int count = Db.RunSQLUpdate("UPDATE location SET locationname='"+Util.cleanForSQL(locationname)+"', accountid='"+accountid+"', longitude='"+longitude+"', latitude='"+latitude+"', city='"+reger.core.Util.cleanForSQL(city)+"', state='"+reger.core.Util.cleanForSQL(state)+"', country='"+reger.core.Util.cleanForSQL(country)+"'  WHERE locationid='"+locationid+"'");
             //-----------------------------------
             //-----------------------------------
+            // Flag to check if the record is updated or not.
+            updated = true;
         } else {
-            if (isGpsDataPresent() || isCityStateCountryInfoAvailable() || !locationname.equals("")){
-
+            // Insert only if record not updated (based on updated flag that is set above).
+            if ((isGpsDataPresent() || isCityStateCountryInfoAvailable() || !locationname.equals("")) &&  !updated ){
                 if (locationname.equals("")){
                     locationname="Location";
                 }
