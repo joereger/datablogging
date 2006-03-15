@@ -7,8 +7,6 @@ import reger.core.db.Db;
  */
 public class Profile {
 
-    // To avoid displaying edit profile link, if coming from Author.log
-    public static boolean fromAuthorLog = false;
     /**
      *
      * @param accountuser -  The profile of the user who is being displayed
@@ -40,6 +38,7 @@ public class Profile {
             mb.append("<font face=arial size=-1 color=#0000ff>");
             if (!iseditable && userSession.getAccountuser().getAccountuserid()==accountuser.getAccountuserid()){
                 // Following if condition is added to avoid displaying edit profile link, if coming from Author.log
+                boolean fromAuthorLog =  ((Boolean) userSession.getAttribute("fromauthor")).booleanValue();
                 if (!fromAuthorLog) {
                     mb.append(" (<a href='"+pathToAppRoot+"myhome/settings-profile.log?iseditable=1'>");
                     mb.append("Edit Profile");
@@ -218,7 +217,7 @@ public class Profile {
 
         mb.append("</table>");
         // To avoid displaying edit profile link, if coming from Author.log
-        fromAuthorLog = false;
+       userSession.setAttribute("fromauthor", false);
         return mb;
     }
 
