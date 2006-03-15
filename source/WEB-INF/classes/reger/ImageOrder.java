@@ -17,7 +17,7 @@ public class ImageOrder {
         int currentorder = 0;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstCurrentFieldorder= Db.RunSQL("SELECT image.order FROM image WHERE imageid='"+imageid+"'");
+        String[][] rstCurrentFieldorder= Db.RunSQL("SELECT imageorder FROM image WHERE imageid='"+imageid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstCurrentFieldorder!=null && rstCurrentFieldorder.length>0){
@@ -30,7 +30,7 @@ public class ImageOrder {
         int imageidJustBelow = 0;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstLower= Db.RunSQL("SELECT imageid FROM image WHERE image.order<'"+currentorder+"' ORDER BY image.order DESC LIMIT 0,1");
+        String[][] rstLower= Db.RunSQL("SELECT imageid FROM image WHERE imageorder<'"+currentorder+"' ORDER BY imageorder DESC LIMIT 0,1");
         //-----------------------------------
         //-----------------------------------
         if (rstLower!=null && rstLower.length>0){
@@ -57,7 +57,7 @@ public class ImageOrder {
         int currentorder = 0;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstCurrentFieldorder= Db.RunSQL("SELECT image.order FROM image WHERE imageid='"+imageid+"'");
+        String[][] rstCurrentFieldorder= Db.RunSQL("SELECT imageorder FROM image WHERE imageid='"+imageid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstCurrentFieldorder!=null && rstCurrentFieldorder.length>0){
@@ -70,7 +70,7 @@ public class ImageOrder {
         int imageidJustAbove = 0;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstLower= Db.RunSQL("SELECT imageid FROM image WHERE image.order>'"+currentorder+"' ORDER BY image.order ASC LIMIT 0,1");
+        String[][] rstLower= Db.RunSQL("SELECT imageid FROM image WHERE imageorder>'"+currentorder+"' ORDER BY imageorder ASC LIMIT 0,1");
         //-----------------------------------
         //-----------------------------------
         if (rstLower!=null && rstLower.length>0){
@@ -97,7 +97,7 @@ public class ImageOrder {
         int orderA = 0;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstFieldA= Db.RunSQL("SELECT image.order FROM image WHERE imageid='"+imageidA+"'");
+        String[][] rstFieldA= Db.RunSQL("SELECT imageorder FROM image WHERE imageid='"+imageidA+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstFieldA!=null && rstFieldA.length>0){
@@ -110,7 +110,7 @@ public class ImageOrder {
         int orderB = 0;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstFieldB= Db.RunSQL("SELECT image.order FROM image WHERE imageid='"+imageidB+"'");
+        String[][] rstFieldB= Db.RunSQL("SELECT imageorder FROM image WHERE imageid='"+imageidB+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstFieldB!=null && rstFieldB.length>0){
@@ -129,14 +129,14 @@ public class ImageOrder {
         //Update A
         //-----------------------------------
         //-----------------------------------
-        int countA = Db.RunSQLUpdate("UPDATE image SET image.order='"+orderB+"' WHERE imageid='"+imageidA+"'");
+        int countA = Db.RunSQLUpdate("UPDATE image SET imageorder='"+orderB+"' WHERE imageid='"+imageidA+"'");
         //-----------------------------------
         //-----------------------------------
 
         //Update B
         //-----------------------------------
         //-----------------------------------
-        int countB = Db.RunSQLUpdate("UPDATE image SET image.order='"+orderA+"' WHERE imageid='"+imageidB+"'");
+        int countB = Db.RunSQLUpdate("UPDATE image SET imageorder='"+orderA+"' WHERE imageid='"+imageidB+"'");
         //-----------------------------------
         //-----------------------------------
     }
@@ -151,7 +151,7 @@ public class ImageOrder {
         int max = 1;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstMax= Db.RunSQL("SELECT MAX(image.order) FROM image, event WHERE image.eventid=event.eventid AND event.eventid='"+eventid+"'");
+        String[][] rstMax= Db.RunSQL("SELECT MAX(imageorder) FROM image, event WHERE image.eventid=event.eventid AND event.eventid='"+eventid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstMax!=null && rstMax.length>0 && Util.isinteger(rstMax[0][0])){
@@ -170,7 +170,7 @@ public class ImageOrder {
         int count = 1;
         //-----------------------------------
         //-----------------------------------
-        String[][] rstFields= Db.RunSQL("SELECT imageid, image.order FROM image WHERE eventid='"+eventid+"' ORDER BY image.order ASC");
+        String[][] rstFields= Db.RunSQL("SELECT imageid, imageorder FROM image WHERE eventid='"+eventid+"' ORDER BY imageorder ASC");
         //-----------------------------------
         //-----------------------------------
         if (rstFields!=null && rstFields.length>0){
@@ -178,7 +178,7 @@ public class ImageOrder {
                 //Now update each megafield with a contiguous order scheme
                 //-----------------------------------
                 //-----------------------------------
-                int bloo = Db.RunSQLUpdate("UPDATE image SET image.order='"+count+"' WHERE imageid='"+rstFields[i][0]+"'");
+                int bloo = Db.RunSQLUpdate("UPDATE image SET imageorder='"+count+"' WHERE imageid='"+rstFields[i][0]+"'");
                 //-----------------------------------
                 //-----------------------------------
 

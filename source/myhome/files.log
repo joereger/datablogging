@@ -153,7 +153,7 @@ if (request.getParameter("action")!=null){
                         java.lang.String filename = FilenameUtils.normalize(files[i]);
                         //-----------------------------------
                         //-----------------------------------
-                        int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(filename)+"', '"+0+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+0+"', '"+reger.core.Util.cleanForSQL(filename)+"', '"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(filename)+"')");
+                        int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, imageorder, accountuserid, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(filename)+"', '"+0+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+0+"', '"+reger.core.Util.cleanForSQL(filename)+"', '"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(filename)+"')");
                         //-----------------------------------
                         //-----------------------------------
                     }

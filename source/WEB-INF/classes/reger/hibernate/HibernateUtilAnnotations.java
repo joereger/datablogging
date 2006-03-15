@@ -3,19 +3,13 @@ package reger.hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
 import org.hibernate.HibernateException;
-import org.hibernate.event.SaveOrUpdateEventListener;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 import java.io.File;
 
-
 import reger.core.db.DbConfig;
-import reger.hibernate.eventlisteners.RegerDefaultSaveOrUpdateEventListener;
-import reger.hibernate.eventlisteners.RegerDefaultUpdateEventListener;
-import reger.hibernate.eventlisteners.RegerDefaultSaveEventListener;
-import reger.hibernate.interceptors.ValidationInterceptor;
 
-public class HibernateUtil {
+public class HibernateUtilAnnotations {
 
     private static SessionFactory sessionFactory;
     private static final ThreadLocal session = new ThreadLocal();
@@ -23,7 +17,7 @@ public class HibernateUtil {
     static {
         try {
             //Create a configuration object
-            Configuration conf = new Configuration();
+            AnnotationConfiguration conf = new AnnotationConfiguration();
             //Add config file
             String pathConfig = reger.core.WebAppRootDir.getWebAppRootPath() + "WEB-INF/classes/hibernate.cfg.xml";
             conf.configure(new File(pathConfig));
@@ -41,17 +35,6 @@ public class HibernateUtil {
             conf.setProperty("hibernate.show_sql", "true");
             conf.setProperty("hibernate.generate_statistics", "false");
 
-            //Save or update validation listener
-//            SaveOrUpdateEventListener[] stack = { new RegerDefaultSaveOrUpdateEventListener() };
-//            conf.getEventListeners().setSaveOrUpdateEventListeners(stack);
-//            SaveOrUpdateEventListener[] stack2 = { new RegerDefaultUpdateEventListener() };
-//            conf.getEventListeners().setUpdateEventListeners(stack2);
-//            SaveOrUpdateEventListener[] stack3 = { new RegerDefaultSaveEventListener() };
-//            conf.getEventListeners().setSaveEventListeners(stack3);
-
-            //Interceptor(s)
-//            conf.setInterceptor(new ValidationInterceptor());
-
             //Connection pool
             conf.setProperty("hibernate.c3p0.min_size", String.valueOf(DbConfig.getDbMinIdle()));
             conf.setProperty("hibernate.c3p0.max_size", String.valueOf(DbConfig.getDbMaxActive()));
@@ -62,11 +45,10 @@ public class HibernateUtil {
             conf.setProperty("hibernate.cache.use_second_level_cache", "true");
             conf.setProperty("hibernate.cache.provider_class", "org.hibernate.cache.OSCacheProvider");
             conf.setProperty("hibernate.cache.use_structured_entries", "false");
-            conf.setProperty("hibernate.cache.use_query_cache", "true");
-            conf.setProperty("hibernate.cache.usage", "nonstrict-read-write");
+            conf.setProperty("hibernate.cache.use_query_cache", "false");
 
             // Create the SessionFactory
-            sessionFactory = conf.buildSessionFactory();
+            HibernateUtilAnnotations.sessionFactory = conf.buildSessionFactory();
 
             System.out.println("Reger.com: HibernateUtil Session Initialized. Let's rock some data abstration!");
             System.out.println("Reger.com: HibernateUtil: username:"+DbConfig.getDbUsername());
@@ -79,58 +61,41 @@ public class HibernateUtil {
 
 
     public static Session getSession() throws HibernateException {
-        Session s = (Session) HibernateUtil.session.get();
+        Session s = (Session) HibernateUtilAnnotations.session.get();
         if (s==null||!s.isOpen()) {
-            s = sessionFactory.openSession();
-            session.set(s);
+            s = HibernateUtilAnnotations.sessionFactory.openSession();
+            HibernateUtilAnnotations.session.set(s);
         }
         return s;
     }
 
     public static void closeSession() throws HibernateException {
-        Session s = (Session)session.get();
-        session.set(null);
+        Session s = (Session) HibernateUtilAnnotations.session.get();
+        HibernateUtilAnnotations.session.set(null);
         if (s!=null && s.isOpen()){
             s.close();
         }
     }
 
     public static Object load(Class clazz, int id){
-        return getSession().get(clazz, id);
+        return HibernateUtilAnnotations.getSession().get(clazz, id);
     }
 
-
-    public static void refresh(Object obj){
-        getSession().refresh(obj);
-    }
-
-    public static void save(Object obj) throws HibValEx {
-
-        try{
-            ValidateWorker.validate(obj);
-        } catch (HibValEx hex){
-            throw hex;
-        }
-
-        try{
-            Session hsession = getSession();
-            hsession.beginTransaction();
-            hsession.saveOrUpdate(obj);
-            hsession.getTransaction().commit();
-            hsession.close();
-        } catch (HibernateException hibex){
-            reger.core.Debug.errorsave(hibex, "HibernateUtil.java", "Problem with HibernateUtil.save()");
-            HibValEx hex = new HibValEx("Sorry, unable to complete database update: "+hibex.getMessage());
-            throw hex;
-        }
+    public static void save(Object obj){
+        Session hsession = HibernateUtilAnnotations.getSession();
+        hsession.beginTransaction();
+        hsession.saveOrUpdate(obj);
+        hsession.getTransaction().commit();
+        hsession.close();
     }
 
     public static void delete(Object obj){
-        Session hsession = getSession();
+        Session hsession = HibernateUtilAnnotations.getSession();
         hsession.beginTransaction();
         hsession.delete(obj);
         hsession.getTransaction().commit();
         hsession.close();
+
     }
 
 

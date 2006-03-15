@@ -35,7 +35,7 @@ public class FieldTypeVerticalradios extends Field implements FieldType, ChartFi
         this.fieldData = new ArrayList<FieldData>();
         for (Iterator it = field.getDataForField().iterator(); it.hasNext(); ) {
             FieldData fldDataTmp = (FieldData)it.next();
-            this.fieldData.add(0, fldDataTmp);
+            this.fieldData.add(0, new FieldData(fldDataTmp));
         }
         populateFromAnotherField(field);
     }

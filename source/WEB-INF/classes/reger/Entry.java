@@ -403,7 +403,7 @@ public class Entry {
         this.accountid = account.getAccountid();
         this.accountuserid = accountUser.getAccountuserid();
 
-        Debug.debug(4, "Entry.java", "Edit entry called: eventid=" + eventid + ", accountid=" + accountid + ", accountuserid=" + accountuserid);
+        Debug.debug(3, "Entry.java", "Edit entry called: eventid=" + eventid + ", accountid=" + accountid + ", accountuserid=" + accountuserid);
 
         //Validate the entry and the accompanying megadata
         try {
@@ -596,6 +596,8 @@ public class Entry {
 
             this.eventid = eventid;
 
+            reger.core.Debug.debug(3, "Entry.java", "eventid=" + eventid + " found and refreshed in database.");
+
             //Get date
             try {
                 dateGmt = reger.core.TimeUtils.dbstringtocalendar(rstEventdetails[0][0]);
@@ -699,16 +701,17 @@ public class Entry {
             }
         }
 
+        //Load the polls
         loadPolls();
 
         //Go get the fields
         if (fields == null) {
             try {
-                Debug.debug(5, "", "---------<br>Entry.java - about to call LogCache for logid=" + logid);
-                Log logByLogid = LogCache.get(logid);
-                if (logByLogid != null) {
-                    Debug.debug(5, "", "Entry.java - logByLogid.getName()=" + logByLogid.getName() + "<br>--------");
-                    fields = AllFieldsInSystem.copyFieldTypeArray(logByLogid.getFields());
+                Debug.debug(3, "", "---------<br>Entry.java - about to call LogCache for logid=" + logid);
+                Log log = LogCache.get(logid);
+                if (log != null && log.getLogid()>0) {
+                    Debug.debug(3, "", "Entry.java - log.getName()=" + log.getName() + "<br>--------");
+                    fields = AllFieldsInSystem.copyFieldTypeArray(log.getFields());
                 }
             } catch (Exception e) {
                 Debug.errorsave(e, "");
@@ -716,19 +719,24 @@ public class Entry {
         }
 
         //Go get the data for those fields
-        if (fields != null) {
+        if (fields != null && fields.size()>0) {
+            //ArrayList<FieldType> fieldsTmp = new ArrayList<FieldType>();
             for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
                 FieldType ft = (FieldType)it.next();
                 //Populate the object with values from the eventid
-                Debug.debug(5, "", "Entry.java - fields[i].loadDataForEventid() will be called for " + ft.getFieldname());
+                Debug.debug(3, "", "Entry.java - fields[i].loadDataForEventid() will be called for " + ft.getFieldname());
                 ft.loadDataForEventid(eventid, logid);
-                Debug.debug(5, "", "Entry.java - fieldname= " + ft.getFieldname() + " fields[i].getDataForField()[0].getValue()=" + ft.getDataForField().get(0).getValue());
+                //fieldsTmp.add(ft);
+                Debug.debug(3, "", "Entry.java - fieldname= " + ft.getFieldname() + " fields[i].getDataForField()[0].getValue()=" + ft.getDataForField().get(0).getValue());
             }
+            //this.fields = fieldsTmp;
         }
 
         //Load xform
         eventXformData = new EventXformData();
         eventXformData.loadByEventid(eventid, logid);
+
+
 
         return true;
 
@@ -860,6 +868,7 @@ public class Entry {
     public void validateEntryMega() throws ValidationException {
         ValidationException validationException = new ValidationException();
         if (fields != null) {
+            reger.core.Debug.debug(3, "Entry.java", "Fields is not null eventid=" + eventid);
             //Iterate the fields, calling the validate function
             for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
                 FieldType ft = (FieldType)it.next();

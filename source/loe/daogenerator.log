@@ -30,64 +30,64 @@ pageProps.pathToAppRoot="../";
 mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "This page allows you to generate DAO objects from the database.<br>Make sure that the database has not been contaminated by unhealthy alters.<br>Make sure it includes the changes you want to capture.<br>Enter the source directory of the current DAOs and click Go.<br>Then test, test, test.<br><br>If you don't know what this page is for you probably shouldn't be using it."));
 
 
-if (request.getParameter("action")!=null && request.getParameter("action").equals("go")){
-    File dir = new File(FilenameUtils.normalize(request.getParameter("directory")));
-    if (dir.isDirectory()){
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstData= reger.core.db.Db.RunSQL("SHOW TABLES");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstData!=null && rstData.length>0){
-            for(int i=0; i<rstData.length; i++){
-                String tablename = rstData[i][0];
-                reger.dao.generator.Generator gen = new reger.dao.generator.Generator();
-                String daotext = gen.getDaoForTable(tablename);
-                try{
-                    File file = new File(FilenameUtils.normalize(request.getParameter("directory")) + reger.dao.generator.Generator.getFirstCharUpperCased(tablename) + "DAO.java");
-                    reger.core.Debug.debug(3, "daogenerator.log", file.getAbsolutePath());
-                    BufferedWriter outBuf = new BufferedWriter(new FileWriter(file));
-                    outBuf.write(daotext);
-                    outBuf.close();
-                } catch (IOException ioex){
-                    reger.core.Debug.errorsave(ioex, "daogenerator.log", "Fail saving DAO file to filesystem.");
-                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Fail saving DAO file to filesystem for at least one table."));
-                }
-            }
-        }
-    }
-    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Done!"));
-}
-
-
-if (request.getParameter("action")!=null && request.getParameter("action").equals("gofinder")){
-    File dir = new File(FilenameUtils.normalize(request.getParameter("directory")));
-    if (dir.isDirectory()){
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstData= reger.core.db.Db.RunSQL("SHOW TABLES");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstData!=null && rstData.length>0){
-            for(int i=0; i<rstData.length; i++){
-                String tablename = rstData[i][0];
-                reger.dao.generator.FinderGenerator findgen = new reger.dao.generator.FinderGenerator();
-                String findertext = findgen.getDaoForTable(tablename);
-                try{
-                    File file = new File(FilenameUtils.normalize(request.getParameter("directory")) + reger.dao.generator.Generator.getFirstCharUpperCased(tablename) + "Finder.java");
-                    reger.core.Debug.debug(3, "daogenerator.log", file.getAbsolutePath());
-                    BufferedWriter outBuf = new BufferedWriter(new FileWriter(file));
-                    outBuf.write(findertext);
-                    outBuf.close();
-                } catch (IOException ioex){
-                    reger.core.Debug.errorsave(ioex, "daogenerator.log", "Fail saving finder file to filesystem.");
-                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Fail saving finder file to filesystem for at least one table."));
-                }
-            }
-        }
-    }
-    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Done!"));
-}
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("go")){
+//    File dir = new File(FilenameUtils.normalize(request.getParameter("directory")));
+//    if (dir.isDirectory()){
+//        //-----------------------------------
+//        //-----------------------------------
+//        String[][] rstData= reger.core.db.Db.RunSQL("SHOW TABLES");
+//        //-----------------------------------
+//        //-----------------------------------
+//        if (rstData!=null && rstData.length>0){
+//            for(int i=0; i<rstData.length; i++){
+//                String tablename = rstData[i][0];
+//                reger.dao.generator.Generator gen = new reger.dao.generator.Generator();
+//                String daotext = gen.getDaoForTable(tablename);
+//                try{
+//                    File file = new File(FilenameUtils.normalize(request.getParameter("directory")) + reger.dao.generator.Generator.getFirstCharUpperCased(tablename) + "DAO.java");
+//                    reger.core.Debug.debug(3, "daogenerator.log", file.getAbsolutePath());
+//                    BufferedWriter outBuf = new BufferedWriter(new FileWriter(file));
+//                    outBuf.write(daotext);
+//                    outBuf.close();
+//                } catch (IOException ioex){
+//                    reger.core.Debug.errorsave(ioex, "daogenerator.log", "Fail saving DAO file to filesystem.");
+//                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Fail saving DAO file to filesystem for at least one table."));
+//                }
+//            }
+//        }
+//    }
+//    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Done!"));
+//}
+//
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("gofinder")){
+//    File dir = new File(FilenameUtils.normalize(request.getParameter("directory")));
+//    if (dir.isDirectory()){
+//        //-----------------------------------
+//        //-----------------------------------
+//        String[][] rstData= reger.core.db.Db.RunSQL("SHOW TABLES");
+//        //-----------------------------------
+//        //-----------------------------------
+//        if (rstData!=null && rstData.length>0){
+//            for(int i=0; i<rstData.length; i++){
+//                String tablename = rstData[i][0];
+//                reger.dao.generator.FinderGenerator findgen = new reger.dao.generator.FinderGenerator();
+//                String findertext = findgen.getDaoForTable(tablename);
+//                try{
+//                    File file = new File(FilenameUtils.normalize(request.getParameter("directory")) + reger.dao.generator.Generator.getFirstCharUpperCased(tablename) + "Finder.java");
+//                    reger.core.Debug.debug(3, "daogenerator.log", file.getAbsolutePath());
+//                    BufferedWriter outBuf = new BufferedWriter(new FileWriter(file));
+//                    outBuf.write(findertext);
+//                    outBuf.close();
+//                } catch (IOException ioex){
+//                    reger.core.Debug.errorsave(ioex, "daogenerator.log", "Fail saving finder file to filesystem.");
+//                    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Fail saving finder file to filesystem for at least one table."));
+//                }
+//            }
+//        }
+//    }
+//    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Done!"));
+//}
 
 
 

@@ -1,0 +1,326 @@
+<%@ page import="reger.SideColumn,
+                 java.util.*,
+                 org.hibernate.*,
+                 reger.hibernate.HibernateUtil,
+                 org.hibernate.Transaction"%>
+<%@ page import="org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy"%>
+<%@ page import="reger.dao.hibernate.*"%>
+<%@ page import="reger.InfoBox"%>
+<%@ page import="reger.hibernate.HibValEx"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+if (request.getParameter("action")==null){
+    mb.append(InfoBox.get(InfoBox.BOXTYPEINFO, "../", "Enjoy the show."));
+}
+
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("delete")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        Event event = (Event)HibernateUtil.load(Event.class, eventid);
+//        HibernateUtil.delete(event);
+//        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" deleted."));
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("rnimage")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))){
+//            int imageid = Integer.parseInt(request.getParameter("imageid"));
+//            Event event = (Event)HibernateUtil.load(Event.class, eventid);
+//            for (Iterator<Image> iterator = event.getImages().iterator(); iterator.hasNext();) {
+//                Image image = iterator.next();
+//                if (image.getImageid()==imageid){
+//                    image.setFilename(image.getFilename()+"-rn");
+//                }
+//            }
+//            try{
+//                HibernateUtil.save(event);
+//                mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" saved and imageid="+imageid+" name appended."));
+//            } catch (HibValEx hex){
+//                mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, "../", hex.getErrorsAsSingleString()));
+//            }
+//        }
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("rnpoll")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("pollid"))){
+//            int pollid = Integer.parseInt(request.getParameter("pollid"));
+//            Event event = (Event)HibernateUtil.load(Event.class, eventid);
+//            for (Iterator<Poll> iterator = event.getPolls().iterator(); iterator.hasNext();) {
+//                Poll poll = iterator.next();
+//                if (poll.getPollid()==pollid){
+//                    poll.setQuestion(poll.getQuestion()+"-rn");
+//                }
+//            }
+//            HibernateUtil.save(event);
+//            mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" saved and pollid="+pollid+" name appended."));
+//        }
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("removeimage")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))){
+//            int imageid = Integer.parseInt(request.getParameter("imageid"));
+//            Event event = (Event)HibernateUtil.load(Event.class, eventid);
+//            for (Iterator<Image> iterator = event.getImages().iterator(); iterator.hasNext();) {
+//                Image image = iterator.next();
+//                if (image.getImageid()==imageid){
+//                    iterator.remove();
+//                }
+//            }
+//            HibernateUtil.save(event);
+//            mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" saved and imageid="+imageid+" removed."));
+//        }
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("deletejustimage")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("imageid"))){
+//            int imageid = Integer.parseInt(request.getParameter("imageid"));
+//            Image image = (Image)HibernateUtil.load(Image.class, imageid);
+//            HibernateUtil.delete(image);
+//            mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" changed and imageid="+imageid+" deleted."));
+//        }
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("deletejustpoll")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("pollid"))){
+//            int pollid = Integer.parseInt(request.getParameter("pollid"));
+//            Poll poll = (Poll)HibernateUtil.load(Poll.class, pollid);
+//            HibernateUtil.delete(poll);
+//            mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" changed and pollid="+pollid+" deleted."));
+//        }
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("rngroup")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("groupid"))){
+//            int groupid = Integer.parseInt(request.getParameter("groupid"));
+//            Event event = (Event)HibernateUtil.load(Event.class, eventid);
+//            for (Iterator<Groups> iterator = event.getGroups().iterator(); iterator.hasNext();) {
+//                Groups group = iterator.next();
+//                if (group.getGroupid()==groupid){
+//                    group.setName(group.getName()+"-rn");
+//                }
+//            }
+//            try{
+//                HibernateUtil.save(event);
+//                mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" saved and groupid="+groupid+" name appended."));
+//            } catch (HibValEx hex){
+//                mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, "../", hex.getErrorsAsSingleString()));
+//            }
+//        }
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("deletejustgroup")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("groupid"))){
+//            int groupid = Integer.parseInt(request.getParameter("groupid"));
+//            Groups group = (Groups)HibernateUtil.load(Groups.class, groupid);
+//            HibernateUtil.delete(group);
+//            mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" changed and groupid="+groupid+" deleted."));
+//        }
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("removegroup")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("groupid"))){
+//            int groupid = Integer.parseInt(request.getParameter("groupid"));
+//            try{
+//                Event event = (Event)HibernateUtil.load(Event.class, eventid);
+//                for (Iterator<Groups> iterator = event.getGroups().iterator(); iterator.hasNext();) {
+//                    Groups group = iterator.next();
+//                    if (group.getGroupid()==groupid){
+//                        iterator.remove();
+//                    }
+//                }
+//                HibernateUtil.save(event);
+//                mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" saved and groupid="+groupid+" name appended."));
+//            } catch (HibValEx hex){
+//                mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, "../", hex.getErrorsAsSingleString()));
+//            }
+//        }
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("newgroup")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        try{
+//            Groups newgroup = new Groups();
+//            newgroup.setName("group-"+reger.core.RandomString.randomAlphanumeric(5) + "-" + reger.core.TimeUtils.nowInGmtString());
+//            HibernateUtil.save(newgroup);
+//            Event event = (Event)HibernateUtil.load(Event.class, eventid);
+//            event.getGroups().add(newgroup);
+//            HibernateUtil.save(event);
+//            mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" saved and added groupid="+newgroup.getGroupid()+"."));
+//        } catch (HibValEx hex){
+//            mb.append(InfoBox.get(InfoBox.BOXTYPEERROR, "../", hex.getErrorsAsSingleString()));
+//        }
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("newimage")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        Image newimage = new Image();
+//        newimage.setFilename("image-"+reger.core.RandomString.randomAlphanumeric(5) + "-" + reger.core.TimeUtils.nowInGmtString());
+//        newimage.setEventid(eventid);
+//        newimage.setAccountuserid(3);
+//        newimage.setAccountid(56);
+//        newimage.setSizeinbytes(452);
+//        newimage.setImage("image-"+reger.core.RandomString.randomAlphanumeric(5));
+//        HibernateUtil.save(newimage);
+//        Event event = (Event)HibernateUtil.load(Event.class, eventid);
+//        System.out.println("eventid="+event.getEventid()+" imageid=" + newimage.getImageid());
+//        HibernateUtil.refresh(event);
+//        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" saved and added imageid="+newimage.getImageid()+"."));
+//    }
+//}
+//
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("newpoll")){
+//    if (request.getParameter("eventid")!=null && reger.core.Util.isinteger(request.getParameter("eventid"))){
+//        int eventid = Integer.parseInt(request.getParameter("eventid"));
+//        Poll newpoll = new Poll();
+//        newpoll.setQuestion("question-"+reger.core.RandomString.randomAlphanumeric(5) + "-" + reger.core.TimeUtils.nowInGmtString());
+//        newpoll.setEventid(new Integer(eventid));
+//        HibernateUtil.save(newpoll);
+//        Event event = (Event)HibernateUtil.load(Event.class, eventid);
+//        HibernateUtil.refresh(event);
+//        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Eventid="+eventid+" saved and added pollid="+newpoll.getPollid()+"."));
+//    }
+//}
+//
+//
+
+
+
+
+
+mb.append("<br><br><a href='hibernate-associations.log'>Refresh</a><br>");
+
+
+List events = HibernateUtil.getSession().createQuery("from Event").setFirstResult(0).setMaxResults(20).list();
+for (int i = 0; i < events.size(); i++) {
+    Event event = (Event) events.get(i);
+    mb.append("<font face=arial size=-1>");
+    mb.append("<br><br>event.getEventid(): " + event.getEventid());
+    mb.append(" <a href='hibernate-associations.log?action=delete&eventid="+event.getEventid()+"'>Delete</a>");
+    mb.append(" <a href='hibernate-associations.log?action=newgroup&eventid="+event.getEventid()+"'>New Group</a>");
+    mb.append(" <a href='hibernate-associations.log?action=newimage&eventid="+event.getEventid()+"'>New Image</a>");
+    mb.append(" <a href='hibernate-associations.log?action=newpoll&eventid="+event.getEventid()+"'>New Poll</a>");
+    mb.append("</font>");
+    Set<Image> images = event.getImages();
+    for (Iterator<Image> iterator = images.iterator(); iterator.hasNext();) {
+        reger.dao.hibernate.Image image = iterator.next();
+        mb.append("<font face=arial size=-2>");
+        mb.append("<br>(imageid="+image.getImageid()+", filename="+image.getFilename()+")");
+        mb.append(" <a href='hibernate-associations.log?action=rnimage&eventid="+event.getEventid()+"&imageid="+image.getImageid()+"'>Rn</a>");
+        mb.append(" <a href='hibernate-associations.log?action=removeimage&eventid="+event.getEventid()+"&imageid="+image.getImageid()+"'>Rem</a>");
+        mb.append(" <a href='hibernate-associations.log?action=deletejustimage&eventid="+event.getEventid()+"&imageid="+image.getImageid()+"'>Del</a>");
+        mb.append("</font>");
+    }
+    Set<Groups> groups = event.getGroups();
+    for (Iterator<Groups> iterator = groups.iterator(); iterator.hasNext();) {
+        reger.dao.hibernate.Groups group = iterator.next();
+        mb.append("<font face=arial size=-2>");
+        mb.append("<br>(groupid="+group.getGroupid()+", name="+group.getName()+")");
+        mb.append(" <a href='hibernate-associations.log?action=rngroup&eventid="+event.getEventid()+"&groupid="+group.getGroupid()+"'>Rn</a>");
+        mb.append(" <a href='hibernate-associations.log?action=removegroup&eventid="+event.getEventid()+"&groupid="+group.getGroupid()+"'>Rem</a>");
+        mb.append(" <a href='hibernate-associations.log?action=deletejustgroup&eventid="+event.getEventid()+"&groupid="+group.getGroupid()+"'>DelJust</a>");
+        mb.append("</font>");
+    }
+//    List<Episode> episodes = event.getEpisodes();
+//    for (Iterator<Episode> iterator = episodes.iterator(); iterator.hasNext();) {
+//        reger.dao.hibernate.Episode episode = iterator.next();
+//        mb.append("<font face=arial size=-2>");
+//        mb.append("<br>(episodeid="+episode.getEpisodeid()+", name="+episode.getName()+")");
+//        mb.append(" <a href='hibernate-associations.log?action=rnepisode&eventid="+event.getEventid()+"&episodeid="+episode.getEpisodeid()+"'>Rn</a>");
+//        mb.append("</font>");
+//    }
+    Set<Poll> polls = event.getPolls();
+    for (Iterator<Poll> iterator = polls.iterator(); iterator.hasNext();) {
+        reger.dao.hibernate.Poll poll = iterator.next();
+        mb.append("<font face=arial size=-2>");
+        mb.append("<br>(pollid="+poll.getPollid()+", question="+poll.getQuestion()+")");
+        mb.append(" <a href='hibernate-associations.log?action=rnpoll&eventid="+event.getEventid()+"&pollid="+poll.getPollid()+"'>Rn</a>");
+        mb.append(" <a href='hibernate-associations.log?action=deletejustpoll&eventid="+event.getEventid()+"&pollid="+poll.getPollid()+"'>DelJust</a>");
+        mb.append("</font>");
+    }
+//    List<Message> messages = event.getMessages();
+//    for (Iterator<Message> iterator = messages.iterator(); iterator.hasNext();) {
+//        reger.dao.hibernate.Message message = iterator.next();
+//        mb.append("<font face=arial size=-2>");
+//        mb.append("<br>(messageid="+message.getMessageid()+", message="+message.getMessage()+")");
+//        mb.append(" <a href='hibernate-associations.log?action=removemessage&eventid="+event.getEventid()+"&messageid="+message.getMessageid()+"'>Rem</a>");
+//        mb.append(" <a href='hibernate-associations.log?action=deletejustmessage&eventid="+event.getEventid()+"&messageid="+message.getMessageid()+"'>DelJust</a>");
+//        mb.append("</font>");
+//    }
+}
+//HibernateUtil.closeSession();
+
+
+
+
+
+
+//mb.append("<br>Banner saved.<br>bannerid=" + banner.getBannerid());
+//mb.append("<br>name=" + banner.getFilename());
+
+mb.append("<br><br>");
+
+
+
+
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

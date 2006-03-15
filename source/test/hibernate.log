@@ -2,8 +2,9 @@
                  java.util.*,
                  org.hibernate.*,
                  reger.hibernate.HibernateUtil,
-                 org.hibernate.Transaction,
-                 reger.hibernate.Cat"%>
+                 org.hibernate.Transaction"%>
+<%@ page import="reger.dao.hibernate.Banner"%>
+<%@ page import="org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy"%>
 
 
 <%
@@ -25,24 +26,79 @@ pageProps.pathToAppRoot="";
             StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("save")){
+//    String filename = request.getParameter("filename");
+//    if (request.getParameter("bannerid")!=null && reger.core.Util.isinteger(request.getParameter("bannerid"))){
+//        int bannerid = Integer.parseInt(request.getParameter("bannerid"));
+//        Banner banner = (Banner)HibernateUtil.load(Banner.class, bannerid);
+//        banner.setFilename(filename);
+//        HibernateUtil.save(banner);
+//    }
+//}
+
+if (request.getParameter("action")!=null && request.getParameter("action").equals("savestart")){
+    if (request.getParameter("bannerid")!=null && reger.core.Util.isinteger(request.getParameter("bannerid"))){
+        int bannerid = Integer.parseInt(request.getParameter("bannerid"));
+        Banner banner = (Banner)HibernateUtil.load(Banner.class, bannerid);
+        mb.append("<form action=hibernate.log method=post>");
+        mb.append("<input type=hidden name=action value='save'>");
+        mb.append("<input type=hidden name=bannerid value='"+bannerid+"'>");
+        mb.append("<input type='text' name=filename value=\""+reger.core.Util.cleanForHtml(banner.getFilename())+"\">");
+        mb.append("<input type=submit>");
+        mb.append("</form>");
+    }
+
+}
+
+if (request.getParameter("action")!=null && request.getParameter("action").equals("delete")){
+    if (request.getParameter("bannerid")!=null && reger.core.Util.isinteger(request.getParameter("bannerid"))){
+        int bannerid = Integer.parseInt(request.getParameter("bannerid"));
+        Banner banner = (Banner)HibernateUtil.load(Banner.class, bannerid);
+        HibernateUtil.delete(banner);
+    }
+}
 
 
-Session hsession = HibernateUtil.getSessionFactory().getCurrentSession();
-hsession.beginTransaction();
 
-Cat princess = new Cat();
-princess.setName("Princess" + reger.core.RandomString.randomAlphanumeric(4));
-princess.setSex('F');
-princess.setWeight(Float.parseFloat(String.valueOf(reger.core.Util.randomInt(30))));
+if (request.getParameter("action")!=null && request.getParameter("action").equals("new")){
+//    Session hsession = HibernateUtil.getSession();
+//    hsession.beginTransaction();
+//    Banner banner = new Banner();
+//    banner.setFilename(reger.core.RandomString.randomAlphanumeric(5) + "-" + reger.core.TimeUtils.nowInGmtString());
+//    hsession.save(banner);
+//    hsession.getTransaction().commit();
+//    HibernateUtil.closeSession();
 
-hsession.save(princess);
-hsession.getTransaction().commit();
+    Banner banner = new Banner();
+    banner.setFilename(reger.core.RandomString.randomAlphanumeric(5) + "-" + reger.core.TimeUtils.nowInGmtString());
+    HibernateUtil.save(banner);
+
+}
+
+mb.append("<br><br><a href='hibernate.log'>Refresh</a>");
+mb.append(" | <a href='hibernate.log?action=new'>New</a><br>");
+
+//Session sessionl = HibernateUtil.getSession();
+//sessionl.beginTransaction();
+List result = HibernateUtil.getSession().createQuery("from Banner").list();
+//sessionl.getTransaction().commit();
+for (int i = 0; i < result.size(); i++) {
+    Banner ban = (Banner) result.get(i);
+    mb.append("<br>ban.getBannerid(): " + ban.getBannerid() +
+                       " ban.getFilename(): " + ban.getFilename() +
+                       " <a href='hibernate.log?action=savestart&bannerid="+ban.getBannerid()+"'>Edit</a>" +
+                       " <a href='hibernate.log?action=delete&bannerid="+ban.getBannerid()+"'>Delete</a>"
+                       );
+}
 
 
 
-mb.append("<br>Cat saved. catid=" + princess.getCatid());
-mb.append("<br>Cat saved. name=" + princess.getName());
-mb.append("<br>Cat saved. weight=" + princess.getWeight());
+
+
+
+
+//mb.append("<br>Banner saved.<br>bannerid=" + banner.getBannerid());
+//mb.append("<br>name=" + banner.getFilename());
 
 mb.append("<br><br>");
 

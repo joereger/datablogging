@@ -185,7 +185,7 @@ public class RssRome {
                 java.util.Vector encList = new java.util.Vector();
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstEnc= Db.RunSQL("SELECT imageid, image, description, sizeinbytes FROM image WHERE eventid='"+entry.eventid+"' ORDER BY image.order ASC, image.imageid ASC");
+                String[][] rstEnc= Db.RunSQL("SELECT imageid, image, description, sizeinbytes FROM image WHERE eventid='"+entry.eventid+"' ORDER BY imageorder ASC, image.imageid ASC");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstEnc!=null && rstEnc.length>0){
@@ -562,7 +562,7 @@ public class RssRome {
                 java.util.Vector encList = new java.util.Vector();
                 //-----------------------------------
                 //-----------------------------------
-                String[][] rstEnc= Db.RunSQL("SELECT imageid, image, description, sizeinbytes FROM image WHERE eventid='"+entry.eventid+"' ORDER BY image.order ASC, image.imageid ASC");
+                String[][] rstEnc= Db.RunSQL("SELECT imageid, image, description, sizeinbytes FROM image WHERE eventid='"+entry.eventid+"' ORDER BY imageorder ASC, image.imageid ASC");
                 //-----------------------------------
                 //-----------------------------------
                 if (rstEnc!=null && rstEnc.length>0){

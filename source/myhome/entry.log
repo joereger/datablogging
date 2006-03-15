@@ -27,7 +27,6 @@ pageProps.helpText="This page allows you to add or edit weblog entries.  Once yo
 pageProps.entry.populate(pageProps.logProps.logid, request, userSession.getAccountuser().getUsertimezoneid());
 
 
-
 //Make sure this user can admin this log
 if (!userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
     try{

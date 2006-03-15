@@ -1,0 +1,4 @@
+<persistence>
+   <persistence-unit name="manager1" transaction-type="RESOURCE_LOCAL">
+   </persistence-unit>
+</persistence>

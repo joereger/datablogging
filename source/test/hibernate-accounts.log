@@ -1,0 +1,81 @@
+<%@ page import="reger.SideColumn,
+                 java.util.*,
+                 org.hibernate.*,
+                 reger.hibernate.HibernateUtil,
+                 org.hibernate.Transaction"%>
+<%@ page import="org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy"%>
+<%@ page import="reger.dao.hibernate.*"%>
+<%@ page import="reger.InfoBox"%>
+<%@ page import="reger.hibernate.HibValEx"%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.PUBLICSITE;
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
+pageProps.pathToAppRoot="";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+            StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+if (request.getParameter("action")==null){
+    mb.append(InfoBox.get(InfoBox.BOXTYPEINFO, "../", "Enjoy the show."));
+}
+
+//if (request.getParameter("action")!=null && request.getParameter("action").equals("delete")){
+//    if (request.getParameter("accountid")!=null && reger.core.Util.isinteger(request.getParameter("accountid"))){
+//        int accountid = Integer.parseInt(request.getParameter("accountid"));
+//        Account account = (Account)HibernateUtil.load(Account.class, accountid);
+//        HibernateUtil.delete(account);
+//        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, "../", "Accountid="+accountid+" deleted."));
+//    }
+//}
+
+
+
+
+mb.append("<br><br><a href='hibernate-accounts.log'>Refresh</a><br>");
+
+
+List events = HibernateUtil.getSession().createQuery("from Account").setFirstResult(1000).setMaxResults(20).list();
+for (int i = 0; i < events.size(); i++) {
+    Account account = (Account) events.get(i);
+    mb.append("<font face=arial size=-1>");
+    mb.append("<br><br>"+account.getAccounturl()+" event.getEventid(): " + account.getAccountid());
+    mb.append(" <a href='hibernate-accounts.log?action=delete&accountid="+account.getAccountid()+"'>Delete</a>");
+    mb.append("</font>");
+
+}
+
+
+mb.append("<br><br>");
+
+
+
+
+
+
+mb.append("<br><br><br><br><br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+            StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+<%@ include file="../globalfooter.jsp" %>
+

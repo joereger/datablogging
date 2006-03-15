@@ -8,6 +8,7 @@ import java.util.*;
 public class Debug {
 
     public static void logtodb(String whattolog, String label){
+        System.out.println(label + ": " + whattolog);
         //-----------------------------------
         //-----------------------------------
         int identity = reger.core.db.Db.RunSQLInsert("INSERT INTO error(date, description, label) VALUES('"+ TimeUtils.nowInGmtString()+"', '"+ Util.cleanForSQL(whattolog) +"', '"+reger.core.Util.cleanForSQL(label)+"')");

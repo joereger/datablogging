@@ -1,6 +1,7 @@
 package reger.scheduledtasks;
 
 import reger.core.scheduler.SmtpListener;
+import reger.hibernate.HibernateUtil;
 
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;

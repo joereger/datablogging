@@ -165,11 +165,17 @@ public class Account implements java.io.Serializable {
             messagesapproval = Integer.parseInt(rs[0][6]);
             homepagetitle = rs[0][7];
             homepagehtml = rs[0][8];
-            admintools = Integer.parseInt(rs[0][9]);
-            pingweblogscom = Integer.parseInt(rs[0][10]);
+            if (reger.core.Util.isinteger(rs[0][9])){
+                admintools = Integer.parseInt(rs[0][9]);
+            }
+            if (reger.core.Util.isinteger(rs[0][10])){
+                pingweblogscom = Integer.parseInt(rs[0][10]);
+            }
             displaycharsinsummary = Integer.parseInt(rs[0][11]);
             displaynumberofentries = Integer.parseInt(rs[0][12]);
-            userelatedlinks = Integer.parseInt(rs[0][13]);
+            if (reger.core.Util.isinteger(rs[0][13])){
+                userelatedlinks = Integer.parseInt(rs[0][13]);
+            }
             createdate = TimeUtils.dbstringtocalendar(rs[0][14]);
             favesitetitle = rs[0][15];
             favesiteon = Integer.parseInt(rs[0][16]);
@@ -178,7 +184,9 @@ public class Account implements java.io.Serializable {
             emailnewsletter = Integer.parseInt(rs[0][19]);
             emailsendhour = Integer.parseInt(rs[0][20]);
             timezoneid= rs[0][21];
-            issearchmysiteon= Integer.parseInt(rs[0][22]);
+            if (reger.core.Util.isinteger(rs[0][22])){
+                issearchmysiteon= Integer.parseInt(rs[0][22]);
+            }
 
             if (rs[0][23].equals("1")){
                 istrackbackon = true;

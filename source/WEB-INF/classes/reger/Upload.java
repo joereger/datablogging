@@ -207,7 +207,7 @@ public class Upload {
                                     if(eventid>0){
                                         //-----------------------------------
                                         //-----------------------------------
-                                        int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, image.order, accountuserid, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(path+java.io.File.separator+finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(path+java.io.File.separator+finalfilename)+"')");
+                                        int identity = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, imageorder, accountuserid, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(path+java.io.File.separator+finalfilename)+"', '"+mediafilesize+"', '"+reger.ImageOrder.getOrderForNewImage(eventid)+"', '"+accountuserid+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(path+java.io.File.separator+finalfilename)+"')");
                                         //-----------------------------------
                                         //-----------------------------------
 

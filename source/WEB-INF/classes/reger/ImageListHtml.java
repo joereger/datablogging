@@ -77,7 +77,7 @@ public class ImageListHtml {
             sqlLiveEntry = " AND " + reger.Entry.sqlOfLiveEntry + " ";
         }
 
-        String sqlOrderBy = " ORDER BY date DESC, image.order ASC, imageid ASC";
+        String sqlOrderBy = " ORDER BY date DESC, imageorder ASC, imageid ASC";
         if (returnOnlyOneRecordAtRandom) {
             sqlOrderBy = " ORDER BY RAND() LIMIT 0,1";
         }

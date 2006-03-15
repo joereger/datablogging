@@ -20,7 +20,7 @@ public class SmtpListener implements Runnable  {
     public SmtpListener() {
         execTime=new reger.executionTime();
         if (reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERISON").equals("1")){
-            System.out.println("REGER: New smtplistener being started.");
+            //System.out.println("REGER: New smtplistener being started.");
             thread = new Thread(this);
             thread.setPriority(Thread.MIN_PRIORITY);
             thread.start();
@@ -28,7 +28,7 @@ public class SmtpListener implements Runnable  {
     }
 
     public void shutDownSmtpListener(){
-        System.out.println("REGER: SmtpListener.shutDownSmtpListener() called");
+        //System.out.println("REGER: SmtpListener.shutDownSmtpListener() called");
         try{
             keepMeRunning = false;
             slisten.close();
@@ -83,7 +83,7 @@ public class SmtpListener implements Runnable  {
                 sconn = slisten.accept();
                 smtpHandler = new SmtpListenerConnHandler(sconn, this);
             }
-            System.out.println("REGER: Freeing up SMTP Listener socket port in SmtpListener.java");
+            //System.out.println("REGER: Freeing up SMTP Listener socket port in SmtpListener.java");
             sconn.close();
             sconn = null;
             smtpHandler = null;
@@ -96,16 +96,16 @@ public class SmtpListener implements Runnable  {
             Debug.debug(5, "", "SMTP Listener did not bind to port 25.  Incoming email API will not function properly.");
             //reger.core.EmailSend.sendMail(reger.Vars.EMAILDEFAULTTO, reger.Vars.EMAILDEFAULTTO, "Weblogs SMTP Listener Failed to Bind to Port 25", "This is generally caused by another service running on port 25 or by a conflict with Tomcat on startup.  It can generally be fixed by restarting Tomcat.");
         } catch (java.net.SocketException sockex){
-            System.out.println("REGER: SMTP Listener socket exception: " + sockex.getMessage());
+            //System.out.println("REGER: SMTP Listener socket exception: " + sockex.getMessage());
             sockex.printStackTrace();
             Debug.debug(5, "", sockex);
         } catch (Exception e)  {
-            System.out.println("REGER: SMTP Listener general exception: " + e.getMessage());
+            //System.out.println("REGER: SMTP Listener general exception: " + e.getMessage());
             e.printStackTrace();
             Debug.errorsave(e, "");
             //reger.core.EmailSend.sendMail(reger.Vars.EMAILDEFAULTTO, reger.Vars.EMAILDEFAULTTO, "Weblogs SMTP Listener Failed to Bind to Port 25", "This is generally caused by another service running on port 25 or by a conflict with Tomcat on startup.  It can generally be fixed by restarting Tomcat.");
         }
-        System.out.println("REGER: SMTP Listener thread at end of run() method.");
+        //System.out.println("REGER: SMTP Listener thread at end of run() method.");
     }
 
     public static void main (String args[]) {

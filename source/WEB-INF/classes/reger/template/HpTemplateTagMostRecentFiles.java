@@ -60,7 +60,7 @@ public class HpTemplateTagMostRecentFiles implements HpTemplateTag{
         }
 
         //Get the list
-        String sql="SELECT image.imageid, image.image, event.eventid, event.logid, event.title FROM image, event WHERE image.eventid=event.eventid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" AND "+reger.Entry.sqlOfLiveEntry+" "+logidSql+" ORDER BY event.date DESC, image.order ASC LIMIT 0,"+maxinlist;
+        String sql="SELECT image.imageid, image.image, event.eventid, event.logid, event.title FROM image, event WHERE image.eventid=event.eventid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" AND "+reger.Entry.sqlOfLiveEntry+" "+logidSql+" ORDER BY event.date DESC, imageorder ASC LIMIT 0,"+maxinlist;
 
         mb.append("<table cellpadding=0 cellspacing=1 border=0>" );
         mb.append(reger.core.Util.popup());
