@@ -56,9 +56,6 @@
     <listener>
         <listener-class>reger.scheduledtasks.AppStartupAndShutdown</listener-class>
     </listener>
-    <listener>
-        <listener-class>reger.hibernate.HibernateListener</listener-class>
-    </listener>
     <servlet>
       <servlet-name>Loader</servlet-name>
       <servlet-class>reger.scheduledtasks.Loader</servlet-class>
