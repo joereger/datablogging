@@ -160,5 +160,25 @@
         <copy file="${tomcat.app.name}-(bld${build.number})-${build.time}.war" tofile="${wardir}/ROOT.war" overwrite="true"/>
 		<delete file="${tomcat.app.name}-(bld${build.number})-${build.time}.war"/>
     </target>
+
+    <taskdef name="hibernatetool"
+        classname="org.hibernate.tool.ant.HibernateToolTask"
+        classpathref="lib.classpath"/>
+    <target name="hibernategen" description="Builds a war file.">
+        <hibernatetool destdir="${sourcedir}/hibernate/generatedclasses/">
+            <jdbcconfiguration
+             propertyfile="hibernateforant.properties"
+             packagename="reger.dao.hibernate"
+             revengfile="${sourcedir}/WEB-INF/classes/hibernate.reveng.xml"
+            />
+            <!-- Annotated pojos -->
+            <!--<hbm2java jdk5="true" ejb3="true"/>-->
+            <!--<hbm2cfgxml ejb3="true"/>-->
+            <!-- XML Config -->
+            <hbm2java jdk5="true" ejb3="false"/>
+            <hbm2hbmxml/>
+            <hbm2cfgxml/>
+        </hibernatetool>
+    </target>
     
 </project>
