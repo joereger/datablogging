@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:31 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Mobile" table="mobile">
+        <cache usage="nonstrict-read-write"/>
+        <id name="mobileid" type="int">
+            <column name="mobileid" />
+            <generator class="native" />
+        </id>
+        <property name="xupsubno" type="string">
+            <column name="xupsubno" not-null="true" />
+        </property>
+        <property name="accountuserid" type="int">
+            <column name="accountuserid" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

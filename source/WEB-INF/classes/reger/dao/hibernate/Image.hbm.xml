@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:32 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Image" table="image">
+        <cache usage="nonstrict-read-write"/>
+        <id name="imageid" type="int">
+            <column name="imageid" />
+            <generator class="native" />
+        </id>
+
+        <set name="tags" table="tagimagelink" cascade="save-update" order-by="tagid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="imageid"></key>
+            <many-to-many class="reger.dao.hibernate.Tag" column="tagid" fetch="select" not-found="ignore"></many-to-many>
+        </set>
+
+        <set name="polarhrms" inverse="true" cascade="all-delete-orphan" order-by="polarhrmid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="imageid"></key>
+            <one-to-many class="reger.dao.hibernate.Polarhrm" not-found="ignore"></one-to-many>
+        </set>
+
+        <property name="eventid" type="int">
+            <column name="eventid" not-null="true"/>
+        </property>
+        <property name="accountuserid" type="int">
+            <column name="accountuserid" not-null="true" />
+        </property>
+        <property name="image" type="string">
+            <column name="image" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" />
+        </property>
+        <property name="sizeinbytes" type="int">
+            <column name="sizeinbytes" not-null="true" />
+        </property>
+        <property name="imageorder" type="java.lang.Integer">
+            <column name="imageorder" />
+        </property>
+        <property name="originalfilename" type="string">
+            <column name="originalfilename" />
+        </property>
+        <property name="accountid" type="int">
+            <column name="accountid" not-null="true" />
+        </property>
+        <property name="filename" type="string">
+            <column name="filename" />
+        </property>
+    </class>
+</hibernate-mapping>

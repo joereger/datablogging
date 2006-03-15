@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:27 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Poll" table="poll">
+        <cache usage="nonstrict-read-write"/>
+        <id name="pollid" type="int">
+            <column name="pollid" />
+            <generator class="native" />
+        </id>
+
+        <set name="pollanswers" inverse="true" cascade="all-delete-orphan" order-by="pollanswerid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="pollid"></key>
+            <one-to-many class="reger.dao.hibernate.Pollanswer" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="pollreaderanswers" inverse="true" cascade="all-delete-orphan" order-by="pollreaderanswerid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="pollid"></key>
+            <one-to-many class="reger.dao.hibernate.Pollreaderanswer" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="pollreadercomments" inverse="true" cascade="all-delete-orphan" order-by="pollreadercommentid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="pollid"></key>
+            <one-to-many class="reger.dao.hibernate.Pollreadercomment" not-found="ignore"></one-to-many>
+        </set>
+
+        <property name="eventid" type="java.lang.Integer">
+            <column name="eventid" />
+        </property>
+        <property name="question" type="string">
+            <column name="question" />
+        </property>
+        <property name="readerscanaddownanswer" type="boolean">
+            <column name="readerscanaddownanswer" />
+        </property>
+        <property name="readerscanaddcomments" type="boolean">
+            <column name="readerscanaddcomments" />
+        </property>
+        <property name="readerscanvoteonreaderanswers" type="boolean">
+            <column name="readerscanvoteonreaderanswers" />
+        </property>
+        <property name="readerinputismoderated" type="boolean">
+            <column name="readerinputismoderated" />
+        </property>
+        <property name="isopen" type="boolean">
+            <column name="isopen" />
+        </property>
+    </class>
+</hibernate-mapping>

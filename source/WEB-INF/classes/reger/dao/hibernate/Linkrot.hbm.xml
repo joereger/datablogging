@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:38 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Linkrot" table="linkrot">
+        <cache usage="nonstrict-read-write"/>
+        <id name="linkrotid" type="int">
+            <column name="linkrotid" />
+            <generator class="native" />
+        </id>
+
+        <set name="linkrotrecommendations" inverse="true" cascade="all-delete-orphan">
+            <cache usage="nonstrict-read-write"/>
+            <key column="linkrotid"></key>
+            <one-to-many class="reger.dao.hibernate.Linkrotrecommendation" not-found="ignore"></one-to-many>
+        </set>
+
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="keywords" type="string">
+            <column name="keywords" length="65535" />
+        </property>
+        <property name="lastcheckeddate" type="timestamp">
+            <column name="lastcheckeddate" length="19" />
+        </property>
+        <property name="isbroken" type="boolean">
+            <column name="isbroken" />
+        </property>
+        <property name="httpstatuscode" type="java.lang.Integer">
+            <column name="httpstatuscode" />
+        </property>
+    </class>
+</hibernate-mapping>

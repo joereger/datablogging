@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:32 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Systemmessage" table="systemmessage">
+        <cache usage="nonstrict-read-write"/>
+        <id name="systemmessageid" type="int">
+            <column name="systemmessageid" />
+            <generator class="native" />
+        </id>
+        <property name="systemmessage" type="string">
+            <column name="systemmessage" />
+        </property>
+        <property name="islive" type="boolean">
+            <column name="islive" />
+        </property>
+        <property name="autooldonrestart" type="boolean">
+            <column name="autooldonrestart" />
+        </property>
+        <property name="showtologgedinusers" type="boolean">
+            <column name="showtologgedinusers" />
+        </property>
+        <property name="showtonotloggedinusers" type="boolean">
+            <column name="showtonotloggedinusers" />
+        </property>
+        <property name="date" type="timestamp">
+            <column name="date" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

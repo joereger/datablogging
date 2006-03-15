@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:34 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Event" table="event">
+        <cache usage="nonstrict-read-write"/>
+        <id name="eventid" type="int">
+            <column name="eventid" />
+            <generator class="native" />
+        </id>
+
+
+        <set name="images" inverse="true" cascade="all-delete-orphan" order-by="imageorder asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <one-to-many class="reger.dao.hibernate.Image" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="groups" table="eventtogroup" cascade="save-update" order-by="groupid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <many-to-many class="reger.dao.hibernate.Groups" column="groupid" fetch="select" not-found="ignore"></many-to-many>
+        </set>
+
+        <set name="episodes" table="eventtoepisode" cascade="save-update" order-by="episodeid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <many-to-many class="reger.dao.hibernate.Episode" column="episodeid" fetch="select" not-found="ignore"></many-to-many>
+        </set>
+
+        <set name="polls" inverse="true" cascade="all-delete-orphan" order-by="pollid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <one-to-many class="reger.dao.hibernate.Poll" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="messages" inverse="true" cascade="all-delete-orphan" order-by="messageid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <one-to-many class="reger.dao.hibernate.Message" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="locations" table="locationtoevent" cascade="save-update" order-by="locationid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <many-to-many class="reger.dao.hibernate.Location" column="locationid" fetch="select" not-found="ignore"></many-to-many>
+        </set>
+
+        <set name="tags" table="eventtaglink" cascade="save-update" order-by="tagid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <many-to-many class="reger.dao.hibernate.Tag" column="tagid" fetch="select" not-found="ignore"></many-to-many>
+        </set>
+
+        <set name="trackbacks" inverse="true" cascade="all-delete-orphan" order-by="trackbackid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <one-to-many class="reger.dao.hibernate.Trackback" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="eventxformdatas" inverse="true" cascade="all-delete-orphan" order-by="eventxformdataid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <one-to-many class="reger.dao.hibernate.Eventxformdata" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="megavalues" inverse="true" cascade="all-delete-orphan" order-by="megavalueid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <one-to-many class="reger.dao.hibernate.Megavalue" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="linkrots" table="linkroteventlookup" cascade="save-update" order-by="linkrotid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventid"></key>
+            <many-to-many class="reger.dao.hibernate.Linkrot" column="linkrotid" fetch="select" not-found="ignore"></many-to-many>
+        </set>
+
+        
+
+
+        <property name="eventtypeid" type="int">
+            <column name="eventtypeid" not-null="true" />
+        </property>
+        <property name="locationid" type="int">
+            <column name="locationid" not-null="true" />
+        </property>
+        <property name="createdate" type="timestamp">
+            <column name="createdate" length="19" not-null="true" />
+        </property>
+        <property name="date" type="timestamp">
+            <column name="date" length="19" not-null="true" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" not-null="true" />
+        </property>
+        <property name="comments" type="string">
+            <column name="comments" />
+        </property>
+        <property name="accountid" type="int">
+            <column name="accountid" not-null="true" />
+        </property>
+        <property name="logid" type="int">
+            <column name="logid" not-null="true" />
+        </property>
+        <property name="accountuserid" type="int">
+            <column name="accountuserid" not-null="true" />
+        </property>
+        <property name="isdraft" type="boolean">
+            <column name="isdraft" />
+        </property>
+        <property name="isapproved" type="boolean">
+            <column name="isapproved" />
+        </property>
+        <property name="favorite" type="boolean">
+            <column name="favorite" />
+        </property>
+        <property name="sizeinbytes" type="int">
+            <column name="sizeinbytes" not-null="true" />
+        </property>
+        <property name="istemporary" type="boolean">
+            <column name="istemporary" />
+        </property>
+        <property name="ismoderatorapproved" type="boolean">
+            <column name="ismoderatorapproved" />
+        </property>
+        <property name="lastmodifiedbyuserdate" type="timestamp">
+            <column name="lastmodifiedbyuserdate" length="19" />
+        </property>
+        <property name="isflaggedformoderator" type="boolean">
+            <column name="isflaggedformoderator" />
+        </property>
+        <property name="requiresmoderatorapproval" type="boolean">
+            <column name="requiresmoderatorapproval" />
+        </property>
+        <property name="entrykey" type="string">
+            <column name="entrykey" />
+        </property>
+    </class>
+</hibernate-mapping>

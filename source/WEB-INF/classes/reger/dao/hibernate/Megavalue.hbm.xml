@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:36 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Megavalue" table="megavalue">
+        <cache usage="nonstrict-read-write"/>
+        <id name="megavalueid" type="int">
+            <column name="megavalueid" />
+            <generator class="native" />
+        </id>
+        <property name="megafieldid" type="java.lang.Integer">
+            <column name="megafieldid" />
+        </property>
+        <property name="eventid" type="java.lang.Integer">
+            <column name="eventid" />
+        </property>
+        <property name="megavalue" type="string">
+            <column name="megavalue" />
+        </property>
+        <property name="megavalueextended" type="string">
+            <column name="megavalueextended" />
+        </property>
+    </class>
+</hibernate-mapping>

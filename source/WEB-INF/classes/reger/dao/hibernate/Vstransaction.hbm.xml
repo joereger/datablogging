@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:33 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Vstransaction" table="vstransaction">
+        <cache usage="nonstrict-read-write"/>
+        <id name="vstransactionid" type="int">
+            <column name="vstransactionid" />
+            <generator class="native" />
+        </id>
+        <property name="accountid" type="java.lang.Integer">
+            <column name="accountid" />
+        </property>
+        <property name="datetime" type="timestamp">
+            <column name="datetime" length="19" />
+        </property>
+        <property name="vssentstring" type="string">
+            <column name="vssentstring" />
+        </property>
+        <property name="vsresultstring" type="string">
+            <column name="vsresultstring" />
+        </property>
+        <property name="hostaddress" type="string">
+            <column name="hostaddress" length="50" />
+        </property>
+        <property name="result" type="string">
+            <column name="result" length="50" />
+        </property>
+        <property name="acct" type="string">
+            <column name="acct" length="50" />
+        </property>
+        <property name="amt" type="string">
+            <column name="amt" length="50" />
+        </property>
+        <property name="street" type="string">
+            <column name="street" length="50" />
+        </property>
+        <property name="zip" type="string">
+            <column name="zip" length="50" />
+        </property>
+        <property name="rpref" type="string">
+            <column name="rpref" length="50" />
+        </property>
+        <property name="profileid" type="string">
+            <column name="profileid" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

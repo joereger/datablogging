@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:33 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Accountuserlogaccess" table="accountuserlogaccess">
+        <cache usage="nonstrict-read-write"/>
+        <id name="accountuserlogaccessid" type="int">
+            <column name="accountuserlogaccessid" />
+            <generator class="native" />
+        </id>
+        <property name="accountuserid" type="int">
+            <column name="accountuserid" not-null="true" />
+        </property>
+        <property name="logid" type="int">
+            <column name="logid" not-null="true" />
+        </property>
+        <property name="canread" type="boolean">
+            <column name="canread" />
+        </property>
+        <property name="canwrite" type="boolean">
+            <column name="canwrite" />
+        </property>
+    </class>
+</hibernate-mapping>

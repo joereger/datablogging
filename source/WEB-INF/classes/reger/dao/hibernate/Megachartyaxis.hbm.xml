@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:37 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Megachartyaxis" table="megachartyaxis">
+        <cache usage="nonstrict-read-write"/>
+        <id name="megachartyaxisid" type="int">
+            <column name="megachartyaxisid" />
+            <generator class="native" />
+        </id>
+        <property name="megachartid" type="int">
+            <column name="megachartid" not-null="true" />
+        </property>
+        <property name="ymegafieldid" type="int">
+            <column name="ymegafieldid" not-null="true" />
+        </property>
+        <property name="ylogid" type="int">
+            <column name="ylogid" not-null="true" />
+        </property>
+        <property name="yeventtypeid" type="int">
+            <column name="yeventtypeid" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

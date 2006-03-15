@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:35 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Savedsearch" table="savedsearch">
+        <cache usage="nonstrict-read-write"/>
+        <id name="savedsearchid" type="int">
+            <column name="savedsearchid" />
+            <generator class="native" />
+        </id>
+
+        <set name="savedsearchaccounts" inverse="true" cascade="all-delete-orphan" order-by="savedsearchaccountid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="savedsearchid"></key>
+            <one-to-many class="reger.dao.hibernate.Savedsearchaccount" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="savedsearcheventtypes" inverse="true" cascade="all-delete-orphan" order-by="savedsearcheventtypeid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="savedsearchid"></key>
+            <one-to-many class="reger.dao.hibernate.Savedsearcheventtype" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="savedsearchfqes" inverse="true" cascade="all-delete-orphan" order-by="savedearchfqeid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="savedsearchid"></key>
+            <one-to-many class="reger.dao.hibernate.Savedsearchfqe" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="savedsearchlocations" inverse="true" cascade="all-delete-orphan" order-by="savedsearchlocationid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="savedsearchid"></key>
+            <one-to-many class="reger.dao.hibernate.Savedsearchlocation" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="savedsearchlogs" inverse="true" cascade="all-delete-orphan" order-by="savedsearchlogid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="savedsearchid"></key>
+            <one-to-many class="reger.dao.hibernate.Savedsearchlog" not-found="ignore"></one-to-many>
+        </set>
+
+
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="accountid" type="java.lang.Integer">
+            <column name="accountid" />
+        </property>
+        <property name="lastx" type="java.lang.Integer">
+            <column name="lastx" />
+        </property>
+        <property name="lastxunits" type="java.lang.Integer">
+            <column name="lastxunits" />
+        </property>
+        <property name="daterange" type="java.lang.Integer">
+            <column name="daterange" />
+        </property>
+        <property name="datefromgmt" type="timestamp">
+            <column name="datefromgmt" length="19" />
+        </property>
+        <property name="datetogmt" type="timestamp">
+            <column name="datetogmt" length="19" />
+        </property>
+        <property name="searchterms" type="string">
+            <column name="searchterms" />
+        </property>
+    </class>
+</hibernate-mapping>

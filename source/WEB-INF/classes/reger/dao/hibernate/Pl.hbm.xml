@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:29 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Pl" table="pl">
+        <cache usage="nonstrict-read-write"/>
+        <id name="plid" type="int">
+            <column name="plid" />
+            <generator class="native" />
+        </id>
+
+        <set name="offensivecontentpls" inverse="true" cascade="all-delete-orphan" order-by="content asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="plid"></key>
+            <one-to-many class="reger.dao.hibernate.Offensivecontentpl" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="plcontentoverrides" inverse="true" cascade="all-delete-orphan" order-by="nestednavparentid asc, nestednavorder asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="plid"></key>
+            <one-to-many class="reger.dao.hibernate.Plcontentpage" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="plcontentpages" inverse="true" cascade="all-delete-orphan" order-by="content asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="plid"></key>
+            <one-to-many class="reger.dao.hibernate.Offensivecontentpl" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="pldeletearchives" inverse="true" cascade="all-delete-orphan" order-by="date asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="newplid"></key>
+            <one-to-many class="reger.dao.hibernate.Pldeletearchive" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="pleventtypeids" inverse="true" cascade="all-delete-orphan" order-by="priority asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="plid"></key>
+            <one-to-many class="reger.dao.hibernate.Pleventtypeid" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="plnavhides" inverse="true" cascade="all-delete-orphan" order-by="nestednavid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="plid"></key>
+            <one-to-many class="reger.dao.hibernate.Plnavhide" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="plpeers" inverse="true" cascade="all-delete-orphan" order-by="plpeerid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="plid"></key>
+            <one-to-many class="reger.dao.hibernate.Plpeer" not-found="ignore"></one-to-many>
+        </set>
+
+
+
+        <property name="plname" type="string">
+            <column name="plname" length="50" />
+        </property>
+        <property name="plbasedomain" type="string">
+            <column name="plbasedomain" length="50" />
+        </property>
+        <property name="titlebar" type="string">
+            <column name="titlebar" length="50" />
+        </property>
+        <property name="comments" type="string">
+            <column name="comments" />
+        </property>
+        <property name="islive" type="boolean">
+            <column name="islive" />
+        </property>
+        <property name="issignupenabled" type="boolean">
+            <column name="issignupenabled" />
+        </property>
+        <property name="iscontentflaggingon" type="boolean">
+            <column name="iscontentflaggingon" />
+        </property>
+        <property name="doesflaggedcontentneedtobeapproved" type="boolean">
+            <column name="doesflaggedcontentneedtobeapproved" />
+        </property>
+        <property name="doallpostsneedtobeapproved" type="boolean">
+            <column name="doallpostsneedtobeapproved" />
+        </property>
+        <property name="usedynamicdns" type="boolean">
+            <column name="usedynamicdns" />
+        </property>
+        <property name="defaultaccounttypeidatsignup" type="int">
+            <column name="defaultaccounttypeidatsignup" not-null="true" />
+        </property>
+        <property name="defaultmaxspaceinbytes" type="java.lang.Long">
+            <column name="defaultmaxspaceinbytes" />
+        </property>
+        <property name="termsofservice" type="string">
+            <column name="termsofservice" />
+        </property>
+        <property name="newaccountsrequireadminapproval" type="boolean">
+            <column name="newaccountsrequireadminapproval" />
+        </property>
+        <property name="forcelogintoviewsites" type="boolean">
+            <column name="forcelogintoviewsites" />
+        </property>
+        <property name="isweblogscompingon" type="boolean">
+            <column name="isweblogscompingon" />
+        </property>
+        <property name="emailtonotifyofnewaccounts" type="string">
+            <column name="emailtonotifyofnewaccounts" />
+        </property>
+        <property name="emailapiuniqueidentifier" type="string">
+            <column name="emailapiuniqueidentifier" />
+        </property>
+        <property name="defaultmaxbandwidth" type="long">
+            <column name="defaultmaxbandwidth" not-null="true" />
+        </property>
+        <property name="minpasswordchars" type="int">
+            <column name="minpasswordchars" not-null="true" />
+        </property>
+        <property name="minpassworduppercasechars" type="int">
+            <column name="minpassworduppercasechars" not-null="true" />
+        </property>
+        <property name="minpasswordlowercasechars" type="int">
+            <column name="minpasswordlowercasechars" not-null="true" />
+        </property>
+        <property name="minpasswordspecialchars" type="int">
+            <column name="minpasswordspecialchars" not-null="true" />
+        </property>
+        <property name="minpasswordnumericchars" type="int">
+            <column name="minpasswordnumericchars" not-null="true" />
+        </property>
+        <property name="ispasswordsentviaemail" type="boolean">
+            <column name="ispasswordsentviaemail" />
+        </property>
+        <property name="termsofuselinktext" type="string">
+            <column name="termsofuselinktext" length="50" />
+        </property>
+        <property name="feedbacklinktext" type="string">
+            <column name="feedbacklinktext" length="50" />
+        </property>
+        <property name="doapplyplusertemplatetopro" type="boolean">
+            <column name="doapplyplusertemplatetopro" />
+        </property>
+        <property name="publicsitetemplateid" type="int">
+            <column name="publicsitetemplateid" not-null="true" />
+        </property>
+        <property name="entlisttemplateid" type="int">
+            <column name="entlisttemplateid" not-null="true" />
+        </property>
+        <property name="hptemplateid" type="int">
+            <column name="hptemplateid" not-null="true" />
+        </property>
+        <property name="marketingsitetemplateid" type="int">
+            <column name="marketingsitetemplateid" not-null="true" />
+        </property>
+        <property name="marketingsitehptemplateid" type="int">
+            <column name="marketingsitehptemplateid" not-null="true" />
+        </property>
+        <property name="defaulteventtypeid" type="int">
+            <column name="defaulteventtypeid" not-null="true" />
+        </property>
+        <property name="encryptedlicense" type="string">
+            <column name="encryptedlicense" length="65535" />
+        </property>
+        <property name="baseaccountprice" type="java.lang.Double">
+            <column name="baseaccountprice" precision="22" scale="0" />
+        </property>
+        <property name="priceper100mbstorage" type="java.lang.Double">
+            <column name="priceper100mbstorage" precision="22" scale="0" />
+        </property>
+        <property name="pricepergbbandwidth" type="java.lang.Double">
+            <column name="pricepergbbandwidth" precision="22" scale="0" />
+        </property>
+        <property name="istrackbackenabled" type="boolean">
+            <column name="istrackbackenabled" />
+        </property>
+        <property name="plusertemplateid" type="int">
+            <column name="plusertemplateid" not-null="true" />
+        </property>
+        <property name="bannerone" type="string">
+            <column name="bannerone" />
+        </property>
+        <property name="bannertwo" type="string">
+            <column name="bannertwo" />
+        </property>
+        <property name="bannerthree" type="string">
+            <column name="bannerthree" />
+        </property>
+        <property name="showbannertagsonpro" type="boolean">
+            <column name="showbannertagsonpro" />
+        </property>
+        <property name="isemailactivationofaccountsrequired" type="boolean">
+            <column name="isemailactivationofaccountsrequired" />
+        </property>
+        <property name="emailtextactivationmessage" type="string">
+            <column name="emailtextactivationmessage" />
+        </property>
+        <property name="emailsubjectactivationmessage" type="string">
+            <column name="emailsubjectactivationmessage" />
+        </property>
+        <property name="emailtextwelcomemessage" type="string">
+            <column name="emailtextwelcomemessage" />
+        </property>
+        <property name="emailsubjectwelcomemessage" type="string">
+            <column name="emailsubjectwelcomemessage" />
+        </property>
+        <property name="accountupgradeurl" type="string">
+            <column name="accountupgradeurl" />
+        </property>
+    </class>
+</hibernate-mapping>

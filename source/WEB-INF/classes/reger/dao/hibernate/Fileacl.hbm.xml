@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:30 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Fileacl" table="fileacl">
+        <cache usage="nonstrict-read-write"/>
+        <id name="fileaclid" type="int">
+            <column name="fileaclid" />
+            <generator class="native" />
+        </id>
+        <property name="accountid" type="java.lang.Integer">
+            <column name="accountid" />
+        </property>
+        <property name="accountuserid" type="java.lang.Integer">
+            <column name="accountuserid" />
+        </property>
+        <property name="pathandorfilename" type="string">
+            <column name="pathandorfilename" />
+        </property>
+    </class>
+</hibernate-mapping>

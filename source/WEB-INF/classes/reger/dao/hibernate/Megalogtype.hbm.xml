@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:34 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Megalogtype" table="megalogtype">
+        <cache usage="nonstrict-read-write"/>
+        <id name="eventtypeid" type="int">
+            <column name="eventtypeid" />
+            <generator class="native" />
+        </id>
+
+        <set name="megafields" inverse="true" cascade="all-delete-orphan" order-by="megafieldid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventtypeid"></key>
+            <one-to-many class="reger.dao.hibernate.Megafield" not-found="ignore"></one-to-many>
+        </set>
+
+        <set name="logtypexforms" inverse="true" cascade="all-delete-orphan" order-by="logtypexformid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="eventtypeid"></key>
+            <one-to-many class="reger.dao.hibernate.Logtypexform" not-found="ignore"></one-to-many>
+        </set>
+
+        <property name="megalogname" type="string">
+            <column name="megalogname" length="50" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" />
+        </property>
+        <property name="longdescription" type="string">
+            <column name="longdescription" />
+        </property>
+        <property name="showlocation" type="boolean">
+            <column name="showlocation" />
+        </property>
+        <property name="icon" type="string">
+            <column name="icon" length="50" />
+        </property>
+        <property name="showonhomepage" type="boolean">
+            <column name="showonhomepage" />
+        </property>
+        <property name="issystemlogtype" type="boolean">
+            <column name="issystemlogtype" />
+        </property>
+        <property name="isprivate" type="boolean">
+            <column name="isprivate" />
+        </property>
+        <property name="accountuserid" type="int">
+            <column name="accountuserid" not-null="true" />
+        </property>
+        <property name="hiddenfields" type="string">
+            <column name="hiddenfields" length="65535" />
+        </property>
+        <property name="fieldorder" type="string">
+            <column name="fieldorder" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>

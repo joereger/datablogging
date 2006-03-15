@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:31 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.hibernate.Emailapiaddress" table="emailapiaddress">
+        <cache usage="nonstrict-read-write"/>
+        <id name="emailapiaddressid" type="int">
+            <column name="emailapiaddressid" />
+            <generator class="native" />
+        </id>
+        <property name="uniquekey" type="string">
+            <column name="uniquekey" length="15" />
+        </property>
+        <property name="accountuserid" type="java.lang.Integer">
+            <column name="accountuserid" />
+        </property>
+        <property name="accountid" type="java.lang.Integer">
+            <column name="accountid" />
+        </property>
+        <property name="logid" type="java.lang.Integer">
+            <column name="logid" />
+        </property>
+        <property name="emailtype" type="java.lang.Integer">
+            <column name="emailtype" />
+        </property>
+    </class>
+</hibernate-mapping>
