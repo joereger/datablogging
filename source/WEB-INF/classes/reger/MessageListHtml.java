@@ -166,8 +166,120 @@ public class MessageListHtml {
 
         //See if a message was just submitted
         boolean messageWasJustSubmitted = false;
+        String messagefrom = "";
+        String email = "";
+        String url = "";
+        String emailnotifyCheck = "";
+        String remembermeCheck = "";
+        String message = "";
         if (request.getParameter("submitmessage")!=null && request.getParameter("submitmessage").equals("true")) {
             messageWasJustSubmitted = true;
+
+            if (request.getParameter("messagefrom")!=null && !request.getParameter("messagefrom").equals("")){
+                messagefrom = request.getParameter("messagefrom");
+                //Set cookie
+                if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
+                    Cookie userCookie = new Cookie("message-name", messagefrom);
+                    userCookie.setMaxAge(60*60*24*365);
+                    //userCookie.setDomain(userSession.getAccount().getServername());
+                    userCookie.setPath("/");
+                    response.addCookie(userCookie);
+                //Clear cookie
+                } else if (request.getParameter("rememberme")==null){
+                    Cookie userCookie = new Cookie("message-name", "");
+                    userCookie.setMaxAge(0);
+                    //userCookie.setDomain(userSession.getAccount().getServername());
+                    userCookie.setPath("/");
+                    response.addCookie(userCookie);
+                }
+            }
+
+            if (request.getParameter("email")!=null && !request.getParameter("email").equals("")){
+                email = request.getParameter("email");
+                //Set cookie
+                if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
+                    Cookie userCookie = new Cookie("message-email", email);
+                    userCookie.setMaxAge(60*60*24*365);
+                    //userCookie.setDomain(userSession.getAccount().getServername());
+                    userCookie.setPath("/");
+                    response.addCookie(userCookie);
+                //Clear cookie
+                } else if (request.getParameter("rememberme")==null){
+                    Cookie userCookie = new Cookie("message-email", "");
+                    userCookie.setMaxAge(0);
+                    //userCookie.setDomain(userSession.getAccount().getServername());
+                    userCookie.setPath("/");
+                    response.addCookie(userCookie);
+                }
+            }
+            if (request.getParameter("url")!=null && !request.getParameter("url").equals("")){
+                url = request.getParameter("url");
+                //Set cookie
+                if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
+                    Cookie userCookie = new Cookie("message-url", url);
+                    userCookie.setMaxAge(60*60*24*365);
+                    //userCookie.setDomain(userSession.getAccount().getServername());
+                    userCookie.setPath("/");
+                    response.addCookie(userCookie);
+                //Clear cookie
+                } else if (request.getParameter("rememberme")==null){
+                    Cookie userCookie = new Cookie("message-url", "");
+                    userCookie.setMaxAge(0);
+                    //userCookie.setDomain(userSession.getAccount().getServername());
+                    userCookie.setPath("/");
+                    response.addCookie(userCookie);
+                }
+            }
+            if (request.getParameter("message")!=null && !request.getParameter("message").equals("")){
+                message = request.getParameter("message");
+                //Set cookie
+                if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
+                    Cookie userCookie = new Cookie("message-msg", message);
+                    userCookie.setMaxAge(60*60*24*365);
+                    //userCookie.setDomain(userSession.getAccount().getServername());
+                    userCookie.setPath("/");
+                    response.addCookie(userCookie);
+                //Clear cookie
+                } else if (request.getParameter("rememberme")==null){
+                    Cookie userCookie = new Cookie("message-msg", "");
+                    userCookie.setMaxAge(0);
+                    //userCookie.setDomain(userSession.getAccount().getServername());
+                    userCookie.setPath("/");
+                    response.addCookie(userCookie);
+                }
+            }
+
+            if (request.getParameter("emailnotify")!=null && request.getParameter("emailnotify").equals("1")){
+                emailnotifyCheck = " checked";
+                //Set cookie
+                if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
+                    String emailnotifyRequestValue = "";
+                    if (request.getParameter("emailnotify")!=null && request.getParameter("emailnotify").equals("1")){
+                        emailnotifyRequestValue = "1";
+                    }
+                    Cookie userCookie = new Cookie("message-emailnotify", emailnotifyRequestValue);
+                    userCookie.setMaxAge(60*60*24*365);
+                    //userCookie.setDomain(userSession.getAccount().getServername());
+                    userCookie.setPath("/");
+                    response.addCookie(userCookie);
+                }
+            }
+            if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
+                remembermeCheck = " checked";
+                //Set cookie
+                Cookie userCookie = new Cookie("message-rememberme", request.getParameter("rememberme"));
+                userCookie.setMaxAge(60*60*24*365);
+                //userCookie.setDomain(userSession.getAccount().getServername());
+                userCookie.setPath("/");
+                response.addCookie(userCookie);
+            } else if (request.getParameter("rememberme")==null) {
+                //Clear cookie
+                Cookie userCookie = new Cookie("message-rememberme", "");
+                userCookie.setMaxAge(0);
+                //userCookie.setDomain(userSession.getAccount().getServername());
+                userCookie.setPath("/");
+                response.addCookie(userCookie);
+            }
         }
 
         if (eventid>0 && !messageWasJustSubmitted){
@@ -196,116 +308,40 @@ public class MessageListHtml {
 
             //Name
             mb.append("<font class=smallfont face=arial size=-2>Name (Optional):</font><br>");
-            String messagefrom = "";
-            if (request.getParameter("messagefrom")!=null && !request.getParameter("messagefrom").equals("")){
-                messagefrom = request.getParameter("messagefrom");
-                //Set cookie
-                if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
-                    Cookie userCookie = new Cookie("message-name", messagefrom);
-                    userCookie.setMaxAge(60*60*24*365);
-                    //userCookie.setDomain(userSession.getAccount().getServername());
-                    userCookie.setPath("/");
-                    response.addCookie(userCookie);
-                //Clear cookie
-                } else if (request.getParameter("rememberme")==null){
-                    Cookie userCookie = new Cookie("message-name", "");
-                    userCookie.setMaxAge(0);
-                    //userCookie.setDomain(userSession.getAccount().getServername());
-                    userCookie.setPath("/");
-                    response.addCookie(userCookie);
-                }
-            } else {
                 if (request.getCookies()!=null){
                     if (!reger.core.Util.getCookieValue(request.getCookies(), "message-name", "").equals("")){
                         messagefrom = reger.core.Util.getCookieValue(request.getCookies(), "message-name", "");
                     }
                 }
-            }
             mb.append("<input type='text' name='messagefrom' size='15' maxlength='50' value=\""+reger.core.Util.cleanForHtml(messagefrom)+"\"><br>");
 
             //Email
             mb.append("<font class=smallfont face=arial size=-2>Email Address (Optional, not shown to public.):</font><br>");
-            String email = "";
-            if (request.getParameter("email")!=null && !request.getParameter("email").equals("")){
-                email = request.getParameter("email");
-                //Set cookie
-                if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
-                    Cookie userCookie = new Cookie("message-email", email);
-                    userCookie.setMaxAge(60*60*24*365);
-                    //userCookie.setDomain(userSession.getAccount().getServername());
-                    userCookie.setPath("/");
-                    response.addCookie(userCookie);
-                //Clear cookie
-                } else if (request.getParameter("rememberme")==null){
-                    Cookie userCookie = new Cookie("message-email", "");
-                    userCookie.setMaxAge(0);
-                    //userCookie.setDomain(userSession.getAccount().getServername());
-                    userCookie.setPath("/");
-                    response.addCookie(userCookie);
-                }
-            } else {
                 if (request.getCookies()!=null){
                     if (!reger.core.Util.getCookieValue(request.getCookies(), "message-email", "").equals("")){
                         email = reger.core.Util.getCookieValue(request.getCookies(), "message-email", "");
                     }
                 }
-            }
             mb.append("<input type='text' name='email' size='15' maxlength='255' value=\""+reger.core.Util.cleanForHtml(email)+"\"><br>");
 
             //Url
             mb.append("<font class=smallfont face=arial size=-2>URL (Optional):</font><br>");
-            String url = "";
-            if (request.getParameter("url")!=null && !request.getParameter("url").equals("")){
-                url = request.getParameter("url");
-                //Set cookie
-                if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
-                    Cookie userCookie = new Cookie("message-url", url);
-                    userCookie.setMaxAge(60*60*24*365);
-                    //userCookie.setDomain(userSession.getAccount().getServername());
-                    userCookie.setPath("/");
-                    response.addCookie(userCookie);
-                //Clear cookie
-                } else if (request.getParameter("rememberme")==null){
-                    Cookie userCookie = new Cookie("message-url", "");
-                    userCookie.setMaxAge(0);
-                    //userCookie.setDomain(userSession.getAccount().getServername());
-                    userCookie.setPath("/");
-                    response.addCookie(userCookie);
-                }
-            }  else {
                 if (request.getCookies()!=null){
                     if (!reger.core.Util.getCookieValue(request.getCookies(), "message-url", "").equals("")){
                         url = reger.core.Util.getCookieValue(request.getCookies(), "message-url", "");
                     }
                 }
-            }
             mb.append("<input type='text' name='url' size='15' maxlength='255' value=\""+reger.core.Util.cleanForHtml(url)+"\"><br>");
-
             //Message
             mb.append("<font class=smallfont face=arial size=-2>Message (Required):</font><br>");
-            String message = "";
-            if (request.getParameter("message")!=null && !request.getParameter("message").equals("")){
-                message = request.getParameter("message");
+            if (request.getCookies()!=null){
+                if (!reger.core.Util.getCookieValue(request.getCookies(), "message-msg", "").equals("")){
+                    message = reger.core.Util.getCookieValue(request.getCookies(), "message-msg", "");
+                }
             }
             mb.append("<textarea cols='20' rows='3' name='message' style='width: 100%;font: 10pt monospace'>"+message+"</textarea><br>");
 
             //Emailnotify
-            String emailnotifyCheck = "";
-            if (request.getParameter("emailnotify")!=null && request.getParameter("emailnotify").equals("1")){
-                emailnotifyCheck = " checked";
-                //Set cookie
-                if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
-                    String emailnotifyRequestValue = "";
-                    if (request.getParameter("emailnotify")!=null && request.getParameter("emailnotify").equals("1")){
-                        emailnotifyRequestValue = "1";
-                    }
-                    Cookie userCookie = new Cookie("message-emailnotify", emailnotifyRequestValue);
-                    userCookie.setMaxAge(60*60*24*365);
-                    //userCookie.setDomain(userSession.getAccount().getServername());
-                    userCookie.setPath("/");
-                    response.addCookie(userCookie);
-                }
-            } else {
                 //Clear cookie
                 Cookie userCookie = new Cookie("message-emailnotify", "");
                 userCookie.setMaxAge(0);
@@ -319,7 +355,6 @@ public class MessageListHtml {
                         }
                     }
                 }
-            }
             mb.append("<input type='checkbox' name='emailnotify' value='1' "+emailnotifyCheck+">");
             mb.append("<font class=smallfont face=arial size=-2>Email Me When Somebody Replies (Optional)</font><br>");
 
@@ -327,23 +362,6 @@ public class MessageListHtml {
 
 
             //Rememberme
-            String remembermeCheck = "";
-            if (request.getParameter("rememberme")!=null && request.getParameter("rememberme").equals("1")){
-                remembermeCheck = " checked";
-                //Set cookie
-                Cookie userCookie = new Cookie("message-rememberme", request.getParameter("rememberme"));
-                userCookie.setMaxAge(60*60*24*365);
-                //userCookie.setDomain(userSession.getAccount().getServername());
-                userCookie.setPath("/");
-                response.addCookie(userCookie);
-            } else if (request.getParameter("rememberme")==null) {
-                //Clear cookie
-                Cookie userCookie = new Cookie("message-rememberme", "");
-                userCookie.setMaxAge(0);
-                //userCookie.setDomain(userSession.getAccount().getServername());
-                userCookie.setPath("/");
-                response.addCookie(userCookie);
-            }
             if (request.getCookies()!=null){
                 if (!reger.core.Util.getCookieValue(request.getCookies(), "message-rememberme", "").equals("")){
                     if (reger.core.Util.getCookieValue(request.getCookies(), "message-rememberme", "0").equals("1")){
