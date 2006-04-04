@@ -1,0 +1,275 @@
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.HashMap"%>
+<%@ page import="java.util.Collections"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MARKETINGSITE;
+pageProps.title = "Core Values & Beliefs Quiz Game";
+pageProps.navButtonName = "aboutbiz-core-values";
+pageProps.isPasswordProtected = false;
+pageProps.trafficType=reger.Vars.TRAFFICTYPEMARKETINGSITEMISC;
+pageProps.pathToAppRoot="../";
+pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+
+
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+String[] cvbs = new String[16];
+cvbs[1] = "We respect the individual, and believe that individuals who are treated with respect and given responsibility respond by giving their best.";
+cvbs[2] = "We require complete honesty and integrity in everything we do.";
+cvbs[3] = "We make commitments with care, and then live up to them. In all things, we do what we say we are going to do.";
+cvbs[4] = "Work is an important part of life, and it should be fun. Being a good business person does not mean being stuffy and boring.";
+cvbs[5] = "We are frugal. We guard and conserve the company's resources with at least the same vigilance that we would use to guard and conserve our own personal resources.";
+cvbs[6] = "We insist on giving our best effort in everything we undertake. Furthermore, we see a huge difference between 'good mistakes' (best effort, bad result) and 'bad mistakes' (sloppiness or lack of effort).";
+cvbs[7] = "Clarity in understanding our mission, our goals, and what we expect from each other is critical to our success.";
+cvbs[8] = "In all our dealings we strive to be friendly and courteous, as well as fair and compassionate.";
+cvbs[9] = "We feel a sense of urgency on any matters related to our customers. We own problems and we are always responsive. We are customer driven.";
+cvbs[10] = "We embrace differing opinions and resolve them politely and directly.";
+cvbs[11] = "We share information freely and deliberately, internally and externally, as much as reasonable.";
+cvbs[12] = "We believe that all people are equal, irrespective of job title, skillset or history.";
+cvbs[13] = "We believe that all people have a personal mission and whenever possible we will help people fulfill and/or find that mission.";
+cvbs[14] = "There's a big difference between criticizing a persons work (which is acceptable) and criticizing a person (which is unacceptable).";
+cvbs[15] = "We give back to the community.";
+HashMap cvbsToNumLookup = new HashMap();
+for (int i = 0; i < cvbs.length; i++) {
+    cvbsToNumLookup.put(cvbs[i], i);
+}
+ArrayList cvbsList = new ArrayList();
+for (int i = 0; i < cvbs.length; i++) {
+    cvbsList.add(cvbs[i]);
+}
+
+String[] cvbsFake1 = new String[16];
+cvbsFake1[1] = "We respect the individual, and believe that individualism is more important than group work.";
+cvbsFake1[2] = "We require a good-faith attempt to be honest in everything we do.";
+cvbsFake1[3] = "We say what we're going to do and then try to do that.";
+cvbsFake1[4] = "Work is an important part of life, and it should be fun. We should try our hardest to not be stuffy and boring.";
+cvbsFake1[5] = "We are frugal. We guard and conserve the company's resources in times when budget constraint is necessary.";
+cvbsFake1[6] = "We insist on giving our best effort where time allows. Furthermore, we see a huge difference between 'good mistakes' (best effort, bad result) and 'bad mistakes' (sloppiness or lack of effort).";
+cvbsFake1[7] = "Clarity in understanding what we expect from each other is critical to our success.";
+cvbsFake1[8] = "In all our dealings we strive to be friendly and courteous, as well as fair and compassionate unless we're in negotiations.";
+cvbsFake1[9] = "We feel a sense of urgency on any matters related to our customers. We own problems.";
+cvbsFake1[10] = "We tolerate differing opinions and resolve them politely and directly.";
+cvbsFake1[11] = "We share information freely and deliberately internally as much as reasonable.";
+cvbsFake1[12] = "We believe that all people are equal in business terms, irrespective of job title, skillset or history.";
+cvbsFake1[13] = "We believe that all people have a personal mission and that mission is more important than the business mission.";
+cvbsFake1[14] = "There's a big difference between criticizing a persons work over the weekend (which is acceptable) and criticizing a person during the work week (which is unacceptable).";
+cvbsFake1[15] = "We give back to the communities that most help us in our mission.";
+
+String[] cvbsFake2 = new String[16];
+cvbsFake2[1] = "We respect the individual, and believe that investing in individuals will make more money for the company.";
+cvbsFake2[2] = "We require complete honesty and integrity in everything we do, so long as it makes good business sense.";
+cvbsFake2[3] = "We commit to plans in writing when we are certain we can meet them.  Otherwise we don't commit in writing.";
+cvbsFake2[4] = "Work is an important part of life, and it should be fun. But having fun doesn't mean bringing one's life into work.";
+cvbsFake2[5] = "We are frugal. We guard and conserve the company's resources with as much vigilance as investors ask for.";
+cvbsFake2[6] = "We insist on giving our best effort on projects of high priority. Furthermore, we see a huge difference between 'good mistakes' (best effort, bad result) and 'bad mistakes' (sloppiness or lack of effort).";
+cvbsFake2[7] = "Clarity in understanding our mission, our goals, and what we expect from each other is important to our success.";
+cvbsFake2[8] = "When people are kind to us we strive to be friendly and courteous, as well as fair and compassionate.";
+cvbsFake2[9] = "We feel a sense of urgency when customers yell over the background noise. We own problems and we are always responsive.";
+cvbsFake2[10] = "We embrace differing opinions and resolve them by any means necessary.";
+cvbsFake2[11] = "We share information as much as reasonable.";
+cvbsFake2[12] = "We believe that all people of the same job type are equal, no matter what school they attended.";
+cvbsFake2[13] = "We believe that all people have a personal mission and finding that mission is the number one priority.";
+cvbsFake2[14] = "Criticizing people can only be done by criticizing one's work.";
+cvbsFake2[15] = "We give back to the community because it's good for PR.";
+
+String[] sins = new String[13];
+sins[1] = "Gossip, rumors or politicking.";
+sins[2] = "Joke about employees, customers, partners, or vendors.";
+sins[3] = "Work here and not have a personal datablog, or not maintain it on a regular basis.";
+sins[4] = "Rely on outside vendors, consultants and or developers that are overly priced and let us down.";
+sins[5] = "Show up to meetings late or unprepared.";
+sins[6] = "Provide poor customer service with no genuine concern for our customers.";
+sins[7] = "Finger point at how other people or departments are not doing their job.";
+sins[8] = "Poor planning and or poor coordination across departments.";
+sins[9] = "Ignore the competition, as they are far inferior to us.";
+sins[10] = "Miss deadlines that we commit to internally and externally.";
+sins[11] = "Make recruiting, hiring, and training a lower priority because we are too busy doing other tasks.";
+sins[12] = "Look for the next job assignment, instead of focusing on the current one.";
+HashMap sinsToNumLookup = new HashMap();
+for (int i = 0; i < sins.length; i++) {
+    sinsToNumLookup.put(sins[i], i);
+}
+ArrayList sinsList = new ArrayList();
+for (int i = 0; i < sins.length; i++) {
+    sinsList.add(sins[i]);
+}
+
+//State
+int totalquestionsanswered = 0;
+if (request.getParameter("totalquestionsanswered")!=null && reger.core.Util.isinteger(request.getParameter("totalquestionsanswered"))){
+    totalquestionsanswered =Integer.parseInt(request.getParameter("totalquestionsanswered"));
+}
+int totalcorrectlyanswered = 0;
+if (request.getParameter("totalcorrectlyanswered")!=null && reger.core.Util.isinteger(request.getParameter("totalcorrectlyanswered"))){
+    totalcorrectlyanswered =Integer.parseInt(request.getParameter("totalcorrectlyanswered"));
+}
+
+//Current action
+String action = "";
+if (request.getParameter("action")!=null){
+    action = request.getParameter("action");
+}
+
+//Processing
+if (action.equals("answer")){
+    totalquestionsanswered = totalquestionsanswered + 1;
+    if (request.getParameter("answer")!=null && request.getParameter("correctanswer")!=null && request.getParameter("answer").equals(request.getParameter("correctanswer"))){
+        totalcorrectlyanswered = totalcorrectlyanswered + 1;
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Correct!"));
+    } else {
+        String correctanswerhint = "";
+        if (request.getParameter("correctanswerhint")!=null){
+            correctanswerhint =  "<br><br>"+request.getParameter("correctanswerhint");
+        }
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Sorry, incorrect!" + correctanswerhint));
+    }
+}
+
+//Define question types
+int QT_CVBNUMBERMATCH = 1;
+int QT_SINNUMBERMATCH = 2;
+int QT_CVBFAKE = 3;
+
+//Determine the question type
+int questiontype = QT_CVBNUMBERMATCH;
+int rnd = reger.core.Util.randomInt(2);
+if (rnd==0){
+    questiontype = QT_SINNUMBERMATCH;
+} else if (rnd==1){
+    questiontype = QT_CVBNUMBERMATCH;
+} else {
+    questiontype = QT_CVBFAKE;
+}
+
+//Display Score
+mb.append("<div style=\"float: right; width: 225;\">");
+mb.append(reger.ui.RoundedCorners.start("state", "", "ffffcc", "000000"));
+mb.append("<font face='impact, arial' style=\"font-size: 40px;\" color=#000000>");
+mb.append(totalcorrectlyanswered + " / " + totalquestionsanswered);
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<font face='impact, arial' size=-2 color=#000000>");
+mb.append("correct / total");
+mb.append("</font>");
+mb.append("<br>");
+mb.append("<a href='biz-core-values-game.log'>Reset</a>");
+mb.append(reger.ui.RoundedCorners.end("state"));
+mb.append("</div>");
+
+//Form start
+mb.append("<form action=biz-core-values-game.log method=post>");
+mb.append("<input type=hidden name=action value='answer'>");
+mb.append("<input type=hidden name=totalquestionsanswered value='"+totalquestionsanswered+"'>");
+mb.append("<input type=hidden name=totalcorrectlyanswered value='"+totalcorrectlyanswered+"'>");
+
+//Display the question
+if (questiontype==QT_CVBNUMBERMATCH){
+    int cvbnumber = reger.core.Util.randomInt(14) + 1;
+    String correctanswer = String.valueOf(cvbnumber);
+    mb.append("<font face='impact, arial' size=+3 color=#666666>");
+    mb.append("Which CV&B is known as \"cvb"+cvbnumber+"\"?");
+    mb.append("</font>");
+    mb.append("<input type=hidden name=correctanswer value='"+correctanswer+"'>");
+    mb.append("<input type=hidden name=correctanswerhint value=\"cvb"+cvbnumber+": "+reger.core.Util.cleanForHtml(cvbs[cvbnumber])+"<br><br>\">");
+    Collections.shuffle(cvbsList);
+    for (java.util.Iterator it = cvbsList.iterator(); it.hasNext(); ) {
+        String cvb = (String)it.next();
+        if (cvbsToNumLookup.get(cvb)!=null  && cvb!=null){
+            mb.append("<br><br>");
+            mb.append("<input type=radio name=answer value='"+cvbsToNumLookup.get(cvb)+"'>");
+            //mb.append("cvbsToNumLookup.get(cvb)=" + cvbsToNumLookup.get(cvb) + " ");
+            mb.append("<font face='arial' size=-1 color=#000000>");
+            mb.append(cvb);
+            mb.append("</font>");
+        }
+    }
+} else if (questiontype==QT_SINNUMBERMATCH){
+    int sinnumber = reger.core.Util.randomInt(11) + 1;
+    String correctanswer = String.valueOf(sinnumber);
+    mb.append("<font face='impact, arial' size=+3 color=#666666>");
+    mb.append("Which Deadly Sin is known as \"sin"+sinnumber +"\"?");
+    mb.append("</font>");
+    mb.append("<input type=hidden name=correctanswer value='"+correctanswer+"'>");
+    mb.append("<input type=hidden name=correctanswerhint value=\"sin"+sinnumber+": "+reger.core.Util.cleanForHtml(sins[sinnumber])+"<br><br>\">");
+    Collections.shuffle(sinsList);
+    for (java.util.Iterator it = sinsList.iterator(); it.hasNext(); ) {
+        String sin = (String)it.next();
+        if (sinsToNumLookup.get(sin)!=null && sin!=null){
+            mb.append("<br><br>");
+            mb.append("<input type=radio name=answer value='"+sinsToNumLookup.get(sin)+"'>");
+            mb.append("<font face='arial' size=-1 color=#000000>");
+            //mb.append("sinsToNumLookup.get(sin)=" + sinsToNumLookup.get(sin) + " ");
+            mb.append(sin);
+            mb.append("</font>");
+        }
+    }
+} else if (questiontype==QT_CVBFAKE){
+    int cvbnumber = reger.core.Util.randomInt(14) + 1;
+    mb.append("<font face='impact, arial' size=+3 color=#666666>");
+    mb.append("Which is the REAL \"cvb"+cvbnumber+"\"?");
+    mb.append("</font>");
+    ArrayList possibleAnswers = new ArrayList();
+    possibleAnswers.add(cvbs[cvbnumber]);
+    possibleAnswers.add(cvbsFake1[cvbnumber]);
+    possibleAnswers.add(cvbsFake2[cvbnumber]);
+    Collections.shuffle(possibleAnswers);
+    int answernumber = 0;
+    for (java.util.Iterator it = possibleAnswers.iterator(); it.hasNext(); ) {
+        String cvb = (String)it.next();
+        if (cvb!=null){
+            answernumber = answernumber + 1;
+            mb.append("<br><br>");
+            mb.append("<input type=radio name=answer value='"+answernumber+"'>");
+            //mb.append("cvbsToNumLookup.get(cvb)=" + cvbsToNumLookup.get(cvb) + " ");
+            if (cvbsToNumLookup.get(cvb)!=null){
+                mb.append("<input type=hidden name=correctanswer value='"+answernumber+"'>");
+                mb.append("<input type=hidden name=correctanswerhint value=\"cvb"+cvbnumber+": "+reger.core.Util.cleanForHtml(cvbs[cvbnumber])+"<br><br>\">");
+            }
+            mb.append("<font face='arial' size=-1 color=#000000>");
+            mb.append(cvb);
+            mb.append("</font>");
+        }
+    }
+}
+
+mb.append("<br><br>");
+mb.append("<input type=submit name='Answer' value='Answer'>");
+mb.append("</form>");
+
+
+
+
+
+
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
