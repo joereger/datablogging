@@ -77,7 +77,7 @@ public class AllMegaLogTypesInSystem {
     public static MegaLogType getMegaLogTypeByEventtypeid(int eventtypeid){
         //If it's null, refresh.  Generally won't happen.
         if (allMegaLogTypes==null){
-            Debug.debug(5, "", "AllMegaLogTypesInSystem.java - Refreshing Point2.");
+            Debug.debug(5, "AllMegaLogTypesInSystem.java", "Refreshing Point2.");
             refresh();
         }
 
@@ -87,7 +87,7 @@ public class AllMegaLogTypesInSystem {
         }
 
         //Then refresh.
-        Debug.debug(5, "", "AllMegaLogTypesInSystem.java - Refreshing Point3.");
+        Debug.debug(5, "AllMegaLogTypesInSystem.java", "Refreshing Point3.");
         refresh();
 
         //And check again.
@@ -96,6 +96,7 @@ public class AllMegaLogTypesInSystem {
         }
 
         //If we still don't have it, return null.
+        Debug.debug(5, "AllMegaLogTypesInSystem.java", "Returning null.");
         return null;
     }
 

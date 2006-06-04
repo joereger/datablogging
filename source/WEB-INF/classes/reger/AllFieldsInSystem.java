@@ -207,7 +207,7 @@ public class AllFieldsInSystem {
 
 
     public static ArrayList<FieldType> allMegaFieldsForEventtypeid(int eventtypeid, boolean getCopyOfFieldInsteadOfReference){
-        Debug.debug(3, "", "AllFieldsInSystem.allMegaFieldsForEventtypeid() - eventtypeid=" + eventtypeid);
+        Debug.debug(5, "", "AllFieldsInSystem.allMegaFieldsForEventtypeid() - eventtypeid=" + eventtypeid);
         ArrayList<FieldType> out = new ArrayList<FieldType>();
         if (allFieldsInSystem==null){
             refresh();

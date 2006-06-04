@@ -45,7 +45,7 @@ mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, 
 //                String daotext = gen.getDaoForTable(tablename);
 //                try{
 //                    File file = new File(FilenameUtils.normalize(request.getParameter("directory")) + reger.dao.generator.Generator.getFirstCharUpperCased(tablename) + "DAO.java");
-//                    reger.core.Debug.debug(3, "daogenerator.log", file.getAbsolutePath());
+//                    reger.core.Debug.debug(5, "daogenerator.log", file.getAbsolutePath());
 //                    BufferedWriter outBuf = new BufferedWriter(new FileWriter(file));
 //                    outBuf.write(daotext);
 //                    outBuf.close();
@@ -75,7 +75,7 @@ mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, 
 //                String findertext = findgen.getDaoForTable(tablename);
 //                try{
 //                    File file = new File(FilenameUtils.normalize(request.getParameter("directory")) + reger.dao.generator.Generator.getFirstCharUpperCased(tablename) + "Finder.java");
-//                    reger.core.Debug.debug(3, "daogenerator.log", file.getAbsolutePath());
+//                    reger.core.Debug.debug(5, "daogenerator.log", file.getAbsolutePath());
 //                    BufferedWriter outBuf = new BufferedWriter(new FileWriter(file));
 //                    outBuf.write(findertext);
 //                    outBuf.close();

@@ -50,6 +50,7 @@ public class Log implements NestedNavItem {
         //-----------------------------------
         if (rstLog!=null && rstLog.length>0){
             for(int i=0; i<rstLog.length; i++){
+                reger.core.Debug.debug(5, "Log.java", "loading logid="+rstLog[i][0]);
                 this.logid=Integer.parseInt(rstLog[i][0]);
                 accountid=Integer.parseInt(rstLog[i][1]);
                 eventtypeid=Integer.parseInt(rstLog[i][2]);
@@ -85,7 +86,7 @@ public class Log implements NestedNavItem {
                     }
                 }
                 //Get fieldOrderCollection
-                if (!fieldorder.equals("")){
+                if (fieldorder!=null && !fieldorder.equals("")){
                     fieldOrderCollection = new FieldOrderCollection(fieldorder);
                 } else {
                     fieldorder = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getFieldorder();
@@ -123,7 +124,7 @@ public class Log implements NestedNavItem {
                tmp0.append(ftC.getMegafieldid() + "<br>fieldname=" + ftC.getFieldname() + "<br>");
             }
         }
-        Debug.debug(3, "", "Log.java - logid="+logid+" fields Before Assignment<br>" + tmp0.toString());
+        Debug.debug(5, "", "Log.java - logid="+logid+" fields Before Assignment<br>" + tmp0.toString());
 
         //Order the fields
         orderFieldsAndSeparateHidden(fields);

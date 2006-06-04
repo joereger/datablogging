@@ -26,7 +26,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
-mb.append("At Reger.com, our employees are our most valuable asset, as we would not exist without them. As such, each employee’s aim is serve each other, and our customers and partners, as well as the communities we are a part of. We feel that by responding in this manner, the corporation will always be successful. To that end, we have created our company’s core values and beliefs. They are not simply ink on paper. Rather, they are read at all company meetings, and guide all of our actions. If we don't seem to be living up to them, contact us at <a href='mailto=cvbs@reger.com'>cvbs@reger.com</a>.  To freshen up on the CV&Bs, play the <a href='biz-core-values-game.log'>CV&B Game</a>.");
+mb.append("At Reger.com, our employees are our most valuable asset, as we would not exist without them. As such, each employee’s aim is serve each other, and our customers and partners, as well as the communities we are a part of. We feel that by responding in this manner, the corporation will always be successful. To that end, we present our company’s core values and beliefs. They are not simply ink on paper. Rather, they are read at all company meetings, and guide all of our actions. If we don't seem to be living up to them, contact us at <a href='mailto=cvbs@reger.com'>cvbs@reger.com</a>.  To freshen up on the CV&Bs, play the <a href='biz-core-values-game.log'>CV&B Game</a>.");
 
 mb.append("<br>");
 mb.append("<br>");

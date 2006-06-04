@@ -380,7 +380,7 @@ public class Entry {
         //Add a new record to the Event Table.  This is a temporary entry.
         //-------------------------------------------------
         //---------------------=======---------------------
-        eventid = reger.core.db.Db.RunSQLInsert("INSERT INTO event(eventtypeid, locationid, date, title, comments, accountid, logid, favorite, isdraft, createdate, sizeinbytes, isapproved, accountuserid, istemporary) VALUES('" + eventtypeid + "','0','" + TimeUtils.dateformatfordb(dateGmt) + "','" + reger.core.Util.cleanForSQL(title) + "','" + reger.core.Util.cleanForSQL(comments) + "','" + accountid + "','" + logid + "','" + favorite + "','" + isDraft + "', '" + reger.core.TimeUtils.nowInGmtString() + "', '" + reger.core.Util.sizeInBytes(comments) + "','" + isApproved + "', '" + tmpAcctuserid + "', '1')");
+        eventid = reger.core.db.Db.RunSQLInsert("INSERT INTO event(eventtypeid, locationid, date, title, comments, accountid, logid, favorite, isdraft, createdate, sizeinbytes, isapproved, accountuserid, istemporary, ismoderatorapproved) VALUES('" + eventtypeid + "','0','" + TimeUtils.dateformatfordb(dateGmt) + "','" + reger.core.Util.cleanForSQL(title) + "','" + reger.core.Util.cleanForSQL(comments) + "','" + accountid + "','" + logid + "','" + favorite + "','" + isDraft + "', '" + reger.core.TimeUtils.nowInGmtString() + "', '" + reger.core.Util.sizeInBytes(comments) + "','" + isApproved + "', '" + tmpAcctuserid + "', '1', '1')");
         //---------------------=======---------------------
         //-------------------------------------------------
 
@@ -403,7 +403,7 @@ public class Entry {
         this.accountid = account.getAccountid();
         this.accountuserid = accountUser.getAccountuserid();
 
-        Debug.debug(3, "Entry.java", "Edit entry called: eventid=" + eventid + ", accountid=" + accountid + ", accountuserid=" + accountuserid);
+        Debug.debug(3, "Entry.java", "Edit entry called: eventid=" + eventid + ", accountid=" + accountid + ", accountuserid=" + accountuserid + " ismoderatorapproved=" + ismoderatorapproved);
 
         //Validate the entry and the accompanying megadata
         try {
@@ -451,6 +451,7 @@ public class Entry {
             if (reger.OffensiveContentFlagger.isOffensive(this, pl.getPlid())) {
                 isflaggedformoderator = 1;
                 if (pl.getDoesflaggedcontentneedtobeapproved()) {
+                    reger.core.Debug.debug(3, "Entry.java", "Setting ismoderatorapproved=0 because pl.getDoesflaggedcontentneedtobeapproved()=true.");
                     ismoderatorapproved = 0;
                     requiresmoderatorapproval = 1;
                 }
@@ -459,6 +460,7 @@ public class Entry {
 
         //Deal with pl.doallpostsneedtobeapproved
         if (pl.getDoallpostsneedtobeapproved()) {
+            reger.core.Debug.debug(3, "Entry.java", "Setting ismoderatorapproved=0 because pl.getDoallpostsneedtobeapproved()=true.");
             ismoderatorapproved = 0;
             requiresmoderatorapproval = 1;
         }
@@ -596,7 +598,7 @@ public class Entry {
 
             this.eventid = eventid;
 
-            reger.core.Debug.debug(3, "Entry.java", "eventid=" + eventid + " found and refreshed in database.");
+            reger.core.Debug.debug(5, "Entry.java", "eventid=" + eventid + " found and refreshed in database.");
 
             //Get date
             try {
@@ -707,10 +709,10 @@ public class Entry {
         //Go get the fields
         if (fields == null) {
             try {
-                Debug.debug(3, "", "---------<br>Entry.java - about to call LogCache for logid=" + logid);
+                Debug.debug(5, "", "---------<br>Entry.java - about to call LogCache for logid=" + logid);
                 Log log = LogCache.get(logid);
                 if (log != null && log.getLogid()>0) {
-                    Debug.debug(3, "", "Entry.java - log.getName()=" + log.getName() + "<br>--------");
+                    Debug.debug(5, "", "Entry.java - log.getName()=" + log.getName() + "<br>--------");
                     fields = AllFieldsInSystem.copyFieldTypeArray(log.getFields());
                 }
             } catch (Exception e) {
@@ -724,10 +726,10 @@ public class Entry {
             for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
                 FieldType ft = (FieldType)it.next();
                 //Populate the object with values from the eventid
-                Debug.debug(3, "", "Entry.java - fields[i].loadDataForEventid() will be called for " + ft.getFieldname());
+                Debug.debug(5, "", "Entry.java - fields[i].loadDataForEventid() will be called for " + ft.getFieldname());
                 ft.loadDataForEventid(eventid, logid);
                 //fieldsTmp.add(ft);
-                Debug.debug(3, "", "Entry.java - fieldname= " + ft.getFieldname() + " fields[i].getDataForField()[0].getValue()=" + ft.getDataForField().get(0).getValue());
+                Debug.debug(5, "", "Entry.java - fieldname= " + ft.getFieldname() + " fields[i].getDataForField()[0].getValue()=" + ft.getDataForField().get(0).getValue());
             }
             //this.fields = fieldsTmp;
         }
@@ -868,7 +870,7 @@ public class Entry {
     public void validateEntryMega() throws ValidationException {
         ValidationException validationException = new ValidationException();
         if (fields != null) {
-            reger.core.Debug.debug(3, "Entry.java", "Fields is not null eventid=" + eventid);
+            reger.core.Debug.debug(5, "Entry.java", "Fields is not null eventid=" + eventid);
             //Iterate the fields, calling the validate function
             for (Iterator it = this.fields.iterator(); it.hasNext(); ) {
                 FieldType ft = (FieldType)it.next();

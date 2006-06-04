@@ -13,13 +13,13 @@ public class ValidateWorker {
 
     public static void validate(Object entity) throws HibValEx{
 
-        reger.core.Debug.debug(3, "ValidateWorker.java", "validate() called: " + entity.getClass().getName());
+        reger.core.Debug.debug(5, "ValidateWorker.java", "validate() called: " + entity.getClass().getName());
 
         if (entity!=null){
             String fq_classname = entity.getClass().getName();
             try{
                 fq_classname = fq_classname.replaceAll("reger.dao.hibernate.", "reger.dao.validators.");
-                reger.core.Debug.debug(3, "ValidateWorker.java", "Looking for validator here: " + fq_classname);
+                reger.core.Debug.debug(5, "ValidateWorker.java", "Looking for validator here: " + fq_classname);
 
                 reger.hibernate.Validator validator = (reger.hibernate.Validator)(Class.forName(fq_classname).newInstance());
 
@@ -33,7 +33,7 @@ public class ValidateWorker {
             } catch (HibernateException h){
                 throw h;
             } catch (Exception e){
-                reger.core.Debug.debug(3, "ValidateWorker.java", "No validator here: " + fq_classname + " e="+e.getMessage());
+                reger.core.Debug.debug(5, "ValidateWorker.java", "No validator here: " + fq_classname + " e="+e.getMessage());
             }
         }
     }

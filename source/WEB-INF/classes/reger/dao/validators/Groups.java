@@ -14,7 +14,7 @@ public class Groups implements Validator {
         HibValEx vex = new HibValEx("");
         if (entity instanceof reger.dao.hibernate.Groups){
             reger.dao.hibernate.Groups group = (reger.dao.hibernate.Groups)entity;
-            reger.core.Debug.debug(3, "reger.dao.validators.Groups.java", "custom validator called: " + entity.getClass().getName());
+            reger.core.Debug.debug(5, "reger.dao.validators.Groups.java", "custom validator called: " + entity.getClass().getName());
             //Name can't be blank
             if (group.getName().equals("")){
                 vex.addValidationError("Group name can not be blank.");

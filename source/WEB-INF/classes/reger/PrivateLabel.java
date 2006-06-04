@@ -271,7 +271,7 @@ public class PrivateLabel {
         ArrayList<NestedNavItem> staticJspPagesMinusHiddenOnes = new ArrayList<NestedNavItem>();
         for (Iterator it = staticJspPages.iterator(); it.hasNext(); ) {
             NestedNavItem navItem = (NestedNavItem)it.next();
-            if (!hiddenByPl.containsKey(navItem.getThisNestedNavId())){
+            if (navItem!=null && hiddenByPl!=null && !hiddenByPl.containsKey(navItem.getThisNestedNavId())){
                 staticJspPagesMinusHiddenOnes.add(navItem);
             }
         }

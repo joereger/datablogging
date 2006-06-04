@@ -14,7 +14,7 @@ import reger.hibernate.HibValEx;
 public class ValidationInterceptor extends EmptyInterceptor {
     public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types){
         try{
-            reger.core.Debug.debug(3, "ValidationInterceptor.java", "Interceptor called for: " + entity.getClass().getName());
+            reger.core.Debug.debug(5, "ValidationInterceptor.java", "Interceptor called for: " + entity.getClass().getName());
             ValidateWorker.validate(entity);
         } catch (HibValEx hex){
             throw hex;

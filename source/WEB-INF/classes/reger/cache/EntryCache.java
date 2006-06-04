@@ -18,16 +18,16 @@ public class EntryCache {
         if (eventid>0){
             Object obj = CacheFactory.getCacheProvider().get(String.valueOf(eventid), GROUP);
             if (obj!=null && (obj instanceof Entry)){
-                reger.core.Debug.debug(3, "EntryCache.java", "Returning cached version of eventid="+eventid);
+                reger.core.Debug.debug(5, "EntryCache.java", "Returning cached version of eventid="+eventid);
                 return (Entry)obj;
             } else {
                 Entry entry = new Entry(eventid);
                 CacheFactory.getCacheProvider().put(String.valueOf(eventid), GROUP, entry);
-                reger.core.Debug.debug(3, "EntryCache.java", "Refreshed cache version of eventid="+eventid);
+                reger.core.Debug.debug(5, "EntryCache.java", "Refreshed cache version of eventid="+eventid);
                 return entry;
             }
         }
-        reger.core.Debug.debug(3, "EntryCache.java", "Returning new Event(0) for eventid="+eventid);
+        reger.core.Debug.debug(5, "EntryCache.java", "Returning new Event(0) for eventid="+eventid);
         return new Entry(0);
     }
 
