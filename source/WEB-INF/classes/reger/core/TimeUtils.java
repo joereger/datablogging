@@ -239,6 +239,14 @@ public class TimeUtils {
 		return myDateFormat.format(date.getTime());
 	}
 
+	public static String dateformatFullNoTime(Calendar date) {
+		DateFormat myDateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy");
+		if (date==null){
+            date = nowInGmtCalendar();
+        }
+		return myDateFormat.format(date.getTime());
+	}
+
 	/**
     * Date format
     *

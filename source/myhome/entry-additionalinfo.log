@@ -12,28 +12,12 @@
 <%@ page import="reger.poll.PollResultsHtml"%>
 <%@ page import="reger.cache.EntryCache"%>
 <%@ page import="reger.cache.LogCache"%>
+
+
 <%
-    /*----------------------------------------------------*/
-/*                  Page Config                       */
-    reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
-    pageProps.siteSection = pageProps.ADMINSITE;
-    pageProps.isPasswordProtected = true;
-    pageProps.navButtonName = "entries";
-    pageProps.aclObjectName = "ADDEDITENTRIES";
-    pageProps.isLogidRequired = true;
-    pageProps.trafficType = reger.Vars.TRAFFICTYPEADMINLOGSECTION;
-    pageProps.pathToAppRoot = "../";
-//pageProps.onloadJavascriptMethod = "makeFormDraggable();";
-    pageProps.helpText = "This page allows you to add or edit weblog entries.  Once you're done editing, click to Save the Entry.<br><br>Below the save button you'll find a number of important extended properties that are related to this entry.  Explore these special features... they can dramatically improve your weblogging experience.";
 /*----------------------------------------------------*/
-%>
-
-<%@ include file="../globalheader.jsp" %>
-
-<%
-    /*----------------------------------------------------*/
 /*                  Main Body                         */
-    StringBuffer mb = new StringBuffer();
+    //StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
     String eventid = request.getParameter("eventid");
     if (eventid == null || !reger.core.Util.isinteger(eventid)) {
@@ -48,7 +32,7 @@
         return;
     }
 
-    if (pageProps.action.equals("submit")) {
+    if (pageProps.action.equals("submitadditionalinfo")) {
         //Groups
         try {
             ArrayList<Integer> groupids = new ArrayList<Integer>();
@@ -73,7 +57,7 @@
             return;
         }
 
-        response.sendRedirect("index.log?msg=entryedited&eventid=" + entry.eventid + "&logid=" + entry.logid);
+        response.sendRedirect("index.log?msg=entryediteddone&eventid=" + entry.eventid + "&logid=" + entry.logid);
         return;
     }
 
@@ -81,35 +65,36 @@
     if (pageProps.action.equals("")) {
         boolean haveSomethingToAdd = false;
 
-        mb.append("<br>");
-        mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+        afterPost.append("<br>");
+        //afterPost.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
 
-        mb.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your entry has been saved!  You can now add optional features to your post.  <a href='index.log?msg=entryedited&eventid=" + entry.eventid + "&logid=" + entry.logid+"'>Skip</a>"));
+        //afterPost.append(InfoBox.get(InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your entry has been saved!  You can now add optional features to your post.  <a href='index.log?msg=entryedited&eventid=" + entry.eventid + "&logid=" + entry.logid+"'>Skip</a>"));
 
-        mb.append("<form action=entry-additionalinfo.log method=post>");
-        mb.append("<input type=hidden name=action value='submit'>");
-        mb.append("<input type=hidden name=eventid value='" + entry.eventid + "'>");
-        mb.append("<input type=hidden name=logid value='" + entry.logid + "'>");
-        mb.append("<table cellpadding=10 cellspacing=0 border=0>");
+        afterPost.append("<form action=index.log method=post>");
+        afterPost.append("<input type=hidden name=action value='submitadditionalinfo'>");
+        afterPost.append("<input type=hidden name=msg value='entryedited'>");
+        afterPost.append("<input type=hidden name=eventid value='" + entry.eventid + "'>");
+        afterPost.append("<input type=hidden name=logid value='" + entry.logid + "'>");
+        afterPost.append("<table cellpadding=10 cellspacing=0 border=0>");
 
 
         //Begin Groups
         if (userSession.getAccountuser().userCanDoAcl("POSTENTRYTOGROUP", userSession.getAccount().getAccountid())) {
             haveSomethingToAdd = true;
-            //mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-            //mb.append("<table cellpadding=10 cellspacing=0 border=0>");
-            mb.append("<tr>");
-            mb.append("<td align=left valign=top>");
-            mb.append("<img src='../images/groups-lg.gif' align=left>");
-            mb.append("</td>");
-            mb.append("<td align=right valign=top>");
-            mb.append("<font face=arial size=+2><b>");
-            mb.append("Groups");
-            mb.append("</b></font><br><font face=arial size=-2><b>");
-            mb.append("Groups allow you to share posts<br> with people who have common interests.<br>Groups can be public or private.");
-            mb.append("</b></font></td>");
-            mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
-            mb.append("");
+            //afterPost.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+            //afterPost.append("<table cellpadding=10 cellspacing=0 border=0>");
+            afterPost.append("<tr>");
+            afterPost.append("<td align=left valign=top>");
+            //afterPost.append("<img src='../images/groups-lg.gif' align=left>");
+            afterPost.append("</td>");
+            afterPost.append("<td align=right valign=top>");
+            afterPost.append("<font face=arial size=+2><b>");
+            afterPost.append("Groups");
+            afterPost.append("</b></font><br><font face=arial size=-2><b>");
+            afterPost.append("Groups allow you to share posts<br> with people who have common interests.<br>Groups can be public or private.");
+            afterPost.append("</b></font></td>");
+            afterPost.append("<td align=left valign=top>");
+            afterPost.append("");
             //Get all groups this accountuser is subscribed to
             //-----------------------------------
             //-----------------------------------
@@ -120,101 +105,101 @@
 
 
                 for (int i = 0; i < rstGroups.length; i++) {
-                    mb.append("<input type=checkbox name=groupid value='" + rstGroups[i][0] + "'");
+                    afterPost.append("<input type=checkbox name=groupid value='" + rstGroups[i][0] + "'");
                     if (entry.isInGroup(Integer.parseInt(rstGroups[i][0]))) {
-                        mb.append(" checked ");
+                        afterPost.append(" checked ");
                     }
-                    mb.append(" >");
-                    mb.append(" ");
-                    mb.append("<font face=arial size=-1><b>");
-                    mb.append(rstGroups[i][1]);
-                    mb.append("</b></font>");
-                    mb.append("<br>");
+                    afterPost.append(" >");
+                    afterPost.append(" ");
+                    afterPost.append("<font face=arial size=-1><b>");
+                    afterPost.append(rstGroups[i][1]);
+                    afterPost.append("</b></font>");
+                    afterPost.append("<br>");
                 }
 
                 if (log.getLogaccess() == reger.Vars.LOGACCESSPRIVATE) {
-                    mb.append("<img src='" + pageProps.pathToAppRoot + "images/info-icon.gif' border=0>");
-                    mb.append(" ");
-                    mb.append("<font face=arial size=-2>");
-                    mb.append("Note: posting entries from private logs (like this one) to groups will make it visible to readers and members of the group.  You are sharing something otherwise private with the group.  Readers of the group will not be able to view other entries in the this private log.  You're granting them a pass for this single entry.");
-                    mb.append("</font>");
+                    afterPost.append("<img src='" + pageProps.pathToAppRoot + "images/info-icon.gif' border=0>");
+                    afterPost.append(" ");
+                    afterPost.append("<font face=arial size=-2>");
+                    afterPost.append("Note: posting entries from private logs (like this one) to groups will make it visible to readers and members of the group.  You are sharing something otherwise private with the group.  Readers of the group will not be able to view other entries in the this private log.  You're granting them a pass for this single entry.");
+                    afterPost.append("</font>");
                 }
 
             } else {
-                mb.append("<font face=arial size=-2>");
-                mb.append("You're not subscribed to any groups.  Groups allow you and your friends to share blog posts.");
-                mb.append("<br><br>");
-                mb.append("Click <a href='groups.log'>here</a> to find groups to join or create one of your own.");
-                mb.append("</font>");
+                afterPost.append("<font face=arial size=-2>");
+                afterPost.append("You're not subscribed to any groups.  Groups allow you and your friends to share blog posts.");
+                afterPost.append("<br><br>");
+                afterPost.append("Click <a href='groups.log'>here</a> to find groups to join or create one of your own.");
+                afterPost.append("</font>");
             }
-            mb.append("</td>");
-            mb.append("</tr>");
-            //mb.append("</table>");
-            //mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+            afterPost.append("</td>");
+            afterPost.append("</tr>");
+            //afterPost.append("</table>");
+            //afterPost.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         }
         //End Groups
 
         // Begin Poll
-        mb.append("<br>");
-        //mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-        //mb.append("<table cellpadding=10 cellspacing=0 border=0>");
-        mb.append("<tr>");
-        mb.append("<td align=left valign=top>");
-        mb.append("<img src='../images/poll-icon.gif' align=left>");
-        mb.append("</td>");
-        mb.append("<td align=right valign=top>");
-        mb.append("<font face=arial size=+2><b>");
-        mb.append("Polls");
-        mb.append("</b></font><br><font face=arial size=-2><b>");
-        mb.append("Polls allow you to get feedback from your readers.");
-        mb.append("</b></font></td>");
-        mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
-        mb.append("<input type=radio name=pollid value=0> ");
-        mb.append("<font face=arial size=-1><b>");
-        mb.append("Create a new poll");
-        mb.append("</b></font>");
+        afterPost.append("<br>");
+        //afterPost.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+        //afterPost.append("<table cellpadding=10 cellspacing=0 border=0>");
+        afterPost.append("<tr>");
+        afterPost.append("<td align=left valign=top>");
+        //afterPost.append("<img src='../images/poll-icon.gif' align=left>");
+        afterPost.append("</td>");
+        afterPost.append("<td align=right valign=top>");
+        afterPost.append("<font face=arial size=+2><b>");
+        afterPost.append("Polls");
+        afterPost.append("</b></font><br><font face=arial size=-2><b>");
+        afterPost.append("Polls allow you to get feedback from your readers.");
+        afterPost.append("</b></font></td>");
+        afterPost.append("<td align=left valign=top>");
+        afterPost.append("<input type=radio name=pollid value=0> ");
+        afterPost.append("<font face=arial size=-1><b>");
+        afterPost.append("Create a new poll");
+        afterPost.append("</b></font>");
         if (entry.getPolls().size()>0){
             for (Iterator it = entry.getPolls().iterator(); it.hasNext(); ) {
                 Poll poll = (Poll)it.next();
-                mb.append("<br><input type=radio name=pollid value="+poll.getPollid()+"> ");
-                mb.append("<font face=arial size=-1><b>");
-                mb.append("Edit Poll: \""+poll.getQuestion()+"\"");
-                mb.append("</b></font>");
+                afterPost.append("<br><input type=radio name=pollid value="+poll.getPollid()+"> ");
+                afterPost.append("<font face=arial size=-1><b>");
+                afterPost.append("Edit Poll: \""+poll.getQuestion()+"\"");
+                afterPost.append("</b></font>");
             }
 
         }
-        mb.append("</td>");
-        mb.append("</tr>");
-        //mb.append("</table>");
-        //mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+        afterPost.append("</td>");
+        afterPost.append("</tr>");
+        //afterPost.append("</table>");
+        //afterPost.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
         // End Poll
 
 
-        //mb.append("<table cellpadding=10 cellspacing=0 border=0>");
-        mb.append("<tr>");
-        mb.append("<td align=left valign=top>");
-        //mb.append("<img src='../images/groups-lg.gif' align=left>");
-        mb.append("</td>");
-        mb.append("<td align=right valign=top>");
-        mb.append("<font face=arial size=+2><b>");
-        mb.append("</b></font></td>");
-        mb.append("<td bgcolor='#ffffff' align=left valign=top class=logentrycontent>");
-        mb.append("<input type=submit value='Continue'>");
-        mb.append("</td>");
-        mb.append("</tr>");
+        //afterPost.append("<table cellpadding=10 cellspacing=0 border=0>");
+        afterPost.append("<tr>");
+        afterPost.append("<td align=left valign=top>");
+        //afterPost.append("<img src='../images/groups-lg.gif' align=left>");
+        afterPost.append("</td>");
+        afterPost.append("<td align=right valign=top>");
+        afterPost.append("<font face=arial size=+2><b>");
+        afterPost.append("</b></font></td>");
+        afterPost.append("<td align=left valign=top>");
+        afterPost.append("<input type=submit value='Add Optional Info'>");
+        afterPost.append("</td>");
+        afterPost.append("</tr>");
 
 
 
-        mb.append("</table>");
+        afterPost.append("</table>");
 
 
-        mb.append("</form>");
+        afterPost.append("</form>");
 
-        mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+        //afterPost.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 
 
         if (!haveSomethingToAdd) {
-            response.sendRedirect("index.log?msg=entryedited&eventid=" + entry.eventid + "&logid=" + entry.logid);
+            response.sendRedirect("index.log?msg=entryediteddone&eventid=" + entry.eventid + "&logid=" + entry.logid);
             return;
         }
     }
@@ -222,14 +207,4 @@
 
 %>
 
-<%
-    /*----------------------------------------------------*/
-/*                  Side Column                       */
-    StringBuffer sc = new StringBuffer();
-/*----------------------------------------------------*/
 
-
-%>
-
-
-<%@ include file="../globalfooter.jsp" %>

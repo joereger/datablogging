@@ -141,7 +141,7 @@ public class FileBrowser {
             if (actionsForAllFiles.size()>0){
                 mb.append("<font face=arial size=-2>");
                 mb.append("<div class=yellowbox>");
-                mb.append("<form action='"+currentPageName+"' style=\"border: 0px; margin: 0px;\" method=post>");
+                mb.append("<form action='"+currentPageName+"' id='filelistform' style=\"border: 0px; margin: 0px;\" method=post>");
                 mb.append("<input type=hidden name=eventid value='"+eventid+"'>");
                 mb.append("<select name=action>");
                 for (Iterator it = actionsForAllFiles.iterator(); it.hasNext(); ) {
@@ -215,18 +215,28 @@ public class FileBrowser {
     private void processFiles(File in) {
         if (in.isDirectory()) {
             String[] children = in.list();
+            boolean haveatleastonefileflag = false;
             for (int i=0; i<children.length; i++) {
                 File tmp = new File(in, children[i]);
                 if (tmp.isFile()){
+                    haveatleastonefileflag = true;
                     String path = Util.getFilenameMinusDirectoryName(tmp, userSession.getAccount());
                     String filename = FilenameUtils.getName(path);
                     if (actionsForAllFiles.size()>0){
-                        filesHtml.append("<input type=checkbox name=file value='"+path+"'>");
+                        filesHtml.append("<input type=checkbox class=individualfile name=file value='"+path+"'>");
                     }
                     filesHtml.append("<img src='"+pageProps.pathToAppRoot+"images/filebrowser/file-sm.gif' border=0 align=middle>");
                     filesHtml.append(filename);
                     filesHtml.append("<br>");
                 }
+            }
+            if (haveatleastonefileflag){
+                StringBuffer tmp = new StringBuffer();
+                tmp.append("<script src=\"/js/checkallboxes.js\" type=\"text/javascript\"></script>");
+                tmp.append("<input type='checkbox' name='allfiles' value='' onclick=\"checkAll(document.getElementById('filelistform'), 'individualfile',this);\">");
+                tmp.append(" <b>Select All Files</b>");
+                tmp.append("<br><br>");
+                filesHtml = tmp.append(filesHtml);
             }
         }
     }

@@ -454,7 +454,7 @@ public class EmailApi {
 
                 //Set the title
                 if (mailtype==CAMPHONEPOST && overridecamphonesubject==1){
-                    overridecamphonesubjecttext = overridecamphonesubjecttext.replaceAll("\\<\\$Date\\$\\>", reger.core.TimeUtils.dateformatcompact(reger.core.TimeUtils.nowInUserTimezone(timezoneid)));
+                    overridecamphonesubjecttext = overridecamphonesubjecttext.replaceAll("\\<\\$Date\\$\\>", reger.core.TimeUtils.dateformatFullNoTime(reger.core.TimeUtils.nowInUserTimezone(timezoneid)));
                     entry.title=reger.core.Util.truncateString(overridecamphonesubjecttext, 255);
                 } else {
                     entry.title=reger.core.Util.truncateString(subject, 255);

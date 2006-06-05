@@ -67,7 +67,13 @@ if (pageProps.action.equals("togglehelp")){
 //Special Messages Section Start
 if (request.getParameter("msg")!=null) {
 	if (request.getParameter("msg").equals("entryedited")) {
-		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log entry has been saved!<br><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a>"));
+		//mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log entry has been saved!<br><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a>"));
+	    StringBuffer afterPost = new StringBuffer();
+	    afterPost.append("Your log entry has been saved!<br><a href=index.log>Skip</a> | <a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a><br>");
+	    %><%@ include file="entry-additionalinfo.log" %><%
+	    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, afterPost.toString()));
+    } else if (request.getParameter("msg").equals("entryediteddone")) {
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log entry has been saved!<br><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a><br>"));    
 	} else if (request.getParameter("msg").equals("newlog")) {
 		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Log(s) added. You can add entries by chosing a log below."));
 	} else if (request.getParameter("msg").equals("eventdeleted")) {
