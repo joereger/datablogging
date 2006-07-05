@@ -26,7 +26,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
-mb.append("We love press. We love getting the word out so that more people can share in the web logging revolution.   Just let us know what we can do to help.  If you are with the media and have questions, please contact <a href='mailto:duncan@reger.com'>Duncan Freeman.</a>");
+mb.append("We love press. We love getting the word out so that more people can share in the web logging revolution.   Just let us know what we can do to help.  If you are with the media and have questions, please contact <a href='mailto:joe@joereger.com'>Joe Reger.</a>");
 mb.append("<br>");
 mb.append("<br>");
 mb.append("Weblogging is also exciting because it's still somewhat underground.  While numerous articles have been written about it, it's still got a cool factor.  It's something that we geeky people do.  Reger.com is trying to bring that excitement and value to everybody by adding the concept of activity-specific web logs. Additionally, web logging is exciting because it touches so many new trends like social networking and corporate knowledge management.");

@@ -37,46 +37,8 @@ mb.append("Reger.com");
 mb.append("<br>");
 mb.append("phone: 404.394.6102");
 mb.append("<br>");
-mb.append("email: <a href='mailto:info@reger.com'>info@reger.com</a>");
+mb.append("email: <a href='mailto:joe@joereger.com'>joe@joereger.com</a>");
 
-mb.append("<br>");
-mb.append("<br>");
-mb.append("<h2>Sales</h2>");
-mb.append("John Broaddus:");
-mb.append("<br>");
-mb.append("phone: 404.661.3440");
-mb.append("<br>");
-mb.append("email: <a href='mailto:jb@reger.com'>jb@reger.com</a>");
-
-mb.append("<br>");
-mb.append("<br>");
-mb.append("<h2>Marketing and Press Inquiries:</h2>");
-mb.append("Duncan Freeman");
-mb.append("<br>");
-mb.append("phone: 404.229.2216");
-mb.append("<br>");
-mb.append("email: <a href='mailto:duncan@reger.com'>duncan@reger.com</a>");
-
-mb.append("<br>");
-mb.append("<br>");
-mb.append("<h2>Legal Matters:</h2>");
-mb.append("John Elmore");
-mb.append("<br>");
-mb.append("phone: 404.394.6102");
-mb.append("<br>");
-mb.append("email: <a href='mailto:john@reger.com'>john@reger.com</a>");
-
-mb.append("<br>");
-mb.append("<br>");
-mb.append("<h2>Additional Contact Information:</h2>");
-mb.append("Partnerships: <a href='mailto:partner@reger.com'>partner@reger.com</a>");
-mb.append("<br>");
-mb.append("Reseller Program: <a href='mailto:var@reger.com'>var@reger.com</a>");
-mb.append("<br>");
-mb.append("Customer Service: <a href='mailto:service@reger.com'>service@reger.com</a>");
-mb.append("<br>");
-mb.append("Customer Support: <a href='mailto:support@reger.com'>support@reger.com</a>");
-mb.append("<br>");
 
 
 

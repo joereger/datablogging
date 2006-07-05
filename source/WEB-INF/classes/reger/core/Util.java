@@ -112,13 +112,16 @@ public class Util {
 	 */
     public static String getJspName(String uri){
         try{
+            reger.core.Debug.debug(5, "Util.getJspName()", "uri=" + uri);
             String tmp[]=uri.split("/");
             if (tmp.length>1){
+                reger.core.Debug.debug(5, "Util.getJspName()", "uri=" + uri + " length>1 so returning:" + tmp[tmp.length-1]);
                 return tmp[tmp.length-1];
             }
         } catch (Exception e){
-            Debug.debug(5, "", e);
+            Debug.debug(5, "Util.getJspName()", e);
         }
+        reger.core.Debug.debug(5, "Util.getJspName()", "uri=" + uri+ "length not > 1 so returning uri:" + uri);
         return uri;
     }
 

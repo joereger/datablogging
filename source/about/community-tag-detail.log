@@ -118,7 +118,7 @@
                     }
 
                     //Output the entry
-                    mb.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, reger.core.Util.truncateString(entry.comments, userSession.getAccount().getDisplaycharsinsummary()), logname, entry.filecount, entry.messagecount, entry.accountuserid));
+                    mb.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, reger.core.Util.truncateString(entry.comments, userSession.getAccount().getDisplaycharsinsummary()), logname, entry.filecount, entry.messagecount, entry.accountuserid, entry));
                 }
             }
             mb.append("</tr>");

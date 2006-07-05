@@ -747,6 +747,9 @@ public class EmailApi {
                     //Do the imagetags
                     reger.Tag.addMultipleTagsToImage(camphoneimagetags, imageid);
 
+                    //Refresh entry cache
+                    reger.cache.EntryCache.flush(eventid);
+
                     Debug.debug(3, "EmailApi", "Imageid="+imageid);
                 //}
             //}

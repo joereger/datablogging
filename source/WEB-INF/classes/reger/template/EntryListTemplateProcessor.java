@@ -2,6 +2,7 @@ package reger.template;
 
 import reger.core.Debug;
 import reger.cache.TemplateTagCache;
+import reger.Entry;
 
 import java.util.Calendar;
 import java.util.regex.Pattern;
@@ -35,15 +36,15 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
     /**
      * Override so it can be called without an author tag
      */
-    public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount) {
-        return entryout(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, -1);
+    public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, Entry entry) {
+        return entryout(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, -1, entry);
     }
 
   /**
     * tRex is the template engine.  It's robust but fast... like tRex.
     * This version of tRex builds events from templates.
     */
-    public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid) {
+    public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, Entry entry) {
         //Make sure we have a template
         if (templateentry.equals("")) {
             EntryListTemplateProcessor enttp = new EntryListTemplateProcessor();
@@ -64,7 +65,7 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
             //Go get the tag that can handle this syntax
             EntryListTemplateTag tag = getTagBySyntax(m.group());
             if (tag!=null){
-                m.appendReplacement(en, reger.core.Util.cleanForAppendreplacement(tag.getValue(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, accountuserid)));
+                m.appendReplacement(en, reger.core.Util.cleanForAppendreplacement(tag.getValue(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, accountuserid, entry)));
             }
 
         }
@@ -110,7 +111,7 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new EntryListTemplateTag[11];
+        tags = new EntryListTemplateTag[12];
         tags[0] = new EntryListTemplateTagLogentryTitle();
         tags[1] = new EntryListTemplateTagLogentryUrl();
         tags[2] = new EntryListTemplateTagLogentryBody();
@@ -122,6 +123,7 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
         tags[8] = new EntryListTemplateTagLogentryDatetimeExpanded();
         tags[9] = new EntryListTemplateTagLogName();
         tags[10]= new EntryListTemplateTagMessagesCount();
+        tags[11]= new EntryListTemplateTagFileThumbs();
     }
 
     public TemplateTag[] getTagsThisProcessorCanHandle(){

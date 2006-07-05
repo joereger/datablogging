@@ -105,6 +105,7 @@ public class Entry {
     //Counts
     public int messagecount = 0;
     public int filecount = 0;
+    public StringBuffer filethumbs = new StringBuffer();
 
     //Xform
     private EventXformData eventXformData = null;
@@ -676,6 +677,23 @@ public class Entry {
         if (rstFileCount != null && rstFileCount.length > 0) {
             filecount = Integer.parseInt(rstFileCount[0][0]);
         }
+
+        //Thumbs
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstThumbs = Db.RunSQL("SELECT imageid, description FROM image WHERE eventid='" + eventid + "' ORDER BY imageorder ASC, imageid ASC");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstThumbs != null && rstThumbs.length > 0) {
+            filethumbs = new StringBuffer();
+            for (int i = 0; i < rstThumbs.length; i++) {
+                filethumbs.append("<a href='mediaouthtml.log?imageid="+rstThumbs[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
+                filethumbs.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                filethumbs.append("</a>");
+            }
+        }
+
+
 
         //Groups
         //-----------------------------------

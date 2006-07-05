@@ -215,9 +215,9 @@ public class htmlListEvents {
 
                 //If we're on edit.log and the logged-in user can't administer this logid then don't display the result.
                 if (!thispagename.equals("entries.log")) {
-                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid));
+                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid, entry));
                 } else if ((thispagename.equals("entries.log") && userSession.getAccountuser().userCanViewLog(entry.logid))) {
-                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurladmin, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid));
+                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurladmin, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid, entry));
                 }
             }
         } else {

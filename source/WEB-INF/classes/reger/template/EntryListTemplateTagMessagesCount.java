@@ -38,7 +38,7 @@ public class EntryListTemplateTagMessagesCount implements EntryListTemplateTag{
      * It takes in these elements and then spits out what the
      * tag should be replaced with on the screen.
      */
-    public String getValue(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid) {
+    public String getValue(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, reger.Entry entry) {
         return "<a href='"+logentryurl+"#comments'>"+messagescount+"</a>";
     }
 

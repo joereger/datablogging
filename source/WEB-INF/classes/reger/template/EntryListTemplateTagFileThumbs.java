@@ -1,21 +1,18 @@
 package reger.template;
 
-import reger.pageFramework.PageProps;
-import reger.UserSession;
-
 import java.util.Calendar;
 
 /**
  *
  */
-public class EntryListTemplateTagAgoText implements EntryListTemplateTag{
+public class EntryListTemplateTagFileThumbs implements EntryListTemplateTag{
 
     /**
      * The syntax required to put this tag into the page.
      * Note: this is "Page.Title", not <$Page.Title$>
      */
     public String getSyntax() {
-        return "Ago.Text";
+        return "File.Thumbs";
     }
 
     public boolean acceptsParticularSyntax(String tagExample){
@@ -26,7 +23,7 @@ public class EntryListTemplateTagAgoText implements EntryListTemplateTag{
     }
 
     public String getDescription() {
-        return "Hours, Days, Weeks or Years since this log entry was made. Sample output: 3 Days Ago.";
+        return "Thumbnails of files added to this entry.";
     }
 
     public boolean isRequired(){
@@ -39,16 +36,14 @@ public class EntryListTemplateTagAgoText implements EntryListTemplateTag{
      * tag should be replaced with on the screen.
      */
     public String getValue(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, reger.Entry entry) {
-        //Agotext is based on a GMT date so I must convert from this calendar to a gmt one
-        Calendar tmpCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(entrydate, entrydate.getTimeZone().getID(), "GMT");
-        return reger.core.TimeUtils.agoText(tmpCal);
+        return entry.filethumbs.toString();
     }
 
     /**
      * Content used for previews of templates.
      */
     public String getPreview(){
-        return reger.core.TimeUtils.agoText(reger.core.TimeUtils.xDaysAgoStart(Calendar.getInstance(), 3));
+        return "No preview.";
     }
 
 }

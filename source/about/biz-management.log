@@ -48,27 +48,7 @@ mb.append("Email: <a href='mailto:joesr@reger.com'>joesr@reger.com</a>");
 mb.append("<br>");
 mb.append("Datablog: <a href='http://joesr.reger.com/'>http://joesr.reger.com/</a>");
 
-mb.append("<br>");
-mb.append("<br>");
-mb.append("<h1>Duncan Freeman</h1>");
-mb.append("<b>EVP, Marketing:</b>");
-mb.append("<br>");
-mb.append("Prior to Reger.com, Duncan was involved with a technology initiative in both the health care and music industry, and was the President and Co-founder of Strio, a wireless ASP for the retail industry. Prior to Strio, Duncan worked for MindSpring from 1996 until 2000 in the Business Services division marketing its emerging technologies, and was responsible for the company's corporate co-location service. He also managed the strategic relationships with companies such as Microsoft, Network Solutions and Intershop in Hamburg, Germany. Duncan received his BA from the University of Alabama and an MDiv. from Emory University concentrating in Ethics. Additionally, he is a LTJG in the United States Navy Reserves.");
-mb.append("<br>");
-mb.append("Email: <a href='mailto:duncan@reger.com'>duncan@reger.com</a>");
-mb.append("<br>");
-mb.append("Datablog: <a href='http://duncan.reger.com/'>http://duncan.reger.com/</a>");
 
-mb.append("<br>");
-mb.append("<br>");
-mb.append("<h1>John Broaddus</h1>");
-mb.append("<b>VP, Sales:</b>");
-mb.append("<br>");
-mb.append("Coming Soon...");
-mb.append("<br>");
-mb.append("Email: <a href='mailto:jb@reger.com'>jb@reger.com</a>");
-mb.append("<br>");
-mb.append("Datablog: <a href='http://jb.reger.com/'>http://jb.reger.com/</a>");
 
 mb.append("<br>");
 mb.append("<br>");

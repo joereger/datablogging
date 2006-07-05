@@ -448,7 +448,7 @@ public class MegaLogTypeHtmlrender {
 
 
                 //If we're on edit.log and the logged-in user can't administer this logid then don't display the result
-                mb.append( reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.dbstringtocalendar(rsEvent[i][3]), rsEvent[i][0], entryurl, reger.core.Util.truncateString(rsEvent[i][1], displaycharsinsummary), rsEvent[i][2], 0, 0, Integer.parseInt(rsEvent[i][8])));
+                mb.append( reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.dbstringtocalendar(rsEvent[i][3]), rsEvent[i][0], entryurl, reger.core.Util.truncateString(rsEvent[i][1], displaycharsinsummary), rsEvent[i][2], 0, 0, Integer.parseInt(rsEvent[i][8]), reger.cache.EntryCache.get(Integer.parseInt(rsEvent[i][4]))));
 
             }
         } else {

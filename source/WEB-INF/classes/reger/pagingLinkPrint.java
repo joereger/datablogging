@@ -8,7 +8,7 @@ public class pagingLinkPrint {
 
     public static StringBuffer getHtml(int counttotal, int currentpage, int perpage, HttpServletRequest request){
 
-        Debug.debug(5, "", "pagingLinkPrint.java - getHtml(counttotal=" + counttotal + ", currentpage=" + currentpage + ", perpage=" + perpage);
+        Debug.debug(5, "pagingLinkPrint.java", "getHtml(counttotal=" + counttotal + ", currentpage=" + currentpage + ", perpage=" + perpage);
 
         //Parse request object.
         //Remove references to currentpage
@@ -27,7 +27,11 @@ public class pagingLinkPrint {
 
         //Get the script name
         //String thispagename = request.getServletPath();
+        reger.core.Debug.debug(5, "pagingLinkPrint.java", reger.core.ErrorDissect.ServletUtilsdissect(request));
         String thispagename = reger.core.Util.getJspName(request.getRequestURL().toString());
+        if (thispagename.equals(request.getServerName().toString())){
+            thispagename = "index.log";
+        }
         //reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));
 
 
