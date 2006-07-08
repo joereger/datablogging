@@ -10,10 +10,15 @@ import reger.ThumbnailCreator;
 import javax.mail.BodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.imageio.ImageReader;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.io.File;
 import java.io.FileOutputStream;
-
+import java.io.IOException;
+import java.awt.image.BufferedImage;
 
 
 /**
@@ -381,7 +386,7 @@ public class EmailApi {
     /**
      * New Entry method.
      */
- 	private void newPost(){
+     private void newPost(){
 
         //Create an instance of the backend object
         reger.Entry entry = new reger.Entry();
@@ -700,19 +705,30 @@ public class EmailApi {
                      //Save the file with the updated filename
                      //Turn the content into an inputstream
                      FileOutputStream fileOut = new FileOutputStream(savedFile);
-                     java.io.InputStream is = (java.io.InputStream)bodyPart.getContent();
-                     byte[] buffer = new byte[64000];
-                     int read = 0;
-                     while(read != -1){
-                        read = is.read(buffer,0,buffer.length);
-                        if(read!=-1){
-                            fileOut.write(buffer,0,read);
-                        }
-                     }
-                     fileOut.flush();
-                     is.close();
-                     fileOut.close();
+                     try{
+                         if (bodyPart.getContent().getClass().getName().equals("java.awt.image.BufferedImage")){
+                            Debug.debug(3, "EmailApi", "bodyPart.getContent().getClass().getName().equals(\"java.awt.image.BufferedImage\") = true");
+                            BufferedImage bi = (BufferedImage)bodyPart.getContent();
+                            ImageIO.write(bi, getImageFormatName(bi), fileOut);
 
+                         } else {
+                             Debug.debug(3, "EmailApi", "bodyPart.getContent().getClass().getName().equals(\"java.awt.image.BufferedImage\") = false");
+                             java.io.InputStream is = (java.io.InputStream)bodyPart.getContent();
+                             byte[] buffer = new byte[64000];
+                             int read = 0;
+                             while(read != -1){
+                                read = is.read(buffer,0,buffer.length);
+                                if(read!=-1){
+                                    fileOut.write(buffer,0,read);
+                                }
+                             }
+                             fileOut.flush();
+                             is.close();
+                         }
+                     } catch (java.lang.ClassCastException ccex){
+                        Debug.errorsave(ccex, "Error saving file from EmailApi");
+                     }
+                     fileOut.close();
 
                     ThumbnailCreator.createThumbnail(savedFile);
 
@@ -760,6 +776,32 @@ public class EmailApi {
         }
         return true;
 
+    }
+
+    private static String getImageFormatName(Object o) {
+        try {
+            // Create an image input stream on the image
+            ImageInputStream iis = ImageIO.createImageInputStream(o);
+
+            // Find all image readers that recognize the image format
+            Iterator iter = ImageIO.getImageReaders(iis);
+            if (!iter.hasNext()) {
+                // No readers found
+                return null;
+            }
+
+            // Use the first reader
+            ImageReader reader = (ImageReader)iter.next();
+
+            // Close stream
+            iis.close();
+
+            // Return the format name
+            return reader.getFormatName();
+        } catch (Exception e) {
+            Debug.errorsave(e, "EmailApi");
+            return "jpeg";
+        }
     }
 
 
