@@ -50,9 +50,6 @@ if (pageProps.action.equals("login")){
     } else {
         mb.append("<font face=arial size=+3 color=red>Fail, sir!</font><br>");
     }
-
-
-
 }
 
 

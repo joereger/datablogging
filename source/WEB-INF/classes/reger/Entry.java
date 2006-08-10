@@ -681,7 +681,7 @@ public class Entry {
         //Thumbs
         //-----------------------------------
         //-----------------------------------
-        String[][] rstThumbs = Db.RunSQL("SELECT imageid, description FROM image WHERE eventid='" + eventid + "' ORDER BY imageorder ASC, imageid ASC");
+        String[][] rstThumbs = Db.RunSQL("SELECT imageid, description FROM image WHERE eventid='" + eventid + "' ORDER BY imageorder DESC, imageid ASC");
         //-----------------------------------
         //-----------------------------------
         if (rstThumbs != null && rstThumbs.length > 0) {
