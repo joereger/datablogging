@@ -21,7 +21,7 @@ String[][] rstUser= Db.RunSQL("SELECT accountuser.accountuserid FROM accountuser
 //-----------------------------------
 //-----------------------------------
 if (rstUser!=null && rstUser.length>0){
-    //There is a user
+
 } else {
     //There is not yet a user with LOEAdmin permissions in the database.
     response.sendRedirect("setup-03.log");
@@ -33,8 +33,15 @@ if (rstUser!=null && rstUser.length>0){
 
 
 <%@ include file="setup-header.jsp" %>
+<%
+if (request.getParameter("msg")!=null && request.getParameter("msg").equals("issetupadminusernotvalid")){
+    out.print("<font face=arial size=+3 color=#ff0000>You can't use /setup to configure your server.  Use the already-existing admin account and go to LOE Admin.  Thanks.</font>");    
+} else {
+    out.print("<font face=arial size=+3 color=#cccccc>Congratulations!  Setup is Finished!</font>");
+}
+%>
 
-<font face=arial size=+3 color=#cccccc>Congratulations!  Setup is Finished!</font>
+
 <br><br>
 <%out.print(reger.ui.ShadowBox.start("../"));%>
 <font face=arial size=-1 color=#cccccc><a href='../index.log'>Click here to go to the homepage where you can log in using the administrator account.</a></font>

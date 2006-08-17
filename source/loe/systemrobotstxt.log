@@ -103,6 +103,7 @@ if (!errortext.equals("")){
 
     mb.append("<br><br><b>A conservative example of robots.txt for the datablogging server:</b><br>");
     mb.append("<br>User-agent: *");
+    mb.append("<br>Disallow:   /entry");
     mb.append("<br>Disallow:   /test");
     mb.append("<br>Disallow:   /myhome");
     mb.append("<br>Disallow:   /loe");

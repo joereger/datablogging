@@ -30,7 +30,20 @@ String[][] rstUser= Db.RunSQL("SELECT accountuser.accountuserid FROM accountuser
 //-----------------------------------
 //-----------------------------------
 if (rstUser!=null && rstUser.length>0){
-
+    int issetupadminuser = 0;
+    try{
+        if (request.getSession().getAttribute("issetupadminuser")!=null){
+            if (reger.core.Util.isinteger(String.valueOf(request.getSession().getAttribute("issetupadminuser")))){
+                issetupadminuser = (Integer)request.getSession().getAttribute("issetupadminuser");
+            }
+        }
+    } catch (Exception ex){
+        issetupadminuser = 0;
+    }
+    if (issetupadminuser!=1){
+        response.sendRedirect("setup-05.log?msg=issetupadminusernotvalid");
+        return;
+    }
 } else {
     //There is NOT a user with LOEAdmin permissions in the database.
     response.sendRedirect("setup-03.log");
@@ -53,7 +66,6 @@ EmailServer emailserver = new EmailServer();
 String plbasedomain = request.getServerName();
 
 
-//Create an account ------------------------------------------------------------
 //------------------------------------------------------------------------------
 if (request.getParameter("action")!=null && request.getParameter("action").equals("save")) {
 
@@ -78,7 +90,6 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
         int count = reger.core.db.Db.RunSQLUpdate("UPDATE pl SET plbasedomain='"+reger.core.Util.cleanForHtml(request.getParameter("plbasedomain"))+"' WHERE plid='1'");
         //-----------------------------------
         //-----------------------------------
-
     }
 
     //Redirect on success

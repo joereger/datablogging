@@ -151,6 +151,8 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
         //Redirect to log the user in
         //response.sendRedirect(baseUrlOfAccount +"/login.log?action=login&username="+java.net.URLEncoder.encode(au.getUsername(), "UTF-8")+"&password="+java.net.URLEncoder.encode(request.getParameter("password"), "UTF-8")+"&msg=signupcomplete");
         //return;
+        //Set a session var so that the setup screens know that they can continue
+        request.getSession().setAttribute("issetupadminuser", 1);
         response.sendRedirect("setup-04.log");
         return;
 

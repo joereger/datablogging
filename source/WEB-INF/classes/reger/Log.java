@@ -89,8 +89,13 @@ public class Log implements NestedNavItem {
                 if (fieldorder!=null && !fieldorder.equals("")){
                     fieldOrderCollection = new FieldOrderCollection(fieldorder);
                 } else {
-                    fieldorder = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getFieldorder();
-                    fieldOrderCollection = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getFieldOrderCollection();
+                    MegaLogType mlt = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid);
+                    if (mlt!=null){
+                        fieldorder = mlt.getFieldorder();
+                        fieldOrderCollection = mlt.getFieldOrderCollection();
+                    } else {
+                        fieldOrderCollection = new FieldOrderCollection(fieldorder);    
+                    }
                 }
 
                 //Get fields for this log

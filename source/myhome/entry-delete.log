@@ -1,4 +1,5 @@
 <%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.cache.EntryCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -67,7 +68,9 @@ if (pageProps.action.equals("delete")){
     //-----------------------------------
 
     //Now delete the entry itself
+    int eventid = pageProps.entry.eventid;
     pageProps.entry.deleteEntryAll();
+    EntryCache.flush(eventid);
 
      //Redirect user back to the admin homepage
      try {

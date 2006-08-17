@@ -34,9 +34,7 @@ public class AllMegaLogTypesInSystem {
             if (rstLogs!=null && rstLogs.length>0){
                 for(int i=0; i<rstLogs.length; i++){
                     MegaLogType logType = new MegaLogType(Integer.parseInt(rstLogs[i][0]));
-
-                        allMegaLogTypes.put(new Integer(Integer.parseInt(rstLogs[i][0])), logType);
-
+                    allMegaLogTypes.put(new Integer(Integer.parseInt(rstLogs[i][0])), logType);
                 }
             }
         }
