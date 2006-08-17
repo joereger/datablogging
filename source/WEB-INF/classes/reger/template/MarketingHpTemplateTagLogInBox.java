@@ -108,16 +108,16 @@ public class MarketingHpTemplateTagLogInBox implements MarketingHpTemplateTag{
             mb.append("<td>");
             mb.append("<input type=submit value='Log In' style=\"font-size: 10px\">");
             //Temporary Start
-            mb.append("<br><br>");
-            mb.append("<table border=0 width=190><tr><td>");
-            mb.append("<font class=smallfont face=arial color=#ff0000 size=-1><b>");
-            mb.append("Attention: If you're having trouble logging in please ");
-            mb.append("<a href='"+pageProps.pathToAppRoot+"about/login-legacyusernameaddemail.log'>");
-            mb.append("click here");
-            mb.append("</a>");
-            mb.append(", as we now handle login with your email address.");
-            mb.append("</b></font>");
-            mb.append("</td></tr></table>");
+//            mb.append("<br><br>");
+//            mb.append("<table border=0 width=190><tr><td>");
+//            mb.append("<font class=smallfont face=arial color=#ff0000 size=-1><b>");
+//            mb.append("Attention: If you're having trouble logging in please ");
+//            mb.append("<a href='"+pageProps.pathToAppRoot+"about/login-legacyusernameaddemail.log'>");
+//            mb.append("click here");
+//            mb.append("</a>");
+//            mb.append(", as we now handle login with your email address.");
+//            mb.append("</b></font>");
+//            mb.append("</td></tr></table>");
             //Temporary End
             mb.append("</td>");
             mb.append("</tr>");
