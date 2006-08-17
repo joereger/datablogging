@@ -20,7 +20,7 @@ public class AllPlJspPages {
 
         //Top Level
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-1, "Home", "index.log", NestedNavItem.NESTEDNAVITEMBASE, 0, 1)));
-        nestedNavItems.add((NestedNavItem)(new PlJspPage(-2, "Sign Up - It's Free!", "signup.log", NestedNavItem.NESTEDNAVITEMBASE, 0, 2)));
+        nestedNavItems.add((NestedNavItem)(new PlJspPage(-2, "Sign Up", "signup.log", NestedNavItem.NESTEDNAVITEMBASE, 0, 2)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-46, "Tell a Friend!", "community-tellfriend.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -2, 1)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-3, "See Our Community", "community.log", NestedNavItem.NESTEDNAVITEMBASE, 0, 3)));
         nestedNavItems.add((NestedNavItem)(new PlJspPage(-4, "Want to Learn More?", "moreinfo.log", NestedNavItem.NESTEDNAVITEMBASE, 0, 4)));

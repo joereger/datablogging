@@ -469,7 +469,7 @@ public class TourHtml {
         ff.append("<br><br>");
         ff.append("<font face=arial size=-1>");
         ff.append("<a href='signup.log'><img src='images/tourperson-4.jpg' alt='' border='0' align=right></a>");
-        ff.append("<b>We don't require a single piece of personal information and it's free.</b>  You can provide an email address so that we can take care of you better, but we won't force you to.");
+        ff.append("<b>We don't require much personal information and it's free.</b>  You can provide an email address so that we can take care of you better, but we won't force you to.");
         ff.append("<br><br>");
         ff.append("Go ahead, setup a fake account and if you like it you can always start over.  It only takes 90 seconds to create a new account.  And it's scientifically proven to be fun.  <b>The hurdle is pretty low here.</b>");
         ff.append("<br><br>");

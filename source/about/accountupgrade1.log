@@ -345,7 +345,7 @@ if (!account.isPro()){
     mb.append("<li>The amount above will be your new monthly charge for service effective immediately.</li>");
 }
 mb.append("<li>Your credit card will be charged monthly.</li>");
-mb.append("<li>You may cancel your account at any time, free of charge.</li>");
+mb.append("<li>You may cancel your account at any time.</li>");
 mb.append("<li>Your account will have access to the amount of storage and bandwidth that you have chosen.</li>");
 mb.append("<li>By upgrading, you agree to the terms of service of this site.</li>");
 mb.append("<ul>");

@@ -109,7 +109,7 @@ mb.append("<td bgcolor=#ffffff align=center>");
 mb.append(reger.ui.ShadowBox.start("../"));
 mb.append("<font face=arial size=+1 color=#666666><b>It's Easy and Free to Get Started</b></font>");
 mb.append("<br>");
-mb.append("<font face=arial size=-2><b>Creating an account takes seconds and does not require a credit card.  You'll get a free upgrade to Pro features for "+reger.Vars.TRIALACCOUNTDAYS+" days.  After that you can keep using the site for free or you can pay a small fee for storage and traffic, generally around $4 per month.</b></font>");
+mb.append("<font face=arial size=-2><b>Creating an account takes seconds and does not require a credit card.  You'll get an automatic upgrade to Pro features for "+reger.Vars.TRIALACCOUNTDAYS+" days.  After that you can keep using the site for free or you can pay a small fee for storage and traffic, generally around $4 per month.</b></font>");
 mb.append("<br>");
 mb.append("<a href='signup.log'><img src='images/arrow-sm-yellow.gif' border=0 width=9 height=9><font face=arial size=-2 color=#0000ff><b>Start datablogging now</b></font></a>");
 mb.append(reger.ui.ShadowBox.end("../"));
