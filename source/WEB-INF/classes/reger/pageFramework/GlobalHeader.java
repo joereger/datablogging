@@ -59,7 +59,8 @@ public class GlobalHeader {
                     //If the account is null we know that we have a private label homepage.  Only an issue when user goes to main publicsite index.log but there's no account.
                     if ((userSession.getAccount()==null || userSession.getAccount().getAccountid()==0) && pageProps.siteSection==pageProps.PUBLICSITE){
                         Debug.debug(4, "GlobalHeader", "globalheader.jsp - redirecting to a private label homepage inside of the forced login code.");
-                        response.sendRedirect(request.getScheme()+"://"+userSession.getPl().getPlBaseUrl()+"/about/index.log");
+                        Debug.debug(4, "GlobalHeader", "Will attempt redirect to:<br>"+userSession.getPl().getPlBaseUrl()+"/about/index.log");
+                        response.sendRedirect(userSession.getPl().getPlBaseUrl()+"/about/index.log");
                         return;
                     }
 
@@ -67,7 +68,8 @@ public class GlobalHeader {
                     //if ((userSession.getAccountuser()==null || userSession.getAccount().getAccountid()==0) || !userSession.getAccountuser().isLoggedIn) {
                     if ((userSession.getAccountuser()==null) || !userSession.getAccountuser().isLoggedIn) {
                         Debug.debug(4, "GlobalHeader", "globalheader.jsp - redirecting to force a login because the user is not logged in.");
-                        response.sendRedirect(request.getScheme()+"://"+userSession.getPl().getPlBaseUrl()+"/about/login.log?returnurl=" + java.net.URLEncoder.encode(request.getRequestURL()+"?"+request.getQueryString(), "UTF-8"));
+                        Debug.debug(4, "GlobalHeader", "Will attempt redirect to:<br>"+userSession.getPl().getPlBaseUrl()+"/about/login.log?returnurl=" + java.net.URLEncoder.encode(request.getRequestURL()+"?"+request.getQueryString(), "UTF-8"));
+                        response.sendRedirect(userSession.getPl().getPlBaseUrl()+"/about/login.log?returnurl=" + java.net.URLEncoder.encode(request.getRequestURL()+"?"+request.getQueryString(), "UTF-8"));
                         return;
                     }
                 }
