@@ -139,6 +139,7 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolssupercookie", "tools", "SUPERCOOKIE", "myhome/tools-supercookie.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolstaggame", "tools", "KEYWORD TAG GAME", "myhome/tools-taggame.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolslinkrot", "tools", "LINK ROT", "myhome/tools-linkrot.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolssearchreplace", "tools", "SEARCH/REPLACE", "myhome/tools-searchreplace.log", false, "", null));
 
 
         // Import Entries

@@ -1,0 +1,151 @@
+<%@ page import="reger.core.Util"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Tools";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "toolssearchreplace";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+if (pageProps.action!=null && pageProps.action.equals("searchandreplace")){
+    if (request.getParameter("searchfor")!=null){
+        if (request.getParameter("replacewith")!=null){
+
+        //@todo make this a little more bulletproof... a search term of #~{&! will break it right now
+        if (request.getParameter("searchfor").indexOf("\\")<0 && request.getParameter("replacewith").indexOf("\\")<0){
+                //-----------------------------------
+                //-----------------------------------
+                String[][] rstLog= reger.core.db.Db.RunSQL("SELECT logid FROM megalog WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+                //-----------------------------------
+                //-----------------------------------
+                if (rstLog!=null && rstLog.length>0){
+                    for(int i=0; i<rstLog.length; i++){
+                        int logid = Integer.parseInt(rstLog[i][0]);
+
+                        //-----------------------------------
+                        //-----------------------------------
+                        String[][] rstEntries= reger.core.db.Db.RunSQL("SELECT eventid, title, comments FROM event WHERE logid='"+logid+"'");
+                        //-----------------------------------
+                        //-----------------------------------
+                        if (rstEntries!=null && rstEntries.length>0){
+                            for(int j=0; j<rstEntries.length; j++){
+                                String title = rstEntries[j][1];
+                                String body = rstEntries[j][2];
+
+                                title = title.replaceAll(request.getParameter("searchfor"), request.getParameter("replacewith"));
+                                body = body.replaceAll(request.getParameter("searchfor"), request.getParameter("replacewith"));
+
+                                //-----------------------------------
+                                //-----------------------------------
+                                int count = reger.core.db.Db.RunSQLUpdate("UPDATE event SET title='"+ Util.cleanForSQL(title)+"', comments='"+Util.cleanForSQL(body)+"' WHERE eventid='"+rstEntries[j][0]+"'");
+                                //-----------------------------------
+                                //-----------------------------------
+
+
+                                //-----------------------------------
+                                //-----------------------------------
+                                String[][] rstMessage= reger.core.db.Db.RunSQL("SELECT messageid, message FROM message WHERE eventid='"+rstEntries[j][0]+"'");
+                                //-----------------------------------
+                                //-----------------------------------
+                                if (rstMessage!=null && rstMessage.length>0){
+                                    for(int k=0; k<rstMessage.length;k++){
+
+                                        String message = rstMessage[k][1];
+
+                                        message = message.replaceAll(request.getParameter("searchfor"), request.getParameter("replacewith"));
+
+                                        //-----------------------------------
+                                        //-----------------------------------
+                                        int count2 = reger.core.db.Db.RunSQLUpdate("UPDATE message SET message='"+ Util.cleanForSQL(message)+"' WHERE messageid='"+rstMessage[k][0]+"'");
+                                        //-----------------------------------
+                                        //-----------------------------------
+                                    }
+                                }
+
+
+
+                                //-----------------------------------
+                                //-----------------------------------
+                                String[][] rstImage = reger.core.db.Db.RunSQL("SELECT imageid, description FROM image WHERE eventid='"+rstEntries[j][0]+"'");
+                                //-----------------------------------
+                                //-----------------------------------
+                                if (rstImage !=null && rstImage.length>0){
+                                    for(int l=0; l<rstImage.length;l++){
+
+                                        String description = rstImage[l][1];
+
+                                        description = description.replaceAll(request.getParameter("searchfor"), request.getParameter("replacewith"));
+
+                                        //-----------------------------------
+                                        //-----------------------------------
+                                        int count2 = reger.core.db.Db.RunSQLUpdate("UPDATE image SET description='"+ Util.cleanForSQL(description)+"' WHERE imageid='"+rstImage[l][0]+"'");
+                                        //-----------------------------------
+                                        //-----------------------------------
+                                    }
+                                }
+
+
+
+                            }
+                        }
+                    }
+                }
+
+                mb.append("<font face=arial size=+2>Search and replace complete.</font><br>");
+            } else {
+                mb.append("<font face=arial size=+2>Illegal character in search and replace.</font><br>");
+            }
+        }
+    }
+}
+
+mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+
+mb.append("<form action='tools-searchreplace.log' method=post>");
+mb.append("<input type=hidden name=action value=searchandreplace>");
+mb.append("Search for: <input type=text name=searchfor size=20 maxlength=50>" );
+mb.append("<br>");
+mb.append("Replace with: <input type=text name=replacewith size=20 maxlength=50>");
+mb.append("<br>");
+mb.append("<input type=submit>");
+mb.append("<br>Search and replace will be executed on all logs, images and comments for this blog.");
+mb.append("<br>This is case sensitive.");
+mb.append("</form>");
+
+mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

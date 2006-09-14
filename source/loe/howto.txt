@@ -226,6 +226,22 @@ http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/keytool.html
 
 
 
+<b>Yet another set of SSL instructions</b>
+
+Create the keystore
+D:\Superfly\userdata\certs>d:\Superfly\Java\jre1.5.0_08\bin\keytool -genkey -alias tomcat -keyalg RSA -keystore D:\Superfly\userdata\certs\cert.keystore
+
+Generate the cert request (and send it to the cert signer)
+D:\Superfly\Java\jre1.5.0_08\bin\keytool -certreq -keyalg RSA -alias tomcat -file D:\Superfly\userdata\certs\certreq.csr -keystore D:\Superfly\userdata\certs\cert.keystore
+
+Import the root chain (found on signer's website usually)
+D:\Superfly\Java\jre1.5.0_08\bin\keytool -import -alias root -keystore D:\Superfly\userdata\certs\cert.keystore -trustcacerts -file D:\Superfly\userdata\certs\rootcert.crt 
+
+Import the signed cert (from verisign, etc)
+D:\Superfly\Java\jre1.5.0_08\bin\keytool -import -alias tomcat -keystore D:\Superfly\userdata\certs\cert.keystore -trustcacerts -file D:\Superfly\userdata\certs\mysignedcert.txt 
+
+
+
 <b>Configure Application</b>
 The database username/password is held in a file called %APP_ROOT%/META-INF/context.xml.  This XML file should be backed-up and stored out of the %APP_ROOT%/META-INF/ directory because each build will overwrite it.
 
