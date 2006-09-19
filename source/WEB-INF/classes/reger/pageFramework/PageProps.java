@@ -77,35 +77,31 @@ public class PageProps{
 	*/
 	public void populate(javax.servlet.http.HttpServletRequest request, reger.UserSession userSession){
 
-        //Get incoming eventid
-        int tmpeventid=-1;
+        //Populate logProps
+        boolean logpropsHasBeenPopulated = false;
+        //Get incoming eventid... second because eventid should override logid
         if (request.getParameter("eventid")!=null && !request.getParameter("eventid").equals("")){
 			if (reger.core.Util.isinteger(request.getParameter("eventid"))) {
-				tmpeventid=Integer.parseInt(request.getParameter("eventid"));
+				//Use eventid to populate logProps
+                logProps.populateEventidData(Integer.parseInt(request.getParameter("eventid")), userSession.getAccount().getAccountid());
+			    logpropsHasBeenPopulated = true;
+			}
+		}
+        //Get incoming logid
+        if (!logpropsHasBeenPopulated && request.getParameter("logid")!=null && !request.getParameter("logid").equals("")){
+			if (reger.core.Util.isinteger(request.getParameter("logid"))) {
+				//Use logid to populate logProps
+                logProps.populateLogidData(Integer.parseInt(request.getParameter("logid")), userSession.getAccount().getAccountid());
 			}
 		}
 
-        //Get incoming logid
-        int tmplogid=-1;
-        if (request.getParameter("logid")!=null && !request.getParameter("logid").equals("")){
-			if (reger.core.Util.isinteger(request.getParameter("logid"))) {
-				tmplogid=Integer.parseInt(request.getParameter("logid"));
-			}
-		}
+
 
         //Populate the action
 		if (request.getParameter("action")!=null && !request.getParameter("action").equals("")){
 			action=request.getParameter("action");
 		}
 
-        //Get the logProps object setup
-        if (tmplogid!=-1){
-            //Use logid to populate logProps
-            logProps.populateLogidData(tmplogid, userSession.getAccount().getAccountid());
-        } else if (tmpeventid!=-1) {
-            //Use eventid to populate logProps
-            logProps.populateEventidData(tmpeventid, userSession.getAccount().getAccountid());
-        }
 
 
         //Get the event object setup
