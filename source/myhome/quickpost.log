@@ -1,0 +1,86 @@
+<%@ page import="reger.core.db.Db, java.util.Hashtable,
+                 reger.core.licensing.License,
+                 reger.core.licensing.RegerLicensingApiClient"%>
+<%@ page import="reger.core.Util" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="reger.Log" %>
+<%@ page import="reger.api.QuickPost" %>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "QuickPost";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingsacctstatus";
+pageProps.aclObjectName = "ADMINHOME";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+if (pageProps.action.equals("submit")) {
+    if (request.getParameter("logid") != null && Util.isinteger(request.getParameter("logid"))) {
+        if (request.getParameter("entrytext") != null && !request.getParameter("entrytext").equals("")) {
+            int logid = Integer.parseInt(request.getParameter("logid"));
+            String entrytext = request.getParameter("entrytext");
+            if (userSession.getAccountuser().userCanAuthorLog(logid)) {
+                QuickPost.quickPost(userSession.getAccountuser(), userSession.getAccount(), entrytext, logid);
+                mb.append("<center>");
+                mb.append("Posted!  Now Post More!");
+                mb.append("<br>");
+                mb.append("</center>");
+            }
+        }
+    }
+}
+
+if (request.getParameter("logid") != null && Util.isinteger(request.getParameter("logid"))) {
+    mb.append("<center>");
+    mb.append("<form action=quickpost.log method=post>");
+    mb.append("<input type=hidden name=action value=submit>");
+    mb.append("<input type=hidden name=logid value=\"" + request.getParameter("logid") + "\">");
+    mb.append("<textarea name=\"entrytext\"></textarea>");
+    mb.append("<br>");
+    mb.append("<input type='submit' value='Blog It!'>");
+    mb.append("</form>");
+    mb.append("</center>");
+} else {
+    ArrayList<Integer> logids = userSession.getAccount().getAlllogsforaccountid();
+    for (Iterator<Integer> iterator = logids.iterator(); iterator.hasNext();) {
+        Integer logid = iterator.next();
+        if (userSession.getAccountuser().userCanAuthorLog(logid)) {
+            Log log = new Log(logid);
+            mb.append("<a href='quickpost.log?logid=" + logid + "'>");
+            mb.append(log.getName());
+            mb.append("</a>");
+            mb.append("<br>");
+        }
+    }
+}
+
+out.print(mb.toString());
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+<%//@todo note that quickPost does not record bandwidth usage.%>
+
+<%//@ include file="../globalfooter.jsp" %>

@@ -158,6 +158,14 @@ public class TimeUtils {
         }
 		return myDateFormat.format(date.getTime());
 	}
+
+	public static String dateformattimeWithAMPM(Calendar date) {
+		DateFormat myDateFormat = new SimpleDateFormat("hh:mm:ss aa");
+		if (date==null){
+            date = nowInGmtCalendar();
+        }
+		return myDateFormat.format(date.getTime());
+	}
     
 	
 	/**
@@ -950,6 +958,12 @@ public class TimeUtils {
     public static Calendar AddOneMonth(Calendar cal){
         Calendar outCal = (Calendar) cal.clone();
         outCal.add(Calendar.MONTH, 1);
+        return outCal;
+    }
+
+    public static Calendar AddOneDay(Calendar cal){
+        Calendar outCal = (Calendar) cal.clone();
+        outCal.add(Calendar.DATE, 1);
         return outCal;
     }
 
