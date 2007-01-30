@@ -93,7 +93,7 @@ if (pageProps.action.equals("revokepladmin")) {
 
 //Grant pladmin permission
 if (pageProps.action.equals("grantloeadmin")) {
-    if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", au.getAccountid())){
+    if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
         au.addUserToAclGroup("LOEAdmin", au.getAccountid());
     }
 }
@@ -189,7 +189,7 @@ for (int i = 0; i < allPls.length; i++) {
 mb.append("</td>");
 
 mb.append("<td valign=top bgcolor=#ffffff class=acct>");
-if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", au.getAccountid())){
+if (userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
     if (!au.userCanDoAcl("MASTERADMIN", au.getAccountid())){
         mb.append("<a href='accountuserdetail.log?action=grantloeadmin&accountuserid="+au.accountuserid+"&plid="+pl.getPlid()+"'>");
         mb.append("Grant LOEAdmin Permission");
