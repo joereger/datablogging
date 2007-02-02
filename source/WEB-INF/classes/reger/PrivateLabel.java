@@ -252,44 +252,44 @@ public class PrivateLabel {
     }
 
     private void loadNestedNavItems(){
-
-        //Get nav items from system
-        ArrayList<NestedNavItem> staticJspPages = AllPlJspPages.getNestedNavItems();
-        //Get list of those that are hidden by this pl
-        HashMap hiddenByPl = new HashMap();
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstHidden= Db.RunSQL("SELECT nestednavid FROM plnavhide WHERE plid='"+plid+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstHidden!=null && rstHidden.length>0){
-            for(int i=0; i<rstHidden.length; i++){
-                hiddenByPl.put(new Integer(Integer.parseInt(rstHidden[i][0])), true);
-            }
-        }
-        //Create a new list of staticJspPages without those that are hidden by the pl
-        ArrayList<NestedNavItem> staticJspPagesMinusHiddenOnes = new ArrayList<NestedNavItem>();
-        for (Iterator it = staticJspPages.iterator(); it.hasNext(); ) {
-            NestedNavItem navItem = (NestedNavItem)it.next();
-            if (navItem!=null && hiddenByPl!=null && !hiddenByPl.containsKey(navItem.getThisNestedNavId())){
-                staticJspPagesMinusHiddenOnes.add(navItem);
-            }
-        }
-        //Get nav items from private label
-        //-----------------------------------
-        //-----------------------------------
-        String[][] rstPlContPage= Db.RunSQL("SELECT plcontentpageid FROM plcontentpage WHERE plid='"+plid+"'");
-        //-----------------------------------
-        //-----------------------------------
-        if (rstPlContPage!=null && rstPlContPage.length>0){
-            for(int i=0; i<rstPlContPage.length; i++){
-                PlContentPage plContPage = new PlContentPage(Integer.parseInt(rstPlContPage[i][0]));
-                reger.core.Debug.debug(5, "PrivateLabel.java", "Found a plcontentpageid: "+plContPage.getPlcontentpageid() + " " + plContPage.getName());
-                staticJspPagesMinusHiddenOnes.add((NestedNavItem)plContPage);
-            }
-        }
         if (nestedNavCollection!=null){
             synchronized(nestedNavCollection){
+                //Get nav items from system
+                ArrayList<NestedNavItem> staticJspPages = AllPlJspPages.getNestedNavItems();
+                //Get list of those that are hidden by this pl
+                HashMap hiddenByPl = new HashMap();
+                //-----------------------------------
+                //-----------------------------------
+                String[][] rstHidden= Db.RunSQL("SELECT nestednavid FROM plnavhide WHERE plid='"+plid+"'");
+                //-----------------------------------
+                //-----------------------------------
+                if (rstHidden!=null && rstHidden.length>0){
+                    for(int i=0; i<rstHidden.length; i++){
+                        hiddenByPl.put(new Integer(Integer.parseInt(rstHidden[i][0])), true);
+                    }
+                }
+                //Create a new list of staticJspPages without those that are hidden by the pl
+                ArrayList<NestedNavItem> staticJspPagesMinusHiddenOnes = new ArrayList<NestedNavItem>();
+                for (Iterator it = staticJspPages.iterator(); it.hasNext(); ) {
+                    NestedNavItem navItem = (NestedNavItem)it.next();
+                    if (navItem!=null && hiddenByPl!=null && !hiddenByPl.containsKey(navItem.getThisNestedNavId())){
+                        staticJspPagesMinusHiddenOnes.add(navItem);
+                    }
+                }
+                //Get nav items from private label
+                //-----------------------------------
+                //-----------------------------------
+                String[][] rstPlContPage= Db.RunSQL("SELECT plcontentpageid FROM plcontentpage WHERE plid='"+plid+"'");
+                //-----------------------------------
+                //-----------------------------------
+                if (rstPlContPage!=null && rstPlContPage.length>0){
+                    for(int i=0; i<rstPlContPage.length; i++){
+                        PlContentPage plContPage = new PlContentPage(Integer.parseInt(rstPlContPage[i][0]));
+                        reger.core.Debug.debug(5, "PrivateLabel.java", "Found a plcontentpageid: "+plContPage.getPlcontentpageid() + " " + plContPage.getName());
+                        staticJspPagesMinusHiddenOnes.add((NestedNavItem)plContPage);
+                    }
+                }
+                //Finally, add to the var
                 nestedNavCollection = new NestedNavCollection(staticJspPagesMinusHiddenOnes);
             }
         }

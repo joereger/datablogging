@@ -40,7 +40,7 @@
             String tagId;
             String tag;
             TreeMap tempTagMap = null;
-            double minSize = 12;
+            double minSize = 8;
             double maxSize = 36;
             double fontSizeRange = maxSize-minSize;
             int minNumberOfItems = ((Integer) sizeMap.firstKey()).intValue();
@@ -56,7 +56,6 @@
                         double a = numberOfItemsInCurrentTag-minNumberOfItems;
                         double b = maxNumberOfItems-minNumberOfItems;
                         howFarInNumberOfItemsRange = a/b;
-                        //howFarInNumberOfItemsRange = (numberOfItemsInCurrentTag-minNumberOfItems)/(maxNumberOfItems-minNumberOfItems);
                     } else {
                         //Just needs to be a very small number... it's as close to the start of the range as possible
                         howFarInNumberOfItemsRange = .01;
@@ -78,7 +77,7 @@
         Debug.errorsave(e, "Exception occurred in tags.log");
     }
 
-    qs.append("</td>");
+    qs.append("</td>");                                         
     qs.append("</tr>");
     qs.append("</table>");
 
