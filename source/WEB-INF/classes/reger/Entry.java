@@ -106,6 +106,7 @@ public class Entry {
     public int messagecount = 0;
     public int filecount = 0;
     public StringBuffer filethumbs = new StringBuffer();
+    public StringBuffer filethumbsrss = new StringBuffer();
 
     //Xform
     private EventXformData eventXformData = null;
@@ -686,10 +687,15 @@ public class Entry {
         //-----------------------------------
         if (rstThumbs != null && rstThumbs.length > 0) {
             filethumbs = new StringBuffer();
+            filethumbsrss = new StringBuffer();
             for (int i = 0; i < rstThumbs.length; i++) {
+                Account account = new Account(accountid);
                 filethumbs.append("<a href='mediaouthtml.log?imageid="+rstThumbs[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
                 filethumbs.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                 filethumbs.append("</a>");
+                filethumbsrss.append("<a href='"+account.getSiteRootUrl()+"/mediaouthtml.log?imageid="+rstThumbs[i][0]+"'>");
+                filethumbsrss.append("<img src='"+account.getSiteRootUrl()+"/mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                filethumbsrss.append("</a>");
             }
         }
 

@@ -100,10 +100,17 @@ public class File {
 
             int index = 0;
             java.io.File newFile = new java.io.File(account.getPathToAccountFiles()+newfilepath+newfilename);
-            while (newFile.exists()){
+
+            while (newFile.exists() && index<5){
                 index = index + 1;
                 newfilename = newfilenamebase + "-" + index + "." + newfilenameextension;
+                reger.core.Debug.debug(3, "File.java", "Creating directory/file: " + account.getPathToAccountFiles()+newfilepath+newfilename);
                 newFile = new java.io.File(account.getPathToAccountFiles()+newfilepath+newfilename);
+                if (newFile.exists()){
+                    reger.core.Debug.debug(3, "File.java", "newFile Exists!");
+                } else {
+                    reger.core.Debug.debug(3, "File.java", "newFile does not exist!");    
+                }
             }
 
             reger.core.Debug.debug(5, "File.java", "newfilepath+newfilename="+newfilepath+newfilename);

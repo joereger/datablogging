@@ -163,7 +163,9 @@ public class RssRome {
                 //String itemDescription = rstEvent[i][4].replace(apost, "'");
                 //String itemDescription = rstEvent[i][4].replaceAll("\\\u2019", "'");
                 //String itemDescription = reger.core.Util.cleanForHtmlAdvanced(rstEvent[i][4]);
-                String itemDescription = entry.comments;
+                String itemDescription = entry.comments.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
+                itemDescription = itemDescription + "<br><br>";
+                itemDescription = itemDescription + entry.filethumbsrss;
                 //reger.core.Util.logtodb("After: " + itemDescription);
                 Description desc = new Description();
                 desc.setValue(itemDescription);

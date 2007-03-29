@@ -105,7 +105,9 @@ if (request.getParameter("action")!=null){
                 String filenamealone = FilenameUtils.getName(filename);
                 String oldpath = FilenameUtils.getPath(filename);
                 reger.core.Debug.debug(5, "files.log", "calling fileObj.move("+FilenameUtils.normalize(request.getParameter("moveto")) +"/"+ filenamealone+")");
-                fileObj.move(FilenameUtils.normalize(request.getParameter("moveto")) +"/" +filenamealone);
+                if ((request.getParameter("moveto")+"/"+filenamealone).length()<225){
+                    fileObj.move(FilenameUtils.normalize(request.getParameter("moveto")) +"/" +filenamealone);
+                }
             }
         }
         showFileBrowser = true;
@@ -139,7 +141,9 @@ if (request.getParameter("action")!=null){
                 newname = newname.replaceAll("/", "");
                 String dirname = FilenameUtils.getPath(filename);
                 File fileObj = new File(userSession.getAccount(), filename);
-                fileObj.move(FilenameUtils.normalize(dirname)+newname);
+                if((FilenameUtils.normalize(dirname)+newname).length()<225){
+                    fileObj.move(FilenameUtils.normalize(dirname)+newname);
+                }
             }
         }
         showFileBrowser = true;
@@ -211,12 +215,16 @@ if (request.getParameter("action")!=null){
         String newdirname = FilenameUtils.normalize(request.getParameter("newdirname"));
         newdirname = newdirname.replaceAll("\\\\", "");
         newdirname = newdirname.replaceAll("/", "");
-        java.io.File newDir = new java.io.File(userSession.getAccount().getPathToAccountFiles()+path+java.io.File.separator+newdirname);
-        newDir.mkdirs();
-        java.io.File newThumbsDir = new java.io.File(userSession.getAccount().getPathToAccountFiles()+path+java.io.File.separator+newdirname+java.io.File.separator+".thumbnails");
-        newThumbsDir.mkdirs();
-        showFileBrowser = true;
-        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  The directory has been created."));
+        if((userSession.getAccount().getPathToAccountFiles()+path+java.io.File.separator+newdirname).length()<225){
+            java.io.File newDir = new java.io.File(userSession.getAccount().getPathToAccountFiles()+path+java.io.File.separator+newdirname);
+            newDir.mkdirs();
+            java.io.File newThumbsDir = new java.io.File(userSession.getAccount().getPathToAccountFiles()+path+java.io.File.separator+newdirname+java.io.File.separator+".thumbnails");
+            newThumbsDir.mkdirs();
+            showFileBrowser = true;
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  The directory has been created."));
+        } else {
+            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Sorry, the path created by that operation would exceed 225 characters."));
+        }
     } else if (request.getParameter("action").equals("uploadstart")){
         if (path.equals("")){
             //Calculate the new dated directory name
@@ -273,10 +281,14 @@ if (request.getParameter("action")!=null){
                 parentdirectoryname = path.substring(0, FilenameUtils.indexOfLastSeparator(path)) + java.io.File.separator;
             }
             String pathtomoveto = FilenameUtils.normalize(parentdirectoryname + renameto);
-            reger.core.Debug.debug(5, "files.log", "calling fileObj.move("+pathtomoveto+") to rename a directory");
-            fileObj.move(pathtomoveto);
-            showFileBrowser = true;
-            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  The directory has been renamed."));
+            if (pathtomoveto.length()<225){
+                reger.core.Debug.debug(5, "files.log", "calling fileObj.move("+pathtomoveto+") to rename a directory");
+                fileObj.move(pathtomoveto);
+                showFileBrowser = true;
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  The directory has been renamed."));
+            } else {
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Sorry, the path created by that operation would exceed 225 characters."));
+            }
         }else{
             showFileBrowser = true;
             mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  You can't do that to the base directory."));
@@ -318,10 +330,14 @@ if (request.getParameter("action")!=null){
             File fileObj = new File(userSession.getAccount(), path);
             String directoryname = path.substring(FilenameUtils.indexOfLastSeparator(path)+1, path.length());
             String pathtomoveto = FilenameUtils.normalize(moveto + java.io.File.separator + directoryname);
-            reger.core.Debug.debug(5, "files.log", "calling fileObj.move("+pathtomoveto+") to move a directory");
-            fileObj.move(pathtomoveto);
-            showFileBrowser = true;
-            mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  The directory has been moved."));
+            if (pathtomoveto.length()<225){
+                reger.core.Debug.debug(5, "files.log", "calling fileObj.move("+pathtomoveto+") to move a directory");
+                fileObj.move(pathtomoveto);
+                showFileBrowser = true;
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Success!  The directory has been moved."));
+            } else {
+                mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Sorry, the path created by that operation would exceed 225 characters."));
+            }
         }else{
             showFileBrowser = true;
             mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, "Oops!  You can't do that to the base directory."));
