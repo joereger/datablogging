@@ -6,6 +6,7 @@ import reger.Account;
 import reger.cache.AccountCache;
 import reger.cache.providers.CacheFactory;
 import reger.core.db.Db;
+import reger.core.Debug;
 import reger.mega.FieldType;
 
 import java.util.*;
@@ -45,45 +46,57 @@ public class LogCache {
 
     public static void flushByLogid(int logid){
         flush(logid);
-        synchronized(logCacheKeyEventtypeidRelationship){
-            for (Iterator it = logCacheKeyEventtypeidRelationship.iterator(); it.hasNext(); ) {
-                LogCacheKeyEventtypeidRelationship rel = (LogCacheKeyEventtypeidRelationship)it.next();
-                if (rel.logid==logid){
-                    it.remove();
+        try{
+            synchronized(logCacheKeyEventtypeidRelationship){
+                for (Iterator it = logCacheKeyEventtypeidRelationship.iterator(); it.hasNext(); ) {
+                    LogCacheKeyEventtypeidRelationship rel = (LogCacheKeyEventtypeidRelationship)it.next();
+                    if (rel!=null && rel.logid==logid){
+                        it.remove();
+                    }
                 }
             }
-        }
-        synchronized(logCacheKeyMegafieldidRelationship){
-            for (Iterator it = logCacheKeyMegafieldidRelationship.iterator(); it.hasNext(); ) {
-                LogCacheKeyMegafieldidRelationship rel = (LogCacheKeyMegafieldidRelationship)it.next();
-                if (rel.logid==logid){
-                    it.remove();
+            synchronized(logCacheKeyMegafieldidRelationship){
+                for (Iterator it = logCacheKeyMegafieldidRelationship.iterator(); it.hasNext(); ) {
+                    LogCacheKeyMegafieldidRelationship rel = (LogCacheKeyMegafieldidRelationship)it.next();
+                    if (rel!=null && rel.logid==logid){
+                        it.remove();
+                    }
                 }
             }
+        } catch (Exception ex){
+            Debug.debug(5, "LogCache.java", ex);
         }
     }
 
     public static void flushByMegafieldid(int megafieldid){
-        synchronized(logCacheKeyMegafieldidRelationship){
-            for (Iterator it = logCacheKeyMegafieldidRelationship.iterator(); it.hasNext(); ) {
-                LogCacheKeyMegafieldidRelationship rel = (LogCacheKeyMegafieldidRelationship)it.next();
-                if (rel.megafieldid==megafieldid){
-                    CacheFactory.getCacheProvider().flush(String.valueOf(rel.logid), GROUP);
-                    it.remove();
+        try{
+            synchronized(logCacheKeyMegafieldidRelationship){
+                for (Iterator it = logCacheKeyMegafieldidRelationship.iterator(); it.hasNext(); ) {
+                    LogCacheKeyMegafieldidRelationship rel = (LogCacheKeyMegafieldidRelationship)it.next();
+                    if (rel.megafieldid==megafieldid){
+                        CacheFactory.getCacheProvider().flush(String.valueOf(rel.logid), GROUP);
+                        it.remove();
+                    }
                 }
             }
+        } catch (Exception ex){
+            Debug.debug(5, "LogCache.java", ex);
         }
     }
 
     public static void flushByEventtypeid(int eventtypeid){
-        synchronized(logCacheKeyEventtypeidRelationship){
-            for (Iterator it = logCacheKeyEventtypeidRelationship.iterator(); it.hasNext(); ) {
-                LogCacheKeyEventtypeidRelationship rel = (LogCacheKeyEventtypeidRelationship)it.next();
-                if (rel.eventtypeid==eventtypeid){
-                    CacheFactory.getCacheProvider().flush(String.valueOf(rel.logid), GROUP);
-                    it.remove();
+        try{
+            synchronized(logCacheKeyEventtypeidRelationship){
+                for (Iterator it = logCacheKeyEventtypeidRelationship.iterator(); it.hasNext(); ) {
+                    LogCacheKeyEventtypeidRelationship rel = (LogCacheKeyEventtypeidRelationship)it.next();
+                    if (rel.eventtypeid==eventtypeid){
+                        CacheFactory.getCacheProvider().flush(String.valueOf(rel.logid), GROUP);
+                        it.remove();
+                    }
                 }
             }
+        } catch (Exception ex){
+            Debug.debug(5, "LogCache.java", ex);
         }
     }
 
