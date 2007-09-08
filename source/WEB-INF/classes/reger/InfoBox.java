@@ -47,9 +47,6 @@ public class InfoBox {
 		mb.append("</td>");
 		mb.append("<td valign=top>");
 		mb.append("<font face=arial size=-1 color=#"+fontcolor+"><b>" + text + "</b></font>");
-		if (boxType==BOXTYPEERROR){
-            mb.append("<br><font face=arial color=#"+fontcolor+" size=-2>Visit the <a href='http://www.reger.com/jforum/'>support forum</a> if you still have questions.</font>");
-        }
 		mb.append("</td></tr></table>");
 
         mb.append(reger.ui.RoundedCorners.end("infobox"+randomString));
@@ -70,9 +67,6 @@ public class InfoBox {
 //		mb.append("</td>");
 //		mb.append("<td bgcolor=#ffffff valign=left>");
 //		mb.append("<font face=arial size=+1 color=#000000><b>" + text + "</b></font>");
-//		if (boxType==BOXTYPEERROR){
-//            mb.append("<br><font face=arial size=-2>Visit the <a href='http://www.reger.com/jforum/'>support forum</a> if you still have questions.</font>");
-//        }
 //		mb.append("</td></tr></table></center><br>");
 
 

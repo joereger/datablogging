@@ -36,7 +36,6 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONSIGNUP;
     mb.append("Please note: This is a limited free offering of the BETA version of our Enterprise Edition platform. It includes the production-quality code used to run reger.com, packaged in a way that allows you to run it on your own server. We are making it available for free in return for your feedback, comments and suggestions on how we might improve our software. If you would like to contact us with any questions regarding this release, please send an email to <a href='mailto:support@reger.com'>support@reger.com</a>.</b>");
     mb.append("<ul>");
     mb.append("<li>BETA status:  <font color=#ff0000>Danger!</font> The distributable form is new and may cause issues on various systems.  If you need a robust installed version please contact us directly... we can, and have, installed behind firewalls into enterprise environments.</li>");
-    mb.append("<li>We need your feedback to make it work better.  Tell us what you like and don't like in the <a href='http://www.reger.com/jforum/'>support forum</a>.</li>");
     mb.append("<li>In this early BETA period there is no automated licensing built into the product.  Contact us if you'd like a license.  We'll be releasing a pricing plan and automated licensing process soon.  With the free version you get 3 users, unlimited sites, unlimited logs and one private label.</li>");
     mb.append("</ul>");
 

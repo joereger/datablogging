@@ -137,7 +137,7 @@ pageProps.pathToAppRoot="../";
         mb.append("<td bgcolor=#cccccc>");
         mb.append("</td>");
         mb.append("<td bgcolor=#e6e6e6><font face=arial size=-1>");
-        mb.append("Accounts on this installation are governed by a Server License.  Contact your system admin if you have questions or visit the <a href='http://www.reger.com/jforum/'>support forum</a>.");
+        mb.append("Accounts on this installation are governed by a Server License.  Contact your system admin if you have questions.");
         mb.append("</font></td>");
         mb.append("</tr>");
 

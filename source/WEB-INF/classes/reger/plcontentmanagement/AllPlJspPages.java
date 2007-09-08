@@ -44,7 +44,7 @@ public class AllPlJspPages {
                 add(new PlJspPage(-43, "Find a Datablog Site", "community-findsite.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 5));
                 add(new PlJspPage(-44, "Complex Search", "community-search.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 6));
                 add(new PlJspPage(-55, "Locate a User Group", "community-groups.log", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 7));
-                add(new PlJspPage(-47, "Discussion Forum", "http://www.reger.com/jforum", NestedNavItem.NESTEDNAVTYPEPLJSPPAGE, -3, 8));
+             
 
 
 
