@@ -31,22 +31,22 @@ public class Debug {
     public static void errorsave(Throwable e, String label, int accountid, String message, javax.servlet.http.HttpServletRequest request){
         try {
             boolean doRecord = true;
+            String prettyError = "";
+
+            //Make the error pretty
+            prettyError = ErrorDissect.dissect(e, request, message);
+
             try{
                 if (e instanceof java.net.SocketException){
                     doRecord=false;
                 }
-            }catch (Throwable ee){
-                //Do nothing
+            }catch (Throwable ee){//Do nothing}
+
+            if (prettyError!=null && prettyError.indexOf("getOutputStream() has already been called")>-1){
+                doRecord = false;
             }
 
             if (doRecord){
-                //Convert the exception to a string
-                //String prettyError = getErrorString(e, message);
-                String prettyError = "";
-
-                //Add the new dissection stuff
-                prettyError = ErrorDissect.dissect(e, request, message);
-
 
                 //Try to find a current error with the same description
                 //-----------------------------------
