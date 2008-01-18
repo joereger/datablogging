@@ -40,7 +40,9 @@ public class Debug {
                 if (e instanceof java.net.SocketException){
                     doRecord=false;
                 }
-            }catch (Throwable ee){//Do nothing}
+            }catch (Throwable ee){
+                //Do nothing
+            }
 
             if (prettyError!=null && prettyError.indexOf("getOutputStream() has already been called")>-1){
                 doRecord = false;

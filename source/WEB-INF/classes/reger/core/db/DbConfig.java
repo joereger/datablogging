@@ -1,6 +1,7 @@
 package reger.core.db;
 
 import reger.core.licensing.DesEncrypter;
+import reger.core.Debug;
 
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -27,8 +28,12 @@ public class DbConfig {
     private static boolean haveValidConfig = false;
     private static boolean haveNewConfigToTest = false;
     private static boolean haveAttemptedToLoadDefaultPropsFile = false;
-    private static String dbPropsInternalFilename = reger.core.WebAppRootDir.getWebAppRootPath() + "conf/db.props";
+    private static String dbPropsInternalFilename = reger.core.WebAppRootDir.getWebAppRootPath() + "conf/instance.props";
     private static String dbPropsExternalFilename = "datablogging-"+reger.core.WebAppRootDir.getUniqueContextId()+"-dbconfig.txt";
+
+    public DbConfig(){
+        System.out.println("DbConfig instanciated");
+    }
 
     public static void load(){
         if (!haveValidConfig && !haveAttemptedToLoadDefaultPropsFile){
@@ -38,12 +43,16 @@ public class DbConfig {
 
                 //Look in the /conf directory
                 try{
+                    System.out.println("Looking for instance.props dbPropsInternalFilename: "+dbPropsInternalFilename);
                     File internalFile = new File(dbPropsInternalFilename);
                     if (internalFile!=null && internalFile.exists() && internalFile.canRead() && internalFile.isFile()){
                         Properties properties = new Properties();
                         properties.load(new FileInputStream(internalFile));
                         loadPropsFile(properties);
                         gotFile = true;
+                        System.out.println("Found instance props from dbPropsInternalFilename="+dbPropsInternalFilename);
+                    } else {
+                        System.out.println("dbPropsInternalFilename is null, doesn't exist, can't be read, etc");
                     }
                 } catch (IOException e) {
                     //e.printStackTrace();
@@ -54,12 +63,16 @@ public class DbConfig {
                 //If we don't have one in the conf directory, look to the system default dir
                 if (!gotFile){
                     try{
+                        System.out.println("Looking for instance.props dbPropsExternalFilename: "+dbPropsExternalFilename);
                         File externalFile = new File("", dbPropsExternalFilename);
                         if (externalFile!=null && externalFile.exists() && externalFile.canRead() && externalFile.isFile()){
                             Properties properties = new Properties();
                             properties.load(new FileInputStream(externalFile));
                             loadPropsFile(properties);
                             gotFile = true;
+                            System.out.println("Found instance props from dbPropsExternalFilename");
+                        } else {
+                            System.out.println("dbPropsExternalFilename is null, doesn't exist, can't be read, etc");
                         }
                     } catch (IOException e) {
                         //e.printStackTrace();
@@ -79,8 +92,9 @@ public class DbConfig {
         try{
             dbConnectionUrl = properties.getProperty("dbConnectionUrl", "jdbc:mysql://localhost:3306/regerdatabase?autoReconnect=true");
             dbUsername = properties.getProperty("dbUsername", "username");
-            DesEncrypter encrypter2 = new DesEncrypter(passPhrase);
-            dbPassword = encrypter2.decrypt(properties.getProperty("dbPassword", "password"));
+            //DesEncrypter encrypter2 = new DesEncrypter(passPhrase);
+            //dbPassword = encrypter2.decrypt(properties.getProperty("dbPassword", "password"));
+            dbPassword = properties.getProperty("dbPassword", "password");
             dbMaxActive = properties.getProperty("dbMaxActive", "100");
             dbMaxIdle = properties.getProperty("dbMaxIdle", "15");
             dbMinIdle = properties.getProperty("dbMinIdle", "10");
@@ -110,9 +124,10 @@ public class DbConfig {
                     properties.setProperty("dbUsername", dbUsername);
                 }
                 if (dbPassword!=null){
-                    DesEncrypter encrypter2 = new DesEncrypter(passPhrase);
-                    String encDbPassword = encrypter2.encrypt(dbPassword);
-                    properties.setProperty("dbPassword", encDbPassword);
+                    //DesEncrypter encrypter2 = new DesEncrypter(passPhrase);
+                    //String encDbPassword = encrypter2.encrypt(dbPassword);
+                    //properties.setProperty("dbPassword", encDbPassword);
+                    properties.setProperty("dbPassword", dbPassword);
                 }
                 if (dbMaxActive!=null){
                     properties.setProperty("dbMaxActive", dbMaxActive);
