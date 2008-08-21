@@ -32,6 +32,10 @@ if (request.getParameter("action")==null){
     mb.append(InfoBox.get(InfoBox.BOXTYPEINFO, "../", "Enjoy the show."));
 }
 
+//select count(*) from traffic where accountid in (select accountid from account where isactiveaccount='0');
+
+//select * from account where accountid NOT IN (4891, 2474, 3315, 2350, 3381, 84, 3119, 2396, 8063, 4914, 1, 4791, 4253, 7075, 6081, 7376, 2420, 49, 51, 2333, 322, 201, 2385, 3336, 5630, 410, 4911, 2489, 5771, 2982, 2621, 5001, 5005, 4908, 55, 50, 52, 5713, 5643, 3119, 5012, 3051, 2765, 3397, 4046, 2535. 4964, 4681, 3161, 2282, 3386, 1703, 4971, 3903, 5206, 2295, 928, 2628, 4933);
+    
 //if (request.getParameter("action")!=null && request.getParameter("action").equals("delete")){
 //    if (request.getParameter("accountid")!=null && reger.core.Util.isinteger(request.getParameter("accountid"))){
 //        int accountid = Integer.parseInt(request.getParameter("accountid"));
@@ -47,14 +51,13 @@ if (request.getParameter("action")==null){
 mb.append("<br><br><a href='hibernate-accounts.log'>Refresh</a><br>");
 
 
-List events = HibernateUtil.getSession().createQuery("from Account").setFirstResult(1000).setMaxResults(20).list();
+List events = HibernateUtil.getSession().createQuery("from Account").setMaxResults(20).list();
 for (int i = 0; i < events.size(); i++) {
     Account account = (Account) events.get(i);
     mb.append("<font face=arial size=-1>");
     mb.append("<br><br>"+account.getAccounturl()+" event.getEventid(): " + account.getAccountid());
     mb.append(" <a href='hibernate-accounts.log?action=delete&accountid="+account.getAccountid()+"'>Delete</a>");
     mb.append("</font>");
-
 }
 
 

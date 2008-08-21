@@ -202,6 +202,7 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemmessage", "loetools", "SYSTEM MESSAGE", "loe/systemmessage.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loehowto", "loetools", "HOWTO", "loe/howto.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedaogenerator", "loetools", "DAO GENERATOR", "loe/daogenerator.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedeletedeadaccounts", "loetools", "DELETE DEAD ACCOUNTS", "loe/deletedeadaccounts.log", false, "MASTERADMIN", null));
 
         //LOE Performance
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loememory", "loeperformance", "MEMORY", "loe/memory.log", false, "MASTERADMIN", null));

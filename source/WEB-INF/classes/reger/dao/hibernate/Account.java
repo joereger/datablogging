@@ -61,7 +61,7 @@ public class Account  implements java.io.Serializable {
      private String billingerror;
      private Date lastbillingcheck;
      private String googlemapsapikey;
-     private Double maxspaceinbytes;
+     private Date datemarkedinactive;
 
 
     //Association
@@ -282,7 +282,7 @@ public class Account  implements java.io.Serializable {
         this.billingerror = billingerror;
         this.lastbillingcheck = lastbillingcheck;
         this.googlemapsapikey = googlemapsapikey;
-        this.maxspaceinbytes = maxspaceinbytes;
+
     }
 
 
@@ -657,20 +657,11 @@ public class Account  implements java.io.Serializable {
         this.googlemapsapikey = googlemapsapikey;
     }
 
-    public Double getMaxspaceinbytes() {
-        return this.maxspaceinbytes;
+    public Date getDatemarkedinactive() {
+        return datemarkedinactive;
     }
 
-    public void setMaxspaceinbytes(Double maxspaceinbytes) {
-        this.maxspaceinbytes = maxspaceinbytes;
+    public void setDatemarkedinactive(Date datemarkedinactive) {
+        this.datemarkedinactive=datemarkedinactive;
     }
-
-
-
-
-
-
-
-
-
 }

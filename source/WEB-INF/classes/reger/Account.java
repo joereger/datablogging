@@ -69,6 +69,7 @@ public class Account implements java.io.Serializable {
     private String billingerror;
     private License accountLicense;
     private String googlemapsapikey;
+    private Calendar datemarkedinactive = Calendar.getInstance();
 
 
 
@@ -150,7 +151,8 @@ public class Account implements java.io.Serializable {
         "isbillingokencrypted,"+       //40
         "lastbillingcheck,"+            //41
         "billingerror,"+                 //42
-        "googlemapsapikey"+             //43
+        "googlemapsapikey,"+             //43
+        "datemarkedinactive"+            //44
         " FROM account WHERE accountid='"+accountid+"'" +
         " ORDER BY customservername DESC LIMIT 0,1");
         //-----------------------------------
@@ -243,6 +245,7 @@ public class Account implements java.io.Serializable {
             lastbillingcheck = TimeUtils.dbstringtocalendar(rs[0][41]);
             billingerror = rs[0][42];
             googlemapsapikey = rs[0][43];
+            datemarkedinactive = TimeUtils.dbstringtocalendar(rs[0][44]);
 
             //Set the site root url
             siteRootUrl = setSiteRootUrlViaAccountid(accountid);
@@ -1305,5 +1308,11 @@ public class Account implements java.io.Serializable {
         this.fileacls = fileacls;
     }
 
+    public Calendar getDatemarkedinactive() {
+        return datemarkedinactive;
+    }
 
+    public void setDatemarkedinactive(Calendar datemarkedinactive) {
+        this.datemarkedinactive=datemarkedinactive;
+    }
 }

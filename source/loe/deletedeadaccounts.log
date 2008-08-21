@@ -1,0 +1,104 @@
+
+<%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
+<%@ page import="org.apache.commons.io.FilenameUtils"%>
+<%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.dao.generator.dbcolumntypes.DbColumnType"%>
+<%@ page import="reger.dao.generator.dbcolumntypes.DbColumnTypeFactory"%>
+<%@ page import="reger.dao.hibernate.Account" %>
+<%@ page import="reger.hibernate.HibernateUtil" %>
+<%@ page import="reger.core.TimeUtils" %>
+<%@ page import="reger.core.Util" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.MASTERADMINSITE;
+pageProps.title = "Delete Dead Accounts";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "loedeletedeadaccounts";
+pageProps.aclObjectName = "MASTERADMIN";
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+    StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "This is a very powerful and dangerous page.  Be careful"));
+
+int days = 60;
+if (request.getParameter("days")!=null && Util.isinteger(request.getParameter("days"))){
+    days = Integer.parseInt(request.getParameter("days"));
+}
+
+if (request.getParameter("action")!=null && request.getParameter("action").equals("go")){
+    Calendar xdaysago = TimeUtils.xDaysAgoStart(Calendar.getInstance(), days);
+    List accounts = HibernateUtil.getSession().createQuery("from Account where isactiveaccount='0'").list();
+    for (int i = 0; i < accounts.size(); i++) {
+        Account account = (Account) accounts.get(i);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(account.getDatemarkedinactive());
+        if (cal.before(xdaysago)){
+            try{HibernateUtil.delete(account);}catch(Exception ex){Debug.debug(3, "deletedeadaccounts.log", ex);}
+        }
+    }
+}
+
+mb.append("Show those inactive for: ");
+mb.append("<a href='deletedeadaccounts.log?days="+90+"'>90 days</a> ");
+mb.append("<a href='deletedeadaccounts.log?days="+60+"'>60 days</a> ");
+mb.append("<a href='deletedeadaccounts.log?days="+45+"'>45 days</a> ");
+mb.append("<a href='deletedeadaccounts.log?days="+15+"'>15 days</a> ");
+mb.append("<a href='deletedeadaccounts.log?days="+10+"'>10 days</a> ");
+mb.append("<a href='deletedeadaccounts.log?days="+5+"'>5 days</a> ");
+mb.append("<br/><br/><a href='deletedeadaccounts.log?action=go&days="+days+"'>DELETE THOSE INACTIVE FOR "+days+" DAYS!!!</a><br/><br/>");
+
+Calendar xdaysago = TimeUtils.xDaysAgoStart(Calendar.getInstance(), days);
+List accounts = HibernateUtil.getSession().createQuery("from Account where isactiveaccount='0'").list();
+mb.append("<font face=arial size=-2>");
+for (int i = 0; i < accounts.size(); i++) {
+    Account account = (Account) accounts.get(i);
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(account.getDatemarkedinactive());
+    if (cal.before(xdaysago)){
+        mb.append("<br>account.getAccountid():"+account.getAccountid()+" account.getAccounturl():" + account.getAccounturl()+" datemarkedinactive:"+ TimeUtils.dateformatcompactwithtime(cal));
+    }
+}
+mb.append("</font>");
+
+
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+mb.append("<br>");
+
+
+%>
+
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+    //sc.append("This is a ");
+    //sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
+
+
+
+
+
+
+

@@ -242,8 +242,9 @@
         <property name="googlemapsapikey" type="string">
             <column name="googlemapsapikey" />
         </property>
-        <property name="maxspaceinbytes" type="java.lang.Double">
-            <column name="maxspaceinbytes" precision="22" scale="0" />
+        <property name="datemarkedinactive" type="timestamp">
+            <column name="datemarkedinactive" length="19" not-null="true" />
         </property>
+
     </class>
 </hibernate-mapping>
