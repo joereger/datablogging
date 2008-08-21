@@ -1,4 +1,4 @@
-<%@ page import="reger.SideColumn"%>
+<%@ page import="reger.core.Util"%>
 
 <%
 /*----------------------------------------------------*/
@@ -20,7 +20,11 @@ pageProps.pathToAppRoot="";
 /*----------------------------------------------------*/
 
 //Calendar
-mb.append(reger.CalendarHtml.smallcalendar(reger.Vars.CALENDARTYPEEMPTYEVENTLINKS, request.getParameter("viewmonth"), -1, "calendar.log", userSession));
+int logid = -1;
+if (request.getParameter("logid")!=null && Util.isinteger(request.getParameter("logid"))){
+    logid = Integer.parseInt(request.getParameter("logid"));
+}
+mb.append(reger.CalendarHtml.smallcalendar(reger.Vars.CALENDARTYPEEMPTYEVENTLINKS, request.getParameter("viewmonth"), logid, "calendar.log", userSession));
 
 
 //Get a list of entries
