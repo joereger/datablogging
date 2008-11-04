@@ -95,7 +95,7 @@
         <property name="title" type="string">
             <column name="title" not-null="true" />
         </property>
-        <property name="comments" type="string">
+        <property name="comments" type="text">
             <column name="comments" />
         </property>
         <property name="accountid" type="int">
