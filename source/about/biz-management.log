@@ -50,16 +50,6 @@ mb.append("Datablog: <a href='http://joesr.reger.com/'>http://joesr.reger.com/</
 
 
 
-mb.append("<br>");
-mb.append("<br>");
-mb.append("<h1>John Elmore, J.D.</h1>");
-mb.append("<b>Business Strategy Consultant:</b>");
-mb.append("<br>");
-mb.append("Prior to Reger.com, John worked as a patent attorney in DC and was the CTO for Strio, Inc. John has worked in the technology industry for over ten years holding a variety of senior management positions. John has several degrees including a masters in both computer science and electrical engineering, as well as an MBA. He has also conducted research for his PhD at Georgia Tech. His expertise includes business strategy, product development, patent law and artificial intelligence.");
-mb.append("<br>");
-mb.append("Email: <a href='mailto:john@reger.com'>john@reger.com</a>");
-mb.append("<br>");
-mb.append("Datablog: <a href='http://john.reger.com/'>http://john.reger.com/</a>");
 
 mb.append("<br>");
 mb.append("<br>");
