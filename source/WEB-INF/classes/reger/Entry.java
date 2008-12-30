@@ -1100,6 +1100,13 @@ public class Entry {
         return filename;
     }
 
+    public static String entryFileNameStaticNoWords(int logid, int eventid) {
+
+        String filename = "entry-logid" + logid + "-eventid" + eventid + ".log";
+
+        return filename;
+    }
+
     /**
      * Creates the url of format entry-logid1-eventid2374-this-is-the-title.log
      * Use this if you haven't instantiated the event class.

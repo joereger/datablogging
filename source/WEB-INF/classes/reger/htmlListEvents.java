@@ -3,7 +3,9 @@ package reger;
 import reger.template.Template;
 import reger.core.TimeUtils;
 import reger.core.Debug;
+import reger.core.Util;
 import reger.cache.LogCache;
+import reger.systemproperties.AllSystemProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -166,14 +168,23 @@ public class htmlListEvents {
                 //String entryurl="entry-logid" + rsEvent[i][5] + "-eventid" + rsEvent[i][4] + ".log";
                 String entryurl = reger.Entry.entryFileNameStatic(entry.logid, entry.eventid, entry.title);
                 String entryurladmin = "entry.log?logid=" + entry.logid + "&eventid=" + entry.eventid + "&action=edit";
-                //Add the servername and port
-                if (request.getLocalPort() == 80 || request.getLocalPort() == 443) {
-                    entryurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl;
-                    entryurladmin = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/myhome/" + entryurladmin;
-                } else {
-                    entryurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + ":" + request.getLocalPort() + "/" + entryurl;
-                    entryurladmin = "" + userSession.getAccount().getSiteRootUrl(userSession) + ":" + request.getLocalPort() + "/myhome/" + entryurladmin;
-                }
+                //Calculate the port num
+//                String portStr = "";
+//                String forceportStr = AllSystemProperties.getProp("FORCEPORT");
+//                if (Util.isinteger(forceportStr)){
+//                    if (!forceportStr.equals("80") && !forceportStr.equals("443")){
+//                        portStr = ":"+forceportStr;
+//                    }
+//                } else {
+//                    if (request.getLocalPort()!=80 && request.getLocalPort()!=443) {
+//                        portStr = ":"+request.getLocalPort();
+//                    }
+//                }
+                //Now create the entry urls
+                //entryurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + portStr + "/" + entryurl;
+                //entryurladmin = "" + userSession.getAccount().getSiteRootUrl(userSession) + portStr + "/myhome/" + entryurladmin;
+                entryurl = userSession.getUrlWithPortSmartlyAttached(userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl);
+                entryurladmin = userSession.getUrlWithPortSmartlyAttached(userSession.getAccount().getSiteRootUrl(userSession) + "/myhome/" + entryurladmin);
 
 
                 //The Entry body

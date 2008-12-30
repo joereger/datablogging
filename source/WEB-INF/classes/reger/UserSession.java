@@ -1,7 +1,10 @@
 package reger;
 
 import reger.core.Debug;
+import reger.core.SystemProperty;
+import reger.core.Util;
 import reger.cache.providers.jboss.Cacheable;
+import reger.systemproperties.AllSystemProperties;
 
 import javax.servlet.http.Cookie;
 import java.util.Calendar;
@@ -99,8 +102,15 @@ public class UserSession implements java.io.Serializable {
             reger.core.Debug.debug(5, "UserSession.java", "urlParsed.toString() = " + urlParsed.toString() + "<br>urlParsed.getProtocol() = "+urlParsed.getProtocol()+"<br>getUrlSplitter().getPort() = "+getUrlSplitter().getPort());
 
             //Now create a new version of the URL, manually controlling the port num, scheme
-            java.net.URL urlPortControlled = new java.net.URL(getUrlSplitter().getScheme(), urlParsed.getHost(), getUrlSplitter().getPort(), urlParsed.getFile());
-
+            int port = getUrlSplitter().getPort();
+            String forceportStr = AllSystemProperties.getProp("FORCEPORT");
+            if (Util.isinteger(forceportStr)){
+                port = Integer.parseInt(forceportStr);
+            }
+            java.net.URL urlPortControlled = new java.net.URL(getUrlSplitter().getScheme(), urlParsed.getHost(), urlParsed.getFile());
+            if (port!=80){
+                urlPortControlled = new java.net.URL(getUrlSplitter().getScheme(), urlParsed.getHost(), port, urlParsed.getFile());
+            }
             //Now get the output
             outUrl = urlPortControlled.toString();
         } catch (Exception ex){

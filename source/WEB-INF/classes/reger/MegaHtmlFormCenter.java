@@ -32,7 +32,7 @@ public class MegaHtmlFormCenter {
             mb.append("<td bgcolor=#ffffff colspan=6 align=left valign=top>");
         }
 
-//        if (displayasadmin){
+//        if (displayasadmin && userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
 //            //Display the link to turn edit fields on/off
 //
 //            mb.append("<table cellpadding=5 cellspacing=1 border=0 class=greysolidborder>");
