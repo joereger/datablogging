@@ -1,3 +1,4 @@
+<%try{%>
 <%
 
 reger.core.Debug.debug(5, "mediaout.log", "Made it to mediaout.log top");
@@ -113,8 +114,9 @@ try{
             if (filenameToShow==null || filenameToShow.equals("")){
                 filenameToShow = fileName;
             }
-            response.setHeader("Content-Disposition", "attachment; filename=" + filenameToShow);
-
+            if (mt.setAsDownload()){
+                response.setHeader("Content-Disposition", "attachment; filename=" + filenameToShow);
+            }
 
 
             // Creating a new FileInputStream object
@@ -146,7 +148,13 @@ try{
             //This is a specific error that happens when users abort their connection.
             Debug.debug(5, "", e);
         } catch (Exception e) {
-            Debug.errorsave(e, "");
+            if (e.toString().substring(0, 21).equals("ClientAbortException:")){
+                //Debug.debug(5, "", e);
+            } else if (e.toString().indexOf("getOutputStream() has already been called for this response")>-1){
+                //Debug.debug(5, "", e);
+            } else {
+                Debug.errorsave(e, "");
+            }
         }
     } else {
         //Show the placeholder error image
@@ -183,10 +191,12 @@ try{
             //This is a specific error that happens when users abort their connection.
             Debug.debug(5, "", e);
         } catch (Exception e) {
-            if (!e.toString().substring(0, 21).equals("ClientAbortException:")){
-                Debug.errorsave(e, "");
+            if (e.toString().substring(0, 21).equals("ClientAbortException:")){
+                //Debug.debug(5, "", e);
+            } else if (e.toString().indexOf("getOutputStream() has already been called for this response")>-1){
+                //Debug.debug(5, "", e);
             } else {
-                Debug.debug(5, "", e);
+                Debug.errorsave(e, "");
             }
         }
     }
@@ -226,9 +236,7 @@ try{
 //End record traffic
 //----------------------------------------------------------------
 
-%>
-
-<%
+%><%
 /*----------------------------------------------------*/
 /*                  Side Column                       */
         StringBuffer sc = new StringBuffer();
@@ -236,7 +244,4 @@ try{
 
 //sc.append("This is a ");
 //sc.append("side column section.");
-%>
-
-
-
+%><%}catch(Exception ex){Debug.debug(5, "mediaout.log", ex);}%>

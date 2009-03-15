@@ -63,4 +63,8 @@ public class MsProject implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

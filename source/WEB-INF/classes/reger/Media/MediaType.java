@@ -37,4 +37,6 @@ public interface MediaType {
      */
     public String getMimeType();
 
+    public boolean setAsDownload();
+
 }

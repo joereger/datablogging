@@ -16,6 +16,8 @@ import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
  * Represents an entry
  */
@@ -107,6 +109,7 @@ public class Entry {
     public int filecount = 0;
     public StringBuffer filethumbs = new StringBuffer();
     public StringBuffer filethumbsrss = new StringBuffer();
+    public StringBuffer filethumbslightbox = new StringBuffer();
 
     //Xform
     private EventXformData eventXformData = null;
@@ -682,20 +685,62 @@ public class Entry {
         //Thumbs
         //-----------------------------------
         //-----------------------------------
-        String[][] rstThumbs = Db.RunSQL("SELECT imageid, description FROM image WHERE eventid='" + eventid + "' ORDER BY imageorder DESC, imageid ASC");
+        String[][] rstThumbs = Db.RunSQL("SELECT imageid, description, filename FROM image WHERE eventid='" + eventid + "' ORDER BY imageorder DESC, imageid ASC");
         //-----------------------------------
         //-----------------------------------
         if (rstThumbs != null && rstThumbs.length > 0) {
             filethumbs = new StringBuffer();
             filethumbsrss = new StringBuffer();
+            filethumbslightbox = new StringBuffer();
             for (int i = 0; i < rstThumbs.length; i++) {
                 Account account = new Account(accountid);
+
+                String ext = FilenameUtils.getExtension(rstThumbs[i][2]);
+
                 filethumbs.append("<a href='mediaouthtml.log?imageid="+rstThumbs[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
                 filethumbs.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                 filethumbs.append("</a>");
                 filethumbsrss.append("<a href='"+account.getSiteRootUrl()+"/mediaouthtml.log?imageid="+rstThumbs[i][0]+"'>");
                 filethumbsrss.append("<img src='"+account.getSiteRootUrl()+"/mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                 filethumbsrss.append("</a>");
+
+//                if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+//                    filethumbslightbox.append("<a href=\"mediaout.log?imageid="+rstThumbs[i][0]+"&ext="+ext+"\" class=\"lightwindow\"  rel=\""+title+"[Images]\" title=\"\" caption=\""+rstThumbs[i][1]+"\" author=\"\">");
+//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+//                    filethumbslightbox.append("</a>");
+//                } else if (ext.indexOf("mov")>-1){
+//                    filethumbslightbox.append("<a href=\"mediaout.log?imageid="+rstThumbs[i][0]+"&ext="+ext+"\" class=\"lightwindow\" params=\"lightwindow_type=media\" rel=\""+title+"[Images]\" title=\"\" caption=\""+rstThumbs[i][1]+"\" author=\"\">");
+//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+//                    filethumbslightbox.append("</a>");
+//                } else {
+//                    ext = ".html";
+//                    filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page"+ext+"\" class=\"lightwindow\" params=\"lightwindow_type=page,lightwindow_width=600,lightwindow_height=345\" rel=\""+title+"[Images]\" title=\"\" caption=\""+rstThumbs[i][1]+"\" author=\"\">");
+//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+//                    filethumbslightbox.append("</a>");
+//                }
+
+//                if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+//                    filethumbslightbox.append("<a href=\"mediaout.log?imageid="+rstThumbs[i][0]+"&ext=."+ext+"\" class=\"mb\"  rel=\"\" >");
+//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+//                    filethumbslightbox.append("</a>");
+//                } else {
+//                    ext = "html";
+//                    filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" class=\"mb\" rel=\"type: iframe,width:400,height:300\" title=\"\" caption=\""+rstThumbs[i][1]+"\" author=\"\">");
+//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+//                    filethumbslightbox.append("</a>");
+//                }
+
+                if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+                    filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"&TB_iframe=true\" title=\"Image\" class=\"thickbox\" rel=\"Images\">");
+                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                    filethumbslightbox.append("</a>");
+                } else {
+                    ext = "html";
+                    filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"&TB_iframe=true&height=350&width=450\" class=\"thickbox\" title=\"\"  rel=\""+title+"\">");
+                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                    filethumbslightbox.append("</a>");
+                }
+
             }
         }
 

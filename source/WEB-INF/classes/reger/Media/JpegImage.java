@@ -65,5 +65,7 @@ public class JpegImage implements MediaType {
     }
 
 
-
+    public boolean setAsDownload() {
+        return false;
+    }
 }

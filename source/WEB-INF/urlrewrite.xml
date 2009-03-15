@@ -234,6 +234,12 @@
         <to>/mediaout.log?imageid=$1&amp;isProfileImage=$2&amp;entrykey=$3&amp;$6</to>
     </rule>
 
+    <rule>
+        <name>Media files done in a way to preserve extensions</name>
+        <note>The main redirect. </note>
+        <from>/mediaout-imageid([0-9]+).(.*)(\?)*(.*)</from>
+        <to>/mediaout.log?imageid=$1&amp;$6</to>
+    </rule>
 
     <rule>
         <name>File Access</name>
@@ -243,8 +249,12 @@
     </rule>
 
 
-
-
+    <rule>
+        <name>Media files done in a way to preserve</name>
+        <note>img filenames good</note>
+        <from>/mediaout/(.*)(\?)*(.*)</from>
+        <to>/mediaout.log?$3</to>
+    </rule>
 
     <rule>
         <name>Media files done in a way to preserve</name>
@@ -252,6 +262,8 @@
         <from>/js/fckeditor/editor/dialog/mediaout.log(\?)*(.*)</from>
         <to>/mediaout.log?$2</to>
     </rule>
+
+
 
     <rule>
         <name>Media files done in a way to preserve</name>

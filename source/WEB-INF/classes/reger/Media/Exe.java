@@ -63,4 +63,8 @@ public class Exe implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

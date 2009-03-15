@@ -63,4 +63,8 @@ public class MsWordDoc implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

@@ -76,4 +76,8 @@ public class QuicktimeMov implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

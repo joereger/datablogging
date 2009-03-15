@@ -83,4 +83,8 @@ public class mp3Audio implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

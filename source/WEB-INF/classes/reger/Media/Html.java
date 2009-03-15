@@ -64,4 +64,8 @@ public class Html implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

@@ -777,5 +777,7 @@ public class PolarHRM implements MediaType{
 
     }
 
-
+    public boolean setAsDownload() {
+        return true;
+    }
 }

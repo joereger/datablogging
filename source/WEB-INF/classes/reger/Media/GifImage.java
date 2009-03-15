@@ -62,5 +62,7 @@ public class GifImage implements MediaType {
     }
 
 
-
+    public boolean setAsDownload() {
+        return false;
+    }
 }

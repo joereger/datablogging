@@ -63,4 +63,8 @@ public class Visio implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

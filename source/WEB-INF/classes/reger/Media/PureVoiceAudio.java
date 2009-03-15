@@ -74,4 +74,7 @@ public class PureVoiceAudio implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
 }

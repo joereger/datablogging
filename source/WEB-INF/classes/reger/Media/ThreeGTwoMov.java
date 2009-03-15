@@ -77,4 +77,8 @@ public class ThreeGTwoMov implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

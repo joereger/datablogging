@@ -39,7 +39,7 @@ mb.append("</ul>");
 
 mb.append("<a name='ronny'>");
 mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
-mb.append("<img src='images/people-ronny.gif' align=right>");
+//mb.append("<img src='images/people-ronny.gif' align=right>");
 mb.append("<font face=arial size=+3 color=#cccccc>Ronny the Runner</font>");
 mb.append("<br>");
 mb.append("<font face=arial size=-2 color=#333333>");
@@ -95,7 +95,7 @@ mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
 mb.append("<a name='frank'>");
 mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
 mb.append("<img src='images/people-frank.gif' align=left>");
-mb.append("<font face=arial size=+3 color=#cccccc>Fat Frank the Weightwatcher</font>");
+//mb.append("<font face=arial size=+3 color=#cccccc>Fat Frank the Weightwatcher</font>");
 mb.append("<br>");
 mb.append("<font face=arial size=-2 color=#333333>");
 mb.append("Frank is fat.  Not phat... fat.  He wants to lose some weight so he decides to use datablogging to keep track of his daily weigh-ins.  His data needs are fairly simple, but they have a fundamental effect on his life.");
@@ -144,7 +144,7 @@ mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
 
 mb.append("<a name='molly'>");
 mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
-mb.append("<img src='images/people-molly.gif' align=right>");
+//mb.append("<img src='images/people-molly.gif' align=right>");
 mb.append("<font face=arial size=+3 color=#cccccc>Molly the Moviegoer</font>");
 mb.append("<br>");
 mb.append("<font face=arial size=-2 color=#333333>");

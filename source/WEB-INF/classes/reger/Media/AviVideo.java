@@ -69,4 +69,8 @@ public class AviVideo implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

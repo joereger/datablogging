@@ -61,6 +61,8 @@ public class PngImage implements MediaType {
 
     }
 
-
+    public boolean setAsDownload() {
+        return false;
+    }
 
 }

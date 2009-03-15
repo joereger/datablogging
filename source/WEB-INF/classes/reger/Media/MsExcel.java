@@ -63,4 +63,8 @@ public class MsExcel implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

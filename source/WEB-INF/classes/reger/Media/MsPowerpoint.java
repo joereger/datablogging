@@ -63,4 +63,8 @@ public class MsPowerpoint implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

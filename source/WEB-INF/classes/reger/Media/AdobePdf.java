@@ -63,4 +63,8 @@ public class AdobePdf implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

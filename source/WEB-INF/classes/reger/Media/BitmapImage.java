@@ -61,6 +61,10 @@ public class BitmapImage implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 
 
 }

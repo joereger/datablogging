@@ -63,4 +63,7 @@ public class Photoshop implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
 }

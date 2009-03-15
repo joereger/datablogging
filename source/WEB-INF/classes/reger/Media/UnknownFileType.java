@@ -61,4 +61,8 @@ public class UnknownFileType implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }

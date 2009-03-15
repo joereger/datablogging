@@ -111,7 +111,7 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new EntryListTemplateTag[12];
+        tags = new EntryListTemplateTag[13];
         tags[0] = new EntryListTemplateTagLogentryTitle();
         tags[1] = new EntryListTemplateTagLogentryUrl();
         tags[2] = new EntryListTemplateTagLogentryBody();
@@ -124,6 +124,7 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
         tags[9] = new EntryListTemplateTagLogName();
         tags[10]= new EntryListTemplateTagMessagesCount();
         tags[11]= new EntryListTemplateTagFileThumbs();
+        tags[12]= new EntryListTemplateTagFileThumbsLightbox();
     }
 
     public TemplateTag[] getTagsThisProcessorCanHandle(){

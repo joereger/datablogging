@@ -63,4 +63,8 @@ public class Zip implements MediaType {
 
     }
 
+    public boolean setAsDownload() {
+        return true;
+    }
+
 }
