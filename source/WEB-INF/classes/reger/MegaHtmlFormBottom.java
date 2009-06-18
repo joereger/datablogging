@@ -369,9 +369,9 @@ public class MegaHtmlFormBottom {
                 reger.TimeLine tl = new reger.TimeLine(null, null, pageProps.entry.dateGmt, userSession.getAccount().getAccountid(), userSession);
                 if (tl.timeperiodids.length > 0) {
                     mb.append("<tr>");
-                    mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top  class=logentryheader><font face=arial size=-1><b>Time Period</b></font><br><font face=arial size=-2><b>This entry took place during these time periods.</b></font><br>");
+                    mb.append("<td colspan=3 align=right valign=top  class=logentryheader><font face=arial size=-1><b>Time Period</b></font><br><font face=arial size=-2><b>This entry took place during these time periods.</b></font><br>");
                     mb.append("</td>");
-                    mb.append("<td bgcolor='#ffffff' align=center valign=top colspan=3 nowrap class=logentrycontent>");
+                    mb.append("<td align=center valign=top colspan=3 nowrap class=logentrycontent>");
                     mb.append(tl.getTimelineHtml(pageProps.pathToAppRoot, 300));
                     mb.append("</td>");
                     mb.append("</tr>");
