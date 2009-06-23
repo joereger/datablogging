@@ -367,9 +367,9 @@ public class ImageListHtml {
                     if (currentCol==colsPerRow){
                         mb.append("</tr>");
                         currentCol = 1;
-                    }
-                    
-                    currentCol = currentCol + 1;
+                    } else {
+                        currentCol = currentCol + 1;
+                    } 
                 }
             }
 
