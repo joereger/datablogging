@@ -75,6 +75,8 @@
         afterPost.append("<input type=hidden name=msg value='entryedited'>");
         afterPost.append("<input type=hidden name=eventid value='" + entry.eventid + "'>");
         afterPost.append("<input type=hidden name=logid value='" + entry.logid + "'>");
+
+
         afterPost.append("<table cellpadding=10 cellspacing=0 border=0>");
 
 
@@ -140,6 +142,7 @@
         //End Groups
 
         // Begin Poll
+        if (1==2){
         afterPost.append("<br>");
         //afterPost.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
         //afterPost.append("<table cellpadding=10 cellspacing=0 border=0>");
@@ -187,11 +190,8 @@
         afterPost.append("<input type=submit value='Add Optional Info'>");
         afterPost.append("</td>");
         afterPost.append("</tr>");
-
-
-
         afterPost.append("</table>");
-
+        
 
         afterPost.append("</form>");
 

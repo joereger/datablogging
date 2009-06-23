@@ -2,12 +2,10 @@ package reger.core.agotext;
 
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import reger.core.agotext.units.Second;
+import reger.core.TimeUtils;
 
 /**
  * User: Joe Reger Jr
@@ -45,10 +43,12 @@ public class AgoText {
      *
      * @param reference
      */
-    public AgoText(final Date reference)
-    {
+    public AgoText(final Date reference){
         setReference(reference);
     }
+
+
+
 
     /**
      * Calculate the approximate duration between the referenceDate and date
@@ -59,9 +59,8 @@ public class AgoText {
     public Duration approximateDuration(final Date then)
     {
         Date ref = reference;
-        if (ref == null)
-        {
-            ref = new Date();
+        if (ref == null){
+            ref = TimeUtils.nowInGmtCalendar().getTime();
         }
 
         long difference = then.getTime() - ref.getTime();
@@ -140,7 +139,7 @@ public class AgoText {
         logger.debug("calculatePreciseDuration() called");
         int numberUnitsToShow = 2;
         int numberUnitsShown = 0;
-        if (reference == null){ reference = new Date(); }
+        if (reference == null){ reference = TimeUtils.nowInGmtCalendar().getTime(); }
         List<Duration> result = new ArrayList<Duration>();
         long difference = then.getTime() - reference.getTime();
         Duration duration = calculateDuration(difference);
@@ -230,9 +229,8 @@ public class AgoText {
      *
      * @param timestamp
      */
-    public void setReference(final Date timestamp)
-    {
-        reference = timestamp;
+    public void setReference(final Date timestamp){
+        reference = TimeUtils.nowInGmtCalendar().getTime();
     }
 
     /**

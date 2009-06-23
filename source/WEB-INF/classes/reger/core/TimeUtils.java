@@ -84,6 +84,13 @@ public class TimeUtils {
 		usertime = TimeUtils.convertFromOneTimeZoneToAnother(usertime, usertime.getTimeZone().getID(), timezoneid);
         return usertime;
     }
+
+    public static Calendar getCalFromDate(Date date){
+        Calendar out = Calendar.getInstance();
+        out.setTime(date);
+        return out;
+    }
+
 	
 	/**
     * Format a calendar date object in the correct string format so that it can be saved in mySql
