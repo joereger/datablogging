@@ -5,6 +5,8 @@ import org.apache.log4j.Logger;
 import java.util.*;
 
 import reger.core.agotext.units.Second;
+import reger.core.agotext.units.Year;
+import reger.core.agotext.units.Month;
 import reger.core.TimeUtils;
 
 /**
@@ -147,19 +149,17 @@ public class AgoText {
         numberUnitsShown = numberUnitsShown +  1;
         logger.debug("duration.getUnit().getName()="+duration.getUnit().getName()+" duration.getDelta()="+duration.getDelta()+" duration.getQuantity()="+duration.getQuantity());
         logger.debug("added duration (out of while loop)");
-        while ((Math.abs(duration.getDelta()) > 0) && numberUnitsShown<numberUnitsToShow && !(duration.getUnit() instanceof Second)){
-            duration = calculateDuration(duration.getDelta());
-            logger.debug("duration.getUnit().getName()="+duration.getUnit().getName()+" duration.getDelta()="+duration.getDelta()+" duration.getQuantity()="+duration.getQuantity());
-            if (duration.getUnit() instanceof TimeUnit){
-                result.add(duration);
-                numberUnitsShown = numberUnitsShown + 1;
-                logger.debug("added duration");
-                if (duration.getUnit() instanceof Second){
-                    logger.debug("it's a second so we're not getting another one");
-                    break;
+        //Only consider a second/third term if this is a year or month
+        if ((duration.getUnit() instanceof Year) || (duration.getUnit() instanceof Month)){
+            while ((Math.abs(duration.getDelta()) > 0) && numberUnitsShown<numberUnitsToShow){
+                duration = calculateDuration(duration.getDelta());
+                logger.debug("duration.getUnit().getName()="+duration.getUnit().getName()+" duration.getDelta()="+duration.getDelta()+" duration.getQuantity()="+duration.getQuantity());
+                if (duration.getUnit() instanceof TimeUnit){
+                    result.add(duration);
+                    numberUnitsShown = numberUnitsShown + 1;
+                    logger.debug("added duration (inside while loop)");
                 }
-            } else {
-                logger.debug("not adding duration because duration.getUnit() not instanceof TimeUnit");
+                if (duration.getUnit() instanceof Second){ break; }
             }
         }
         return result;
