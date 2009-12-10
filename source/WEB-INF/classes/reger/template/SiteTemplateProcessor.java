@@ -70,6 +70,13 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/nav.css\" type=\"text/css\" />");
         appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />");
         appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />");
+        //JWPlayer
+        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/silverlight.js\"></script>");
+        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/wmvplayer.js\"></script>");
+        //Thickbox
+        //appendToHead.append("<script type=\"text/javascript\" src=\"/js/thickbox/jquery.js\"></script>\n");
+        //appendToHead.append("<script type=\"text/javascript\" src=\"/js/thickbox/thickbox.js\"></script>\n");
+        //appendToHead.append("<link rel=\"stylesheet\" href=\"/js/thickbox/thickbox.css\" type=\"text/css\" media=\"screen\" />\n");
 
         StringBuffer appendToTopOfPage = new StringBuffer();
         if (userSession.getAccountuser().getIsLoggedIn()){

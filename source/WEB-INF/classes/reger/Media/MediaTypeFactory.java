@@ -10,7 +10,7 @@ public class MediaTypeFactory {
     public static MediaType getHandlerByFileExtension(String fileExtension){
 
         //This is essentially a registry of all MediaType handlers
-        MediaType[] mediaTypes = new MediaType[21];
+        MediaType[] mediaTypes = new MediaType[22];
         mediaTypes[0]=new BitmapImage();
         mediaTypes[1]=new QuicktimeMov();
         mediaTypes[2]=new MpegVideo();
@@ -32,6 +32,7 @@ public class MediaTypeFactory {
         mediaTypes[18]=new Exe();
         mediaTypes[19]=new PureVoiceAudio();
         mediaTypes[20]=new ThreeGTwoMov();
+        mediaTypes[20]=new WmvVideo();
 
         //Iterate the mediaType objects
         for (int i = 0; i < mediaTypes.length; i++) {

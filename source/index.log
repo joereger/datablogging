@@ -46,9 +46,9 @@ pageProps.helpText="This is your weblog's home page.  People who visit your webl
 //"}\n" +
 //"</style>\n");
 
-mb.append("<script type=\"text/javascript\" src=\"/js/thickbox/jquery.js\"></script>\n" +
-"<script type=\"text/javascript\" src=\"/js/thickbox/thickbox.js\"></script>\n"+
-"<link rel=\"stylesheet\" href=\"/js/thickbox/thickbox.css\" type=\"text/css\" media=\"screen\" />");
+//mb.append("<script type=\"text/javascript\" src=\"/js/thickbox/jquery.js\"></script>\n" +
+//"<script type=\"text/javascript\" src=\"/js/thickbox/thickbox.js\"></script>\n"+
+//"<link rel=\"stylesheet\" href=\"/js/thickbox/thickbox.css\" type=\"text/css\" media=\"screen\" />");
 
 
 //If it's not a calendar query or a search, do the dynamic html box thingy

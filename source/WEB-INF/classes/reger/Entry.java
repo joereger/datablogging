@@ -110,6 +110,7 @@ public class Entry {
     public StringBuffer filethumbs = new StringBuffer();
     public StringBuffer filethumbsrss = new StringBuffer();
     public StringBuffer filethumbslightbox = new StringBuffer();
+    public StringBuffer videolist = new StringBuffer();
 
     //Xform
     private EventXformData eventXformData = null;
@@ -692,19 +693,23 @@ public class Entry {
             filethumbs = new StringBuffer();
             filethumbsrss = new StringBuffer();
             filethumbslightbox = new StringBuffer();
+            videolist = new StringBuffer();
             for (int i = 0; i < rstThumbs.length; i++) {
                 Account account = new Account(accountid);
 
                 String ext = FilenameUtils.getExtension(rstThumbs[i][2]);
 
-                filethumbs.append("<a href='mediaouthtml.log?imageid="+rstThumbs[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
-                filethumbs.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-                filethumbs.append("</a>");
-                filethumbsrss.append("<a href='"+account.getSiteRootUrl()+"/mediaouthtml.log?imageid="+rstThumbs[i][0]+"'>");
-                filethumbsrss.append("<img src='"+account.getSiteRootUrl()+"/mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-                filethumbsrss.append("</a>");
+                //Don't do a thumbnail for videos
+                if (ext.indexOf("wmv")==-1){
+                    filethumbs.append("<a href='mediaouthtml.log?imageid="+rstThumbs[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
+                    filethumbs.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                    filethumbs.append("</a>");
+                    filethumbsrss.append("<a href='"+account.getSiteRootUrl()+"/mediaouthtml.log?imageid="+rstThumbs[i][0]+"'>");
+                    filethumbsrss.append("<img src='"+account.getSiteRootUrl()+"/mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                    filethumbsrss.append("</a>");
 
-//                if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+                   
+                    //                if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
 //                    filethumbslightbox.append("<a href=\"mediaout.log?imageid="+rstThumbs[i][0]+"&ext="+ext+"\" class=\"lightwindow\"  rel=\""+title+"[Images]\" title=\"\" caption=\""+rstThumbs[i][1]+"\" author=\"\">");
 //                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
 //                    filethumbslightbox.append("</a>");
@@ -730,16 +735,42 @@ public class Entry {
 //                    filethumbslightbox.append("</a>");
 //                }
 
-                if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
-                    filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"&TB_iframe=true\" title=\"Image\" class=\"thickbox\" rel=\"Images\">");
-                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-                    filethumbslightbox.append("</a>");
-                } else {
-                    ext = "html";
-                    filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"&TB_iframe=true&height=350&width=450\" class=\"thickbox\" title=\"\"  rel=\""+title+"\">");
-                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-                    filethumbslightbox.append("</a>");
+                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+                        filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"&TB_iframe=true\" title=\"Image\" class=\"thickbox\" rel=\"Images\">");
+                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                        filethumbslightbox.append("</a>");
+                    } else {
+                        ext = "html";
+                        filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"&TB_iframe=true&height=350&width=450\" class=\"thickbox\" title=\"\"  rel=\""+title+"\">");
+                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                        filethumbslightbox.append("</a>");
+                    }
                 }
+
+
+
+                Debug.debug(1, "Entry.java", "filename="+rstThumbs[i][2]+" ext="+ext);
+                if (ext.indexOf("wmv")>-1){
+                    if (videolist.length()==0){
+                        videolist.append("<br/>");   
+                    }
+                    videolist.append("<div id=\"myplayer"+rstThumbs[i][0]+"\"></div>\n" +
+                            "                <script type=\"text/javascript\">\n" +
+                            "                    var elm = document.getElementById(\"myplayer"+rstThumbs[i][0]+"\");\n" +
+                            "                    var src = '/js/wmvplayer/wmvplayer.xaml';\n" +
+                            "                    var cfg = {\n" +
+                            "                        file:'mediaout.log?imageid="+rstThumbs[i][0]+"',\n" +
+                            "                        width:'320',\n" +
+                            "                        height:'200',\n" +
+                            "                        showstop:'true',\n" +
+                            "                        screencolor:'000000'\n" +
+                            "                    };\n" +
+                            "                    var ply = new jeroenwijering.Player(elm,src,cfg);\n" +
+                            "                </script>");
+                    videolist.append("<br/>");
+                }
+
+
 
             }
         }

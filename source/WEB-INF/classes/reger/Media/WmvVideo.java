@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Handles standard images.
  */
-public class AviVideo implements MediaType {
+public class WmvVideo implements MediaType {
 
     /**
      * Returns the proper mime type for this MediaType
      */
     public String getMimeType(){
-        return "video/x-msvideo";
+        return "video/x-ms-wmv";
     }
 
     /**
@@ -47,7 +47,7 @@ public class AviVideo implements MediaType {
      */
     public String[] getAcceptableFileExtensions() {
         String[] extensions = new String[1];
-        extensions[0]="avi";
+        extensions[0]="wmv";
         return extensions;
     }
 
@@ -56,8 +56,25 @@ public class AviVideo implements MediaType {
      */
     public String getMediaOutHtml(HttpServletRequest request, reger.UserSession userSession) {
         String mediaouturl = "mediaout.log?imageid="+request.getParameter("imageid")+"&isProfileImage="+request.getParameter("isProfileImage")+"&entrykey="+request.getParameter("entrykey");
+        //StringBuffer mb = new StringBuffer();
+        //mb.append("<EMBED SRC=\""+mediaouturl+"\" AUTOSTART=true></EMBED>");
+        //return mb.toString();
+
+
         StringBuffer mb = new StringBuffer();
-        mb.append("<EMBED SRC=\""+mediaouturl+"\" AUTOSTART=true></EMBED>");
+        mb.append("<div id=\"myplayer"+request.getParameter("imageid")+"\"></div>\n" +
+                            "                <script type=\"text/javascript\">\n" +
+                            "                    var elm = document.getElementById(\"myplayer"+request.getParameter("imageid")+"\");\n" +
+                            "                    var src = '/js/wmvplayer/wmvplayer.xaml';\n" +
+                            "                    var cfg = {\n" +
+                            "                        file:'mediaout.log?imageid="+request.getParameter("imageid")+"',\n" +
+                            "                        width:'320',\n" +
+                            "                        height:'200',\n" +
+                            "                        showstop:'true',\n" +
+                            "                        screencolor:'000000'\n" +
+                            "                    };\n" +
+                            "                    var ply = new jeroenwijering.Player(elm,src,cfg);\n" +
+                            "                </script>");
         return mb.toString();
     }
 
