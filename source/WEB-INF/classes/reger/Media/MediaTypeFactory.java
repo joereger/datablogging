@@ -32,7 +32,7 @@ public class MediaTypeFactory {
         mediaTypes[18]=new Exe();
         mediaTypes[19]=new PureVoiceAudio();
         mediaTypes[20]=new ThreeGTwoMov();
-        mediaTypes[20]=new WmvVideo();
+        mediaTypes[21]=new WmvVideo();
 
         //Iterate the mediaType objects
         for (int i = 0; i < mediaTypes.length; i++) {

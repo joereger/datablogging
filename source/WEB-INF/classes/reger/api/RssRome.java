@@ -299,11 +299,12 @@ public class RssRome {
             if (overridecamphonesubject==1){
                 String dateString = reger.core.TimeUtils.dateformatFullNoTime(reger.core.TimeUtils.gmttousertime(entry.dateGmt, account.getTimezoneid()));
                 overridecamphonesubjecttext = overridecamphonesubjecttext.replaceAll("\\<\\$Date\\$\\>", dateString);
-                String tmpTitle = reger.core.Util.truncateString(overridecamphonesubjecttext, 255);
+                logger.debug("overridecamphonesubject after <$Date$> replacement="+overridecamphonesubjecttext);
+                String generatedSubject = reger.core.Util.truncateString(overridecamphonesubjecttext, 255);
                 logger.debug("entry.title="+entry.title);
                 logger.debug("dateString="+dateString);
-                logger.debug("tmpTitle="+tmpTitle);
-                if (tmpTitle.equals(entry.title) || dateString.equals(entry.title)){
+                logger.debug("generatedSubject="+generatedSubject);
+                if (generatedSubject.equals(entry.title.trim()) || dateString.equals(entry.title.trim())){
                     logger.debug("returning true!!!");
                     return true;
                 }
