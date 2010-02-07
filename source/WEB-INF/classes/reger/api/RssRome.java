@@ -1,28 +1,27 @@
 package reger.api;
 
-import reger.core.db.Db;
-import reger.core.Debug;
-import reger.core.DateDiff;
-import reger.api.rome.MegaDataRSSModule;
-import reger.api.rome.MegaDataRSSModuleImpl;
-import reger.Media.MediaType;
-import reger.Media.MediaTypeFactory;
-import reger.Log;
-import reger.Account;
-import reger.Accountuser;
-
-import java.util.Calendar;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.sun.syndication.feed.atom.Content;
+import com.sun.syndication.feed.atom.Entry;
+import com.sun.syndication.feed.atom.Feed;
+import com.sun.syndication.feed.atom.Generator;
 import com.sun.syndication.feed.rss.*;
 import com.sun.syndication.feed.synd.*;
-import com.sun.syndication.feed.atom.Feed;
-import com.sun.syndication.feed.atom.Content;
-import com.sun.syndication.feed.atom.Generator;
-import com.sun.syndication.feed.atom.Entry;
-import com.sun.syndication.io.*;
+import com.sun.syndication.io.SyndFeedOutput;
+import com.sun.syndication.io.WireFeedOutput;
 import org.apache.log4j.Logger;
+import reger.Account;
+import reger.Log;
+import reger.Media.MediaType;
+import reger.Media.MediaTypeFactory;
+import reger.api.rome.MegaDataRSSModule;
+import reger.api.rome.MegaDataRSSModuleImpl;
+import reger.core.DateDiff;
+import reger.core.Debug;
+import reger.core.db.Db;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  *
@@ -31,6 +30,7 @@ public class RssRome {
 
 
     public static StringBuffer getFeed(reger.UserSession userSession, int logid, int limititems, String feedType, String password, int eventid){
+        Logger logger = Logger.getLogger(RssRome.class);
         //Verify that we have a valid feed type
         if (!verifyType(feedType)){
             //Default value if fail
@@ -42,18 +42,32 @@ public class RssRome {
             //userSession.getAccountuser().quickLogLogin(password);
         //}
 
+        //Need to find the right accountuserid
+        int accountuserid = 0;
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstAcctUser= Db.RunSQL("SELECT accountuserid FROM accountuser WHERE accountid='"+userSession.getAccount().getAccountid()+"' and isactive='1'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstAcctUser!=null && rstAcctUser.length>0){
+            if (!rstAcctUser[0][0].equals("") && reger.core.Util.isinteger(rstAcctUser[0][0])){
+                accountuserid = Integer.parseInt(rstAcctUser[0][0]);
+            }
+        }
+        logger.debug("found accountuserid="+accountuserid);
+
         //Call the appropriate Atom or RSS feed generator
         if (feedType.substring(0,4).equals("atom")){
-            return getFeedAtom(userSession, logid, limititems, feedType, eventid);
+            return getFeedAtom(userSession, logid, limititems, feedType, eventid, accountuserid);
         } else {
-            return getFeedRss(userSession, logid, limititems, feedType, eventid);
+            return getFeedRss(userSession, logid, limititems, feedType, eventid, accountuserid);
         }
 
     }
 
 
 
-    private static StringBuffer getFeedRss(reger.UserSession userSession, int logid, int limititems , String feedType, int eventid){
+    private static StringBuffer getFeedRss(reger.UserSession userSession, int logid, int limititems , String feedType, int eventid, int accountuserid){
         StringBuffer fd = new StringBuffer();
 
         //Create Rome Feed Object
@@ -115,7 +129,7 @@ public class RssRome {
                 reger.Entry entry = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][0]));
 
                 //See if this is an auto title... if so, don't post for a couple days
-                if (!isAutoNamedJobbie(entry, userSession.getAccountuser(), userSession.getAccount())){
+                if (!isAutoNamedJobbie(entry, userSession.getAccount(), accountuserid)){
 
                     //Get log name
                     String logname="";
@@ -269,7 +283,7 @@ public class RssRome {
         return fd;
     }
 
-    public static boolean isAutoNamedJobbie(reger.Entry entry, Accountuser accountuser, Account account){
+    public static boolean isAutoNamedJobbie(reger.Entry entry, Account account, int accountuserid){
         Logger logger = Logger.getLogger(RssRome.class);
         logger.debug("start isAutoNamedJobbie()-------");
         try{
@@ -280,10 +294,11 @@ public class RssRome {
                 logger.debug("returning false because DateDiff > 48");
                 return false;
             }
+
             //Get the emailapi settings
             //-----------------------------------
             //-----------------------------------
-            String[][] rstApisettings= Db.RunSQL("SELECT overridecamphonesubject, overridecamphonesubjecttext, ignorecamphonebody, consolidatecamphonetoonedailyentry, saveemailpostsasdraft, savecamphonepostsasdraft, camphoneimagetags, emailsecret FROM emailapi WHERE emailapi.accountuserid='"+accountuser.getAccountuserid()+"'");
+            String[][] rstApisettings= Db.RunSQL("SELECT overridecamphonesubject, overridecamphonesubjecttext, ignorecamphonebody, consolidatecamphonetoonedailyentry, saveemailpostsasdraft, savecamphonepostsasdraft, camphoneimagetags, emailsecret FROM emailapi WHERE emailapi.accountuserid='"+accountuserid+"'");
             //-----------------------------------
             //-----------------------------------
             if (rstApisettings!=null && rstApisettings.length>0){
@@ -295,6 +310,7 @@ public class RssRome {
                 }
             }
             //Now see what's up
+            logger.debug("accountuserid="+accountuserid);
             logger.debug("overridecamphonesubject="+overridecamphonesubject);
             if (overridecamphonesubject==1){
                 String dateString = reger.core.TimeUtils.dateformatFullNoTime(reger.core.TimeUtils.gmttousertime(entry.dateGmt, account.getTimezoneid()));
@@ -320,7 +336,7 @@ public class RssRome {
 
 
 
-    public static StringBuffer getFeedAtom(reger.UserSession userSession, int logid, int limititems , String feedType, int eventid){
+    public static StringBuffer getFeedAtom(reger.UserSession userSession, int logid, int limititems , String feedType, int eventid, int accountuserid){
         StringBuffer fd = new StringBuffer();
 
         //Create Rome Feed Object
@@ -381,7 +397,7 @@ public class RssRome {
                 reger.Entry entry = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][0]));
 
                 //See if this is an auto title... if so, don't post for a couple days
-                if (!isAutoNamedJobbie(entry, userSession.getAccountuser(), userSession.getAccount())){
+                if (!isAutoNamedJobbie(entry, userSession.getAccount(), accountuserid)){
 
                     //Get log name
                     String logname="";
@@ -495,7 +511,7 @@ public class RssRome {
 
 
 
-    public static StringBuffer getSyndFeed(reger.UserSession userSession, int logid, int limititems , String feedType){
+    private static StringBuffer getSyndFeed(reger.UserSession userSession, int logid, int limititems , String feedType, int accountuserid){
         StringBuffer fd = new StringBuffer();
 
         //Create Rome Feed Object
@@ -551,7 +567,7 @@ public class RssRome {
                 reger.Entry entry = reger.cache.EntryCache.get(Integer.parseInt(rstEvent[i][0]));
 
                 //See if this is an auto title... if so, don't post for a couple days
-                if (!isAutoNamedJobbie(entry, userSession.getAccountuser(), userSession.getAccount())){
+                if (!isAutoNamedJobbie(entry, userSession.getAccount(), accountuserid)){
 
                     //Get log name
                     String logname="";
