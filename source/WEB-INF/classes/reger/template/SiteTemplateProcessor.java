@@ -71,8 +71,16 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />");
         appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />");
         //JWPlayer
-        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/silverlight.js\"></script>");
-        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/wmvplayer.js\"></script>");
+        //appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/silverlight.js\"></script>");
+        //appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/wmvplayer.js\"></script>");
+        //Jquery
+        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jquery-1.4.1.min.js\"></script>");
+        //prettyPhoto
+        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/prettyPhoto/css/prettyPhoto.css\" type=\"text/css\" />");
+        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/prettyPhoto/js/jquery.prettyPhoto.js\"></script>");
+
+
+
         //Thickbox
         //appendToHead.append("<script type=\"text/javascript\" src=\"/js/thickbox/jquery.js\"></script>\n");
         //appendToHead.append("<script type=\"text/javascript\" src=\"/js/thickbox/thickbox.js\"></script>\n");
@@ -86,8 +94,17 @@ public class SiteTemplateProcessor implements TemplateProcessor {
             }
         }
 
+        //Append just before close body
+        StringBuffer appendToBottomOfPage = new StringBuffer();
+        appendToBottomOfPage.append("<script type=\"text/javascript\" charset=\"utf-8\">\n" +
+                "$(document).ready(function(){\n" +
+                "     $(\"a[rel^='prettyPhoto']\").prettyPhoto({theme:'facebook'});\n" +
+                "});\n" +
+                "</script>");
+
         //Whether or not we've found a body tag yet
         boolean foundbodytag = false;
+        boolean foundclosebodytag = false;
         boolean foundheadtag = false;
 
         //This is the main page output stringbuffer
@@ -100,7 +117,7 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         int allFlagsAsInt = Integer.parseInt(allFlags);
         //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.|\\n)*?\\>|\\<head(.|\\n)*?\\>|\\<\\/body>|\\<\\/head>)", allFlagsAsInt);
         //Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.*?)\\>|\\<head(.*?)\\>|\\<\\/body>|\\<\\/head>)", allFlagsAsInt);
-        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.*?)\\>|\\<head(.*?)\\>)", allFlagsAsInt);
+        Pattern p = Pattern.compile("(\\<\\$(.|\\n)*?\\$\\>|\\<body(.*?)\\>|\\<head(.*?)\\>|\\</body(.*?)\\>)", allFlagsAsInt);
         // Create a matcher with an input string
         Matcher m = p.matcher(templateMainBody);
         // Loop through
@@ -110,6 +127,10 @@ public class SiteTemplateProcessor implements TemplateProcessor {
                 //Body tag
                 foundbodytag = true;
                 m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(m.group() + appendToTopOfPage.toString()));
+            } else if (m.group().substring(0,6).equalsIgnoreCase("</body")) {
+                //Just before close body tag
+                foundclosebodytag = true;
+                m.appendReplacement(pg, reger.core.Util.cleanForAppendreplacement(appendToBottomOfPage.toString() + m.group()));
             } else if (m.group().substring(0,5).equalsIgnoreCase("<head") || m.group().substring(0,6).equalsIgnoreCase("< head")) {
                 //Head tag
                 foundheadtag = true;
@@ -147,6 +168,15 @@ public class SiteTemplateProcessor implements TemplateProcessor {
             StringBuffer tmp = new StringBuffer();
             tmp.append("<head>"+appendToHead+"</head>");
             tmp.append(pg);
+            pg = tmp;
+        }
+
+        //If no close body tag was found we should put stuff onto bottom of the stringbuffer
+        if (!foundclosebodytag){
+            //Append AdminTools
+            StringBuffer tmp = new StringBuffer();
+            tmp.append(pg);
+            tmp.append(appendToBottomOfPage);
             pg = tmp;
         }
 

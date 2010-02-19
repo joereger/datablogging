@@ -1,22 +1,22 @@
 package reger;
 
-import reger.core.db.Db;
-import reger.core.ValidationException;
-import reger.core.Debug;
-import reger.core.TimeUtils;
-import reger.linkrot.AnchorFinder;
+import org.apache.commons.io.FilenameUtils;
 import reger.cache.LogCache;
 import reger.cache.providers.jboss.Cacheable;
-import reger.xforms.EventXformData;
-import reger.mega.FieldType;
+import reger.core.Debug;
+import reger.core.TimeUtils;
+import reger.core.Util;
+import reger.core.ValidationException;
+import reger.core.db.Db;
 import reger.groups.EventToGroup;
+import reger.linkrot.AnchorFinder;
+import reger.mega.FieldType;
 import reger.poll.Poll;
+import reger.xforms.EventXformData;
 
-import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
-
-import org.apache.commons.io.FilenameUtils;
 
 /**
  * Represents an entry
@@ -735,16 +735,31 @@ public class Entry {
 //                    filethumbslightbox.append("</a>");
 //                }
 
+
+                    //V2 FAIL
+//                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+//                        filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"&TB_iframe=true\" title=\"Image\" class=\"thickbox\" rel=\"Images\">");
+//                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+//                        filethumbslightbox.append("</a>");
+//                    } else {
+//                        ext = "html";
+//                        filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"&TB_iframe=true&height=350&width=450\" class=\"thickbox\" title=\"\"  rel=\""+title+"\">");
+//                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+//                        filethumbslightbox.append("</a>");
+//                    }
+
+                    //prettyPhoto + jQuery, can you bring it... finally?
                     if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
-                        filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"&TB_iframe=true\" title=\"Image\" class=\"thickbox\" rel=\"Images\">");
+                        filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"\" title=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
                         filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                         filethumbslightbox.append("</a>");
                     } else {
                         ext = "html";
-                        filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"&TB_iframe=true&height=350&width=450\" class=\"thickbox\" title=\"\"  rel=\""+title+"\">");
+                        filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
                         filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                         filethumbslightbox.append("</a>");
                     }
+
                 }
 
 
