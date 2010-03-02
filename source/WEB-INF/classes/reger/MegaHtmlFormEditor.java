@@ -75,7 +75,7 @@ public class MegaHtmlFormEditor {
             mb.append("}" + "\n");
             mb.append("//--></script>" + "\n");
             //mb.append("<textarea cols='45' rows='10' name='comments' wrap='virtual' style='width: 75%;font: 10pt monospace' class=\"expandify\">"+pageProps.entry.comments+"</textarea>");
-            mb.append("<textarea name='comments' wrap='virtual' style='overflow: hidden; height: 80px; width: 75%;' class=\"expand\">"+pageProps.entry.comments+"</textarea>");
+            mb.append("<textarea name=\"comments\" wrap=\"virtual\" rows=\"5\" style=\"overflow: hidden; height: 80px; width: 75%;\" class=\"expand80-200000\">"+pageProps.entry.comments+"</textarea>");
             //Expanding input box script
             mb.append("<script type='text/javascript' src='"+pageProps.pathToAppRoot+"/js/jquery.textarea-expander.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
             mb.append("");
