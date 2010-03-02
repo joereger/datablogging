@@ -1,6 +1,8 @@
 package reger.template;
 
+import org.apache.commons.io.FilenameUtils;
 import reger.UserSession;
+import reger.core.Util;
 import reger.core.db.Db;
 import reger.pageFramework.PageProps;
 
@@ -57,7 +59,7 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
         }
 
         //Get the list
-        String sql="SELECT image.imageid, image.image, event.eventid, event.logid, event.title FROM image, event WHERE image.eventid=event.eventid AND  event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY RAND() DESC LIMIT 0,"+maxinlist;
+        String sql="SELECT image.imageid, image.image, event.eventid, event.logid, event.title, image.filename, image.description FROM image, event WHERE image.eventid=event.eventid AND  event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY RAND() DESC LIMIT 0,"+maxinlist;
 
 
         mb.append("<table cellpadding=0 cellspacing=1 border=0>" );
@@ -73,14 +75,29 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
         	while(i<rstToday.length && counter<maxinlist){
         		counter=counter+1;
 
+                String ext = FilenameUtils.getExtension(rstToday[i][5]);
+
         		mb.append("<tr>" );
                 //String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rstToday[i][3]), Integer.parseInt(rstToday[i][2]), rstToday[i][4]);
 
                 mb.append("<td valign=top bgcolor=#ffffff><font face=arial size=-2>" );
                 //mb.append("<a href='"+pageProps.pathToAppRoot+"mediaouthtml.log?imageid="+rstToday[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">" );
-                mb.append("<a rel=\"prettyPhoto[HpTemplateTagRandomFiles]\" href='"+pageProps.pathToAppRoot+"mediaouthtml.log?imageid="+rstToday[i][0]+"'>" );
-                mb.append("<img src='"+pageProps.pathToAppRoot+"mediaout.log?imageid="+ rstToday[i][0] +"&isthumbnail=yes' border=0>" );
-                mb.append("</a>" );
+                //mb.append("<img src='"+pageProps.pathToAppRoot+"mediaout.log?imageid="+ rstToday[i][0] +"&isthumbnail=yes' border=0>" );
+                //mb.append("</a>" );
+
+                if (ext.toLowerCase().indexOf("jpg")>-1 || ext.toLowerCase().indexOf("gif")>-1 || ext.toLowerCase().indexOf("png")>-1 || ext.toLowerCase().indexOf("bmp")>-1){
+                    mb.append("<a href=\"mediaout/file."+ext+"?imageid="+rstToday[i][0]+"\" title=\""+ Util.cleanForjavascript(rstToday[i][6])+"\" rel=\"prettyPhoto[HpTemplateTagRandomFiles]\">");
+                    mb.append("<img src='mediaout.log?imageid="+rstToday[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                    mb.append("</a>");
+                } else {
+                    String extOrig = ext;
+                    ext = "html";
+                    mb.append("<a href=\"mediaouthtml.log?iframe=true&width=950&height=760&imageid="+rstToday[i][0]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstToday[i][6])+" extOrig="+extOrig+"\" rel=\"prettyPhoto[HpTemplateTagRandomFiles]\">");
+                    mb.append("<img src='mediaout.log?imageid="+rstToday[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                    mb.append("</a>");
+                }
+
+
                 mb.append("</font></td>" );
                 mb.append("</tr>" );
 
