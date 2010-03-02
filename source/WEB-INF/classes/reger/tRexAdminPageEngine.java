@@ -24,6 +24,10 @@ public class tRexAdminPageEngine {
         ap.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />");
         ap.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />");
 
+       //Jquery
+        ap.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jquery-1.4.1.min.js\"></script>");
+
+
         ap.append("</head>");
         ap.append("<body bgcolor=#ffffff link='#0000ff' vlink='#0000ff' text='#000000' LEFTMARGIN='0' TOPMARGIN='0' MARGINWIDTH='0' MARGINHEIGHT='0'");
         //Onload handler

@@ -26,6 +26,13 @@ pageProps.pathToAppRoot="";
 <html>
 <head>
 	<title>Random Images</title>
+
+    <script type="text/javascript" src="js/jquery-1.4.1.min.js"></script>
+    <link rel="stylesheet" href="js/prettyPhoto/css/prettyPhoto.css" type="text/css" />
+    <script type="text/javascript" src="js/prettyPhoto/js/jquery.prettyPhoto.js"></script>
+
+
+
 </head>
 
 <meta http-equiv="Refresh" content="30">
@@ -52,7 +59,8 @@ StringBuffer imglist=new StringBuffer();
 if (rstImageRandom!=null && rstImageRandom.length>0){
     for(int i=0; i<rstImageRandom.length; i++){
 
-        imglist.append("<a href='mediaouthtml.log?imageid=" + rstImageRandom[i][2] + "' align=left valign=top onclick=\"NewWindow(this.href,'name','','','yes');return false;\">");
+        //imglist.append("<a href='mediaouthtml.log?imageid=" + rstImageRandom[i][2] + "' align=left valign=top onclick=\"NewWindow(this.href,'name','','','yes');return false;\">");
+        imglist.append("<a rel=\"prettyPhoto[RandomImages]\" href='mediaouthtml.log?imageid=" + rstImageRandom[i][2] + "'>");
         imglist.append("<img src='mediaout.log?imageid=" + rstImageRandom[i][2] + "&isthumbnail=yes' width=100 border=0>");
         imglist.append("</a><br>");
         imglist.append("<img src=images/clear.gif border=0 width=1 height=5><br>");
@@ -72,6 +80,12 @@ if (rstImageRandom!=null && rstImageRandom.length>0){
 </tr>
 </table><br>
 
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){
+     $("a[rel^='prettyPhoto']").prettyPhoto({theme:'facebook'});
+});
+</script>
 
 </body>
 </html>

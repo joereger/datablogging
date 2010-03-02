@@ -1,12 +1,8 @@
 package reger.template;
 
-import reger.pageFramework.PageProps;
 import reger.UserSession;
+import reger.core.db.Db;
 import reger.pageFramework.PageProps;
-import reger.core.db.Db;
-import reger.core.db.Db;
-
-import java.util.Calendar;
 
 /**
  *
@@ -81,7 +77,8 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
                 //String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rstToday[i][3]), Integer.parseInt(rstToday[i][2]), rstToday[i][4]);
 
                 mb.append("<td valign=top bgcolor=#ffffff><font face=arial size=-2>" );
-                mb.append("<a href='"+pageProps.pathToAppRoot+"mediaouthtml.log?imageid="+rstToday[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">" );
+                //mb.append("<a href='"+pageProps.pathToAppRoot+"mediaouthtml.log?imageid="+rstToday[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">" );
+                mb.append("<a rel=\"prettyPhoto[HpTemplateTagRandomFiles]\" href='"+pageProps.pathToAppRoot+"mediaouthtml.log?imageid="+rstToday[i][0]+"'>" );
                 mb.append("<img src='"+pageProps.pathToAppRoot+"mediaout.log?imageid="+ rstToday[i][0] +"&isthumbnail=yes' border=0>" );
                 mb.append("</a>" );
                 mb.append("</font></td>" );
