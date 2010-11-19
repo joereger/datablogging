@@ -62,7 +62,7 @@ public class MegaChartFactory {
         }
 
         //Truncate the data for performance
-        megaChart.truncateDataToCertainNumberOfPoints(100);
+        megaChart.truncateDataToCertainNumberOfPoints(750);
         //Create the chart
         JFreeChart chart = ct.getJFreeChart(megaChart);
         //Format the chart

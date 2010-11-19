@@ -78,6 +78,10 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         //prettyPhoto
         appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/prettyPhoto/css/prettyPhoto.css\" type=\"text/css\" />");
         appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/prettyPhoto/js/jquery.prettyPhoto.js\"></script>");
+        //Canonical
+        appendToHead.append(appendCanonicalToHead(userSession, request));
+
+
 
 
 
@@ -187,6 +191,12 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         reger.core.Debug.debug(5, "SiteTemplateProcessor.java", "Leaving SiteTemplateProcessor.");
 	    return pg;
 
+    }
+
+    public static String appendCanonicalToHead(UserSession userSession, javax.servlet.http.HttpServletRequest request){
+        String out = "";
+        userSession.getUrlSplitter().getRequest_uri();
+        return out;
     }
 
 

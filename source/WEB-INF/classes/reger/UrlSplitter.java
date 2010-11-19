@@ -17,6 +17,7 @@ public class UrlSplitter implements java.io.Serializable {
     private String siterooturl = "";
     private int port = 80;
     private String scheme = "http://";
+    private String request_uri = "";
     private ArrayList<String> servernameAllPossibleDomains=new ArrayList<String>();
 
 
@@ -29,6 +30,10 @@ public class UrlSplitter implements java.io.Serializable {
     }
 
     public UrlSplitter(javax.servlet.http.HttpServletRequest request){
+        //Original request uri... what's in the browser
+        request_uri = request.getRequestURI();
+        Debug.debug(1, "", " request_uri=" + request_uri);
+
         //Get the host
         rawIncomingServername = request.getServerName();
         Debug.debug(5, "", " rawIncomingServername=" + rawIncomingServername);
@@ -125,4 +130,11 @@ public class UrlSplitter implements java.io.Serializable {
         return scheme;
     }
 
+    public String getRequest_uri() {
+        return request_uri;
+    }
+
+    public void setRequest_uri(String request_uri) {
+        this.request_uri = request_uri;
+    }
 }
