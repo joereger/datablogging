@@ -464,7 +464,7 @@ public class Account implements java.io.Serializable {
   }
 
   public String getPathToAccountFiles(){
-      return reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"files"+java.io.File.separator+accountid+java.io.File.separator;
+      return reger.systemprops.AllSystemProperties.getProp("PATHUPLOADMEDIA")+"files"+java.io.File.separator+accountid+java.io.File.separator;
   }
 
   /**

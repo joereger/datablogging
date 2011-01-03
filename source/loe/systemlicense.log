@@ -1,9 +1,5 @@
 
-<%@ page import="java.util.*,
-                 reger.core.SystemProperty,
-                 reger.systemproperties.AllSystemProperties,
-                 reger.core.db.DbConfig,
-                 reger.core.licensing.License" %>
+<%@ page import="reger.core.licensing.License" %>
 
 <%
 /*----------------------------------------------------*/

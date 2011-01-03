@@ -175,7 +175,7 @@ public class AllNavButtons {
 
         //LOE
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loemain", "loe", "MAIN", "loe/index.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfig", "loe", "SYSTEM SETUP", "loe/systemproperties.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfig", "loe", "SYSTEM SETUP", "loe/systemprops.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loeperformance", "loe", "PERFORMANCE", "loe/memory.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loeeventlog", "loe", "EVENT LOG", "loe/viewevents.jsp", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loescheduler", "loe", "SCHEDULER", "loe/schedulerStatus.log", false, "MASTERADMIN", null));
@@ -183,7 +183,7 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetools", "loe", "TOOLS", "loe/tools.log", false, "MASTERADMIN", null));
 
         //LOE Syetem Config
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfigprops", "loesystemconfig", "SYSTEM PROPS", "loe/systemproperties.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfigprops", "loesystemconfig", "SYSTEM PROPS", "loe/systemprops.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfigdb", "loesystemconfig", "DATABASE SETUP", "loe/systemdb.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemlicense", "loesystemconfig", "SERVER LICENSE", "loe/systemlicense.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loerobotstxt", "loesystemconfig", "ROBOTS.TXT", "loe/systemrobotstxt.log", false, "MASTERADMIN", null));

@@ -1,8 +1,7 @@
 package reger.scheduledtasks;
 
-import reger.core.WebAppRootDir;
 import reger.core.bandwidthtest.BandwidthTest;
-import reger.core.db.DbConfig;
+import reger.systemprops.InstanceProperties;
 
 import java.io.*;
 import javax.servlet.*;
@@ -28,7 +27,7 @@ public class Loader extends HttpServlet {
         reger.core.WebAppRootDir ward = new reger.core.WebAppRootDir(config);
         reger.core.ContextName ctname = new reger.core.ContextName(config);
         //Make sure we have a valid db connection
-        if (!DbConfig.haveValidConfig()){
+        if (!InstanceProperties.haveValidConfig()){
             return;
         }
         startAMasterThread();

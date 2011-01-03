@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:32 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Scheduler" table="scheduler">
+        <cache usage="nonstrict-read-write"/>
+        <id name="schedulerid" type="int">
+            <column name="schedulerid" />
+            <generator class="native" />
+        </id>
+        <property name="masterthreadid" type="java.lang.Integer">
+            <column name="masterthreadid" />
+        </property>
+        <property name="task" type="string">
+            <column name="task" />
+        </property>
+        <property name="lastrun" type="timestamp">
+            <column name="lastrun" length="19" />
+        </property>
+        <property name="timesrun" type="java.lang.Integer">
+            <column name="timesrun" />
+        </property>
+        <property name="comment" type="string">
+            <column name="comment" />
+        </property>
+    </class>
+</hibernate-mapping>

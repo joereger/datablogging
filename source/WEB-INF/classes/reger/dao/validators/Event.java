@@ -2,11 +2,9 @@ package reger.dao.validators;
 
 
 import reger.Account;
-import reger.hibernate.Validator;
-import reger.hibernate.HibValEx;
+import reger.dao.hibernate.Validator;
+import reger.dao.hibernate.HibValEx;
 import reger.cache.AccountCache;
-import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.event.EventSource;
 
 /**
  * Validator for the event dao
@@ -16,8 +14,8 @@ public class Event implements Validator {
 
     public void validate(Object entity) throws HibValEx {
         HibValEx vex = new HibValEx("");
-        if (entity instanceof reger.dao.hibernate.Event){
-            reger.dao.hibernate.Event event = (reger.dao.hibernate.Event)entity;
+        if (entity instanceof reger.dao.Event){
+            reger.dao.Event event = (reger.dao.Event)entity;
             //Title can't be blank
             if (event.getTitle().equals("")){
                 vex.addValidationError("Entry title can not be blank.");

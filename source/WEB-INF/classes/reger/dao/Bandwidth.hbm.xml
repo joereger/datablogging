@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:35 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Bandwidth" table="bandwidth">
+        <cache usage="nonstrict-read-write"/>
+        <id name="bandwidthid" type="int">
+            <column name="bandwidthid" />
+            <generator class="native" />
+        </id>
+        <property name="accountid" type="java.lang.Integer">
+            <column name="accountid" />
+        </property>
+        <property name="month" type="java.lang.Integer">
+            <column name="month" />
+        </property>
+        <property name="year" type="java.lang.Integer">
+            <column name="year" />
+        </property>
+        <property name="bytes" type="long">
+            <column name="bytes" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

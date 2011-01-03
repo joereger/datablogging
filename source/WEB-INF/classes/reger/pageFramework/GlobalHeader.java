@@ -3,10 +3,10 @@ package reger.pageFramework;
 import reger.UserSession;
 import reger.emailtext.BasicEmails;
 import reger.licensing.ServerLicense;
-import reger.core.db.DbConfig;
 import reger.core.WebAppRootDir;
 import reger.core.ContextName;
 import reger.core.*;
+import reger.systemprops.InstanceProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +36,7 @@ public class GlobalHeader {
             }
 
             //Make sure we have a valid db connection
-            if (!DbConfig.haveValidConfig()){
+            if (!InstanceProperties.haveValidConfig()){
                 response.sendRedirect(pageProps.pathToAppRoot + "setup/setup-00.log");
                 return;
             }
@@ -83,7 +83,7 @@ public class GlobalHeader {
             pageProps.isCurrentRequestSSL = pageProps.isRequestSSL(request);
             //reger.core.Util.logtodb("Successfully determined isCurrentRequestSSL:" + pageProps.isCurrentRequestSSL + "<br>getProtocol()=" + request.getProtocol());
             //Next, if the page requires SSL but it isn't SSL and SSL is on for this instance we need to do a redirect
-            if (!request.isSecure() && reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+            if (!request.isSecure() && reger.systemprops.AllSystemProperties.getProp("SSLISON").equals("1")){
                 //Redirect to https
                 try {
                     //reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));

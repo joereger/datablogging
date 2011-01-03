@@ -1,13 +1,13 @@
-<%@ page import="reger.core.db.DbConfig,
-                 reger.core.db.Db,
+<%@ page import="reger.core.db.Db,
                  reger.MegaLogType,
                  reger.Account,
                  reger.core.Util"%>
+<%@ page import="reger.systemprops.InstanceProperties" %>
 <%
 //Only do this page if we have an invalid database connection.
 //Otherwise, anybody's going to be able to reset the database
 //configuration whenever they want. Which isn't cool.
-if (!DbConfig.haveValidConfig()){
+if (!InstanceProperties.haveValidConfig()){
     response.sendRedirect("setup-01.log");
     return;
 }

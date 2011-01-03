@@ -2,9 +2,6 @@ package reger.dbversion;
 
 import reger.core.db.Db;
 import reger.core.dbupgrade.UpgradeDatabaseOneVersion;
-import reger.core.Debug;
-import reger.Log;
-import reger.systemproperties.AllSystemProperties;
 
 import java.io.File;
 import java.util.Calendar;

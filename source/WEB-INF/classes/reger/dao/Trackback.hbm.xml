@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:37 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Trackback" table="trackback">
+        <cache usage="nonstrict-read-write"/>
+        <id name="trackbackid" type="int">
+            <column name="trackbackid" />
+            <generator class="native" />
+        </id>
+        <property name="eventid" type="int">
+            <column name="eventid" not-null="true" />
+        </property>
+        <property name="isoutbound" type="boolean">
+            <column name="isoutbound" />
+        </property>
+        <property name="ispingedalready" type="boolean">
+            <column name="ispingedalready" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" />
+        </property>
+        <property name="blogname" type="string">
+            <column name="blogname" />
+        </property>
+        <property name="posttitle" type="string">
+            <column name="posttitle" />
+        </property>
+        <property name="excerpt" type="string">
+            <column name="excerpt" />
+        </property>
+        <property name="datetime" type="timestamp">
+            <column name="datetime" length="19" />
+        </property>
+        <property name="isapproved" type="boolean">
+            <column name="isapproved" />
+        </property>
+    </class>
+</hibernate-mapping>

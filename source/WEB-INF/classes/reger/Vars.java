@@ -194,7 +194,7 @@ public class Vars {
 
     public static String getHttpUrlPrefix(){
         if (httpUrlPrefix==null){
-            if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+            if (reger.systemprops.AllSystemProperties.getProp("SSLISON").equals("1")){
                 httpUrlPrefix = "https://";
             } else {
                 httpUrlPrefix = "http://";

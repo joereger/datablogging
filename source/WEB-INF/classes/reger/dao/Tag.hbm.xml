@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:33 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Tag" table="tag">
+        <cache usage="nonstrict-read-write"/>
+        <id name="tagid" type="int">
+            <column name="tagid" />
+            <generator class="native" />
+        </id>
+        <property name="tag" type="string">
+            <column name="tag" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

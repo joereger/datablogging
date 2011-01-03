@@ -16,7 +16,7 @@ import java.util.Map;
 import java.net.URISyntaxException;
 
 import reger.core.WebAppRootDir;
-import reger.systemproperties.PathUploadMedia;
+import reger.systemprops.PathUploadMedia;
 import reger.Entry;
 import reger.Log;
 import reger.AllMegaLogTypesInSystem;
@@ -236,7 +236,7 @@ public class ChibaServletReger {
             aAdapter.setConfigPath(reger.core.WebAppRootDir.getWebAppRootPath() + "WEB-INF"+java.io.File.separator+"chibaConfig.xml");
             aAdapter.setActionUrl(actionURL);
             PathUploadMedia pathUploadMedia = new PathUploadMedia();
-            aAdapter.setUploadDir(reger.systemproperties.AllSystemProperties.getProp(pathUploadMedia.getPropertyName()));
+            aAdapter.setUploadDir(reger.systemprops.AllSystemProperties.getProp(pathUploadMedia.getPropertyName()));
             aAdapter.setBaseURI(requestURI);
             aAdapter.setStylesheetPath(reger.core.WebAppRootDir.getWebAppRootPath() + "css" + java.io.File.separator + "chibaXslt");
 

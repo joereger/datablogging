@@ -398,7 +398,7 @@ Debug.debug(5, "", reger.core.ErrorDissect.ServletUtilsdissect(request));
 mb.append("<br><br>");
 
 
-//if (!reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+//if (!reger.systemprops.AllSystemProperties.getProp("SSLISON").equals("1")){
 //    mb.append(reger.ui.BubbleBox.start("Advanced Upload", pageProps.pathToAppRoot));
 //
 //    mb.append("<center>");

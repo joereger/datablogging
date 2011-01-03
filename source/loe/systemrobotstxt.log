@@ -1,8 +1,7 @@
 
 <%@ page import="java.util.*,
                  reger.core.SystemProperty,
-                 reger.systemproperties.AllSystemProperties,
-                 reger.core.db.DbConfig" %>
+                 reger.systemprops.AllSystemProperties" %>
 
 <%
 /*----------------------------------------------------*/
@@ -31,7 +30,7 @@ pageProps.pathToAppRoot="../";
 //Save the properties, test them
 String errortext = "";
 if (request.getParameter("action")!=null && request.getParameter("action").equals("save")){
-    reger.systemproperties.RobotsTxt.save(request.getParameter("robotstxt"));
+    reger.systemprops.RobotsTxt.save(request.getParameter("robotstxt"));
 }
 
 
@@ -66,7 +65,7 @@ if (!errortext.equals("")){
     mb.append("<td valign=top align=left>");
     mb.append("<font face=arial size=-1>");
     mb.append("<textarea name=robotstxt wrap=off style=\"width: 100%\" rows=25 cols=65>");
-    mb.append(reger.systemproperties.RobotsTxt.getRobotstxt());
+    mb.append(reger.systemprops.RobotsTxt.getRobotstxt());
     mb.append("</textarea>");
     mb.append("</font>");
     mb.append("</td>");

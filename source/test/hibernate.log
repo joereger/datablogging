@@ -1,7 +1,7 @@
 <%@ page import="reger.SideColumn,
                  java.util.*,
                  org.hibernate.*,
-                 reger.hibernate.HibernateUtil,
+                 reger.dao.hibernate.HibernateUtil,
                  org.hibernate.Transaction"%>
 <%@ page import="reger.dao.hibernate.Banner"%>
 <%@ page import="org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy"%>

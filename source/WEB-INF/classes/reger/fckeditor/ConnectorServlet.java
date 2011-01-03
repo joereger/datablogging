@@ -3,15 +3,13 @@ package reger.fckeditor;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.util.*;
-import org.apache.commons.fileupload.*;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import reger.systemproperties.AllSystemProperties;
+import reger.systemprops.AllSystemProperties;
 import reger.core.db.Db;
 
 

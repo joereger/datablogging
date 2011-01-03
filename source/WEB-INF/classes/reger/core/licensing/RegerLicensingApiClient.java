@@ -1,7 +1,7 @@
 package reger.core.licensing;
 
 import reger.core.Debug;
-import reger.systemproperties.AllSystemProperties;
+import reger.systemprops.AllSystemProperties;
 
 import java.util.Vector;
 import java.util.Hashtable;

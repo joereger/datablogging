@@ -1,5 +1,7 @@
 package reger.core.db;
 
+import reger.systemprops.InstanceProperties;
+
 import java.sql.*;
 
 
@@ -20,7 +22,7 @@ public class Db {
   * Run SQL, return a String Array
   */
   public static String[][] RunSQL(String sql, int recordstoreturn) {
-    if (DbConfig.haveValidConfig() || DbConfig.haveNewConfigToTest()){
+    if (InstanceProperties.haveValidConfig() || InstanceProperties.haveNewConfigToTest()){
         return reger.core.db.proxool.Db.RunSQL(sql, recordstoreturn);
     } else {
         return new String[0][];
@@ -36,7 +38,7 @@ public class Db {
 
   //Run Update SQL, return the number of rows affected
   public static int RunSQLUpdate(String sql){
-    if (DbConfig.haveValidConfig() || DbConfig.haveNewConfigToTest()){
+    if (InstanceProperties.haveValidConfig() || InstanceProperties.haveNewConfigToTest()){
        return reger.core.db.proxool.Db.RunSQLUpdate(sql);
     } else {
         return 0;
@@ -46,7 +48,7 @@ public class Db {
 
   //Run Insert SQL, return the unique autonumber of the row inserted
   public static int RunSQLInsert(String sql){
-    if (DbConfig.haveValidConfig() || DbConfig.haveNewConfigToTest()){
+    if (InstanceProperties.haveValidConfig() || InstanceProperties.haveNewConfigToTest()){
       return reger.core.db.proxool.Db.RunSQLInsert(sql);
     } else {
         return 0;

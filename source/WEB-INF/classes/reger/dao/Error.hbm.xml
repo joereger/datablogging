@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:36 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Error" table="error">
+        <cache usage="nonstrict-read-write"/>
+        <id name="errorid" type="int">
+            <column name="errorid" />
+            <generator class="native" />
+        </id>
+        <property name="date" type="timestamp">
+            <column name="date" length="19" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="50" />
+        </property>
+        <property name="accountid" type="java.lang.Integer">
+            <column name="accountid" />
+        </property>
+        <property name="count" type="int">
+            <column name="count" not-null="true" />
+        </property>
+        <property name="label" type="string">
+            <column name="label" />
+        </property>
+    </class>
+</hibernate-mapping>

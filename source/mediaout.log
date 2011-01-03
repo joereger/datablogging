@@ -27,7 +27,7 @@ if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbna
                  reger.Media.MediaTypeFactory,
                  reger.core.db.Db" %>
 <%@ page import="reger.core.Debug"%>
-<%@ page import="reger.systemproperties.AllSystemProperties"%>
+<%@ page import="reger.systemprops.AllSystemProperties"%>
 <%@ page import="org.apache.commons.io.FilenameUtils"%>
 
 <%

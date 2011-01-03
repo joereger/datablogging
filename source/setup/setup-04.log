@@ -1,22 +1,22 @@
-<%@ page import="reger.core.db.DbConfig,
-                 reger.core.db.Db,
+<%@ page import="reger.core.db.Db,
                  reger.Account,
                  reger.core.Util,
                  java.util.Calendar,
                  java.util.Hashtable,
                  reger.core.licensing.License"%>
 <%@ page import="reger.cache.LogCache"%>
-<%@ page import="reger.systemproperties.PathUploadMedia"%>
-<%@ page import="reger.systemproperties.EmailServer"%>
-<%@ page import="reger.systemproperties.AllSystemProperties"%>
+<%@ page import="reger.systemprops.PathUploadMedia"%>
+<%@ page import="reger.systemprops.EmailServer"%>
+<%@ page import="reger.systemprops.AllSystemProperties"%>
 <%@ page import="reger.PrivateLabel"%>
 <%@ page import="reger.AllPrivateLabelsInSystem"%>
 <%@ page import="reger.core.ValidationException"%>
+<%@ page import="reger.systemprops.InstanceProperties" %>
 <%
 //Only do this page if we have an invalid database connection.
 //Otherwise, anybody's going to be able to reset the database
 //configuration whenever they want. Which isn't cool.
-if (!DbConfig.haveValidConfig()){
+if (!InstanceProperties.haveValidConfig()){
     response.sendRedirect("setup-01.log");
     return;
 }

@@ -34,7 +34,7 @@ public class LinkrotSpider implements ScheduledTask{
 
 
     public void doTask(){
-        if (reger.systemproperties.AllSystemProperties.getProp("ISLINKROTFIXERON").equals("1")){
+        if (reger.systemprops.AllSystemProperties.getProp("ISLINKROTFIXERON").equals("1")){
             //Record number of processed URLs
             int urlsProcessed = 0;
 

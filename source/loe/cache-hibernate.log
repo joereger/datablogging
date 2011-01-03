@@ -23,7 +23,7 @@ pageProps.pathToAppRoot="../";
 
 //Output the hibernate cache as html
 try{
-    mb.append(reger.hibernate.HibernateCacheStats.getCacheDump());
+    mb.append(reger.dao.hibernate.HibernateCacheStats.getCacheDump());
 } catch (Exception e){
     mb.append(reger.core.ErrorDissect.dissect(e));
 }

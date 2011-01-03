@@ -1,5 +1,7 @@
 package reger.core;
 
+import org.apache.log4j.Logger;
+
 import java.util.*;
 
 /**
@@ -9,6 +11,8 @@ public class Debug {
 
     public static void logtodb(String whattolog, String label){
         System.out.println(label + ": " + whattolog);
+        Logger logger = Logger.getLogger(Debug.class);
+        logger.debug(label+": "+whattolog);
         //-----------------------------------
         //-----------------------------------
         int identity = reger.core.db.Db.RunSQLInsert("INSERT INTO error(date, description, label) VALUES('"+ TimeUtils.nowInGmtString()+"', '"+ Util.cleanForSQL(whattolog) +"', '"+reger.core.Util.cleanForSQL(label)+"')");
@@ -30,11 +34,16 @@ public class Debug {
       */
     public static void errorsave(Throwable e, String label, int accountid, String message, javax.servlet.http.HttpServletRequest request){
         try {
+            Logger logger = Logger.getLogger(Debug.class);
+            logger.debug(label+": "+message+" accountid:"+accountid);
+            e.printStackTrace();
+
             boolean doRecord = true;
             String prettyError = "";
 
             //Make the error pretty
             prettyError = ErrorDissect.dissect(e, request, message);
+
 
             try{
                 if (e instanceof java.net.SocketException){
@@ -108,6 +117,8 @@ public class Debug {
 
 
     public static void debug(int debugLevel, String label, String whatToLog){
+        Logger logger = Logger.getLogger(Debug.class);
+        logger.debug(label+": "+whatToLog);
         if (debugLevel<= DegubLevel.getDebugLevel()){
             logtodb(whatToLog, label);
         }
@@ -115,6 +126,7 @@ public class Debug {
 
 
     public static void debug(int debugLevel, String label, Throwable e){
+        Logger logger = Logger.getLogger(Debug.class);
         if (debugLevel<= DegubLevel.getDebugLevel()){
             errorsave(e, label, -1, "", null);
         }

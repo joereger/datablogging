@@ -60,7 +60,7 @@ public class StorageSpaceUpdate implements ScheduledTask{
                 String image = rstImages[i][1];
                 long sizeinbytes = Long.parseLong(rstImages[i][2]);
                 //Now go get the actual size from the file system
-                java.io.File file = new java.io.File((String)reger.systemproperties.AllSystemProperties.getProp("PATHUPLOADMEDIA"), image);
+                java.io.File file = new java.io.File((String)reger.systemprops.AllSystemProperties.getProp("PATHUPLOADMEDIA"), image);
                 long sizereportedfromfilesystem = file.length();
                 //If the two are different, update with the one from the file system
                 if (sizeinbytes!=sizereportedfromfilesystem){

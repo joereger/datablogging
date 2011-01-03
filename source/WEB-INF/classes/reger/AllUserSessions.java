@@ -117,7 +117,7 @@ public class AllUserSessions {
             Debug.debug(5, "", "AllUserSessions.java - Creating cookie.<br>userSessionId=" + userSessionId + "<br>No Domain Set.");
         }
         userCookie.setPath("/");
-        if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+        if (reger.systemprops.AllSystemProperties.getProp("SSLISON").equals("1")){
             userCookie.setSecure(true);
         }
         return userCookie;

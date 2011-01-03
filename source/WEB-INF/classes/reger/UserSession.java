@@ -1,10 +1,9 @@
 package reger;
 
 import reger.core.Debug;
-import reger.core.SystemProperty;
 import reger.core.Util;
 import reger.cache.providers.jboss.Cacheable;
-import reger.systemproperties.AllSystemProperties;
+import reger.systemprops.AllSystemProperties;
 
 import javax.servlet.http.Cookie;
 import java.util.Calendar;

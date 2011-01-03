@@ -20,7 +20,7 @@ public class Demo {
 
     public String getDemoBaseUrl(){
         if (demoBaseUrl==null || demoBaseUrl.equals("")){
-            demoBaseUrl = reger.systemproperties.AllSystemProperties.getProp("DEMOSDIRECTORYURL");
+            demoBaseUrl = reger.systemprops.AllSystemProperties.getProp("DEMOSDIRECTORYURL");
         }
         if (demoBaseUrl==null || demoBaseUrl.equals("")){
             return "http://www.reger.com/demos/";

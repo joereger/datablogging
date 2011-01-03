@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:34 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Pollreaderanswer" table="pollreaderanswer">
+        <cache usage="nonstrict-read-write"/>
+        <id name="pollreaderanswerid" type="int">
+            <column name="pollreaderanswerid" />
+            <generator class="native" />
+        </id>
+        <property name="pollid" type="java.lang.Integer">
+            <column name="pollid" />
+        </property>
+        <property name="answer" type="string">
+            <column name="answer" />
+        </property>
+        <property name="readername" type="string">
+            <column name="readername" />
+        </property>
+        <property name="votes" type="java.lang.Integer">
+            <column name="votes" />
+        </property>
+        <property name="isapproved" type="boolean">
+            <column name="isapproved" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,12 +1,9 @@
 package reger.core;
 
-import reger.filesync.server.*;
-import reger.systemproperties.AllSystemProperties;
+import reger.systemprops.AllSystemProperties;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import org.apache.commons.io.FilenameUtils;
 
 /**
  * User: Joe Reger Jr

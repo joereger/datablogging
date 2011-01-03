@@ -96,7 +96,7 @@ if (rstEventtype!=null){
 	for(int i=0; i<rstEventtype.length; i++){
 
         //Get the domain name setup for this PL to use on email
-        String emailDomain = reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERHOSTNAME");
+        String emailDomain = reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERHOSTNAME");
 
         //Get the EmailApiAddress unique identifier
         reger.api.EmailApiAddress addr = new reger.api.EmailApiAddress(userSession.getAccountuser().getAccountuserid(), userSession.getAccount().getAccountid(), Integer.parseInt(rstEventtype[i][0]), reger.api.EmailApi.CAMPHONEPOST);

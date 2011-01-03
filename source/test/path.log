@@ -79,7 +79,7 @@ Properties properties = new Properties();
 properties.setProperty("date", reger.core.TimeUtils.nowInGmtString());
 File fil = new File("", "datablogging-"+reger.core.WebAppRootDir.getUniqueContextId()+"-dbconfig.txt");
 FileOutputStream fos = new FileOutputStream(fil);
-properties.store(fos, "DbConfig for " + reger.core.WebAppRootDir.getUniqueContextId());
+properties.store(fos, "InstanceProps for " + reger.core.WebAppRootDir.getUniqueContextId());
 fos.close();
 fil = null;
 fos = null;

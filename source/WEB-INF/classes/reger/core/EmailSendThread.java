@@ -46,7 +46,7 @@ public class EmailSendThread extends Thread {
 //		    System.out.println("EMAIL TRY: to:"+to+" from:"+from+" subject="+subject);
 //
 //            Properties props =  System.getProperties();
-//            props.put("mail.smtp.host",  reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"));
+//            props.put("mail.smtp.host",  reger.systemprops.AllSystemProperties.getProp("EMAILSERVER"));
 //            props.put("mail.transport.protocol", "smtp");
 //            Session session = Session.getDefaultInstance(props, null);
 //
@@ -69,7 +69,7 @@ public class EmailSendThread extends Thread {
 //
 //            //Transport.send(msg);
 //            Transport transport = session.getTransport("smtp");
-//            transport.connect(reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"), null, null);
+//            transport.connect(reger.systemprops.AllSystemProperties.getProp("EMAILSERVER"), null, null);
 //            transport.sendMessage(msg, addrArray);
 //
 //

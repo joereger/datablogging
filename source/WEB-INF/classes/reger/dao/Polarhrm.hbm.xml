@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:35 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Polarhrm" table="polarhrm">
+        <cache usage="nonstrict-read-write"/>
+        <id name="polarhrmid" type="int">
+            <column name="polarhrmid" />
+            <generator class="native" />
+        </id>
+
+        <set name="polarhrmdatas" inverse="true" cascade="all-delete-orphan" order-by="polarhrmdataid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="polarhrmid"></key>
+            <one-to-many class="reger.dao.Polarhrmdata" not-found="ignore"></one-to-many>
+        </set>
+
+        <property name="imageid" type="int">
+            <column name="imageid" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

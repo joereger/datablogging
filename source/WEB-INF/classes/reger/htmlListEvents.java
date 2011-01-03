@@ -3,9 +3,7 @@ package reger;
 import reger.template.Template;
 import reger.core.TimeUtils;
 import reger.core.Debug;
-import reger.core.Util;
 import reger.cache.LogCache;
-import reger.systemproperties.AllSystemProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;

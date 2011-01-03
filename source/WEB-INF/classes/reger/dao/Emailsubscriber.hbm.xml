@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:33 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Emailsubscriber" table="emailsubscriber">
+        <cache usage="nonstrict-read-write"/>
+        <id name="emailsubscriberid" type="int">
+            <column name="emailsubscriberid" />
+            <generator class="native" />
+        </id>
+        <property name="sendeveryxdays" type="int">
+            <column name="sendeveryxdays" not-null="true" />
+        </property>
+        <property name="emailaddress" type="string">
+            <column name="emailaddress" length="50" not-null="true" />
+        </property>
+        <property name="accountid" type="int">
+            <column name="accountid" not-null="true" />
+        </property>
+        <property name="htmlemail" type="boolean">
+            <column name="htmlemail" />
+        </property>
+        <property name="lastsentdate" type="timestamp">
+            <column name="lastsentdate" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:32 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Traffic" table="traffic">
+        <cache usage="nonstrict-read-write"/>
+        <id name="trafficid" type="int">
+            <column name="trafficid" />
+            <generator class="native" />
+        </id>
+        <property name="count" type="java.lang.Integer">
+            <column name="count" />
+        </property>
+        <property name="traffictypeid" type="java.lang.Integer">
+            <column name="traffictypeid" />
+        </property>
+        <property name="datetime" type="timestamp">
+            <column name="datetime" length="19" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" />
+        </property>
+        <property name="plid" type="java.lang.Integer">
+            <column name="plid" />
+        </property>
+        <property name="accountid" type="java.lang.Integer">
+            <column name="accountid" />
+        </property>
+        <property name="logid" type="java.lang.Integer">
+            <column name="logid" />
+        </property>
+        <property name="eventid" type="java.lang.Integer">
+            <column name="eventid" />
+        </property>
+        <property name="imageid" type="java.lang.Integer">
+            <column name="imageid" />
+        </property>
+        <property name="referrer" type="string">
+            <column name="referrer" />
+        </property>
+        <property name="browser" type="string">
+            <column name="browser" />
+        </property>
+        <property name="remotehost" type="string">
+            <column name="remotehost" />
+        </property>
+        <property name="iscollapsed" type="boolean">
+            <column name="iscollapsed" />
+        </property>
+    </class>
+</hibernate-mapping>

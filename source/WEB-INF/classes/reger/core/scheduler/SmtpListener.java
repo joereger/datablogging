@@ -19,7 +19,7 @@ public class SmtpListener implements Runnable  {
 
     public SmtpListener() {
         execTime=new reger.executionTime();
-        if (reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERISON").equals("1")){
+        if (reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERISON").equals("1")){
             //System.out.println("REGER: New smtplistener being started.");
             thread = new Thread(this);
             thread.setPriority(Thread.MIN_PRIORITY);
@@ -47,11 +47,11 @@ public class SmtpListener implements Runnable  {
     //Status check called from MasterThread
     public String statusCheck(){
         String status="";
-        if (reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERISON").equals("1")){
+        if (reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERISON").equals("1")){
             if (isPortSuccessfullyBound){
-                status = "Listening for " + execTime.getElapsedMillis() + " millis.<br><font face=arial size=-2>IP: " + reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERIP");
+                status = "Listening for " + execTime.getElapsedMillis() + " millis.<br><font face=arial size=-2>IP: " + reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP");
             } else {
-                status = "Couldn't bind to port 25.</font><br><font face=arial size=-2>Tried " + execTime.getElapsedMillis() + " millis ago.<br>IP: " + reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERIP");
+                status = "Couldn't bind to port 25.</font><br><font face=arial size=-2>Tried " + execTime.getElapsedMillis() + " millis ago.<br>IP: " + reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP");
             }
         } else {
             status = "Not turned on in System Properties.<br><font face=arial size=-2>(Set variable EMAILLISTENERISON and EMAILLISTENERIP)";
@@ -60,7 +60,7 @@ public class SmtpListener implements Runnable  {
     }
 
     public boolean isRunningAsItShouldBe(){
-        if (reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERISON").equals("1")){
+        if (reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERISON").equals("1")){
             if (isPortSuccessfullyBound){
                 return true;
             } else {
@@ -72,9 +72,9 @@ public class SmtpListener implements Runnable  {
     }
 
     public void run()  {
-        Debug.debug(5, "", "Starting SMTP listener on: " + reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERIP"));
+        Debug.debug(5, "", "Starting SMTP listener on: " + reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP"));
         try {
-            slisten = new ServerSocket(25, 50, InetAddress.getByName(reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERIP")));
+            slisten = new ServerSocket(25, 50, InetAddress.getByName(reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP")));
             isPortSuccessfullyBound = true;
             keepMeRunning = true;
             Socket sconn = null;

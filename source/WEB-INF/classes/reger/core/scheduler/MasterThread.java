@@ -1,9 +1,9 @@
 package reger.core.scheduler;
 
 import reger.core.db.Db;
-import reger.core.db.DbConfig;
 import reger.core.Util;
 import reger.core.Debug;
+import reger.systemprops.InstanceProperties;
 
 import java.util.Calendar;
 
@@ -56,7 +56,7 @@ public class MasterThread extends Thread {
 		try{
 
 			//Make sure we have a valid db connection
-            if (!DbConfig.haveValidConfig()){
+            if (!InstanceProperties.haveValidConfig()){
                 return;
             }
 
@@ -75,7 +75,7 @@ public class MasterThread extends Thread {
 
             //Load the system properties
             try{
-                reger.systemproperties.AllSystemProperties.loadProperties();
+                reger.systemprops.AllSystemProperties.loadProperties();
             } catch (Exception e){
                 Debug.errorsave(e, "");
             }

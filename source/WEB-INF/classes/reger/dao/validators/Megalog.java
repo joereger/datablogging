@@ -1,10 +1,8 @@
 package reger.dao.validators;
 
 
-import reger.hibernate.Validator;
-import reger.hibernate.HibValEx;
-import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.event.EventSource;
+import reger.dao.hibernate.Validator;
+import reger.dao.hibernate.HibValEx;
 
 /**
  * Validator for the megalog dao
@@ -13,8 +11,8 @@ public class Megalog implements Validator {
 
     public void validate(Object entity) throws HibValEx {
         HibValEx vex = new HibValEx("");
-        if (entity instanceof reger.dao.hibernate.Megalog){
-            reger.dao.hibernate.Megalog megalog = (reger.dao.hibernate.Megalog)entity;
+        if (entity instanceof reger.dao.Megalog){
+            reger.dao.Megalog megalog = (reger.dao.Megalog)entity;
             //Title can't be blank
             if (megalog.getName().equals("")){
                 vex.addValidationError("Log name can not be blank.");

@@ -6,7 +6,7 @@
 <%@ page import="reger.dao.generator.dbcolumntypes.DbColumnType"%>
 <%@ page import="reger.dao.generator.dbcolumntypes.DbColumnTypeFactory"%>
 <%@ page import="reger.dao.hibernate.Account" %>
-<%@ page import="reger.hibernate.HibernateUtil" %>
+<%@ page import="reger.dao.hibernate.HibernateUtil" %>
 <%@ page import="reger.core.TimeUtils" %>
 <%@ page import="reger.core.Util" %>
 

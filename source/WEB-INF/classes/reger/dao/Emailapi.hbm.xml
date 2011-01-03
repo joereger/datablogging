@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:30 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Emailapi" table="emailapi">
+        <cache usage="nonstrict-read-write"/>
+        <id name="emailapiid" type="int">
+            <column name="emailapiid" />
+            <generator class="native" />
+        </id>
+
+
+        <set name="emailapiaddresses" inverse="true" cascade="all-delete-orphan" order-by="emailapiaddressid asc">
+            <cache usage="nonstrict-read-write"/>
+            <key column="emailapiid"></key>
+            <one-to-many class="reger.dao.Emailapiaddress" not-found="ignore"></one-to-many>
+        </set>
+
+        <property name="accountuserid" type="int">
+            <column name="accountuserid" not-null="true" />
+        </property>
+        <property name="emailsecret" type="string">
+            <column name="emailsecret" length="10" />
+        </property>
+        <property name="overridecamphonesubject" type="boolean">
+            <column name="overridecamphonesubject" />
+        </property>
+        <property name="overridecamphonesubjecttext" type="string">
+            <column name="overridecamphonesubjecttext" />
+        </property>
+        <property name="ignorecamphonebody" type="boolean">
+            <column name="ignorecamphonebody" />
+        </property>
+        <property name="consolidatecamphonetoonedailyentry" type="boolean">
+            <column name="consolidatecamphonetoonedailyentry" />
+        </property>
+        <property name="saveemailpostsasdraft" type="boolean">
+            <column name="saveemailpostsasdraft" />
+        </property>
+        <property name="savecamphonepostsasdraft" type="boolean">
+            <column name="savecamphonepostsasdraft" />
+        </property>
+        <property name="camphoneimagetags" type="string">
+            <column name="camphoneimagetags" />
+        </property>
+    </class>
+</hibernate-mapping>

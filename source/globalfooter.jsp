@@ -11,7 +11,7 @@ if (pageProps.siteSection!=pageProps.MOBILEPUBLIC && pageProps.siteSection!=page
 
 //Close hibernate session
 try{
-    reger.hibernate.HibernateUtil.closeSession();
+    reger.dao.hibernate.HibernateUtil.closeSession();
 } catch (Throwable t){
     reger.core.Debug.errorsave(t, "globalfooter.jsp", "Error shutting down hibernate session");
 }

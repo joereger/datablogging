@@ -86,7 +86,7 @@ public class PersistentLogin {
         if (!domainToSetCookieOn.equals("")){
             userCookie.setDomain("."+domainToSetCookieOn);
         }
-        if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("1")){
+        if (reger.systemprops.AllSystemProperties.getProp("SSLISON").equals("1")){
             userCookie.setSecure(true);
         }
         userCookie.setPath("/");
@@ -106,7 +106,7 @@ public class PersistentLogin {
         Cookie userCookie = new Cookie(cookieName, " ");
         userCookie.setMaxAge(0);  //Delete Cookie
         userCookie.setPath("/");
-        if (reger.systemproperties.AllSystemProperties.getProp("SSLISON").equals("")){
+        if (reger.systemprops.AllSystemProperties.getProp("SSLISON").equals("")){
             userCookie.setSecure(true);
         }
 

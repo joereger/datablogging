@@ -30,7 +30,7 @@ public class EmailSend {
             eThr.isHtmlEmail = isHtmlEmail;
             eThr.start();
         }catch (Exception e) {
-            Debug.errorsave(e, "", "Error starting email thread.  Should have been sending to: " + reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"));
+            Debug.errorsave(e, "", "Error starting email thread.  Should have been sending to: " + reger.systemprops.AllSystemProperties.getProp("EMAILSERVER"));
         }
         System.out.println("EMAIL END SEND VIA THREAD: to"+to+" from:"+from+" subject:"+subject);
     }
@@ -45,7 +45,7 @@ public class EmailSend {
             System.out.println("EMAIL BEGIN SEND: to"+to+" from:"+from+" subject:"+subject);
 
             Properties props =  System.getProperties();
-            props.put("mail.smtp.host",  reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"));
+            props.put("mail.smtp.host",  reger.systemprops.AllSystemProperties.getProp("EMAILSERVER"));
             props.put("mail.transport.protocol", "smtp");
             Session session = Session.getDefaultInstance(props, null);
 
@@ -70,7 +70,7 @@ public class EmailSend {
 
             //Transport.send(msg);
             Transport transport = session.getTransport("smtp");
-            transport.connect(reger.systemproperties.AllSystemProperties.getProp("EMAILSERVER"), null, null);
+            transport.connect(reger.systemprops.AllSystemProperties.getProp("EMAILSERVER"), null, null);
             transport.sendMessage(msg, addrArray);
 
 

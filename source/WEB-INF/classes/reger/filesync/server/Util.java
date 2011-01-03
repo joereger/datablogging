@@ -1,9 +1,8 @@
 package reger.filesync.server;
 
 import org.apache.commons.io.FilenameUtils;
-import reger.Accountuser;
 import reger.Account;
-import reger.systemproperties.AllSystemProperties;
+import reger.systemprops.AllSystemProperties;
 
 import java.io.File;
 

@@ -18,8 +18,8 @@ import reger.core.Debug;
  */
 public class RegerSpellCheck implements SpellCheckListener {
 
-    private static String dictFile = reger.systemproperties.AllSystemProperties.getProp("SPELLINGDICTIONARYFILE");
-    private static String phonetFile = reger.systemproperties.AllSystemProperties.getProp("SPELLINGPHONETICFILE");
+    private static String dictFile = reger.systemprops.AllSystemProperties.getProp("SPELLINGDICTIONARYFILE");
+    private static String phonetFile = reger.systemprops.AllSystemProperties.getProp("SPELLINGPHONETICFILE");
 
     private static SpellDictionary dictionary = null;
 

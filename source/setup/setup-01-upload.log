@@ -1,13 +1,13 @@
-<%@ page import="reger.core.db.DbConfig,
-                 org.apache.commons.fileupload.FileItem,
+<%@ page import="org.apache.commons.fileupload.FileItem,
                  java.io.InputStream,
                  java.util.Properties,
                  java.util.Enumeration"%>
+<%@ page import="reger.systemprops.InstanceProperties" %>
 <%
 //Only do this page if we have an invalid database connection.
 //Otherwise, anybody's going to be able to reset the database
 //configuration whenever they want. Which isn't cool.
-if (DbConfig.haveValidConfig()){
+if (InstanceProperties.haveValidConfig()){
     response.sendRedirect("setup-02.log");
     return;
 }
@@ -41,18 +41,12 @@ if (fileItems!=null && fileItems.length>0){
             //out.print("props: " + s + "=" + props.getProperty(s) + "<br>");
         }
 
-
-        //Put them into the DbConfig
-        reger.core.db.DbConfig.loadPropsFile(props);
-
-        //Let's see what the props look like
-        //out.print("DbConfig.getDbConnectionUrl()= " + reger.core.db.DbConfig.getDbConnectionUrl() + "<br>");
-        //out.print("DbConfig.getDbUsername()= " + reger.core.db.DbConfig.getDbUsername() + "<br>");
-        //out.print("DbConfig.getDbPassword()= " + reger.core.db.DbConfig.getDbPassword() + "<br>");
+        //Store them
+        InstanceProperties.loadPropsFile(props);
 
         //Save the props
-        if (reger.core.db.DbConfig.haveValidConfig()){
-            reger.core.db.DbConfig.save();
+        if (InstanceProperties.haveValidConfig()){
+            InstanceProperties.save();
             reger.scheduledtasks.Loader.startAMasterThread();
             response.sendRedirect("setup-02.log");
             return;

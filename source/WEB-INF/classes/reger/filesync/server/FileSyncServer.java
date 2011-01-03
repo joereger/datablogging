@@ -4,7 +4,7 @@ import reger.Accountuser;
 import reger.Account;
 import reger.PrivateLabel;
 import reger.ThumbnailCreator;
-import reger.systemproperties.AllSystemProperties;
+import reger.systemprops.AllSystemProperties;
 import reger.core.TimeUtils;
 import reger.cache.AccountCache;
 

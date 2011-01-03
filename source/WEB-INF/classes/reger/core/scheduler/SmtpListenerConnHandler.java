@@ -12,7 +12,7 @@ import java.net.*;
 
 class SmtpListenerConnHandler implements Runnable  {
 
-    public static String serverName = reger.systemproperties.AllSystemProperties.getProp("EMAILLISTENERIP");
+    public static String serverName = reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP");
 
     Socket sclient;
     SmtpListener parent;

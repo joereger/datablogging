@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:41 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Megachart" table="megachart">
+        <cache usage="nonstrict-read-write"/>
+        <id name="megachartid" type="int">
+            <column name="megachartid" />
+            <generator class="native" />
+        </id>
+
+        <set name="megachartyaxes" inverse="true" cascade="all-delete-orphan">
+            <cache usage="nonstrict-read-write"/>
+            <key column="megachartid"></key>
+            <one-to-many class="reger.dao.Megachartyaxis" not-found="ignore"></one-to-many>
+        </set>
+
+
+        <property name="chartname" type="string">
+            <column name="chartname" length="100" not-null="true" />
+        </property>
+        <property name="xeventtypeid" type="int">
+            <column name="xeventtypeid" not-null="true" />
+        </property>
+        <property name="xlogid" type="int">
+            <column name="xlogid" not-null="true" />
+        </property>
+        <property name="xmegafieldid" type="int">
+            <column name="xmegafieldid" not-null="true" />
+        </property>
+        <property name="yaxiswhattodo" type="int">
+            <column name="yaxiswhattodo" not-null="true" />
+        </property>
+        <property name="chartsize" type="int">
+            <column name="chartsize" not-null="true" />
+        </property>
+        <property name="charttype" type="int">
+            <column name="charttype" not-null="true" />
+        </property>
+        <property name="daterange" type="int">
+            <column name="daterange" not-null="true" />
+        </property>
+        <property name="lastxdays" type="int">
+            <column name="lastxdays" not-null="true" />
+        </property>
+        <property name="lastxweeks" type="int">
+            <column name="lastxweeks" not-null="true" />
+        </property>
+        <property name="lastxmonths" type="int">
+            <column name="lastxmonths" not-null="true" />
+        </property>
+        <property name="lastxyears" type="int">
+            <column name="lastxyears" not-null="true" />
+        </property>
+        <property name="daterangefromyyyy" type="int">
+            <column name="daterangefromyyyy" not-null="true" />
+        </property>
+        <property name="daterangefrommm" type="int">
+            <column name="daterangefrommm" not-null="true" />
+        </property>
+        <property name="daterangefromdd" type="int">
+            <column name="daterangefromdd" not-null="true" />
+        </property>
+        <property name="daterangetoyyyy" type="int">
+            <column name="daterangetoyyyy" not-null="true" />
+        </property>
+        <property name="daterangetomm" type="int">
+            <column name="daterangetomm" not-null="true" />
+        </property>
+        <property name="daterangetodd" type="int">
+            <column name="daterangetodd" not-null="true" />
+        </property>
+        <property name="daterangesavedsearchid" type="int">
+            <column name="daterangesavedsearchid" not-null="true" />
+        </property>
+        <property name="accountid" type="int">
+            <column name="accountid" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

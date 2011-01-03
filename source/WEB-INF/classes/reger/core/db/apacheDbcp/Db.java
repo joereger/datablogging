@@ -5,7 +5,7 @@ import javax.sql.*;
 import java.sql.*;
 import java.util.Vector;
 import reger.core.Debug;
-import reger.core.db.DbConfig;
+import reger.systemprops.InstanceProperties;
 
 public class Db {
 
@@ -17,14 +17,14 @@ public class Db {
         System.out.println("Reger.com: Start ds setup.");
         BasicDataSource ds = new BasicDataSource();
 
-        ds.setDriverClassName(DbConfig.getDbDriverName());
-        ds.setUsername(DbConfig.getDbUsername());
-        ds.setPassword(DbConfig.getDbPassword());
-        ds.setUrl(DbConfig.getDbConnectionUrl());
-        ds.setMaxActive(DbConfig.getDbMaxActive());
-        ds.setMaxIdle(DbConfig.getDbMaxIdle());
-        ds.setMaxWait(DbConfig.getDbMaxWait());
-        ds.setMinIdle(DbConfig.getDbMinIdle());
+        ds.setDriverClassName(InstanceProperties.getDbDriverName());
+        ds.setUsername(InstanceProperties.getDbUsername());
+        ds.setPassword(InstanceProperties.getDbPassword());
+        ds.setUrl(InstanceProperties.getDbConnectionUrl());
+        ds.setMaxActive(InstanceProperties.getDbMaxActive());
+        ds.setMaxIdle(InstanceProperties.getDbMaxIdle());
+        ds.setMaxWait(InstanceProperties.getDbMaxWait());
+        ds.setMinIdle(InstanceProperties.getDbMinIdle());
 
         Db.ds = ds;
         System.out.println("Reger.com: End ds setup.");
@@ -35,7 +35,7 @@ public class Db {
    */
   public static Connection getConnection(){
         try{
-            if (ds==null || DbConfig.haveNewConfigToTest()){
+            if (ds==null || InstanceProperties.haveNewConfigToTest()){
                 System.out.println("Reger.com: ds is null or we have a new dbconfig to test.");
                 setupDataSource();
             }

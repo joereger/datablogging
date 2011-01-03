@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2006 3:43:33 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="reger.dao.Message" table="message">
+        <cache usage="nonstrict-read-write"/>
+        <id name="messageid" type="int">
+            <column name="messageid" />
+            <generator class="native" />
+        </id>
+        <property name="eventid" type="int">
+            <column name="eventid" not-null="true" />
+        </property>
+        <property name="messagedate" type="timestamp">
+            <column name="messagedate" length="19" not-null="true" />
+        </property>
+        <property name="messagefrom" type="string">
+            <column name="messagefrom" length="50" />
+        </property>
+        <property name="message" type="string">
+            <column name="message" not-null="true" />
+        </property>
+        <property name="isapproved" type="boolean">
+            <column name="isapproved" />
+        </property>
+        <property name="sizeinbytes" type="int">
+            <column name="sizeinbytes" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" />
+        </property>
+        <property name="ipaddress" type="string">
+            <column name="ipaddress" length="50" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" />
+        </property>
+        <property name="emailnotify" type="java.lang.Integer">
+            <column name="emailnotify" />
+        </property>
+    </class>
+</hibernate-mapping>

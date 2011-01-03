@@ -1,12 +1,12 @@
 <%@ page import="reger.SideColumn,
                  java.util.*,
                  org.hibernate.*,
-                 reger.hibernate.HibernateUtil,
+                 reger.dao.hibernate.HibernateUtil,
                  org.hibernate.Transaction"%>
 <%@ page import="org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy"%>
 <%@ page import="reger.dao.hibernate.*"%>
 <%@ page import="reger.InfoBox"%>
-<%@ page import="reger.hibernate.HibValEx"%>
+<%@ page import="reger.dao.hibernate.HibValEx"%>
 
 
 <%
