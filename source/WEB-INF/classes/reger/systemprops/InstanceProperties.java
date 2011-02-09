@@ -44,7 +44,7 @@ public class InstanceProperties {
     private static boolean haveValidConfig = false;
     private static boolean haveNewConfigToTest = false;
     private static boolean haveAttemptedToLoadDefaultPropsFile = false;
-    private static String dbPropsInternalFilename = reger.core.WebAppRootDir.getWebAppRootPath() + "conf\\instance.props";
+    private static String dbPropsInternalFilename = reger.core.WebAppRootDir.getWebAppRootPath() + "conf"+File.separatorChar+"instance.props";
     private static String dbPropsExternalFilename = "datablogging-"+reger.core.WebAppRootDir.getUniqueContextId()+"-dbconfig.txt";
 
     public static void load(){
