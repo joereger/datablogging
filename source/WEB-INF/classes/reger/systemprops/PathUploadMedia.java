@@ -23,7 +23,7 @@ public class PathUploadMedia extends SystemProperty{
 
     private String chooseDefaultPathByExaminingSystemDefault(){
         //Find default dir
-        File chosenFile = new File("", "blogserver-data" + File.separator);
+        File chosenFile = new File("", "blogserver-data" + File.separatorChar);
         String defPath = chosenFile.getAbsolutePath();
         chosenFile = null;
         reger.core.Debug.debug(5, "PathUploadMedia.java", "Default value chosen by going to system root:" + defPath);
