@@ -26,7 +26,7 @@ public class AviVideo implements MediaType {
             //@todo http://java.sun.com/products/java-media/jmf/2.1.1/solutions/Cut.html
             //@todo http://java.sun.com/products/java-media/jmf/2.1.1/solutions/Split.java
 
-            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images\\mediatypeicons\\icon-video.gif", pathToThumbnail);
+            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images/mediatypeicons/icon-video.gif", pathToThumbnail);
 
         } catch (Throwable e) {
             Debug.errorsave(e, "");

@@ -33,7 +33,7 @@ public class BasicEmails {
         String subject = pl.getEmailsubjectactivationmessage();
         String body = pl.getEmailtextactivationmessage();
         if (body.equals("")){
-            body = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages\\activationmessage.txt").toString();
+            body = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages/activationmessage.txt").toString();
         }
         if (subject.equals("")){
             subject = "Activate your new datablog!";
@@ -107,7 +107,7 @@ public class BasicEmails {
         String subject = pl.getEmailsubjectwelcomemessage();
         String body = pl.getEmailtextwelcomemessage();
         if (body.equals("")){
-            body = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages\\welcomemessage.txt").toString();
+            body = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "emailmessages/welcomemessage.txt").toString();
         }
         if (subject.equals("")){
             subject = "Hi " + au.getFriendlyname() + ", welcome to your new datablogging Account!";

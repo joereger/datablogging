@@ -188,7 +188,7 @@ public class MarketingHpTemplateProcessor implements TemplateProcessor {
 
     public String getDefaultTemplate(){
         if (defaultTemplate==null){
-            defaultTemplate = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "templates\\marketinghp\\default\\template.html").toString();
+            defaultTemplate = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "templates/marketinghp/default/template.html").toString();
         }
         return defaultTemplate;
     }

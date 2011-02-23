@@ -21,7 +21,7 @@ public class MsProject implements MediaType {
      */
     public void createThumbnail(String pathToFile, String pathToThumbnail) {
         try{
-            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images\\mediatypeicons\\icon-project.gif", pathToThumbnail);
+            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images/mediatypeicons/icon-project.gif", pathToThumbnail);
         } catch (Throwable e) {
             Debug.errorsave(e, "");
         }

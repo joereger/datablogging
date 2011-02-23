@@ -18,7 +18,7 @@ public class Version47ToVersion48 implements UpgradeDatabaseOneVersion{
 
 
 
-            String termsofservice = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "setup\\regercom-tos-privacy.txt").toString();
+            String termsofservice = reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "setup/regercom-tos-privacy.txt").toString();
 
             //-----------------------------------
             //-----------------------------------

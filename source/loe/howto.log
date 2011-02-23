@@ -26,7 +26,7 @@ pageProps.pathToAppRoot="../";
 
 
 mb.append("<pre>");
-mb.append(reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "loe\\howto.txt"));
+mb.append(reger.core.Util.textFileRead(reger.core.WebAppRootDir.getWebAppRootPath() + "loe/howto.txt"));
 mb.append("</pre>");
 
 

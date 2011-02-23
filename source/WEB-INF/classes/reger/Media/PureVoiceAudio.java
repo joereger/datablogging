@@ -21,7 +21,7 @@ public class PureVoiceAudio implements MediaType {
      */
     public void createThumbnail(String pathToFile, String pathToThumbnail) {
         try{
-            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images\\icon-audio.gif", pathToThumbnail);
+            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images/icon-audio.gif", pathToThumbnail);
         } catch (Throwable e) {
             Debug.errorsave(e, "");
         }

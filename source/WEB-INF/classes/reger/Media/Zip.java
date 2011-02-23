@@ -21,7 +21,7 @@ public class Zip implements MediaType {
      */
     public void createThumbnail(String pathToFile, String pathToThumbnail) {
         try{
-            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images\\mediatypeicons\\icon-zip.gif", pathToThumbnail);
+            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images/mediatypeicons/icon-zip.gif", pathToThumbnail);
         } catch (Throwable e) {
             Debug.errorsave(e, "");
         }

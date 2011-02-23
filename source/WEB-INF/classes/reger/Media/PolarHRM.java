@@ -100,7 +100,7 @@ public class PolarHRM implements MediaType{
 
         try{
             //reger.core.Util.logtodb("Copying file in polarhrm.");
-            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images\\mediatypeicons\\icon-polarhrm.gif", pathToThumbnail);
+            reger.core.Util.copyFile(reger.core.WebAppRootDir.getWebAppRootPath() + "images/mediatypeicons/icon-polarhrm.gif", pathToThumbnail);
         } catch (Throwable e) {
             Debug.errorsave(e, "");
         }
