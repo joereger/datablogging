@@ -85,6 +85,8 @@ if (rstImageData!=null && rstImageData.length>0){
 
 if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbnail").equals("yes")) {
     fileName = FilenameUtils.normalize(FilenameUtils.normalize(FilenameUtils.getPath(fileName))+".thumbnails"+java.io.File.separator+FilenameUtils.getName(fileName));
+} else {
+    fileName = FilenameUtils.normalize(FilenameUtils.normalize(FilenameUtils.getPath(fileName))+FilenameUtils.getName(fileName));
 }
 
 reger.core.Debug.debug(5, "mediaout.log", "fileName="+fileName+"<br>showactualimage="+showactualimage);
