@@ -100,14 +100,43 @@ public class EhcacheProvider implements CacheProvider {
         return "EhcacheProvider";
     }
 
+//    public Object get(String key, String group) {
+//        try {
+//            return getCache().get("/"+group+"/"+key).getObjectValue();
+//        }  catch (Exception e){
+//            logger.error("Error getting from cacheManager", e);
+//        }
+//        return null;
+//    }
+
     public Object get(String key, String group) {
         try {
-            return getCache().get("/"+group+"/"+key).getValue();
+            logger.debug("get(key="+key+", group="+group+")");
+
+            if (key==null || key.equals("")){
+                if (group==null || group.equals("")){
+                    logger.debug("Empty key and group requested");
+                    return null;
+                }
+            }
+
+            Cache cache = getCache();
+            if (cache!=null){
+                Element element = getCache().get("/"+group+"/"+key);
+                if (element!=null){
+                    return element.getObjectValue();
+                } else {
+                    logger.debug("Element is null");
+                }
+            } else {
+                logger.error("CACHE IS NULL");
+            }
         }  catch (Exception e){
             logger.error("Error getting from cacheManager", e);
         }
         return null;
     }
+
 
     public void put(String key, String group, Object obj) {
         try{
