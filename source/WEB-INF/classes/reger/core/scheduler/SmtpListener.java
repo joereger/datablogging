@@ -82,7 +82,11 @@ public class SmtpListener implements Runnable  {
     public void bindPort25(){
         Debug.debug(4, "", "Starting SMTP listener on: " + reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP") +" port 25");
         try {
-            slisten = new ServerSocket(25, 50, InetAddress.getByName(reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP")));
+            if (reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP").equals("*")){
+                slisten = new ServerSocket(25);
+            } else {
+                slisten = new ServerSocket(25, 50, InetAddress.getByName(reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP")));
+            }
             isPortSuccessfullyBound = true;
             keepMeRunning = true;
             Socket sconn = null;
@@ -119,7 +123,11 @@ public class SmtpListener implements Runnable  {
     public void bindPort8025(){
         Debug.debug(4, "", "Starting SMTP listener on: " + reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP") +" port 8025");
         try {
-            slisten = new ServerSocket(8025, 50, InetAddress.getByName(reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP")));
+            if (reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP").equals("*")){
+                slisten = new ServerSocket(8025);
+            } else {
+                slisten = new ServerSocket(8025, 50, InetAddress.getByName(reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP")));
+            }
             isPortSuccessfullyBound = true;
             keepMeRunning = true;
             Socket sconn = null;

@@ -3,9 +3,22 @@ package reger;
 import java.io.*;
 import java.awt.*;
 import java.awt.image.*;
+import javax.imageio.ImageIO;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.swing.ImageIcon;
-import com.sun.image.codec.jpeg.*;
+//import com.sun.image.codec.jpeg.*;
+
 import reger.core.Debug;
+
+
+import java.io.OutputStream;
+import javax.imageio.ImageWriter;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.IIOImage;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.plugins.jpeg.*;
+
 
 /**
  * Resize an image that already exists on the filesystem
@@ -30,25 +43,40 @@ public class ResizeImage{
           BufferedImage resizedImage = scaleImage(sourceImage,targetWidth,targetHeight);
 
           //Create the output file handler
-          BufferedOutputStream outFile = new BufferedOutputStream(new FileOutputStream(outimagelocation));
+          //BufferedOutputStream outFile = new BufferedOutputStream(new FileOutputStream(outimagelocation));
+          FileImageOutputStream outFile = new FileImageOutputStream(new File(outimagelocation));
+
+          ImageWriter encoder = (ImageWriter) ImageIO.getImageWritersByFormatName("JPEG").next();
+          JPEGImageWriteParam param = new JPEGImageWriteParam(null);
+
+          param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+          param.setCompressionQuality(0.9f);
+
+          encoder.setOutput(outFile);
+          encoder.write((IIOMetadata) null, new IIOImage(resizedImage,null,null), param);
+
+
+          //Below is the OLD way which relies on sun's JPEG implementation (not in OpenJDK)
 
           // Output the finished image straight to the response as a JPEG!
-          JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(outFile);
+          //JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(outFile);
 
           //Set some jpeg parameters
-          JPEGEncodeParam param = encoder.
-          getDefaultJPEGEncodeParam(resizedImage);
-          int quality = Integer.parseInt("90");
-          quality = Math.max(0, Math.min(quality, 100));
-          param.setQuality((float)quality / 100.0f, false);
-          encoder.setJPEGEncodeParam(param);
+          //JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(resizedImage);
+          //int quality = Integer.parseInt("90");
+          //quality = Math.max(0, Math.min(quality, 100));
+          //param.setQuality((float)quality / 100.0f, false);
+          //encoder.setJPEGEncodeParam(param);
 
           //Do the actual encoding which will save it to the file system
-          encoder.encode(resizedImage);
+          //encoder.encode(resizedImage);
 
         } catch(Exception e) {
             //@todo Copy generic file thumbnail working.  (It is coded but failing because it can't find the sourcefile)
             //Try to copy the generic file thumbnail and if it fails record an error.
+            //reger.core.Debug.debug(5, "ResizeImage.java", "resize() called<br>inimagelocation:"+inimagelocation+"<br>outimagelocation:"+outimagelocation);
+            reger.core.Debug.debug(5, "ResizeImage.java", "fail creating thumbnail: "+e.getMessage());
+            Debug.errorsave(e, "ResizeImage.java");
             if (!reger.core.Util.copyFile(reger.Vars.THUMBNAILGENERIC + "", outimagelocation)) {
                 Debug.logtodb("Unsuccessful copy of THUMBNAILGENERIC.  See ResizeImage.java around line 49.  Error will be saved to database in next error entry.", "");
                 Debug.errorsave(e, "");
@@ -68,8 +96,7 @@ public class ResizeImage{
 
     private static BufferedImage toBufferedImage(Image image) {
         image = new ImageIcon(image).getImage();
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null)
-        ,image.getHeight(null),BufferedImage.TYPE_INT_RGB);
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null) ,image.getHeight(null),BufferedImage.TYPE_INT_RGB);
         Graphics g = bufferedImage.createGraphics();
         g.setColor(Color.white);
         g.fillRect(0,0,image.getWidth(null),image.getHeight(null));

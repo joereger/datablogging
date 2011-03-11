@@ -89,10 +89,12 @@ if (request.getParameter("isthumbnail")!=null && request.getParameter("isthumbna
     fileName = FilenameUtils.normalize(FilenameUtils.normalize(FilenameUtils.getPath(fileName))+FilenameUtils.getName(fileName));
 }
 
-reger.core.Debug.debug(5, "mediaout.log", "fileName="+fileName+"<br>showactualimage="+showactualimage);
+reger.core.Debug.debug(5, "mediaout.log", "fileName="+fileName+" showactualimage="+showactualimage);
 
 File testimage = new File(userSession.getAccount().getPathToAccountFiles() + fileName);
+reger.core.Debug.debug(5, "mediaout.log", "userSession.getAccount().getPathToAccountFiles() + fileName="+userSession.getAccount().getPathToAccountFiles() + fileName);
 if (!testimage.canRead()) {
+    reger.core.Debug.debug(5, "mediaout.log", "!testimage.canRead() so showactualimage=false");
     showactualimage=false;
 }
 
