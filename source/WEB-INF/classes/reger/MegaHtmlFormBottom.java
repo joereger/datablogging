@@ -247,10 +247,42 @@ public class MegaHtmlFormBottom {
                 mb.append("<font face=arial size=-1>");
                 if (pageProps.entry.eventid != -1) {
                     if (!editLayout) {
-                        mb.append("<a href='entry-addmedia.log?eventid=" + pageProps.entry.eventid + "' onclick=\"javascript:NewWindow(this.href,'name','750','0','yes');return false;\">");
-                        mb.append("<img src='" + pageProps.pathToAppRoot + "images/icon-file-upload.gif' border=0 align=left>");
-                        mb.append("Click Here to<br>Add Images or Files<br>to This Entry");
-                        mb.append("</a>");
+                        //mb.append("<a href='entry-addmedia.log?eventid=" + pageProps.entry.eventid + "' onclick=\"javascript:NewWindow(this.href,'name','750','0','yes');return false;\">");
+                        //mb.append("<img src='" + pageProps.pathToAppRoot + "images/icon-file-upload.gif' border=0 align=left>");
+                        //mb.append("Click Here to<br>Add Images or Files<br>to This Entry");
+                        //mb.append("</a>");
+
+                        mb.append("" + "\n");
+                        mb.append("<div id=\"file-uploader-demo1\">" + "\n");
+                        mb.append("<noscript>" + "\n");
+                        mb.append("<p>Please enable JavaScript to use file uploader.</p>" + "\n");
+                        mb.append("</noscript>" + "\n");
+                        mb.append("</div>" + "\n");
+
+                        mb.append("<script src=\""+pageProps.pathToAppRoot+"js/valums-file-uploader-0c701eb/client/fileuploader.js\" type=\"text/javascript\"></script>" + "\n");
+                        mb.append("<script>" + "\n");
+//                        mb.append("function createUploader(){" + "\n");
+//                        mb.append("var uploader = new qq.FileUploader({" + "\n");
+//                        mb.append("element: document.getElementById('file-uploader-demo1')," + "\n");
+//                        mb.append("action: 'upload-requestprocessor.log?eventid="+pageProps.entry.eventid+"'," + "\n");
+//                        mb.append("debug: true" + "\n");
+//                        mb.append("});" + "\n");
+//                        mb.append("}" + "\n");
+
+                        mb.append("$(document).ready(function()" + "\n");
+                        mb.append("{" + "\n");
+                        mb.append("var uploader = new qq.FileUploader({" + "\n");
+                        mb.append("element: document.getElementById('file-uploader-demo1')," + "\n");
+                        mb.append("action: 'upload-requestprocessor-ajax.log?eventid="+pageProps.entry.eventid+"'," + "\n");
+                        mb.append("debug: true" + "\n");
+                        mb.append("});" + "\n");
+                        mb.append("});" + "\n");
+
+
+                        //mb.append("window.onload = createUploader;" + "\n");
+                        mb.append("</script>" + "\n");
+                        mb.append("" + "\n");
+
                     }
                 } else {
                     mb.append("You can add images after the entry is created.");

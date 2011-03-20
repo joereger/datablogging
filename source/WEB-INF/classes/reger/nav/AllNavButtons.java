@@ -20,11 +20,11 @@ public class AllNavButtons {
 
         //Top level Admin Tab buttons
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("adminhome", "", "MY HOME", "myhome/index.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logs", "", "LOGS", "myhome/logs.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logs", "", "LOGS", "myhome/logs-log-list.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entries", "", "ENTRIES", "myhome/entries-recent.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("files", "", "FILES", "myhome/files.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("files", "", "FILES", "myhome/files.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphs", "", "GRAPHS", "myhome/graphs.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffic", "", "TRAFFIC", "myhome/traffic.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffic", "", "TRAFFIC", "myhome/traffic.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("people", "", "PEOPLE", "myhome/people.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("groups", "", "GROUPS", "myhome/groups.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settings", "", "SETTINGS", "myhome/settings-siteprops.log", false, "", null));
@@ -42,8 +42,8 @@ public class AllNavButtons {
 
 
         //Logs Buttons
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsmain", "logs", "LOGS VS. LOG TYPES", "myhome/logs.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsyourlogs", "logs", "YOUR LOGS", "myhome/logs-log-list.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsmain", "logs", "LOGS VS. LOG TYPES", "myhome/logs.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logslogtypes", "logs", "YOUR CUSTOM LOG TYPES", "myhome/logs-type-list.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlog", "logs", "CREATE A NEW LOG", "myhome/logs-newlog.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlogtype", "logs", "CREATE A NEW CUSTOM LOG TYPE", "myhome/logs-type-properties.log?action=startadd", false, "", null));
@@ -68,7 +68,7 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphsmain", "graphs", "GRAPHS", "myhome/graphs.log", false, "", null));
 
         //Files
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("filesbrowse", "files", "BROWSE", "myhome/files.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("filesbrowse", "files", "BROWSE", "myhome/files.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("filessync", "files", "SYNC TOOL", "myhome/files-synctool.log", false, "", null));
 
         //Episodes

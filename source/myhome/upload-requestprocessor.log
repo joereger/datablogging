@@ -39,7 +39,7 @@ pageProps.isUploadPage = true;
 //mb.append(reger.core.Util.popupCloseReturnToEntryJavascript());
 
 //debug
-Debug.debug(5, "upload-requestprocessor.log", reger.core.ErrorDissect.ServletUtilsdissect(request));
+Debug.debug(1, "upload-requestprocessor.log", reger.core.ErrorDissect.ServletUtilsdissect(request));
 
 //Parse the upload
 //reger.Upload ul = new reger.Upload(request);
@@ -71,21 +71,23 @@ if (ul.requestParams.get("returnurl")!=null){
 if (ul.isMultipart) {
     //Note the false indicating that this is not a profile upload.
     //Note that accountuserid param is 0 because this is not a profile upload.
-    Debug.debug(5, "upload-requestprocessor.log", "Before ul.save()");
+    Debug.debug(1, "upload-requestprocessor.log", "Before ul.save()");
     ul.save(localEventid, imagetags, 0, userSession, path);
-    Debug.debug(5, "upload-requestprocessor.log", "After ul.save()");
+    Debug.debug(1, "upload-requestprocessor.log", "After ul.save()");
 }
 
 //Redirect if upload was successful
 String msg = "";
 if (ul.hasenoughfreespace) {
     if (ul.isMultipart){
+        Debug.debug(1, "upload-requestprocessor.log", "ul.ismultupart=true");
         //Flush cache
         reger.cache.EntryCache.flush(localEventid);
         msg = "Upload successful.";
+    } else {
+        Debug.debug(1, "upload-requestprocessor.log", "ul.ismultupart=false");
     }
 } else {
-    //@todo Be a better salesman... the user just hit an account limit.  Love them.  Feel their pain.  Offer a fix... for a small fee.
     msg = "Not enough storage space available on this account";
 }
 

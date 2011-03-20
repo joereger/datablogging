@@ -406,18 +406,18 @@ public class ErrorDissect {
 			buffer.append("length: ").append(contentLength).append("<br>");
 			buffer.append("type: ").append(request.getContentType()).append("<br>");
 			buffer.append("content:<br>");
-			try {
-				InputStream in = request.getInputStream();
-				ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				byte[] array = new byte[contentLength];
-				int len;
-				while ((len=in.read(array)) != -1) {
-					bos.write(array, 0, len);
-				}
-				buffer.append(bos.toString("utf-8"));
-			} catch (IOException e) {
-				buffer.append("IOException occured while trying to read request content: " + e.getMessage());
-			}
+//			try {
+//				InputStream in = request.getInputStream();
+//				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//				byte[] array = new byte[contentLength];
+//				int len;
+//				while ((len=in.read(array)) != -1) {
+//					bos.write(array, 0, len);
+//				}
+//				buffer.append(bos.toString("utf-8"));
+//			} catch (IOException e) {
+//				buffer.append("IOException occured while trying to read request content: " + e.getMessage());
+//			}
 			buffer.append("</font>");
             buffer.append("</td>");
             buffer.append("</tr>");

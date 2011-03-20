@@ -708,45 +708,6 @@ public class Entry {
                     filethumbsrss.append("<img src='"+account.getSiteRootUrl()+"/mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                     filethumbsrss.append("</a>");
 
-                   
-                    //                if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
-//                    filethumbslightbox.append("<a href=\"mediaout.log?imageid="+rstThumbs[i][0]+"&ext="+ext+"\" class=\"lightwindow\"  rel=\""+title+"[Images]\" title=\"\" caption=\""+rstThumbs[i][1]+"\" author=\"\">");
-//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-//                    filethumbslightbox.append("</a>");
-//                } else if (ext.indexOf("mov")>-1){
-//                    filethumbslightbox.append("<a href=\"mediaout.log?imageid="+rstThumbs[i][0]+"&ext="+ext+"\" class=\"lightwindow\" params=\"lightwindow_type=media\" rel=\""+title+"[Images]\" title=\"\" caption=\""+rstThumbs[i][1]+"\" author=\"\">");
-//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-//                    filethumbslightbox.append("</a>");
-//                } else {
-//                    ext = ".html";
-//                    filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page"+ext+"\" class=\"lightwindow\" params=\"lightwindow_type=page,lightwindow_width=600,lightwindow_height=345\" rel=\""+title+"[Images]\" title=\"\" caption=\""+rstThumbs[i][1]+"\" author=\"\">");
-//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-//                    filethumbslightbox.append("</a>");
-//                }
-
-//                if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
-//                    filethumbslightbox.append("<a href=\"mediaout.log?imageid="+rstThumbs[i][0]+"&ext=."+ext+"\" class=\"mb\"  rel=\"\" >");
-//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-//                    filethumbslightbox.append("</a>");
-//                } else {
-//                    ext = "html";
-//                    filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" class=\"mb\" rel=\"type: iframe,width:400,height:300\" title=\"\" caption=\""+rstThumbs[i][1]+"\" author=\"\">");
-//                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-//                    filethumbslightbox.append("</a>");
-//                }
-
-
-                    //V2 FAIL
-//                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
-//                        filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"&TB_iframe=true\" title=\"Image\" class=\"thickbox\" rel=\"Images\">");
-//                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-//                        filethumbslightbox.append("</a>");
-//                    } else {
-//                        ext = "html";
-//                        filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"&TB_iframe=true&height=350&width=450\" class=\"thickbox\" title=\"\"  rel=\""+title+"\">");
-//                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-//                        filethumbslightbox.append("</a>");
-//                    }
 
                     //prettyPhoto + jQuery, can you bring it... finally?
                     if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){

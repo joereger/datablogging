@@ -1,0 +1,61 @@
+
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Add Images/Media";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "entries";
+pageProps.aclObjectName = "ADDMEDIA";
+//pageProps.onunloadJavascriptMethod = "returnToEntryPage()";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINLOGSECTION;
+pageProps.pathToAppRoot="../";
+pageProps.isUploadPage = false;
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%@ page import="org.apache.commons.fileupload.*,
+                 reger.core.db.Db,
+                 reger.Help" %>
+<%@ page import="java.io.*" %>
+<%@ page import="reger.core.Debug"%>
+<%@ page import="org.apache.commons.io.FilenameUtils"%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+//Note that the ulAjax Upload object is available as long as pageProps.isUploadPage=true
+
+
+//Return to entry javascript
+//mb.append(reger.core.Util.popupCloseReturnToEntryJavascript());
+
+//debug
+Debug.debug(1, "upload-requestprocessor-ajax.log", reger.core.ErrorDissect.ServletUtilsdissect(request));
+
+
+
+//Save the upload
+Debug.debug(1, "upload-requestprocessor-ajax.log", "Before ulAjax.save()");
+reger.UploadAjax ulAjax = new reger.UploadAjax(request, userSession);
+Debug.debug(1, "upload-requestprocessor-ajax.log", "After ulAjax.save()");
+
+
+//Redirect if upload was successful
+if (ulAjax.issuccess) {
+    response.setStatus(response.SC_OK);
+    response.getWriter().print("{success: true}");
+} else {
+    response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+    response.getWriter().print("{success: false}");
+}
+return;
+%>

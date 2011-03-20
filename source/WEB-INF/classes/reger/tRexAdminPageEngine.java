@@ -26,6 +26,8 @@ public class tRexAdminPageEngine {
 
        //Jquery
         ap.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jquery-1.4.1.min.js\"></script>");
+        //Valums File Uploader
+        ap.append("<link href=\""+pageProps.pathToAppRoot+"js/valums-file-uploader-0c701eb/client/fileuploader.css\" rel=\"stylesheet\" type=\"text/css\">");
 
 
         ap.append("</head>");
