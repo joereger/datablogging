@@ -4,63 +4,63 @@
 <!-- Generated Mar 7, 2006 3:43:28 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Accountuser" table="accountuser">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="accountuserid" type="int">
             <column name="accountuserid" />
             <generator class="native" />
         </id>
 
         <set name="accountuseracls" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountuserid"></key>
             <one-to-many class="reger.dao.Accountuseracl" not-found="ignore"></one-to-many>
         </set>
 
         <set name="aclgroups" table="accountuseraclgroup" cascade="save-update">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountuserid"></key>
             <many-to-many class="reger.dao.Aclgroup" column="aclgroupid" fetch="select" not-found="ignore"></many-to-many>
         </set>
 
         <set name="accountuserfields" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountuserid"></key>
             <one-to-many class="reger.dao.Accountuserfield" not-found="ignore"></one-to-many>
         </set>
 
         <set name="accountuserlogaccesses" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountuserid"></key>
             <one-to-many class="reger.dao.Accountuserlogaccess" not-found="ignore"></one-to-many>
         </set>
 
         <set name="accountuserpersistentlogins" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountuserid"></key>
             <one-to-many class="reger.dao.Accountuserpersistentlogin" not-found="ignore"></one-to-many>
         </set>
 
         <set name="accountuserpladmins" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountuserid"></key>
             <one-to-many class="reger.dao.Accountuserpladmin" not-found="ignore"></one-to-many>
         </set>
 
         <set name="friends" table="friend" cascade="save-update">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountuseridsource"></key>
             <many-to-many class="reger.dao.Accountuser" column="accountuseridtarget" fetch="select" not-found="ignore"></many-to-many>
         </set>
 
         <!-- Note save-update -->
         <set name="sentfriendmessages" inverse="true" cascade="save-update">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountuserid"></key>
             <one-to-many class="reger.dao.Friendmessage" not-found="ignore"></one-to-many>
         </set>
 
         <set name="receivedfriendmessages" table="friendmessagerecipient" cascade="save-update">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountuserid"></key>
             <many-to-many class="reger.dao.Friendmessage" column="friendmessageid" fetch="select" not-found="ignore"></many-to-many>
         </set>

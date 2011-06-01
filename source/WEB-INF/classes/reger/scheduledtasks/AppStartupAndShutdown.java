@@ -1,6 +1,7 @@
 package reger.scheduledtasks;
 
 import reger.core.scheduler.SmtpListener;
+import reger.systemprops.InstanceProperties;
 
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
@@ -14,6 +15,8 @@ import java.awt.*;
 public class AppStartupAndShutdown implements ServletContextListener {
  public void contextInitialized(ServletContextEvent cse) {
     System.out.println("REGER: Application initialized");
+
+
 
     System.setProperty("java.awt.headless", "true");
     boolean headless = GraphicsEnvironment.isHeadless();

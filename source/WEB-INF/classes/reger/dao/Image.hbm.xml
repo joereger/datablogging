@@ -4,20 +4,20 @@
 <!-- Generated Mar 7, 2006 3:43:32 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Image" table="image">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="imageid" type="int">
             <column name="imageid" />
             <generator class="native" />
         </id>
 
         <set name="tags" table="tagimagelink" cascade="save-update" order-by="tagid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="imageid"></key>
             <many-to-many class="reger.dao.Tag" column="tagid" fetch="select" not-found="ignore"></many-to-many>
         </set>
 
         <set name="polarhrms" inverse="true" cascade="all-delete-orphan" order-by="polarhrmid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="imageid"></key>
             <one-to-many class="reger.dao.Polarhrm" not-found="ignore"></one-to-many>
         </set>

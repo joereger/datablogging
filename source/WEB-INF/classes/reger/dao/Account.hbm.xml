@@ -4,104 +4,104 @@
 <!-- Generated Mar 7, 2006 3:43:40 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Account" table="account">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="accountid" type="int">
             <column name="accountid" />
             <generator class="native" />
         </id>
 
         <set name="accountuseracls" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Accountuseracl" not-found="ignore"></one-to-many>
         </set>
 
         <set name="accountuseraclgroups" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Accountuseraclgroup" not-found="ignore"></one-to-many>
         </set>
 
         <set name="bandwidths" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Bandwidth" not-found="ignore"></one-to-many>
         </set>
 
         <set name="contentpages" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Contentpage" not-found="ignore"></one-to-many>
         </set>
 
         <set name="emailapiaddresses" inverse="true" cascade="all-delete-orphan" order-by="logid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Emailapiaddress" not-found="ignore"></one-to-many>
         </set>
 
         <set name="emailsubscribers" inverse="true" cascade="all-delete-orphan" order-by="emailaddress asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Emailsubscriber" not-found="ignore"></one-to-many>
         </set>
 
         <set name="episodes" inverse="true" cascade="all-delete-orphan" order-by="episodeid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Episode" not-found="ignore"></one-to-many>
         </set>
 
         <set name="events" inverse="true" cascade="all-delete-orphan" order-by="date asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Event" not-found="ignore"></one-to-many>
         </set>
 
         <set name="favesites" inverse="true" cascade="all-delete-orphan" order-by="name asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Favesite" not-found="ignore"></one-to-many>
         </set>
 
         <set name="fileacls" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Fileacl" not-found="ignore"></one-to-many>
         </set>
 
         <set name="locations" inverse="true" cascade="all-delete-orphan" order-by="locationname asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Location" not-found="ignore"></one-to-many>
         </set>
 
         <set name="megacharts" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Megachart" not-found="ignore"></one-to-many>
         </set>
 
         <set name="megalogs" inverse="true" cascade="all-delete-orphan" order-by="logid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Megalog" not-found="ignore"></one-to-many>
         </set>
 
         <set name="savedsearches" inverse="true" cascade="all-delete-orphan" order-by="name asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Savedsearch" not-found="ignore"></one-to-many>
         </set>
 
         <set name="templatenews" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Templatenew" not-found="ignore"></one-to-many>
         </set>
 
         <set name="traffics" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="accountid"></key>
             <one-to-many class="reger.dao.Traffic" not-found="ignore"></one-to-many>
         </set>

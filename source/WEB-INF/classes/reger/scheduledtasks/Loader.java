@@ -1,9 +1,12 @@
 package reger.scheduledtasks;
 
+import reger.cache.providers.CacheFactory;
 import reger.core.bandwidthtest.BandwidthTest;
 import reger.systemprops.InstanceProperties;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -26,6 +29,33 @@ public class Loader extends HttpServlet {
     public void init(ServletConfig config){
         reger.core.WebAppRootDir ward = new reger.core.WebAppRootDir(config);
         reger.core.ContextName ctname = new reger.core.ContextName(config);
+        //Set infinispan jgroups vars
+        String jgroupstcpaddress="127.0.0.1";
+        try {
+            InetAddress addr = InetAddress.getLocalHost();
+            byte[] ipAddr = addr.getAddress();
+            String hostname = addr.getHostName();
+            String ipAddrStr = "";
+            for (int i=0; i<ipAddr.length; i++) {
+                if (i > 0) {
+                    ipAddrStr += ".";
+                }
+                ipAddrStr += ipAddr[i]&0xFF;
+            }
+            jgroupstcpaddress=ipAddrStr;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        System.setProperty("jgroups.tcp.address", jgroupstcpaddress);
+        System.out.println("jgroups.tcp.address="+jgroupstcpaddress);
+        System.setProperty("jgroups.tcpping.initial_hosts", InstanceProperties.getJgroupstcppinginitialhosts());
+        System.out.println("jgroups.tcpping.initial_hosts="+InstanceProperties.getJgroupstcppinginitialhosts());
+        System.setProperty("jgroups.tcp.port", InstanceProperties.getJgroupstcpport());
+        System.out.println("jgroups.tcp.port="+InstanceProperties.getJgroupstcpport());
+        //Initialize object cache so it only creates one instance of itself
+        CacheFactory.getCacheProvider().get("applicationstartup", "applicationstartup");
         //Make sure we have a valid db connection
         if (!InstanceProperties.haveValidConfig()){
             return;

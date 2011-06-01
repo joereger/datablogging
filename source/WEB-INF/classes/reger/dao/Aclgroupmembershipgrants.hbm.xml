@@ -4,7 +4,7 @@
 <!-- Generated Mar 7, 2006 3:43:39 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Aclgroupmembershipgrants" table="aclgroupmembershipgrants">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="aclgroupmembershipgrantsid" type="int">
             <column name="aclgroupmembershipgrantsid" />
             <generator class="native" />

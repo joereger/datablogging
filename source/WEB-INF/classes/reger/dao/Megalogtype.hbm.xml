@@ -4,20 +4,20 @@
 <!-- Generated Mar 7, 2006 3:43:34 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Megalogtype" table="megalogtype">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="eventtypeid" type="int">
             <column name="eventtypeid" />
             <generator class="native" />
         </id>
 
         <set name="megafields" inverse="true" cascade="all-delete-orphan" order-by="megafieldid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventtypeid"></key>
             <one-to-many class="reger.dao.Megafield" not-found="ignore"></one-to-many>
         </set>
 
         <set name="logtypexforms" inverse="true" cascade="all-delete-orphan" order-by="logtypexformid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventtypeid"></key>
             <one-to-many class="reger.dao.Logtypexform" not-found="ignore"></one-to-many>
         </set>

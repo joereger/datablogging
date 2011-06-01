@@ -4,7 +4,7 @@
 <!-- Generated Mar 7, 2006 3:43:28 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Groups" table="groups">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="groupid" type="int">
             <column name="groupid" />
             <generator class="native" />

@@ -4,7 +4,7 @@
 <!-- Generated Mar 7, 2006 3:43:32 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Systemproperty" table="systemproperty">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="systempropertyid" type="int">
             <column name="systempropertyid" />
             <generator class="native" />

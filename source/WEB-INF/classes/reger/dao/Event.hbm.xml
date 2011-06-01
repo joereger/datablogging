@@ -4,7 +4,7 @@
 <!-- Generated Mar 7, 2006 3:43:34 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Event" table="event">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="eventid" type="int">
             <column name="eventid" />
             <generator class="native" />
@@ -12,67 +12,67 @@
 
 
         <set name="images" inverse="true" cascade="all-delete-orphan" order-by="imageorder asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <one-to-many class="reger.dao.Image" not-found="ignore"></one-to-many>
         </set>
 
         <set name="groups" table="eventtogroup" cascade="save-update" order-by="groupid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <many-to-many class="reger.dao.Groups" column="groupid" fetch="select" not-found="ignore"></many-to-many>
         </set>
 
         <set name="episodes" table="eventtoepisode" cascade="save-update" order-by="episodeid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <many-to-many class="reger.dao.Episode" column="episodeid" fetch="select" not-found="ignore"></many-to-many>
         </set>
 
         <set name="polls" inverse="true" cascade="all-delete-orphan" order-by="pollid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <one-to-many class="reger.dao.Poll" not-found="ignore"></one-to-many>
         </set>
 
         <set name="messages" inverse="true" cascade="all-delete-orphan" order-by="messageid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <one-to-many class="reger.dao.Message" not-found="ignore"></one-to-many>
         </set>
 
         <set name="locations" table="locationtoevent" cascade="save-update" order-by="locationid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <many-to-many class="reger.dao.Location" column="locationid" fetch="select" not-found="ignore"></many-to-many>
         </set>
 
         <set name="tags" table="eventtaglink" cascade="save-update" order-by="tagid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <many-to-many class="reger.dao.Tag" column="tagid" fetch="select" not-found="ignore"></many-to-many>
         </set>
 
         <set name="trackbacks" inverse="true" cascade="all-delete-orphan" order-by="trackbackid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <one-to-many class="reger.dao.Trackback" not-found="ignore"></one-to-many>
         </set>
 
         <set name="eventxformdatas" inverse="true" cascade="all-delete-orphan" order-by="eventxformdataid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <one-to-many class="reger.dao.Eventxformdata" not-found="ignore"></one-to-many>
         </set>
 
         <set name="megavalues" inverse="true" cascade="all-delete-orphan" order-by="megavalueid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <one-to-many class="reger.dao.Megavalue" not-found="ignore"></one-to-many>
         </set>
 
         <set name="linkrots" table="linkroteventlookup" cascade="save-update" order-by="linkrotid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="eventid"></key>
             <many-to-many class="reger.dao.Linkrot" column="linkrotid" fetch="select" not-found="ignore"></many-to-many>
         </set>

@@ -4,14 +4,14 @@
 <!-- Generated Mar 7, 2006 3:43:41 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Megachart" table="megachart">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="megachartid" type="int">
             <column name="megachartid" />
             <generator class="native" />
         </id>
 
         <set name="megachartyaxes" inverse="true" cascade="all-delete-orphan">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="megachartid"></key>
             <one-to-many class="reger.dao.Megachartyaxis" not-found="ignore"></one-to-many>
         </set>

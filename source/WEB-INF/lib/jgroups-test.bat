@@ -1,1 +1,0 @@
-java -cp concurrent.jar;jgroups.jar;commons-logging-1.0.4.jar org.jgroups.demos.ViewDemo -props ../jgroups-config-sample.xml

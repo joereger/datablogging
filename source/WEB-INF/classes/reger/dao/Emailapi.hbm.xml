@@ -4,7 +4,7 @@
 <!-- Generated Mar 7, 2006 3:43:30 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Emailapi" table="emailapi">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="emailapiid" type="int">
             <column name="emailapiid" />
             <generator class="native" />
@@ -12,7 +12,7 @@
 
 
         <set name="emailapiaddresses" inverse="true" cascade="all-delete-orphan" order-by="emailapiaddressid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="emailapiid"></key>
             <one-to-many class="reger.dao.Emailapiaddress" not-found="ignore"></one-to-many>
         </set>

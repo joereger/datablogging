@@ -4,38 +4,38 @@
 <!-- Generated Mar 7, 2006 3:43:35 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Savedsearch" table="savedsearch">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="savedsearchid" type="int">
             <column name="savedsearchid" />
             <generator class="native" />
         </id>
 
         <set name="savedsearchaccounts" inverse="true" cascade="all-delete-orphan" order-by="savedsearchaccountid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="savedsearchid"></key>
             <one-to-many class="reger.dao.Savedsearchaccount" not-found="ignore"></one-to-many>
         </set>
 
         <set name="savedsearcheventtypes" inverse="true" cascade="all-delete-orphan" order-by="savedsearcheventtypeid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="savedsearchid"></key>
             <one-to-many class="reger.dao.Savedsearcheventtype" not-found="ignore"></one-to-many>
         </set>
 
         <set name="savedsearchfqes" inverse="true" cascade="all-delete-orphan" order-by="savedearchfqeid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="savedsearchid"></key>
             <one-to-many class="reger.dao.Savedsearchfqe" not-found="ignore"></one-to-many>
         </set>
 
         <set name="savedsearchlocations" inverse="true" cascade="all-delete-orphan" order-by="savedsearchlocationid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="savedsearchid"></key>
             <one-to-many class="reger.dao.Savedsearchlocation" not-found="ignore"></one-to-many>
         </set>
 
         <set name="savedsearchlogs" inverse="true" cascade="all-delete-orphan" order-by="savedsearchlogid asc">
-            <cache usage="nonstrict-read-write"/>
+            <cache usage="transactional"/>
             <key column="savedsearchid"></key>
             <one-to-many class="reger.dao.Savedsearchlog" not-found="ignore"></one-to-many>
         </set>

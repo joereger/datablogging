@@ -4,7 +4,7 @@
 <!-- Generated Mar 7, 2006 3:43:36 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
     <class name="reger.dao.Pollanswer" table="pollanswer">
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="transactional"/>
         <id name="pollanswerid" type="int">
             <column name="pollanswerid" />
             <generator class="native" />
