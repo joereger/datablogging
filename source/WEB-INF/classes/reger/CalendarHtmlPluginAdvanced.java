@@ -79,11 +79,11 @@ public class CalendarHtmlPluginAdvanced implements CalendarDayPlugin{
                             for(int j=0; j<rstVal.length; j++){
                                 String fieldname = rstVal[j][0];
                                 if (fieldname.equals("Swim Time")){
-                                    fieldname = "Swim";
+                                    fieldname = "S";
                                 } else if (fieldname.equals("Bike Time")){
-                                    fieldname = "Bike";
+                                    fieldname = "B";
                                 } else if (fieldname.equals("Run Time")){
-                                    fieldname = "Run";
+                                    fieldname = "R";
                                 }
                                 //Get megavalue for this eventid
                                 int megavalue = 0;
@@ -123,7 +123,7 @@ public class CalendarHtmlPluginAdvanced implements CalendarDayPlugin{
                     cellContent=(String)e.getValue();
                     //Add to stringbuffer
                     StringBuffer sc = new StringBuffer();
-                    sc.append("<TD class=calendardayboxtoday BGCOLOR=#ffffcc width=12% valign=top><a href='" + thisPageName + "?logid=" + logid + "&viewdate="+ year +"-"+reger.core.Util.prefillZeroes(String.valueOf(month), 2)+"-"+reger.core.Util.prefillZeroes(String.valueOf(iCurrent), 2)+"'>" + iCurrent + "</a><br>"+cellContent+"</TD>");
+                    sc.append("<TD class=calendardayboxtoday BGCOLOR=#ffffcc width=12% valign=top><font face=arial size=-2><a href='" + thisPageName + "?logid=" + logid + "&viewdate="+ year +"-"+reger.core.Util.prefillZeroes(String.valueOf(month), 2)+"-"+reger.core.Util.prefillZeroes(String.valueOf(iCurrent), 2)+"'>" + iCurrent + "</a><br>"+cellContent+"</font></TD>");
                     //And store back in hashmap
                     this.cellHtml.put(e.getKey(), sc.toString());
                 } else {

@@ -83,7 +83,7 @@ public class CalendarHtmlAdvanced {
         iDOW = reger.core.TimeUtils.GetWeekdayMonthStartsOn(dDate.get(Calendar.MONTH), dDate.get(Calendar.YEAR));
 
         //Start the html
-        sc.append("<TABLE BORDER=0 CELLSPACING=1 CELLPADDING=1 class=sidecolunit>");
+        sc.append("<TABLE BORDER=1 CELLSPACING=1 CELLPADDING=1 class=sidecolunit width=100%>");
         sc.append("<TR>");
         sc.append("<td class=sidecolheader  ALIGN='center' COLSPAN=8>");
 
@@ -107,7 +107,7 @@ public class CalendarHtmlAdvanced {
 
         //The month name and next/previous links
         sc.append("<a href='" + thispagename + "?logid=" + logid + "&viewmonth="  + viewdatelastmonth + "'><</a> ");
-        sc.append(thismonthname + "  " + thisyear);
+        sc.append("<font face=arial size=+1><b>"+thismonthname + "  " + thisyear+"</b></font>");
         sc.append("<a href='" + thispagename + "?logid=" + logid + "&viewmonth="  + viewdatenextmonth + "'>></a> ");
         sc.append("</TD>");
         sc.append("</TR>");
@@ -166,7 +166,7 @@ public class CalendarHtmlAdvanced {
             if (plugin.cellHtml.get(thisdate)!=null){
                 sc.append((String)plugin.cellHtml.get(thisdate) + Vars.LINEBREAKCHARFOREMAIL);
             } else {
-                sc.append("<TD class=calendardaybox width=12% valign=top>" + iCurrent + "<BR></TD>" + Vars.LINEBREAKCHARFOREMAIL);
+                sc.append("<TD class=calendardaybox width=12% valign=top><font face=arial size=-2>" + iCurrent + "<BR></font></TD>" + Vars.LINEBREAKCHARFOREMAIL);
             }
 
             //Add the megavalues to the temporary weekly and monthly totals
@@ -222,7 +222,7 @@ public class CalendarHtmlAdvanced {
         sc.append("<TD BGCOLOR=#ffffff width=12%></TD>");
         sc.append("<TD BGCOLOR=#ffffff width=12%></TD>");
         sc.append("<TD BGCOLOR=#cccccc width=12% valign=top align=right style='font-weight: bold;  padding: 5px;'><font face=arial>"+thismonthname.toUpperCase() + "  " + thisyear+" TOTALS</font></TD>");
-        sc.append("<TD BGCOLOR=#cccccc width=100 valign=top style='font-weight: bold;  padding: 5px;'><font face=arial>"+getMonthSum(megavalueMonthSum)+"</font></TD>");
+        sc.append("<TD BGCOLOR=#cccccc width=100 valign=top style='font-weight: bold;  padding: 5px;' nowrap><font face=arial>"+getMonthSum(megavalueMonthSum)+"</font></TD>");
         sc.append("</TR>");
 
         sc.append("</TABLE>");
