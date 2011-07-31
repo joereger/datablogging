@@ -24,9 +24,7 @@ int logid = -1;
 if (request.getParameter("logid")!=null && Util.isinteger(request.getParameter("logid"))){
     logid = Integer.parseInt(request.getParameter("logid"));
 }
-mb.append(reger.CalendarHtml.smallcalendar(reger.Vars.CALENDARTYPEEMPTYEVENTLINKS, request.getParameter("viewmonth"), logid, "calendar.log", userSession));
-
-
+mb.append(reger.CalendarHtmlAdvanced.smallcalendar(reger.Vars.CALENDARTYPEEMPTYEVENTLINKS, request.getParameter("viewmonth"), logid, "calendar.log", userSession));
 
 //Get a list of entries
 //mb.append(reger.htmlListEvents.getList(userSession, reger.core.Util.getCurrentPage(request.getParameter("logid")), request.getParameter("searchterms"), reger.core.Util.getCurrentPage(request.getParameter("currentpage")),request.getParameter("viewdate"), request.getParameter("viewmonth"), "index.log", -1, true, request));

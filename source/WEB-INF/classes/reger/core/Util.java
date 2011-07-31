@@ -533,6 +533,29 @@ public class Util {
         return inHash;
     }
 
+
+    public static HashMap hashMapAppendValue(HashMap<String, Integer> inHash, String key, int valuetoappend) {
+        if (inHash.get(key)!=null) {
+            //We must append
+            inHash.put(key, inHash.get(key) + valuetoappend);
+        } else {
+            //Simply add
+            inHash.put(key, valuetoappend);
+        }
+        return inHash;
+    }
+
+    public static HashMap hashMapAppendValue(HashMap<Integer, Integer> inHash, int key, int valuetoappend) {
+        if (inHash.get(key)!=null) {
+            //We must append
+            inHash.put(key, inHash.get(key) + valuetoappend);
+        } else {
+            //Simply add
+            inHash.put(key, valuetoappend);
+        }
+        return inHash;
+    }
+
     /*
       * Prefill zeroes.  Example: 1 becomes 001.
       */
