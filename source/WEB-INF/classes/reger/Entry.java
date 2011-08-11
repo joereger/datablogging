@@ -110,6 +110,7 @@ public class Entry {
     public StringBuffer filethumbs = new StringBuffer();
     public StringBuffer filethumbsrss = new StringBuffer();
     public StringBuffer filethumbslightbox = new StringBuffer();
+    public StringBuffer filethumbspolaroid = new StringBuffer();
     public StringBuffer videolist = new StringBuffer();
 
     //Xform
@@ -693,6 +694,8 @@ public class Entry {
             filethumbs = new StringBuffer();
             filethumbsrss = new StringBuffer();
             filethumbslightbox = new StringBuffer();
+            filethumbspolaroid = new StringBuffer();
+            filethumbspolaroid.append("<ul class=\"polaroids\">");
             videolist = new StringBuffer();
             for (int i = 0; i < rstThumbs.length; i++) {
                 Account account = new Account(accountid);
@@ -719,6 +722,23 @@ public class Entry {
                         filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
                         filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                         filethumbslightbox.append("</a>");
+                    }
+
+
+                    //Polaroid
+                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+                        filethumbspolaroid.append("<li>");
+                        filethumbspolaroid.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"\" title=\""+""+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
+                        filethumbspolaroid.append("<img alt=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes'>");
+                        filethumbspolaroid.append("</a>");
+                        filethumbspolaroid.append("</li>");
+                    } else {
+                        ext = "html";
+                        filethumbspolaroid.append("<li>");
+                        filethumbspolaroid.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" title=\""+""+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
+                        filethumbspolaroid.append("<img alt=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes'>");
+                        filethumbspolaroid.append("</a>");
+                        filethumbspolaroid.append("</li>");
                     }
 
                 }
@@ -749,6 +769,10 @@ public class Entry {
 
 
             }
+
+            filethumbspolaroid.append("</ul>");
+            filethumbspolaroid.append("<br clear=\"all\">");
+
         }
 
 

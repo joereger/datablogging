@@ -80,6 +80,8 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/prettyPhoto/js/jquery.prettyPhoto.js\"></script>");
         //Canonical
         appendToHead.append(appendCanonicalToHead(userSession, request));
+        //Polaroid Thumbs
+        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/thumbspolaroid.css\" type=\"text/css\" />");
 
 
 

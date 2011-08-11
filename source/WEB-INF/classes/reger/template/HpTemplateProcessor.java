@@ -98,7 +98,7 @@ public class HpTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new HpTemplateTag[7];
+        tags = new HpTemplateTag[8];
         tags[0] = new HpTemplateTagFavoriteEntries();
         tags[1] = new HpTemplateTagListOfEntries();
         tags[2] = new HpTemplateTagMostRead7Days();
@@ -106,7 +106,7 @@ public class HpTemplateProcessor implements TemplateProcessor {
         tags[4] = new HpTemplateTagMostRecentList();
         tags[5] = new HpTemplateTagOnThisDay();
         tags[6] = new HpTemplateTagRandomFiles();
-
+        tags[7] = new HpTemplateTagRandomFilesPolaroid();
     }
 
     public TemplateTag[] getTagsThisProcessorCanHandle(){
