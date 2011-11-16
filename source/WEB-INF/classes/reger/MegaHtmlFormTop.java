@@ -353,7 +353,7 @@ public class MegaHtmlFormTop {
                     //String commentsTmp = pageProps.entry.comments;
                     //commentsTmp = commentsTmp.replaceAll( reger.Vars.LINEBREAK, "<br>LBR:");
                     //commentsTmp = commentsTmp.replaceAll( reger.Vars.CARRIAGERETURN, "<br>CRT:");
-                    String commentsTmp = pageProps.entry.comments.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
+
 
 
                     //Polls
@@ -377,6 +377,14 @@ public class MegaHtmlFormTop {
                         mb.append("</div>");
                     }
 
+                    //Replace any image tags with html for images
+                    String commentsTmp = MegaHtmlFormTopImageTags.replaceImageTagsWithHtml(pageProps.entry, request.getParameter("entrykey"));
+
+                    //Convert line breaks to <br>
+                    commentsTmp = commentsTmp.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
+
+
+                    //Put body of blog post onto screen
                     mb.append("<font face=arial size=-1>"+commentsTmp+"</font>");
                 }
             }

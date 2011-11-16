@@ -25,6 +25,7 @@ public class Template {
     public static final int TEMPLATETYPEMARKETINGHOMEPAGE = 5;
     public static final int TEMPLATETYPEPLUSER = 6;
     public static final int TEMPLATETYPEENTRYPAGE = 7;
+    public static final int TEMPLATETYPEENTRYBODY = 8;
 
     public Template(int templateid){
         load(templateid);
