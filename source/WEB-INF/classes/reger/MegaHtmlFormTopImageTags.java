@@ -78,7 +78,7 @@ public class MegaHtmlFormTopImageTags {
                 if (!height.equals("")){heightStr="height=\""+height+"\"";}
                 String alignStr = "";
                 if (!align.equals("")){alignStr="align=\""+align+"\"";}
-                String imgtag = "<img src=\""+mediaouturl+"\" border=\"0\" "+widthStr+" "+heightStr+" "+alignStr+" >";
+                String imgtag = "<img class=\"entryimageembed\" id=\""+imageid+"\" src=\""+mediaouturl+"\" "+widthStr+" "+heightStr+" "+alignStr+" >";
 
                 m.appendReplacement(mb, reger.core.Util.cleanForAppendreplacement(imgtag));
 

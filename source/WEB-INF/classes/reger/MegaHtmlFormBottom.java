@@ -132,11 +132,13 @@ public class MegaHtmlFormBottom {
                 }
 
                 //Spelling
+                if (1==2){
                 mb.append("<br>");
                 mb.append("<input type='checkbox' name='dospellcheck' value='1' " + disabledFormText + ">");
                 mb.append(" <font face=arial size=-2 color=#000000>Do Spell Check.</font>");
                 mb.append("<br>");
                 mb.append("</font>");
+                }
 
                 mb.append("</td>");
                 mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3>");

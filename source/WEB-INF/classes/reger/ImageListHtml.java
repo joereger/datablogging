@@ -210,6 +210,9 @@ public class ImageListHtml {
 
                     mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + entrykeyQueryString + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
                     mb.append("<img src='" + mediaoutPath + "mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "' border=0></a>");
+                    if (userSessionOfPersonViewing.getAccountuser().getEntrymode()==reger.Vars.ENTRYMODESIMPLE) {
+                        mb.append("<br/><a href=\"javascript:appendImageTag("+rstImagelist[i][0]+")\"><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">Add to Entry</font></a>");
+                    }
                     if (!rstImagelist[i][6].equals("")) {
                         mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + FilenameUtils.getName(rstImagelist[i][10]) + "</font>");
                     }

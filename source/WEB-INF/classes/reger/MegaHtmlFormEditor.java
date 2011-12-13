@@ -10,7 +10,7 @@ public class MegaHtmlFormEditor {
 
 
         //Spelling errors
-        if (pageProps.entry.haveSpellingErrors){
+        if (1==2 || pageProps.entry.haveSpellingErrors){
 
             //First, show a radio allowing user to choose to use recommendations or edit manually
             mb.append("<table width=100% cellpadding=5 cellspacing=0 border=0>");
@@ -74,8 +74,16 @@ public class MegaHtmlFormEditor {
             mb.append("    xGetElementById('entryform').submit();");
             mb.append("}" + "\n");
             mb.append("//--></script>" + "\n");
+
+            mb.append("\n" + "<script language=\"JavaScript\"><!--" + "\n");
+            mb.append("function appendImageTag(imageid) {" + "\n");
+            mb.append("    $(\"#entrybodyinput\").append('<$image id=\"' + imageid + '\"$>');");
+            //mb.append("    $(\"#entrybodyinput\").append('<$image id=\"').append($imageid).append('\"$>');");
+            mb.append("}" + "\n");
+            mb.append("//--></script>" + "\n");
+
             //mb.append("<textarea cols='45' rows='10' name='comments' wrap='virtual' style='width: 75%;font: 10pt monospace' class=\"expandify\">"+pageProps.entry.comments+"</textarea>");
-            mb.append("<textarea name=\"comments\" wrap=\"virtual\" rows=\"5\" style=\"overflow: hidden; height: 80px; width: 75%;\" class=\"expand80-200000\">"+pageProps.entry.comments+"</textarea>");
+            mb.append("<textarea name=\"comments\" id=\"entrybodyinput\" wrap=\"virtual\" rows=\"5\" style=\"overflow: hidden; height: 80px; width: 75%;\" class=\"expand80-200000\">"+pageProps.entry.comments+"</textarea>");
             //Expanding input box script
             mb.append("<script type='text/javascript' src='"+pageProps.pathToAppRoot+"/js/jquery.textarea-expander.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
             mb.append("");
@@ -85,7 +93,7 @@ public class MegaHtmlFormEditor {
         }
 
 
-        if (pageProps.entry.haveSpellingErrors){
+        if (1==2 || pageProps.entry.haveSpellingErrors){
             mb.append("</div>");
         }
 
