@@ -11,36 +11,36 @@ public class LocationRenderHtml {
         //reger.core.Util.debug(5, "LocationRenderHtml.getHtmlForEntryPageTable()<br>locOfEntry.getLocationname()" + locOfEntry.getLocationname());
         StringBuffer mb = new StringBuffer();
         mb.append("<tr>");
-        mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader>");
-        mb.append("<font face=arial size=-1><b>Location:</b></font>");
+        mb.append("<td colspan=3 align=right valign=top class=logentryheader>");
+        mb.append("<font face=arial size=-1><b>Location</b></font>");
         if (displayasadmin) {
             mb.append("<br>");
             mb.append("<font face=arial size=-2>");
-            mb.append("<b>");
-            mb.append("Track the physical location of your entries to get maps of your travels.");
-            mb.append("<br><br>");
-            mb.append("Choose from a previously created location or enter a new one.  Only Location Name is required... all other fields are optional.");
-            mb.append("<br><br>");
+//            mb.append("<b>");
+//            mb.append("Track the physical location of your entries to get maps of your travels.");
+//            mb.append("<br><br>");
+//            mb.append("Choose from a previously created location or enter a new one.  Only Location Name is required... all other fields are optional.");
+//            mb.append("<br><br>");
             mb.append("<a href='entries-locations-edit.log'>");
-            mb.append("View/Edit All Locations");
+            mb.append("All Locations");
             mb.append("</a>");
             mb.append("</b>");
             mb.append("</font>");
         } else {
             if (locOfEntry!=null && locOfEntry.getLocationid()>0) {
-                mb.append("<br>");
-                mb.append("<font face=arial class=smallfont size=-2>");
-                mb.append("<a href='locations.log?locationid="+locOfEntry.getLocationid()+"'>");
-                mb.append("All Entries From This Location");
-                mb.append("</a>");
-                mb.append("</font>");
+//                mb.append("<br>");
+//                mb.append("<font face=arial class=smallfont size=-2>");
+//                mb.append("<a href='locations.log?locationid="+locOfEntry.getLocationid()+"'>");
+//                mb.append("All Entries From This Location");
+//                mb.append("</a>");
+//                mb.append("</font>");
             } else {
-                mb.append("<br>");
-                mb.append("<font face=arial class=smallfont size=-2>");
-                mb.append("<a href='locations.log'>");
-                mb.append("All Locations");
-                mb.append("</a>");
-                mb.append("</font>");
+//                mb.append("<br>");
+//                mb.append("<font face=arial class=smallfont size=-2>");
+//                mb.append("<a href='locations.log'>");
+//                mb.append("All Locations");
+//                mb.append("</a>");
+//                mb.append("</font>");
             }
         }
         mb.append("</td>");
@@ -57,7 +57,6 @@ public class LocationRenderHtml {
         //Output the current location
         if (displayasadmin){
             mb.append(getSingleLocationAsHtml(new Location(0), displayasadmin, disabledFormText));
-            //mb.append(getSingleLocationAsHtml(locOfEntry, displayasadmin, disabledFormText));
         } else{
             mb.append(getSingleLocationAsHtml(locOfEntry, displayasadmin, disabledFormText));
         }
@@ -83,7 +82,7 @@ public class LocationRenderHtml {
         mb.append("<tr>");
         mb.append("<td valign=bottom align=left colspan=3>");
         if (displayasadmin) {
-            mb.append("<font face=arial size=-2><strong>Location Name</strong></font><br>");
+            //mb.append("<font face=arial size=-2><strong>Location</strong></font><br>");
             mb.append("<input type='text' name='locationname' maxlength='254' value=\""+reger.core.Util.cleanForHtml(loc.getLocationname())+"\" size=30 "+disabledFormText+" style=\"font-size: 10px;\">");
         } else {
             if (loc.getLocationid()>0){
@@ -100,96 +99,96 @@ public class LocationRenderHtml {
         mb.append("</tr>");
 
 
-        mb.append("<tr>");
-
-        //City
-        mb.append("<td valign=bottom align=left>");
-        if (displayasadmin || !loc.getCity().equals("")){
-            mb.append("<font face=arial size=-2><strong>City</strong></font><br>");
-        }
-        if (displayasadmin) {
-            mb.append("<input type='text' name='city' maxlength='254' value=\""+reger.core.Util.cleanForHtml(loc.getCity())+"\" size=6 "+disabledFormText+" style=\"font-size: 10px;\">");
-        } else {
-            if (loc.getLocationid()>0 && !loc.getCity().equals("")){
-                mb.append("<font face=arial class=smallfont size=-1>");
-                mb.append(loc.getCity());
-                mb.append("</font>");
-            }
-        }
-        mb.append("</td>");
-
-
-        //State
-        mb.append("<td valign=bottom align=left>");
-        if (displayasadmin || !loc.getState().equals("")){
-            mb.append("<font face=arial size=-2><strong>State</strong></font><br>");
-        }
-        if (displayasadmin) {
-            mb.append("<input type='text' name='state' maxlength='254' value=\""+reger.core.Util.cleanForHtml(loc.getState())+"\" size=6 "+disabledFormText+" style=\"font-size: 10px;\">");
-        } else {
-            if (loc.getLocationid()>0 && !loc.getState().equals("")){
-                mb.append("<font face=arial class=smallfont size=-1>");
-                mb.append(loc.getState());
-                mb.append("</font>");
-            }
-        }
-        mb.append("</td>");
-
-        //Country
-        mb.append("<td valign=bottom align=left>");
-        if (displayasadmin || !loc.getCountry().equals("")){
-            mb.append("<font face=arial size=-2><strong>Country</strong></font><br>");
-        }
-        if (displayasadmin) {
-            mb.append("<input type='text' name='country' maxlength='254' value=\""+reger.core.Util.cleanForHtml(loc.getCountry())+"\" size=6 "+disabledFormText+" style=\"font-size: 10px;\">");
-        } else {
-            if (loc.getLocationid()>0 && !loc.getCountry().equals("")){
-                mb.append("<font face=arial class=smallfont size=-1>");
-                mb.append(loc.getCountry());
-                mb.append("</font>");
-            }
-        }
-        mb.append("</td>");
-        mb.append("</tr>");
+//        mb.append("<tr>");
+//
+//        //City
+//        mb.append("<td valign=bottom align=left>");
+//        if (displayasadmin || !loc.getCity().equals("")){
+//            mb.append("<font face=arial size=-2><strong>City</strong></font><br>");
+//        }
+//        if (displayasadmin) {
+//            mb.append("<input type='text' name='city' maxlength='254' value=\""+reger.core.Util.cleanForHtml(loc.getCity())+"\" size=6 "+disabledFormText+" style=\"font-size: 10px;\">");
+//        } else {
+//            if (loc.getLocationid()>0 && !loc.getCity().equals("")){
+//                mb.append("<font face=arial class=smallfont size=-1>");
+//                mb.append(loc.getCity());
+//                mb.append("</font>");
+//            }
+//        }
+//        mb.append("</td>");
+//
+//
+//        //State
+//        mb.append("<td valign=bottom align=left>");
+//        if (displayasadmin || !loc.getState().equals("")){
+//            mb.append("<font face=arial size=-2><strong>State</strong></font><br>");
+//        }
+//        if (displayasadmin) {
+//            mb.append("<input type='text' name='state' maxlength='254' value=\""+reger.core.Util.cleanForHtml(loc.getState())+"\" size=6 "+disabledFormText+" style=\"font-size: 10px;\">");
+//        } else {
+//            if (loc.getLocationid()>0 && !loc.getState().equals("")){
+//                mb.append("<font face=arial class=smallfont size=-1>");
+//                mb.append(loc.getState());
+//                mb.append("</font>");
+//            }
+//        }
+//        mb.append("</td>");
+//
+//        //Country
+//        mb.append("<td valign=bottom align=left>");
+//        if (displayasadmin || !loc.getCountry().equals("")){
+//            mb.append("<font face=arial size=-2><strong>Country</strong></font><br>");
+//        }
+//        if (displayasadmin) {
+//            mb.append("<input type='text' name='country' maxlength='254' value=\""+reger.core.Util.cleanForHtml(loc.getCountry())+"\" size=6 "+disabledFormText+" style=\"font-size: 10px;\">");
+//        } else {
+//            if (loc.getLocationid()>0 && !loc.getCountry().equals("")){
+//                mb.append("<font face=arial class=smallfont size=-1>");
+//                mb.append(loc.getCountry());
+//                mb.append("</font>");
+//            }
+//        }
+//        mb.append("</td>");
+//        mb.append("</tr>");
 
 
 
         //Start GPS coords
-        if (displayasadmin || loc.isGpsDataPresent()){
-            mb.append("<tr>");
-            mb.append("<td valign=top align=left><font face=arial size=-2><strong>GPS Latitude: </strong></font></td>");
-            mb.append("<td valign=top align=left colspan=2>");
-            if (displayasadmin) {
-                mb.append("<INPUT TYPE='TEXT' VALUE='"+loc.getLatitude()+"' NAME='latitude' SIZE=16 style=\"font-size: 10px;\" "+disabledFormText+">");
-            } else {
-                mb.append("<font face=arial size=-1>"+loc.getLatitude()+"</font>");
-            }
-            mb.append("</td>");
-            mb.append("</tr>");
-
-            mb.append("<tr>");
-            mb.append("<td valign=top align=left><font face=arial size=-2><strong>GPS Longitude: </strong></font></td>");
-            mb.append("<td valign=top align=left colspan=2>");
-            if (displayasadmin) {
-                mb.append("<INPUT TYPE='TEXT' VALUE='"+loc.getLongitude()+"' NAME='longitude' SIZE=16 style=\"font-size: 10px;\" "+disabledFormText+">");
-            } else {
-                mb.append("<font face=arial size=-1>"+loc.getLongitude()+"</font>");
-            }
-            mb.append("</td>");
-            mb.append("</tr>");
-
-            if (displayasadmin) {
-                mb.append(reger.core.Util.popup());
-
-                mb.append("<tr>");
-                mb.append("<td valign=top align=left><font face=arial size=-2><strong></strong></font></td>");
-                mb.append("<td valign=top align=left colspan=2>");
-                mb.append("<a href='../entry-googlemaps-chooselatlon.log' onclick=\"javascript:NewWindow(this.href,'name','700','600','yes');return false;\">");
-                mb.append("<font face=arial size=-2><strong>Find Coordinates Easily on a Map</strong></font>");
-                mb.append("</a>");
-                mb.append("</td>");
-                mb.append("</tr>");
-            }
+//        if (displayasadmin || loc.isGpsDataPresent()){
+//            mb.append("<tr>");
+//            mb.append("<td valign=top align=left><font face=arial size=-2><strong>GPS Latitude: </strong></font></td>");
+//            mb.append("<td valign=top align=left colspan=2>");
+//            if (displayasadmin) {
+//                mb.append("<INPUT TYPE='TEXT' VALUE='"+loc.getLatitude()+"' NAME='latitude' SIZE=16 style=\"font-size: 10px;\" "+disabledFormText+">");
+//            } else {
+//                mb.append("<font face=arial size=-1>"+loc.getLatitude()+"</font>");
+//            }
+//            mb.append("</td>");
+//            mb.append("</tr>");
+//
+//            mb.append("<tr>");
+//            mb.append("<td valign=top align=left><font face=arial size=-2><strong>GPS Longitude: </strong></font></td>");
+//            mb.append("<td valign=top align=left colspan=2>");
+//            if (displayasadmin) {
+//                mb.append("<INPUT TYPE='TEXT' VALUE='"+loc.getLongitude()+"' NAME='longitude' SIZE=16 style=\"font-size: 10px;\" "+disabledFormText+">");
+//            } else {
+//                mb.append("<font face=arial size=-1>"+loc.getLongitude()+"</font>");
+//            }
+//            mb.append("</td>");
+//            mb.append("</tr>");
+//
+//            if (displayasadmin) {
+////                mb.append(reger.core.Util.popup());
+////
+////                mb.append("<tr>");
+////                mb.append("<td valign=top align=left><font face=arial size=-2><strong></strong></font></td>");
+////                mb.append("<td valign=top align=left colspan=2>");
+////                mb.append("<a href='../entry-googlemaps-chooselatlon.log' onclick=\"javascript:NewWindow(this.href,'name','700','600','yes');return false;\">");
+////                mb.append("<font face=arial size=-2><strong>Find Coordinates Easily on a Map</strong></font>");
+////                mb.append("</a>");
+////                mb.append("</td>");
+////                mb.append("</tr>");
+//            }
 
 
 
@@ -300,17 +299,17 @@ public class LocationRenderHtml {
 //            }
 //            mb.append("</td>");
 //            mb.append("</tr>");
-        }
+//        }
         //End gps coords
 
         mb.append("</table>");
 
         if (displayasadmin) {
-                mb.append("<br>");
-                mb.append("<font face=arial size=-2><strong>");
-                mb.append("Enter GPS coordinates in any of the following formats:<br>");
-                mb.append("DD.DD, DD:MM.MM(N|S|E|W), DD:MM:SS.SS(N|S|E|W)");
-                mb.append("</strong></font>");
+//                mb.append("<br>");
+//                mb.append("<font face=arial size=-2><strong>");
+//                mb.append("Enter GPS coordinates in any of the following formats:<br>");
+//                mb.append("DD.DD, DD:MM.MM(N|S|E|W), DD:MM:SS.SS(N|S|E|W)");
+//                mb.append("</strong></font>");
             }
 
         return mb.toString();

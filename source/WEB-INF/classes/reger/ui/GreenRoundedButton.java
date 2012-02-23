@@ -5,7 +5,19 @@ package reger.ui;
  */
 public class GreenRoundedButton {
 
+
+
     public static StringBuffer get(String pathToAppRoot, String textOnButton){
+        StringBuffer mb = new StringBuffer();
+
+
+        mb.append("<a class=\"btn btn-success disabled\" href=\"#\" style=\"width: 100%;\">"+textOnButton+"</a>");
+
+
+        return mb;
+    }
+
+    public static StringBuffer getOLD(String pathToAppRoot, String textOnButton){
         StringBuffer mb = new StringBuffer();
         mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
         mb.append("<tr>");

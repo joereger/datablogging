@@ -26,11 +26,9 @@ public class MegaHtmlFormCenter {
 
 
         mb.append("<tr>");
-        if (editLayout){
-            mb.append("<td bgcolor=#ffffcc colspan=6 align=left valign=top>");
-        } else {
+
             mb.append("<td bgcolor=#ffffff colspan=6 align=left valign=top>");
-        }
+
 
 //        if (displayasadmin && userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
 //            //Display the link to turn edit fields on/off

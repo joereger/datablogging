@@ -5,7 +5,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "<img src='../images/icon-log-med-notext.gif' align=top> Customize Log Properties";
+pageProps.title = "Customize Log Properties";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "logsyourlogs";
 pageProps.aclObjectName = "CUSTOMIZELOG";

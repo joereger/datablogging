@@ -161,7 +161,7 @@ public class FieldLayout {
                         //Field name
                         mb.append(fld.getFieldname());
                         //Requiredness
-                        if (fld.getIsrequired()==1){
+                        if (fld.getIsrequired()==1 && LAYOUTMODE==LAYOUTMODEEDIT){
                             mb.append(" (Required)");
                         }
                         mb.append(     "</div>" + reger.Vars.LINEBREAKCHARFORHTML);
@@ -195,34 +195,34 @@ public class FieldLayout {
                                         reger.core.Debug.debug(4, "FieldLayout.java", e);
                                         fieldNameUrlEncoded = fld.getFieldname() + " vs. Time";
                                     }
-                                    mb.append("<br>");
-                                    mb.append("<font face=arial class=smallfont size=-2>");
-                                    mb.append("Graph this field:");
-                                    mb.append("<br>");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISWEEK+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("This Week");
-                                    mb.append("</a>");
-                                    mb.append(" | ");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISMONTH+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("This Month");
-                                    mb.append("</a>");
-                                    mb.append(" | ");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISYEAR+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("This Year");
-                                    mb.append("</a>");
-                                    mb.append("<br>");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=7&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("Last 7 Days");
-                                    mb.append("</a>");
-                                    mb.append(" | ");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=30&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("Last 30 Days");
-                                    mb.append("</a>");
-                                    mb.append(" | ");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=365&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("Last 365 Days");
-                                    mb.append("</a>");
-                                    mb.append("</font>");
+//                                    mb.append("<br>");
+//                                    mb.append("<font face=arial class=smallfont size=-2>");
+//                                    mb.append("Graph this field:");
+//                                    mb.append("<br>");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISWEEK+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("This Week");
+//                                    mb.append("</a>");
+//                                    mb.append(" | ");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISMONTH+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("This Month");
+//                                    mb.append("</a>");
+//                                    mb.append(" | ");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISYEAR+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("This Year");
+//                                    mb.append("</a>");
+//                                    mb.append("<br>");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=7&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("Last 7 Days");
+//                                    mb.append("</a>");
+//                                    mb.append(" | ");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=30&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("Last 30 Days");
+//                                    mb.append("</a>");
+//                                    mb.append(" | ");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=365&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("Last 365 Days");
+//                                    mb.append("</a>");
+//                                    mb.append("</font>");
                                 } else {
                                     //Alpha fields
                                     String fieldNameUrlEncoded = "";
@@ -232,34 +232,34 @@ public class FieldLayout {
                                         reger.core.Debug.debug(4, "FieldLayout.java", e);
                                         fieldNameUrlEncoded = fld.getFieldname() + " vs. Time";
                                     }
-                                    mb.append("<br>");
-                                    mb.append("<font face=arial class=smallfont size=-2>");
-                                    mb.append("Graph this field:");
-                                    mb.append("<br>");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISWEEK+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("This Week");
-                                    mb.append("</a>");
-                                    mb.append(" | ");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISMONTH+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("This Month");
-                                    mb.append("</a>");
-                                    mb.append(" | ");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISYEAR+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("This Year");
-                                    mb.append("</a>");
-                                    mb.append("<br>");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=7&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("Last 7 Days");
-                                    mb.append("</a>");
-                                    mb.append(" | ");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=30&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("Last 30 Days");
-                                    mb.append("</a>");
-                                    mb.append(" | ");
-                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=365&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-                                    mb.append("Last 365 Days");
-                                    mb.append("</a>");
-                                    mb.append("</font>");
+//                                    mb.append("<br>");
+//                                    mb.append("<font face=arial class=smallfont size=-2>");
+//                                    mb.append("Graph this field:");
+//                                    mb.append("<br>");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISWEEK+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("This Week");
+//                                    mb.append("</a>");
+//                                    mb.append(" | ");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISMONTH+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("This Month");
+//                                    mb.append("</a>");
+//                                    mb.append(" | ");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISYEAR+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("This Year");
+//                                    mb.append("</a>");
+//                                    mb.append("<br>");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=7&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("Last 7 Days");
+//                                    mb.append("</a>");
+//                                    mb.append(" | ");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=30&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("Last 30 Days");
+//                                    mb.append("</a>");
+//                                    mb.append(" | ");
+//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=365&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+//                                    mb.append("Last 365 Days");
+//                                    mb.append("</a>");
+//                                    mb.append("</font>");
                                 }
                             }
                         //}

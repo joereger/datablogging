@@ -29,7 +29,7 @@ public class SiteTemplateTagQuickStats implements SiteTemplateTag{
     }
 
     public boolean isRequired(){
-        return true;
+        return false;
     }
 
     /**

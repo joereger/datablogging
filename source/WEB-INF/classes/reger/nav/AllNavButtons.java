@@ -19,114 +19,114 @@ public class AllNavButtons {
     private static void createButtons(){
 
         //Top level Admin Tab buttons
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("adminhome", "", "MY HOME", "myhome/index.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logs", "", "LOGS", "myhome/logs-log-list.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entries", "", "ENTRIES", "myhome/entries-recent.log", false, "", null));
-        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("files", "", "FILES", "myhome/files.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphs", "", "GRAPHS", "myhome/graphs.log", false, "", null));
-        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffic", "", "TRAFFIC", "myhome/traffic.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("people", "", "PEOPLE", "myhome/people.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("groups", "", "GROUPS", "myhome/groups.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settings", "", "SETTINGS", "myhome/settings-siteprops.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("tools", "", "TOOLS", "myhome/tools.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pl", "", "PRIVATE LABEL", "pl/index.log", false, "PLADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loe", "", "LOE ADMIN", "loe/index.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("adminhome", "", "Dashboard", "myhome/index.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logs", "", "Logs", "myhome/logs-log-list.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entries", "", "Posts", "myhome/entries-recent.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("files", "", "Files", "myhome/files.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphs", "", "Graphs", "myhome/graphs.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffic", "", "Traffic", "myhome/traffic.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("people", "", "People", "myhome/people.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("groups", "", "Groups", "myhome/groups.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settings", "", "Settings", "myhome/settings-siteprops.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("tools", "", "Tools", "myhome/tools.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pl", "", "Pl", "pl/index.log", false, "PLADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loe", "", "Sysadmin", "loe/index.log", false, "MASTERADMIN", null));
 
 
         //Sites
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("sitesmain", "adminhome", "MANAGE SITES", "myhome/sites.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("sitesnewsite", "adminhome", "CREATE A NEW SITE", "myhome/sites-newsite.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("sitesmain", "adminhome", "Manage Sites", "myhome/sites.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("sitesnewsite", "adminhome", "New Site", "myhome/sites-newsite.log", false, "", null));
 
         //Versions
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("versionsmain", "adminhome", "RELEASE NOTES", "myhome/versions.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("versionsmain", "adminhome", "Release Notes", "myhome/versions.log", false, "", null));
 
 
         //Logs Buttons
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsyourlogs", "logs", "YOUR LOGS", "myhome/logs-log-list.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsmain", "logs", "LOGS VS. LOG TYPES", "myhome/logs.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logslogtypes", "logs", "YOUR CUSTOM LOG TYPES", "myhome/logs-type-list.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlog", "logs", "CREATE A NEW LOG", "myhome/logs-newlog.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlogtype", "logs", "CREATE A NEW CUSTOM LOG TYPE", "myhome/logs-type-properties.log?action=startadd", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewstatic", "logs", "STATIC PAGES", "myhome/logs-contentpage-edit.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsyourlogs", "logs", "Your Logs", "myhome/logs-log-list.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsmain", "logs", "Logs vs Log Types", "myhome/logs.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logslogtypes", "logs", "Custom Log Types", "myhome/logs-type-list.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlog", "logs", "New Log", "myhome/logs-newlog.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlogtype", "logs", "New Log Type", "myhome/logs-type-properties.log?action=startadd", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewstatic", "logs", "Pages", "myhome/logs-contentpage-edit.log", false, "", null));
         //allNavButtons = reger.core.Util.addToNavButtonArray(allNavButtons, new NavButton("logsstaticcontentpages", "logs", "STATIC CONTENT PAGES", "myhome/logs-contentpage.log", false, ""));
 
         //Entries Buttons
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesrecent", "entries", "RECENT", "myhome/entries-recent.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessearchtop", "entries", "SEARCH", "myhome/entries-simplesearch.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesdraft", "entries", "DRAFTS", "myhome/entries-draft.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entrieslocations", "entries", "LOCATIONS", "myhome/entries-locations.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodes", "entries", "EPISODES", "myhome/episodes.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiods", "entries", "PERIODS", "myhome/timeperiods.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriespolls", "entries", "POLLS", "myhome/entries-polls.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesrecent", "entries", "Recent", "myhome/entries-recent.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessearchtop", "entries", "Search", "myhome/entries-simplesearch.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesdraft", "entries", "Drafts", "myhome/entries-draft.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entrieslocations", "entries", "Locations", "myhome/entries-locations.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodes", "entries", "Episodes", "myhome/episodes.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiods", "entries", "Periods", "myhome/timeperiods.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriespolls", "entries", "Polls", "myhome/entries-polls.log", false, "", null));
 
         //Entries Search
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessimplesearch", "entriessearchtop", "SIMPLE SEARCH", "myhome/entries-simplesearch.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessearch", "entriessearchtop", "ADVANCED SEARCH", "myhome/entries.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessaved", "entriessearchtop", "SAVED SEARCHES", "myhome/entries-savedsearches.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessimplesearch", "entriessearchtop", "Simple Search", "myhome/entries-simplesearch.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessearch", "entriessearchtop", "Advanced Search", "myhome/entries.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessaved", "entriessearchtop", "Saved Searches", "myhome/entries-savedsearches.log", false, "", null));
 
         //Graphs
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphsmain", "graphs", "GRAPHS", "myhome/graphs.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphsmain", "graphs", "Graphs", "myhome/graphs.log", false, "", null));
 
         //Files
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("filesbrowse", "files", "BROWSE", "myhome/files.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("filessync", "files", "SYNC TOOL", "myhome/files-synctool.log", false, "", null));
 
         //Episodes
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodesmain", "episodes", "YOUR EPISODES", "myhome/episodes.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodeswhatare", "episodes", "WHAT ARE EPISODES?", "myhome/episodes-whatare.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodesnew", "episodes", "ADD A NEW EPISODE", "myhome/episodes-new.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodesmain", "episodes", "Your Episodes", "myhome/episodes.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodeswhatare", "episodes", "What Are Episodes?", "myhome/episodes-whatare.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodesnew", "episodes", "New Episode", "myhome/episodes-new.log", false, "", null));
 
 
         //Time Periods
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiodsmain", "timeperiods", "MAIN", "myhome/timeperiods.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiodsadd", "timeperiods", "ADD TIME PERIOD", "myhome/timeperiods-add.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiodshelp", "timeperiods", "WHAT ARE TIME PERIODS?", "myhome/timeperiods-help.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiodsmain", "timeperiods", "Main", "myhome/timeperiods.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiodsadd", "timeperiods", "New Time Period", "myhome/timeperiods-add.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiodshelp", "timeperiods", "What Are Time Periods?", "myhome/timeperiods-help.log", false, "", null));
 
 
         //Traffic
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficmain", "traffic", "MAIN", "myhome/traffic.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficentries", "traffic", "ENTRIES", "myhome/traffic-entries.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficlogs", "traffic", "LOGS", "myhome/traffic-logs.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficfiles", "traffic", "FILES", "myhome/traffic-images.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficmessages", "traffic", "MESSAGES", "myhome/traffic-messages.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffictrackback", "traffic", "TRACKBACKS", "myhome/traffic-trackback.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficbrowsers", "traffic", "BROWSERS", "myhome/traffic-browsers.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficreferers", "traffic", "REFERERS", "myhome/traffic-referers.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficclicks", "traffic", "CLICKS", "myhome/traffic-rawclicks.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficmain", "traffic", "Main", "myhome/traffic.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficentries", "traffic", "Entries", "myhome/traffic-entries.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficlogs", "traffic", "Logs", "myhome/traffic-logs.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficfiles", "traffic", "Files", "myhome/traffic-images.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficmessages", "traffic", "Messages", "myhome/traffic-messages.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffictrackback", "traffic", "Trackbacks", "myhome/traffic-trackback.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficbrowsers", "traffic", "Browsers", "myhome/traffic-browsers.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficreferers", "traffic", "Referers", "myhome/traffic-referers.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("trafficclicks", "traffic", "Clicks", "myhome/traffic-rawclicks.log", false, "", null));
 
         //People
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplemain", "people", "MAIN", "myhome/people.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplespecialaccess", "people", "PEOPLE SPECIAL ACCESS", "myhome/people-authors.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peopleaddauthor", "people", "ADD AUTHOR", "myhome/people-accountuser.log?action=newstart", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplefriends", "people", "FRIENDS", "myhome/people-friends.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peopleinvite", "people", "INVITE", "myhome/people-friends-invite.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplefind", "people", "FIND PEOPLE", "myhome/people-find.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peopleinbox", "people", "INBOX", "myhome/people-inbox.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplemessage", "people", "SEND MESSAGE", "myhome/people-newmessage.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplemain", "people", "Main", "myhome/people.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplespecialaccess", "people", "Special Access", "myhome/people-authors.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peopleaddauthor", "people", "Add Author", "myhome/people-accountuser.log?action=newstart", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplefriends", "people", "Friends", "myhome/people-friends.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peopleinvite", "people", "Invite", "myhome/people-friends-invite.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplefind", "people", "Find People", "myhome/people-find.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peopleinbox", "people", "Inbox", "myhome/people-inbox.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("peoplemessage", "people", "Send Message", "myhome/people-newmessage.log", false, "", null));
 
         //Groups
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("groupsmain", "groups", "MAIN", "myhome/groups.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("groupsmain", "groups", "Main", "myhome/groups.log", false, "", null));
 
         //Settings
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingssiteprops", "settings", "SITE SETTINGS", "myhome/settings-siteprops.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingssettings", "settings", "USER SETTINGS", "myhome/settings-accountuser.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplatetab", "settings", "SITE LOOK & FEEL TEMPLATES", "myhome/settings-template-oneclick.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsprofile", "settings", "YOUR PROFILE", "myhome/settings-profile.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsfavesites", "settings", "FAVORITE SITES", "myhome/settings-favesites.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsacctstatus", "settings", "LICENSE STATUS", "myhome/accountstatus.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingssiteprops", "settings", "Site Settings", "myhome/settings-siteprops.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingssettings", "settings", "User Settings", "myhome/settings-accountuser.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplatetab", "settings", "Look and Feel", "myhome/settings-template-main.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsprofile", "settings", "Your Profile", "myhome/settings-profile.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsfavesites", "settings", "Favorite Sites", "myhome/settings-favesites.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsacctstatus", "settings", "License Status", "myhome/accountstatus.log", false, "", null));
 
         //Look & Feel
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplateoneclick", "settingstemplatetab", "SIMPLE ONE-CLICK TEMPLATES", "myhome/settings-template-oneclick.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplate", "settingstemplatetab", "ADVANCED/MANUAL EDITING", "myhome/settings-template-main.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplateoneclick", "settingstemplatetab", "SIMPLE ONE-CLICK TEMPLATES", "myhome/settings-template-oneclick.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplate", "settingstemplatetab", "Template Editing", "myhome/settings-template-main.log", false, "", null));
 
 
         //Profile
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsprofilemain", "settingsprofile", "MAIN", "myhome/settings-profile.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsaddprofileimage", "settingsprofile", "ADD PROFILE IMAGE", "myhome/settings-addprofileimage.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsprofilemain", "settingsprofile", "Main", "myhome/settings-profile.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsaddprofileimage", "settingsprofile", "Add Profile Image", "myhome/settings-addprofileimage.log", false, "", null));
 
         //Skins
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsskinsmain", "settingsskins", "EASY SKINS", "myhome/settings-skin.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingscustomskin", "settingsskins", "CUSTOM SKINS", "myhome/settings-skin-custom.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsskinsmain", "settingsskins", "Easy Skins", "myhome/settings-skin.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingscustomskin", "settingsskins", "Custom Skins", "myhome/settings-skin-custom.log", false, "", null));
 
         //Tools
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsmain", "tools", "MAIN", "myhome/tools.log", false, "", null));
@@ -143,14 +143,14 @@ public class AllNavButtons {
 
 
         // Import Entries
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsimportmain", "toolsimport", "MAIN", "myhome/tools-import.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsimportmain", "toolsimport", "Main", "myhome/tools-import.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("importrss", "toolsimport", "RSS", "myhome/tools-importrss.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("importmovabletype", "toolsimport", "MOVABLE TYPE", "myhome/tools-import-movabletype.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("importmovabletype", "toolsimport", "Movable Type", "myhome/tools-import-movabletype.log", false, "", null));
 
         //Tools Email/Camphone
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphoneemail", "toolsemailcamphone", "EMAIL ADDRESSES", "myhome/tools-emailapi-emailaddresses.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphonephone", "toolsemailcamphone", "PHONE ADDRESSES", "myhome/tools-emailapi-phoneaddresses.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphonesettings", "toolsemailcamphone", "SETTINGS", "myhome/tools-emailapi-settings.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphoneemail", "toolsemailcamphone", "Email Addresses", "myhome/tools-emailapi-emailaddresses.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphonephone", "toolsemailcamphone", "Phone Addresses", "myhome/tools-emailapi-phoneaddresses.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphonesettings", "toolsemailcamphone", "Settings", "myhome/tools-emailapi-settings.log", false, "", null));
 
         //Private Label
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmain", "pl", "MAIN", "pl/index.log", false, "PLADMIN", new String[]{"plid"}));

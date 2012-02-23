@@ -9,7 +9,7 @@
 <%@ page import="java.text.*"%>
 <%@ page import="reger.core.Debug"%>
 <%@ page import="java.util.HashMap"%>
-
+<%@ page import="reger.nestednav.NestedNavItem" %>
 
 
 <%
@@ -100,113 +100,137 @@ if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl"
 
 
 
+    mb.append("<div class=\"hero-unit\">"+"\n");
+    mb.append("    <h1>dashboard</h1>"+"\n");
+    mb.append("    <p>manage your blog</p>"+"\n");
+    mb.append("</div>"+"\n");
 
 
 //Put up the main table
-reger.nestednav.NestedNavDisplayAdminHome navMgrDisplay = new reger.nestednav.NestedNavDisplayAdminHome();
+//reger.nestednav.NestedNavDisplayAdminHome navMgrDisplay = new reger.nestednav.NestedNavDisplayAdminHome();
+//mb.append(navMgrDisplay.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request));
+
+
+
+mb.append("<div class=\"row\">");
+mb.append("<div class=\"span4\">");
+mb.append("<h1>Logs</h1>");
+reger.nestednav.NestedNavDisplayLayoutManager navMgrDisplay = new reger.nestednav.NestedNavDisplayLayoutManager();
 mb.append(navMgrDisplay.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request));
+mb.append("</div>");
+
+
+
+
+mb.append("<div class=\"span4\">");
+    mb.append("<h1>Recent Posts</h1>");
+
+    mb.append("<table class=\"table table-striped\">");
+    //@todo Add paging to /myhome/entries.log list
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstLastentries= Db.RunSQL("SELECT event.eventid, event.title, event.date FROM event, megalog WHERE event.logid=megalog.logid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" AND event.istemporary='0' ORDER BY event.date DESC LIMIT 0,25");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstLastentries!=null && rstLastentries.length>0){
+        for(int i=0; i<rstLastentries.length; i++){
+            mb.append("<tr>");
+            //@todo Check /myhome/entries.log for timezone
+            //@todo Add /myhome/entries.log Agotext
+
+
+            mb.append("<td><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstLastentries[i][1]), 100)+"</strong></td>");
+            mb.append("<td>");
+
+            mb.append("<div class=\"btn-group\">" + "\n");
+            mb.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+rstLastentries[i][0]+"&action=edit\">Edit</a>" + "\n");
+            mb.append("<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">" + "\n");
+            mb.append("<span class=\"caret\"></span>" + "\n");
+            mb.append("</a>" + "\n");
+            mb.append("<ul class=\"dropdown-menu\">" + "\n");
+            mb.append("<li><a href=\"../entry.log?eventid="+rstLastentries[i][0]+"\">View</a></li>" + "\n");
+            mb.append("<li><a href=\"entry-move.log?eventid="+rstLastentries[i][0]+"\">Move</a></li>" + "\n");
+            mb.append("<li><a href=\"entry-delete.log?eventid="+rstLastentries[i][0]+"\">Delete</a></li>" + "\n");
+            mb.append("</ul>" + "\n");
+            mb.append("</div>" + "\n");
+
+            mb.append("</td>");
+
+            mb.append("</tr>");
+        }
+    }
+
+
+    mb.append("</table>");
+    mb.append("<!-- End last edited -->");
+
+
+ mb.append("</div>");
+
+
+
+
+mb.append("<div class=\"span4\">");
+    mb.append("<h1>Drafts</h1>");
+
+    //Draft entries start
+    mb.append("<!-- Start Draft List -->");
+    mb.append("<table class=\"table table-striped\">");
+
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstDrafts= reger.core.db.Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstDrafts!=null && rstDrafts.length>0){
+        for(int i=0; i<rstDrafts.length; i++){
+            mb.append("<tr>");
+
+            mb.append("<td><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstDrafts[i][2]), 100)+"</strong></td>");
+
+            mb.append("<td>");
+            mb.append("<div class=\"btn-group\">" + "\n");
+            mb.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+rstDrafts[i][0]+"&action=edit\">Edit</a>" + "\n");
+            mb.append("<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">" + "\n");
+            mb.append("<span class=\"caret\"></span>" + "\n");
+            mb.append("</a>" + "\n");
+            mb.append("<ul class=\"dropdown-menu\">" + "\n");
+            mb.append("<li><a href=\"../entry.log?eventid="+rstDrafts[i][0]+"\">View</a></li>" + "\n");
+            mb.append("<li><a href=\"entry-move.log?eventid="+rstDrafts[i][0]+"\">Move</a></li>" + "\n");
+            mb.append("<li><a href=\"entry-delete.log?eventid="+rstDrafts[i][0]+"\">Delete</a></li>" + "\n");
+            mb.append("</ul>" + "\n");
+            mb.append("</div>" + "\n");
+            mb.append("</td>");
+
+            mb.append("</tr>");
+
+        }
+    } else {
+        mb.append("<tr><td bgcolor=#ffffff valign=top colspan=5>");
+        mb.append("<font face=arial size=-2>None</font>");
+        mb.append("</td></tr>");
+    }
+    mb.append("</table>");
+    mb.append("<!-- End Draft List -->");
+    //Draft entries end
+
+
+
+
+mb.append("</div>");
+
+
+
+
+mb.append("</div>");
+
 
 
 
 
 mb.append("<br>");
 
-//Draft entries start
-mb.append("<!-- Start Draft List -->");
-String help1 = reger.Help.tip("Saved as Draft", "Draft entries are saved here as works in progress.  They are not shown on your public site until you publish them.  You can do this by editing them (clicking the title link) and then choosing the Yes, Publish Now radio option near the bottom of the edit screen.  Finish by clicking Edit Log Entry.  Also, keep in mind that you can edit your entries as much as you like without publishing them.", false, pageProps.pathToAppRoot);
-mb.append(reger.ui.BubbleBox.start("Saved as Draft " + help1, pageProps.pathToAppRoot));
-mb.append("<table width=100% cellpadding=0 cellspacing=1 border=0>");
-//mb.append("<tr><td bgcolor=#666666 colspan=5><font face=arial size=+1 color=#ffffff><strong>Saved as Draft</strong></font></td></tr>");
-mb.append("<tr>");
-mb.append("<td bgcolor=#e6e6e6 valign=top align=left colspan=2>");
-mb.append("<font face=arial size=-2 color=#666666>Title</font></a></td>");
-mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
-mb.append("<font face=arial size=-2 color=#666666>");
-mb.append("Date");
-mb.append("</font>");
-mb.append("</td>");
-mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
-mb.append("<font face=arial size=-2 color=#666666>");
-mb.append("Log");
-mb.append("</font>");
-mb.append("</td>");
-mb.append("<td bgcolor=#e6e6e6 valign=top align=left>");
-mb.append("<font face=arial size=-2 color=#666666>");
-mb.append("Author");
-mb.append("</font>");
-mb.append("</td>");
-mb.append("</tr>");
-//-----------------------------------
-//-----------------------------------
-String[][] rstDrafts= reger.core.db.Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
-//-----------------------------------
-//-----------------------------------
-if (rstDrafts!=null && rstDrafts.length>0){
-	for(int i=0; i<rstDrafts.length; i++){
-	    mb.append("<tr>");
-		mb.append("<td bgcolor=#ffffff valign=top align=right width=10><a href='log-" + rstDrafts[i][1] + ".log?eventid=" + rstDrafts[i][0] + "&action=edit'><img src='../images/bullet-arrow.gif' width='9' height='9' alt='' border='0'></a>");
-		mb.append("</td>");
-		mb.append("<td bgcolor=#ffffff valign=top align=left>");
-		mb.append("<a href='entry.log?eventid=" + rstDrafts[i][0] + "&action=edit'><font face=arial size=-2>" + reger.core.Util.cleanForHtml(rstDrafts[i][2]) + "</font></a></td>");
-		mb.append("<td bgcolor=#ffffff valign=top align=left>");
-		mb.append("<font face=arial size=-2>");
-		mb.append(reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstDrafts[i][3])));
-		mb.append("</font>");
-		mb.append("</td>");
-		mb.append("<td bgcolor=#ffffff valign=top align=left>");
-		mb.append("<font face=arial size=-2>");
-		mb.append(" " + rstDrafts[i][4]);
-		mb.append("</font>");
-		mb.append("</td>");
-        mb.append("<td bgcolor=#ffffff valign=top align=left>");
-        mb.append("<font face=arial size=-2>");
-        mb.append(" " + rstDrafts[i][5]);
-        mb.append("</font>");
-        mb.append("</td>");
-		mb.append("</tr>");
-	}
-} else {
-	mb.append("<tr><td bgcolor=#ffffff valign=top colspan=5>");
-	mb.append("<font face=arial size=-2>No entries are currently Saved As Draft.  You save an entry as draft near the bottom of a new entry.</font>");
-	mb.append("</td></tr>");
-}
-mb.append("</table>");
-mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-mb.append("<!-- End Draft List -->");
-//Draft entries end
 
-mb.append("<br>");
-
-mb.append("<!-- Start last edited -->");
-mb.append(reger.ui.BubbleBox.start("Most Recent Log Entries", pageProps.pathToAppRoot));
-mb.append("<table width=100% cellpadding=5 cellspacing=0 border=0>");
-//@todo Add paging to /myhome/entries.log list
-//-----------------------------------
-//-----------------------------------
-String[][] rstLastentries= Db.RunSQL("SELECT event.eventid, event.title, event.date FROM event, megalog WHERE event.logid=megalog.logid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" AND event.istemporary='0' ORDER BY event.date DESC LIMIT 0,25");
-//-----------------------------------
-//-----------------------------------
-if (rstLastentries!=null && rstLastentries.length>0){
-	for(int i=0; i<rstLastentries.length; i++){
-		mb.append("<tr>");
-        //@todo Check /myhome/entries.log for timezone
-        //@todo Add /myhome/entries.log Agotext
-        mb.append("<td bgcolor=#ffffff valign=top><a href='entry.log?eventid="+rstLastentries[i][0]+"&action=edit'><img src='../images/bullet-arrow.gif' width='9' height='9' alt='' border='0'></a></td>");
-        mb.append("<td bgcolor=#ffffff valign=top><font face=arial size=-2>"+reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstLastentries[i][2]))+"</font></td>");
-        mb.append("<td bgcolor=#ffffff valign=top><font face=arial size=-1><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstLastentries[i][1]), 100)+"</strong></font></td>");
-        mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='../entry.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-2>View</font></a></td>");
-        mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='entry.log?eventid="+rstLastentries[i][0]+"&action=edit'><font face=arial size=-2>Edit</font></a></td>");
-        mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='entry-move.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-2>Move</font></a></td>");
-        //mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='entry-addmedia.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-2>Add File</font></a></td>");
-        mb.append("<td bgcolor=#ffffff valign=top nowrap><a href='entry-delete.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-2>Delete</font></a></td>");
-        mb.append("</tr>");
-	}
-}
-
-
-mb.append("</table>");
-mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-mb.append("<!-- End last edited -->");
 
 
 
@@ -223,39 +247,39 @@ mb.append("<!-- End last edited -->");
 
 
 
-sc.append("<!-- Start account stuff -->");
-//sc.append("<img src='../images/clear.gif' width='10' height='90' alt='' border='0'>");
-sc.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
-//sc.append("<tr><td bgcolor=#cccccc colspan=2><font face=arial size=+1 color=#000000>Your Account</font></td></tr>");
-sc.append("<tr>");
-sc.append("<td bgcolor='#ffffff' align=left valign=top colspan=4>");
-if (userSession.getAccount().isPro()) {
-    sc.append("<center>");
-    sc.append("<a href='accountstatus.log'>");
-    sc.append("<img src='images/pro-yel.gif' alt='This is a Pro account.' border=0>");
-    sc.append("</a>");
-    sc.append("<br>");
-    sc.append("<a href='accountstatus.log'>");
-    sc.append("<font face=arial size=-2><strong>Account Status</strong></font>");
-    sc.append("</a>");
-    sc.append("</center>");
-} else {
-    sc.append("<center><img src='images/free-yel.gif' alt='This is a Free account.' border=0>");
-    sc.append("<br>");
-    sc.append("<font face=arial size=-2>You're certainly welcome to use the site for free, but you're missing out on all the great Pro features.  And upgrading removes all banner ads from your site.</font>");
-    sc.append("<br>");
-    sc.append("<a href='accountstatus.log'>");
-    sc.append("<font face=arial size=-2><strong>See what you're missing.</strong></font>");
-    sc.append("</a>");
-    sc.append("</center>");
-}
-sc.append("</td>");
-sc.append("</tr>");
-
-sc.append("</table>");
-sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-sc.append("<!-- End account stuff -->");
+//sc.append("<!-- Start account stuff -->");
+////sc.append("<img src='../images/clear.gif' width='10' height='90' alt='' border='0'>");
+//sc.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
+//sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+////sc.append("<tr><td bgcolor=#cccccc colspan=2><font face=arial size=+1 color=#000000>Your Account</font></td></tr>");
+//sc.append("<tr>");
+//sc.append("<td bgcolor='#ffffff' align=left valign=top colspan=4>");
+//if (userSession.getAccount().isPro()) {
+//    sc.append("<center>");
+//    sc.append("<a href='accountstatus.log'>");
+//    sc.append("<img src='images/pro-yel.gif' alt='This is a Pro account.' border=0>");
+//    sc.append("</a>");
+//    sc.append("<br>");
+//    sc.append("<a href='accountstatus.log'>");
+//    sc.append("<font face=arial size=-2><strong>Account Status</strong></font>");
+//    sc.append("</a>");
+//    sc.append("</center>");
+//} else {
+//    sc.append("<center><img src='images/free-yel.gif' alt='This is a Free account.' border=0>");
+//    sc.append("<br>");
+//    sc.append("<font face=arial size=-2>You're certainly welcome to use the site for free, but you're missing out on all the great Pro features.  And upgrading removes all banner ads from your site.</font>");
+//    sc.append("<br>");
+//    sc.append("<a href='accountstatus.log'>");
+//    sc.append("<font face=arial size=-2><strong>See what you're missing.</strong></font>");
+//    sc.append("</a>");
+//    sc.append("</center>");
+//}
+//sc.append("</td>");
+//sc.append("</tr>");
+//
+//sc.append("</table>");
+//sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+//sc.append("<!-- End account stuff -->");
 
 
 
@@ -800,12 +824,6 @@ sc.append("</a>");
 sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
 sc.append("<!-- Version End -->");
 //Version End
-
-
-
-
-
-
 
 
 

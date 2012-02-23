@@ -15,21 +15,10 @@ public class NavPanelLevelZero {
     public static String getHtmlStart(String pathToAppRoot, UserSession userSession, NavButton[] navButtons, String currentNavButtonName, HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
-
-
-        mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0 bgcolor=#ffcc00 style=\"background-image: url(images/top-bar-rightbg.gif); background-position: top right; background-repeat: no-repeat;\">");
-        mb.append("<tr>");
-        mb.append("<td class=navlevel0topbar colspan=10><img src='images/clear.gif' width=1 height=85 align=right>");
-        mb.append("</td>");
-        mb.append("</tr>");
-
-
-        mb.append("<tr>");
-
-        mb.append("<td class=navtablevel0spacer width=35>");
-        mb.append("<img src='images/clear.gif' width=35 height=35>");
-        mb.append("</td>");
-
+        mb.append("    <div class=\"navbar navbar-fixed-top\">" + "\n");
+        mb.append("      <div class=\"navbar-inner\">" + "\n");
+        mb.append("        <div class=\"container\">" + "\n");
+        mb.append("            <ul class=\"nav\">" + "\n");
 
         //Need one for each button
         String url = "";
@@ -39,39 +28,28 @@ public class NavPanelLevelZero {
                 //Make sure the user has enough permissions to view this button
                 if (navButtons[i].aclNameRequiredToShowButton.equals("") || userSession.getAccountuser().userCanDoAcl(navButtons[i].aclNameRequiredToShowButton, userSession.getAccount().getAccountid())){
 
-                    mb.append("<td class=navtablevel0spacer width=6>");
-                    mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=6 height=1>");
-                    mb.append("</td>");
-
                     url = pathToAppRoot + navButtons[i].buttonUrlFromSiteRoot + navButtons[i].getQueryStringIncludingRequestVars(request);
                     text = navButtons[i].buttonTitle;
+                    String isOn = "";
                     if (navButtons[i].navButtonName.equals(currentNavButtonName)){
-                        mb.append("<td class=navtablevel0tabon align=center valign=top nowrap>");
-                        mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=5 height=1>");
-                        mb.append("<a href=\""+url+"\">"+text+"</a>");
-                        mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=5 height=1>");
-                        mb.append("</td>");
-                    } else {
-                        mb.append("<td class=navtablevel0taboff align=center valign=top nowrap>");
-                        mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=5 height=1>");
-                        mb.append("<a href=\""+url+"\">"+text+"</a>");
-                        mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=5 height=1>");
-                        mb.append("</td>");
+                        isOn = " class=\"active\"";
                     }
+
+                    mb.append("                    <li "+isOn+">" + "\n");
+                    mb.append("                        <a href=\""+url+"\">" + "\n");
+                    mb.append("                        "+ text + "\n");
+                    mb.append("                        </a>" + "\n");
+                    mb.append("                    </li>" + "\n");
+
                 }
             }
         }
 
-        mb.append("<td class=navtablevel0spacer width=50% >");
-        mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=25 height=1>");
-        mb.append("</td>");
+        mb.append("            </ul>" + "\n");
+        mb.append("        </div>" + "\n");
+        mb.append("      </div>" + "\n");
+        mb.append("    </div>" + "\n");
 
-
-        mb.append("</tr>");
-        mb.append("</table>");
-
-
-        //Body of page goes here
 
         return mb.toString();
     }
@@ -79,11 +57,6 @@ public class NavPanelLevelZero {
     public static String getHtmlEnd(String pathToAppRoot, NavButton[] navButtons, String currentNavButtonName, HttpServletRequest request){
         StringBuffer mb = new StringBuffer();
 
-        mb.append("<table cellpadding=0 cellspacing=0 width=100% border=0>");
-        mb.append("<tr bgcolor=#ffcc00>");
-        mb.append("<td class=navlevel0bottom><img src='"+pathToAppRoot+"images/clear.gif' width=1 height=15></td>");
-        mb.append("</tr>");
-        mb.append("</table>");
 
 
         return mb.toString();

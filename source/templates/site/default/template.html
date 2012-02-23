@@ -1,368 +1,116 @@
-<html>
-<head>
-<title><$Site.Name$> <$Entry.Title$></title>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
 
+    <title><$Site.Name$> <$Entry.Title$></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content="Joe Reger, Jr.">
 
+    <!-- Le styles -->
 
-<style>
-/* ++++++++++++++++++++ This is the stylesheet that controls elements that are output by the system.  The names are pre-defined.  They may make little sense to you at first.  Play with them.  Change one to a funky color and then visit your site to see how it looks.  If you get in trouble, simply go to the Template Gallery and start over with one of the stylish pre-built templates. Have fun and be creative! You're in control. */
+    <link href="/css/twitter-bootstrap-2.0.1/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bmbleb.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 90px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="/css/twitter-bootstrap-2.0.1/css/bootstrap-responsive.css" rel="stylesheet">
 
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/favicon.ico">
 
-/* The color of links on your site. */
-a  {color: #000000;  font-weight: bold;}
 
+  </head>
 
+  <body>
 
-/* A big font used throughout the site in various places. */
-.bigfont{font-family: verdana, arial, helvetica, sans-serif;
-color:#000000;
-font-size:25px;}
 
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
 
+            <ul class="nav">
 
-/* A medium font used throughout the site in various places. */
-.mediumfont{font-family: verdana, arial, helvetica, sans-serif;
-color:#000000;
-font-size:10px;}
+              <!-- Start Home Button -->
+                <li>
+                    <a href="/">
+                    Home
+                    </a>
+                </li>
+              <!-- EndHome Button -->
 
+                <!-- Start Categories Dropdown -->
 
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Categories
+                        <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/sysadmin/index.jsp">SysAdmin Home</a></li>
+                            <li><a href="/sysadmin/errorlist.jsp">System & Error Log</a></li>
+                            <li><a href="/sysadmin/userlist.jsp">User Accounts</a></li>
+                            <li><a href="/sysadmin/manuallyrunscheduledtask.jsp">Scheduled Tasks</a></li>
+                            <li><a href="/sysadmin/systemprops.jsp">System Props</a></li>
+                            <li><a href="/sysadmin/instanceprops.jsp">Instance Props</a></li>
+                            <li><a href="/sysadmin/hibernatecache.jsp">Cache</a></li>
+                            <li><a href="/sysadmin/pageperformance.jsp">Page Performance Metrics</a></li>
+                            <li><a href="/sysadmin/privatelabels.jsp">Private Labels</a></li>
+                            <li><a href="/sysadmin/demofliptop.jsp">Demo Fliptop</a></li>
+                            <li><a href="/sysadmin/demorapleaf.jsp">Demo Rapleaf</a></li>
+                        </ul>
+                    </li>
 
-/* A small font used throughout the site in various places. */
-.smallfont{font-family: verdana, arial, helvetica, sans-serif;
-color:#666666;
-font-size:10px;}
 
 
+            </ul>
 
-/* The table that houses your main log navigation. */
-.navigation{width: 100%;
-background-color: #e6e6e6;
-}
+        </div>
+      </div>
 
+    </div>
 
+    <div class="container">
 
-/* The style of a navigation button that is currently clicked off. This will determine the general color and style of your navigation bar. */
-.navcelloff{padding: 3px;
-background-color: #cccccc;
-width: 100%;
-border-left: 6px solid #cccccc;
-}
+     <div class="hero-unit">
+        <h1><$Site.Name$></h1>
+        <p><$Site.Description$></p>
+      </div>
 
+     <div class="row">
+          <div class="span12">
 
+            <!-- Start Main Body -->
+            <$Main.Body$>
+            <!-- End Main Body -->
 
-/* The style of a navigation button that is currently clicked on. */
-.navcellon{padding: 3px;
-background-color: #dddddd;
-width: 100%;
-border-left: 6px solid #666699;
-}
+          </div>
+     </div>
 
 
 
-/* The font used when a navigation bar button is turned off. */
-.navfontoff{FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px; color: #333333;
-font-weight: bold;}
+      <br/><br/>
+      <hr>
 
+      <footer>
+        <p></p>
+      </footer>
 
+    </div> <!-- /container -->
 
-/* The font used when a navigation bar button is turned on. */
-.navfonton{FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px; color: #333333;
-font-weight: bold;}
 
 
 
-/* Content in your side column is arranged into units. */
-.sidecolunit {
-width: 100%;
-margin-bottom: 10px;
-border-top: 3px solid #333333;
-border-bottom: 1px solid #333333;
-border-left: 1px solid #333333;
-border-right: 1px solid #333333;
-}
-
-
-
-/* The background and font for unit headers in your side column. */
-.sidecolheader {
-background-color: #666699;
-padding: 3px;
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px;
-color: #e6e6e6;
-font-weight: bold;
-width: 100%;
-}
-
-
-
-.sidecolheader a {
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px;
-color: #e6e6e6;
-font-weight: bold;
-}
-
-
-
-/* The background and font for content in your side column. */
-.sidecolcontent {
-padding: 3px;
-background-color: #cccccc;
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px;
-color: #333333;
-font-weight: bold;
-width: 100%;
-}
-
-
-
-.sidecolcontent a {
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px;
-color: #333333;
-font-weight: bold;
-}
-
-
-
-/* Sun Mon Tue Wed Thu Fri Sat.  This changes the font and background color. */
-.calendardayname{background-color: #999999;
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 8px; color: #000000;
-font-weight: bold;}
-
-
-
-/* 1 2 3...  the little numbers in your calendar.  This changes the font and background color. */
-.calendardaybox{background-color: #e6e6e6;
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px; color: #000000;
-font-weight: bold;}
-
-
-
-/* The current day in your calendar.  This changes the font and background color so that you can highlight it. */
-.calendardayboxtoday{background-color: #cccccc;
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px; color: #000000;
-font-weight: bold;}
-
-
-
-/* Important for setting the style of your log entry detail page. This controls the display of field names.*/
-.logentryheader{background-color: #cccccc;
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 12px; color: #000000;
-font-weight: bold;}
-
-
-
-/* Important for setting the style of your log entry detail page. This controls the display of your data. */
-.logentrycontent{background-color: #ffffff;
-FONT-FAMILY: verdana, arial, helvetica, sans-serif;
-font-size: 10px; color: #000000;}
-
-
-
-/* Control the little numbers that appear when you list more log entries than will appear on the page. */
-.pagingnumbers{padding: 0px;
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px;
-color: #333333;
-font-weight: bold;
-background-color: #e6e6e6;
-border-top: 1px solid #333333;
-border-bottom: 1px solid #333333;
-border-left: 1px solid #333333;
-border-right: 1px solid #333333;
-width: 100%}
-
-
-
-.pagingnumbers a {
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 10px;
-color: #333333;
-font-weight: bold;
-}
-
-
-
-/* ++++++++++++++++++++ Below this point are css classes that appear in the template itself.  You can add/remove classes by editing your template directly. */
-
-
-
-TD.topbox {
-border-top: 7px solid #333333;
-border-bottom: 1px solid #333333;
-border-left: 1px solid #333333;
-border-right: 1px solid #333333;
-}
-
-
-
-TD.leftcol {
-border-top: 7px solid #333333;
-border-bottom: 1px solid #333333;
-border-left: 1px solid #333333;
-border-right: 1px solid #333333;
-}
-
-
-
-TD.centercol {
-border-top: 7px solid #333333;
-border-bottom: 1px solid #333333;
-border-left: 1px solid #333333;
-border-right: 1px solid #333333;
-}
-
-
-
-TD.rightcol {
-border-top: 7px solid #333333;
-border-bottom: 1px solid #333333;
-border-left: 1px solid #333333;
-border-right: 1px solid #333333;
-}
-
-
-
-.entrywrapper {
-border-top: 3px solid #333333;
-border-bottom: 1px solid #cccccc;
-border-left: 1px solid #cccccc;
-border-right: 1px solid #cccccc;
-margin-top: 8px;
-margin-bottom: 15px;
-}
-
-
-
-.entrytitle {
-background: #666699;
-font-family:  verdana, arial, helvetica, sans-serif;
-font-size: 12px;
-color: #e6e6e6;
-font-weight: bold;
-border-left: 0px solid #666699;
-padding: 3px;
-}
-
-
-
-.entrytitle a, .entrytitle font {
-FONT-FAMILY:  verdana, arial, helvetica, sans-serif;
-font-size: 12px;
-color: #e6e6e6;
-font-weight: bold;
-}
-
-
-
-.entryago {
-float: right;
-font-family:  verdana, arial, helvetica, sans-serif;
-font-size: 10px;
-color: #e6e6e6;
-font-weight: bold;
-padding-left: 5px;
-}
-
-
-
-.entryago a, .entryago font {
-font-family:  verdana, arial, helvetica, sans-serif;
-font-size: 10px;
-color: #e6e6e6;
-font-weight: bold;
-}
-
-
-
-.entrybody {
-font-family:  verdana, arial, helvetica, sans-serif;
-font-size: 10px;
-color: #666666;
-font-weight: normal;
-padding-left: 5px;
-padding-top: 8px;
-padding-bottom: 8px;
-}
-
-
-
-.entrydate {
-font-family:  verdana, arial, helvetica, sans-serif;
-font-size: 8px;
-color: #333333;
-font-weight: bold;
-padding-left: 5px;
-}
-
-
-
-.entrydate a, .entrydate font {
-font-family:  verdana, arial, helvetica, sans-serif;
-font-size: 8px;
-color: #333333;
-font-weight: bold;
-}
-
-</style>
-
-
-
-</head>
-<body bgcolor='#ffffff' text='#000000' link='#0000ff' vlink='#0000ff' LEFTMARGIN='0' TOPMARGIN='0' MARGINWIDTH='0' MARGINHEIGHT='0'>
-<center>
-<br>
-<table cellpadding=3 cellspacing=2 border=0 width=95% >
-
-
-
-<tr>
-<td colspan=3 valign=bottom align=left bgcolor='#666699' class=topbox>
-<br><br><br><font face=arial color=#e6e6e6 size=+3><b><$Site.Name$></b></font>
-<br><font face=arial color=#cccccc size=+1><$Site.Description$></font>
-</td>
-</tr>
-
-
-
-<tr>
-<td valign=top bgcolor='#cccccc' width=200 class=leftcol>
-<$Navbar.Vertical$>
-</td>
-<td valign=top bgcolor=#ffffff class=centercol>
-<$Main.Body$>
-</td>
-<td valign=top bgcolor=#cccccc width=200 align=right class=rightcol>
-<$Quick.Stats$><br>
-<$Small.Calendar$><br>
-<$On.This.Day$><br>
-<$Blogroll$><br>
-<$Comments$><br>
-<$Search.Box$><br>
-<$Email.Subscribe.Box$><br>
-<$Graphs.List$><br>
-<$Rss.Link$><br>
-<$Wap.Link$><br>
-
-
-
-
-</td>
-</tr>
-
-
-
-</table>
-</center>
-</body>
+  </body>
 </html>
+

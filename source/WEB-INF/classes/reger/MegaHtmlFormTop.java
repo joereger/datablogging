@@ -78,19 +78,18 @@ public class MegaHtmlFormTop {
 
 
             if (pageProps.action.equals("edit") || pageProps.action.equals("editsubmit")) {
-                mb.append("<span style=\"background: #f6f6f6; float: right; border: 1px dotted #999; padding:3px; width: 25%;\">");
-                mb.append("<font face=arial size=-2>Add <a href='entry.log?logid="+pageProps.logProps.logid+"&action=default'>default values</a> to "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+" for faster logging.</font><br>");
-                mb.append("<font face=arial size=-2>Post to this log via <a href='tools-emailapi-emailaddresses.log'>email</a>.</font><br>");
-                mb.append("</span>");
-                mb.append("<img src='../images/logimages/"+ pageProps.logProps.megalogtypeicon +"' width=100 height=50 border=0 align=top>");
-                mb.append("<font face=arial size=+3>Edit Log Entry: "+ reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</font><br>");
+//                mb.append("<span style=\"background: #f6f6f6; float: right; border: 1px dotted #999; padding:3px; width: 25%;\">");
+//                mb.append("<font face=arial size=-2>Add <a href='entry.log?logid="+pageProps.logProps.logid+"&action=default'>default values</a> to "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+" for faster logging.</font><br>");
+//                mb.append("<font face=arial size=-2>Post to this log via <a href='tools-emailapi-emailaddresses.log'>email</a>.</font><br>");
+//                mb.append("</span>");
+                mb.append("<font face=arial size=+3>Edit Post on "+ reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</font><br>");
                 mb.append("<div style=\"clear:both;\"><br><br></div>");
             } else if (pageProps.action.equals("default") || pageProps.action.equals("defaultsubmit")) {
-                mb.append("<span style=\"background: #f6f6f6; float: right; border: 1px dotted #999; padding:3px; width: 25%;\">");
-                mb.append("<font face=arial size=-1><b>These default values make it faster and easier to log.  You can always change values when you create or edit an entry.</b></font><br>");
-                mb.append("</span>");
+//                mb.append("<span style=\"background: #f6f6f6; float: right; border: 1px dotted #999; padding:3px; width: 25%;\">");
+//                mb.append("<font face=arial size=-1><b>These default values make it faster and easier to log.  You can always change values when you create or edit an entry.</b></font><br>");
+//                mb.append("</span>");
                 mb.append("<img src='../images/logimages/"+ pageProps.logProps.megalogtypeicon +"' width=100 height=50 border=0 align=top>");
-                mb.append("<font face=arial size=+3>Default Values For: "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</font><br>");
+                mb.append("<font face=arial size=+3>Default Values For Posts on "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</font><br>");
                 mb.append("<div style=\"clear:both;\"><br><br></div>");
             } else {
                 //Override with some settings for layout mode
@@ -98,13 +97,13 @@ public class MegaHtmlFormTop {
                     mb.append("<font face=arial size=+3>Customize Log Fields: "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</font><br>");
                     mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "You are now customizing the activity-specific fields of this log.  You can change the arrangement of fields, edit the properties of a field, add new fields and remove fields.  When you're done, click Off to go back to normal entry mode."));
                 }  else {
-                    mb.append("<span style=\"background: #f6f6f6; float: right; border: 1px dotted #999; padding:3px; width: 25%;\">");
-                    mb.append("<font face=arial size=-2>Add <a href='entry.log?logid="+pageProps.logProps.logid+"&action=default'>default values</a> to this log for faster logging.</font><br>");
-                    mb.append("<font face=arial size=-2>Post to this log via <a href='tools-emailapi-emailaddresses.log'>email</a>.</font><br>");
-                    mb.append("<font face=arial size=-2><a href='logs-log-properties.log?logid="+pageProps.logProps.logid+"'>Customize</a> this log.</font><br>");
-                    mb.append("</span>");
+//                    mb.append("<span style=\"background: #f6f6f6; float: right; border: 1px dotted #999; padding:3px; width: 25%;\">");
+//                    mb.append("<font face=arial size=-2>Add <a href='entry.log?logid="+pageProps.logProps.logid+"&action=default'>default values</a> to this log for faster logging.</font><br>");
+//                    mb.append("<font face=arial size=-2>Post to this log via <a href='tools-emailapi-emailaddresses.log'>email</a>.</font><br>");
+//                    mb.append("<font face=arial size=-2><a href='logs-log-properties.log?logid="+pageProps.logProps.logid+"'>Customize</a> this log.</font><br>");
+//                    mb.append("</span>");
                     mb.append("<img src='../images/logimages/"+ pageProps.logProps.megalogtypeicon +"' width=100 height=50 border=0 align=top>");
-                    mb.append("<font face=arial size=+3>Add Log Entry: "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</font><br>");
+                    mb.append("<h1>New Post to "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</h1><br>");
                     mb.append("<div style=\"clear:both;\"><br><br></div>");
 
                 }
@@ -178,11 +177,7 @@ public class MegaHtmlFormTop {
 
             //Else display the normal form
         } else {
-           if (!displayasadmin) {
-                if (userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
-                    mb.append("<a href='myhome/entry.log?eventid="+pageProps.entry.eventid+"&action=edit'><font face=arial size=-1 class=mediumfont>Edit this Entry</font></a>");
-                }
-           }
+
 
 
             mb.append("<!-- begin  log entry table -->");
@@ -200,7 +195,7 @@ public class MegaHtmlFormTop {
             reger.core.Debug.debug(4, "MegaHtmlFormTop.java", "MegaHtmlFormTop mm=" + mm + "<br>dateGmt="+ TimeUtils.dateformatfordb(pageProps.entry.dateGmt) + "<br>TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid)="+TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid));
             mb.append("<td width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin){
-                mb.append("<select name='mm' id=\"j_mm\" "+disabledFormText+">");
+                mb.append("<select class=\"span1\" name='mm' id=\"j_mm\" "+disabledFormText+">");
                 for(int i=1; i<=12; i++){
                     mb.append("<option value='" + i + "' ");
                     if (i==mm) {
@@ -218,7 +213,7 @@ public class MegaHtmlFormTop {
             int dd = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "day");
             mb.append("<td width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select name='dd' id=\"j_dd\" "+disabledFormText+">");
+                mb.append("<select class=\"span1\" name='dd' id=\"j_dd\" "+disabledFormText+">");
                 for(int i=1; i<=31; i++){
                     mb.append("<option value='" + i + "' ");
                     if (i==dd) {
@@ -236,7 +231,7 @@ public class MegaHtmlFormTop {
             int yyyy = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "year");
             mb.append("<td width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select name='yyyy' id=\"j_yyyy\" "+disabledFormText+">");
+                mb.append("<select class=\"span1\" name='yyyy' id=\"j_yyyy\" "+disabledFormText+">");
                 for(int i=1900; i<=2020; i++){
                     mb.append("<option value='" + i + "' ");
                     if (i==yyyy) {
@@ -254,10 +249,9 @@ public class MegaHtmlFormTop {
             mb.append("<td bgcolor='#ffffff' align=left valign=top nowrap width=100% colspan=3 class=logentryheader>");
             //@todo Tabindex working on main entry page
             if (displayasadmin) {
-                mb.append("<font face=arial size=-1><b>Title:</b></font><br>");
                 mb.append("<input type='text' name='title' maxlength=255 size=40 value=\"" + reger.core.Util.cleanForHtml(pageProps.entry.title) + "\" tabindex=1 "+disabledFormText+">");
             } else {
-                mb.append(reger.core.Util.cleanForHtml(pageProps.entry.title));
+                mb.append("<h1>"+reger.core.Util.cleanForHtml(pageProps.entry.title)+"</h1>");
             }
             mb.append("</td>");
 
@@ -267,7 +261,7 @@ public class MegaHtmlFormTop {
             int h = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "hour");
             mb.append("<tr><td align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select name='h' id=\"j_h\" "+disabledFormText+">");
+                mb.append("<select class=\"span1\" name='h' id=\"j_h\" "+disabledFormText+">");
                 if (h>=13) {
                     h=h-12;
                 } else if (h==0){
@@ -295,7 +289,7 @@ public class MegaHtmlFormTop {
             int m = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "minute");
             mb.append("<td align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select name='m' id=\"j_m\" "+disabledFormText+">");
+                mb.append("<select class=\"span1\" name='m' id=\"j_m\" "+disabledFormText+">");
                 for(int i=0; i<=59; i++){
                     mb.append("<option value='" + i + "' ");
                     if (i==m) {
@@ -313,7 +307,7 @@ public class MegaHtmlFormTop {
             String ampm = TimeUtils.getAmPm(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid));
             mb.append("<td align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select name='ampm' id=\"j_ampm\" "+disabledFormText+">");
+                mb.append("<select class=\"span1\" name='ampm' id=\"j_ampm\" "+disabledFormText+">");
                 mb.append("<option value='AM' ");
                 if (ampm!=null && ampm.equals("AM")) {
                     mb.append("selected");
@@ -336,7 +330,7 @@ public class MegaHtmlFormTop {
             mb.append("</td>");
 
             //Body
-            mb.append("<td bgcolor='#ffffff' align=left valign=top rowspan=5 colspan=3 class=logentrycontent>");
+            mb.append("<td bgcolor='#ffffff' align=left valign=top rowspan=2 colspan=3 class=logentrycontent>");
 
             //Update the entrymode if necessary
             if (request.getParameter("toggleentrymode")!=null && request.getParameter("toggleentrymode").equals("true")){
@@ -347,6 +341,7 @@ public class MegaHtmlFormTop {
             if (!editLayout){
                 if (displayasadmin){
                     mb.append(reger.MegaHtmlFormEditor.getHtml(userSession, pageProps, request));
+                    mb.append("<br/><br/>");
                 } else {
                     //String commentsTmp = pageProps.entry.comments.replaceAll( reger.Vars.LINEBREAKCHAR, "<br><br>");
                     //String commentsTmp = pageProps.entry.comments.replaceAll( reger.Vars.LINEBREAKCHAR, "<br>BTH:");
@@ -377,6 +372,14 @@ public class MegaHtmlFormTop {
                         mb.append("</div>");
                     }
 
+                    //Display an edit link to site owners
+                    if (!displayasadmin) {
+                        if (userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
+                            mb.append("<a href='myhome/entry.log?eventid="+pageProps.entry.eventid+"&action=edit'>Edit this Entry</a><br/>");
+                        }
+                    }
+
+
                     //Replace any image tags with html for images
                     String commentsTmp = MegaHtmlFormTopImageTags.replaceImageTagsWithHtml(pageProps.entry, request.getParameter("entrykey"));
 
@@ -392,39 +395,39 @@ public class MegaHtmlFormTop {
             mb.append("</td>");
             mb.append("</tr>");
 
-
-            //Show the timezone
-            mb.append("<tr><td colspan=3 bgcolor=#cccccc valign=top class=logentryheader>");
-            mb.append("<font face=arial size=-2 class=smallfont>Timezone: <b>"+timezoneid+"</b></font>");
-            mb.append("</td></tr>");
-
-            //Show the calendar chooser or the Ago Text
-            mb.append("<tr><td colspan=3 bgcolor=#cccccc valign=top class=logentryheader>");
-            if (displayasadmin){
-                if (!editLayout){
-                    mb.append("<a href='#' id=\"f_trigger_a\"><img src=\""+pageProps.pathToAppRoot+"js/jscalendar/img.gif\" id=\"f_trigger_a\" style=\"cursor: pointer; border: 1px solid red;\" title=\"Date selector\" onmouseover=\"this.style.background='red';\" onmouseout=\"this.style.background=''\"/><font face=arial size=-2><b>Date Chooser</b></font></a>" + "\n");
-                    //dhtml Date script - must go below forms for best compatibility
-                    mb.append(reger.MegaHtmlFormJscalendar.theScript(pageProps));
-                }
-            } else {
-                mb.append(reger.core.TimeUtils.agoText(pageProps.entry.dateGmt));
-            }
-            mb.append("</td></tr>");
+//
+//            //Show the timezone
+//            mb.append("<tr><td colspan=3  valign=top class=logentryheader>");
+////            mb.append("<font face=arial size=-2 class=smallfont>Timezone: <b>"+timezoneid+"</b></font>");
+//            mb.append("</td></tr>");
+//
+//            //Show the calendar chooser or the Ago Text
+//            mb.append("<tr><td colspan=3  valign=top class=logentryheader>");
+//            if (displayasadmin){
+//                if (!editLayout){
+////                    mb.append("<a href='#' id=\"f_trigger_a\"><img src=\""+pageProps.pathToAppRoot+"js/jscalendar/img.gif\" id=\"f_trigger_a\" style=\"cursor: pointer; border: 1px solid red;\" title=\"Date selector\" onmouseover=\"this.style.background='red';\" onmouseout=\"this.style.background=''\"/><font face=arial size=-2><b>Date Chooser</b></font></a>" + "\n");
+////                    //dhtml Date script - must go below forms for best compatibility
+////                    mb.append(reger.MegaHtmlFormJscalendar.theScript(pageProps));
+//                }
+//            } else {
+////                mb.append(reger.core.TimeUtils.agoText(pageProps.entry.dateGmt));
+//            }
+//            mb.append("</td></tr>");
 
 
 
             //Show the author
             try{
-                mb.append("<tr><td colspan=3 bgcolor=#cccccc valign=top class=logentryheader>");
+                mb.append("<tr><td colspan=3 valign=top class=logentryheader>");
                 //mb.append("<font face=arial size=-2 class=smallfont>Author: <b><a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"' onclick=\"leaveEntryPage(this.href); return false;\">"+pageProps.entry.author+"</b></font>");
                 if (!editLayout && pageProps.entry.accountuserid>0){
-                    Accountuser au = new Accountuser(pageProps.entry.accountuserid, true);
-                    mb.append("<font face=arial size=-2 class=smallfont>");
-                    mb.append("Author:<br>");
-                    mb.append("<a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"'>");
-                    mb.append("<img src = '"+au.primaryImage(userSession, true)+"' width=50 border=0><br>");
-                    mb.append(au.getFriendlyname());
-                    mb.append("</b></font></a>");
+//                    Accountuser au = new Accountuser(pageProps.entry.accountuserid, true);
+//                    mb.append("<font face=arial size=-2 class=smallfont>");
+//                    mb.append("Author:<br>");
+//                    mb.append("<a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"'>");
+//                    mb.append("<img src = '"+au.primaryImage(userSession, true)+"' width=50 border=0><br>");
+//                    mb.append(au.getFriendlyname());
+//                    mb.append("</b></font></a>");
                 }
                 mb.append("</td></tr>");
             } catch (Exception e){
@@ -434,31 +437,31 @@ public class MegaHtmlFormTop {
 
 
             //Editor toggle
-            mb.append("<tr height=100% ><td colspan=3 bgcolor=#cccccc valign=top class=logentryheader>");
-            if (displayasadmin) {
-                //mb.append("<font face=arial size=-2>This is the date and time that you want to appear on the log entry.<br><br>");
-
-                //Display the toggle entry mode link
-                if (!editLayout){
-                    if (userSession.getAccountuser().getEntrymode()==1) {
-                        mb.append("<font face=arial size=-2>If your browser is having trouble displaying this page then go</font> ");
-                        //mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "' onclick=\"leaveEntryPage(this.href); return false;\">");
-                        mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "'>");
-                        mb.append("<br><font face=arial size=-1 color=#0000ff><b>To Simple Entry Mode</b></font>");
-                        mb.append("</a>");
-                        mb.append("<br>");
-                    } else {
-                        mb.append("<font face=arial size=-2>If you're using Internet Explorer 4+ and want to try more advanced text formatting then go</font><br>");
-                        //mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "' onclick=\"leaveEntryPage(this.href); return false;\">");
-                        mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "'>");
-                        mb.append("<font face=arial size=-1 color=#0000ff><b>To Advanced Entry Mode</b></font>");
-                        mb.append("</a>");
-                        mb.append("<br>");
-                    }
-                }
-                mb.append("</font><br>");
-            }
-            mb.append("</td></tr>");
+//            mb.append("<tr height=100% ><td colspan=3 valign=top class=logentryheader>");
+//            if (displayasadmin) {
+//                //mb.append("<font face=arial size=-2>This is the date and time that you want to appear on the log entry.<br><br>");
+//
+//                //Display the toggle entry mode link
+//                if (!editLayout){
+//                    if (userSession.getAccountuser().getEntrymode()==1) {
+//                        mb.append("<font face=arial size=-2>If your browser is having trouble displaying this page then go</font> ");
+//                        //mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "' onclick=\"leaveEntryPage(this.href); return false;\">");
+//                        mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "'>");
+//                        mb.append("<br><font face=arial size=-1 color=#0000ff><b>To Simple Entry Mode</b></font>");
+//                        mb.append("</a>");
+//                        mb.append("<br>");
+//                    } else {
+//                        mb.append("<font face=arial size=-2>If you're using Internet Explorer 4+ and want to try more advanced text formatting then go</font><br>");
+//                        //mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "' onclick=\"leaveEntryPage(this.href); return false;\">");
+//                        mb.append("<a href='entry.log?toggleentrymode=true&action=edit&logid="+ pageProps.logProps.logid +"&eventid=" + pageProps.entry.eventid + "'>");
+//                        mb.append("<font face=arial size=-1 color=#0000ff><b>To Advanced Entry Mode</b></font>");
+//                        mb.append("</a>");
+//                        mb.append("<br>");
+//                    }
+//                }
+//                mb.append("</font><br>");
+//            }
+//            mb.append("</td></tr>");
 
             mb.append("<!-- Start log-type-specific fields -->");
 

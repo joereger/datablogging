@@ -74,11 +74,10 @@ public class MegaHtmlFormTopChiba {
 
 
             if (pageProps.action.equals("edit") || pageProps.action.equals("editsubmit")) {
-                mb.append("<span style=\"background: #f6f6f6; float: right; border: 1px dotted #999; padding:3px; width: 25%;\">");
-                mb.append("<font face=arial size=-2>Add <a href='entry.log?logid="+pageProps.logProps.logid+"&action=default'>default values</a> to "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+" for faster logging.</font><br>");
-                mb.append("<font face=arial size=-2>Post to this log via <a href='tools-emailapi-emailaddresses.log'>email</a>.</font><br>");
-                mb.append("</span>");
-                mb.append("<img src='../images/logimages/"+ pageProps.logProps.megalogtypeicon +"' width=100 height=50 border=0 align=top>");
+//                mb.append("<span style=\"background: #f6f6f6; float: right; border: 1px dotted #999; padding:3px; width: 25%;\">");
+//                mb.append("<font face=arial size=-2>Add <a href='entry.log?logid="+pageProps.logProps.logid+"&action=default'>default values</a> to "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+" for faster logging.</font><br>");
+//                mb.append("<font face=arial size=-2>Post to this log via <a href='tools-emailapi-emailaddresses.log'>email</a>.</font><br>");
+//                mb.append("</span>");
                 mb.append("<font face=arial size=+3>Edit Log Entry: "+ reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</font><br>");
                 mb.append("<div style=\"clear:both;\"><br><br></div>");
             } else if (pageProps.action.equals("default") || pageProps.action.equals("defaultsubmit")) {

@@ -126,9 +126,9 @@ if (!userSession.getAccountuser().userCanViewLog(entry.logid) || entry.accountid
     }
 
     if (poll.getPollid()>0){
-        pageProps.title = "<img src='../images/poll-icon.gif' align=middle border=0> Poll: " + poll.getQuestion();
+        pageProps.title = "Poll: " + poll.getQuestion();
     } else {
-        pageProps.title = "<img src='../images/poll-icon.gif' align=middle border=0> New Poll";
+        pageProps.title = "New Poll";
     }
 
     mb.append("<table cellspacing=5 cellpadding=5 border=0>");

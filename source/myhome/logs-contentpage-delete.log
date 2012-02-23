@@ -9,7 +9,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "<img src='../images/icon-static-page-med-notext.gif' align=top> Delete Static Content Page?";
+pageProps.title = "Delete Static Content Page?";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "logsnewstatic";
 pageProps.aclObjectName = "CUSTOMIZELOG";

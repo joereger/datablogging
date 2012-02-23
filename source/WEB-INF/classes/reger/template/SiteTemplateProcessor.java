@@ -66,24 +66,30 @@ public class SiteTemplateProcessor implements TemplateProcessor {
 
         //Figure out what AdminTools and LoggedInBar look like
         StringBuffer appendToHead = new StringBuffer();
-        appendToHead.append(appendRssAutodiscovery(userSession));
-        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/nav.css\" type=\"text/css\" />");
-        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />");
-        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />");
+        //appendToHead.append(appendRssAutodiscovery(userSession));
+        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/nav.css\" type=\"text/css\" />"+"\n");
+        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />"+"\n");
+        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />"+"\n");
         //JWPlayer
         //appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/silverlight.js\"></script>");
         //appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/wmvplayer.js\"></script>");
-        //Jquery
-        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jquery-1.4.1.min.js\"></script>");
+        //Twitter Bootstrap
+        appendToHead.append("<link href=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/css/bootstrap.css\" rel=\"stylesheet\">\n" +
+                "    <link href=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/css/bootstrap-responsive.css\" rel=\"stylesheet\">");
+
+
+
+
+        //jQuery
+        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/jquery-1.7.1.min.js\"></script>"+"\n");
+
         //prettyPhoto
-        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/prettyPhoto/css/prettyPhoto.css\" type=\"text/css\" />");
-        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/prettyPhoto/js/jquery.prettyPhoto.js\"></script>");
+        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/prettyPhoto3.1.3/css/prettyPhoto.css\" type=\"text/css\" />"+"\n");
+        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/prettyPhoto3.1.3/js/jquery.prettyPhoto.js\"></script>"+"\n");
         //Canonical
         appendToHead.append(appendCanonicalToHead(userSession, request));
         //Polaroid Thumbs
-        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/thumbspolaroid.css\" type=\"text/css\" />");
-
-
+        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/thumbspolaroid.css\" type=\"text/css\" />"+"\n");
 
 
 
@@ -93,19 +99,40 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         //appendToHead.append("<link rel=\"stylesheet\" href=\"/js/thickbox/thickbox.css\" type=\"text/css\" media=\"screen\" />\n");
 
         StringBuffer appendToTopOfPage = new StringBuffer();
-        if (userSession.getAccountuser().getIsLoggedIn()){
-            appendToTopOfPage.append(reger.LoggedInBar.getHtml(userSession, pageProps));
-            if (userSession.getAccount().getAdmintools()==1 && userSession.getAccountuser().getAccountid()==userSession.getAccount().getAccountid()){
-                appendToTopOfPage.append(reger.AdminTools.getHtml(userSession, pageProps.logProps.logid, pageProps.entry.eventid));
-            }
-        }
+
+        //Admintools
+//        if (userSession.getAccountuser().getIsLoggedIn()){
+//            appendToTopOfPage.append(reger.LoggedInBar.getHtml(userSession, pageProps));
+//            if (userSession.getAccount().getAdmintools()==1 && userSession.getAccountuser().getAccountid()==userSession.getAccount().getAccountid()){
+//                appendToTopOfPage.append(reger.AdminTools.getHtml(userSession, pageProps.logProps.logid, pageProps.entry.eventid));
+//            }
+//        }
 
         //Append just before close body
         StringBuffer appendToBottomOfPage = new StringBuffer();
+
+
+
+
+        appendToBottomOfPage.append("<script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-transition.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-alert.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-modal.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-dropdown.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-scrollspy.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"/css/twitter-bootstrap-2.0.1/js/bootstrap-tab.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"/css/twitter-bootstrap-2.0.1/js/bootstrap-tooltip.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-popover.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-button.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-collapse.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-carousel.js\"></script>\n" +
+                "    <script src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/bootstrap-typeahead.js\"></script>\n\n");
+
+
+
         appendToBottomOfPage.append("<script type=\"text/javascript\" charset=\"utf-8\">\n" +
-                "$(document).ready(function(){\n" +
-                "     $(\"a[rel^='prettyPhoto']\").prettyPhoto({theme:'facebook'});\n" +
-                "});\n" +
+                "  $(document).ready(function(){\n" +
+                "    $(\"a[rel^='prettyPhoto']\").prettyPhoto();\n" +
+                "  });\n" +
                 "</script>");
 
         //Whether or not we've found a body tag yet

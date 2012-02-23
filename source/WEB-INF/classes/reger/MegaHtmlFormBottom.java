@@ -35,7 +35,7 @@ public class MegaHtmlFormBottom {
             }
 
             mb.append("<tr>");
-            mb.append("<td colspan=3 bgcolor=#cccccc align=center valign=top><input type='submit' value='" + submittext + "' " + disabledFormText + "></td>");
+            mb.append("<td colspan=3 align=center valign=top><input type='submit' value='" + submittext + "' " + disabledFormText + "></td>");
             mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=9>");
             mb.append("&nbsp;");
             mb.append("</td>");
@@ -56,7 +56,7 @@ public class MegaHtmlFormBottom {
             //Save as Draft?
             if (displayasadmin) {
                 mb.append("<tr>");
-                mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top><font face=arial size=-1><b>Publish Now?</b></font><br><font face=arial size=-2><b></b></font><br>");
+                mb.append("<td colspan=3 align=right valign=top><font face=arial size=-1><b>Publish Now?</b></font><br><font face=arial size=-2><b></b></font><br>");
                 mb.append("</td>");
                 mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap>");
                 mb.append("<input type='radio' name='isdraft' value='0' " + disabledFormText + " ");
@@ -120,7 +120,7 @@ public class MegaHtmlFormBottom {
 
 
                 mb.append("<tr>");
-                mb.append("<td colspan=3 bgcolor=#cccccc align=center valign=top>");
+                mb.append("<td colspan=3 align=center valign=top>");
 
                 //Put the submit button on the page, sometimes with the javascript, sometimes without
                 if (userSession.getAccountuser().getEntrymode() == reger.Vars.ENTRYMODEADVANCED) {
@@ -128,7 +128,7 @@ public class MegaHtmlFormBottom {
                     //mb.append("<INPUT TYPE=submit NAME=newreview VALUE='"+submittext+"' "+disabledFormText+">");
 
                 } else {
-                    mb.append("<input type='submit' value='" + submittext + "' onclick=\"submitPost();\" " + disabledFormText + ">");
+                    mb.append("<input class=\"btn btn-primary\" type='submit' value='" + submittext + "' onclick=\"submitPost();\" " + disabledFormText + ">");
                 }
 
                 //Spelling
@@ -187,24 +187,26 @@ public class MegaHtmlFormBottom {
 
             //Optional Stuff
             if (displayasadmin) {
-                mb.append("<tr>");
-                mb.append("<td colspan=6 bgcolor=#ffffff align=left valign=top class=logentryheader>");
-                mb.append("<font face=arial size=-2>");
-                mb.append("<b>");
-                mb.append("Extended Entry Information");
-                mb.append("</b>");
-                mb.append("</font>");
-                mb.append("</td>");
-                mb.append("</tr>");
+//                mb.append("<tr>");
+//                mb.append("<td colspan=6 bgcolor=#ffffff align=left valign=top class=logentryheader>");
+//                mb.append("<font face=arial size=-2>");
+//                mb.append("<b>");
+//                mb.append("Extended Entry Information");
+//                mb.append("</b>");
+//                mb.append("</font>");
+//                mb.append("</td>");
+//                mb.append("</tr>");
             }
 
             //Smart Entry Tags
             mb.append("<tr>");
-            mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
+            mb.append("<td colspan=3 align=right valign=top class=logentryheader><font face=arial size=-1><b>");
             if (displayasadmin) {
-                mb.append("Keyword Tags</b></font><br><font face=arial size=-2><b>Enter keyword tags to help organize and find your entries.");
+                mb.append("Tags</b></font>");
             } else {
-                mb.append("Keyword Tags");
+                if (pageProps.entry.entryKeywordTagsWithLinks!=null && pageProps.entry.entryKeywordTagsWithLinks.length()>0){
+                    mb.append("Tags");
+                }
             }
             mb.append("</b></font><br>");
             mb.append("</td>");
@@ -222,26 +224,22 @@ public class MegaHtmlFormBottom {
             mb.append("</tr>");
 
             //Location
-            if (pageProps.entry.location != null) {
-                Debug.debug(5, "", "Megahtmlformbottom.java calling location locationid=" + pageProps.entry.location.getLocationid() + "<br>getLongitude()=" + pageProps.entry.location.getLongitude());
+            if (displayasadmin) {
+                if (pageProps.entry.location != null) {
+                    Debug.debug(5, "", "Megahtmlformbottom.java calling location locationid=" + pageProps.entry.location.getLocationid() + "<br>getLongitude()=" + pageProps.entry.location.getLongitude());
+                }
+                mb.append(LocationRenderHtml.getHtmlForEntryPageTable(pageProps.entry.location, displayasadmin, disabledFormText, userSession));
             }
-            mb.append(LocationRenderHtml.getHtmlForEntryPageTable(pageProps.entry.location, displayasadmin, disabledFormText, userSession));
 
 
             mb.append("<a name='images'><!-- Begin Images -->");
             //Begin image-add link
             if (displayasadmin) {
                 mb.append("<tr>");
-                mb.append("<td valign=top align=right bgcolor=#cccccc colspan=3 class=logentryheader>");
+                mb.append("<td valign=top align=right colspan=3 class=logentryheader>");
                 mb.append("<font face=arial size=-1>");
                 mb.append("<b>");
-                mb.append("Files/Images/Media");
-                mb.append("</b>");
-                mb.append("</font>");
-                mb.append("<br>");
-                mb.append("<font face=arial size=-2>");
-                mb.append("<b>");
-                mb.append("Images, video, mp3 or any other file that you want to attach to this entry.");
+                mb.append("Images & Files");
                 mb.append("</b>");
                 mb.append("</font>");
                 mb.append("</td>");
@@ -312,7 +310,7 @@ public class MegaHtmlFormBottom {
                 reger.RelatedLinks relatedLinks = reger.cache.RelatedLinksCache.get(pageProps.entry.eventid, searchterms, userSession);
                 if (relatedLinks.getRelatedLinks().size() > 0) {
                     mb.append("<tr>");
-                    mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
+                    mb.append("<td colspan=3 align=right valign=top class=logentryheader><font face=arial size=-1><b>");
                     mb.append("Related Entries");
                     mb.append("</b></font><br>");
                     mb.append("</td>");
@@ -333,7 +331,7 @@ public class MegaHtmlFormBottom {
             //Episodes
             if (displayasadmin) {
                 mb.append("<tr>");
-                mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top  class=logentryheader><font face=arial size=-1><b>Episodes</b></font><br><font face=arial size=-2><b>This entry is part of these episodes.</b></font><br>");
+                mb.append("<td colspan=3 align=right valign=top  class=logentryheader><font face=arial size=-1><b>Episodes</b></font><br><font face=arial size=-2><b>This entry is part of these episodes.</b></font><br>");
                 mb.append("</td>");
                 mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
                 //-----------------------------------
@@ -414,11 +412,11 @@ public class MegaHtmlFormBottom {
 
             //Favorite Selection
             mb.append("<tr>");
-            mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
+            mb.append("<td colspan=3 align=right valign=top class=logentryheader><font face=arial size=-1><b>");
             if (displayasadmin) {
                 mb.append("List as Favorite?</b></font><br><font face=arial size=-2><b>Appears in a \"Favorites\" list on all pages of this log.");
             } else {
-                mb.append("Favorite Entry?");
+                //mb.append("Favorite Entry?");
             }
             mb.append("</b></font><br>");
             mb.append("</td>");
@@ -435,11 +433,11 @@ public class MegaHtmlFormBottom {
                 }
                 mb.append("><font face=arial size=-1><b>Yes</b></font>");
             } else {
-                if (pageProps.entry.favorite != 1) {
-                    mb.append("No");
-                } else {
-                    mb.append("Yes");
-                }
+//                if (pageProps.entry.favorite != 1) {
+//                    mb.append("No");
+//                } else {
+//                    mb.append("Yes");
+//                }
             }
             mb.append("</td>");
             mb.append("</tr>");
@@ -447,7 +445,7 @@ public class MegaHtmlFormBottom {
             //Author Selection
             if (displayasadmin && userSession.getAccountuser().userCanDoAcl("CHANGEAUTHORSHIP", userSession.getAccount().getAccountid())) {
                 mb.append("<tr>");
-                mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
+                mb.append("<td colspan=3 align=right valign=top class=logentryheader><font face=arial size=-1><b>");
                 mb.append("Author:");
                 mb.append("</b></font><br>");
                 mb.append("</td>");
@@ -485,7 +483,7 @@ public class MegaHtmlFormBottom {
             //Begin Groups
             if (displayasadmin && userSession.getAccountuser().userCanDoAcl("POSTENTRYTOGROUP", userSession.getAccount().getAccountid())) {
                 mb.append("<tr>");
-                mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
+                mb.append("<td colspan=3 align=right valign=top class=logentryheader><font face=arial size=-1><b>");
                 mb.append("Groups:");
                 mb.append("</b></font><br><font face=arial size=-2><b>");
                 mb.append("This entry is posted to these groups.");
@@ -532,29 +530,29 @@ public class MegaHtmlFormBottom {
                 mb.append("</td>");
                 mb.append("</tr>");
             } else {
-                //-----------------------------------
-                //-----------------------------------
-                String[][] rstGroupsThisEventIsIn = Db.RunSQL("SELECT groups.groupid, groups.name FROM eventtogroup, groups WHERE eventtogroup.groupid=groups.groupid AND eventtogroup.eventid='" + pageProps.entry.eventid + "'");
-                //-----------------------------------
-                //-----------------------------------
-                if (rstGroupsThisEventIsIn != null && rstGroupsThisEventIsIn.length > 0) {
-                    mb.append("<tr>");
-                    mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
-                    mb.append("Groups:");
-                    mb.append("</b></font><br><font face=arial size=-2><b>");
-                    mb.append("This entry is posted to these groups.");
-                    mb.append("</b></font></td>");
-                    mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
-                    for (int i = 0; i < rstGroupsThisEventIsIn.length; i++) {
-                        mb.append("<font face=arial size=-2 class=smallfont>");
-                        mb.append("<a href='" + userSession.getPl().getPlBaseUrl(userSession) + "/about/community-group-view.log?groupid=" + rstGroupsThisEventIsIn[i][0] + "'>");
-                        mb.append(rstGroupsThisEventIsIn[i][1]);
-                        mb.append("</a>");
-                        mb.append("</font> ");
-                    }
-                    mb.append("</td>");
-                    mb.append("</tr>");
-                }
+//                //-----------------------------------
+//                //-----------------------------------
+//                String[][] rstGroupsThisEventIsIn = Db.RunSQL("SELECT groups.groupid, groups.name FROM eventtogroup, groups WHERE eventtogroup.groupid=groups.groupid AND eventtogroup.eventid='" + pageProps.entry.eventid + "'");
+//                //-----------------------------------
+//                //-----------------------------------
+//                if (rstGroupsThisEventIsIn != null && rstGroupsThisEventIsIn.length > 0) {
+//                    mb.append("<tr>");
+//                    mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
+//                    mb.append("Groups:");
+//                    mb.append("</b></font><br><font face=arial size=-2><b>");
+//                    mb.append("This entry is posted to these groups.");
+//                    mb.append("</b></font></td>");
+//                    mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
+//                    for (int i = 0; i < rstGroupsThisEventIsIn.length; i++) {
+//                        mb.append("<font face=arial size=-2 class=smallfont>");
+//                        mb.append("<a href='" + userSession.getPl().getPlBaseUrl(userSession) + "/about/community-group-view.log?groupid=" + rstGroupsThisEventIsIn[i][0] + "'>");
+//                        mb.append(rstGroupsThisEventIsIn[i][1]);
+//                        mb.append("</a>");
+//                        mb.append("</font> ");
+//                    }
+//                    mb.append("</td>");
+//                    mb.append("</tr>");
+//                }
             }
             //End Groups
 
@@ -590,87 +588,87 @@ public class MegaHtmlFormBottom {
                 } else {
 
 
-                    mb.append("<tr>");
-                    mb.append("<td colspan='3' bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
-                    mb.append("Trackback");
-                    mb.append("</b></font><br>");
-                    mb.append("</td>");
-                    mb.append("<td bgcolor='#ffffff' align=left valign=top colspan='6' nowrap class=logentrycontent>");
-                    //Show trackback URL for this entry
-                    mb.append("<font face=arial size=-2>");
-                    mb.append("<b>Trackback URL for this entry:</b>");
-                    mb.append("<br>");
-                    String trackbackurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/trackback-eventid" + pageProps.entry.eventid + ".log";
-                    mb.append("<i>");
-                    mb.append(trackbackurl);
-                    mb.append("</i>");
-                    mb.append("</font>");
-                    mb.append("<br>");
-                    mb.append("<br>");
-
-                    //Get a list of trackbacks
-                    mb.append("<font face=arial size=-2>");
-                    mb.append("<b>Trackbacks:</b>");
-                    mb.append("</font>");
-                    mb.append("<br>");
-                    mb.append("<table cellpadding=0 cellspacing=1 width=100% border=0>");
-                    //-----------------------------------
-                    //-----------------------------------
-                    String[][] rstListTrackbacks = Db.RunSQL("SELECT url, posttitle, blogname, excerpt, datetime FROM trackback WHERE eventid='" + pageProps.entry.eventid + "' AND isoutbound='0' AND isapproved='1' ORDER BY datetime ASC");
-                    //-----------------------------------
-                    //-----------------------------------
-                    if (rstListTrackbacks != null && rstListTrackbacks.length > 0) {
-                        for (int i = 0; i < rstListTrackbacks.length; i++) {
-
-                            mb.append("<tr>");
-                            mb.append("<td bgcolor=#e6e6e6 class=logentryheader>");
-                            mb.append("<font face=arial size=-2>");
-                            mb.append("<a href=\"" + reger.core.Util.cleanForHtml(rstListTrackbacks[i][0]) + "\" rel=\"nofollow\">");
-                            mb.append("<b>" + reger.NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][1]) + "</b>");
-                            mb.append("</a>");
-                            mb.append("</font>");
-                            mb.append("</td>");
-                            mb.append("</tr>");
-
-                            mb.append("<tr>");
-                            mb.append("<td bgcolor=#ffffff class=logentrycontent>");
-                            mb.append("<font face=arial size=-2>");
-                            mb.append("<b>" + reger.NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][2]) + "</b>");
-                            mb.append("</font>");
-                            mb.append("</td>");
-                            mb.append("</tr>");
-
-                            mb.append("<tr>");
-                            mb.append("<td bgcolor=#ffffff class=logentrycontent>");
-                            mb.append("<font face=arial size=-2>");
-                            mb.append(reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.gmttousertime(reger.core.TimeUtils.dbstringtocalendar(rstListTrackbacks[i][4]), userSession.getAccount().getTimezoneid())));
-                            mb.append("</font>");
-                            mb.append("</td>");
-                            mb.append("</tr>");
-
-                            mb.append("<tr>");
-                            mb.append("<td bgcolor=#ffffff class=logentrycontent>");
-                            mb.append("<font face=arial size=-2>");
-                            String trackbackBody = reger.NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][3]);
-                            mb.append(trackbackBody.replaceAll("<", "&lt;"));
-                            mb.append("</font>");
-                            mb.append("</td>");
-                            mb.append("</tr>");
-
-
-                        }
-                    } else {
-                        mb.append("<tr>");
-                        mb.append("<td bgcolor=#ffffff class=logentrycontent>");
-                        mb.append("<font face=arial size=-2>");
-                        mb.append("None.");
-                        mb.append("</font>");
-                        mb.append("</td>");
-                        mb.append("</tr>");
-                    }
-                    mb.append("</table>");
-                    mb.append("</td>");
-                    mb.append("</tr>");
+//                    mb.append("<tr>");
+//                    mb.append("<td colspan='3' bgcolor=#cccccc align=right valign=top class=logentryheader><font face=arial size=-1><b>");
+//                    mb.append("Trackback");
+//                    mb.append("</b></font><br>");
+//                    mb.append("</td>");
+//                    mb.append("<td bgcolor='#ffffff' align=left valign=top colspan='6' nowrap class=logentrycontent>");
+//                    //Show trackback URL for this entry
+//                    mb.append("<font face=arial size=-2>");
+//                    mb.append("<b>Trackback URL for this entry:</b>");
+//                    mb.append("<br>");
+//                    String trackbackurl = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/trackback-eventid" + pageProps.entry.eventid + ".log";
+//                    mb.append("<i>");
+//                    mb.append(trackbackurl);
+//                    mb.append("</i>");
+//                    mb.append("</font>");
+//                    mb.append("<br>");
+//                    mb.append("<br>");
+//
+//                    //Get a list of trackbacks
+//                    mb.append("<font face=arial size=-2>");
+//                    mb.append("<b>Trackbacks:</b>");
+//                    mb.append("</font>");
+//                    mb.append("<br>");
+//                    mb.append("<table cellpadding=0 cellspacing=1 width=100% border=0>");
+//                    //-----------------------------------
+//                    //-----------------------------------
+//                    String[][] rstListTrackbacks = Db.RunSQL("SELECT url, posttitle, blogname, excerpt, datetime FROM trackback WHERE eventid='" + pageProps.entry.eventid + "' AND isoutbound='0' AND isapproved='1' ORDER BY datetime ASC");
+//                    //-----------------------------------
+//                    //-----------------------------------
+//                    if (rstListTrackbacks != null && rstListTrackbacks.length > 0) {
+//                        for (int i = 0; i < rstListTrackbacks.length; i++) {
+//
+//                            mb.append("<tr>");
+//                            mb.append("<td bgcolor=#e6e6e6 class=logentryheader>");
+//                            mb.append("<font face=arial size=-2>");
+//                            mb.append("<a href=\"" + reger.core.Util.cleanForHtml(rstListTrackbacks[i][0]) + "\" rel=\"nofollow\">");
+//                            mb.append("<b>" + reger.NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][1]) + "</b>");
+//                            mb.append("</a>");
+//                            mb.append("</font>");
+//                            mb.append("</td>");
+//                            mb.append("</tr>");
+//
+//                            mb.append("<tr>");
+//                            mb.append("<td bgcolor=#ffffff class=logentrycontent>");
+//                            mb.append("<font face=arial size=-2>");
+//                            mb.append("<b>" + reger.NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][2]) + "</b>");
+//                            mb.append("</font>");
+//                            mb.append("</td>");
+//                            mb.append("</tr>");
+//
+//                            mb.append("<tr>");
+//                            mb.append("<td bgcolor=#ffffff class=logentrycontent>");
+//                            mb.append("<font face=arial size=-2>");
+//                            mb.append(reger.core.TimeUtils.dateformatcompactwithtime(reger.core.TimeUtils.gmttousertime(reger.core.TimeUtils.dbstringtocalendar(rstListTrackbacks[i][4]), userSession.getAccount().getTimezoneid())));
+//                            mb.append("</font>");
+//                            mb.append("</td>");
+//                            mb.append("</tr>");
+//
+//                            mb.append("<tr>");
+//                            mb.append("<td bgcolor=#ffffff class=logentrycontent>");
+//                            mb.append("<font face=arial size=-2>");
+//                            String trackbackBody = reger.NoFollowTag.addNoFollowTagToLinks(rstListTrackbacks[i][3]);
+//                            mb.append(trackbackBody.replaceAll("<", "&lt;"));
+//                            mb.append("</font>");
+//                            mb.append("</td>");
+//                            mb.append("</tr>");
+//
+//
+//                        }
+//                    } else {
+//                        mb.append("<tr>");
+//                        mb.append("<td bgcolor=#ffffff class=logentrycontent>");
+//                        mb.append("<font face=arial size=-2>");
+//                        mb.append("None.");
+//                        mb.append("</font>");
+//                        mb.append("</td>");
+//                        mb.append("</tr>");
+//                    }
+//                    mb.append("</table>");
+//                    mb.append("</td>");
+//                    mb.append("</tr>");
 
                 }
 
@@ -683,37 +681,37 @@ public class MegaHtmlFormBottom {
             }
 
             //@todo Wouldn't it be cool to be able to approve/delete messages directly on the entry page if you're logged in?  I thought so.
-            mb.append("<a name='comments'><!-- Begin Messages -->");
-            if (userSession.getAccount().getMessagesstatus() == 1 && !displayasadmin) {
-                boolean emailnotify = false;
-                if (request.getParameter("emailnotify") != null && request.getParameter("emailnotify").equals("1")) {
-                    emailnotify = true;
-                }
-                String ipaddress = request.getRemoteAddr();
-                String message = "";
-                if (request.getParameter("message") != null && !request.getParameter("message").equals("")) {
-                    message = request.getParameter("message");
-                }
-                String messagefrom = "";
-                if (request.getParameter("messagefrom") != null && !request.getParameter("messagefrom").equals("")) {
-                    messagefrom = request.getParameter("messagefrom");
-                }
-                String email = "";
-                if (request.getParameter("email") != null && !request.getParameter("email").equals("")) {
-                    email = request.getParameter("email");
-                }
-                String url = "";
-                if (request.getParameter("url") != null && !request.getParameter("url").equals("")) {
-                    url = request.getParameter("url");
-                }
-                //Save messages
-                if (request.getParameter("submitmessage") != null && request.getParameter("submitmessage").equals("true")) {
-                    mb.append(reger.MessageListHtml.saveMessage(message, messagefrom, userSession.getAccount().getAccountid(), pageProps.entry.eventid, email, ipaddress, url, emailnotify, userSession, request));
-                }
-                //Display messages
-                mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()), "entry.log", pageProps.action, pageProps.logProps.logid, -1, request, true, response));
-            }
-            mb.append("<!-- End Messages -->");
+//            mb.append("<a name='comments'><!-- Begin Messages -->");
+//            if (userSession.getAccount().getMessagesstatus() == 1 && !displayasadmin) {
+//                boolean emailnotify = false;
+//                if (request.getParameter("emailnotify") != null && request.getParameter("emailnotify").equals("1")) {
+//                    emailnotify = true;
+//                }
+//                String ipaddress = request.getRemoteAddr();
+//                String message = "";
+//                if (request.getParameter("message") != null && !request.getParameter("message").equals("")) {
+//                    message = request.getParameter("message");
+//                }
+//                String messagefrom = "";
+//                if (request.getParameter("messagefrom") != null && !request.getParameter("messagefrom").equals("")) {
+//                    messagefrom = request.getParameter("messagefrom");
+//                }
+//                String email = "";
+//                if (request.getParameter("email") != null && !request.getParameter("email").equals("")) {
+//                    email = request.getParameter("email");
+//                }
+//                String url = "";
+//                if (request.getParameter("url") != null && !request.getParameter("url").equals("")) {
+//                    url = request.getParameter("url");
+//                }
+//                //Save messages
+//                if (request.getParameter("submitmessage") != null && request.getParameter("submitmessage").equals("true")) {
+//                    mb.append(reger.MessageListHtml.saveMessage(message, messagefrom, userSession.getAccount().getAccountid(), pageProps.entry.eventid, email, ipaddress, url, emailnotify, userSession, request));
+//                }
+//                //Display messages
+//                mb.append(reger.MessageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, userSession.getAccount().getTimezoneid(), userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid()), "entry.log", pageProps.action, pageProps.logProps.logid, -1, request, true, response));
+//            }
+//            mb.append("<!-- End Messages -->");
 
 
             mb.append("</table>");
