@@ -136,7 +136,7 @@ public class FieldTypeNumericrange extends Field implements FieldType, ChartFiel
 
 
 
-        outstring.append("<table cellpadding=5 cellspacing=1 bgcolor=#cccccc border=0>");
+        outstring.append("<table cellpadding=5 cellspacing=1 bgcolor=#ffffff border=0>");
         outstring.append("<tr>");
 
         if (!minlabel.equals("")) {
@@ -148,7 +148,7 @@ public class FieldTypeNumericrange extends Field implements FieldType, ChartFiel
 
             outstring.append("<td valign=top nowrap align=center");
             if (fieldData.get(0).getValue().equals(String.valueOf(rangeval))) {
-                outstring.append(" bgcolor=#cccccc");
+                outstring.append(" bgcolor=#ffffff");
             } else {
                 outstring.append(" bgcolor=#ffffff");
             }
@@ -210,7 +210,7 @@ public class FieldTypeNumericrange extends Field implements FieldType, ChartFiel
         double step = Double.parseDouble(allParams.getParamValueByOneworddatabasekey("step"));
 
 
-        outstring.append("<table cellpadding=5 cellspacing=1 bgcolor=#cccccc border=0>");
+        outstring.append("<table cellpadding=5 cellspacing=1 bgcolor=#ffffff border=0>");
         outstring.append("<tr>");
 
         if (!minlabel.equals("")) {
@@ -222,7 +222,7 @@ public class FieldTypeNumericrange extends Field implements FieldType, ChartFiel
 
             outstring.append("<td valign=top nowrap align=center");
             if (fieldData.get(0).getValue().equals(String.valueOf(rangeval))) {
-                outstring.append(" bgcolor=#cccccc");
+                outstring.append(" bgcolor=#e6e6e6");
             } else {
                 outstring.append(" bgcolor=#ffffff");
             }

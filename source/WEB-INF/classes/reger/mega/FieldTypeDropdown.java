@@ -140,13 +140,16 @@ public class FieldTypeDropdown extends Field implements FieldType, ChartField{
         }
 
         outstring.append("</select>");
+
+        outstring.append("<br>");
+        outstring.append("<div style=\"float:right;\">");
+        outstring.append("<font face=arial size=-2  style=\"font-size: 10px;\">");
         if (isFormActive){
-            outstring.append("<br>");
-            outstring.append("<a href='entry-fieldoptions.log?megafieldid="+ megafieldid +"&logid="+ logid +"' onclick=\"javascript:NewWindow(this.href,'name','450','0','yes');return false;\"><font face=arial size=-2  style=\"font-size: 10px;\">Edit/Disable Options</font></a>");
-        }                     
-        outstring.append("<br>");
-        outstring.append("<font face=arial size=-2 style=\"font-size: 10px;\">Or Add a New Option:</font>");
-        outstring.append("<br>");
+            outstring.append("<a href='entry-fieldoptions.log?megafieldid="+ megafieldid +"&logid="+ logid +"' onclick=\"javascript:NewWindow(this.href,'name','450','0','yes');return false;\">edit options</a>");
+        }
+        //outstring.append("add a new one");
+        outstring.append("</font>");
+        outstring.append("</div>");
         outstring.append("<input type='text' name='megafieldid-new-" + megafieldid + "' size='15' maxlength='49' value=\"\" style=\"font-size: 10px;\" "+disabledFormText+">");
 
 

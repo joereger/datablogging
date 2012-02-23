@@ -138,11 +138,11 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
 
         outstring.append("<table><tr><td nowrap>");
         outstring.append("<font face=arial size=-2>");
-        outstring.append("<input type=text size=2 maxlength=5 name=megafieldid-"+ megafieldid + "-hours value=\""+ hms.getHours() +"\" "+disabledFormText+">");
+        outstring.append("<input class=\"span1\" type=text size=2 maxlength=5 name=megafieldid-"+ megafieldid + "-hours value=\""+ hms.getHours() +"\" "+disabledFormText+">");
         outstring.append("hrs &nbsp;:&nbsp; ");
-        outstring.append("<input type=text size=2 maxlength=5 name=megafieldid-"+ megafieldid + "-minutes value=\""+ hms.getMinutes() +"\" "+disabledFormText+">");
+        outstring.append("<input class=\"span1\" type=text size=2 maxlength=5 name=megafieldid-"+ megafieldid + "-minutes value=\""+ hms.getMinutes() +"\" "+disabledFormText+">");
         outstring.append("min &nbsp;:&nbsp; ");
-        outstring.append("<input type=text size=2 maxlength=5 name=megafieldid-"+ megafieldid + "-seconds value=\""+ hms.getSeconds() +"\" "+disabledFormText+">");
+        outstring.append("<input class=\"span1\" type=text size=2 maxlength=5 name=megafieldid-"+ megafieldid + "-seconds value=\""+ hms.getSeconds() +"\" "+disabledFormText+">");
         outstring.append("sec");
         outstring.append("</font>");
         outstring.append("</td></tr></table>");

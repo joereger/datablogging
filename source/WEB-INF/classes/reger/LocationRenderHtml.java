@@ -21,9 +21,9 @@ public class LocationRenderHtml {
 //            mb.append("<br><br>");
 //            mb.append("Choose from a previously created location or enter a new one.  Only Location Name is required... all other fields are optional.");
 //            mb.append("<br><br>");
-            mb.append("<a href='entries-locations-edit.log'>");
-            mb.append("All Locations");
-            mb.append("</a>");
+//            mb.append("<a href='entries-locations-edit.log'>");
+//            mb.append("All Locations");
+//            mb.append("</a>");
             mb.append("</b>");
             mb.append("</font>");
         } else {
@@ -49,7 +49,11 @@ public class LocationRenderHtml {
             if (userSession!=null && userSession.getAccountuser()!=null && userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && locOfEntry!=null){
                 //Get list of locations
                 mb.append(getDropdown(Location.getLocationsUserCanView(userSession.getAccountuser(), userSession.getAccount()), disabledFormText, locOfEntry.getLocationid(), "Not Specified/New Location", false));
-                mb.append("<br>");
+                String locname = "";
+                if (locOfEntry!=null){
+                    locname = locOfEntry.getLocationname();
+                }
+                mb.append("<input type='text' name='locationname' maxlength='254' value=\""+reger.core.Util.cleanForHtml(locname)+"\" size=30 "+disabledFormText+" style=\"font-size: 10px;\">");
                 //End get list of locations
             }
         }
@@ -82,8 +86,8 @@ public class LocationRenderHtml {
         mb.append("<tr>");
         mb.append("<td valign=bottom align=left colspan=3>");
         if (displayasadmin) {
-            //mb.append("<font face=arial size=-2><strong>Location</strong></font><br>");
-            mb.append("<input type='text' name='locationname' maxlength='254' value=\""+reger.core.Util.cleanForHtml(loc.getLocationname())+"\" size=30 "+disabledFormText+" style=\"font-size: 10px;\">");
+
+
         } else {
             if (loc.getLocationid()>0){
                 mb.append("<font face=arial class=smallfont size=-1>");

@@ -31,7 +31,7 @@ public class tRexAdminPageEngine {
         ap.append("    <link href=\"/css/twitter-bootstrap-2.0.1/css/bootstrap.css\" rel=\"stylesheet\">" + "\n");
         ap.append("    <style type=\"text/css\">" + "\n");
         ap.append("      body { " + "\n");
-        ap.append("        padding-top: 120px; " + "\n");
+        ap.append("        padding-top: 90px; " + "\n");
         ap.append("        padding-bottom: 40px; " + "\n");
         ap.append("      } " + "\n");
         ap.append("    </style>" + "\n");

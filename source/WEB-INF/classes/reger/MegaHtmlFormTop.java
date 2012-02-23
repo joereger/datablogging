@@ -195,7 +195,7 @@ public class MegaHtmlFormTop {
             reger.core.Debug.debug(4, "MegaHtmlFormTop.java", "MegaHtmlFormTop mm=" + mm + "<br>dateGmt="+ TimeUtils.dateformatfordb(pageProps.entry.dateGmt) + "<br>TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid)="+TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid));
             mb.append("<td width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin){
-                mb.append("<select class=\"span1\" name='mm' id=\"j_mm\" "+disabledFormText+">");
+                mb.append("<select style=\"width:50px;\" class=\"span1\" name='mm' id=\"j_mm\" "+disabledFormText+">");
                 for(int i=1; i<=12; i++){
                     mb.append("<option value='" + i + "' ");
                     if (i==mm) {
@@ -213,7 +213,7 @@ public class MegaHtmlFormTop {
             int dd = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "day");
             mb.append("<td width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select class=\"span1\" name='dd' id=\"j_dd\" "+disabledFormText+">");
+                mb.append("<select style=\"width:50px;\" class=\"span1\" name='dd' id=\"j_dd\" "+disabledFormText+">");
                 for(int i=1; i<=31; i++){
                     mb.append("<option value='" + i + "' ");
                     if (i==dd) {
@@ -231,7 +231,7 @@ public class MegaHtmlFormTop {
             int yyyy = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "year");
             mb.append("<td width=50 align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select class=\"span1\" name='yyyy' id=\"j_yyyy\" "+disabledFormText+">");
+                mb.append("<select style=\"width:65px;\" class=\"span1\" name='yyyy' id=\"j_yyyy\" "+disabledFormText+">");
                 for(int i=1900; i<=2020; i++){
                     mb.append("<option value='" + i + "' ");
                     if (i==yyyy) {
@@ -261,7 +261,7 @@ public class MegaHtmlFormTop {
             int h = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "hour");
             mb.append("<tr><td align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select class=\"span1\" name='h' id=\"j_h\" "+disabledFormText+">");
+                mb.append("<select style=\"width:50px;\" class=\"span1\" name='h' id=\"j_h\" "+disabledFormText+">");
                 if (h>=13) {
                     h=h-12;
                 } else if (h==0){
@@ -289,7 +289,7 @@ public class MegaHtmlFormTop {
             int m = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "minute");
             mb.append("<td align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select class=\"span1\" name='m' id=\"j_m\" "+disabledFormText+">");
+                mb.append("<select style=\"width:50px;\" class=\"span1\" name='m' id=\"j_m\" "+disabledFormText+">");
                 for(int i=0; i<=59; i++){
                     mb.append("<option value='" + i + "' ");
                     if (i==m) {
@@ -307,7 +307,7 @@ public class MegaHtmlFormTop {
             String ampm = TimeUtils.getAmPm(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid));
             mb.append("<td align=left valign=top class=logentryheader>");
             if (displayasadmin) {
-                mb.append("<select class=\"span1\" name='ampm' id=\"j_ampm\" "+disabledFormText+">");
+                mb.append("<select style=\"width:65px;\" class=\"span1\" name='ampm' id=\"j_ampm\" "+disabledFormText+">");
                 mb.append("<option value='AM' ");
                 if (ampm!=null && ampm.equals("AM")) {
                     mb.append("selected");

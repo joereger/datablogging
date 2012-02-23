@@ -27,7 +27,10 @@ public class MegaHtmlFormCenter {
 
         mb.append("<tr>");
 
-            mb.append("<td bgcolor=#ffffff colspan=6 align=left valign=top>");
+            mb.append("<td bgcolor=#ffffff colspan=3 align=left valign=top>");
+            mb.append("</td>");
+
+            mb.append("<td bgcolor=#ffffff colspan=3 align=left valign=top>");
 
 
 //        if (displayasadmin && userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){

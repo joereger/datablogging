@@ -167,7 +167,7 @@ public class FieldLayout {
                         mb.append(     "</div>" + reger.Vars.LINEBREAKCHARFORHTML);
                         //Field description
                         if (!fld.getFielddescription().equals("")) {
-                            mb.append("    <div id='fieldBoxDesc"+fld.getMegafieldid()+"' class='fieldBoxDesc' title=''>"+fld.getFielddescription()+"</div>" + reger.Vars.LINEBREAKCHARFORHTML);
+                            //mb.append("    <div id='fieldBoxDesc"+fld.getMegafieldid()+"' class='fieldBoxDesc' title=''>"+fld.getFielddescription()+"</div>" + reger.Vars.LINEBREAKCHARFORHTML);
                         }
                         //Field content
                         mb.append("    <div id='fieldBoxContent"+fld.getMegafieldid()+"' class='fieldBoxContent'>" + reger.Vars.LINEBREAKCHARFORHTML);

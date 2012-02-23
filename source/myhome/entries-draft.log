@@ -25,42 +25,55 @@ pageProps.helpText="This page helps you find old entries so that you can edit, d
 
 
 
+ mb.append("<div class=\"row\">");
+    mb.append("<div class=\"span6\">");
+
+
+//Draft entries start
+    mb.append("<!-- Start Draft List -->");
+    mb.append("<table class=\"table table-striped\">");
+
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstDrafts= reger.core.db.Db.RunSQL("SELECT eventid, event.eventtypeid, title, date, name, accountuser.friendlyname FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY date DESC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstDrafts!=null && rstDrafts.length>0){
+        for(int i=0; i<rstDrafts.length; i++){
+            mb.append("<tr>");
+
+            mb.append("<td><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstDrafts[i][2]), 100)+"</strong></td>");
+
+            mb.append("<td>");
+            mb.append("<div class=\"btn-group\">" + "\n");
+            mb.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+rstDrafts[i][0]+"&action=edit\">Edit</a>" + "\n");
+            mb.append("<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">" + "\n");
+            mb.append("<span class=\"caret\"></span>" + "\n");
+            mb.append("</a>" + "\n");
+            mb.append("<ul class=\"dropdown-menu\">" + "\n");
+            mb.append("<li><a href=\"../entry.log?eventid="+rstDrafts[i][0]+"\">View</a></li>" + "\n");
+            mb.append("<li><a href=\"entry-move.log?eventid="+rstDrafts[i][0]+"\">Move</a></li>" + "\n");
+            mb.append("<li><a href=\"entry-delete.log?eventid="+rstDrafts[i][0]+"\">Delete</a></li>" + "\n");
+            mb.append("</ul>" + "\n");
+            mb.append("</div>" + "\n");
+            mb.append("</td>");
+
+            mb.append("</tr>");
+
+        }
+    } else {
+        mb.append("<tr><td bgcolor=#ffffff valign=top colspan=5>");
+        mb.append("<font face=arial size=-2>None</font>");
+        mb.append("</td></tr>");
+    }
+    mb.append("</table>");
+    mb.append("<!-- End Draft List -->");
+    //Draft entries end
 
 
 
-mb.append("<!-- Start last edited -->");
-mb.append(reger.ui.BubbleBox.start("", pageProps.pathToAppRoot));
-mb.append("<table width=100% cellpadding=5 cellspacing=0 border=0>");
-//@todo Add paging to /myhome/entries.log list
-//-----------------------------------
-//-----------------------------------
-String[][] rstLastentries= Db.RunSQL("SELECT event.eventid, event.title, event.date FROM event, megalog WHERE event.logid=megalog.logid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" AND event.istemporary='0' AND event.isdraft='1' ORDER BY event.date DESC LIMIT 0,100");
-//-----------------------------------
-//-----------------------------------
-if (rstLastentries!=null && rstLastentries.length>0){
-	for(int i=0; i<rstLastentries.length; i++){
-		mb.append("<tr>");
-        //@todo Check /myhome/entries.log for timezone
-        //@todo Add /myhome/entries.log Agotext
-        mb.append("<td bgcolor=#ffffff valign=top><a href='entry.log?eventid="+rstLastentries[i][0]+"&action=edit'><img src='../images/bullet-arrow.gif' width='9' height='9' alt='' border='0'></a>");
-        mb.append("</td>");
-        mb.append("<td bgcolor=#ffffff valign=top>");
-        mb.append("<font face=arial size=-2>"+rstLastentries[i][2]+"</font>");
-        mb.append("</td>");
-        mb.append("<td bgcolor=#ffffff valign=top><font face=arial size=-1>"+Util.truncateString(Util.cleanForHtml(rstLastentries[i][1]), 100)+"</font></td>");
-        mb.append("<td bgcolor=#ffffff valign=top><a href='../entry.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-1>View</font></a></td>");
-        mb.append("<td bgcolor=#ffffff valign=top><a href='entry.log?eventid="+rstLastentries[i][0]+"&action=edit'><font face=arial size=-1>Edit</font></a></td>");
-        mb.append("<td bgcolor=#ffffff valign=top><a href='entry-move.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-1>Move</font></a></td>");
-        //mb.append("<td bgcolor=#ffffff valign=top><a href='entry-addmedia.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-1>Add File</font></a></td>");
-        mb.append("<td bgcolor=#ffffff valign=top><a href='entry-delete.log?eventid="+rstLastentries[i][0]+"'><font face=arial size=-1>Delete</font></a></td>");
-        mb.append("</tr>");
-	}
-}
-
-
-mb.append("</table>");
-mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-mb.append("<!-- End last edited -->");
+    mb.append("</div>");
+    mb.append("</div>");
 
 
 
