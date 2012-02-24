@@ -71,7 +71,7 @@ public class NestedNavDisplayLayoutManager implements NestedNavDisplay{
                 //reger.Log log = LogCache.get(navItem.getThisNestedNavId());
                 mb.append("<tr>");
                 mb.append("<td nowrap>"+nestingNbsp+"<font face=arial size=-1><b> " + navItem.getNestedNavLinkText() +"</b></td>");
-                mb.append("<td nowrap>");
+                mb.append("<td  style=\"width:126px;\" nowrap>");
 
                 mb.append("<div class=\"btn-group\">" + "\n");
                 if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPEMEGALOG){

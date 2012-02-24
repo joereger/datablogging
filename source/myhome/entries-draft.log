@@ -44,7 +44,7 @@ pageProps.helpText="This page helps you find old entries so that you can edit, d
 
             mb.append("<td><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstDrafts[i][2]), 100)+"</strong><br/><h6>"+reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstDrafts[i][3]))+"</h6></td>");
 
-            mb.append("<td>");
+            mb.append("<td style=\"width:100px;\" nowrap>");
             mb.append("<div class=\"btn-group\">" + "\n");
             mb.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+rstDrafts[i][0]+"&action=edit\"><i class=\"icon-edit icon-white\"></i> Edit</a>" + "\n");
             mb.append("<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">" + "\n");

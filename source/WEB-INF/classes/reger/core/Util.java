@@ -920,16 +920,26 @@ public class Util {
          leftwidth=(int)((value/max)*100);
          rightwidth=100-leftwidth;
 
-         bc.append("<table cellpadding=0 cellspacing=0 border=0 width=100%>");
-         bc.append("<tr>");
-         bc.append("<td valign=top width="+leftwidth+"% align=left bgcolor=#ff0000>");
-         bc.append("<img src='"+pathToAppRoot+"images/clear.gif' width=1 height=10>");
-         bc.append("</td>");
-         bc.append("<td valign=top width="+rightwidth+"% align=left bgcolor=#00ff00>");
-         bc.append("<img src='"+pathToAppRoot+"images/clear.gif' width=1 height=10>");
-         bc.append("</td>");
-         bc.append("</tr>");
-         bc.append("</table>");
+         float percent = (value/max)*100;
+
+
+        bc.append("<div class=\"progress progress-info progress-striped active\">");
+        bc.append("<div class=\"bar\" style=\"width: "+percent+"%;\"></div>");
+        bc.append("</div>");
+
+
+
+//
+//         bc.append("<table cellpadding=0 cellspacing=0 border=0 width=100%>");
+//         bc.append("<tr>");
+//         bc.append("<td valign=top width="+leftwidth+"% align=left bgcolor=#ff0000>");
+//         bc.append("<img src='"+pathToAppRoot+"images/clear.gif' width=1 height=10>");
+//         bc.append("</td>");
+//         bc.append("<td valign=top width="+rightwidth+"% align=left bgcolor=#00ff00>");
+//         bc.append("<img src='"+pathToAppRoot+"images/clear.gif' width=1 height=10>");
+//         bc.append("</td>");
+//         bc.append("</tr>");
+//         bc.append("</table>");
 
          return bc;
      }

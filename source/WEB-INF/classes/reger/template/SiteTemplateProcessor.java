@@ -67,9 +67,9 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         //Figure out what AdminTools and LoggedInBar look like
         StringBuffer appendToHead = new StringBuffer();
         //appendToHead.append(appendRssAutodiscovery(userSession));
-        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/nav.css\" type=\"text/css\" />"+"\n");
-        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />"+"\n");
-        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />"+"\n");
+        //appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/nav.css\" type=\"text/css\" />"+"\n");
+        //appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />"+"\n");
+        //appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />"+"\n");
         //JWPlayer
         //appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/silverlight.js\"></script>");
         //appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"/js/wmvplayer/wmvplayer.js\"></script>");

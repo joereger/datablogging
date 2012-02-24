@@ -716,35 +716,35 @@ public class Entry {
                     //prettyPhoto + jQuery, can you bring it... finally?
                     filethumbslightbox.append("<li>" + "\n");
                     filethumbslightbox.append("<div class=\"thumbnail\">" + "\n");
-                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+//                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
                         filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"\" title=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
                         filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                         filethumbslightbox.append("</a>");
-                    } else {
-                        ext = "html";
-                        filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-                        filethumbslightbox.append("</a>");
-                    }
+//                    } else {
+//                        ext = "html";
+//                        filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
+//                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+//                        filethumbslightbox.append("</a>");
+//                    }
                     filethumbslightbox.append("</div>" + "\n");
                     filethumbslightbox.append("</li>" + "\n");
 
 
                     //Polaroid
-                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+//                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
                         filethumbspolaroid.append("<li>");
                         filethumbspolaroid.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"\" title=\""+""+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
                         filethumbspolaroid.append("<img alt=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes'>");
                         filethumbspolaroid.append("</a>");
                         filethumbspolaroid.append("</li>");
-                    } else {
-                        ext = "html";
-                        filethumbspolaroid.append("<li>");
-                        filethumbspolaroid.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" title=\""+""+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-                        filethumbspolaroid.append("<img alt=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes'>");
-                        filethumbspolaroid.append("</a>");
-                        filethumbspolaroid.append("</li>");
-                    }
+//                    } else {
+//                        ext = "html";
+//                        filethumbspolaroid.append("<li>");
+//                        filethumbspolaroid.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" title=\""+""+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
+//                        filethumbspolaroid.append("<img alt=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes'>");
+//                        filethumbspolaroid.append("</a>");
+//                        filethumbspolaroid.append("</li>");
+//                    }
 
                 }
 

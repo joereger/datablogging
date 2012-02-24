@@ -85,17 +85,17 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
                 //mb.append("<img src='"+pageProps.pathToAppRoot+"mediaout.log?imageid="+ rstToday[i][0] +"&isthumbnail=yes' border=0>" );
                 //mb.append("</a>" );
 
-                if (ext.toLowerCase().indexOf("jpg")>-1 || ext.toLowerCase().indexOf("gif")>-1 || ext.toLowerCase().indexOf("png")>-1 || ext.toLowerCase().indexOf("bmp")>-1){
+//                if (ext.toLowerCase().indexOf("jpg")>-1 || ext.toLowerCase().indexOf("gif")>-1 || ext.toLowerCase().indexOf("png")>-1 || ext.toLowerCase().indexOf("bmp")>-1){
                     mb.append("<a href=\"mediaout/file."+ext+"?imageid="+rstToday[i][0]+"\" title=\""+ Util.cleanForjavascript(rstToday[i][6])+"\" rel=\"prettyPhoto[HpTemplateTagRandomFiles]\">");
                     mb.append("<img src='mediaout.log?imageid="+rstToday[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                     mb.append("</a>");
-                } else {
-                    String extOrig = ext;
-                    ext = "html";
-                    mb.append("<a href=\"mediaouthtml.log?iframe=true&width=950&height=760&imageid="+rstToday[i][0]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstToday[i][6])+" extOrig="+extOrig+"\" rel=\"prettyPhoto[HpTemplateTagRandomFiles]\">");
-                    mb.append("<img src='mediaout.log?imageid="+rstToday[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-                    mb.append("</a>");
-                }
+//                } else {
+//                    String extOrig = ext;
+//                    ext = "html";
+//                    mb.append("<a href=\"mediaouthtml.log?iframe=true&width=950&height=760&imageid="+rstToday[i][0]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstToday[i][6])+" extOrig="+extOrig+"\" rel=\"prettyPhoto[HpTemplateTagRandomFiles]\">");
+//                    mb.append("<img src='mediaout.log?imageid="+rstToday[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+//                    mb.append("</a>");
+//                }
 
 
                 mb.append("</font></td>" );

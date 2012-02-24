@@ -73,7 +73,7 @@ public class MegaHtmlFormTopImageTags {
 
                 String mediaouturl = "mediaout.log?imageid="+imageid+"&entrykey="+entrykey;
                 String widthStr = "";
-                if (!width.equals("")){widthStr="width=\""+width+"\"";}
+                if (!width.equals("")){widthStr="width=\""+width+"\"";} else {widthStr="width=\"100%\"";}
                 String heightStr = "";
                 if (!height.equals("")){heightStr="height=\""+height+"\"";}
                 String alignStr = "";
@@ -81,12 +81,11 @@ public class MegaHtmlFormTopImageTags {
                 StringBuffer imgtag = new StringBuffer();
 
                 imgtag.append("<ul class=\"thumbnails\">" + "\n");
+                //imgtag.append("<li style=\"width:100%;\">" + "\n");
                 imgtag.append("<li style=\"width:100%;\">" + "\n");
-//                imgtag.append("<div class=\"thumbnail\">" + "\n");
                 imgtag.append("<a class=\"thumbnail\" rel=\"prettyPhoto[Images"+entry.eventid+"]\" title=\"\" href=\""+mediaouturl+"\">" +
                         "<img class=\"entryimageembed\" id=\""+imageid+"\" src=\""+mediaouturl+"\" "+widthStr+" "+heightStr+" "+alignStr+" >" +
                         "</a>");
-//                imgtag.append("</div>" + "\n");
                 imgtag.append("</li>" + "\n");
                 imgtag.append("</ul>" + "\n");
 

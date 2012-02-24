@@ -185,7 +185,7 @@ public class MegaHtmlFormTop {
 
 
             //mb.append("<table cellpadding=0 cellspacing=0 border=0 bgcolor='#999999' width=100% ><tr><td>");
-            mb.append("<table cellpadding=5 cellspacing=1 width=100% class=logentrytable border=0>");
+            mb.append("<table cellpadding=5 cellspacing=1  class=logentrytable border=0 width=\"100%\">");
 
 
 
@@ -246,7 +246,7 @@ public class MegaHtmlFormTop {
             mb.append("<br><font face=arial size=-2 class=smallfont>Year</font></td>");
 
             //Title
-            mb.append("<td bgcolor='#ffffff' align=left valign=top nowrap width=100% colspan=3 class=logentryheader>");
+            mb.append("<td bgcolor='#ffffff' align=left valign=top nowrap colspan=3 class=logentryheader>");
             //@todo Tabindex working on main entry page
             if (displayasadmin) {
                 mb.append("<input type='text' name='title' maxlength=255 size=40 value=\"" + reger.core.Util.cleanForHtml(pageProps.entry.title) + "\" tabindex=1 "+disabledFormText+">");
