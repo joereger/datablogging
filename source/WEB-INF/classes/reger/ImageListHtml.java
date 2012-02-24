@@ -165,8 +165,7 @@ public class ImageListHtml {
 
             //End paging
 
-            //Add the popup javascript
-            mb.append(reger.core.Util.popup());
+
 
             //reger.core.Util.logtodb(sqlSelect+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry+sqlOrderBy);
             //-----------------------------------
@@ -179,51 +178,66 @@ public class ImageListHtml {
                     String mediaoutPath = "";
                     mb.append("<!-- Begin individual image listing -->");
                     mb.append("<tr>");
-                    mb.append("<td valign=middle align=center bgcolor=#cccccc>");
-                    mb.append("<table cellpadding=0 cellspacing=0 border=0>");
-                    mb.append("<tr>");
-                    mb.append("<td valign=top align=center>");
-                    mb.append("<font face=arial size=-2 style=\"font-size: 10px;\" color=#999999>");
-                    mb.append("<b>Move<br>Up<br></b>");
-                    mb.append("</font>");
-                    mb.append("<input type=radio name=imageid-" + rstImagelist[i][0] + "-move value=up>");
+                    mb.append("<td valign=middle align=center>");
+//                    mb.append("<table cellpadding=0 cellspacing=0 border=0>");
+//                    mb.append("<tr>");
+//                    mb.append("<td valign=top align=center>");
+//                    mb.append("<font face=arial size=-2 style=\"font-size: 10px;\" color=#999999>");
+//                    mb.append("<b>Move<br>Up<br></b>");
+//                    mb.append("</font>");
+//                    mb.append("<input type=radio name=imageid-" + rstImagelist[i][0] + "-move value=up>");
+//                    mb.append("</td>");
+//                    mb.append("</tr>");
+//                    mb.append("<tr>");
+//                    mb.append("<td valign=top align=center>");
+//                    mb.append("<input type=radio name=imageid-" + rstImagelist[i][0] + "-move value=stay checked>");
+//                    mb.append("");
+//                    mb.append("</td>");
+//                    mb.append("</tr>");
+//                    mb.append("<tr>");
+//                    mb.append("<td valign=top align=center>");
+//                    mb.append("<input type=radio name=imageid-" + rstImagelist[i][0] + "-move value=down>");
+//                    mb.append("<font face=arial size=-2 style=\"font-size: 10px;\" color=#999999>");
+//                    mb.append("<b><br>Move<br>Down</b>");
+//                    mb.append("</font>");
+//                    mb.append("</td>");
+//                    mb.append("</tr>");
+//                    mb.append("</table>");
                     mb.append("</td>");
-                    mb.append("</tr>");
-                    mb.append("<tr>");
-                    mb.append("<td valign=top align=center>");
-                    mb.append("<input type=radio name=imageid-" + rstImagelist[i][0] + "-move value=stay checked>");
-                    mb.append("");
-                    mb.append("</td>");
-                    mb.append("</tr>");
-                    mb.append("<tr>");
-                    mb.append("<td valign=top align=center>");
-                    mb.append("<input type=radio name=imageid-" + rstImagelist[i][0] + "-move value=down>");
-                    mb.append("<font face=arial size=-2 style=\"font-size: 10px;\" color=#999999>");
-                    mb.append("<b><br>Move<br>Down</b>");
-                    mb.append("</font>");
-                    mb.append("</td>");
-                    mb.append("</tr>");
-                    mb.append("</table>");
-                    mb.append("</td>");
-                    mb.append("<td valign=middle align=center bgcolor=#cccccc colspan=2>");
+                    mb.append("<td valign=middle align=center colspan=2>");
 
                     mediaoutPath = "../";
 
-                    mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + entrykeyQueryString + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
-                    mb.append("<img src='" + mediaoutPath + "mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "' border=0></a>");
+                    //mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&entrykey=" + entrykeyQueryString + "'  rel=\"prettyPhoto[Images"+eventid+"]\">");
+                    //mb.append("<img src='" + mediaoutPath + "mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes&entrykey=" + entrykeyQueryString + "' border=0>");
+                    //mb.append("</a>");
+
+                    String ext = FilenameUtils.getExtension(rstImagelist[i][10]);
+                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+                        mb.append("<a href=\"mediaout/file."+ext+"?imageid="+rstImagelist[i][0]+"&entrykey="+entrykeyQueryString+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
+                        mb.append("<img src=\"mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "\" border=0>" + "\n");
+                        mb.append("</a>" + "\n");
+                    } else {
+                        mb.append("<a href=\"mediaouthtml.log?imageid="+rstImagelist[i][0]+"&ext=page."+ext+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
+                        mb.append("<img src=\"mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "\" border=0>" + "\n");
+                        mb.append("</a>" + "\n");
+                    }
+
+
                     if (userSessionOfPersonViewing.getAccountuser().getEntrymode()==reger.Vars.ENTRYMODESIMPLE) {
-                        mb.append("<br/><a href=\"javascript:appendImageTag("+rstImagelist[i][0]+")\"><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">Add to Entry</font></a>");
+                        mb.append("<br/><a href=\"javascript:appendImageTag("+rstImagelist[i][0]+")\"><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">Add to Post Body</font></a>");
                     }
-                    if (!rstImagelist[i][6].equals("")) {
-                        mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + FilenameUtils.getName(rstImagelist[i][10]) + "</font>");
-                    }
-                    if (!rstImagelist[i][7].equals("")) {
-                        mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImagelist[i][7] + " bytes</font>");
-                    }
-                    mb.append("<br><input type='checkbox' name='delete-" + rstImagelist[i][0] + "' value='yes'> <font face=arial size=-2>Delete?</font>");
+//                    if (!rstImagelist[i][6].equals("")) {
+//                        mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + FilenameUtils.getName(rstImagelist[i][10]) + "</font>");
+//                    }
+//                    if (!rstImagelist[i][7].equals("")) {
+//                        mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImagelist[i][7] + " bytes</font>");
+//                    }
+
                     mb.append("</td>");
                     mb.append("<td valign=top bgcolor=#ffffff colspan=9>");
-                    mb.append("<font face=arial size=-2>Optional Description:</font><br>");
+                    mb.append("<div style=\"float:right;\"><input type='checkbox' name='delete-" + rstImagelist[i][0] + "' value='yes'> <font face=arial size=-2>Delete?</font></div>");
+                    mb.append("<font face=arial size=-2>Description:</font><br>");
                     mb.append("<textarea cols='30' rows='3' name='imagedescription-" + rstImagelist[i][0] + "' style='width: 100%;font: 10pt monospace'>" + reger.core.Util.cleanForHtml(rstImagelist[i][1]) + "</textarea>");
 
                     //Display the entry that this image came from
@@ -242,7 +256,7 @@ public class ImageListHtml {
                     String imageTags = reger.Tag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
                     mb.append("<br>");
                     String helpImagetags = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.  Create multi-word tags with quotes (example: car \"blue interior\" oldsmobile.)", false, mediaoutPath);
-                    mb.append("<font face=arial size=-2>Optional Keyword Tags " + helpImagetags + ":</font><br><input type='text' name='imagetag-" + rstImagelist[i][0] + "' value=\"" + reger.core.Util.cleanForHtml(imageTags) + "\" size='35' maxlength='254' style=\"font-size: 10px;\"><br>");
+                    mb.append("<font face=arial size=-2>Tags " + helpImagetags + ":</font><br><input type='text' name='imagetag-" + rstImagelist[i][0] + "' value=\"" + reger.core.Util.cleanForHtml(imageTags) + "\" size='35' maxlength='254' style=\"font-size: 10px;\"><br>");
 
 
 
