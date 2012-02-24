@@ -694,6 +694,7 @@ public class Entry {
             filethumbs = new StringBuffer();
             filethumbsrss = new StringBuffer();
             filethumbslightbox = new StringBuffer();
+            filethumbslightbox.append("<ul class=\"thumbnails\">" + "\n");
             filethumbspolaroid = new StringBuffer();
             filethumbspolaroid.append("<ul class=\"polaroids\">");
             videolist = new StringBuffer();
@@ -713,6 +714,8 @@ public class Entry {
 
 
                     //prettyPhoto + jQuery, can you bring it... finally?
+                    filethumbslightbox.append("<li>" + "\n");
+                    filethumbslightbox.append("<div class=\"thumbnail\">" + "\n");
                     if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
                         filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"\" title=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
                         filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
@@ -723,6 +726,8 @@ public class Entry {
                         filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                         filethumbslightbox.append("</a>");
                     }
+                    filethumbslightbox.append("</div>" + "\n");
+                    filethumbslightbox.append("</li>" + "\n");
 
 
                     //Polaroid
@@ -742,6 +747,7 @@ public class Entry {
                     }
 
                 }
+
 
 
 
@@ -769,6 +775,7 @@ public class Entry {
 
 
             }
+            filethumbslightbox.append("</ul>" + "\n");
 
             filethumbspolaroid.append("</ul>");
             filethumbspolaroid.append("<br clear=\"all\">");

@@ -78,11 +78,19 @@ public class MegaHtmlFormTopImageTags {
                 if (!height.equals("")){heightStr="height=\""+height+"\"";}
                 String alignStr = "";
                 if (!align.equals("")){alignStr="align=\""+align+"\"";}
-                String imgtag = "<a rel=\"prettyPhoto[Images"+entry.eventid+"]\" title=\"\" href=\""+mediaouturl+"\">" +
-                        "<img class=\"entryimageembed\" id=\""+imageid+"\" src=\""+mediaouturl+"\" "+widthStr+" "+heightStr+" "+alignStr+" >" +
-                        "</a>";
+                StringBuffer imgtag = new StringBuffer();
 
-                m.appendReplacement(mb, reger.core.Util.cleanForAppendreplacement(imgtag));
+                imgtag.append("<ul class=\"thumbnails\">" + "\n");
+                imgtag.append("<li style=\"width:100%;\">" + "\n");
+//                imgtag.append("<div class=\"thumbnail\">" + "\n");
+                imgtag.append("<a class=\"thumbnail\" rel=\"prettyPhoto[Images"+entry.eventid+"]\" title=\"\" href=\""+mediaouturl+"\">" +
+                        "<img class=\"entryimageembed\" id=\""+imageid+"\" src=\""+mediaouturl+"\" "+widthStr+" "+heightStr+" "+alignStr+" >" +
+                        "</a>");
+//                imgtag.append("</div>" + "\n");
+                imgtag.append("</li>" + "\n");
+                imgtag.append("</ul>" + "\n");
+
+                m.appendReplacement(mb, reger.core.Util.cleanForAppendreplacement(imgtag.toString()));
 
             } else {
 

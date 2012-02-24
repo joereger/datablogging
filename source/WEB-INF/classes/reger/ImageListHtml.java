@@ -343,7 +343,7 @@ public class ImageListHtml {
                     }
 
                     if (rstImagelist[i][1]!=null && rstImagelist[i][1].length()>0){
-                        mb.append("<p>"+reger.core.Util.cleanForHtml(rstImagelist[i][1])+"</p>" + "\n");
+                        //mb.append("<p>"+reger.core.Util.cleanForHtml(rstImagelist[i][1])+"</p>" + "\n");
                     }
 
                     mb.append("</div>" + "\n");
