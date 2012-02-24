@@ -251,7 +251,14 @@ public class MegaHtmlFormTop {
             if (displayasadmin) {
                 mb.append("<input type='text' name='title' maxlength=255 size=40 value=\"" + reger.core.Util.cleanForHtml(pageProps.entry.title) + "\" tabindex=1 "+disabledFormText+">");
             } else {
-                mb.append("<h1>"+reger.core.Util.cleanForHtml(pageProps.entry.title)+"</h1>");
+                mb.append("<h1>"+reger.core.Util.cleanForHtml(pageProps.entry.title));
+                //Display an edit link to site owners
+                if (!displayasadmin) {
+                    if (userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
+                        mb.append(" <a class=\"btn btn-success btn-small\" href='myhome/entry.log?eventid="+pageProps.entry.eventid+"&action=edit'><i class=\"icon-edit icon-white\"></i> Edit</a><br/>");
+                    }
+                }
+                mb.append("</h1>");
             }
             mb.append("</td>");
 
@@ -372,12 +379,7 @@ public class MegaHtmlFormTop {
                         mb.append("</div>");
                     }
 
-                    //Display an edit link to site owners
-                    if (!displayasadmin) {
-                        if (userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
-                            mb.append("<a href='myhome/entry.log?eventid="+pageProps.entry.eventid+"&action=edit'>Edit this Entry</a><br/>");
-                        }
-                    }
+
 
 
                     //Replace any image tags with html for images

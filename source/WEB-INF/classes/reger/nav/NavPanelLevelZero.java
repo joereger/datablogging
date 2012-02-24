@@ -45,7 +45,29 @@ public class NavPanelLevelZero {
             }
         }
 
+
+        mb.append("                    <li>" + "\n");
+        mb.append("                        <a href=\"../login.log?action=logout\">" + "\n");
+        mb.append("                        log out" + "\n");
+        mb.append("                        </a>" + "\n");
+        mb.append("                    </li>" + "\n");
+
         mb.append("            </ul>" + "\n");
+
+
+
+
+
+
+        mb.append("            <ul class=\"nav pull-right\">" + "\n");
+        mb.append("                    <li>" + "\n");
+        mb.append("                        <a href=\"../\">" + "\n");
+        mb.append("                        visit your site" + "\n");
+        mb.append("                        </a>" + "\n");
+        mb.append("                    </li>" + "\n");
+        mb.append("            </ul>" + "\n");
+
+
         mb.append("        </div>" + "\n");
         mb.append("      </div>" + "\n");
         mb.append("    </div>" + "\n");

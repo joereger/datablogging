@@ -106,7 +106,13 @@ public class MegaHtmlFormBottom {
             if (request.getParameter("imagetagid") != null && reger.core.Util.isinteger(request.getParameter("imagetagid"))) {
                 imagetagid = Integer.parseInt(request.getParameter("imagetagid"));
             }
+            mb.append("<tr>");
+            mb.append("<td colspan=3 align=right valign=top>");
+            mb.append("</td>");
+            mb.append("<td valign=top colspan=3 >");
             mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, imagetagid, displayasadmin, userSession, -1, perpage, request));
+            mb.append("</td>");
+            mb.append("</tr>");
 
             mb.append("<!-- End Images -->");
 

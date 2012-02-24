@@ -85,7 +85,7 @@ if (userSession.getAccountuser().userCanDoAcl("NEWLOG", userSession.getAccount()
 
 }
 
-
+<br/><br/>
 
 //Display the page
 if (pageProps.action.equals("search")){

@@ -24,66 +24,66 @@ public class MegaLogTypeListHtmlRenderer {
         mb.append("<tr>");
         mb.append("<td align=left valign=top>");
 
-            //Starter Log Type Start
-            mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
-            mb.append("<table cellpadding=0 cellspacing=1 border=0>");
-            mb.append("<tr>");
-            mb.append("<td align=left valign=center bgcolor=#ffffff colspan=2>");
-            mb.append("<font face=arial size=+2 color=#666666><b>Not Sure?</b></font>");
-            mb.append("<br>");
-            mb.append("<font face=arial size=-2 color=#666666><b>There's no need to choose some fancy log type. You can always add logs of any type later on.  You can even create log types of your own.  Use this one to get started quickly and simply:</b></font>");
-            mb.append("<br><br>");
-            mb.append("</td>");
-            mb.append("</tr>");
-            Debug.debug(5, "", "MegaLogTypeListHtmlRenderer.java - userSession.getPl().getDefaulteventtypeid():" + userSession.getPl().getDefaulteventtypeid());
-            MegaLogType basicLogType = AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(userSession.getPl().getDefaulteventtypeid());
-            if (basicLogType==null){
-                basicLogType = AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(reger.Vars.DEFAULTLOGEVENTTYPEID);
-            }
-            mb.append("<!-- begin log type -->");
-            mb.append("<tr>");
-            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=2>");
-            mb.append("<font face=arial size=+1 color=#000000><b>"+basicLogType.getMegalogname() +"</b></font>");
-            mb.append("<br>");
-            mb.append("<font face=arial size=-2 color=#333333>" + basicLogType.getDescription() + "");
-            mb.append("</font>");
-            mb.append("</td>");
-            mb.append("</tr>");
-            mb.append("<tr>");
-            mb.append("<td bgcolor='#ffffff' align=left width=10% valign=top>");
-            mb.append("<form action="+urlforAddLogForm+" method=post>");
-            mb.append("<input type=hidden name=action value=addlogtype>");
-            mb.append("<input type=hidden name=eventtypeid value="+basicLogType.getEventtypeid()+">");
-            mb.append("<input type='submit' value='+ Create a Log' style=\"font-size: 10px;\">");
-            mb.append("</form>");
-            mb.append("</td>");
-            mb.append("<td bgcolor='#ffffff' align=left valign=top>");
-            mb.append("<form action="+urlForMoreInfo+" method=GET>");
-            mb.append("<input type=hidden name=eventtypeid value="+basicLogType.getEventtypeid()+">");
-            mb.append("<input type='submit' value='Learn More' style=\"font-size: 10px;\">");
-            mb.append("</form>");
-            mb.append("</td>");
-            mb.append("</tr>");
-            mb.append("<tr>");
-            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=2>");
-            mb.append("<font face=arial size=+1><b>&nbsp;</b></font>");
-            mb.append("</td>");
-            mb.append("</tr>");
-            mb.append("<!-- end log type -->");
-            mb.append("</table>");
-            mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
+//            //Starter Log Type Start
+//            mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
+//            mb.append("<table cellpadding=0 cellspacing=1 border=0>");
+////            mb.append("<tr>");
+////            mb.append("<td align=left valign=center bgcolor=#ffffff colspan=2>");
+////            mb.append("<font face=arial size=+2 color=#666666><b>Not Sure?</b></font>");
+////            mb.append("<br>");
+////            mb.append("<font face=arial size=-2 color=#666666><b>There's no need to choose some fancy log type. You can always add logs of any type later on.  You can even create log types of your own.  Use this one to get started quickly and simply:</b></font>");
+////            mb.append("<br><br>");
+////            mb.append("</td>");
+////            mb.append("</tr>");
+//            Debug.debug(5, "", "MegaLogTypeListHtmlRenderer.java - userSession.getPl().getDefaulteventtypeid():" + userSession.getPl().getDefaulteventtypeid());
+//            MegaLogType basicLogType = AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(userSession.getPl().getDefaulteventtypeid());
+//            if (basicLogType==null){
+//                basicLogType = AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(reger.Vars.DEFAULTLOGEVENTTYPEID);
+//            }
+//            mb.append("<!-- begin log type -->");
+//            mb.append("<tr>");
+//            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=2>");
+//            mb.append("<font face=arial size=+1 color=#000000><b>"+basicLogType.getMegalogname() +"</b></font>");
+//            mb.append("<br>");
+//            mb.append("<font face=arial size=-2 color=#333333>" + basicLogType.getDescription() + "");
+//            mb.append("</font>");
+//            mb.append("</td>");
+//            mb.append("</tr>");
+//            mb.append("<tr>");
+//            mb.append("<td bgcolor='#ffffff' align=left width=10% valign=top>");
+//            mb.append("<form action="+urlforAddLogForm+" method=post>");
+//            mb.append("<input type=hidden name=action value=addlogtype>");
+//            mb.append("<input type=hidden name=eventtypeid value="+basicLogType.getEventtypeid()+">");
+//            mb.append("<input type='submit' value='+ Create a Log' style=\"font-size: 10px;\">");
+//            mb.append("</form>");
+//            mb.append("</td>");
+//            mb.append("<td bgcolor='#ffffff' align=left valign=top>");
+//            mb.append("<form action="+urlForMoreInfo+" method=GET>");
+//            mb.append("<input type=hidden name=eventtypeid value="+basicLogType.getEventtypeid()+">");
+//            mb.append("<input type='submit' value='Learn More' style=\"font-size: 10px;\">");
+//            mb.append("</form>");
+//            mb.append("</td>");
+//            mb.append("</tr>");
+//            mb.append("<tr>");
+//            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=2>");
+//            mb.append("<font face=arial size=+1><b>&nbsp;</b></font>");
+//            mb.append("</td>");
+//            mb.append("</tr>");
+//            mb.append("<!-- end log type -->");
+//            mb.append("</table>");
+//            mb.append(reger.ui.ShadowBox.end(pageProps.pathToAppRoot));
 
 
 
             //System Log Types Start
             mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
             mb.append("<table cellpadding=0 cellspacing=1 border=0>");
-            mb.append("<tr>");
-            mb.append("<td align=left valign=center bgcolor=#ffffff colspan=2>");
-            mb.append("<font face=arial size=+2 color=#666666><b>System Log Types</b></font>");
-            mb.append("<br><br>");
-            mb.append("</td>");
-            mb.append("</tr>");
+//            mb.append("<tr>");
+//            mb.append("<td align=left valign=center bgcolor=#ffffff colspan=2>");
+//            mb.append("<font face=arial size=+2 color=#666666><b>System Log Types</b></font>");
+//            mb.append("<br><br>");
+//            mb.append("</td>");
+//            mb.append("</tr>");
             //String sqlSubselectCountLogsEt = "(SELECT count(*) FROM megalog megalog WHERE megalog.eventtypeid=megalogtype.eventtypeid AND megalog.logaccess='"+reger.Vars.LOGACCESSPUBLIC+"') as logcount";
             //-----------------------------------
             //-----------------------------------
@@ -466,13 +466,13 @@ public class MegaLogTypeListHtmlRenderer {
         mb.append("<form action="+urlforAddLogForm+" method=post>");
         mb.append("<input type=hidden name=action value=addlogtype>");
         mb.append("<input type=hidden name=eventtypeid value="+eventtypeid+">");
-        mb.append("<input type='submit' value='+ Create a Log' style=\"font-size: 10px;\">");
+        mb.append("<input class=\"btn btn-success btn-large\" type='submit' value='+ Create a Log' style=\"font-size: 10px;\">");
         mb.append("</form>");
         mb.append("</td>");
         mb.append("<td bgcolor='#ffffff' align=left valign=top>");
         mb.append("<form action="+urlForMoreInfo+" method=GET>");
         mb.append("<input type=hidden name=eventtypeid value="+eventtypeid+">");
-        mb.append("<input type='submit' value='Learn More' style=\"font-size: 10px;\">");
+        mb.append("<input type='submit' class=\"btn btn-info btn-large\" value='Learn More' style=\"font-size: 10px;\">");
         mb.append("</form>");
         mb.append("</td>");
         mb.append("</tr>");

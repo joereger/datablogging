@@ -41,7 +41,7 @@ public class MegaLogTypeHtmlrender {
                 mb.append("<form action="+urlforAddLogForm+" method=post>");
                 mb.append("<input type=hidden name=action value=addlogtype>");
                 mb.append("<input type=hidden name=eventtypeid value="+logType.getEventtypeid()+">");
-                mb.append("<input type='submit' value='+ Create a Log' style=\"font-size: 10px;\">");
+                mb.append("<input class=\"btn btn-primary btn-large\" type='submit' value='+ Create a Log of this Type' style=\"font-size: 10px;\">");
                 mb.append("</td>");
                 mb.append("</form>");
                 mb.append("</center>");
@@ -52,44 +52,44 @@ public class MegaLogTypeHtmlrender {
                 mb.append(reger.ui.ShadowBox.start(pageProps.pathToAppRoot));
                 mb.append("<font face=arial size=+3 color=#666666><b>"+logType.getMegalogname()+"</b></font>");
 
-                mb.append("<br>");
-                mb.append("<br>");
-                mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
-                mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILTOSHOWENTRYPAGE+"'>");
-                mb.append("<font face=arial size=-2 color=#0000ff><b>Log Entry Page for this Log Type</b></font>");
-                mb.append("</a>");
-                if(!(userSession.getPl().getForcelogintoviewsites() && (userSession.getAccountuser()==null || !userSession.getAccountuser().isLoggedIn))){
-                    int numOfGraphs = graphsBasedOnEventtypeid(logType.getEventtypeid(), userSession);
-                    if (numOfGraphs>0){
-                        mb.append("<br>");
-                        mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
-                        mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILTOSHOWGRAPHS+"'>");
-                        mb.append("<font face=arial size=-2 color=#0000ff><b>"+numOfGraphs+" Graphs for this Type</b></font>");
-                        mb.append("</a>");
-                    }
-                     mb.append("<br>");
-                    mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
-                    mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILTOSHOWUSERLOGS+"'>");
-                    mb.append("<font face=arial size=-2 color=#0000ff><b>"+numberOfUserLogsBasedOnEventtypeid(logType.getEventtypeid(), userSession)+" User Logs of this Type</b></font>");
-                    mb.append("</a>");
-                    mb.append("<br>");
-                    mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
-                    mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILTOSHOWENTRIES+"'>");
-                    mb.append("<font face=arial size=-2 color=#0000ff><b>"+numberOfRecentEntriesBasedOnEventtypeid(logType.getEventtypeid(), userSession)+" Log Entries of this Type</b></font>");
-                    mb.append("</a>");
-                    mb.append("<br>");
-                    mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
-                    mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILOWNER+"'>");
-                    mb.append("<font face=arial size=-2 color=#0000ff><b>Owner of this Type</b></font>");
-                    mb.append("</a>");
-                }
+//                mb.append("<br>");
 //                mb.append("<br>");
 //                mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
-//                mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEXMLSCHEMA+"'>");
-//                mb.append("<font face=arial size=-2 color=#0000ff><b>XML Schema</b></font>");
+//                mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILTOSHOWENTRYPAGE+"'>");
+//                mb.append("<font face=arial size=-2 color=#0000ff><b>Log Entry Page for this Log Type</b></font>");
 //                mb.append("</a>");
-                mb.append("<br>");
-                //@todo List APIs for this log type
+//                if(!(userSession.getPl().getForcelogintoviewsites() && (userSession.getAccountuser()==null || !userSession.getAccountuser().isLoggedIn))){
+//                    int numOfGraphs = graphsBasedOnEventtypeid(logType.getEventtypeid(), userSession);
+//                    if (numOfGraphs>0){
+//                        mb.append("<br>");
+//                        mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
+//                        mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILTOSHOWGRAPHS+"'>");
+//                        mb.append("<font face=arial size=-2 color=#0000ff><b>"+numOfGraphs+" Graphs for this Type</b></font>");
+//                        mb.append("</a>");
+//                    }
+//                     mb.append("<br>");
+//                    mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
+//                    mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILTOSHOWUSERLOGS+"'>");
+//                    mb.append("<font face=arial size=-2 color=#0000ff><b>"+numberOfUserLogsBasedOnEventtypeid(logType.getEventtypeid(), userSession)+" User Logs of this Type</b></font>");
+//                    mb.append("</a>");
+//                    mb.append("<br>");
+//                    mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
+//                    mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILTOSHOWENTRIES+"'>");
+//                    mb.append("<font face=arial size=-2 color=#0000ff><b>"+numberOfRecentEntriesBasedOnEventtypeid(logType.getEventtypeid(), userSession)+" Log Entries of this Type</b></font>");
+//                    mb.append("</a>");
+//                    mb.append("<br>");
+//                    mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
+//                    mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEDETAILOWNER+"'>");
+//                    mb.append("<font face=arial size=-2 color=#0000ff><b>Owner of this Type</b></font>");
+//                    mb.append("</a>");
+//                }
+////                mb.append("<br>");
+////                mb.append("<img src='"+pageProps.pathToAppRoot+"about/images/arrow-sm-yellow.gif' border=0 valign=bottom> ");
+////                mb.append("<a href='"+thispagename+"?eventtypeid="+logType.getEventtypeid()+"&logtypedetailtoshow="+LOGTYPEXMLSCHEMA+"'>");
+////                mb.append("<font face=arial size=-2 color=#0000ff><b>XML Schema</b></font>");
+////                mb.append("</a>");
+//                mb.append("<br>");
+//                //@todo List APIs for this log type
 
                 mb.append("<br>");
                 mb.append("<font face=arial size=-1 color=#666666><b>"+logType.getDescription()+"</b></font>");

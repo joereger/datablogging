@@ -92,7 +92,7 @@ mb.append("<table cellpadding=5 cellspacing=1 border=0 width=100% align=center>"
 
 
 mb.append("<tr>");
-mb.append("<td valign=top align=left bgcolor='#eeeeee'><input type=text name=name value=\""+Util.cleanForHtml(log.getName())+"\"></td>");
+mb.append("<td valign=top align=left ><input type=text name=name value=\""+Util.cleanForHtml(log.getName())+"\"></td>");
 mb.append("<td valign=top align=left bgcolor='#ffffff'><font face=arial size=-1><strong>Log Name</strong></font><br><font face=arial size=-2><strong>This is the name that appears on your public log.</strong></font></td>");
 mb.append("</tr>");
 
@@ -102,7 +102,7 @@ mb.append("</tr>");
 //mb.append("</tr>");
 
 mb.append("<tr>");
-mb.append("<td valign=top align=left bgcolor='#eeeeee'>");
+mb.append("<td valign=top align=left >");
 //Radio Control
 TreeMap radiosPasswordProtection=new TreeMap();
 radiosPasswordProtection.put(String.valueOf(reger.Vars.LOGACCESSPUBLIC),"<img src='../images/icon-public.gif' border=0> Public");
@@ -110,17 +110,17 @@ radiosPasswordProtection.put(String.valueOf(reger.Vars.LOGACCESSPRIVATE),"<img s
 mb.append(reger.formControl.radioList(radiosPasswordProtection, String.valueOf(log.getLogaccess()), "logaccess", "vertical"));
 //End Radio Control
 mb.append("</td>");
-mb.append("<td bgcolor='#ffffff' valign=top align=left>");
+mb.append("<td  valign=top align=left>");
 mb.append("<font face=arial size=-1><strong>Log Security:</strong></font><br><font face=arial size=-2><strong>Determines whether this log is password-protected or open to the public.  Once you password-protect a log your users must register and you must manually allow them to view this log.  Or they can use the Quick Password if you assign one.</strong></font></td>");
 mb.append("</tr>");
 
 mb.append("<tr>");
-mb.append("<td valign=top align=left bgcolor='#eeeeee'><input type=text name=password value=\""+Util.cleanForHtml(log.getPassword())+"\"></td>");
+mb.append("<td valign=top align=left ><input type=text name=password value=\""+Util.cleanForHtml(log.getPassword())+"\"></td>");
 mb.append("<td valign=top align=left bgcolor='#ffffff'><font face=arial size=-1><strong>QuickLogin Password:</strong></font><br><font face=arial size=-2><strong>If you make your log private then users will need to register before they can see it.  This is cumbersome if you intend to share your private log with a large (but private) group of friends or family.  So we created the QuickLogin Password.  You can distribute the QuickLogin Password and users will be able to use it to see your log without registering.  Leave blank if you're unsure or if you don't need a QuickLogin Password.  Tell people to click login and enter their QuickLogin Password.</strong></font></td>");
 mb.append("</tr>");
 
 mb.append("<tr>");
-mb.append("<td valign=top align=left bgcolor='#eeeeee'>");
+mb.append("<td valign=top align=left >");
 //Radio Control
 String showHpText = "1";
 if (!log.getShowonhomepage()){
@@ -132,15 +132,15 @@ radiosShowOnHp.put("0","<img src='../images/home-hidden.gif' border=0> Hidden");
 mb.append(reger.formControl.radioList(radiosShowOnHp, showHpText, "showonhomepage", "vertical"));
 //End Radio Control
 mb.append("</td>");
-mb.append("<td bgcolor='#ffffff' valign=top align=left>");
+mb.append("<td  valign=top align=left>");
 mb.append("<font face=arial size=-1><strong>Visible on Homepage?</strong></font><br><font face=arial size=-2><strong>Your web log homepage is an important place.  It's the place where your visitors get their first glimpse of you and where they find updates.  Sometimes you want to keep track of things and keep them public, but you don't necessarily want them to take up space on your homepage.  This allows you to have a log's entries not appear on the home page.  Note: This is different than making a log private.  By deciding to not show on the homepage you are not restricting access to the log... you are just making users click the log directly before they see its log entries.  We hope this makes sense.  If not, play around with it a bit.  You can always switch it back.</strong></font></td>");
 mb.append("</tr>");
 
 
 
 mb.append("<tr>");
-mb.append("<td bgcolor=#cccccc align=center><input type='submit' value='Save Properties'></td>");
-mb.append("<td bgcolor=#ffffff align=center></td>");
+mb.append("<td align=center><input class=\"btn btn-primary btn-large\" type='submit' value='Save Properties'></td>");
+mb.append("<td  align=center></td>");
 mb.append("</tr>");
 
 mb.append("</form>");

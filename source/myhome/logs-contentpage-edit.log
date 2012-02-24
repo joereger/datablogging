@@ -72,8 +72,8 @@ String currentNavButtonName = "";
 
 mb.append("");
 
-mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Static content pages are not blog entries!  Please read and understand what they are before using them.  They're not dangerous, but they may not be what you think they are."));
-
+//mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEINFO, pageProps.pathToAppRoot, "Static content pages are not blog entries!  Please read and understand what they are before using them.  They're not dangerous, but they may not be what you think they are."));
+//
 
 
 mb.append("<form action=logs-contentpage-edit.log method=post>");

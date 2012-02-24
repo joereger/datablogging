@@ -19,18 +19,18 @@ public class AllNavButtons {
     private static void createButtons(){
 
         //Top level Admin Tab buttons
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("adminhome", "", "Dashboard", "myhome/index.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logs", "", "Logs", "myhome/logs-log-list.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entries", "", "Posts", "myhome/entries-recent.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("adminhome", "", "dashboard", "myhome/index.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entries", "", "posts", "myhome/entries-recent.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logs", "", "logs & pages", "myhome/logs-log-list.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("files", "", "Files", "myhome/files.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphs", "", "Graphs", "myhome/graphs.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphs", "", "graphs", "myhome/graphs.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffic", "", "Traffic", "myhome/traffic.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("people", "", "People", "myhome/people.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("groups", "", "Groups", "myhome/groups.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settings", "", "Settings", "myhome/settings-siteprops.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("tools", "", "Tools", "myhome/tools.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pl", "", "Pl", "pl/index.log", false, "PLADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loe", "", "Sysadmin", "loe/index.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settings", "", "settings", "myhome/settings-siteprops.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("tools", "", "tools", "myhome/tools.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pl", "", "pl", "pl/index.log", false, "PLADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loe", "", "sysadmin", "loe/index.log", false, "MASTERADMIN", null));
 
 
         //Sites
@@ -42,18 +42,18 @@ public class AllNavButtons {
 
 
         //Logs Buttons
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsyourlogs", "logs", "Your Logs", "myhome/logs-log-list.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsmain", "logs", "Logs vs Log Types", "myhome/logs.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logslogtypes", "logs", "Custom Log Types", "myhome/logs-type-list.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlog", "logs", "New Log", "myhome/logs-newlog.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlogtype", "logs", "New Log Type", "myhome/logs-type-properties.log?action=startadd", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewstatic", "logs", "Pages", "myhome/logs-contentpage-edit.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsyourlogs", "logs", "Your Logs and Pages", "myhome/logs-log-list.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlog", "logs", "Log Types", "myhome/logs-newlog.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsmain", "logs", "Logs vs Log Types", "myhome/logs.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logslogtypes", "logs", "Make Your Own Log Type", "myhome/logs-type-list.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewlogtype", "logs", "Make Your Own Log Type", "myhome/logs-type-properties.log?action=startadd", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logsnewstatic", "logs", "Pages", "myhome/logs-contentpage-edit.log", false, "", null));
         //allNavButtons = reger.core.Util.addToNavButtonArray(allNavButtons, new NavButton("logsstaticcontentpages", "logs", "STATIC CONTENT PAGES", "myhome/logs-contentpage.log", false, ""));
 
         //Entries Buttons
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesrecent", "entries", "Recent", "myhome/entries-recent.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessearchtop", "entries", "Search", "myhome/entries-simplesearch.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriesdraft", "entries", "Drafts", "myhome/entries-draft.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessearchtop", "entries", "Search", "myhome/entries-simplesearch.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entrieslocations", "entries", "Locations", "myhome/entries-locations.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("episodes", "entries", "Episodes", "myhome/episodes.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("timeperiods", "entries", "Periods", "myhome/timeperiods.log", false, "", null));
@@ -111,7 +111,7 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingssiteprops", "settings", "Site Settings", "myhome/settings-siteprops.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingssettings", "settings", "User Settings", "myhome/settings-accountuser.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingstemplatetab", "settings", "Look and Feel", "myhome/settings-template-main.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsprofile", "settings", "Your Profile", "myhome/settings-profile.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsprofile", "settings", "Your Profile", "myhome/settings-profile.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsfavesites", "settings", "Favorite Sites", "myhome/settings-favesites.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingsacctstatus", "settings", "License Status", "myhome/accountstatus.log", false, "", null));
 
@@ -129,16 +129,16 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("settingscustomskin", "settingsskins", "Custom Skins", "myhome/settings-skin-custom.log", false, "", null));
 
         //Tools
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsmain", "tools", "MAIN", "myhome/tools.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsimport", "tools", "IMPORT ENTRIES", "myhome/tools-import.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphone", "tools", "EMAIL/CAMPHONE", "myhome/tools-emailapi-emailaddresses.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsapi", "tools", "OPEN APIs", "myhome/tools-api.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsrss", "tools", "RSS XML FEEDS", "myhome/tools-rssfeeds.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsmobile", "tools", "MOBILE ACCESS", "myhome/tools-mobile.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsjavascript", "tools", "JAVASCRIPT", "myhome/tools-javascriptpublishing.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolssupercookie", "tools", "SUPERCOOKIE", "myhome/tools-supercookie.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolstaggame", "tools", "KEYWORD TAG GAME", "myhome/tools-taggame.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolslinkrot", "tools", "LINK ROT", "myhome/tools-linkrot.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsmain", "tools", "Main", "myhome/tools.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsimport", "tools", "Import Posts", "myhome/tools-import.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphone", "tools", "Email/Camphone", "myhome/tools-emailapi-emailaddresses.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsapi", "tools", "Open APIs", "myhome/tools-api.log", false, "", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsrss", "tools", "RSS Feeds", "myhome/tools-rssfeeds.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsmobile", "tools", "Mobile Access", "myhome/tools-mobile.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsjavascript", "tools", "JAVASCRIPT", "myhome/tools-javascriptpublishing.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolssupercookie", "tools", "SUPERCOOKIE", "myhome/tools-supercookie.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolstaggame", "tools", "KEYWORD TAG GAME", "myhome/tools-taggame.log", false, "", null));
+        //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolslinkrot", "tools", "LINK ROT", "myhome/tools-linkrot.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolssearchreplace", "tools", "SEARCH/REPLACE", "myhome/tools-searchreplace.log", false, "", null));
 
 
@@ -153,77 +153,77 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("toolsemailcamphonesettings", "toolsemailcamphone", "Settings", "myhome/tools-emailapi-settings.log", false, "", null));
 
         //Private Label
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmain", "pl", "MAIN", "pl/index.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmanage", "pl", "SETTINGS", "pl/plmanage.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plsitecontent", "pl", "SITE CONTENT", "pl/plsitecontent.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pltemplates", "pl", "TEMPLATES", "pl/pltemplates.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pleventtype", "pl", "LOG TYPES", "pl/pleventtype.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plpeers", "pl", "PEERS", "pl/plpeers.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmoderation", "pl", "MODERATION", "pl/plmoderationmain.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("placcounts", "pl", "ACCOUNTS", "pl/accounts.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plentries", "pl", "ENTRIES", "pl/entries.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plbandwidth", "pl", "BANDWIDTH", "pl/bandwidth.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plfiles", "pl", "FILES", "pl/files.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("ploffensivewords", "pl", "OFFENSIVE", "pl/offensivewordslist.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmain", "pl", "Main", "pl/index.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmanage", "pl", "Settings", "pl/plmanage.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plsitecontent", "pl", "Site Content", "pl/plsitecontent.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pltemplates", "pl", "Templates", "pl/pltemplates.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("pleventtype", "pl", "Log Types", "pl/pleventtype.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plpeers", "pl", "Peers", "pl/plpeers.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmoderation", "pl", "Moderation", "pl/plmoderationmain.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("placcounts", "pl", "Accounts", "pl/accounts.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plentries", "pl", "Entries", "pl/entries.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plbandwidth", "pl", "Bandwidth", "pl/bandwidth.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plfiles", "pl", "Files", "pl/files.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("ploffensivewords", "pl", "Offensive", "pl/offensivewordslist.log", false, "PLADMIN", new String[]{"plid"}));
 
 
         //Private Label Moderation
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmoderationmain", "plmoderation", "MAIN", "pl/entryapproval.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plentryapproval", "plmoderation", "ENTRIES REQUIRING APPROVAL", "pl/entryapproval.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plflaggedentries", "plmoderation", "ENTRIES FLAGGED FOR REVIEW", "pl/flaggedentries.log", false, "PLADMIN", new String[]{"plid"}));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plnewaccountapproval", "plmoderation", "NEW ACCOUNTS REQUIRING APPROVAL", "pl/newaccountapproval.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plmoderationmain", "plmoderation", "Main", "pl/entryapproval.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plentryapproval", "plmoderation", "Entries for Approval", "pl/entryapproval.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plflaggedentries", "plmoderation", "Entries for Review", "pl/flaggedentries.log", false, "PLADMIN", new String[]{"plid"}));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("plnewaccountapproval", "plmoderation", "Accounts for Approval", "pl/newaccountapproval.log", false, "PLADMIN", new String[]{"plid"}));
 
         //LOE
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loemain", "loe", "MAIN", "loe/index.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfig", "loe", "SYSTEM SETUP", "loe/systemproperties.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loeperformance", "loe", "PERFORMANCE", "loe/memory.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loeeventlog", "loe", "EVENT LOG", "loe/viewevents.jsp", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loescheduler", "loe", "SCHEDULER", "loe/schedulerStatus.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedefaults", "loe", "DEFAULTS", "loe/defaults.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetools", "loe", "TOOLS", "loe/tools.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loemain", "loe", "Main", "loe/index.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfig", "loe", "System Setup", "loe/systemproperties.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loeperformance", "loe", "Performance", "loe/memory.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loeeventlog", "loe", "Event Log", "loe/viewevents.jsp", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loescheduler", "loe", "Scheduler", "loe/schedulerStatus.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedefaults", "loe", "Defaults", "loe/defaults.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetools", "loe", "Tools", "loe/tools.log", false, "MASTERADMIN", null));
 
         //LOE Syetem Config
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfigprops", "loesystemconfig", "SYSTEM PROPS", "loe/systemproperties.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfigdb", "loesystemconfig", "DATABASE SETUP", "loe/systemdb.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemlicense", "loesystemconfig", "SERVER LICENSE", "loe/systemlicense.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loerobotstxt", "loesystemconfig", "ROBOTS.TXT", "loe/systemrobotstxt.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfigprops", "loesystemconfig", "System Props", "loe/systemproperties.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemconfigdb", "loesystemconfig", "Database", "loe/systemdb.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemlicense", "loesystemconfig", "Server License", "loe/systemlicense.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loerobotstxt", "loesystemconfig", "Robots.txt", "loe/systemrobotstxt.log", false, "MASTERADMIN", null));
 
         //LOE Defaults
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedefaultsmain", "loedefaults", "MAIN", "loe/defaults.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loelogtypes", "loedefaults", "LOG TYPES", "loe/logtypes-list-system.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetemplates", "loedefaults", "TEMPLATES", "loe/settings-template-main.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loegraphs", "loedefaults", "GRAPHS", "loe/graphs.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedefaultsmain", "loedefaults", "Main", "loe/defaults.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loelogtypes", "loedefaults", "Log Types", "loe/logtypes-list-system.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetemplates", "loedefaults", "Templates", "loe/settings-template-main.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loegraphs", "loedefaults", "Graphs", "loe/graphs.log", false, "MASTERADMIN", null));
 
         //LOE Tools
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetoolsmain", "loetools", "MAIN", "loe/tools.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loemastercookie", "loetools", "MASTERCOOKIE", "loe/mastercookie.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loeoffensive", "loetools", "OFFENSIVE", "loe/offensivewordslist.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loebugs", "loetools", "BUGS", "loe/bugs.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemmessage", "loetools", "SYSTEM MESSAGE", "loe/systemmessage.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loehowto", "loetools", "HOWTO", "loe/howto.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedaogenerator", "loetools", "DAO GENERATOR", "loe/daogenerator.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedeletedeadaccounts", "loetools", "DELETE DEAD ACCOUNTS", "loe/deletedeadaccounts.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetoolsmain", "loetools", "Main", "loe/tools.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loemastercookie", "loetools", "Mastercookie", "loe/mastercookie.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loeoffensive", "loetools", "Offensive", "loe/offensivewordslist.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loebugs", "loetools", "Bugs", "loe/bugs.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loesystemmessage", "loetools", "System Message", "loe/systemmessage.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loehowto", "loetools", "Howto", "loe/howto.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedaogenerator", "loetools", "DAO Generator", "loe/daogenerator.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedeletedeadaccounts", "loetools", "Delete Dead Accounts", "loe/deletedeadaccounts.log", false, "MASTERADMIN", null));
 
         //LOE Performance
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loememory", "loeperformance", "MEMORY", "loe/memory.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedbconnpool", "loeperformance", "DB CONNECTION POOL", "loe/dbconnpool.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loecache", "loeperformance", "CACHE", "loe/cache.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loecachehibernate", "loeperformance", "HIBERNATE CACHE", "loe/cache-hibernate.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loememory", "loeperformance", "Memory", "loe/memory.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loedbconnpool", "loeperformance", "DB Conn Pool", "loe/dbconnpool.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loecache", "loeperformance", "Cache", "loe/cache.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loecachehibernate", "loeperformance", "Hibernate Cache", "loe/cache-hibernate.log", false, "MASTERADMIN", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loepagenotfound", "loeperformance", "404s", "loe/pagenotfoundlist.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetrafficbypage", "loeperformance", "PAGE LOAD", "loe/trafficbypage.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loehtmlcache", "loeperformance", "HTMLCACHE", "loe/htmlcache.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetraffichitcache", "loeperformance", "TRAFFIC CACHE", "loe/traffichitcache.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loestorage", "loeperformance", "STORAGE", "loe/storage.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loebandwidthspeed", "loeperformance", "BANDWIDTH SPEED", "loe/bandwidthspeed.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetrafficbypage", "loeperformance", "Page Load", "loe/trafficbypage.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loehtmlcache", "loeperformance", "HtmlCache", "loe/htmlcache.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetraffichitcache", "loeperformance", "Traffic Cache", "loe/traffichitcache.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loestorage", "loeperformance", "Storage", "loe/storage.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loebandwidthspeed", "loeperformance", "Bandwidth", "loe/bandwidthspeed.log", false, "MASTERADMIN", null));
 
         //LOE LogTypes
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loelogtypessystem", "loelogtypes", "SYSTEM LOG TYPES", "loe/logtypes-list-system.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loelogtypesuser", "loelogtypes", "USER LOG TYPES", "loe/logtypes-list-user.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loelogtypesorphan", "loelogtypes", "ORPHANED LOG TYPES", "loe/logtypes-list-orphan.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loelogtypessystem", "loelogtypes", "System Log Types", "loe/logtypes-list-system.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loelogtypesuser", "loelogtypes", "User Log Types", "loe/logtypes-list-user.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loelogtypesorphan", "loelogtypes", "Orphaned Log Types", "loe/logtypes-list-orphan.log", false, "MASTERADMIN", null));
 
         //LOE Templates
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetemplatesmain", "loetemplates", "SYSTEM TEMPLATES", "loe/settings-template-main.log", false, "MASTERADMIN", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetemplatesuser", "loetemplates", "USER TEMPLATES", "loe/settings-template-user.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetemplatesmain", "loetemplates", "System Templates", "loe/settings-template-main.log", false, "MASTERADMIN", null));
+        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("loetemplatesuser", "loetemplates", "User Templates", "loe/settings-template-user.log", false, "MASTERADMIN", null));
 
     }
 

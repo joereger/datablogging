@@ -270,7 +270,7 @@ public class SiteTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new SiteTemplateTag[22];
+        tags = new SiteTemplateTag[23];
         tags[0] = new SiteTemplateTagEntryTitle();
         tags[1] = new SiteTemplateTagLogName();
         tags[2] = new SiteTemplateTagMainBody();
@@ -293,7 +293,7 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         tags[19] = new SiteTemplateTagGraphs();
         tags[20] = new SiteTemplateTagRssXmlLink();
         tags[21] = new SiteTemplateTagWapLink();
-
+        tags[22] = new SiteTemplateTagNavLogsAndPages();
 
     }
 

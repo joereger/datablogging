@@ -7,7 +7,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "Your Logs";
+pageProps.title = "Your Logs and Pages";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "logsyourlogs";
 pageProps.aclObjectName = "CUSTOMIZELOG";
@@ -36,10 +36,23 @@ String currentNavButtonName = "";
 mb.append("<br><br>");
 
 mb.append("<div class=\"row\">");
-mb.append("<div class=\"span4\">");
-mb.append("<a href='logs-newlog.log'><img src='images/add_16.gif' alt='' border='0'><font face=arial size=-1><b>Create a New Log</b></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href='logs-contentpage-edit.log'><img src='images/add_16.gif' alt='' border='0'><font face=arial size=-1><b>Create a New Static Content Page</b></a><br/>");
+mb.append("<div class=\"span6\">");
+
 reger.nestednav.NestedNavDisplayLayoutManager navMgrDisplay = new reger.nestednav.NestedNavDisplayLayoutManager();
 mb.append(navMgrDisplay.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request));
+mb.append("</div>");
+
+
+mb.append("<div class=\"span2\">");
+    mb.append("&nbsp;");
+mb.append("</div>");
+
+
+mb.append("<div class=\"span4\">");
+mb.append("<a class=\"btn btn-primary btn-small\" href='logs-newlog.log'><i class=\"icon-plus-sign icon-white\"></i> Create a New Log</a>");
+mb.append("<br/><br/>");
+mb.append("<a class=\"btn btn-primary btn-small\" href='logs-contentpage-edit.log'><i class=\"icon-plus-sign icon-white\"></i> Create a New Page</a><br/>");
+
 mb.append("</div>");
 mb.append("</div>");
 mb.append("<br><br><br><br><br>");

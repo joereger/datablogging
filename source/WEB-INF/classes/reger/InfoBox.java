@@ -12,45 +12,20 @@ public class InfoBox {
     public static String getRound(int boxType, String pathToAppRoot, String text){
         StringBuffer mb = new StringBuffer();
 
-        //mb.append("<br>");
-        String bgcolor = "ffffff";
-        String fontcolor = "000000";
-        String bordercolor = "999999";
-        if (boxType==BOXTYPEERROR){
-            bgcolor = "ff0000";
-            fontcolor = "ffffff";
-            bordercolor = "000000";
+
+        String type = "";
+        if (boxType==BOXTYPEINFO){
+            type = "alert-info";
+        } else if (boxType==BOXTYPEERROR){
+            type = "alert-error";
         } else if (boxType==BOXTYPECOMPLETE){
-            bgcolor = "00ff00";
-            fontcolor = "000000";
-            bordercolor = "999999";
-        } else {
-            bgcolor = "98a8d3";
-            fontcolor = "ffffff";
-            bordercolor = "666666";
+            type = "alert-success";
         }
 
-        String randomString = reger.core.RandomString.randomAlphabetic(6);
-
-        mb.append(reger.ui.RoundedCorners.start("infobox"+randomString, bgcolor, bordercolor, 100));
-
-		mb.append("<table cellspacing=0 cellpadding=1 border=0>");
-		mb.append("<tr>");
-		mb.append("<td valign=top>");
-		mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=1 border=0>");
-		mb.append("</td>");
-		mb.append("<td valign=top width=50 align=left>");
-		mb.append("<img src='"+pathToAppRoot+getIcon(boxType)+"' border=0 align=center>");
-		mb.append("</td>");
-		mb.append("<td valign=top>");
-		mb.append("<img src='"+pathToAppRoot+"images/clear.gif' width=10 border=0>");
-		mb.append("</td>");
-		mb.append("<td valign=top>");
-		mb.append("<font face=arial size=-1 color=#"+fontcolor+"><b>" + text + "</b></font>");
-		mb.append("</td></tr></table>");
-
-        mb.append(reger.ui.RoundedCorners.end("infobox"+randomString));
-        mb.append("<br>");
+		mb.append("    <div class=\"alert "+type+"\">\n" +
+                "    <a class=\"close\" data-dismiss=\"alert\">×</a>\n" +
+                "    <strong>"+text+"</strong>\n" +
+                "    </div>");
 
 
 
@@ -73,15 +48,5 @@ public class InfoBox {
         return getRound(boxType, pathToAppRoot, text);
     }
 
-    private static String getIcon(int boxType){
-        if (boxType==BOXTYPEINFO){
-            return "images/infobox-info-new.gif";
-        } else if (boxType==BOXTYPEERROR){
-            return "images/infobox-error-new.gif";
-        }  else if (boxType==BOXTYPECOMPLETE){
-            return "images/infobox-complete-new.gif";
-        }
-        return "images/infobox-info.gif";
-    }
 
 }

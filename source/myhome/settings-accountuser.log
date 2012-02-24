@@ -9,7 +9,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "Your User Settings";
+pageProps.title = "User Settings";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "settingssettings";
 pageProps.aclObjectName = "CUSTOMIZE";
@@ -102,22 +102,8 @@ if (au.getAccountuserid()!=-1){
 }
 
 
-
+mb.append("<br/><br/>");
 //Display the title
-mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
-mb.append("<tr>");
-mb.append("<td valign=top align=left bgcolor=#ffffff>");
-mb.append("<font face=arial size=+2 color=#666666>");
-mb.append(au.getFriendlyname());
-mb.append("</font>");
-mb.append("</td>");
-mb.append("</tr>");
-mb.append("<tr>");
-mb.append("<td valign=top align=left bgcolor=#cccccc>");
-mb.append("&nbsp;");
-mb.append("</td>");
-mb.append("</tr>");
-mb.append("</table>");
 
 //Output the main form only if this is your own account
 if (userSession.getAccountuser().getAccountuserid()==au.getAccountuserid()){
@@ -295,7 +281,7 @@ mb.append("<table cellpadding=3 cellspacing=1 width=100% border=0>");
 mb.append("<tr>");
 mb.append("<td valign=top align=center bgcolor=#ffffff colspan=2>");
 mb.append("<br>");
-mb.append("<input type=submit value='Save Changes'>");
+mb.append("<input class=\"btn btn-primary brn-large\" type=submit value='Save Changes'>");
 mb.append("</form>");
 //if (!au.isInAclgroup("SiteOwner", userSession.getAccount().getAccountid()) && !au.userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
 //    mb.append("<br><p align=right>");

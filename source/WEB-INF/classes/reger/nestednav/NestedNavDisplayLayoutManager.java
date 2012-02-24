@@ -75,8 +75,13 @@ public class NestedNavDisplayLayoutManager implements NestedNavDisplay{
 
                 mb.append("<div class=\"btn-group\">" + "\n");
                 if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPEMEGALOG){
-                    mb.append("<a class=\"btn btn-success\" href=\"entry.log?logid="+navItem.getThisNestedNavId()+"&action=add\">Post</a>" + "\n");
+                    mb.append("<a class=\"btn btn-success\" href=\"entry.log?logid="+navItem.getThisNestedNavId()+"&action=add\"><i class=\"icon-plus-sign icon-white\"></i> New Post</a>" + "\n");
+                } else if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPECONTENTPAGE) {
+                    mb.append("<a class=\"btn btn-success\" href=\"logs-contentpage-edit.log?contentpageid="+navItem.getThisNestedNavId()+"\"><i class=\"icon-edit icon-white\"></i> Edit Page</a>" + "\n");
+                } else {
+                    mb.append("<a class=\"btn btn-success\" href=\"logs-log-move.log?action=movestart&nestednavtype="+navItem.getThisNestedNavType()+"&nestednavid="+navItem.getThisNestedNavId()+"\"><i class=\"icon-move icon-white\"></i> Move</a>" + "\n");
                 }
+
                 mb.append("<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">" + "\n");
                 mb.append("<span class=\"caret\"></span>" + "\n");
                 mb.append("</a>" + "\n");
@@ -89,7 +94,7 @@ public class NestedNavDisplayLayoutManager implements NestedNavDisplay{
                     mb.append("<li><a href=\"logs-log-permissions.log?logid="+ navItem.getThisNestedNavId() +"\">Permissions</a></li>" + "\n");
                     mb.append("<li><a href=\"logs-log-delete.log?logid="+ navItem.getThisNestedNavId() +"\">Delete</a></li>" + "\n");
                 } else if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPECONTENTPAGE) {
-                    mb.append("<li><a href=\"logs-contentpage-edit.log?contentpageid="+ navItem.getThisNestedNavId() +"\">Edit Static Content Page</a></li>" + "\n");
+                    //mb.append("<li><a href=\"logs-contentpage-edit.log?contentpageid="+ navItem.getThisNestedNavId() +"\">Edit Static Content Page</a></li>" + "\n");
                     mb.append("<li><a href=\"logs-log-move.log?action=movestart&nestednavtype="+navItem.getThisNestedNavType()+"&nestednavid="+navItem.getThisNestedNavId()+"\">Move</a></li>" + "\n");
                     mb.append("<li><a href=\"logs-contentpage-delete.log?action=deletestart&contentpageid="+ navItem.getThisNestedNavId() +"\">Delete</a></li>" + "\n");
                 } else {

@@ -592,7 +592,7 @@ public class MegaChartHtmlRenderer {
                 mb.append("> Date Range:");
                 mb.append("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From:<br>");
                 mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-                mb.append("<select name=daterangefromyyyy "+dropdownstyle+">");
+                mb.append("<select class=\"span1\" name=daterangefromyyyy "+dropdownstyle+">");
                 for(int i=1900; i<=2010; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangefromyyyy()==i){
@@ -602,7 +602,7 @@ public class MegaChartHtmlRenderer {
                 }
                 mb.append("</select>");
                 mb.append(" / ");
-                mb.append("<select name=daterangefrommm "+dropdownstyle+">");
+                mb.append("<select class=\"span1\" name=daterangefrommm "+dropdownstyle+">");
                 for(int i=1; i<=12; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangefrommm()==i){
@@ -612,7 +612,7 @@ public class MegaChartHtmlRenderer {
                 }
                 mb.append("</select>");
                 mb.append(" / ");
-                mb.append("<select name=daterangefromdd "+dropdownstyle+">");
+                mb.append("<select class=\"span1\" name=daterangefromdd "+dropdownstyle+">");
                 for(int i=0; i<=31; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangefromdd()==i){
@@ -623,7 +623,7 @@ public class MegaChartHtmlRenderer {
                 mb.append("</select>");
                 mb.append("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:<br>");
                 mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-                mb.append("<select name=daterangetoyyyy "+dropdownstyle+">");
+                mb.append("<select class=\"span1\" name=daterangetoyyyy "+dropdownstyle+">");
                 for(int i=1900; i<=2010; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangetoyyyy()==i){
@@ -633,7 +633,7 @@ public class MegaChartHtmlRenderer {
                 }
                 mb.append("</select>");
                 mb.append(" / ");
-                mb.append("<select name=daterangetomm "+dropdownstyle+">");
+                mb.append("<select class=\"span1\" name=daterangetomm "+dropdownstyle+">");
                 for(int i=1; i<=12; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangetomm()==i){
@@ -643,7 +643,7 @@ public class MegaChartHtmlRenderer {
                 }
                 mb.append("</select>");
                 mb.append(" / ");
-                mb.append("<select name=daterangetodd "+dropdownstyle+">");
+                mb.append("<select class=\"span1\" name=daterangetodd "+dropdownstyle+">");
                 for(int i=1; i<=31; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangetodd()==i){

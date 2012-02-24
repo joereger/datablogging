@@ -3,7 +3,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection=pageProps.ADMINSITE;
-pageProps.title = "Create a New Log";
+pageProps.title = "";
 pageProps.isPasswordProtected = true;
 pageProps.navButtonName = "logsnewlog";
 pageProps.aclObjectName = "NEWLOG";

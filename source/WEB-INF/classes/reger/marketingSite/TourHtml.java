@@ -27,18 +27,18 @@ public class TourHtml {
         //-----------------------------------
         if (rstLogtype!=null && rstLogtype.length>0){
 
-            mb.append("<br><br>");
-            mb.append("<center>");
-            mb.append("<font face=arial size=+2 color=#666666>");
-            mb.append("<b>");
-            mb.append("Main log entry page:");
-            mb.append("</font>");
-            mb.append("</b>");
-            mb.append("<br>");
-            mb.append("<font face=arial size=-2 color=#666666>");
-            mb.append("This page is important because it is the page you'll use to create entries.  It shows you all of the fields that make up this log.  Note that the links on this page won't work.");
-            mb.append("</font>");
-            mb.append("</center>");
+//            mb.append("<br><br>");
+//            mb.append("<center>");
+//            mb.append("<font face=arial size=+2 color=#666666>");
+//            mb.append("<b>");
+//            mb.append("Main log entry page:");
+//            mb.append("</font>");
+//            mb.append("</b>");
+//            mb.append("<br>");
+//            mb.append("<font face=arial size=-2 color=#666666>");
+//            mb.append("This page is important because it is the page you'll use to create entries.  It shows you all of the fields that make up this log.  Note that the links on this page won't work.");
+//            mb.append("</font>");
+//            mb.append("</center>");
             mb.append("<br>");
 
             //Set things up for the preview

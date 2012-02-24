@@ -69,11 +69,34 @@ if (request.getParameter("msg")!=null) {
 	if (request.getParameter("msg").equals("entryedited")) {
 		//mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log entry has been saved!<br><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a>"));
 	    StringBuffer afterPost = new StringBuffer();
-	    afterPost.append("Your log entry has been saved!<br><!--<a href=index.log>Skip</a> | --><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a><br>");
-	    %><%//@ include file="entry-additionalinfo.log" %><%
+	    afterPost.append("Post saved! ");
+        afterPost.append("<div class=\"btn-group\">" + "\n");
+        afterPost.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+request.getParameter("eventid")+"&action=edit\"><i class=\"icon-edit icon-white\"></i> Edit</a>" + "\n");
+        afterPost.append("<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">" + "\n");
+        afterPost.append("<span class=\"caret\"></span>" + "\n");
+        afterPost.append("</a>" + "\n");
+        afterPost.append("<ul class=\"dropdown-menu\">" + "\n");
+        afterPost.append("<li><a href=\"../entry.log?eventid="+request.getParameter("eventid")+"\">View</a></li>" + "\n");
+        afterPost.append("<li><a href=\"entry-move.log?eventid="+request.getParameter("eventid")+"\">Move</a></li>" + "\n");
+        afterPost.append("<li><a href=\"entry-delete.log?eventid="+request.getParameter("eventid")+"\">Delete</a></li>" + "\n");
+        afterPost.append("</ul>" + "\n");
+        afterPost.append("</div>" + "\n");
 	    mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, afterPost.toString()));
     } else if (request.getParameter("msg").equals("entryediteddone")) {
-        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Your log entry has been saved!<br><a href=../entry-logid"+request.getParameter("logid")+"-eventid"+request.getParameter("eventid")+".log>View It</a> | <a href=entry.log?eventid="+request.getParameter("eventid")+"&logid="+request.getParameter("logid")+">Edit It</a><br>"));    
+        StringBuffer afterPost = new StringBuffer();
+	    afterPost.append("Post saved! ");
+        afterPost.append("<div class=\"btn-group\">" + "\n");
+        afterPost.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+request.getParameter("eventid")+"&action=edit\"><i class=\"icon-edit icon-white\"></i> Edit</a>" + "\n");
+        afterPost.append("<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">" + "\n");
+        afterPost.append("<span class=\"caret\"></span>" + "\n");
+        afterPost.append("</a>" + "\n");
+        afterPost.append("<ul class=\"dropdown-menu\">" + "\n");
+        afterPost.append("<li><a href=\"../entry.log?eventid="+request.getParameter("eventid")+"\">View</a></li>" + "\n");
+        afterPost.append("<li><a href=\"entry-move.log?eventid="+request.getParameter("eventid")+"\">Move</a></li>" + "\n");
+        afterPost.append("<li><a href=\"entry-delete.log?eventid="+request.getParameter("eventid")+"\">Delete</a></li>" + "\n");
+        afterPost.append("</ul>" + "\n");
+        afterPost.append("</div>" + "\n");
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, afterPost.toString()));
 	} else if (request.getParameter("msg").equals("newlog")) {
 		mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Log(s) added. You can add entries by chosing a log below."));
 	} else if (request.getParameter("msg").equals("eventdeleted")) {
@@ -106,15 +129,11 @@ if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl"
     mb.append("</div>"+"\n");
 
 
-//Put up the main table
-//reger.nestednav.NestedNavDisplayAdminHome navMgrDisplay = new reger.nestednav.NestedNavDisplayAdminHome();
-//mb.append(navMgrDisplay.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request));
-
 
 
 mb.append("<div class=\"row\">");
 mb.append("<div class=\"span4\">");
-mb.append("<h1>Logs</h1>");
+mb.append("<h1>Logs and Pages</h1>");
 reger.nestednav.NestedNavDisplayLayoutManager navMgrDisplay = new reger.nestednav.NestedNavDisplayLayoutManager();
 mb.append(navMgrDisplay.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request));
 mb.append("</div>");
@@ -139,11 +158,11 @@ mb.append("<div class=\"span4\">");
             //@todo Add /myhome/entries.log Agotext
 
 
-            mb.append("<td><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstLastentries[i][1]), 100)+"</strong></td>");
+            mb.append("<td><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstLastentries[i][1]), 100)+"</strong><br/><h6>"+reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstLastentries[i][2]))+"</h6></td>");
             mb.append("<td>");
 
             mb.append("<div class=\"btn-group\">" + "\n");
-            mb.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+rstLastentries[i][0]+"&action=edit\">Edit</a>" + "\n");
+            mb.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+rstLastentries[i][0]+"&action=edit\"><i class=\"icon-pencil icon-white\"></i> Edit</a>" + "\n");
             mb.append("<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">" + "\n");
             mb.append("<span class=\"caret\"></span>" + "\n");
             mb.append("</a>" + "\n");
@@ -186,11 +205,11 @@ mb.append("<div class=\"span4\">");
         for(int i=0; i<rstDrafts.length; i++){
             mb.append("<tr>");
 
-            mb.append("<td><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstDrafts[i][2]), 100)+"</strong></td>");
+            mb.append("<td><strong>"+reger.core.Util.truncateString(reger.core.Util.cleanForHtml(rstDrafts[i][2]), 100)+"</strong><br/><h6>"+reger.core.TimeUtils.agoText(reger.core.TimeUtils.dbstringtocalendar(rstDrafts[i][3]))+"</h6></td>");
 
             mb.append("<td>");
             mb.append("<div class=\"btn-group\">" + "\n");
-            mb.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+rstDrafts[i][0]+"&action=edit\">Edit</a>" + "\n");
+            mb.append("<a class=\"btn btn-success\" href=\"entry.log?eventid="+rstDrafts[i][0]+"&action=edit\"><i class=\"icon-pencil icon-white\"></i> Edit</a>" + "\n");
             mb.append("<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">" + "\n");
             mb.append("<span class=\"caret\"></span>" + "\n");
             mb.append("</a>" + "\n");
@@ -214,6 +233,339 @@ mb.append("<div class=\"span4\">");
     mb.append("<!-- End Draft List -->");
     //Draft entries end
 
+
+    //Start Alerts... there are many many sections to alerts
+    mb.append("<!-- Start Alerts -->");
+    boolean haveAlerts=false;
+    mb.append("<br/><br/>");
+    mb.append("<h1>Alerts</h1>");
+    mb.append("<hr>");
+
+    mb.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+    //Alerts... Messages
+    int totalmessages=0;
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstMessageCount= Db.RunSQL("SELECT count(*) FROM message, event, megalog WHERE message.isapproved='0' AND message.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"' AND event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY message.messagedate DESC");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstMessageCount!=null && rstMessageCount.length>0){
+        totalmessages=Integer.parseInt(rstMessageCount[0][0]);
+        if (totalmessages>0){
+            haveAlerts=true;
+            mb.append("<tr>");
+            mb.append("<td valign=middle>");
+            mb.append("<a href='traffic-messages.log'>");
+            mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+            mb.append(totalmessages);
+            mb.append(" ");
+            mb.append("Unapproved Message");
+            if (totalmessages>1){
+                mb.append("s");
+            }
+            mb.append("</a>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+    }
+
+    //Alerts... Trackbacks
+    if (userSession.getAccount().getIstrackbackon() && userSession.getPl().getIstrackbackenabled()){
+
+        int totaltrackback=0;
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstTbC= Db.RunSQL("SELECT count(*) FROM trackback, event WHERE trackback.isapproved='0' AND trackback.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" AND trackback.isoutbound='0' ORDER BY trackback.datetime DESC");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstTbC!=null && rstTbC.length>0){
+            totaltrackback=Integer.parseInt(rstTbC[0][0]);
+            if (totaltrackback>0){
+                haveAlerts=true;
+                mb.append("<tr>");
+                mb.append("<td valign=middle>");
+                mb.append("<a href='traffic-trackback.log'>");
+                mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+                mb.append(totaltrackback);
+                mb.append(" ");
+                mb.append("Unapproved Trackback");
+                if (totaltrackback>1){
+                    mb.append("s");
+                }
+                mb.append("</a>");
+                mb.append("</td>");
+                mb.append("</tr>");
+            }
+        }
+    }
+
+    //Alerts... Inbox
+    int totalinbox = 0;
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstInboxCount= Db.RunSQL("SELECT count(*) FROM friendmessage, friendmessagerecipient WHERE friendmessagerecipient.isread='0' AND friendmessagerecipient.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND friendmessagerecipient.friendmessageid=friendmessage.friendmessageid");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstInboxCount!=null && rstInboxCount.length>0){
+        totalinbox = Integer.parseInt(rstInboxCount[0][0]);
+        if (totalinbox>0){
+            haveAlerts=true;
+            mb.append("<tr>");
+            mb.append("<a href='people-inbox.log'>");
+            mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+            mb.append(totalinbox);
+            mb.append(" ");
+            mb.append("New Inbox Message");
+            if (totalinbox>1){
+                mb.append("s");
+            }
+            mb.append("</a>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+    }
+
+
+    //Alerts... Require Approval
+    int totalrequireapproval = 0;
+    if (userSession.getAccountuser().userCanDoAcl("APPROVEENTRIES", userSession.getAccount().getAccountid())){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstApprovals= reger.core.db.Db.RunSQL("SELECT count(*) FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isapproved='0' AND event.istemporary='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstApprovals!=null && rstApprovals.length>0){
+            totalrequireapproval = Integer.parseInt(rstApprovals[0][0]);
+            if (totalrequireapproval>0){
+                haveAlerts=true;
+                mb.append("<tr>");
+                mb.append("<a href='entries-requireapproval.log'>");
+                mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+                mb.append(totalrequireapproval);
+                mb.append(" ");
+                if (totalrequireapproval>1){
+                    mb.append("Entries Require Approval");
+                } else {
+                    mb.append("Entry Requires Approval");
+                }
+                mb.append("</a>");
+                mb.append("</td>");
+                mb.append("</tr>");
+            }
+        }
+    }
+
+
+    //Alerts... Declined by Moderator
+    int totaldeclines = 0;
+    //-----------------------------------
+    //-----------------------------------
+    String[][] rstDeclines= reger.core.db.Db.RunSQL("SELECT count(*) FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='0' AND event.istemporary='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
+    //-----------------------------------
+    //-----------------------------------
+    if (rstDeclines!=null && rstDeclines.length>0){
+        totaldeclines = Integer.parseInt(rstDeclines[0][0]);
+        if (totaldeclines>0){
+            haveAlerts=true;
+            mb.append("<tr>");
+            mb.append("<a href='entries-moderatordeclined.log'>");
+            mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+            mb.append(totaldeclines);
+            mb.append(" ");
+            mb.append("Declined by Moderator");
+            mb.append("</a>");
+            mb.append("</td>");
+            mb.append("</tr>");
+        }
+    }
+
+
+    //Alerts... Waiting for Moderator
+    int totalwaitingmoderator = 0;
+    if (userSession.getPl().getDoallpostsneedtobeapproved() || userSession.getPl().getDoesflaggedcontentneedtobeapproved()){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstApprovals= reger.core.db.Db.RunSQL("SELECT count(*) FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.istemporary='0' AND event.isdraft='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstApprovals!=null && rstApprovals.length>0){
+            totalwaitingmoderator = Integer.parseInt(rstApprovals[0][0]);
+            if (totalwaitingmoderator>0){
+                haveAlerts=true;
+                mb.append("<tr>");
+                mb.append("<a href='entries-awaitingmoderator.log'>");
+                mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+                mb.append(totalwaitingmoderator);
+                mb.append(" ");
+                mb.append("Waiting for Moderator");
+                mb.append("</a>");
+                mb.append("</td>");
+                mb.append("</tr>");
+            }
+        }
+    }
+
+
+    //Alerts... Make sure this account has enough free space
+    if (userSession.getAccount().getMaxspaceinbytes()>0 && userSession.getAccount().getSpaceused()>userSession.getAccount().getMaxspaceinbytes()){
+        haveAlerts=true;
+        mb.append("<tr>");
+        mb.append("<a href='accountstatus.log'>");
+        mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+        mb.append("Your account has exceeded its storage limit.  This means that you will not be able to add anything (text or images) to your site.");
+        mb.append("</a>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    } else if (userSession.getAccount().getMaxspaceinbytes()>0 && userSession.getAccount().getSpaceused()>(userSession.getAccount().getMaxspaceinbytes()*.9)){
+        haveAlerts=true;
+        mb.append("<tr>");
+        mb.append("<a href='accountstatus.log'>");
+        mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+        mb.append("Your account is within 10% of its storage limit.  This means that soon you will not be able to add anything (text or images) to your site.");
+        mb.append("</a>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+
+    //Alerts... Make sure this account has enough free hits to be serving pages
+    if (userSession.getAccount().getMaxbandwidth()>0 && userSession.getAccount().getBandwidthused()>userSession.getAccount().getMaxbandwidth()){
+        haveAlerts=true;
+        mb.append("<tr>");
+        mb.append("<a href='accountstatus.log'>");
+        mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+        mb.append("Your account has exceeded its bandwidth limit.  This means that for the remainder of this month visitors will not be able to see your site.");
+        mb.append("</a>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    } else if (userSession.getAccount().getMaxbandwidth()>0 && userSession.getAccount().getBandwidthused()>(userSession.getAccount().getMaxbandwidth()*.9)){
+        haveAlerts=true;
+        mb.append("<tr>");
+        mb.append("<a href='accountstatus.log'>");
+        mb.append("<i class=\"icon-exclamation-sign\"></i> ");
+        mb.append("Your account is within 10% of its bandwidth limit.  If the bandwidth limit is exceeded then for the remainder of this month visitors will not be able to see your site.");
+        mb.append("</a>");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+
+
+    //No Alerts
+    if (!haveAlerts){
+        mb.append("<tr>");
+        mb.append("<td valign=middle>");
+        mb.append("None.");
+        mb.append("</td>");
+        mb.append("</tr>");
+    }
+
+    mb.append("</table>");
+    mb.append("<!-- End Alerts -->");
+
+
+
+
+
+    //Other Sites Start
+    mb.append("<!-- Other Site Start -->");
+    mb.append("<br/><br/>");
+    mb.append("<h1>Sites</h1>");
+    mb.append("<hr>");
+
+    HashMap accts = userSession.getAccountuser().getAccountsUserHasAccessTo();
+    if (accts!=null){
+
+        java.util.Iterator keyValuePairs = accts.entrySet().iterator();
+        for (int i = 0; i < accts.size(); i++){
+            java.util.Map.Entry mapentry = (java.util.Map.Entry) keyValuePairs.next();
+            Integer accountid = (Integer)mapentry.getKey();
+            String sitename = (String)mapentry.getValue();
+
+
+            reger.Account acct = userSession.getAccount();
+            if (accountid.intValue()!=userSession.getAccount().getAccountid()){
+                Debug.debug(5, "", "/myhome/index.log - About to call on cache for accountid=" + accountid.intValue());
+                acct = reger.cache.AccountCache.get(accountid.intValue());
+                Debug.debug(5, "", "/myhome/index.log - Done calling on cache for accountid=" + accountid.intValue());
+            }
+
+            mb.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/'>");
+            mb.append("<b>");
+            mb.append(acct.getHomepagetitle());
+            mb.append("</b>");
+            mb.append("</a>");
+            mb.append("<br/>");
+
+        }
+
+    }
+    mb.append("<a href='sites.log'>");
+    mb.append("<b>Manage Sites</b>");
+    mb.append("</a>");
+
+
+
+    mb.append("<!-- Other Site End -->");
+    //Other Sites End
+
+
+
+
+
+    //Account Usage start
+    mb.append("<!-- Start Account Usage -->");
+    mb.append("<br/><br/>");
+    mb.append("<h1>Account Usage</h1>");
+    mb.append("<hr>");
+
+    mb.append("<table width=100% cellpadding=0 cellspacing=1 border=0>");
+    mb.append("<tr>");
+    mb.append("<td valign=top align=left >");
+    mb.append("Bandwidth Usage This Month");
+    mb.append("</td>");
+
+    mb.append("</tr>");
+    mb.append("<tr>");
+
+
+    NumberFormat formatter = new DecimalFormat("####.##");
+
+    mb.append("<td valign=top align=left>");
+    if (userSession.getAccount().getMaxbandwidth()>0){
+        mb.append(reger.core.Util.getHtmlBarChart(userSession.getAccount().getBandwidthused(), userSession.getAccount().getMaxbandwidth()));
+        mb.append(formatter.format((double)userSession.getAccount().getBandwidthused()/(double)1000000000)+ "Gb / "+((double)userSession.getAccount().getMaxbandwidth()/(double)1000000000)+"Gb Used<br>(" + (100-(long)(((double)userSession.getAccount().getBandwidthused()/(double)userSession.getAccount().getMaxbandwidth())*(double)100)) + "% Remaining)");
+    } else {
+        mb.append(formatter.format((double)userSession.getAccount().getBandwidthused()/(double)1000000000)+ "Gb");
+    }
+    mb.append("</td>");
+
+
+    mb.append("</tr>");
+    mb.append("<tr>");
+
+    mb.append("<td valign=top align=left>");
+    mb.append("Storage Space");
+    mb.append("</td>");
+
+    mb.append("</tr>");
+    mb.append("<tr>");
+
+    mb.append("<td valign=top align=left  bgcolor=#ffffff>");
+    if (userSession.getAccount().getMaxspaceinbytes()>0){
+        mb.append(reger.core.Util.getHtmlBarChart(userSession.getAccount().getSpaceused(), userSession.getAccount().getMaxspaceinbytes()));
+        mb.append(formatter.format((double)userSession.getAccount().getSpaceused()/(double)1000000)+ "Mb / "+((double)userSession.getAccount().getMaxspaceinbytes()/(double)1000000)+"Mb Used<br>(" + (100-(int)(((double)userSession.getAccount().getSpaceused()/(double)userSession.getAccount().getMaxspaceinbytes())*100)) + "% Free)");
+    } else {
+        mb.append(formatter.format((double)userSession.getAccount().getSpaceused()/(double)1000000)+ "Mb");
+    }
+    mb.append("</td>");
+
+
+    mb.append("</tr>");
+
+    mb.append("</table>");
+
+
+    mb.append("<!-- End Account Usage -->");
+    //Account Usage end
 
 
 
@@ -258,576 +610,129 @@ mb.append("<br>");
 //    sc.append("<center>");
 //    sc.append("<a href='accountstatus.log'>");
 //    sc.append("<img src='images/pro-yel.gif' alt='This is a Pro account.' border=0>");
-//    sc.append("</a>");
-//    sc.append("<br>");
-//    sc.append("<a href='accountstatus.log'>");
-//    sc.append("<font face=arial size=-2><strong>Account Status</strong></font>");
-//    sc.append("</a>");
-//    sc.append("</center>");
+//    mb.append("</a>");
+//    mb.append("<br>");
+//    mb.append("<a href='accountstatus.log'>");
+//    mb.append("<font face=arial size=-2><strong>Account Status</strong></font>");
+//    mb.append("</a>");
+//    mb.append("</center>");
 //} else {
-//    sc.append("<center><img src='images/free-yel.gif' alt='This is a Free account.' border=0>");
-//    sc.append("<br>");
-//    sc.append("<font face=arial size=-2>You're certainly welcome to use the site for free, but you're missing out on all the great Pro features.  And upgrading removes all banner ads from your site.</font>");
-//    sc.append("<br>");
-//    sc.append("<a href='accountstatus.log'>");
-//    sc.append("<font face=arial size=-2><strong>See what you're missing.</strong></font>");
-//    sc.append("</a>");
-//    sc.append("</center>");
+//    mb.append("<center><img src='images/free-yel.gif' alt='This is a Free account.' border=0>");
+//    mb.append("<br>");
+//    mb.append("<font face=arial size=-2>You're certainly welcome to use the site for free, but you're missing out on all the great Pro features.  And upgrading removes all banner ads from your site.</font>");
+//    mb.append("<br>");
+//    mb.append("<a href='accountstatus.log'>");
+//    mb.append("<font face=arial size=-2><strong>See what you're missing.</strong></font>");
+//    mb.append("</a>");
+//    mb.append("</center>");
 //}
-//sc.append("</td>");
-//sc.append("</tr>");
+//mb.append("</td>");
+//mb.append("</tr>");
 //
-//sc.append("</table>");
-//sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-//sc.append("<!-- End account stuff -->");
+//mb.append("</table>");
+//mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+//mb.append("<!-- End account stuff -->");
 
 
 
 
-sc.append("<!-- Start Alerts -->");
-boolean haveAlerts=false;
-sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
-sc.append(reger.ui.BubbleBox.start("Alerts", pageProps.pathToAppRoot));
-
-sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
-//Messages
-int totalmessages=0;
-//-----------------------------------
-//-----------------------------------
-String[][] rstMessageCount= Db.RunSQL("SELECT count(*) FROM message, event, megalog WHERE message.isapproved='0' AND message.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"' AND event.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+" ORDER BY message.messagedate DESC");
-//-----------------------------------
-//-----------------------------------
-if (rstMessageCount!=null && rstMessageCount.length>0){
-    totalmessages=Integer.parseInt(rstMessageCount[0][0]);
-    if (totalmessages>0){
-        haveAlerts=true;
-        sc.append("<tr>");
-        sc.append("<td valign=middle width=25>");
-        sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
-        sc.append("</td>");
-        sc.append("<td valign=middle>");
-        sc.append("<a href='traffic-messages.log'>");
-        sc.append("<font face=arial size=-1>");
-        sc.append("<b>");
-        sc.append(totalmessages);
-        sc.append(" ");
-        sc.append("Unapproved Message");
-        if (totalmessages>1){
-            sc.append("s");
-        }
-        sc.append("</b>");
-        sc.append("</font>");
-        sc.append("</a>");
-        sc.append("</td>");
-        sc.append("</tr>");
-    }
-}
 
 
-//Trackbacks
-if (userSession.getAccount().getIstrackbackon() && userSession.getPl().getIstrackbackenabled()){
-
-    int totaltrackback=0;
-    //-----------------------------------
-    //-----------------------------------
-    String[][] rstTbC= Db.RunSQL("SELECT count(*) FROM trackback, event WHERE trackback.isapproved='0' AND trackback.eventid=event.eventid AND event.accountid='"+userSession.getAccount().getAccountid()+"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" AND trackback.isoutbound='0' ORDER BY trackback.datetime DESC");
-    //-----------------------------------
-    //-----------------------------------
-    if (rstTbC!=null && rstTbC.length>0){
-        totaltrackback=Integer.parseInt(rstTbC[0][0]);
-        if (totaltrackback>0){
-            haveAlerts=true;
-            sc.append("<tr>");
-            sc.append("<td valign=middle width=25>");
-            sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
-            sc.append("</td>");
-            sc.append("<td valign=middle>");
-            sc.append("<a href='traffic-trackback.log'>");
-            sc.append("<font face=arial size=-1>");
-            sc.append("<b>");
-            sc.append(totaltrackback);
-            sc.append(" ");
-            sc.append("Unapproved Trackback");
-            if (totaltrackback>1){
-                sc.append("s");
-            }
-            sc.append("</b>");
-            sc.append("</font>");
-            sc.append("</a>");
-            sc.append("</td>");
-            sc.append("</tr>");
-        }
-    }
-}
-
-//Inbox
-int totalinbox = 0;
-//-----------------------------------
-//-----------------------------------
-String[][] rstInboxCount= Db.RunSQL("SELECT count(*) FROM friendmessage, friendmessagerecipient WHERE friendmessagerecipient.isread='0' AND friendmessagerecipient.accountuserid='"+userSession.getAccountuser().getAccountuserid()+"' AND friendmessagerecipient.friendmessageid=friendmessage.friendmessageid");
-//-----------------------------------
-//-----------------------------------
-if (rstInboxCount!=null && rstInboxCount.length>0){
-    totalinbox = Integer.parseInt(rstInboxCount[0][0]);
-    if (totalinbox>0){
-        haveAlerts=true;
-        sc.append("<tr>");
-        sc.append("<td valign=middle width=25>");
-        sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
-        sc.append("</td>");
-        sc.append("<td valign=middle>");
-        sc.append("<a href='people-inbox.log'>");
-        sc.append("<font face=arial size=-1>");
-        sc.append("<b>");
-        sc.append(totalinbox);
-        sc.append(" ");
-        sc.append("New Inbox Message");
-        if (totalinbox>1){
-            sc.append("s");
-        }
-        sc.append("</b>");
-        sc.append("</font>");
-        sc.append("</a>");
-        sc.append("</td>");
-        sc.append("</tr>");
-    }
-}
 
 
-//Require Approval
-int totalrequireapproval = 0;
-if (userSession.getAccountuser().userCanDoAcl("APPROVEENTRIES", userSession.getAccount().getAccountid())){
-    //-----------------------------------
-    //-----------------------------------
-    String[][] rstApprovals= reger.core.db.Db.RunSQL("SELECT count(*) FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isapproved='0' AND event.istemporary='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
-    //-----------------------------------
-    //-----------------------------------
-    if (rstApprovals!=null && rstApprovals.length>0){
-        totalrequireapproval = Integer.parseInt(rstApprovals[0][0]);
-        if (totalrequireapproval>0){
-            haveAlerts=true;
-            sc.append("<tr>");
-            sc.append("<td valign=middle width=25>");
-            sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
-            sc.append("</td>");
-            sc.append("<td valign=middle>");
-            sc.append("<a href='entries-requireapproval.log'>");
-            sc.append("<font face=arial size=-1>");
-            sc.append("<b>");
-            sc.append(totalrequireapproval);
-            sc.append(" ");
-            if (totalrequireapproval>1){
-                sc.append("Entries Require Approval");
-            } else {
-                sc.append("Entry Requires Approval");
-            }
-            sc.append("</b>");
-            sc.append("</font>");
-            sc.append("</a>");
-            sc.append("</td>");
-            sc.append("</tr>");
-        }
-    }
-}
 
-
-//Declined by Moderator
-int totaldeclines = 0;
-//-----------------------------------
-//-----------------------------------
-String[][] rstDeclines= reger.core.db.Db.RunSQL("SELECT count(*) FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.isdraft='0' AND event.istemporary='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='0' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
-//-----------------------------------
-//-----------------------------------
-if (rstDeclines!=null && rstDeclines.length>0){
-    totaldeclines = Integer.parseInt(rstDeclines[0][0]);
-    if (totaldeclines>0){
-        haveAlerts=true;
-        sc.append("<tr>");
-        sc.append("<td valign=middle width=25>");
-        sc.append("<img src='../images/yellow-alert.gif' width=25 height=25>");
-        sc.append("</td>");
-        sc.append("<td valign=middle>");
-        sc.append("<a href='entries-moderatordeclined.log'>");
-        sc.append("<font face=arial size=-1>");
-        sc.append("<b>");
-        sc.append(totaldeclines);
-        sc.append(" ");
-        sc.append("Declined by Moderator");
-        sc.append("</b>");
-        sc.append("</font>");
-        sc.append("</a>");
-        sc.append("</td>");
-        sc.append("</tr>");
-    }
-}
-
-
-//Waiting for Moderator
-int totalwaitingmoderator = 0;
-if (userSession.getPl().getDoallpostsneedtobeapproved() || userSession.getPl().getDoesflaggedcontentneedtobeapproved()){
-    //-----------------------------------
-    //-----------------------------------
-    String[][] rstApprovals= reger.core.db.Db.RunSQL("SELECT count(*) FROM event, megalog, accountuser WHERE event.accountuserid=accountuser.accountuserid AND event.accountid='"+ userSession.getAccount().getAccountid() +"' AND event.istemporary='0' AND event.isdraft='0' AND event.ismoderatorapproved='0' AND event.requiresmoderatorapproval='1' AND megalog.logid=event.logid AND "+userSession.getAccountuser().LogsUserCanAdministerQueryend(userSession.getAccount().getAccountid())+"");
-    //-----------------------------------
-    //-----------------------------------
-    if (rstApprovals!=null && rstApprovals.length>0){
-        totalwaitingmoderator = Integer.parseInt(rstApprovals[0][0]);
-        if (totalwaitingmoderator>0){
-            haveAlerts=true;
-            sc.append("<tr>");
-            sc.append("<td valign=middle width=25>");
-            sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
-            sc.append("</td>");
-            sc.append("<td valign=middle>");
-            sc.append("<a href='entries-awaitingmoderator.log'>");
-            sc.append("<font face=arial size=-1>");
-            sc.append("<b>");
-            sc.append(totalwaitingmoderator);
-            sc.append(" ");
-            sc.append("Waiting for Moderator");
-            sc.append("</b>");
-            sc.append("</font>");
-            sc.append("</a>");
-            sc.append("</td>");
-            sc.append("</tr>");
-        }
-    }
-}
-
-
-//Make sure this account has enough free space
-if (userSession.getAccount().getMaxspaceinbytes()>0 && userSession.getAccount().getSpaceused()>userSession.getAccount().getMaxspaceinbytes()){
-    haveAlerts=true;
-    sc.append("<tr>");
-    sc.append("<td valign=middle width=25>");
-    sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
-    sc.append("</td>");
-    sc.append("<td valign=middle>");
-    sc.append("<a href='accountstatus.log'>");
-    sc.append("<font face=arial size=-2>");
-    sc.append("<b>");
-    sc.append("Your account has exceeded its storage limit.  This means that you will not be able to add anything (text or images) to your site.");
-    sc.append("</b>");
-    sc.append("</font>");
-    sc.append("</a>");
-    sc.append("</td>");
-    sc.append("</tr>");
-} else if (userSession.getAccount().getMaxspaceinbytes()>0 && userSession.getAccount().getSpaceused()>(userSession.getAccount().getMaxspaceinbytes()*.9)){
-    haveAlerts=true;
-    sc.append("<tr>");
-    sc.append("<td valign=middle width=25>");
-    sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
-    sc.append("</td>");
-    sc.append("<td valign=middle>");
-    sc.append("<a href='accountstatus.log'>");
-    sc.append("<font face=arial size=-2>");
-    sc.append("<b>");
-    sc.append("Your account is within 10% of its storage limit.  This means that soon you will not be able to add anything (text or images) to your site.");
-    sc.append("</b>");
-    sc.append("</font>");
-    sc.append("</a>");
-    sc.append("</td>");
-    sc.append("</tr>");
-}
-
-//Make sure this account has enough free hits to be serving pages
-if (userSession.getAccount().getMaxbandwidth()>0 && userSession.getAccount().getBandwidthused()>userSession.getAccount().getMaxbandwidth()){
-    haveAlerts=true;
-    sc.append("<tr>");
-    sc.append("<td valign=middle width=25>");
-    sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
-    sc.append("</td>");
-    sc.append("<td valign=middle>");
-    sc.append("<a href='accountstatus.log'>");
-    sc.append("<font face=arial size=-2>");
-    sc.append("<b>");
-    sc.append("Your account has exceeded its bandwidth limit.  This means that for the remainder of this month visitors will not be able to see your site.");
-    sc.append("</b>");
-    sc.append("</font>");
-    sc.append("</a>");
-    sc.append("</td>");
-    sc.append("</tr>");
-} else if (userSession.getAccount().getMaxbandwidth()>0 && userSession.getAccount().getBandwidthused()>(userSession.getAccount().getMaxbandwidth()*.9)){
-    haveAlerts=true;
-    sc.append("<tr>");
-    sc.append("<td valign=middle width=25>");
-    sc.append("<img src='../images/info-icon.gif' width=25 height=25>");
-    sc.append("</td>");
-    sc.append("<td valign=middle>");
-    sc.append("<a href='accountstatus.log'>");
-    sc.append("<font face=arial size=-2>");
-    sc.append("<b>");
-    sc.append("Your account is within 10% of its bandwidth limit.  If the bandwidth limit is exceeded then for the remainder of this month visitors will not be able to see your site.");
-    sc.append("</b>");
-    sc.append("</font>");
-    sc.append("</a>");
-    sc.append("</td>");
-    sc.append("</tr>");
-}
-
-
-//No Alerts
-if (!haveAlerts){
-    sc.append("<tr>");
-    sc.append("<td valign=middle colspan=2>");
-    sc.append("<font face=arial size=-2>");
-    sc.append("<b>");
-    sc.append("None.");
-    sc.append("</b>");
-    sc.append("</font>");
-    sc.append("</td>");
-    sc.append("</tr>");
-}
-
-sc.append("</table>");
-
-sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-sc.append("<!-- End Alerts -->");
-
-//sc.append("<!-- Start URL's -->");
-//sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
-//sc.append(reger.ui.BubbleBox.start("Your URLs", pageProps.pathToAppRoot));
-//sc.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
-////sc.append("<tr><td bgcolor=#cccccc><font face=arial size=+1 color=#000000><strong>Your URLs</strong></font></td></tr>");
-//sc.append("<tr>");
-//sc.append("<td>");
-//sc.append("<font face=arial size=-1 color=#000000><b>Make log entries:");
-//sc.append("</b></font><br>");
-//sc.append("<font face=arial size=-2 color=#000000><a href='"+userSession.getAccount().getSiteRootUrl(userSession) +"/myhome/'>"+userSession.getAccount().getSiteRootUrl(userSession) +"/myhome/</a></font><br>");
-//sc.append("</td>");
-//sc.append("</tr>");
+//mb.append("<!-- Start URL's -->");
+//mb.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+//mb.append(reger.ui.BubbleBox.start("Your URLs", pageProps.pathToAppRoot));
+//mb.append("<table width=100% cellpadding=3 cellspacing=1 border=0>");
+////mb.append("<tr><td bgcolor=#cccccc><font face=arial size=+1 color=#000000><strong>Your URLs</strong></font></td></tr>");
+//mb.append("<tr>");
+//mb.append("<td>");
+//mb.append("<font face=arial size=-1 color=#000000><b>Make log entries:");
+//mb.append("</b></font><br>");
+//mb.append("<font face=arial size=-2 color=#000000><a href='"+userSession.getAccount().getSiteRootUrl(userSession) +"/myhome/'>"+userSession.getAccount().getSiteRootUrl(userSession) +"/myhome/</a></font><br>");
+//mb.append("</td>");
+//mb.append("</tr>");
 //
-//sc.append("<tr>");
-//sc.append("<td>");
-//sc.append("<font face=arial size=-1 color=#000000><b>Your log entries are published on your public site:</b></font><br><font face=arial size=-2 color=#000000><a href='"+userSession.getAccount().getSiteRootUrl(userSession) +"/' target=new>"+ userSession.getAccount().getSiteRootUrl(userSession) +"/</a></font><br>");
-//sc.append("</td></tr>");
+//mb.append("<tr>");
+//mb.append("<td>");
+//mb.append("<font face=arial size=-1 color=#000000><b>Your log entries are published on your public site:</b></font><br><font face=arial size=-2 color=#000000><a href='"+userSession.getAccount().getSiteRootUrl(userSession) +"/' target=new>"+ userSession.getAccount().getSiteRootUrl(userSession) +"/</a></font><br>");
+//mb.append("</td></tr>");
 //
 //
-//sc.append("</table>");
-//sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-//sc.append("<!-- End URL's -->");
-
-
-
-//Other Sites Start
-sc.append("<!-- Other Site Start -->");
-sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
-sc.append(reger.ui.BubbleBox.start("Sites", pageProps.pathToAppRoot));
-
-
-
-//if (userSession.getAccount().getAccountid()==userSession.getAccountuser().getAccountid()){
-//    sc.append("<font face=arial size=+2 color=#cccccc>");
-//    sc.append("This is your home site.");
-//    sc.append("</font>");
-//}
-
-HashMap accts = userSession.getAccountuser().getAccountsUserHasAccessTo();
-if (accts!=null){
-    sc.append("<table>");
-    java.util.Iterator keyValuePairs = accts.entrySet().iterator();
-    for (int i = 0; i < accts.size(); i++){
-        java.util.Map.Entry mapentry = (java.util.Map.Entry) keyValuePairs.next();
-        Integer accountid = (Integer)mapentry.getKey();
-        String sitename = (String)mapentry.getValue();
-
-
-        reger.Account acct = userSession.getAccount();
-        if (accountid.intValue()!=userSession.getAccount().getAccountid()){
-            Debug.debug(5, "", "/myhome/index.log - About to call on cache for accountid=" + accountid.intValue());
-            acct = reger.cache.AccountCache.get(accountid.intValue());
-            Debug.debug(5, "", "/myhome/index.log - Done calling on cache for accountid=" + accountid.intValue());
-        }
-
-        //reger.Account acct = new reger.Account(accountid.intValue());
-        //sc.append("<a href='"+ userSession.getAccount().getSiteRootUrl(userSession) + "/'>");
-        sc.append("<tr>");
-        sc.append("<td valign=top>");
-        if (accountid.intValue()==userSession.getAccount().getAccountid()){
-            sc.append("<img src=\"../images/icon-right-16x16.gif\" alt=\"The site you are on right now.\" border=0>");
-        }
-        sc.append("</td>");
-        sc.append("<td valign=top>");
-        sc.append("<font face=arial size=-1>");
-        sc.append("<b>");
-        sc.append(acct.getHomepagetitle());
-        sc.append("</b>");
-        sc.append("</font>");
-        //sc.append("</a>");
-        sc.append("</td>");
-//        sc.append("</tr>");
-//        sc.append("<tr>");
-//        sc.append("<td valign=top>");
-//        sc.append("</td>");
-        sc.append("<td valign=top nowrap>");
-        sc.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/'>");
-        sc.append("<font face=arial size=-2>");
-        sc.append("<img src=\"../images/icon-public.gif\" alt=\"View this site.\" border=0>");
-        //sc.append("View");
-        sc.append("</font>");
-        sc.append("</a>");
-        if (userSession.getAccountuser().userCanDoAcl("ADMINHOME", accountid.intValue())){
-            //sc.append("&nbsp;&nbsp;|&nbsp;&nbsp;");
-            sc.append(" ");
-            sc.append("<a href='"+ acct.getSiteRootUrl(userSession) + "/myhome/'>");
-            sc.append("<font face=arial size=-2>");
-            sc.append("<img src=\"images/icon-edit.gif\" alt=\"Go to Admin.\" border=0>");
-            //sc.append("Admin");
-            sc.append("</font>");
-            sc.append("</a>");
-        }
-        sc.append("</td>");
-        sc.append("</tr>");
-    }
-    sc.append("</table>");
-}
-sc.append("<br>");
-sc.append("<center>");
-sc.append("<a href='sites.log'>");
-sc.append("<font face=arial size=-1>");
-sc.append("<b>Manage Sites</b>");
-sc.append("</font>");
-sc.append("</a>");
-sc.append("</center>");
-
-sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-sc.append("<!-- Other Site End -->");
-//Other Sites End
+//mb.append("</table>");
+//mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+//mb.append("<!-- End URL's -->");
 
 
 
 
 
 
-//Search Site Start
-sc.append("<!-- Search Site Start -->");
-sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
-sc.append(reger.ui.BubbleBox.start("Search Your Site", pageProps.pathToAppRoot));
-//sc.append("<form action=entries.log method=post>");
-//sc.append("<input type=hidden name=action value=search>");
-//sc.append("<br>");
-//sc.append("<input type=text name=searchterms value=\"\">");
-//sc.append("<br>");
-//sc.append("<input type=submit value='Search'>");
-//sc.append("<br>");
-//sc.append("<font face=arial size=-2>");
-//sc.append("<a href='entries.log'>");
-//sc.append("Advanced Search / Search Other Sites");
-//sc.append("</a>");
-//sc.append("</font>");
-//sc.append("</form>");
-sc.append("<a href='entries-simplesearch.log'>");
-sc.append("<font face=arial size=-2>");
-sc.append("Click Here");
-sc.append("</font>");
-sc.append("</a>");
-sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-sc.append("<!-- Search Site End -->");
-//Search Site End
 
 
 
 
-//Account Usage start
-sc.append("<!-- Start Account Usage -->");
-sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
-String helpAcctUsage = Help.tip("Account Usage", "This section shows you how much bandwidth and storage space your web log is using.<br><br>Every time somebody visits your site they use a certain (small) amount of bandwidth.  Over the month this amount is added together.  If you exceed your bandwidth limit your site goes offline until the next month period begins.  For most users the default bandwidth is more than enough for an active site.<br><br>Storage space includes the text in your entries, the text in approved messages and files you've uploaded to your site.", false, pageProps.pathToAppRoot);
-sc.append(reger.ui.BubbleBox.start("Account Usage" + helpAcctUsage, pageProps.pathToAppRoot));
-sc.append("<table width=100% cellpadding=0 cellspacing=1 border=0>");
-//sc.append("<tr><td bgcolor=#666666 colspan=3><font face=arial size=+1 color=#ffffff><strong>Account Usage</strong></font></td></tr>");
-
-sc.append("<tr>");
-
-sc.append("<td valign=top align=left  bgcolor=#e6e6e6>");
-sc.append("<font face=arial size=-2 color=#666666>");
-sc.append("Bandwidth Usage This Month *");
-sc.append("</font>");
-sc.append("</td>");
-
-sc.append("</tr>");
-sc.append("<tr>");
-
-
-NumberFormat formatter = new DecimalFormat("####.##");
-
-sc.append("<td valign=top align=left bgcolor=#ffffff>");
-sc.append("<font face=arial size=-2>");
-if (userSession.getAccount().getMaxbandwidth()>0){
-    sc.append(reger.core.Util.getHtmlBarChart(userSession.getAccount().getBandwidthused(), userSession.getAccount().getMaxbandwidth()));
-    sc.append(formatter.format((double)userSession.getAccount().getBandwidthused()/(double)1000000000)+ "Gb / "+((double)userSession.getAccount().getMaxbandwidth()/(double)1000000000)+"Gb Used<br>(" + (100-(long)(((double)userSession.getAccount().getBandwidthused()/(double)userSession.getAccount().getMaxbandwidth())*(double)100)) + "% Remaining)");
-} else {
-    sc.append(formatter.format((double)userSession.getAccount().getBandwidthused()/(double)1000000000)+ "Gb");
-}
-sc.append("</font>");
-sc.append("</td>");
-
-
-sc.append("</tr>");
-sc.append("<tr>");
-
-sc.append("<td valign=top align=left bgcolor=#e6e6e6>");
-sc.append("<font face=arial size=-2 color=#666666>");
-sc.append("Storage Space");
-sc.append("</font>");
-sc.append("</td>");
-
-sc.append("</tr>");
-sc.append("<tr>");
-
-sc.append("<td valign=top align=left  bgcolor=#ffffff>");
-sc.append("<font face=arial size=-2>");
-if (userSession.getAccount().getMaxspaceinbytes()>0){
-    sc.append(reger.core.Util.getHtmlBarChart(userSession.getAccount().getSpaceused(), userSession.getAccount().getMaxspaceinbytes()));
-    sc.append(formatter.format((double)userSession.getAccount().getSpaceused()/(double)1000000)+ "Mb / "+((double)userSession.getAccount().getMaxspaceinbytes()/(double)1000000)+"Mb Used<br>(" + (100-(int)(((double)userSession.getAccount().getSpaceused()/(double)userSession.getAccount().getMaxspaceinbytes())*100)) + "% Free)");
-} else {
-    sc.append(formatter.format((double)userSession.getAccount().getSpaceused()/(double)1000000)+ "Mb");
-}
-sc.append("</font>");
-sc.append("</td>");
-
-
-sc.append("</tr>");
-
-sc.append("</table>");
-
-sc.append("<br>");
-sc.append("<font face=arial size=-2>");
-sc.append("* Bandwidth usage is updated when you log in.  A bandwidth month is determined by a month in the GMT timezone.");
-sc.append("</font>");
-
-sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-sc.append("<!-- End Account Usage -->");
-//Account Usage end
+////Search Site Start
+//mb.append("<!-- Search Site Start -->");
+//mb.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+//mb.append(reger.ui.BubbleBox.start("Search Your Site", pageProps.pathToAppRoot));
+////mb.append("<form action=entries.log method=post>");
+////mb.append("<input type=hidden name=action value=search>");
+////mb.append("<br>");
+////mb.append("<input type=text name=searchterms value=\"\">");
+////mb.append("<br>");
+////mb.append("<input type=submit value='Search'>");
+////mb.append("<br>");
+////mb.append("<font face=arial size=-2>");
+////mb.append("<a href='entries.log'>");
+////mb.append("Advanced Search / Search Other Sites");
+////mb.append("</a>");
+////mb.append("</font>");
+////mb.append("</form>");
+//mb.append("<a href='entries-simplesearch.log'>");
+//mb.append("<font face=arial size=-2>");
+//mb.append("Click Here");
+//mb.append("</font>");
+//mb.append("</a>");
+//mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+//mb.append("<!-- Search Site End -->");
+////Search Site End
 
 
 
 
-//Version Start
-sc.append("<!-- Version Start -->");
-sc.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
-sc.append(reger.ui.BubbleBox.start("You're Using", pageProps.pathToAppRoot));
-//sc.append("<center>");
-//sc.append("<a href='versions.log?versionid="+reger.versioninfo.VersionInfo.getCURRENTVERSIONID()+"'>");
-sc.append("<font face=arial size=+2 color=#cccccc>");
-sc.append("<b>");
-sc.append("Version " + reger.versioninfo.VersionInfo.getCURRENTVERSIONNAME());
-sc.append("</b>");
-sc.append("</font>");
-//sc.append("</a>");
-sc.append("<br>");
-sc.append("<a href='versions.log'>");
-sc.append("<font face=arial size=-2>");
-sc.append("List All Versions");
-sc.append("</font>");
-sc.append("</a>");
-//sc.append("</center>");
-sc.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-sc.append("<!-- Version End -->");
-//Version End
 
 
 
-sc.append("<br>");
+
+
+////Version Start
+//mb.append("<!-- Version Start -->");
+//mb.append("<img src='../images/clear.gif' width='10' height='10' alt='' border='0'>");
+//mb.append(reger.ui.BubbleBox.start("You're Using", pageProps.pathToAppRoot));
+////mb.append("<center>");
+////mb.append("<a href='versions.log?versionid="+reger.versioninfo.VersionInfo.getCURRENTVERSIONID()+"'>");
+//mb.append("<font face=arial size=+2 color=#cccccc>");
+//mb.append("<b>");
+//mb.append("Version " + reger.versioninfo.VersionInfo.getCURRENTVERSIONNAME());
+//mb.append("</b>");
+//mb.append("</font>");
+////mb.append("</a>");
+//mb.append("<br>");
+//mb.append("<a href='versions.log'>");
+//mb.append("<font face=arial size=-2>");
+//mb.append("List All Versions");
+//mb.append("</font>");
+//mb.append("</a>");
+////mb.append("</center>");
+//mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+//mb.append("<!-- Version End -->");
+////Version End
+
+
+
+mb.append("<br>");
 
 
 
