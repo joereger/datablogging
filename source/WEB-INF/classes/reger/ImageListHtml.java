@@ -179,49 +179,35 @@ public class ImageListHtml {
                     mb.append("<!-- Begin individual image listing -->");
                     mb.append("<tr>");
                     mb.append("<td valign=middle align=center>");
-//                    mb.append("<table cellpadding=0 cellspacing=0 border=0>");
-//                    mb.append("<tr>");
-//                    mb.append("<td valign=top align=center>");
-//                    mb.append("<font face=arial size=-2 style=\"font-size: 10px;\" color=#999999>");
-//                    mb.append("<b>Move<br>Up<br></b>");
-//                    mb.append("</font>");
-//                    mb.append("<input type=radio name=imageid-" + rstImagelist[i][0] + "-move value=up>");
-//                    mb.append("</td>");
-//                    mb.append("</tr>");
-//                    mb.append("<tr>");
-//                    mb.append("<td valign=top align=center>");
-//                    mb.append("<input type=radio name=imageid-" + rstImagelist[i][0] + "-move value=stay checked>");
-//                    mb.append("");
-//                    mb.append("</td>");
-//                    mb.append("</tr>");
-//                    mb.append("<tr>");
-//                    mb.append("<td valign=top align=center>");
-//                    mb.append("<input type=radio name=imageid-" + rstImagelist[i][0] + "-move value=down>");
-//                    mb.append("<font face=arial size=-2 style=\"font-size: 10px;\" color=#999999>");
-//                    mb.append("<b><br>Move<br>Down</b>");
-//                    mb.append("</font>");
-//                    mb.append("</td>");
-//                    mb.append("</tr>");
-//                    mb.append("</table>");
+
                     mb.append("</td>");
                     mb.append("<td valign=middle align=center colspan=2>");
 
                     mediaoutPath = "../";
 
-                    //mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&entrykey=" + entrykeyQueryString + "'  rel=\"prettyPhoto[Images"+eventid+"]\">");
-                    //mb.append("<img src='" + mediaoutPath + "mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes&entrykey=" + entrykeyQueryString + "' border=0>");
-                    //mb.append("</a>");
+
 
                     String ext = FilenameUtils.getExtension(rstImagelist[i][10]);
-//                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
-                        mb.append("<a href=\"mediaout/file."+ext+"?imageid="+rstImagelist[i][0]+"&entrykey="+entrykeyQueryString+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-                        mb.append("<img src=\"mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "\" border=0>" + "\n");
-                        mb.append("</a>" + "\n");
-//                    } else {
-//                        mb.append("<a href=\"mediaouthtml.log?imageid="+rstImagelist[i][0]+"&ext=page."+ext+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
+
+
+
+                    String bigurl = "mediaout/file."+ext+"?imageid="+rstImagelist[i][0]+"&entrykey="+entrykeyQueryString;
+                    String thumburl =  "mediaout.log?imageid="+rstImagelist[i][0]+"&isthumbnail=yes&entrykey="+entrykeyQueryString;
+                    String entryurl = "entry.log?eventid="+rstImagelist[i][4];
+                    String entrytitle = rstImagelist[i][2];
+
+                    //mb.append("<li>"+"\n");
+                    mb.append("<a class=\"thumbnail\" href=\""+bigurl+"\" rel=\"prettyPhoto[Images]\" title=\"<a href='"+entryurl+"'>"+Util.cleanRemoveDoubleQuotes(entrytitle)+"</a>\" >"+"\n");
+                    mb.append("<img alt=\"<a href='"+entryurl+"'>"+Util.cleanRemoveDoubleQuotes(entrytitle)+"</a>\" src=\""+thumburl+"\" width=\"100\" >"+"\n");
+                    mb.append("</a>"+"\n");
+                    //mb.append("</li>"+"\n");
+
+
+
+//                        mb.append("<a href=\"mediaout/file."+ext+"?imageid="+rstImagelist[i][0]+"&entrykey="+entrykeyQueryString+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
 //                        mb.append("<img src=\"mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "\" border=0>" + "\n");
 //                        mb.append("</a>" + "\n");
-//                    }
+
 
 
                     if (userSessionOfPersonViewing.getAccountuser().getEntrymode()==reger.Vars.ENTRYMODESIMPLE) {
@@ -244,8 +230,8 @@ public class ImageListHtml {
                     if (eventid <= 0) {
                         mb.append("<br><br>");
                         mb.append("<font face=arial size=-2 class=smallfont>");
-                        String entryurl = reger.Entry.entryFileNameStatic(Integer.parseInt(rstImagelist[i][4]), rstImagelist[i][3]);
-                        mb.append("From Entry:<br><a href='" + entryurl + "'>" + rstImagelist[i][3] + "</a>");
+                        String entryurltmp = reger.Entry.entryFileNameStatic(Integer.parseInt(rstImagelist[i][4]), rstImagelist[i][3]);
+                        mb.append("From Entry:<br><a href='" + entryurltmp + "'>" + rstImagelist[i][3] + "</a>");
                         //@todo Display date/time in usertime with the image
                         //mb.append("<br>");
                         //mb.append(rstImagelist[i][5]);
@@ -365,145 +351,6 @@ public class ImageListHtml {
     }
 
 
-//    public static StringBuffer htmlOutDisplay(int accountid, int eventid, int tagid, UserSession userSessionOfPersonViewing, int currentpage, int perpage, HttpServletRequest request) {
-//        StringBuffer mb = new StringBuffer();
-//
-//        //Entrykey
-//        String entrykey = "";
-//        if (request.getParameter("entrykey") != null) {
-//            entrykey = request.getParameter("entrykey");
-//        }
-//        String entrykeyQueryString = "";
-//        if (request.getParameter("entrykey") != null) {
-//            entrykeyQueryString = "&entrykey=" + request.getParameter("entrykey");
-//        }
-//
-//        //If this is not displayasadmin, only show images from live entries
-//        boolean displayOnlyImagesFromLiveEntries = true;
-//
-//
-//        //Make sure we're not in admin mode just about to create an entry
-//        if (eventid>0) {
-//            //Start paging
-//            //reger.core.Util.logtodb(sqlSelectCount+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry);
-//            //-----------------------------------
-//            //-----------------------------------
-//            String[][] rstCount = Db.RunSQL(sqlBuilder(true, userSessionOfPersonViewing, accountid, tagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey));
-//            //-----------------------------------
-//            //-----------------------------------
-//            int recordcount = 0;
-//            if (rstCount != null && rstCount.length > 0) {
-//                recordcount = Integer.parseInt(rstCount[0][0]);
-//            }
-//
-//            //reger.core.Util.logtodb("ImageListHtml.java - recordcount=" + recordcount);
-//
-//            if (currentpage < 0) {
-//                currentpage = 1;
-//            }
-//
-//            if (perpage <= 0) {
-//                perpage = 500;
-//            }
-//
-//            if (eventid <= 0) {
-//                //This is not an entry display so page out.
-//                perpage = 50;
-//            }
-//
-//            StringBuffer pagingOut = new StringBuffer();
-//            if (recordcount > perpage) {
-//                pagingOut.append("<tr>");
-//                pagingOut.append("<td colspan=4>");
-//                pagingOut.append(reger.pagingLinkPrint.getHtml(recordcount, currentpage, perpage, request));
-//                pagingOut.append("</td>");
-//                pagingOut.append("</tr>");
-//                //And finally put it on the page
-//                mb.append(pagingOut);
-//            }
-//            //Limit vars
-//            int limitMin = (currentpage * perpage) - perpage;
-//            int limitMax = perpage;
-//            String sqlLimit = " LIMIT " + limitMin + "," + limitMax;
-//
-//            //End paging
-//
-//            //Add the popup javascript
-//            mb.append(reger.core.Util.popup());
-//
-//            mb.append("\n\n\n");
-//            mb.append("<!-- Begin Images Row -->");
-//            mb.append("<tr>");
-//            mb.append("<td valign=middle align=center colspan=12>");
-//            mb.append("<table cellpadding=10 cellspacing=0 border=0 width=\"100%\">");
-//
-//            int currentCol = 1;
-//            int colsPerRow = 4;
-//            int widthPercent = 25;
-//
-//            //reger.core.Util.logtodb(sqlSelect+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry+sqlOrderBy);
-//            //-----------------------------------
-//            //-----------------------------------
-//            String[][] rstImagelist = reger.core.db.Db.RunSQL(sqlBuilder(false, userSessionOfPersonViewing, accountid, tagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey) + sqlLimit);
-//            //-----------------------------------
-//            //-----------------------------------
-//            if (rstImagelist != null) {
-//                for (int i = 0; i < rstImagelist.length; i++) {
-//                    mb.append("\n");
-//                    if (currentCol==1){
-//                        mb.append("<tr>");
-//                    }
-//
-//                    mb.append("<td valign=top class=imagecell width=\""+widthPercent+"%\">");
-//                    mb.append("<center>");
-//                    String mediaoutPath = "";
-//                    mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + entrykeyQueryString + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
-//                    mb.append("<img src='" + mediaoutPath + "mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "' border=0>");
-//                    mb.append("</a>");
-//                    if (rstImagelist[i][1]!=null && rstImagelist[i][1].length()>0){
-//                        mb.append("<br/><font face=arial size=-1 class=normalfont>" + reger.core.Util.cleanForHtml(rstImagelist[i][1]) + "</font>");
-//                    }
-//                    String imageTags = reger.Tag.getStringOfAllTagsForImageAsLinks(Integer.parseInt(rstImagelist[i][0]), mediaoutPath);
-//                    if (!imageTags.equals("")) {
-//                        mb.append("<br/><font face=arial size=-2 class=smallfont>" + imageTags + "</font><br>");
-//                    }
-//                    mb.append("</center>");
-//                    mb.append("</td>");
-//
-//                    if (currentCol==colsPerRow){
-//                        mb.append("</tr>");
-//                        currentCol = 1;
-//                    } else {
-//                        currentCol = currentCol + 1;
-//                    }
-//                }
-//            }
-//
-//            mb.append("</table>");
-//            mb.append("</td>");
-//            mb.append("</tr>");
-//            mb.append("<!-- End Images Row -->");
-//            mb.append("\n\n\n");
-//
-//            //Paging footer
-//            if (recordcount > perpage) {
-//                mb.append(pagingOut);
-//            }
-//        }
-//
-//        return mb;
-//    }
-
-
-    public static StringBuffer tableEnd() {
-        StringBuffer mb = new StringBuffer();
-        mb.append("</table>");
-        mb.append("</td>");
-        mb.append("</tr>");
-        mb.append("</table>");
-        return mb;
-    }
-
     public static StringBuffer getImageList(UserSession userSession, HttpServletRequest request, int imagesPerRow) {
         StringBuffer mb = new StringBuffer();
 
@@ -514,7 +361,7 @@ public class ImageListHtml {
                 currentPage = 1;
             }
         }
-        int perPage = 50;
+        int perPage = 100;
         //Limit vars
         int limitMin = (currentPage * perPage) - perPage;
         int limitMax = perPage;
@@ -545,7 +392,7 @@ public class ImageListHtml {
 
         //-----------------------------------
         //-----------------------------------
-        String[][] rstImageList = Db.RunSQL("SELECT DISTINCT image.imageid, image.image, image.description "+fromSql+whereSql+" ORDER BY event.date DESC, image.imageid ASC LIMIT " + limitMin +"," + limitMax);
+        String[][] rstImageList = Db.RunSQL("SELECT DISTINCT image.imageid, image.image, image.description, megalog.logid, image.filename, event.eventid, event.title "+fromSql+whereSql+" ORDER BY event.date DESC, image.imageid ASC LIMIT " + limitMin +"," + limitMax);
         //-----------------------------------
         //-----------------------------------
         //-----------------------------------
@@ -557,43 +404,76 @@ public class ImageListHtml {
 
 
         int recordcount = Integer.parseInt(rstImageCount[0][0]);
-        mb.append("<table border=0 cellspacing=3 cellpadding=5>");
-        mb.append("<tr>");
+
         StringBuffer pagingOut = new StringBuffer();
         if (recordcount > perPage) {
-            pagingOut.append("<td colspan="+imagesPerRow+">");
             pagingOut.append(reger.pagingLinkPrint.getImagePageNumbers(recordcount,currentPage, perPage, request));
-            pagingOut.append("</td>");
+            pagingOut.append("<br/><br/>");
             //And finally put it on the page
             mb.append(pagingOut);
         }
-        mb.append("</tr>");
-        mb.append("<tr>");
         //End paging
+
+        mb.append("<ul class=\"thumbnails\">" + "\n");
 
         String mediaoutPath = "";
         if (rstImageList != null) {
-            int imagesInCurrentRow = 0;
             for (int i = 0; i < rstImageList.length; i++) {
-                if (imagesInCurrentRow % imagesPerRow == 0) {
-                    mb.append("</tr>");
-                    mb.append("<tr>");
-                }
-                mb.append("<td valign=top align=center bgcolor=#cccccc>");
-                mb.append("<a href='" + mediaoutPath + "mediaouthtml.log?imageid=" + rstImageList[i][0] + "' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
-                mb.append("<img src='" + mediaoutPath + "mediaout.log?imageid=" + rstImageList[i][0] + "&isthumbnail=yes" + "' border=0></a>");
-                mb.append("</td>");
-                imagesInCurrentRow ++;
+
+
+
+
+
+
+                String ext = FilenameUtils.getExtension(rstImageList[i][4]);
+
+
+                    mb.append("<li style=\"width:100px;\">" + "\n");
+                    mb.append("<div class=\"thumbnail\">" + "\n");
+
+
+
+
+                    String entrykeyQueryString = request.getParameter("entrykey");
+                    String bigurl = "mediaout/file."+ext+"?imageid="+rstImageList[i][0]+"&entrykey="+entrykeyQueryString;
+                    String thumburl =  "mediaout.log?imageid="+rstImageList[i][0]+"&isthumbnail=yes&entrykey="+entrykeyQueryString;
+                    String entryurl = "entry.log?eventid="+rstImageList[i][5];
+                    String entrytitle = rstImageList[i][6];
+
+                    //mb.append("<li>"+"\n");
+                    mb.append("<a href=\""+bigurl+"\" rel=\"prettyPhoto[Images]\" title=\"<a href='"+entryurl+"'>"+Util.cleanRemoveDoubleQuotes(entrytitle)+"</a>\" >"+"\n");
+                    mb.append("<img alt=\"<a href='"+entryurl+"'>"+Util.cleanRemoveDoubleQuotes(entrytitle)+"</a>\" src=\""+thumburl+"\" width=\"100\" >"+"\n");
+                    mb.append("</a>"+"\n");
+                    //mb.append("</li>"+"\n");
+
+
+//                        mb.append("<a href=\"mediaout/file."+ext+"?imageid="+rstImageList[i][0]+"\" rel=\"prettyPhoto[ImagesFilesDotLog]\">");
+//                        mb.append("<img src=\"mediaout.log?logid=" + rstImageList[i][3] + "&imageid=" + rstImageList[i][0] + "&isthumbnail=yes\" border=0>" + "\n");
+//                        mb.append("</a>" + "\n");
+
+
+                    mb.append("</div>" + "\n");
+                    mb.append("</li>" + "\n");
+
+
+
+
+
+
+
+
             }
         }
-        mb.append("</tr>");
+        mb.append("</ul>");
+
+
         //Paging footer
         if (recordcount > perPage) {
-            mb.append("<tr>");
+            mb.append("<br/><br/>");
             mb.append(pagingOut);
-            mb.append("</tr>");
         }
-        mb.append("</table>");
+        //End paging
+
 
         return mb;
     }

@@ -63,6 +63,14 @@ public class Util {
         return "";
     }
 
+    public static String cleanRemoveDoubleQuotes(String instring){
+        if (instring!=null){
+            instring=instring.replaceAll("\"", "&quot;");
+            return instring;
+        }
+        return "";
+    }
+
     /**
     * Returns a String truncated to the specified max length
     */

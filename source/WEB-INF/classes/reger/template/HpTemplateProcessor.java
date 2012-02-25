@@ -106,7 +106,8 @@ public class HpTemplateProcessor implements TemplateProcessor {
         tags[4] = new HpTemplateTagMostRecentList();
         tags[5] = new HpTemplateTagOnThisDay();
         tags[6] = new HpTemplateTagRandomFiles();
-        tags[7] = new HpTemplateTagRandomFilesPolaroid();
+        //tags[7] = new HpTemplateTagRandomFilesPolaroid();
+        tags[7] = new HpTemplateAboutThisBlog();
     }
 
     public TemplateTag[] getTagsThisProcessorCanHandle(){

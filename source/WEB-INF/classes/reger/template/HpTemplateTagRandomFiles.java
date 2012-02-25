@@ -44,7 +44,7 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
         StringBuffer mb = new StringBuffer();
 
         //Set number to return
-        int maxinlist = 15;
+        int maxinlist = 10;
 
         //Put the header on
 //        mb.append("<font face=arial size=-1 class=mediumfont color=#cccccc>");
@@ -62,8 +62,8 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
         String sql="SELECT image.imageid, image.image, event.eventid, event.logid, event.title, image.filename, image.description FROM image, event WHERE image.eventid=event.eventid AND  event.accountid='"+ userSession.getAccount().getAccountid() +"' AND "+userSession.getAccountuser().LogsUserCanViewQueryendNoMegalog(userSession.getAccount().getAccountid())+" "+logidSql+" ORDER BY RAND() DESC LIMIT 0,"+maxinlist;
 
 
-        mb.append("<table cellpadding=0 cellspacing=1 border=0>" );
-        mb.append(reger.core.Util.popup());
+
+
         //-----------------------------------
         //-----------------------------------
         String[][] rstToday= Db.RunSQL(sql);
@@ -72,41 +72,59 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
         if (rstToday!=null && rstToday.length>0){
         	int i=0;
             int counter=0;
+            int activeCounter=0;
+
+            mb.append("<h2>Random Images</h2>");
+
+            //mb.append("<div style=\"width:100%; text-align:right;\">"+"\n");
+            mb.append("<div style=\"width:100px;\">"+"\n");
+            mb.append("<ul class=\"thumbnails\">"+"\n");
+
+
+
+
+
+
         	while(i<rstToday.length && counter<maxinlist){
-        		counter=counter+1;
+
 
                 String ext = FilenameUtils.getExtension(rstToday[i][5]);
 
-        		mb.append("<tr>" );
-                //String entryurl=reger.Entry.entryFileNameStatic(Integer.parseInt(rstToday[i][3]), Integer.parseInt(rstToday[i][2]), rstToday[i][4]);
-
-                mb.append("<td valign=top bgcolor=#ffffff><font face=arial size=-2>" );
-                //mb.append("<a href='"+pageProps.pathToAppRoot+"mediaouthtml.log?imageid="+rstToday[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">" );
-                //mb.append("<img src='"+pageProps.pathToAppRoot+"mediaout.log?imageid="+ rstToday[i][0] +"&isthumbnail=yes' border=0>" );
-                //mb.append("</a>" );
-
-//                if (ext.toLowerCase().indexOf("jpg")>-1 || ext.toLowerCase().indexOf("gif")>-1 || ext.toLowerCase().indexOf("png")>-1 || ext.toLowerCase().indexOf("bmp")>-1){
-                    mb.append("<a href=\"mediaout/file."+ext+"?imageid="+rstToday[i][0]+"\" title=\""+ Util.cleanForjavascript(rstToday[i][6])+"\" rel=\"prettyPhoto[HpTemplateTagRandomFiles]\">");
-                    mb.append("<img src='mediaout.log?imageid="+rstToday[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-                    mb.append("</a>");
-//                } else {
-//                    String extOrig = ext;
-//                    ext = "html";
-//                    mb.append("<a href=\"mediaouthtml.log?iframe=true&width=950&height=760&imageid="+rstToday[i][0]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstToday[i][6])+" extOrig="+extOrig+"\" rel=\"prettyPhoto[HpTemplateTagRandomFiles]\">");
-//                    mb.append("<img src='mediaout.log?imageid="+rstToday[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-//                    mb.append("</a>");
-//                }
 
 
-                mb.append("</font></td>" );
-                mb.append("</tr>" );
+                if (ext.toLowerCase().indexOf("jpg")>-1 || ext.toLowerCase().indexOf("gif")>-1 || ext.toLowerCase().indexOf("png")>-1 || ext.toLowerCase().indexOf("bmp")>-1){
+                    counter++;
+
+
+
+
+                    String bigurl = "mediaout/file."+ext+"?imageid="+rstToday[i][0];
+                    String thumburl =  "mediaout.log?imageid="+rstToday[i][0]+"&isthumbnail=yes";
+                    String entryurl = "entry.log?eventid="+rstToday[i][2];
+
+                    mb.append("<li>"+"\n");
+                    mb.append("<a class=\"thumbnail\" href=\""+bigurl+"\" rel=\"prettyPhoto[ImagesRandomPics]\" title=\"<a href='"+entryurl+"'>"+Util.cleanRemoveDoubleQuotes(rstToday[i][4])+"</a>\" >"+"\n");
+                    mb.append("<img alt=\"<a href='"+entryurl+"'>"+Util.cleanRemoveDoubleQuotes(rstToday[i][4])+"</a>\" src=\""+thumburl+"\" width=\"100\" >"+"\n");
+                    mb.append("</a>"+"\n");
+                    mb.append("</li>"+"\n");
+
+
+                }
+
+
+
 
                 i=i+1;
 
         	}
+
+            mb.append("</ul>"+"\n");
+            mb.append("</div>"+"\n");
+            //mb.append("</div>"+"\n");
+
         }
 
-        mb.append("</table>" );
+
 
         return mb.toString();
 
@@ -121,32 +139,29 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
         //Set number to return
         int maxinlist = 15;
 
-        //Put the header on
-        mb.append("<font face=arial size=-1 class=mediumfont color=#cccccc>");
-        mb.append("Random Images");
-        mb.append("</font>");
-        mb.append("<br>");
-
-        mb.append("<table cellpadding=0 cellspacing=1 border=0>" );
-
-
-        for(int i=0; i<=15; i++){
-            mb.append("<tr>" );
-            mb.append("<td valign=top bgcolor=#ffffff><font face=arial size=-2>" );
-            mb.append("<a href='#'>" );
-            mb.append("<img src='mediaout.log?imageid=-1&isthumbnail=yes' border=0>" );
-            mb.append("</a>" );
-            mb.append("</font></td>" );
-            mb.append("</tr>" );
-        }
-
-
-
-
-
-
-
-        mb.append("</table>" );
+//        //Put the header on
+//        mb.append("<font face=arial size=-1 class=mediumfont color=#cccccc>");
+//        mb.append("Random Images");
+//        mb.append("</font>");
+//        mb.append("<br>");
+//
+//        mb.append("<table cellpadding=0 cellspacing=1 border=0>" );
+//
+//
+//        for(int i=0; i<=15; i++){
+//            mb.append("<tr>" );
+//            mb.append("<td valign=top bgcolor=#ffffff><font face=arial size=-2>" );
+//            mb.append("<a href='#'>" );
+//            mb.append("<img src='mediaout.log?imageid=-1&isthumbnail=yes' border=0>" );
+//            mb.append("</a>" );
+//            mb.append("</font></td>" );
+//            mb.append("</tr>" );
+//        }
+//
+//
+//
+//
+//        mb.append("</table>" );
 
         return mb.toString();
     }

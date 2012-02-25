@@ -21,6 +21,8 @@ public class Account  implements java.io.Serializable {
      private int plid;
      private String homepagehtml;
      private String homepagetitle;
+     private String aboutthisbloghtml;
+     private String aboutthisblogtitle;
      private Date createdate;
      private String timezoneid;
      private int jspopup;
@@ -335,6 +337,22 @@ public class Account  implements java.io.Serializable {
 
     public void setHomepagetitle(String homepagetitle) {
         this.homepagetitle = homepagetitle;
+    }
+
+    public String getAboutthisbloghtml() {
+        return aboutthisbloghtml;
+    }
+
+    public void setAboutthisbloghtml(String aboutthisbloghtml) {
+        this.aboutthisbloghtml = aboutthisbloghtml;
+    }
+
+    public String getAboutthisblogtitle() {
+        return aboutthisblogtitle;
+    }
+
+    public void setAboutthisblogtitle(String aboutthisblogtitle) {
+        this.aboutthisblogtitle = aboutthisblogtitle;
     }
 
     public Date getCreatedate() {

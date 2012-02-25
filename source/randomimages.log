@@ -50,7 +50,7 @@ out.println("<td valign=top>");
 
 //-----------------------------------
 //-----------------------------------
-String[][] rstImageRandom= Db.RunSQL("SELECT image.filename, event.logid, imageid, image.description  FROM image, event, megalog WHERE megalog.accountid='"+userSession.getAccount().getAccountid()+"' AND image.eventid=event.eventid AND event.logid=megalog.logid AND (RIGHT(image.filename, 3)='jpg' OR RIGHT(image.filename, 3)='gif' OR RIGHT(image.filename, 3)='png') AND megalog.logaccess='1' ORDER BY RAND() LIMIT 0,15");
+String[][] rstImageRandom= Db.RunSQL("SELECT image.filename, event.logid, imageid, image.description, event.eventid  FROM image, event, megalog WHERE megalog.accountid='"+userSession.getAccount().getAccountid()+"' AND image.eventid=event.eventid AND event.logid=megalog.logid AND (RIGHT(image.filename, 3)='jpg' OR RIGHT(image.filename, 3)='gif' OR RIGHT(image.filename, 3)='png') AND megalog.logaccess='1' ORDER BY RAND() LIMIT 0,15");
 //-----------------------------------
 //-----------------------------------
 
@@ -61,22 +61,34 @@ if (rstImageRandom!=null && rstImageRandom.length>0){
 
         String ext = FilenameUtils.getExtension(rstImageRandom[i][0]);
 
+        String entrykeyQueryString = request.getParameter("entrykey");
+        String bigurl = "mediaout/file."+ext+"?imageid="+rstImageRandom[i][2]+"&entrykey="+entrykeyQueryString;
+        String thumburl =  "mediaout.log?imageid="+rstImageRandom[i][2]+"&isthumbnail=yes&entrykey="+entrykeyQueryString;
+        String entryurl = "entry.log?eventid="+rstImageRandom[i][4];
+        String entrytitle = rstImageRandom[i][3];
+
+        //mb.append("<li>"+"\n");
+        mb.append("<a class=\"thumbnail\" href=\""+bigurl+"\" rel=\"prettyPhoto[ImagesRandomPics]\" title=\"<a href='"+entryurl+"'>"+Util.cleanRemoveDoubleQuotes(entrytitle)+"</a>\" >"+"\n");
+        mb.append("<img alt=\"<a href='"+entryurl+"'>"+Util.cleanRemoveDoubleQuotes(entrytitle)+"</a>\" src=\""+thumburl+"\" width=\"100\" >"+"\n");
+        mb.append("</a>"+"\n");
+        //mb.append("</li>"+"\n");
+
 
         //imglist.append("<a href='mediaouthtml.log?imageid=" + rstImageRandom[i][2] + "' align=left valign=top onclick=\"NewWindow(this.href,'name','','','yes');return false;\">");
         //imglist.append("<img src='mediaout.log?imageid=" + rstImageRandom[i][2] + "&isthumbnail=yes' width=100 border=0>");
         //imglist.append("</a><br>");
 
-//        if (ext.toLowerCase().indexOf("jpg")>-1 || ext.toLowerCase().indexOf("gif")>-1 || ext.toLowerCase().indexOf("png")>-1 || ext.toLowerCase().indexOf("bmp")>-1){
-            imglist.append("<a href=\"mediaout/file."+ext+"?imageid="+rstImageRandom[i][2]+"\" title=\""+ Util.cleanForjavascript(rstImageRandom[i][3])+"\" rel=\"prettyPhoto[randomimages]\">");
-            imglist.append("<img src='mediaout.log?imageid="+rstImageRandom[i][2]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-            imglist.append("</a>");
-//        } else {
-//            String extOrig = ext;
-//            ext = "html";
-//            imglist.append("<a href=\"mediaouthtml.log?imageid="+rstImageRandom[i][2]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstImageRandom[i][3])+" extOrig="+extOrig+"\" rel=\"prettyPhoto[randomimages]\">");
+////        if (ext.toLowerCase().indexOf("jpg")>-1 || ext.toLowerCase().indexOf("gif")>-1 || ext.toLowerCase().indexOf("png")>-1 || ext.toLowerCase().indexOf("bmp")>-1){
+//            imglist.append("<a href=\"mediaout/file."+ext+"?imageid="+rstImageRandom[i][2]+"\" title=\""+ Util.cleanForjavascript(rstImageRandom[i][3])+"\" rel=\"prettyPhoto[randomimages]\">");
 //            imglist.append("<img src='mediaout.log?imageid="+rstImageRandom[i][2]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
 //            imglist.append("</a>");
-//        }
+////        } else {
+////            String extOrig = ext;
+////            ext = "html";
+////            imglist.append("<a href=\"mediaouthtml.log?imageid="+rstImageRandom[i][2]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstImageRandom[i][3])+" extOrig="+extOrig+"\" rel=\"prettyPhoto[randomimages]\">");
+////            imglist.append("<img src='mediaout.log?imageid="+rstImageRandom[i][2]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+////            imglist.append("</a>");
+////        }
 
         imglist.append("<img src=images/clear.gif border=0 width=1 height=5><br>");
 

@@ -237,6 +237,19 @@ if (pageProps.action.equals("submit")) {
     }
 
 
+    if (request.getParameter("aboutthisblogtitle")!=null){
+        userSession.getAccount().setAboutthisblogtitle(request.getParameter("aboutthisblogtitle"));
+    } else {
+        userSession.getAccount().setAboutthisblogtitle("");
+    }
+
+    if (request.getParameter("aboutthisbloghtml")!=null){
+        userSession.getAccount().setAboutthisbloghtml(request.getParameter("aboutthisbloghtml"));
+    } else {
+        userSession.getAccount().setAboutthisbloghtml("");
+    }
+
+
     try{
         //Write the preferences to the database
         userSession.getAccount().save();
@@ -248,9 +261,9 @@ if (pageProps.action.equals("submit")) {
             return;
         }
         //Success
-        reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Saved.");
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPECOMPLETE, pageProps.pathToAppRoot, "Settings saved successfully."));
     } catch (reger.core.ValidationException v){
-        reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, v.getErrorsAsSingleString());
+        mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, v.getErrorsAsSingleString()));
     }
 
 
@@ -287,12 +300,35 @@ mb.append("</tr>");
 
 mb.append("<tr>");
 mb.append("<td bgcolor='#ffffff' width=33% valign=top>");
-mb.append("<font face=arial size=-1><b>Site Description</b></font>");
+mb.append("<font face=arial size=-1><b>Tagline</b></font>");
 mb.append("<br>");
-mb.append("<font face=arial size=-2>Give your site a custom description.");
+mb.append("<font face=arial size=-2>Short tagline describing your site.");
 mb.append("</font></td>");
 mb.append("<td bgcolor='#ffffff' valign=top>");
 mb.append("<textarea cols='25' rows='4' name='homepagehtml'>"+userSession.getAccount().getHomepagehtml()+"</textarea>");
+mb.append("</td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' width=25% valign=top>");
+mb.append("<font face=arial size=-1><b>About this Blog Header</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<input type='text' name='aboutthisblogtitle' size='20' maxlength='240' value=\""+Util.cleanForHtml(userSession.getAccount().getAboutthisblogtitle())+"\">");
+mb.append("</td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td bgcolor='#ffffff' width=33% valign=top>");
+mb.append("<font face=arial size=-1><b>About this Blog</b></font>");
+mb.append("<br>");
+mb.append("<font face=arial size=-2>Html allowed.");
+mb.append("</font></td>");
+mb.append("<td bgcolor='#ffffff' valign=top>");
+mb.append("<textarea cols='25' rows='4' name='aboutthisbloghtml'>"+userSession.getAccount().getAboutthisbloghtml()+"</textarea>");
 mb.append("</td>");
 mb.append("</tr>");
 

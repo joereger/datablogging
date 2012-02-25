@@ -122,6 +122,12 @@
         <property name="homepagetitle" type="string">
             <column name="homepagetitle" length="100" />
         </property>
+        <property name="aboutthisbloghtml" type="string">
+            <column name="aboutthisbloghtml" />
+        </property>
+        <property name="aboutthisblogtitle" type="string">
+            <column name="aboutthisblogtitle" length="255" />
+        </property>
         <property name="createdate" type="timestamp">
             <column name="createdate" length="19" not-null="true" />
         </property>

@@ -86,10 +86,17 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         //prettyPhoto
         appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/prettyPhoto3.1.3/css/prettyPhoto.css\" type=\"text/css\" />"+"\n");
         appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/prettyPhoto3.1.3/js/jquery.prettyPhoto.js\"></script>"+"\n");
+
+
+        //Slides
+        //appendToHead.append("<script src=\""+pageProps.pathToAppRoot+"js/slides/js/slides.min.jquery.js\"></script>");
+
+
+
         //Canonical
         appendToHead.append(appendCanonicalToHead(userSession, request));
         //Polaroid Thumbs
-        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/thumbspolaroid.css\" type=\"text/css\" />"+"\n");
+        //appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/thumbspolaroid.css\" type=\"text/css\" />"+"\n");
 
 
 
@@ -134,6 +141,14 @@ public class SiteTemplateProcessor implements TemplateProcessor {
                 "    $(\"a[rel^='prettyPhoto']\").prettyPhoto();\n" +
                 "  });\n" +
                 "</script>");
+
+
+
+
+
+
+
+
 
         //Whether or not we've found a body tag yet
         boolean foundbodytag = false;
@@ -270,7 +285,7 @@ public class SiteTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new SiteTemplateTag[23];
+        tags = new SiteTemplateTag[25];
         tags[0] = new SiteTemplateTagEntryTitle();
         tags[1] = new SiteTemplateTagLogName();
         tags[2] = new SiteTemplateTagMainBody();
@@ -294,7 +309,8 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         tags[20] = new SiteTemplateTagRssXmlLink();
         tags[21] = new SiteTemplateTagWapLink();
         tags[22] = new SiteTemplateTagNavLogsAndPages();
-
+        tags[23] = new SiteTemplateTagAboutThisBlog();
+        tags[24] = new SiteTemplateTagInfoNavbar();
     }
 
 
