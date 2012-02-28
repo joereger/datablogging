@@ -33,4 +33,11 @@ public class MegaChartTypeTimeSeries implements MegaChartType{
         return chart;
     }
 
+    public String getHighChart(MegaChart megaChart) {
+        //Dataset to hold data
+        TimeSeriesCollection timedataseries = MegaChartConvertToJFreeDataType.timeSeriesCollection(megaChart);
+
+        return "";
+    }
+
 }

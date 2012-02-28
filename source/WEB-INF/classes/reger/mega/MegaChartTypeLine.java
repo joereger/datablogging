@@ -39,4 +39,12 @@ public class MegaChartTypeLine implements MegaChartType{
         return chart;
     }
 
+
+    public String getHighChart(MegaChart megaChart) {
+        String out = MegaChartConvertToHighCharts.xySeriesCollection(megaChart);
+        return out;
+    }
+
+
+
 }

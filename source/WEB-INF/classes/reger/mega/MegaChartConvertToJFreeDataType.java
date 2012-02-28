@@ -34,7 +34,7 @@ public class MegaChartConvertToJFreeDataType {
                             //Do not rely on this catch to fix bugs... the reason it's here
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
-                            //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
+                            //in the above block.
                             Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }
@@ -65,7 +65,7 @@ public class MegaChartConvertToJFreeDataType {
                             //Do not rely on this catch to fix bugs... the reason it's here
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
-                            //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
+                            //in the above block.
                             Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }
@@ -94,7 +94,7 @@ public class MegaChartConvertToJFreeDataType {
                             //Do not rely on this catch to fix bugs... the reason it's here
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
-                            //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
+                            //in the above block.
                             Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }
@@ -133,7 +133,7 @@ public class MegaChartConvertToJFreeDataType {
                             //Do not rely on this catch to fix bugs... the reason it's here
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
-                            //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
+                            //in the above block.
                             Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }
@@ -165,7 +165,7 @@ public class MegaChartConvertToJFreeDataType {
                             //Do not rely on this catch to fix bugs... the reason it's here
                             //is to help the graphs be more robust.  Instead of crashing the whole
                             //graph, only this data point won't be added.  Solve errors caught here
-                            //in the above block.  Don't be lazy Joe Reger, Jr.... yeah you!
+                            //in the above block.
                             Debug.errorsave(e, "", "graph.log - Error Adding Data to jFreeChart Data Set.");
                         }
                     }

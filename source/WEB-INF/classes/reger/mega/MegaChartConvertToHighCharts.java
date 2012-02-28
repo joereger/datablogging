@@ -1,0 +1,430 @@
+package reger.mega;
+
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.DefaultTableXYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import reger.core.Debug;
+import reger.util.Str;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Converts data for a megachart into HighCharts
+ */
+public class MegaChartConvertToHighCharts {
+
+
+
+    public static String defaultCategoryDataset(MegaChart megaChart){
+        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
+        StringBuffer out = new StringBuffer();
+        //Dataset to hold data
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        //Loop on the series of the megaChart
+        for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
+            MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
+            if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
+                for(int i=0; i<megaChartSeries.cleanData.length; i++){
+                    //Y data must always be numeric
+                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
+                        try{
+                            //Base dataset.  Will accept any x axis value
+                            dataset.addValue(Double.parseDouble(megaChartSeries.cleanData[i][2]), megaChartSeries.getyAxisTitle(), megaChartSeries.cleanData[i][1]);
+                        } catch (Exception e) {
+                            //Do not rely on this catch to fix bugs... the reason it's here
+                            //is to help the graphs be more robust.  Instead of crashing the whole
+                            //graph, only this data point won't be added.  Solve errors caught here
+                            //in the above block.
+                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
+                        }
+                    }
+                }
+            }
+        }
+        return out.toString();
+    }
+
+    public static String xySeriesCollection(MegaChart megaChart){
+        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
+        StringBuffer out = new StringBuffer();
+
+
+        //Build structure that'll become json
+        Map<String, Object> rootJson = new HashMap<String, Object>();
+
+
+        Map<String, Object> chartJson = new HashMap<String, Object>();
+        chartJson.put("renderTo", "container");
+        chartJson.put("type", "line");
+        chartJson.put("marginRight", 130);
+        chartJson.put("marginBottom", 25);
+        rootJson.put("chart", chartJson);
+
+
+        Map<String, Object> titleJson = new HashMap<String, Object>();
+        titleJson.put("text", megaChart.getChartname());
+        titleJson.put("x", -20);
+        rootJson.put("title", titleJson);
+
+
+//        Map<String, Object> xaxisJson = new HashMap<String, Object>();
+//            Map<String, Object> xtitleJson = new HashMap<String, Object>();
+//            xtitleJson.put("enabled", true);
+//            xaxisJson.put("title", xtitleJson);
+//        rootJson.put("xAxis", xaxisJson);
+
+
+        Map<String, Object> yaxisJson = new HashMap<String, Object>();
+        //yaxisJson.put("text", "");
+        yaxisJson.put("x", -20);
+            Map<String, Object> ytitleJson = new HashMap<String, Object>();
+            ytitleJson.put("text", megaChart.getChartname());
+            ytitleJson.put("x", -20);
+            yaxisJson.put("title", ytitleJson);
+        rootJson.put("yAxis", yaxisJson);
+
+        rootJson.put("series", getSeriesDataAsJSON(megaChart));
+
+
+        //Serialize responseData to JSON
+        String jsonStr = "";
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            StringWriter sw = new StringWriter();
+            mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+            //mapper.configure(SerializationConfig.Feature., true);
+            mapper.writeValue(sw, rootJson);
+            jsonStr = sw.toString();
+            logger.debug(jsonStr);
+        } catch (JsonGenerationException e) {
+            logger.error("", e);
+        } catch (JsonMappingException e) {
+            logger.error("", e);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
+
+
+
+
+        out.append("<script type=\"text/javascript\">\n" +
+                "\n" +
+                "(function($){ // encapsulate jQuery\n" +
+                "\n" +
+                "var chart;\n" +
+                "$(document).ready(function() {\n" +
+                "    chart = new Highcharts.Chart(\n" +
+                jsonStr +
+                "\n"+
+                ");"+
+                "});\n" +
+                "\n" +
+                "})(jQuery);\n" +
+                "</script>");
+
+                out.append("<div id=\"container\" style=\"width: 100%; height: 500px\"></div>");
+
+
+//                out.append("<script type=\"text/javascript\">\n" +
+//                "\n" +
+//                "(function($){ // encapsulate jQuery\n" +
+//                "\n" +
+//                "var chart;\n" +
+//                "$(document).ready(function() {\n" +
+//                "    chart = new Highcharts.Chart({\n" +
+//                "        chart: {\n" +
+//                "            renderTo: 'container',\n" +
+//                "            type: 'line',\n" +
+//                "            marginRight: 130,\n" +
+//                "            marginBottom: 25\n" +
+//                "        },\n" +
+//                "        title: {\n" +
+//                "            text: '"+megaChart.getChartname()+"',\n" +
+//                "            x: -20 //center\n" +
+//                "        },\n" +
+//                "        subtitle: {\n" +
+//                "            text: '',\n" +
+//                "            x: -20\n" +
+//                "        },\n" +
+////                "        xAxis: {\n" +
+////                "            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',\n" +
+////                "                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']\n" +
+////                "        },\n" +
+//                "        yAxis: {\n" +
+//                "            title: {\n" +
+//                "                text: ''\n" +
+//                "            },\n" +
+//                "            plotLines: [{\n" +
+//                "                value: 0,\n" +
+//                "                width: 1,\n" +
+//                "                color: '#808080'\n" +
+//                "            }]\n" +
+//                "        },\n" +
+//                "        tooltip: {\n" +
+//                "            formatter: function() {\n" +
+//                "                    return '<b>'+ this.series.name +'</b><br/>'+\n" +
+//                "                    this.x +': '+ this.y;\n" +
+//                "            }\n" +
+//                "        },\n" +
+//                "        legend: {\n" +
+//                "            layout: 'vertical',\n" +
+//                "            align: 'right',\n" +
+//                "            verticalAlign: 'top',\n" +
+//                "            x: -10,\n" +
+//                "            y: 100,\n" +
+//                "            borderWidth: 0\n" +
+//                "        },\n" +
+//                "        " + getSeriesDataAsJSONArray(megaChart) + "\n" +
+//                "    });\n" +
+//                "});\n" +
+//                "\n" +
+//                "})(jQuery);\n" +
+//                "</script>");
+
+
+        return out.toString();
+    }
+
+    public static String defaultPieDataset(MegaChart megaChart){
+        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
+        StringBuffer out = new StringBuffer();
+        //Dataset to hold data
+        DefaultPieDataset piedata = null;
+        //Loop on the series of the megaChart
+        for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
+            MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
+            if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
+                piedata = new DefaultPieDataset();
+                for(int i=0; i<megaChartSeries.cleanData.length; i++){
+                    //Y data must always be numeric
+                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
+                        try{
+                            //Pie data. Will accept any x axis value
+                            piedata.setValue(megaChartSeries.cleanData[i][1], Double.parseDouble(megaChartSeries.cleanData[i][2]));
+                        } catch (Exception e) {
+                            //Do not rely on this catch to fix bugs... the reason it's here
+                            //is to help the graphs be more robust.  Instead of crashing the whole
+                            //graph, only this data point won't be added.  Solve errors caught here
+                            //in the above block.
+                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
+                        }
+                    }
+                }
+            }
+        }
+        return out.toString();
+    }
+
+
+    public static String timeSeriesCollection(MegaChart megaChart){
+        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
+        StringBuffer out = new StringBuffer();
+        //Dataset to hold data
+        TimeSeries timedata = null;
+        TimeSeriesCollection timedataseries = new TimeSeriesCollection();
+        //Loop on the series of the megaChart
+        for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
+            MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
+            if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
+                timedata = new TimeSeries(megaChartSeries.yAxisTitle, Millisecond.class);
+                for(int i=0; i<megaChartSeries.cleanData.length; i++){
+                    //Y data must always be numeric
+                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
+                        try{
+                            try{
+                                java.util.Date tmpDate = new java.util.Date(Long.parseLong(megaChartSeries.cleanData[i][1]));
+                                timedata.add(new Millisecond(tmpDate), Double.parseDouble(megaChartSeries.cleanData[i][2]));
+                            } catch (Exception e){
+                                //Here's a situation where the try/catch thing works.  Otherwise
+                                //I'd have to do a date comparison for every single data point.
+                                //Which is a lot of overhead in Java's slow date classes.  Instead,
+                                //I'm relying on the Millisecond's built-in check to see if the date is
+                                //between 1900 and 9999.  Not as elegant as I'd like, but it works.
+                                Debug.debug(5, "", e);
+                            }
+                        } catch (Exception e) {
+                            //Do not rely on this catch to fix bugs... the reason it's here
+                            //is to help the graphs be more robust.  Instead of crashing the whole
+                            //graph, only this data point won't be added.  Solve errors caught here
+                            //in the above block.
+                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
+                        }
+                    }
+                }
+                timedataseries.addSeries(timedata);
+            }
+        }
+        return out.toString();
+    }
+
+    public static String defaultTableXYDataset(MegaChart megaChart){
+        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
+        StringBuffer out = new StringBuffer();
+        //Dataset to hold data
+        XYSeries xydataset = null;
+        DefaultTableXYDataset stackedareadata = new DefaultTableXYDataset();
+        //Loop on the series of the megaChart
+        for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
+            MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
+            if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
+                xydataset = new XYSeries(megaChartSeries.yAxisTitle, false, false);
+                for(int i=0; i<megaChartSeries.cleanData.length; i++){
+                    //Y data must always be numeric
+                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
+                        try{
+                            //XY Data.  Both x,y must be numeric
+                            if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][1])){
+                                xydataset.add(Double.parseDouble(megaChartSeries.cleanData[i][1]), Double.parseDouble(megaChartSeries.cleanData[i][2]));
+                            }
+                        } catch (Exception e) {
+                            //Do not rely on this catch to fix bugs... the reason it's here
+                            //is to help the graphs be more robust.  Instead of crashing the whole
+                            //graph, only this data point won't be added.  Solve errors caught here
+                            //in the above block.
+                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
+                        }
+                    }
+                }
+                stackedareadata.addSeries(xydataset);
+            }
+        }
+        return out.toString();
+    }
+
+
+
+    private static ArrayList getSeriesDataAsJSON(MegaChart megaChart){
+        //Loop on the series of the megaChart
+
+
+        //Map<String, Object> out = new HashMap<String, Object>();
+
+        ArrayList allseries = new ArrayList();
+
+
+
+
+        for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
+            MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
+            if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
+
+                ArrayList arrayofdata = new ArrayList();
+
+
+
+                //StringBuffer data = new StringBuffer();
+                for(int i=0; i<megaChartSeries.cleanData.length; i++){
+                    //Y data must always be numeric
+                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
+                        try{
+                            //XY Data.  Both x,y must be numeric
+                            if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][1])){
+                                ArrayList singledatapoint = new ArrayList();
+                                singledatapoint.add(Double.parseDouble(megaChartSeries.cleanData[i][1]));
+                                singledatapoint.add(Double.parseDouble(megaChartSeries.cleanData[i][2]));
+                                arrayofdata.add(singledatapoint);
+                                //data.append("["+megaChartSeries.cleanData[i][1]+", "+megaChartSeries.cleanData[i][2]+"]");
+                            }
+                        } catch (Exception e) {
+                            //Do not rely on this catch to fix bugs... the reason it's here
+                            //is to help the graphs be more robust.  Instead of crashing the whole
+                            //graph, only this data point won't be added.  Solve errors caught here
+                            //in the above block.
+                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
+                        }
+                    }
+                }
+
+
+                Map<String, Object> singleseries = new HashMap<String, Object>();
+                singleseries.put("name", megaChartSeries.yAxisTitle);
+                singleseries.put("data", arrayofdata);
+                allseries.add(singleseries);
+            }
+        }
+
+
+        //out.put("series", allseries);
+
+        return allseries;
+    }
+
+
+//    private static Map<String, Object> getSeriesDataAsJSONArray(MegaChart megaChart){
+//        //Loop on the series of the megaChart
+//
+//
+//        Map<String, Object> allseries = new HashMap<String, Object>();
+//
+//        ArrayList seriesarray = new ArrayList();
+//
+//
+//
+//
+//
+//        series.append("series: [");
+//        for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
+//            MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
+//            if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
+//
+//                Map<String, Object> allseries = new HashMap<String, Object>();
+//
+//                series.append("{\n");
+//                series.append("            name: '"+ Str.cleanForjavascript(megaChartSeries.yAxisTitle)+"',\n");
+//                series.append("            data: [");
+//
+//
+//                StringBuffer data = new StringBuffer();
+//                for(int i=0; i<megaChartSeries.cleanData.length; i++){
+//                    //Y data must always be numeric
+//                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
+//                        try{
+//                            //XY Data.  Both x,y must be numeric
+//                            if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][1])){
+//                                //xydataset.add(Double.parseDouble(megaChartSeries.cleanData[i][1]), Double.parseDouble(megaChartSeries.cleanData[i][2]));
+//                                if (data.length()>0){
+//                                    data.append(", ");
+//                                }
+//                                data.append("["+megaChartSeries.cleanData[i][1]+", "+megaChartSeries.cleanData[i][2]+"]");
+//                            }
+//                        } catch (Exception e) {
+//                            //Do not rely on this catch to fix bugs... the reason it's here
+//                            //is to help the graphs be more robust.  Instead of crashing the whole
+//                            //graph, only this data point won't be added.  Solve errors caught here
+//                            //in the above block.
+//                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
+//                        }
+//                    }
+//                }
+//                series.append(data.toString());
+//                series.append("]\n");
+//                series.append("        }");
+//                if (j<megaChart.getMegaChartSeries().length-1){
+//                    series.append(",");
+//                }
+//                series.append("\n");
+//            }
+//        }
+//
+//
+//
+//
+//        series.append("]");
+//        return series.toString();
+//    }
+
+}

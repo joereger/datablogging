@@ -23,15 +23,7 @@ pageProps.pathToAppRoot="";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-mb.append("<br>");
-mb.append("<font face=arial size=-1>");
-mb.append("<a href='graphs-detail.log'>");
-mb.append("<img src='myhome/images/add_16.gif' width=16 height=16 border=0 align=middle>");
-mb.append("Create a Graph");
-mb.append("</a>");
-mb.append("</font>");
-mb.append("<br>");
-mb.append("<br>");
+
 
 
 String sql = "SELECT DISTINCT megachart.megachartid, chartname, megalog.logid, megachart.accountid FROM megachart, megachartyaxis, megalog" +
@@ -68,6 +60,17 @@ if (rstGraph!=null && rstGraph.length>0){
         mb.append("<br>");
     }
 }
+
+
+mb.append("<br>");
+//mb.append("<font face=arial size=-1>");
+mb.append("<a class=\"btn btn-primary btn-large\" href='graphs-detail.log'>");
+//mb.append("<img src='myhome/images/add_16.gif' width=16 height=16 border=0 align=middle>");
+mb.append("Create a Graph");
+mb.append("</a>");
+//mb.append("</font>");
+mb.append("<br>");
+mb.append("<br>");
 
 
 

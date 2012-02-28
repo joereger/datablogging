@@ -35,4 +35,9 @@ public class MegaChartTypeAreaChart implements MegaChartType{
         return chart;
     }
 
+    public String getHighChart(MegaChart megaChart) {
+
+        return "";
+    }
+
 }

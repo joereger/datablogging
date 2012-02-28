@@ -29,4 +29,9 @@ public class MegaChartTypeStackedBar implements MegaChartType{
         return chart;
     }
 
+    public String getHighChart(MegaChart megaChart) {
+
+        return "";
+    }
+
 }

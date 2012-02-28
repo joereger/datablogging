@@ -9,6 +9,8 @@ public interface MegaChartType {
 
     public JFreeChart getJFreeChart(MegaChart megaChart);
 
+    public String getHighChart(MegaChart megaChart);
+
     public JFreeChart formatChart(JFreeChart chart);
 
 }
