@@ -36,8 +36,8 @@ public class MegaChartTypeStackedAreaChart implements MegaChartType{
     }
 
     public String getHighChart(MegaChart megaChart) {
-
-        return "";
+        String out = MegaChartConvertToHighCharts.defaultTableXYDataset(megaChart);
+        return out;
     }
 
 }

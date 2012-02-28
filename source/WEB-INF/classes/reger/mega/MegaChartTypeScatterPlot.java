@@ -36,8 +36,8 @@ public class MegaChartTypeScatterPlot implements MegaChartType{
     }
 
     public String getHighChart(MegaChart megaChart) {
-
-        return "";
+        String out = MegaChartConvertToHighCharts.xySeriesCollection(megaChart);
+        return out;
     }
 
 }

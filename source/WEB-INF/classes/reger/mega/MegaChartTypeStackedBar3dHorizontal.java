@@ -30,8 +30,8 @@ public class MegaChartTypeStackedBar3dHorizontal implements MegaChartType{
     }
 
     public String getHighChart(MegaChart megaChart) {
-
-        return "";
+        String out = MegaChartConvertToHighCharts.defaultCategoryDataset(megaChart);
+        return out;
     }
 
 }

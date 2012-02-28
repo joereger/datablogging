@@ -30,8 +30,8 @@ public class MegaChartTypePie implements MegaChartType{
     }
 
     public String getHighChart(MegaChart megaChart) {
-
-        return "";
+        String out = MegaChartConvertToHighCharts.defaultPieDataset(megaChart);
+        return out;
     }
 
 }

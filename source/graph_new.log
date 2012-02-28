@@ -1,6 +1,7 @@
 <%@ page import="reger.core.Debug" %>
 <%@ page import="reger.mega.MegaChartFactory" %>
 <%@ page import="reger.mega.MegaChart" %>
+<%@ page import="reger.util.Num" %>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -43,6 +44,9 @@ try {
 //    }
 
     MegaChart megaChart = new MegaChart(96);
+    if (Num.isinteger(request.getParameter("megachartid"))){
+        megaChart = new MegaChart(Integer.parseInt(request.getParameter("megachartid")));
+    }
     megaChart.loadMegaChartSeriesData(userSession);
 
     //Get the chart
