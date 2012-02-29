@@ -26,8 +26,14 @@ pageProps.pathToAppRoot="";
 
 
 <%
-
 try {
+
+//  Testing
+//    MegaChart megaChart = new MegaChart(96);
+//    if (Num.isinteger(request.getParameter("megachartid"))){
+//        megaChart = new MegaChart(Integer.parseInt(request.getParameter("megachartid")));
+//    }
+//    megaChart.loadMegaChartSeriesData(userSession);
 
     //Determine whether or not this is a preview of a chart.
     boolean ispreview = false;
@@ -36,24 +42,17 @@ try {
     }
 
     //Get the chart and load its data
-//    reger.mega.MegaChart megaChart = new reger.mega.MegaChart(request);
-//    if (ispreview){
-//        megaChart.setMegaChartSeriesAsPreview();
-//    } else {
-//        megaChart.loadMegaChartSeriesData(userSession);
-//    }
-
-    MegaChart megaChart = new MegaChart(96);
-    if (Num.isinteger(request.getParameter("megachartid"))){
-        megaChart = new MegaChart(Integer.parseInt(request.getParameter("megachartid")));
+    reger.mega.MegaChart megaChart = new reger.mega.MegaChart(request);
+    if (ispreview){
+        megaChart.setMegaChartSeriesAsPreview();
+    } else {
+        megaChart.loadMegaChartSeriesData(userSession);
     }
-    megaChart.loadMegaChartSeriesData(userSession);
+
+
 
     //Get the chart
-    String cStr = MegaChartFactory.getHighChart(megaChart);
-
-    mb.append("<script src=\"js/Highcharts-2.2.0/js/highcharts.js\" type=\"text/javascript\"></script>\n");
-    mb.append(cStr);
+    mb.append(MegaChartFactory.getHighChart(megaChart));
     mb.append("<br/><br/>");
     //mb.append("<pre>"+cStr+"</pre>");
 
@@ -63,8 +62,6 @@ try {
 } catch (Exception e) {
     Debug.errorsave(e, "");
 }
-
-
 %>
 
 

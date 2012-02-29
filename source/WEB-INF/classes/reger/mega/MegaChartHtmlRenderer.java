@@ -107,15 +107,32 @@ public class MegaChartHtmlRenderer {
         if (!showOnlyImage){
             mb.append("<font face=arial size=+1 class=bigfont>");
             if (!megaChart.getChartname().equals("")){
-                mb.append(megaChart.getChartname());
+                //mb.append(megaChart.getChartname());
             } else {
                 mb.append("Custom Graph");
             }
             mb.append("</font><br>");
         }
 
-        //Chart image
-        mb.append("<img src='"+pathToAppRoot+"graph.log?"+urlP+"' border=0>");
+        //Chart itself
+
+
+
+        try {
+            //Get the chart itself
+            if (isPreview){
+                megaChart.setMegaChartSeriesAsPreview();
+            } else {
+                megaChart.loadMegaChartSeriesData(userSession);
+            }
+            mb.append(MegaChartFactory.getHighChart(megaChart));
+            mb.append("<br/><br/>");
+        } catch (Exception e) {
+            Debug.errorsave(e, "");
+        }
+
+
+
         mb.append("</td></tr>");
 
 
@@ -848,74 +865,6 @@ public class MegaChartHtmlRenderer {
                 mb.append("</form>");
 
             mb.append("</td></tr>");
-
-
-
-
-
-            //Raw Data Output
-            //int megaChart.getxMegafieldid()=-1;
-            //if (request.getParameter("megaChart.getxMegafieldid()")!=null && reger.core.Util.isinteger(request.getParameter("megaChart.getxMegafieldid()"))){
-            //    megaChart.getxMegafieldid()=Integer.parseInt(request.getParameter("megaChart.getxMegafieldid()"));
-            //}
-            //int[] megaChart.getyMegafieldid() = new int[1];
-            //if (request.getParameter("megaChart.getyMegafieldid()")!=null && reger.core.Util.isinteger(request.getParameter("megaChart.getyMegafieldid()"))){
-            //    megaChart.getyMegafieldid()[0]=Integer.parseInt(request.getParameter("megaChart.getyMegafieldid()"));
-            //}
-            //int yaxiswhattodo=-1;
-            //if (request.getParameter("yaxiswhattodo")!=null && reger.core.Util.isinteger(request.getParameter("yaxiswhattodo"))){
-            //    yaxiswhattodo=Integer.parseInt(request.getParameter("yaxiswhattodo"));
-            //}
-            //int megaChart.getChartsize()=-1;
-            //if (request.getParameter("megaChart.getChartsize()")!=null && reger.core.Util.isinteger(request.getParameter("megaChart.getChartsize()"))){
-            //    megaChart.getChartsize()=Integer.parseInt(request.getParameter("megaChart.getChartsize()"));
-            //}
-            //Create a reger chart object
-//            if (1==2){
-//                //Now output with the new
-//                mb.append("<tr><td bgcolor=#ffffff align=left valign=top>");
-//                mb.append("<font face=arial size=+3>New MegaChartNew</font>");
-//                mb.append("</td></tr>");
-//                reger.executionTime executionTimeNew = new reger.executionTime();
-//                //Go get the entries that relate to this graph
-//                reger.mega.MegaChartEntryChooser entryChooser = new reger.mega.MegaChartEntryChooser(userSession, xLogid, yLogid, daterange, daterangesavedsearchid, lastxdays, lastxweeks, lastxmonths, lastxyears, daterangetoyyyy, daterangetomm, daterangetodd, daterangefromyyyy, daterangefrommm, daterangefromdd);
-//                entryChooser.populate();
-//                for(int j=0; j<megaChart.getyMegafieldid().length; j++){
-//                    //Create the chart object
-//                    reger.mega.MegaChartSeries megaChartSeries=new reger.mega.MegaChartSeries(userSession, megaChart.getxMegafieldid(), megaChart.getxLogid(), megaChart.getyMegafieldid()[j], megaChart.getyLogid()[j], megaChart.getYaxiswhattodo(), megaChart.getChartsize(), megaChart.getDaterange(), megaChart.getLastxdays(), megaChart.getLastxweeks(), megaChart.getLastxmonths(), megaChart.getLastxyears(), megaChart.getDaterangefromyyyy(), megaChart.getDaterangefrommm(), megaChart.getDaterangefromdd(), megaChart.getDaterangetoyyyy(), megaChart.getDaterangetomm(), megaChart.getDaterangetodd(), megaChart.getDaterangesavedsearchid());
-//                    //Output the data to the screen
-//                    mb.append("<tr><td bgcolor=#ffffff align=left valign=top>");
-//                    //@todo Figure out how to display the chart series name here.  Probably create another array along with rawChartData that holds the names and is indexed by the same number.
-//                    mb.append("<font face=arial size=+1>Chart Data ("+j+")</font><br>");
-//                    mb.append("<table cellpadding=2 cellspacing=1 border=0>");
-//                    if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
-//                        for(int i=0; i<megaChartSeries.cleanData.length; i++){
-//                            //@todo On date types convert back to date for display to user.
-//                            mb.append("<tr><td valign=top align=left bgcolor=#e6e6e6>" + megaChartSeries.cleanData[i][1] + "</td><td valign=top align=left colspan=2>" + megaChartSeries.cleanData[i][2] + "</td></tr>");
-//                        }
-//                    }
-//                    mb.append("</table>");
-//
-//                    //Show raw data for debugging purposes. Set showrawdata to true to show.  False to hide. Doi.
-//                    boolean showrawdata=false;
-//                    if (showrawdata) {
-//                        mb.append("<font face=arial size=+1><br><br>Chart Raw Data ("+j+")</font><br>");
-//                        mb.append("<table cellpadding=2 cellspacing=1 border=0>");
-//                        if (megaChartSeries.rawChartData!=null && megaChartSeries.rawChartData.length>0){
-//                            for(int i=0; i<megaChartSeries.rawChartData.length; i++){
-//                                mb.append("<tr><td valign=top align=left bgcolor=#e6e6e6>" + megaChartSeries.rawChartData[i][1] + "</td><td valign=top align=left>" + megaChartSeries.rawChartData[i][2] + "</td><td valign=top align=left> Eventid:" + megaChartSeries.rawChartData[i][0] + "</td></tr>");
-//                            }
-//                        }
-//                        mb.append("</table>");
-//                    }
-//
-//                }
-//                mb.append("<tr><td bgcolor=#ffffff align=left valign=top>");
-//                mb.append("<font face=arial size=+2>"+executionTimeNew.getElapsed()+"</font>");
-//                mb.append("</td></tr>");
-//
-//
-//            }
 
 
 

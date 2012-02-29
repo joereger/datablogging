@@ -5,20 +5,17 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.DefaultTableXYDataset;
 import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 import reger.core.Debug;
-import reger.util.Str;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,184 +26,6 @@ public class MegaChartConvertToHighCharts {
 
 
 
-    public static String defaultCategoryDataset(MegaChart megaChart){
-        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
-
-        //Root JSON container
-        Map<String, Object> rootJson = new HashMap<String, Object>();
-
-        Map<String, Object> chartJson = new HashMap<String, Object>();
-        chartJson.put("renderTo", "container");
-        chartJson.put("type", "line");
-        chartJson.put("marginRight", 130);
-        chartJson.put("marginBottom", 25);
-        rootJson.put("chart", chartJson);
-
-        Map<String, Object> titleJson = new HashMap<String, Object>();
-        titleJson.put("text", megaChart.getChartname());
-        titleJson.put("x", -20);
-        rootJson.put("title", titleJson);
-
-        Map<String, Object> xaxisJson = new HashMap<String, Object>();
-            Map<String, Object> xtitleJson = new HashMap<String, Object>();
-            xtitleJson.put("enabled", true);
-            xtitleJson.put("text", megaChart.getxAxisTitle());
-            xaxisJson.put("title", xtitleJson);
-        rootJson.put("xAxis", xaxisJson);
-
-        Map<String, Object> yaxisJson = new HashMap<String, Object>();
-            Map<String, Object> ytitleJson = new HashMap<String, Object>();
-            ytitleJson.put("text", megaChart.getyAxisTitle());
-            ytitleJson.put("x", -20);
-            yaxisJson.put("title", ytitleJson);
-        rootJson.put("yAxis", yaxisJson);
-
-        //Data is added here
-        rootJson.put("series", getSeriesDataAsJSON(megaChart));
-
-        //Convert to JSON and wrap in HTML
-        return getChartHtml(rootJson);
-
-
-
-
-//        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
-//        StringBuffer out = new StringBuffer();
-//        //Dataset to hold data
-//        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//        //Loop on the series of the megaChart
-//        for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
-//            MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
-//            if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
-//                for(int i=0; i<megaChartSeries.cleanData.length; i++){
-//                    //Y data must always be numeric
-//                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
-//                        try{
-//                            //Base dataset.  Will accept any x axis value
-//                            dataset.addValue(Double.parseDouble(megaChartSeries.cleanData[i][2]), megaChartSeries.getyAxisTitle(), megaChartSeries.cleanData[i][1]);
-//                        } catch (Exception e) {
-//                            //Do not rely on this catch to fix bugs... the reason it's here
-//                            //is to help the graphs be more robust.  Instead of crashing the whole
-//                            //graph, only this data point won't be added.  Solve errors caught here
-//                            //in the above block.
-//                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return out.toString();
-    }
-
-    public static String xySeriesCollection(MegaChart megaChart){
-        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
-
-        //Root JSON container
-        Map<String, Object> rootJson = new HashMap<String, Object>();
-
-        Map<String, Object> chartJson = new HashMap<String, Object>();
-        chartJson.put("renderTo", "container");
-        chartJson.put("type", "line");
-        chartJson.put("marginRight", 130);
-        chartJson.put("marginBottom", 25);
-        rootJson.put("chart", chartJson);
-
-        Map<String, Object> titleJson = new HashMap<String, Object>();
-        titleJson.put("text", megaChart.getChartname());
-        titleJson.put("x", -20);
-        rootJson.put("title", titleJson);
-
-        Map<String, Object> xaxisJson = new HashMap<String, Object>();
-            Map<String, Object> xtitleJson = new HashMap<String, Object>();
-            xtitleJson.put("enabled", true);
-            xtitleJson.put("text", megaChart.getxAxisTitle());
-            xaxisJson.put("title", xtitleJson);
-        rootJson.put("xAxis", xaxisJson);
-
-        Map<String, Object> yaxisJson = new HashMap<String, Object>();
-            Map<String, Object> ytitleJson = new HashMap<String, Object>();
-            ytitleJson.put("text", megaChart.getyAxisTitle());
-            ytitleJson.put("x", -20);
-            yaxisJson.put("title", ytitleJson);
-        rootJson.put("yAxis", yaxisJson);
-
-        //Data is added here
-        rootJson.put("series", getSeriesDataAsJSON(megaChart));
-
-        //Convert to JSON and wrap in HTML
-        return getChartHtml(rootJson);
-    }
-
-    public static String defaultPieDataset(MegaChart megaChart){
-
-        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
-
-        //Root JSON container
-        Map<String, Object> rootJson = new HashMap<String, Object>();
-
-        Map<String, Object> chartJson = new HashMap<String, Object>();
-        chartJson.put("renderTo", "container");
-        chartJson.put("type", "pie");
-        chartJson.put("marginRight", 130);
-        chartJson.put("marginBottom", 25);
-        rootJson.put("chart", chartJson);
-
-        Map<String, Object> titleJson = new HashMap<String, Object>();
-        titleJson.put("text", megaChart.getChartname());
-        titleJson.put("x", -20);
-        rootJson.put("title", titleJson);
-
-        Map<String, Object> xaxisJson = new HashMap<String, Object>();
-            Map<String, Object> xtitleJson = new HashMap<String, Object>();
-            xtitleJson.put("enabled", true);
-            xtitleJson.put("text", megaChart.getxAxisTitle());
-            xaxisJson.put("title", xtitleJson);
-        rootJson.put("xAxis", xaxisJson);
-
-        Map<String, Object> yaxisJson = new HashMap<String, Object>();
-            Map<String, Object> ytitleJson = new HashMap<String, Object>();
-            ytitleJson.put("text", megaChart.getyAxisTitle());
-            ytitleJson.put("x", -20);
-            yaxisJson.put("title", ytitleJson);
-        rootJson.put("yAxis", yaxisJson);
-
-        //Data is added here
-        rootJson.put("series", getSeriesDataAsJSON(megaChart));
-
-        //Convert to JSON and wrap in HTML
-        return getChartHtml(rootJson);
-
-
-
-
-//        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
-//        StringBuffer out = new StringBuffer();
-//        //Dataset to hold data
-//        DefaultPieDataset piedata = null;
-//        //Loop on the series of the megaChart
-//        for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
-//            MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
-//            if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
-//                piedata = new DefaultPieDataset();
-//                for(int i=0; i<megaChartSeries.cleanData.length; i++){
-//                    //Y data must always be numeric
-//                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
-//                        try{
-//                            //Pie data. Will accept any x axis value
-//                            piedata.setValue(megaChartSeries.cleanData[i][1], Double.parseDouble(megaChartSeries.cleanData[i][2]));
-//                        } catch (Exception e) {
-//                            //Do not rely on this catch to fix bugs... the reason it's here
-//                            //is to help the graphs be more robust.  Instead of crashing the whole
-//                            //graph, only this data point won't be added.  Solve errors caught here
-//                            //in the above block.
-//                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return out.toString();
-    }
 
 
     public static String timeSeriesCollection(MegaChart megaChart){
@@ -250,43 +69,56 @@ public class MegaChartConvertToHighCharts {
         return out.toString();
     }
 
-    public static String defaultTableXYDataset(MegaChart megaChart){
+
+
+
+
+    public static ArrayList getSeriesDataTimeSeries(MegaChart megaChart){
         Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
-        StringBuffer out = new StringBuffer();
-        //Dataset to hold data
-        XYSeries xydataset = null;
-        DefaultTableXYDataset stackedareadata = new DefaultTableXYDataset();
-        //Loop on the series of the megaChart
+        ArrayList allseries = new ArrayList();
+
         for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
             MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
             if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
-                xydataset = new XYSeries(megaChartSeries.yAxisTitle, false, false);
+                ArrayList arrayofdata = new ArrayList();
+
                 for(int i=0; i<megaChartSeries.cleanData.length; i++){
-                    //Y data must always be numeric
-                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
-                        try{
-                            //XY Data.  Both x,y must be numeric
-                            if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][1])){
-                                xydataset.add(Double.parseDouble(megaChartSeries.cleanData[i][1]), Double.parseDouble(megaChartSeries.cleanData[i][2]));
-                            }
-                        } catch (Exception e) {
-                            //Do not rely on this catch to fix bugs... the reason it's here
-                            //is to help the graphs be more robust.  Instead of crashing the whole
-                            //graph, only this data point won't be added.  Solve errors caught here
-                            //in the above block.
-                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
+                    try{
+                        ArrayList singledatapoint = new ArrayList();
+                        //Add as either string or double, depending on whether they're supposed to be numeric
+                        if(reger.core.Util.isnumeric(megaChartSeries.cleanData[i][1])){
+                            //singledatapoint.add(Double.parseDouble(megaChartSeries.cleanData[i][1]));
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTimeInMillis(Long.parseLong(megaChartSeries.cleanData[i][1]));
+                            //Date.UTC(year, mo, day, hour, minute, second)
+                            singledatapoint.add("Date.UTC("+cal.get(Calendar.YEAR)+", "+cal.get(Calendar.MONTH)+", "+cal.get(Calendar.DAY_OF_MONTH)+", "+cal.get(Calendar.HOUR)+", "+cal.get(Calendar.MINUTE)+", "+cal.get(Calendar.SECOND)+")");
+                        } else {
+                            continue; //In a time series X must be a milliseconds value to record the datapoint
                         }
+                        if(reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])){
+                            singledatapoint.add(Double.parseDouble(megaChartSeries.cleanData[i][2]));
+                        } else {
+                            singledatapoint.add(megaChartSeries.cleanData[i][2]);
+                        }
+                        arrayofdata.add(singledatapoint);
+                    } catch (Exception e) {
+                        Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
                     }
                 }
-                stackedareadata.addSeries(xydataset);
+
+                Map<String, Object> singleseries = new HashMap<String, Object>();
+                singleseries.put("name", megaChartSeries.yAxisTitle);
+                singleseries.put("data", arrayofdata);
+                allseries.add(singleseries);
             }
         }
-        return out.toString();
+
+        return allseries;
     }
 
 
 
-    private static ArrayList getSeriesDataAsJSON(MegaChart megaChart){
+    public static ArrayList getSeriesDataDefaultXY(MegaChart megaChart){
         Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
         ArrayList allseries = new ArrayList();
 
@@ -325,7 +157,7 @@ public class MegaChartConvertToHighCharts {
         return allseries;
     }
 
-    private static String getChartHtml(Map<String, Object> rootJson){
+    public static String getChartHtml(Map<String, Object> rootJson){
         Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
         StringBuffer out = new StringBuffer();
         //Serialize chart params to JSON
@@ -345,6 +177,7 @@ public class MegaChartConvertToHighCharts {
             logger.error("", e);
         }
 
+        out.append("<script src=\"js/Highcharts-2.2.0/js/highcharts.js\" type=\"text/javascript\"></script>\n");
         out.append("<script type=\"text/javascript\">\n" +
                 "\n" +
                 "(function($){ // encapsulate jQuery\n" +

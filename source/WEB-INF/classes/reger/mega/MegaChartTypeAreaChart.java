@@ -16,6 +16,9 @@ import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.general.DefaultPieDataset;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Chart Type
  */
@@ -36,7 +39,41 @@ public class MegaChartTypeAreaChart implements MegaChartType{
     }
 
     public String getHighChart(MegaChart megaChart) {
-        String out = MegaChartConvertToHighCharts.xySeriesCollection(megaChart);
+        //Root JSON container
+        Map<String, Object> rootJson = new HashMap<String, Object>();
+
+        Map<String, Object> chartJson = new HashMap<String, Object>();
+        chartJson.put("renderTo", "container");
+        chartJson.put("type", "area");
+        chartJson.put("marginRight", 130);
+        chartJson.put("marginBottom", 25);
+        rootJson.put("chart", chartJson);
+
+        Map<String, Object> titleJson = new HashMap<String, Object>();
+        titleJson.put("text", megaChart.getChartname());
+        titleJson.put("x", -20);
+        rootJson.put("title", titleJson);
+
+        Map<String, Object> xaxisJson = new HashMap<String, Object>();
+            Map<String, Object> xtitleJson = new HashMap<String, Object>();
+            xtitleJson.put("enabled", true);
+            xtitleJson.put("text", megaChart.getxAxisTitle());
+            xaxisJson.put("title", xtitleJson);
+        rootJson.put("xAxis", xaxisJson);
+
+        Map<String, Object> yaxisJson = new HashMap<String, Object>();
+            Map<String, Object> ytitleJson = new HashMap<String, Object>();
+            ytitleJson.put("text", megaChart.getyAxisTitle());
+            ytitleJson.put("x", -20);
+            yaxisJson.put("title", ytitleJson);
+        rootJson.put("yAxis", yaxisJson);
+
+        //Data is added here
+        rootJson.put("series", MegaChartConvertToHighCharts.getSeriesDataDefaultXY(megaChart));
+
+        //Convert to JSON and wrap in HTML
+        String out = MegaChartConvertToHighCharts.getChartHtml(rootJson);
+
         return out;
     }
 

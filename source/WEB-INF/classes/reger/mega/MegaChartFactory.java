@@ -125,7 +125,7 @@ public class MegaChartFactory {
 
 
         //Truncate the data for performance
-        megaChart.truncateDataToCertainNumberOfPoints(750);
+        megaChart.truncateDataToCertainNumberOfPoints(10000);
         //Create the chart
         String cStr = ct.getHighChart(megaChart);
         //Return
