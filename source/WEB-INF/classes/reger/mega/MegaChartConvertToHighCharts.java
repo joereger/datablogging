@@ -26,53 +26,6 @@ public class MegaChartConvertToHighCharts {
 
 
 
-
-
-    public static String timeSeriesCollection(MegaChart megaChart){
-        Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
-        StringBuffer out = new StringBuffer();
-        //Dataset to hold data
-        TimeSeries timedata = null;
-        TimeSeriesCollection timedataseries = new TimeSeriesCollection();
-        //Loop on the series of the megaChart
-        for (int j = 0; j < megaChart.getMegaChartSeries().length; j++) {
-            MegaChartSeries megaChartSeries = megaChart.getMegaChartSeries()[j];
-            if (megaChartSeries.cleanData!=null && megaChartSeries.cleanData.length>0){
-                timedata = new TimeSeries(megaChartSeries.yAxisTitle, Millisecond.class);
-                for(int i=0; i<megaChartSeries.cleanData.length; i++){
-                    //Y data must always be numeric
-                    if (reger.core.Util.isnumeric(megaChartSeries.cleanData[i][2])) {
-                        try{
-                            try{
-                                java.util.Date tmpDate = new java.util.Date(Long.parseLong(megaChartSeries.cleanData[i][1]));
-                                timedata.add(new Millisecond(tmpDate), Double.parseDouble(megaChartSeries.cleanData[i][2]));
-                            } catch (Exception e){
-                                //Here's a situation where the try/catch thing works.  Otherwise
-                                //I'd have to do a date comparison for every single data point.
-                                //Which is a lot of overhead in Java's slow date classes.  Instead,
-                                //I'm relying on the Millisecond's built-in check to see if the date is
-                                //between 1900 and 9999.  Not as elegant as I'd like, but it works.
-                                Debug.debug(5, "", e);
-                            }
-                        } catch (Exception e) {
-                            //Do not rely on this catch to fix bugs... the reason it's here
-                            //is to help the graphs be more robust.  Instead of crashing the whole
-                            //graph, only this data point won't be added.  Solve errors caught here
-                            //in the above block.
-                            Debug.errorsave(e, "", "MegaChartConvertToHighCharts - Error Adding Data to Data Set.");
-                        }
-                    }
-                }
-                timedataseries.addSeries(timedata);
-            }
-        }
-        return out.toString();
-    }
-
-
-
-
-
     public static ArrayList getSeriesDataTimeSeries(MegaChart megaChart){
         Logger logger = Logger.getLogger(MegaChartConvertToHighCharts.class);
         ArrayList allseries = new ArrayList();
@@ -91,7 +44,8 @@ public class MegaChartConvertToHighCharts {
                             Calendar cal = Calendar.getInstance();
                             cal.setTimeInMillis(Long.parseLong(megaChartSeries.cleanData[i][1]));
                             //Date.UTC(year, mo, day, hour, minute, second)
-                            singledatapoint.add("Date.UTC("+cal.get(Calendar.YEAR)+", "+cal.get(Calendar.MONTH)+", "+cal.get(Calendar.DAY_OF_MONTH)+", "+cal.get(Calendar.HOUR)+", "+cal.get(Calendar.MINUTE)+", "+cal.get(Calendar.SECOND)+")");
+                            //singledatapoint.add("Date.UTC("+cal.get(Calendar.YEAR)+", "+cal.get(Calendar.MONTH)+", "+cal.get(Calendar.DAY_OF_MONTH)+", "+cal.get(Calendar.HOUR)+", "+cal.get(Calendar.MINUTE)+", "+cal.get(Calendar.SECOND)+")");
+                            singledatapoint.add(Long.parseLong(megaChartSeries.cleanData[i][1])*1000);
                         } else {
                             continue; //In a time series X must be a milliseconds value to record the datapoint
                         }

@@ -543,7 +543,7 @@ public class MegaChartHtmlRenderer {
                     mb.append(" checked");
                 }
                 mb.append("> Last ");
-                mb.append("<select name=lastxdays "+dropdownstyle+">");
+                mb.append("<select style=\"span1\" name=lastxdays "+dropdownstyle+">");
                 for(int i=0; i<60; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getLastxdays()==i){
@@ -559,7 +559,7 @@ public class MegaChartHtmlRenderer {
                     mb.append(" checked");
                 }
                 mb.append("> Last ");
-                mb.append("<select name=lastxweeks "+dropdownstyle+">");
+                mb.append("<select style=\"span1\" name=lastxweeks "+dropdownstyle+">");
                 for(int i=0; i<16; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getLastxweeks()==i){
@@ -575,7 +575,7 @@ public class MegaChartHtmlRenderer {
                     mb.append(" checked");
                 }
                 mb.append("> Last ");
-                mb.append("<select name=lastxmonths "+dropdownstyle+">");
+                mb.append("<select style=\"span1\" name=lastxmonths "+dropdownstyle+">");
                 for(int i=0; i<24; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getLastxmonths()==i){
@@ -591,7 +591,7 @@ public class MegaChartHtmlRenderer {
                     mb.append(" checked");
                 }
                 mb.append("> Last ");
-                mb.append("<select name=lastxyears "+dropdownstyle+">");
+                mb.append("<select style=\"span1\" name=lastxyears "+dropdownstyle+">");
                 for(int i=0; i<100; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getLastxyears()==i){
@@ -610,7 +610,7 @@ public class MegaChartHtmlRenderer {
                 mb.append("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From:<br>");
                 mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
                 mb.append("<select class=\"span1\" name=daterangefromyyyy "+dropdownstyle+">");
-                for(int i=1900; i<=2010; i++){
+                for(int i=1970; i<=2020; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangefromyyyy()==i){
                        mb.append(" selected");
@@ -641,7 +641,7 @@ public class MegaChartHtmlRenderer {
                 mb.append("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:<br>");
                 mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
                 mb.append("<select class=\"span1\" name=daterangetoyyyy "+dropdownstyle+">");
-                for(int i=1900; i<=2010; i++){
+                for(int i=1970; i<=2020; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangetoyyyy()==i){
                        mb.append(" selected");
@@ -751,51 +751,51 @@ public class MegaChartHtmlRenderer {
                 if (megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHART3D){
                     mb.append(" checked");
                 }
-                mb.append("> Stacked 3D Bar");
-                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPEHORIZONTALBAR);
-                if (megaChart.getCharttype()==reger.Vars.CHARTTYPEHORIZONTALBAR){
-                    mb.append(" checked");
-                }
+//                mb.append("> Stacked 3D Bar");
+//                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPEHORIZONTALBAR);
+//                if (megaChart.getCharttype()==reger.Vars.CHARTTYPEHORIZONTALBAR){
+//                    mb.append(" checked");
+//                }
                 mb.append("> Horizontal Bar");
                 mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPEHORIZONTAL3DBAR);
                 if (megaChart.getCharttype()==reger.Vars.CHARTTYPEHORIZONTAL3DBAR){
                     mb.append(" checked");
                 }
-                mb.append("> Horizontal 3D Bar");
-                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPESTACKEDBARCHARTHORIZONTAL);
-                if (megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHARTHORIZONTAL){
-                    mb.append(" checked");
-                }
+//                mb.append("> Horizontal 3D Bar");
+//                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPESTACKEDBARCHARTHORIZONTAL);
+//                if (megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHARTHORIZONTAL){
+//                    mb.append(" checked");
+//                }
                 mb.append("> Stacked Horiz Bar");
                 mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPESTACKEDBARCHART3DHORIZONTAL);
                 if (megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHART3DHORIZONTAL){
                     mb.append(" checked");
                 }
-                mb.append("> Stacked Horiz 3D Bar");
-                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPEPIE);
-                if (megaChart.getCharttype()==reger.Vars.CHARTTYPEPIE){
-                    mb.append(" checked");
-                }
+//                mb.append("> Stacked Horiz 3D Bar");
+//                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPEPIE);
+//                if (megaChart.getCharttype()==reger.Vars.CHARTTYPEPIE){
+//                    mb.append(" checked");
+//                }
                 mb.append("> Pie Chart");
                 mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPE3DPIE);
                 if (megaChart.getCharttype()==reger.Vars.CHARTTYPE3DPIE){
                     mb.append(" checked");
                 }
-                mb.append("> 3D Pie Chart");
-                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPESCATTERPLOT);
-                if (megaChart.getCharttype()==reger.Vars.CHARTTYPESCATTERPLOT){
-                    mb.append(" checked");
-                }
+//                mb.append("> 3D Pie Chart");
+//                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPESCATTERPLOT);
+//                if (megaChart.getCharttype()==reger.Vars.CHARTTYPESCATTERPLOT){
+//                    mb.append(" checked");
+//                }
                 mb.append("> Scatter Plot");
                 mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPESTEPCHART);
                 if (megaChart.getCharttype()==reger.Vars.CHARTTYPESTEPCHART){
                     mb.append(" checked");
                 }
-                mb.append("> Step Chart");
-                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPEAREACHART);
-                if (megaChart.getCharttype()==reger.Vars.CHARTTYPEAREACHART){
-                    mb.append(" checked");
-                }
+//                mb.append("> Step Chart");
+//                mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPEAREACHART);
+//                if (megaChart.getCharttype()==reger.Vars.CHARTTYPEAREACHART){
+//                    mb.append(" checked");
+//                }
                 mb.append("> Area Chart");
                 mb.append("<br><input name=charttype type=radio value="+reger.Vars.CHARTTYPESTACKEDAREA);
                 if (megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDAREA){
