@@ -42,7 +42,7 @@ public class MegaChartTypeTimeSeries implements MegaChartType{
 
         Map<String, Object> chartJson = new HashMap<String, Object>();
         chartJson.put("renderTo", "container");
-        chartJson.put("type", "line");
+        chartJson.put("type", "spline");
         chartJson.put("marginRight", 130);
         chartJson.put("marginBottom", 25);
         rootJson.put("chart", chartJson);
@@ -53,10 +53,7 @@ public class MegaChartTypeTimeSeries implements MegaChartType{
         rootJson.put("title", titleJson);
 
         Map<String, Object> xaxisJson = new HashMap<String, Object>();
-            Map<String, Object> xtitleJson = new HashMap<String, Object>();
-            xtitleJson.put("enabled", true);
-            xtitleJson.put("text", megaChart.getxAxisTitle());
-            xaxisJson.put("title", xtitleJson);
+        xaxisJson.put("type", "datetime");
         rootJson.put("xAxis", xaxisJson);
 
         Map<String, Object> yaxisJson = new HashMap<String, Object>();

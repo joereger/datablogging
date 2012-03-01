@@ -45,7 +45,8 @@ public class MegaChartConvertToHighCharts {
                             cal.setTimeInMillis(Long.parseLong(megaChartSeries.cleanData[i][1]));
                             //Date.UTC(year, mo, day, hour, minute, second)
                             //singledatapoint.add("Date.UTC("+cal.get(Calendar.YEAR)+", "+cal.get(Calendar.MONTH)+", "+cal.get(Calendar.DAY_OF_MONTH)+", "+cal.get(Calendar.HOUR)+", "+cal.get(Calendar.MINUTE)+", "+cal.get(Calendar.SECOND)+")");
-                            singledatapoint.add(Long.parseLong(megaChartSeries.cleanData[i][1])*1000);
+                            //singledatapoint.add("Date.UTC("+cal.get(Calendar.YEAR)+", "+cal.get(Calendar.MONTH)+", "+cal.get(Calendar.DAY_OF_MONTH)+")");
+                            singledatapoint.add(Long.parseLong(megaChartSeries.cleanData[i][1]));
                         } else {
                             continue; //In a time series X must be a milliseconds value to record the datapoint
                         }
