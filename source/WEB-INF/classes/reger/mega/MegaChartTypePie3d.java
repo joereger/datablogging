@@ -40,13 +40,10 @@ public class MegaChartTypePie3d implements MegaChartType{
         Map<String, Object> chartJson = new HashMap<String, Object>();
         chartJson.put("renderTo", "container");
         chartJson.put("type", "pie");
-        chartJson.put("marginRight", 130);
-        chartJson.put("marginBottom", 25);
         rootJson.put("chart", chartJson);
 
         Map<String, Object> titleJson = new HashMap<String, Object>();
         titleJson.put("text", megaChart.getChartname());
-        titleJson.put("x", -20);
         rootJson.put("title", titleJson);
 
         Map<String, Object> xaxisJson = new HashMap<String, Object>();
@@ -59,7 +56,6 @@ public class MegaChartTypePie3d implements MegaChartType{
         Map<String, Object> yaxisJson = new HashMap<String, Object>();
             Map<String, Object> ytitleJson = new HashMap<String, Object>();
             ytitleJson.put("text", megaChart.getyAxisTitle());
-            ytitleJson.put("x", -20);
             yaxisJson.put("title", ytitleJson);
         rootJson.put("yAxis", yaxisJson);
 

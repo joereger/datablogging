@@ -36,16 +36,19 @@ public class MegaChartTypeStackedBar implements MegaChartType{
         //Root JSON container
         Map<String, Object> rootJson = new HashMap<String, Object>();
 
+        Map<String, Object> plotoptionsJson = new HashMap<String, Object>();
+            Map<String, Object> seriesJson = new HashMap<String, Object>();
+            seriesJson.put("stacking", "normal");
+            plotoptionsJson.put("series", seriesJson);
+        rootJson.put("plotOptions", plotoptionsJson);
+
         Map<String, Object> chartJson = new HashMap<String, Object>();
         chartJson.put("renderTo", "container");
         chartJson.put("type", "bar");
-        chartJson.put("marginRight", 130);
-        chartJson.put("marginBottom", 25);
         rootJson.put("chart", chartJson);
 
         Map<String, Object> titleJson = new HashMap<String, Object>();
         titleJson.put("text", megaChart.getChartname());
-        titleJson.put("x", -20);
         rootJson.put("title", titleJson);
 
         Map<String, Object> xaxisJson = new HashMap<String, Object>();
@@ -55,10 +58,11 @@ public class MegaChartTypeStackedBar implements MegaChartType{
             xaxisJson.put("title", xtitleJson);
         rootJson.put("xAxis", xaxisJson);
 
+
+
         Map<String, Object> yaxisJson = new HashMap<String, Object>();
             Map<String, Object> ytitleJson = new HashMap<String, Object>();
             ytitleJson.put("text", megaChart.getyAxisTitle());
-            ytitleJson.put("x", -20);
             yaxisJson.put("title", ytitleJson);
         rootJson.put("yAxis", yaxisJson);
 
