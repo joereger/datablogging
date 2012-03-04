@@ -1,5 +1,6 @@
 package reger.mega;
 
+import org.apache.log4j.Logger;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.plot.CategoryPlot;
@@ -75,11 +76,15 @@ public class MegaChartFactory {
 
 
     public static String getHighChart(MegaChart megaChart){
+        Logger logger = Logger.getLogger(MegaChartFactory.class);
+
+        logger.debug("getHighChart() megaChart.getCharttype()="+megaChart.getCharttype());
+
         //Default Type
         MegaChartType ct = new MegaChartTypeLine();
 
         //Figure out which type the user wants
-        if (megaChart.getxMegadatatype()==reger.mega.DataTypeString.DATATYPEID || megaChart.getCharttype()==reger.Vars.CHARTTYPE3DBAR || megaChart.getCharttype()==reger.Vars.CHARTTYPEHORIZONTALBAR || megaChart.getCharttype()==reger.Vars.CHARTTYPEHORIZONTAL3DBAR || megaChart.getCharttype()==reger.Vars.CHARTTYPEBAR  || megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHART  || megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHART3D || megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHARTHORIZONTAL || megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHART3DHORIZONTAL) {
+        //if (megaChart.getxMegadatatype()==reger.mega.DataTypeString.DATATYPEID || megaChart.getCharttype()==reger.Vars.CHARTTYPE3DBAR || megaChart.getCharttype()==reger.Vars.CHARTTYPEHORIZONTALBAR || megaChart.getCharttype()==reger.Vars.CHARTTYPEHORIZONTAL3DBAR || megaChart.getCharttype()==reger.Vars.CHARTTYPEBAR  || megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHART  || megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHART3D || megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHARTHORIZONTAL || megaChart.getCharttype()==reger.Vars.CHARTTYPESTACKEDBARCHART3DHORIZONTAL) {
             if (megaChart.getCharttype()==reger.Vars.CHARTTYPE3DBAR) {
                 ct = new MegaChartType3DBar();
             } else if (megaChart.getCharttype()==reger.Vars.CHARTTYPEHORIZONTALBAR) {
@@ -97,7 +102,7 @@ public class MegaChartFactory {
             } else {
                 ct = new MegaChartTypeBar();
             }
-        }
+        //}
         if (megaChart.getCharttype()==reger.Vars.CHARTTYPEPIE){
            ct = new MegaChartTypePie();
         }
@@ -123,6 +128,7 @@ public class MegaChartFactory {
             ct = new MegaChartTypeTimeSeries();
         }
 
+        logger.debug("getHighChart() chosen ct="+ct.getClass().getName());
 
         //Truncate the data for performance
         megaChart.truncateDataToCertainNumberOfPoints(10000);

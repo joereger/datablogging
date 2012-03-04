@@ -1,11 +1,15 @@
 package reger.mega;
 
+import reger.Log;
+import reger.cache.LogCache;
 import reger.core.db.Db;
 import reger.UserSession;
 import reger.AddToArray;
 import reger.core.Debug;
+import reger.util.Num;
 
 import java.util.Calendar;
+import java.util.Vector;
 
 /**
  * Represents a chart.  Note that MegaChartSeries does the heavy lifting of data retrieval for a data series.
@@ -49,8 +53,8 @@ public class MegaChart {
         load(megachartid);
     }
 
-    public MegaChart(javax.servlet.http.HttpServletRequest request){
-        populateFromRequest(request);
+    public MegaChart(javax.servlet.http.HttpServletRequest request, UserSession userSession){
+        populateFromRequest(request, userSession);
     }
 
     public void load(int megachartid){
@@ -111,21 +115,26 @@ public class MegaChart {
     }
 
 
-    public void populateFromRequest(javax.servlet.http.HttpServletRequest request){
+    public void populateFromRequest(javax.servlet.http.HttpServletRequest request, UserSession userSession){
+        //Start with the megachartid and then overload
+        if (Num.isinteger(request.getParameter("megachartid"))){
+            load(Integer.parseInt(request.getParameter("megachartid")));
+        }
+
+
+
         if (request.getParameter("chartname")!=null && !request.getParameter("chartname").equals("")){
             chartname=request.getParameter("chartname");
         } else {
             chartname = "";
         }
 
-        xMegafieldChoice = "";
-        xMegafieldid=FieldType.XAXISDATETIME;
-        xLogid = 0;
-        xeventtypeid = 0;
+        //xMegafieldChoice = "";
+        //xMegafieldid=FieldType.XAXISDATETIME;
+        //xLogid = 0;
+        //xeventtypeid = 0;
         if (request.getParameter("xMegafieldChoice")!=null){
             xMegafieldChoice=request.getParameter("xMegafieldChoice");
-        }
-        if(!xMegafieldChoice.equals("")){
             //Break apart the xMegafieldChoice which is of the format <fieldid>_<logid>_<eventtypeid>
             if (reger.core.Util.isinteger(xMegafieldChoice.split("_")[0])){
                 xMegafieldid = Integer.parseInt(xMegafieldChoice.split("_")[0]);
@@ -137,14 +146,60 @@ public class MegaChart {
                 xeventtypeid = Integer.parseInt(xMegafieldChoice.split("_")[2]);
             }
         }
+        if (xMegafieldChoice==null || xMegafieldChoice.equals("")){
+            //If there's no logid, I have to choose one.  This happens
+            //when a user clicks on a system graph.  There is an eventtypeid,
+            //but no logid.  So I'll choose the first logid that is of the type
+            //that the system graph needs. This is kind of ugly.
+            int tmpxLogid = xLogid;
+            if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0){
+                Vector tmpLogs = LogCache.allLogsForAccount(userSession.getAccount().getAccountid());
+                if(tmpxLogid<=0 && xeventtypeid>0){
+                    for (int j = 0; j < tmpLogs.size(); j++) {
+                        Log log = (Log) tmpLogs.elementAt(j);
+                        if (log.getEventtypeid()==xeventtypeid){
+                            tmpxLogid=log.getLogid();
+                        }
+                    }
+                }
+            }
+            //Set xMegaFieldChoice
+            xMegafieldChoice = xMegafieldid+"_"+tmpxLogid+"_"+xeventtypeid;
+        }
 
 
-        yMegafieldChoice = new String[0];
-        yMegafieldid = new int[0];
-        yLogid = new int[0];
-        yEventtypeid = new int[0];
+
+
+
+        //yMegafieldChoice = new String[0];
+        //yMegafieldid = new int[0];
+        //yLogid = new int[0];
+        //yEventtypeid = new int[0];
         if (request.getParameter("yMegafieldChoice")!=null){
             yMegafieldChoice=request.getParameterValues("yMegafieldChoice");
+        }
+        if (yMegafieldChoice==null || yMegafieldChoice.length==0){
+            yMegafieldChoice = new String[yMegafieldid.length];
+            for(int i=0; i<yMegafieldid.length; i++){
+                //If there's no logid, I have to choose one.  This happens
+                //when a user clicks on a system graph.  There is an eventtypeid,
+                //but no logid.  So I'll choose the first logid that is of the type
+                //that the system graph needs. This is kind of ugly.
+                int tmpyLogid = yLogid[i];
+                if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0){
+                    Vector tmpLogs = LogCache.allLogsForAccount(userSession.getAccount().getAccountid());
+                    if(tmpyLogid<=0 && yEventtypeid[i]>0){
+                        for (int j = 0; j < tmpLogs.size(); j++) {
+                            Log log = (Log) tmpLogs.elementAt(j);
+                            if (log.getEventtypeid()==yEventtypeid[i]){
+                                tmpyLogid=log.getLogid();
+                            }
+                        }
+                    }
+                }
+                //Set yMegafieldChoice
+                yMegafieldChoice[i] = yMegafieldid[i]+"_"+tmpyLogid+"_"+yEventtypeid[i];
+            }
         }
         if (yMegafieldChoice.length>0){
             //Break apart the yMegafieldChoice which is of the format <fieldid>_<logid>_<eventtypeid>

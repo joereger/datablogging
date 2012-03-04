@@ -123,7 +123,7 @@ public class MegaChartConvertToHighCharts {
             mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
             mapper.writeValue(sw, rootJson);
             jsonStr = sw.toString();
-            logger.debug(jsonStr);
+            //logger.debug(jsonStr);
         } catch (JsonGenerationException e) {
             logger.error("", e);
         } catch (JsonMappingException e) {
@@ -149,6 +149,8 @@ public class MegaChartConvertToHighCharts {
                 "</script>");
 
         out.append("<div id=\"container\" style=\"width: 100%; height: 500px\"></div>");
+
+        logger.debug(out.toString());
 
         return out.toString();
     }

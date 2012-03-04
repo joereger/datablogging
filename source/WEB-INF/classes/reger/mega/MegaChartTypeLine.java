@@ -48,7 +48,7 @@ public class MegaChartTypeLine implements MegaChartType{
 
         Map<String, Object> chartJson = new HashMap<String, Object>();
         chartJson.put("renderTo", "container");
-        chartJson.put("type", "pie");
+        chartJson.put("type", "spline");
         chartJson.put("marginRight", 130);
         chartJson.put("marginBottom", 25);
         rootJson.put("chart", chartJson);

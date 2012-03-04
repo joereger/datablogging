@@ -121,6 +121,8 @@ if (pageProps.action.equals("go")){
 
     if (request.getParameter("camphoneimagetags")!=null && !request.getParameter("camphoneimagetags").equals("")){
         camphoneimagetags = request.getParameter("camphoneimagetags");
+    } else {
+        camphoneimagetags = "";
     }
 
     //Validation

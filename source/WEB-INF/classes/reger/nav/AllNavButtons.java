@@ -23,7 +23,6 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entries", "", "posts", "myhome/entries-recent.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("logs", "", "logs & pages", "myhome/logs-log-list.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("files", "", "Files", "myhome/files.log", false, "", null));
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphs", "", "graphs", "myhome/graphs.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("traffic", "", "Traffic", "myhome/traffic.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("people", "", "People", "myhome/people.log", false, "", null));
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("groups", "", "Groups", "myhome/groups.log", false, "", null));
@@ -63,9 +62,6 @@ public class AllNavButtons {
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessimplesearch", "entriessearchtop", "Simple Search", "myhome/entries-simplesearch.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessearch", "entriessearchtop", "Advanced Search", "myhome/entries.log", false, "", null));
         allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("entriessaved", "entriessearchtop", "Saved Searches", "myhome/entries-savedsearches.log", false, "", null));
-
-        //Graphs
-        allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("graphsmain", "graphs", "Graphs", "myhome/graphs.log", false, "", null));
 
         //Files
         //allNavButtons = AddToArray.addToNavButtonArray(allNavButtons, new NavButton("filesbrowse", "files", "BROWSE", "myhome/files.log", false, "", null));

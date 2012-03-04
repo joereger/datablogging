@@ -61,9 +61,7 @@ public class SiteTemplateTagAboutThisBlog implements SiteTemplateTag{
         }
 
 
-        if (userSession.getAccountuser().getAccountid()==userSession.getAccount().getAccountid()){
-            out.append("<br/><a class=\"btn btn-success btn-small\" href='myhome/settings-siteprops.log'><i class=\"icon-edit icon-white\"></i> Edit</a>");
-        }
+
 
         if (a){
             out.append("<br/><br/>");

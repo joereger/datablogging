@@ -10,7 +10,7 @@ import java.util.*;
 public class Debug {
 
     public static void logtodb(String whattolog, String label){
-        System.out.println(label + ": " + whattolog);
+        //System.out.println(label + ": " + whattolog);
         Logger logger = Logger.getLogger(Debug.class);
         logger.debug(label+": "+whattolog);
         //-----------------------------------
@@ -118,7 +118,7 @@ public class Debug {
 
     public static void debug(int debugLevel, String label, String whatToLog){
         Logger logger = Logger.getLogger(Debug.class);
-        logger.debug(label+": "+whatToLog);
+        //logger.debug(label+": "+whatToLog);
         if (debugLevel<= DegubLevel.getDebugLevel()){
             logtodb(whatToLog, label);
         }

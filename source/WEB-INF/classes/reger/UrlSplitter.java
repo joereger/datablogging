@@ -32,7 +32,7 @@ public class UrlSplitter implements java.io.Serializable {
     public UrlSplitter(javax.servlet.http.HttpServletRequest request){
         //Original request uri... what's in the browser
         request_uri = request.getRequestURI();
-        Debug.debug(1, "", " request_uri=" + request_uri);
+        Debug.debug(5, "", " request_uri=" + request_uri);
 
         //Get the host
         rawIncomingServername = request.getServerName();

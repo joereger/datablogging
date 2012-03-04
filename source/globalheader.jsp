@@ -1,4 +1,8 @@
-<%@ page import="reger.core.Debug"%><%
+<%@ page import="reger.core.Debug"%>
+<%@ page import="org.apache.log4j.Logger" %><%
+
+Logger logger = Logger.getLogger(this.getClass().getName());
+
 //executionTime Object Creation for Performance Analysis
 reger.executionTime executionTime = new reger.executionTime();
 
