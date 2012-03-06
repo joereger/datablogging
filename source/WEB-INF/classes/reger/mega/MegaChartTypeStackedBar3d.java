@@ -11,6 +11,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.general.DefaultPieDataset;
+import reger.Vars;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,10 @@ import java.util.Map;
  * Chart Type
  */
 public class MegaChartTypeStackedBar3d implements MegaChartType{
+
+    public int getCharttypeid() {
+        return Vars.CHARTTYPE3DBAR;
+    }
 
     public JFreeChart getJFreeChart(MegaChart megaChart) {
         //Dataset to hold data
@@ -33,38 +38,8 @@ public class MegaChartTypeStackedBar3d implements MegaChartType{
     }
 
     public String getHighChart(MegaChart megaChart) {
-        //Root JSON container
-        Map<String, Object> rootJson = new HashMap<String, Object>();
-
-        Map<String, Object> chartJson = new HashMap<String, Object>();
-        chartJson.put("renderTo", "container");
-        chartJson.put("type", "bar");
-        rootJson.put("chart", chartJson);
-
-        Map<String, Object> titleJson = new HashMap<String, Object>();
-        titleJson.put("text", megaChart.getChartname());
-        rootJson.put("title", titleJson);
-
-        Map<String, Object> xaxisJson = new HashMap<String, Object>();
-            Map<String, Object> xtitleJson = new HashMap<String, Object>();
-            xtitleJson.put("enabled", true);
-            xtitleJson.put("text", megaChart.getxAxisTitle());
-            xaxisJson.put("title", xtitleJson);
-        rootJson.put("xAxis", xaxisJson);
-
-        Map<String, Object> yaxisJson = new HashMap<String, Object>();
-            Map<String, Object> ytitleJson = new HashMap<String, Object>();
-            ytitleJson.put("text", megaChart.getyAxisTitle());
-            yaxisJson.put("title", ytitleJson);
-        rootJson.put("yAxis", yaxisJson);
-
-        //Data is added here
-        rootJson.put("series", MegaChartConvertToHighCharts.getSeriesDataDefaultXY(megaChart));
-
-        //Convert to JSON and wrap in HTML
-        String out = MegaChartConvertToHighCharts.getChartHtml(rootJson);
-
-        return out;
+        MegaChartType ct = new MegaChartTypeStackedBar();
+        return ct.getHighChart(megaChart);
     }
 
 }

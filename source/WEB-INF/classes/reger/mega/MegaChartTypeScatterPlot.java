@@ -15,6 +15,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.general.DefaultPieDataset;
+import reger.Vars;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,11 @@ import java.util.Map;
  * Chart Type
  */
 public class MegaChartTypeScatterPlot implements MegaChartType{
+
+    public int getCharttypeid() {
+        return Vars.CHARTTYPESCATTERPLOT;
+    }
+
 
     public JFreeChart getJFreeChart(MegaChart megaChart) {
         //Dataset to hold data

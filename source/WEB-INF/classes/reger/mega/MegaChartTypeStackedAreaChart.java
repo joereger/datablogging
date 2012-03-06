@@ -15,6 +15,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.general.DefaultPieDataset;
+import reger.Vars;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,10 @@ import java.util.Map;
  * Chart Type
  */
 public class MegaChartTypeStackedAreaChart implements MegaChartType{
+
+    public int getCharttypeid() {
+        return Vars.CHARTTYPESTACKEDAREA;
+    }
 
     public JFreeChart getJFreeChart(MegaChart megaChart) {
         //Dataset to hold data
@@ -41,6 +46,12 @@ public class MegaChartTypeStackedAreaChart implements MegaChartType{
     public String getHighChart(MegaChart megaChart) {
         //Root JSON container
         Map<String, Object> rootJson = new HashMap<String, Object>();
+
+        Map<String, Object> plotoptionsJson = new HashMap<String, Object>();
+            Map<String, Object> seriesJson = new HashMap<String, Object>();
+            seriesJson.put("stacking", "normal");
+            plotoptionsJson.put("area", seriesJson);
+        rootJson.put("plotOptions", plotoptionsJson);
 
         Map<String, Object> chartJson = new HashMap<String, Object>();
         chartJson.put("renderTo", "container");

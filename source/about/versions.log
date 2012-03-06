@@ -26,8 +26,7 @@ pageProps.marketingSiteSection = pageProps.MARKETINGSITESECTIONMOREINFO;
 
 
 
-mb.append("<blockquote>");
-mb.append("<font face=arial size=-1>");
+
 if (request.getParameter("versionid")==null || !reger.core.Util.isinteger(request.getParameter("versionid")) || reger.versioninfo.VersionInfo.getVersion(Integer.parseInt(request.getParameter("versionid")))==null){
     mb.append(reger.versioninfo.VersionInfoRenderer.getVersionList("versions.log"));
 } else {
@@ -43,9 +42,8 @@ if (request.getParameter("versionid")==null || !reger.core.Util.isinteger(reques
     mb.append(reger.versioninfo.VersionInfoRenderer.getVersionAsHtml(Integer.parseInt(request.getParameter("versionid"))));
 
 }
-mb.append("</font>");
-mb.append("</blockquote>");
-mb.append("<br><br><br>");
+
+
 
 
 

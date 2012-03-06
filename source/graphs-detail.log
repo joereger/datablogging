@@ -44,7 +44,7 @@ if (request.getParameter("savechart")!=null && request.getParameter("savechart")
         //megaChart.setxLogid(0);
 
         //It's a normal save for a single user
-        megaChart.setXeventtypeid(0);
+        //megaChart.setXeventtypeid(0);
         megaChart.setAccountid(userSession.getAccount().getAccountid());
 
         //Do the save

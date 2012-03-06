@@ -165,16 +165,12 @@ if (pageProps.action.equals("login")){
 
 mb.append("<center>");
 mb.append("<table cellpadding=15 cellspacing=10 width=75% border=0>");
-mb.append("<tr>");
-mb.append("<td valign=top colspan=2 align=center bgcolor=#e6e6e6>");
-mb.append("<img src='images/login-required.gif' align=right>");
-mb.append("</td>");
-mb.append("</tr>");
+
 
 mb.append("<tr>");
 
 
-mb.append("<td valign=top width=50% align=center bgcolor=#e6e6e6>");
+mb.append("<td valign=top width=50% align=left>");
 //mb.append("<font face=arial size=+1>");
 //mb.append("Please Log In:");
 //mb.append("</font>");
@@ -245,13 +241,9 @@ mb.append(box.getHtml(userSession, request, pageProps));
 mb.append("</td>");
 
 
-mb.append("<td valign=top width=50% align=center bgcolor=#e6e6e6>");
+mb.append("<td valign=top width=50% align=left>");
 mb.append("<font face=arial size=+1>");
-mb.append("<a href='signup.log'>Create an Account</a>");
-mb.append("</font>");
-mb.append("<br><br>");
-mb.append("<font face=arial size=-2>");
-mb.append("Creating an account only takes a few seconds.  You'll be datablogging in no time!");
+mb.append("<a href=\"/about/signup.log\" class=\"btn btn-success btn-large\">Sign Up &raquo;</a>");
 mb.append("</font>");
 mb.append("</tr>");
 

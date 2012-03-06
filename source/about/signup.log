@@ -370,9 +370,9 @@ if (userSession.getPl().getIssignupenabled()){
     mb.append("<tr>");
     mb.append("<td bgcolor=#ffffff valign=top align=right>");
     mb.append("<font face=arial size=-1 color=#000000><b>Type the Letters:</b></font><br>");
-    mb.append("<font face=arial size=-2 color=#000000>");
-    mb.append("Type the letters you see in the box to the right.  This is done to prove that you're human, not an automated spam bot.");
-    mb.append("</font>");
+//    mb.append("<font face=arial size=-2 color=#000000>");
+//    mb.append("Type the letters you see in the box to the right.  This is done to prove that you're human, not an automated spam bot.");
+//    mb.append("</font>");
     mb.append("</td>");
     mb.append("<td bgcolor=#ffffff valign=top nowrap align=left colspan=2>");
     mb.append("<input type='text' name='j_captcha_response' value=''>");
@@ -432,7 +432,7 @@ if (userSession.getPl().getIssignupenabled()){
     mb.append(" ");
     mb.append("</td>");
     mb.append("<td bgcolor=#ffffff valign=top nowrap align=left colspan=2>");
-    mb.append("<input type='submit' value='Create Your Datablog Now!'>");
+    mb.append("<input type='submit' value='Complete Signup'>");
     mb.append("</td>");
     mb.append("</tr>");
 

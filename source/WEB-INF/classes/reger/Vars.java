@@ -137,6 +137,7 @@ public class Vars {
     public static final int CHARTTYPESTACKEDBARCHARTHORIZONTAL = 13;
     public static final int CHARTTYPESTACKEDBARCHART3DHORIZONTAL = 14;
     public static final int CHARTTYPESTACKEDAREA = 15;
+    public static final int CHARTTYPETIMESERIES = 16;
 
     //Date Ranges
     public static final int DATERANGEALLTIME = 1;

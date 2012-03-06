@@ -308,8 +308,8 @@ public class MegaLogTypeHtmlrender {
                 mb.append("<br>");
                 //mb.append("<img src='"+pathToRoot+reger.mega.MegaChartSeries.imageUrlForPreviewFromMegachartid(Integer.parseInt(rstChart[i][0]))+"' border=0>");
 
-                MegaChart mc = new MegaChart(Integer.parseInt(rstChart[i][0]));
-                mb.append(MegaChartHtmlRenderer.getHtml(mc, userSession, true, "../", false, true));
+                //MegaChart mc = new MegaChart(Integer.parseInt(rstChart[i][0]));
+                //mb.append(MegaChartHtmlRenderer.getHtml(mc, userSession, true, "../", false, true));
 
                 mb.append("</center>");
                 mb.append("</font>");

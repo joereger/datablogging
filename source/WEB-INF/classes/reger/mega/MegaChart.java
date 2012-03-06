@@ -24,7 +24,7 @@ public class MegaChart {
     private int xMegafieldid=0;
     private int yaxiswhattodo=0;
     private int chartsize=0;
-    private int charttype=0;
+    private int charttype=reger.Vars.CHARTTYPELINE;
     private int daterange=0;
     private int lastxdays=0;
     private int lastxweeks=0;
@@ -230,66 +230,66 @@ public class MegaChart {
             yEventtypeid[0] = 0;
         }
 
-        daterange=reger.Vars.DATERANGEALLTIME;
+        //daterange=reger.Vars.DATERANGEALLTIME;
         if (request.getParameter("daterange")!=null && reger.core.Util.isinteger(request.getParameter("daterange"))){
             daterange=Integer.parseInt(request.getParameter("daterange"));
         }
 
-        chartsize=reger.Vars.CHARTSIZEMEDIUM;
+        //chartsize=reger.Vars.CHARTSIZEMEDIUM;
         if (request.getParameter("chartsize")!=null && reger.core.Util.isinteger(request.getParameter("chartsize"))){
             chartsize=Integer.parseInt(request.getParameter("chartsize"));
         }
 
-        yaxiswhattodo=reger.Vars.YAXISWHATTODOSUM;
+        //yaxiswhattodo=reger.Vars.YAXISWHATTODOSUM;
         if (request.getParameter("yaxiswhattodo")!=null && reger.core.Util.isinteger(request.getParameter("yaxiswhattodo"))){
             yaxiswhattodo=Integer.parseInt(request.getParameter("yaxiswhattodo"));
         }
 
-        charttype=reger.Vars.CHARTTYPELINE;
+
         if (request.getParameter("charttype")!=null && reger.core.Util.isinteger(request.getParameter("charttype"))){
             charttype=Integer.parseInt(request.getParameter("charttype"));
         }
-        lastxdays=1;
+        //lastxdays=1;
         if (request.getParameter("lastxdays")!=null && reger.core.Util.isinteger(request.getParameter("lastxdays"))){
             lastxdays=Integer.parseInt(request.getParameter("lastxdays"));
         }
-        lastxweeks=1;
+        //lastxweeks=1;
         if (request.getParameter("lastxweeks")!=null && reger.core.Util.isinteger(request.getParameter("lastxweeks"))){
             lastxweeks=Integer.parseInt(request.getParameter("lastxweeks"));
         }
-        lastxmonths=1;
+        //lastxmonths=1;
         if (request.getParameter("lastxmonths")!=null && reger.core.Util.isinteger(request.getParameter("lastxmonths"))){
             lastxmonths=Integer.parseInt(request.getParameter("lastxmonths"));
         }
-        lastxyears=1;
+        //lastxyears=1;
         if (request.getParameter("lastxyears")!=null && reger.core.Util.isinteger(request.getParameter("lastxyears"))){
             lastxyears=Integer.parseInt(request.getParameter("lastxyears"));
         }
-        daterangefromyyyy=Calendar.getInstance().get(Calendar.YEAR)-1;
+        //daterangefromyyyy=Calendar.getInstance().get(Calendar.YEAR)-1;
         if (request.getParameter("daterangefromyyyy")!=null && reger.core.Util.isinteger(request.getParameter("daterangefromyyyy"))){
             daterangefromyyyy=Integer.parseInt(request.getParameter("daterangefromyyyy"));
         }
-        daterangefrommm=Calendar.getInstance().get(Calendar.MONTH)+1;
+        //daterangefrommm=Calendar.getInstance().get(Calendar.MONTH)+1;
         if (request.getParameter("daterangefrommm")!=null && reger.core.Util.isinteger(request.getParameter("daterangefrommm"))){
             daterangefrommm=Integer.parseInt(request.getParameter("daterangefrommm"));
         }
-        daterangefromdd=Calendar.getInstance().get(Calendar.DATE);
+        //daterangefromdd=Calendar.getInstance().get(Calendar.DATE);
         if (request.getParameter("daterangefromdd")!=null && reger.core.Util.isinteger(request.getParameter("daterangefromdd"))){
             daterangefromdd=Integer.parseInt(request.getParameter("daterangefromdd"));
         }
-        daterangetoyyyy=Calendar.getInstance().get(Calendar.YEAR);
+        //daterangetoyyyy=Calendar.getInstance().get(Calendar.YEAR);
         if (request.getParameter("daterangetoyyyy")!=null && reger.core.Util.isinteger(request.getParameter("daterangetoyyyy"))){
             daterangetoyyyy=Integer.parseInt(request.getParameter("daterangetoyyyy"));
         }
-        daterangetomm=Calendar.getInstance().get(Calendar.MONTH)+1;
+        //daterangetomm=Calendar.getInstance().get(Calendar.MONTH)+1;
         if (request.getParameter("daterangetomm")!=null && reger.core.Util.isinteger(request.getParameter("daterangetomm"))){
             daterangetomm=Integer.parseInt(request.getParameter("daterangetomm"));
         }
-        daterangetodd=Calendar.getInstance().get(Calendar.DATE);
+        //daterangetodd=Calendar.getInstance().get(Calendar.DATE);
         if (request.getParameter("daterangetodd")!=null && reger.core.Util.isinteger(request.getParameter("daterangetodd"))){
             daterangetodd=Integer.parseInt(request.getParameter("daterangetodd"));
         }
-        daterangesavedsearchid=0;
+        //daterangesavedsearchid=0;
         if (request.getParameter("daterangesavedsearchid")!=null && reger.core.Util.isinteger(request.getParameter("daterangesavedsearchid"))){
             daterangesavedsearchid=Integer.parseInt(request.getParameter("daterangesavedsearchid"));
         }

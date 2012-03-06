@@ -1,115 +1,100 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
 
-<html>
+    <title>Reger.com dataBlogging Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content=""/>
+    <meta name="keywords" content="blogging platform datablogging"/>
+    <meta name="author" content="Joe Reger, Jr.">
 
-<head>
+    <!-- Le styles -->
 
-<title>The Reger Datablogging Platform: <$Page.Title$></title>
+    <link href="/css/twitter-bootstrap-2.0.1/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bmbleb.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 90px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="/css/twitter-bootstrap-2.0.1/css/bootstrap-responsive.css" rel="stylesheet">
 
-<style type="text/css"><!--
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-html body {
-  margin:0;
-  padding:0;
-  background:#ffcc00 url("../templates/marketingsite/default/images/yellowborders.gif") repeat-y center top;
-  text-align:center;
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/favicon.ico">
 
-}
 
-#body {
-  width:710px;
-  padding:10px 0 15px;
-  margin:0 auto;
-  text-align:left;
-}
+  </head>
 
-#header {
-  width: 100%;
-  background:#3d3d3d url("../templates/marketingsite/default/images/greyborders.gif") repeat-y center top;
-  position:relative;
-  top:-4px;
-  border-width:0;
-  border-bottom:3px solid #ffcc00;
-  padding:0;
-}
+  <body>
 
-#h2 {
-  position:relative;
-  top:4px;
-  }
-#h3 {
-  width:710px;
-  margin:0 auto;
-  padding:15px 20px 14px;
-  border-bottom:3px solid #ffcc00;
-  text-align:left;
-  }
 
-#b2 {
-  position:relative;
-  top:4px;
-  }
-#b3 {
-  width:535px;
-  margin:0 auto;
-  padding:15px 20px 14px;
-  text-align:left;
-  }
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
 
-.navcelloff{
-    padding: 3px;
-}
-.navfontoff{
-    font-family: arial;
-    font-size: 10px;
-}
+            <ul class="nav">
 
-.navcellon{
-    padding: 3px;
-}
-.navfonton{
-    font-family: arial;
-    font-size: 10px;
-    font-weight: bold;
-}
+              <!-- Start Home Button -->
+                <li>
+                    <a href="/">
+                    home
+                    </a>
+                </li>
+              <!-- EndHome Button -->
 
-//--></style>
-</head>
 
-<body class="ms">
 
-<div id="header">
-	<div id="h2">
-		<div id="h3">
-		    <br><br><img src='../templates/marketingsite/default/images/regercom-logo-greybg.gif'>
-		</div>
-	</div>
-</div>
+            </ul>
 
-<div id="body">
-	<div id="main-wrap">
-		<table cellpadding=0 cellspacing=0 border=0>
-		<tr>
-		<td valign=top align=left nowrap>
-		<$Navigation.Bar$>
-		</td>		
-		<td valign=top>
-		<img src="images/clear.gif" width=1 height=10 border=0>
-		<br><font face=impact style="font-size: 25px; color: #cccccc;"><strong><$Page.Title$></strong></font>
-		<br>
-        <font face=arial>
-		<div id="b2">
-		    <div id="b3">
-		        <$Main.Body$>
-		    </div>
-		</div>
-		</font>
-		</td>
-		</tr>
-		</table>
-	</div>
-</div>
 
-</body>
+            <ul class="nav pull-right">
+                <li>
+                    <a href="/about/login.log">
+                    login/signup
+                    </a>
+                </li>
+            </ul>
 
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container">
+
+
+
+     <div class="row">
+          <div class="span12">
+
+            <!-- Start Main Body -->
+            <$Main.Body$>
+            <!-- End Main Body -->
+
+          </div>
+     </div>
+
+
+
+      <br/><br/>
+      <hr>
+
+      <footer>
+        <p></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+
+
+
+  </body>
 </html>
+

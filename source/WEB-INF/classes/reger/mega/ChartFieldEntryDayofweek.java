@@ -73,6 +73,7 @@ public class ChartFieldEntryDayofweek extends Field implements ChartField{
                     //Get the day of the week
                     String dayofweek = "NA";
                     dayofweek = cal.get(Calendar.DAY_OF_WEEK) + "-" + reger.core.Util.getDayOfWeekAbbreviated(cal.get(Calendar.DAY_OF_WEEK));
+                    //dayofweek = reger.core.Util.getDayOfWeekAbbreviated(cal.get(Calendar.DAY_OF_WEEK));
                     data.put(rstEvents[i][0], dayofweek);
                 }
             }
@@ -127,6 +128,7 @@ public class ChartFieldEntryDayofweek extends Field implements ChartField{
         for(int i=1; i<=7; i++){
             //The value we want to make sure exists
             String val = i + "-" + reger.core.Util.getDayOfWeekAbbreviated(i);
+            //String val = reger.core.Util.getDayOfWeekAbbreviated(i);
             //If it doesn't exist
             if(data.get(val)==null){
                 //Add it to the TreeMap

@@ -13,4 +13,6 @@ public interface MegaChartType {
 
     public JFreeChart formatChart(JFreeChart chart);
 
+    public int getCharttypeid();
+
 }
