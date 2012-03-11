@@ -65,37 +65,21 @@ String currentNavButtonName = "logs-fieldlayout";
 
 
 
-mb.append("<table cellpadding=5 cellspacing=1 border=0 width=100% align=center>");
-
-
-//Reset layout button
-mb.append("<tr>");
-mb.append("<td bgcolor=#e6e6e6 align=left colspan=2>");
-
 
 
 
 
 
 //Main fields display
-mb.append("<tr>");
-mb.append("<td bgcolor=#ffffff align=left colspan=2>");
+mb.append("<div class=\"row\">");
 //Display the fields
 mb.append(FieldLayout.getHtml(eventtypeid, 0, FieldLayout.LAYOUTMODEEDIT, userSession, "logs-type-fieldlayout.log", "logs-field.log", "logs-newfield.log", pageProps));
-mb.append("</td>");
-mb.append("</tr>");
+mb.append("</div>");
 
 
 
 
 
-
-
-mb.append("<!-- End column table -->");
-
-
-
-mb.append("</table>");
 
 
 

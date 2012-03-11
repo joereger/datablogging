@@ -62,16 +62,16 @@ if (pageProps.logProps.logid>0){
         mb.append("<ul class=\"nav nav-tabs\">\n");
 
         if (currentNavButtonName.equals("logs-type-properties")) {isOn=" class=\"active\"";} else {isOn="";}
-        mb.append("<li "+isOn+"><a href=\"logs-log-properties.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Properties</a></li>\n");
+        mb.append("<li "+isOn+"><a href=\"logs-type-properties.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Properties</a></li>\n");
 
         if (currentNavButtonName.equals("logs-fieldlayout")) {isOn=" class=\"active\"";} else {isOn="";}
-        mb.append("<li "+isOn+"><a href=\"logs-log-templates.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Fields</a></li>\n");
+        mb.append("<li "+isOn+"><a href=\"logs-type-fieldlayout.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Fields</a></li>\n");
 
         if (currentNavButtonName.equals("logs-type-summary")) {isOn=" class=\"active\"";} else {isOn="";}
-        mb.append("<li "+isOn+"><a href=\"logs-log-permissions.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Summary</a></li>\n");
+        mb.append("<li "+isOn+"><a href=\"logs-type-detail.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Summary</a></li>\n");
 
         if (currentNavButtonName.equals("logs-type-msgusers")) {isOn=" class=\"active\"";} else {isOn="";}
-        mb.append("<li "+isOn+"><a href=\"logs-log-move.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Send Message</a></li>\n");
+        mb.append("<li "+isOn+"><a href=\"logs-type-msgusers.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Send Message</a></li>\n");
 
         if (currentNavButtonName.equals("logs-type-delete")) {isOn=" class=\"active\"";} else {isOn="";}
         mb.append("<li "+isOn+"><a href=\"logs-type-delete.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Delete Log Type</a></li>\n");
