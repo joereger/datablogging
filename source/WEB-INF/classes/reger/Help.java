@@ -11,9 +11,9 @@ public class Help {
     public static String tip(String title, String body, boolean stayInPlace, String pathtoroot){
         StringBuffer sb = new StringBuffer();
 
-        sb.append(htmlTipLink(title, body, stayInPlace));
-        sb.append("<img src='"+pathtoroot+"images/help-question.gif' border=0>");
-        sb.append("</a>");
+//        sb.append(htmlTipLink(title, body, stayInPlace));
+//        sb.append("<img src='"+pathtoroot+"images/help-question.gif' border=0>");
+//        sb.append("</a>");
 
         return sb.toString();
     }

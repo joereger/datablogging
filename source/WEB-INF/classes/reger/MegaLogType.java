@@ -1,5 +1,10 @@
 package reger;
 
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.log4j.Logger;
+import reger.mega.FieldOrder;
 import reger.mega.FieldType;
 import reger.mega.FieldOrderCollection;
 import reger.core.db.Db;
@@ -8,8 +13,11 @@ import reger.core.Debug;
 import reger.cache.LogCache;
 import reger.xforms.LogTypeXform;
 
+
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a Log
@@ -32,6 +40,8 @@ public class MegaLogType {
 
     private ArrayList<FieldType> megaFields;
     private ArrayList<FieldType> megaFieldsHidden;
+
+
 
     private LogTypeXform logtypexform = null;
 
@@ -126,6 +136,7 @@ public class MegaLogType {
                 //Load the fields
                 loadFields();
 
+
                 //Load the xform
                 logtypexform = new LogTypeXform();
                 logtypexform.loadByEventtypeid(eventtypeid);
@@ -158,7 +169,12 @@ public class MegaLogType {
 
         this.megaFields = megaFields;
         this.megaFieldsHidden = megaFieldsHidden;
+
+
     }
+
+
+
 
 
 

@@ -1296,9 +1296,9 @@ public class TourHtml {
                 ff.append("<tr>");
 
                 ff.append("<td bgcolor=#ffffff align=right valign=top>");
-                ff.append("<a href='"+link+"'>");
-                ff.append("<img src=../images/logimages/"+imagename+" width=100 height=50 border=0>");
-                ff.append("</a>");
+//                ff.append("<a href='"+link+"'>");
+//                ff.append("<img src=../images/logimages/"+imagename+" width=100 height=50 border=0>");
+//                ff.append("</a>");
                 ff.append("</td>");
 
                 ff.append("<td bgcolor=#ffffff align=left valign=top>");

@@ -38,7 +38,9 @@ public class tRexAdminPageEngine {
         ap.append("    <link href=\"/css/twitter-bootstrap-2.0.1/css/bootstrap-responsive.css\" rel=\"stylesheet\">" + "\n");
 
         //jQuery
-        ap.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/jquery-1.7.1.min.js\"></script>"+"\n");
+        ap.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jQuery/js/jquery-1.7.1.min.js\"></script>"+"\n");
+        ap.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jQuery/js/jquery-ui-1.8.18.custom.min.js\"></script>"+"\n");
+        ap.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/jQuery/css/smoothness/jquery-ui-1.8.18.custom.css\" type=\"text/css\" />"+"\n");
 
         //prettyPhoto
         ap.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/prettyPhoto3.1.3/css/prettyPhoto.css\" type=\"text/css\" />"+"\n");
@@ -159,6 +161,43 @@ public class tRexAdminPageEngine {
                 "    $(\"a[rel^='prettyPhoto']\").prettyPhoto();\n" +
                 "  });\n" +
                 "</script>");
+
+
+//        ap.append("\n\n<script>\n" +
+//                "\t$(function() {\n" +
+//                "\t\t$( \".fieldbox\" ).draggable({ grid: [ 10,10 ], opacity: 0.7, helper: \"clone\" });\n" +
+//                "\t});\n" +
+//                "\t</script>");
+
+        //Field layout Javascript
+//        ap.append("\n\n<script src=\""+pageProps.pathToAppRoot+"js/fieldlayout/customfunctions.js\"></script>\n");
+//        ap.append("<script>\n" +
+//                "\t$(function() {\n" +
+//                "\t\t$( \".fieldbox\" ).draggable({\n" +
+//                "\t\t\tstop: function(event, ui){" +
+//                "\t\t\tsaveFieldPosition(event, ui);\n" +
+//                "\t\t\t}\n" +
+//                "\t\t});\n" +
+//                "\t});\n" +
+//                "\t</script>");
+
+
+        //Field layout Javascript
+        //ap.append("\n\n<script src=\""+pageProps.pathToAppRoot+"js/fieldlayout/customfunctions.js\"></script>\n");
+
+        ap.append("<script>\n" +
+                "            $(function() {        \n" +
+                "                $('#fieldlayout .sortable-list').sortable({\n" +
+                "                    placeholder: 'ui-state-highlight', \n"+
+                "                    connectWith: '#fieldlayout .sortable-list',\n" +
+                "                    update: function(event, ui){\n" +
+                "                        saveSort(event, ui);\n" +
+                "                    }\n" +
+                "                });\n" +
+                "            });\n" +
+                "        </script>");
+
+
 
 
         ap.append("  </body>" + "\n");

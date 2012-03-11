@@ -41,15 +41,6 @@ if (pageProps.logProps.logid>0){
 
 
 
-//        NavButton[] logNavButtons = new NavButton[0];
-//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-log-properties", "", "Properties", "myhome/logs-log-properties.log?logid="+pageProps.logProps.logid, false, "", null));
-//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-log-templates", "", "Look & Feel", "myhome/logs-log-templates.log?logid="+pageProps.logProps.logid, false, "", null));
-//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-log-permissions", "", "Permissions", "myhome/logs-log-permissions.log?logid="+pageProps.logProps.logid, false, "", null));
-//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-log-move", "", "Move Log", "myhome/logs-log-move.log?logid="+pageProps.logProps.logid+"&action=movestart&nestednavtype="+logForHeader.getThisNestedNavType()+"&nestednavid="+logForHeader.getThisNestedNavId()+"", false, "", null));
-//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-log-delete", "", "Delete Log", "myhome/logs-log-delete.log?logid="+pageProps.logProps.logid, false, "", null));
-//
-//        navPanel = new NavPanel("", currentNavButtonName, logNavButtons, 2);
-//        mb.append(navPanel.getHtmlStart(pageProps.pathToAppRoot, userSession, request));
     }
 
     mb.append("<br><br>");
@@ -64,15 +55,38 @@ if (pageProps.logProps.logid>0){
         pageProps.title = "Log Type: " + mlt.getMegalogname();
         pageProps.navButtonName = "logslogtypes";
 
-        NavButton[] logNavButtons = new NavButton[0];
-        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-type-properties", "", "Properties", "myhome/logs-type-properties.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
-        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-fieldlayout", "", "Fields", "myhome/logs-type-fieldlayout.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
-        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-type-summary", "", "Summary", "myhome/logs-type-detail.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
-        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-type-msgusers", "", "Message Users of Log Type", "myhome/logs-type-msgusers.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
-        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-type-delete", "", "Delete Log Type", "myhome/logs-type-delete.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
 
-        navPanel = new NavPanel("", currentNavButtonName, logNavButtons, 2);
-        mb.append(navPanel.getHtmlStart(pageProps.pathToAppRoot, userSession, request));
+        String isOn = "";
+
+        mb.append("<br/>");
+        mb.append("<ul class=\"nav nav-tabs\">\n");
+
+        if (currentNavButtonName.equals("logs-type-properties")) {isOn=" class=\"active\"";} else {isOn="";}
+        mb.append("<li "+isOn+"><a href=\"logs-log-properties.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Properties</a></li>\n");
+
+        if (currentNavButtonName.equals("logs-fieldlayout")) {isOn=" class=\"active\"";} else {isOn="";}
+        mb.append("<li "+isOn+"><a href=\"logs-log-templates.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Fields</a></li>\n");
+
+        if (currentNavButtonName.equals("logs-type-summary")) {isOn=" class=\"active\"";} else {isOn="";}
+        mb.append("<li "+isOn+"><a href=\"logs-log-permissions.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Summary</a></li>\n");
+
+        if (currentNavButtonName.equals("logs-type-msgusers")) {isOn=" class=\"active\"";} else {isOn="";}
+        mb.append("<li "+isOn+"><a href=\"logs-log-move.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Send Message</a></li>\n");
+
+        if (currentNavButtonName.equals("logs-type-delete")) {isOn=" class=\"active\"";} else {isOn="";}
+        mb.append("<li "+isOn+"><a href=\"logs-type-delete.log?eventtypeid="+request.getParameter("eventtypeid")+"\">Delete Log Type</a></li>\n");
+
+        mb.append("</ul>");
+
+//        NavButton[] logNavButtons = new NavButton[0];
+//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-type-properties", "", "Properties", "myhome/logs-type-properties.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
+//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-fieldlayout", "", "Fields", "myhome/logs-type-fieldlayout.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
+//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-type-summary", "", "Summary", "myhome/logs-type-detail.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
+//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-type-msgusers", "", "Message Users of Log Type", "myhome/logs-type-msgusers.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
+//        logNavButtons = AddToArray.addToNavButtonArray(logNavButtons, new NavButton("logs-type-delete", "", "Delete Log Type", "myhome/logs-type-delete.log?eventtypeid="+request.getParameter("eventtypeid"), false, "", null));
+//
+//        navPanel = new NavPanel("", currentNavButtonName, logNavButtons, 2);
+//        mb.append(navPanel.getHtmlStart(pageProps.pathToAppRoot, userSession, request));
     }
 
     mb.append("<br><br>");

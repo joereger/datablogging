@@ -1,5 +1,8 @@
 package reger.mega;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.log4j.Logger;
 import reger.UserSession;
 import reger.MegaLogType;
 import reger.Log;
@@ -7,8 +10,10 @@ import reger.core.Debug;
 import reger.cache.LogCache;
 import reger.pageFramework.PageProps;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -21,6 +26,7 @@ public class FieldLayout {
     public static final int LAYOUTMODEEDIT = 3;
 
     public static String getHtml(int eventtypeid, int logid, int LAYOUTMODE, UserSession userSessionOfSaver, String pageName, String fieldPageName, String newFieldPageName, reger.pageFramework.PageProps pageProps){
+        Logger logger = Logger.getLogger(FieldLayout.class);
         StringBuffer mb = new StringBuffer();
 
         Debug.debug(5, "FieldLayout.java", "FieldLayout.java getHtml(eventtypeid="+eventtypeid+", logid="+logid+", LAYOUTMODE="+LAYOUTMODE+")");
@@ -28,266 +34,336 @@ public class FieldLayout {
         //If this is edit mode
         if (LAYOUTMODE==LAYOUTMODEEDIT) {
             mb.append(topLayoutBar(eventtypeid, logid, pageName, newFieldPageName, pageProps));
-            mb.append("<img src=images/clear.gif width=1 height=2 border=0>");
         }
 
         //Go get the fields to work with, either from the entry, log or the log type
         ArrayList<FieldType> fields = null;
-        FieldOrderCollection fieldOrderCollection = null;
+        String fieldorder = "";
         if (eventtypeid>0){
             fields = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getMegaFields();
-            fieldOrderCollection = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getFieldOrderCollection();
+            fieldorder = reger.AllMegaLogTypesInSystem.getMegaLogTypeByEventtypeid(eventtypeid).getFieldorder();
             Debug.debug(5, "FieldLayout.java", "Using fields from AllMegaLogTypesInSystem");
         }
         if (logid>0){
             fields = LogCache.get(logid).getFields();
-            fieldOrderCollection = LogCache.get(logid).getFieldOrderCollection();
+            fieldorder = LogCache.get(logid).getFieldorder();
             Debug.debug(5, "FieldLayout.java", "Using fields from LogCache");
         }
         if (pageProps.entry.eventid>0){
             fields=pageProps.entry.fields;
+            fieldorder = LogCache.get(pageProps.entry.logid).getFieldorder();
             Debug.debug(5, "FieldLayout.java", "Using fields from pageProps.entry");
         }
 
+        //Empty the columns
+        ArrayList<FieldType> megaFieldsVisibleCol1 = new ArrayList<FieldType>();
+        ArrayList<FieldType> megaFieldsVisibleCol2 = new ArrayList<FieldType>();
+        ArrayList<FieldType> megaFieldsVisibleCol3 = new ArrayList<FieldType>();
 
-        //Javascript for dhtml
-        mb.append("<script type='text/javascript' src='../js/cross-browser.com/x/x_core.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("<script type='text/javascript' src='../js/cross-browser.com/x/x_event.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("<script type='text/javascript' src='../js/cross-browser.com/x/x_drag.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("<script type='text/javascript' src='../js/cross-browser.com-regercomadditional/resizablewindow.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("<script type='text/javascript' src='../js/cross-browser.com-regercomadditional/sethiddenformfieldtolayoutvalues.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("<script type='text/javascript' src='../js/cross-browser.com-regercomadditional/savelayout.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
+        if (fieldorder!=null && !fieldorder.equals("")){
+            try{
+                //Parse fieldorder and extract name/value pairs
+                List<NameValuePair> nvs = URLEncodedUtils.parse(URI.create("http://foo.com/bar.html?" + fieldorder), "UTF-8");
 
-        //Javascript for remoting
-        mb.append("<script src='/dwr/interface/FieldLayoutSave.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("<script src='/dwr/engine.js'></script>" + reger.Vars.LINEBREAKCHARFORHTML);
-
-        //Javascript window.onload
-        String isMovableAndDraggable = "false";
-        if (LAYOUTMODE==LAYOUTMODEEDIT) {
-            isMovableAndDraggable = "true";
+                //First iterate by the fieldorder-derived name/value pairs... this keeps things in order
+                for (Iterator<NameValuePair> it = nvs.iterator(); it.hasNext();) {
+                    NameValuePair nv = it.next();
+                    for (Iterator<FieldType> iterator = fields.iterator(); iterator.hasNext();) {
+                        FieldType fieldType = iterator.next();
+                        //Is this the correct megafieldid
+                        if (String.valueOf(fieldType.getMegafieldid()).equals(nv.getValue())){
+                            //Which col?
+                            if (nv.getName().equals("megafieldidcol1")){
+                                megaFieldsVisibleCol1.add(fieldType);
+                            } else if (nv.getName().equals("megafieldidcol2")){
+                                megaFieldsVisibleCol2.add(fieldType);
+                            } else if (nv.getName().equals("megafieldidcol3")){
+                                megaFieldsVisibleCol3.add(fieldType);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e){
+                logger.error(e);
+            }
         }
-        mb.append("<script language=\"JavaScript\" type=\"text/javascript\"><!--" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("var fen = new Array();" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("var wrapper;" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("window.onload = function()" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("{" + reger.Vars.LINEBREAKCHARFORHTML);
-        int wrapperWidth = 0;
-        int wrapperHeight = 0;
-        if (fields!=null){
-            int i = 0;
-            for (Iterator it = fields.iterator(); it.hasNext(); ) {
+
+
+        //Find fields that aren't in any column and add them to the first
+        for (Iterator<FieldType> iterator = fields.iterator(); iterator.hasNext();) {
+            FieldType fieldType = iterator.next();
+            boolean isInACol = false;
+            //Iterate first col to check
+            for (Iterator<FieldType> it1 = megaFieldsVisibleCol1.iterator(); it1.hasNext();) {
+                FieldType f = it1.next();
+                if (f.getMegafieldid()==fieldType.getMegafieldid()){
+                    isInACol = true;
+                }
+            }
+            //Iterate second col to check
+            for (Iterator<FieldType> it1 = megaFieldsVisibleCol2.iterator(); it1.hasNext();) {
+                FieldType f = it1.next();
+                if (f.getMegafieldid()==fieldType.getMegafieldid()){
+                    isInACol = true;
+                }
+            }
+            //Iterate third col to check
+            for (Iterator<FieldType> it1 = megaFieldsVisibleCol3.iterator(); it1.hasNext();) {
+                FieldType f = it1.next();
+                if (f.getMegafieldid()==fieldType.getMegafieldid()){
+                    isInACol = true;
+                }
+            }
+            //If it's not in a col, add it to the first
+            if (!isInACol){
+                megaFieldsVisibleCol1.add(fieldType);
+            }
+        }
+
+        //Calculate Twitter Bootstrap column span size
+        int totalColumns = 0;
+        if (megaFieldsVisibleCol1!=null && megaFieldsVisibleCol1.size()>0){
+            totalColumns = totalColumns + 1;
+        }
+        if (megaFieldsVisibleCol2!=null && megaFieldsVisibleCol2.size()>0){
+            totalColumns = totalColumns + 1;
+        }
+        if (megaFieldsVisibleCol3!=null && megaFieldsVisibleCol3.size()>0){
+            totalColumns = totalColumns + 1;
+        }
+        String spansize1 = "";
+        String spansize2 = "";
+        String spansize3 = "";
+        if (totalColumns==1){
+            spansize1 = "span8";
+            spansize2 = "span1";
+            spansize3 = "span1";
+        } else if (totalColumns==2){
+            spansize1 = "span4";
+            spansize2 = "span4";
+            spansize3 = "span1";
+        } else {
+            spansize1 = "span3";
+            spansize2 = "span3";
+            spansize3 = "span3";
+        }
+
+
+        mb.append("<script>");
+        mb.append("function saveSort(event, ui){\n" +
+                "    if (!ui.sender) {\n"+
+                "       var col1 = $(\"#fieldlayoutlistcol1\").sortable('serialize', {key:\"megafieldidcol1\"});\n"+
+                "       var col2 = $(\"#fieldlayoutlistcol2\").sortable('serialize', {key:\"megafieldidcol2\"});\n"+
+                "       var col3 = $(\"#fieldlayoutlistcol3\").sortable('serialize', {key:\"megafieldidcol3\"});\n"+
+                "       $.get(\""+pageProps.pathToAppRoot+"FieldLayoutSaveAjax?logid="+logid+"&eventtypeid="+eventtypeid+"&\"+col1+\"&\"+col2+\"&\"+col3);"+
+                "       //alert(col1+\"&\"+col2+\"&\"+col3);\n" +
+                "    }\n"+
+                "}");
+        mb.append("</script>");
+
+        //Wrap all 3 columns in fieldlayout div
+        mb.append("<div id=\"fieldlayout\">");
+
+        mb.append("\n\n<!-- Start FieldLayout.java Megafields Col 1 -->");
+        mb.append("<div class=\""+spansize1+"\">");
+        mb.append("<ul id=\"fieldlayoutlistcol1\" class=\"sortable-list\" style=\"list-style: none;\">");
+        boolean haveFieldInCol1 = false;
+        if (megaFieldsVisibleCol1!=null){
+            for (Iterator it = megaFieldsVisibleCol1.iterator(); it.hasNext(); ) {
                 FieldType fld = (FieldType)it.next();
                 if (fld!=null){
-                    int x = 0;
-                    int y = wrapperHeight + 2;
-                    int w = 400;
-                    int h = 150;
-                    FieldOrder fo = fieldOrderCollection.getFieldOrderForMegafieldid(fld.getMegafieldid());
-                    if (fo!=null){
-                        x = fo.getX();
-                        y = fo.getY();
-                        w = fo.getW();
-                        h = fo.getH();
+                    haveFieldInCol1 = true;
+                    mb.append("<li class=\"sortable-item\" id=\"megafieldid_"+fld.getMegafieldid()+"\" style=\"border-left: thick solid #e6e6e6; padding-left: 3px; margin-top: 20px;\">");
+                    mb.append("<h5>");
+                    mb.append(fld.getFieldname());
+                    mb.append("</h5>");
+                    if (LAYOUTMODE==LAYOUTMODEADMIN){
+                        mb.append(fld.getHtmlAdmin(logid, true));
+                    } else if (LAYOUTMODE==LAYOUTMODEEDIT) {
+                        mb.append(fld.getHtmlAdmin(logid, false));
+                    } else {
+                        String tmp = fld.getHtmlPublic(logid);
+                        if (tmp.equals("")){
+                            mb.append("&nbsp;");
+                        } else {
+                            mb.append(tmp);
+                        }
+
                     }
-                    if ((x+w)>wrapperWidth){
-                        wrapperWidth = x+w;
-                    }
-                    if ((y+h)>wrapperHeight){
-                        wrapperHeight = y+h;
-                    }
-                    mb.append("    fen["+i+"] = new xFenster('"+fld.getMegafieldid()+"', 'fieldBox"+fld.getMegafieldid()+"', "+x+", "+y+", "+w+", "+h+", 'fieldBoxBar"+fld.getMegafieldid()+"', 'fieldBoxResBtn"+fld.getMegafieldid()+"', 'fieldBoxContent"+fld.getMegafieldid()+"', "+isMovableAndDraggable+", "+isMovableAndDraggable+");" + reger.Vars.LINEBREAKCHARFORHTML);
-                    i++;
+                    mb.append("</li>");
                 }
             }
         }
-        mb.append("    wrapper = new xFenster('0', 'fieldBoxWrapper', 0, 0, "+(wrapperWidth+50)+", "+(wrapperHeight+50)+", 'fieldBoxBarWrapper', 'fieldBoxResBtnWrapper', 'fieldBoxContentWrapper', "+isMovableAndDraggable+", "+isMovableAndDraggable+");" + reger.Vars.LINEBREAKCHARFORHTML);
-        //Resize wrapper to browser window, if that's larger than the current work space
-        if (LAYOUTMODE==LAYOUTMODEEDIT) {
-            mb.append("    var newWidth = xClientWidth()-xPageX('fieldBoxWrapper')-20;" + reger.Vars.LINEBREAKCHARFORHTML);
-            mb.append("    if (xClientWidth() > ("+(wrapperWidth+30)+"+xPageX('fieldBoxWrapper')+20)){;" + reger.Vars.LINEBREAKCHARFORHTML);
-            mb.append("        wrapper.resizeAbsolute(newWidth, "+(wrapperHeight+50)+");" + reger.Vars.LINEBREAKCHARFORHTML);
-            mb.append("    }" + reger.Vars.LINEBREAKCHARFORHTML);
+        if (!haveFieldInCol1 && (LAYOUTMODE==LAYOUTMODEADMIN || LAYOUTMODE==LAYOUTMODEEDIT)){
+            mb.append("<li class=\"sortable-item\" id=\"placeholdercol1\" style=\"border-left: thick solid #e6e6e6; padding-left: 3px; margin-top: 20px;\"><img src=\""+pageProps.pathToAppRoot+"images/clear.gif\" border=\"0\" width=\"50\" height=\"1\"></li>");
         }
-        mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
+        mb.append("</ul>");
+        mb.append("</div>");
+        mb.append("\n<!-- End FieldLayout.java Megafields Col 1 -->\n");
 
-        //Javascript window.onunload
-        mb.append("window.onunload = function()" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("{" + reger.Vars.LINEBREAKCHARFORHTML);
-        if (LAYOUTMODE==LAYOUTMODEEDIT) {
-            mb.append("  savelayout();" + reger.Vars.LINEBREAKCHARFORHTML);
+
+        mb.append("\n\n<!-- Start FieldLayout.java Megafields Col 2 -->");
+        mb.append("<div class=\""+spansize2+"\">");
+        mb.append("<ul id=\"fieldlayoutlistcol2\" class=\"sortable-list\" style=\"list-style: none;\">");
+        boolean haveFieldInCol2 = false;
+        if (megaFieldsVisibleCol2!=null){
+            for (Iterator it = megaFieldsVisibleCol2.iterator(); it.hasNext(); ) {
+                FieldType fld = (FieldType)it.next();
+                if (fld!=null){
+                    haveFieldInCol2 = true;
+                    mb.append("<li class=\"sortable-item\" id=\"megafieldid_"+fld.getMegafieldid()+"\" style=\"border-left: thick solid #e6e6e6; padding-left: 3px; margin-top: 20px;\">");
+                    mb.append("<h5>");
+                    mb.append(fld.getFieldname());
+                    mb.append("</h5>");
+                    if (LAYOUTMODE==LAYOUTMODEADMIN){
+                        mb.append(fld.getHtmlAdmin(logid, true));
+                    } else if (LAYOUTMODE==LAYOUTMODEEDIT) {
+                        mb.append(fld.getHtmlAdmin(logid, false));
+                    } else {
+                        String tmp = fld.getHtmlPublic(logid);
+                        if (tmp.equals("")){
+                            mb.append("&nbsp;");
+                        } else {
+                            mb.append(tmp);
+                        }
+
+                    }
+                    mb.append("</li>");
+                }
+            }
         }
-        mb.append("  for (var i = 0; i < fen.length; ++i) {" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("    fen[i].onunload();" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("  }" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("}" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("--></script>" + reger.Vars.LINEBREAKCHARFORHTML);
+        if (!haveFieldInCol2 && (LAYOUTMODE==LAYOUTMODEADMIN || LAYOUTMODE==LAYOUTMODEEDIT)){
+            mb.append("<li class=\"sortable-item\" id=\"placeholdercol2\" style=\"border-left: thick solid #e6e6e6; padding-left: 3px; margin-top: 20px;\"><img src=\""+pageProps.pathToAppRoot+"images/clear.gif\" border=\"0\" width=\"50\" height=\"1\"></li>");
+        }
+        mb.append("</ul>");
+        mb.append("</div>");
+        mb.append("\n<!-- End FieldLayout.java Megafields Col 2 -->\n");
 
-        //Box Style
-        if (LAYOUTMODE==LAYOUTMODEEDIT) {
-            mb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"../js/cross-browser.com-regercomadditional/boxstyleedit.css\"/>" + reger.Vars.LINEBREAKCHARFORHTML);
+
+
+        mb.append("\n\n<!-- Start FieldLayout.java Megafields Col 3 -->");
+        mb.append("<div class=\""+spansize3+"\">");
+        mb.append("<ul id=\"fieldlayoutlistcol3\" class=\"sortable-list\" style=\"list-style: none;\">");
+        boolean haveFieldInCol3 = false;
+        if (megaFieldsVisibleCol3!=null){
+            for (Iterator it = megaFieldsVisibleCol3.iterator(); it.hasNext(); ) {
+                FieldType fld = (FieldType)it.next();
+                if (fld!=null){
+                    haveFieldInCol3 = true;
+                    mb.append("<li class=\"sortable-item\" id=\"megafieldid_"+fld.getMegafieldid()+"\" style=\"border-left: thick solid #e6e6e6; padding-left: 3px; margin-top: 20px;\">");
+                    mb.append("<h5>");
+                    mb.append(fld.getFieldname());
+                    mb.append("</h5>");
+                    if (LAYOUTMODE==LAYOUTMODEADMIN){
+                        mb.append(fld.getHtmlAdmin(logid, true));
+                    } else if (LAYOUTMODE==LAYOUTMODEEDIT) {
+                        mb.append(fld.getHtmlAdmin(logid, false));
+                    } else {
+                        String tmp = fld.getHtmlPublic(logid);
+                        if (tmp.equals("")){
+                            mb.append("&nbsp;");
+                        } else {
+                            mb.append(tmp);
+                        }
+
+                    }
+                    mb.append("</li>");
+                }
+            }
+        }
+        if (!haveFieldInCol3 && (LAYOUTMODE==LAYOUTMODEADMIN || LAYOUTMODE==LAYOUTMODEEDIT)){
+            mb.append("<li class=\"sortable-item\" id=\"placeholdercol3\" style=\"border-left: thick solid #e6e6e6; padding-left: 3px; margin-top: 20px;\"><img src=\""+pageProps.pathToAppRoot+"images/clear.gif\" border=\"0\" width=\"50\" height=\"1\"></li>");
+        }
+        mb.append("</ul>");
+        mb.append("</div>");
+        mb.append("\n<!-- End FieldLayout.java Megafields Col 3 -->\n");
+
+        //Close fieldlayout div that wraps all 3 columns
+        mb.append("</div>\n\n");
+
+
+
+        return mb.toString();
+    }
+
+    private static String getGraphLinks(FieldType fld, int logid){
+        StringBuffer mb = new StringBuffer();
+        //Output graph links
+        if (fld.getMegadatatypeid()!=reger.mega.DataTypeString.DATATYPEID){
+            //Numeric fields
+            String fieldNameUrlEncoded = "";
+            try{
+                fieldNameUrlEncoded = java.net.URLEncoder.encode(fld.getFieldname() + " vs. Time","UTF-8");
+            } catch(Exception e){
+                reger.core.Debug.debug(4, "FieldLayout.java", e);
+                fieldNameUrlEncoded = fld.getFieldname() + " vs. Time";
+            }
+            mb.append("<br>");
+            mb.append("<font face=arial class=smallfont size=-2>");
+            mb.append("Graph this field:");
+            mb.append("<br>");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISWEEK+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("This Week");
+            mb.append("</a>");
+            mb.append(" | ");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISMONTH+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("This Month");
+            mb.append("</a>");
+            mb.append(" | ");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISYEAR+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("This Year");
+            mb.append("</a>");
+            mb.append("<br>");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=7&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("Last 7 Days");
+            mb.append("</a>");
+            mb.append(" | ");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=30&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("Last 30 Days");
+            mb.append("</a>");
+            mb.append(" | ");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=365&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("Last 365 Days");
+            mb.append("</a>");
+            mb.append("</font>");
         } else {
-            mb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"../js/cross-browser.com-regercomadditional/boxstylenoedit.css\"/>" + reger.Vars.LINEBREAKCHARFORHTML);
-        }
-
-        //Fields wrapper start
-        mb.append("<div id='fieldBoxWrapper' class='fieldBoxWrapper'>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("    <div id='fieldBoxBarWrapper' class='fieldBoxBarWrapper' title='Drag to Move'>");
-        mb.append("    </div>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("    <div id='fieldBoxContentWrapper' class='fieldBoxContent'>" + reger.Vars.LINEBREAKCHARFORHTML);
-
-            //Start invividual fields
-            if (fields!=null){
-                for (Iterator it = fields.iterator(); it.hasNext(); ) {
-                    FieldType fld = (FieldType)it.next();
-                    if (fld!=null){
-                        Debug.debug(5, "FieldLayout.java", "FieldLayout.java field not null.  fld.getFieldname()" + fld.getFieldname());
-                        mb.append("<div id='fieldBox"+fld.getMegafieldid()+"' class='fieldBox'>" + reger.Vars.LINEBREAKCHARFORHTML);
-                        mb.append("    <div id='fieldBoxBar"+fld.getMegafieldid()+"' class='fieldBoxBar' title='Drag to Move'>");
-                        //Remove field button
-                        if (LAYOUTMODE==LAYOUTMODEEDIT) {
-                            mb.append("    <div style=\"float: right; width: 15px;\" title='Click to Remove'><a href='"+pageName+"?logid="+logid+"&eventtypeid="+eventtypeid+"&action=remove&megafieldid="+fld.getMegafieldid()+"&mode=editlayout' onclick=\"javascript: savelayout();\"><img src='"+pageProps.pathToAppRoot+"js/cross-browser.com-regercomadditional/images/closebox15-yel.gif' border=0 width=15 height=15 align=right alt='Click to Remove'></a></div>");
-                        }
-                        //Edit button
-                        if (LAYOUTMODE==LAYOUTMODEEDIT) {
-                            if (fld.isFieldOwnedByAccountuser(userSessionOfSaver.getAccountuser())){
-                                mb.append("<div style=\"float: right; width: 35px;\" title='Click to Edit'>");
-                                mb.append("<a href='"+fieldPageName+"?logid="+logid+"&eventtypeid="+eventtypeid+"&action=edit&megafieldid="+fld.getMegafieldid()+"&returntopage="+pageName+"'>");
-                                mb.append("Edit");
-                                mb.append("</a>");
-                                mb.append("</div>");
-                            }
-                        }
-                        //Field name
-                        mb.append(fld.getFieldname());
-                        //Requiredness
-                        if (fld.getIsrequired()==1 && LAYOUTMODE==LAYOUTMODEEDIT){
-                            mb.append(" (Required)");
-                        }
-                        mb.append(     "</div>" + reger.Vars.LINEBREAKCHARFORHTML);
-                        //Field description
-                        if (!fld.getFielddescription().equals("")) {
-                            //mb.append("    <div id='fieldBoxDesc"+fld.getMegafieldid()+"' class='fieldBoxDesc' title=''>"+fld.getFielddescription()+"</div>" + reger.Vars.LINEBREAKCHARFORHTML);
-                        }
-                        //Field content
-                        mb.append("    <div id='fieldBoxContent"+fld.getMegafieldid()+"' class='fieldBoxContent'>" + reger.Vars.LINEBREAKCHARFORHTML);
-
-                        //Start field output, synchronize the field
-                        //synchronized(fld){
-                            if (LAYOUTMODE==LAYOUTMODEADMIN){
-                                mb.append(fld.getHtmlAdmin(logid, true));
-                            } else if (LAYOUTMODE==LAYOUTMODEEDIT) {
-                                mb.append(fld.getHtmlAdmin(logid, false));
-                            } else {
-                                String tmp = fld.getHtmlPublic(logid);
-                                if (tmp.equals("")){
-                                    mb.append("&nbsp;");
-                                } else {
-                                    mb.append(tmp);
-                                }
-                                //Output graph links
-                                if (fld.getMegadatatypeid()!=reger.mega.DataTypeString.DATATYPEID){
-                                    //Numeric fields
-                                    String fieldNameUrlEncoded = "";
-                                    try{
-                                        fieldNameUrlEncoded = java.net.URLEncoder.encode(fld.getFieldname() + " vs. Time","UTF-8");
-                                    } catch(Exception e){
-                                        reger.core.Debug.debug(4, "FieldLayout.java", e);
-                                        fieldNameUrlEncoded = fld.getFieldname() + " vs. Time";
-                                    }
-//                                    mb.append("<br>");
-//                                    mb.append("<font face=arial class=smallfont size=-2>");
-//                                    mb.append("Graph this field:");
-//                                    mb.append("<br>");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISWEEK+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("This Week");
-//                                    mb.append("</a>");
-//                                    mb.append(" | ");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISMONTH+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("This Month");
-//                                    mb.append("</a>");
-//                                    mb.append(" | ");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGETHISYEAR+"&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("This Year");
-//                                    mb.append("</a>");
-//                                    mb.append("<br>");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=7&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("Last 7 Days");
-//                                    mb.append("</a>");
-//                                    mb.append(" | ");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=30&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("Last 30 Days");
-//                                    mb.append("</a>");
-//                                    mb.append(" | ");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+FieldType.XAXISDATETIME+"_0_0&yMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=365&charttype="+reger.Vars.CHARTTYPELINE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("Last 365 Days");
-//                                    mb.append("</a>");
-//                                    mb.append("</font>");
-                                } else {
-                                    //Alpha fields
-                                    String fieldNameUrlEncoded = "";
-                                    try{
-                                        fieldNameUrlEncoded = java.net.URLEncoder.encode(fld.getFieldname() + " vs. Time","UTF-8");
-                                    } catch(Exception e){
-                                        reger.core.Debug.debug(4, "FieldLayout.java", e);
-                                        fieldNameUrlEncoded = fld.getFieldname() + " vs. Time";
-                                    }
-//                                    mb.append("<br>");
-//                                    mb.append("<font face=arial class=smallfont size=-2>");
-//                                    mb.append("Graph this field:");
-//                                    mb.append("<br>");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISWEEK+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("This Week");
-//                                    mb.append("</a>");
-//                                    mb.append(" | ");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISMONTH+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("This Month");
-//                                    mb.append("</a>");
-//                                    mb.append(" | ");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISYEAR+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("This Year");
-//                                    mb.append("</a>");
-//                                    mb.append("<br>");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=7&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("Last 7 Days");
-//                                    mb.append("</a>");
-//                                    mb.append(" | ");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=30&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("Last 30 Days");
-//                                    mb.append("</a>");
-//                                    mb.append(" | ");
-//                                    mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=365&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
-//                                    mb.append("Last 365 Days");
-//                                    mb.append("</a>");
-//                                    mb.append("</font>");
-                                }
-                            }
-                        //}
-                        //End field output
-
-                        mb.append("    </div>" + reger.Vars.LINEBREAKCHARFORHTML);
-                        mb.append("    <div id='fieldBoxResBtn"+fld.getMegafieldid()+"' class='fieldBoxResBtn' title='Drag to Resize'>");
-                        //Bottom right corner drag button
-                        if (LAYOUTMODE==LAYOUTMODEEDIT) {
-                            mb.append("<img src='"+pageProps.pathToAppRoot+"js/cross-browser.com-regercomadditional/images/resize_blue.gif' border=0 valign=bottom align=right>");
-                        }
-                        mb.append("</div>" + reger.Vars.LINEBREAKCHARFORHTML);
-                        mb.append("</div>" + reger.Vars.LINEBREAKCHARFORHTML);
-                    }
-                }
+            //Alpha fields
+            String fieldNameUrlEncoded = "";
+            try{
+                fieldNameUrlEncoded = java.net.URLEncoder.encode(fld.getFieldname() + " vs. Time","UTF-8");
+            } catch(Exception e){
+                reger.core.Debug.debug(4, "FieldLayout.java", e);
+                fieldNameUrlEncoded = fld.getFieldname() + " vs. Time";
             }
-            //End invividual fields
-
-        mb.append("    </div>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("    <div id='fieldBoxResBtnWrapper' class='fieldBoxResBtn' title='Drag to Resize'>");
-        if (LAYOUTMODE==LAYOUTMODEEDIT) {
-            mb.append("<img src='"+pageProps.pathToAppRoot+"js/cross-browser.com-regercomadditional/images/resize_blue.gif' border=0 valign=bottom align=right>");
+            mb.append("<br>");
+            mb.append("<font face=arial class=smallfont size=-2>");
+            mb.append("Graph this field:");
+            mb.append("<br>");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISWEEK+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("This Week");
+            mb.append("</a>");
+            mb.append(" | ");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISMONTH+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("This Month");
+            mb.append("</a>");
+            mb.append(" | ");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGETHISYEAR+"&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("This Year");
+            mb.append("</a>");
+            mb.append("<br>");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=7&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("Last 7 Days");
+            mb.append("</a>");
+            mb.append(" | ");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=30&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("Last 30 Days");
+            mb.append("</a>");
+            mb.append(" | ");
+            mb.append("<a href='graphs-detail.log?ispreview=0&chartname="+fieldNameUrlEncoded+"&xMegafieldChoice="+fld.getMegafieldid()+"_"+logid+"_"+fld.getEventtypeid()+"&yMegafieldChoice="+FieldType.YAXISCOUNT+"_0_0&daterange="+reger.Vars.DATERANGELASTXDAYS+"&lastxdays=365&charttype="+reger.Vars.CHARTTYPE3DPIE+"&chartsize="+reger.Vars.CHARTSIZEMEDIUM+"&yaxiswhattodo="+reger.Vars.YAXISWHATTODOSUM+"'>");
+            mb.append("Last 365 Days");
+            mb.append("</a>");
+            mb.append("</font>");
         }
-        mb.append("</div>" + reger.Vars.LINEBREAKCHARFORHTML);
-        mb.append("</div>" + reger.Vars.LINEBREAKCHARFORHTML);
-        //Fields wrapper end
-
-        mb.append(reger.Vars.LINEBREAKCHARFORHTML);
 
         return mb.toString();
     }

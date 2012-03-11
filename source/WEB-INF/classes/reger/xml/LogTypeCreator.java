@@ -1,10 +1,6 @@
 package reger.xml;
 
 import reger.MegaLogType;
-import reger.Account;
-import reger.Accountuser;
-import reger.mega.FieldType;
-import reger.mega.FieldOrderCollection;
 import reger.mega.Field;
 import reger.core.ValidationException;
 import org.jdom.*;

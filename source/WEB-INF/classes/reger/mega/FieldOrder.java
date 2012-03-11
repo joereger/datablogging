@@ -9,17 +9,13 @@ import reger.cache.providers.jboss.Cacheable;
 public class FieldOrder {
 
     private int megafieldid = 0;
-    private int x = 0;
-    private int y = 0;
-    private int w = 400;
-    private int h = 150;
+    private int col = 1;
+    private int order = 1;
 
-    public FieldOrder(int megafieldid, int x, int y, int w, int h){
+    public FieldOrder(int megafieldid, int col, int order){
         this.megafieldid = megafieldid;
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
+        this.col = col;
+        this.order = order;
     }
 
     public int getMegafieldid() {
@@ -30,36 +26,19 @@ public class FieldOrder {
         this.megafieldid = megafieldid;
     }
 
-    public int getX() {
-        return x;
+    public int getCol() {
+        return col;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setCol(int col) {
+        this.col = col;
     }
 
-    public int getY() {
-        return y;
+    public int getOrder() {
+        return order;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setOrder(int order) {
+        this.order = order;
     }
-
-    public int getW() {
-        return w;
-    }
-
-    public void setW(int w) {
-        this.w = w;
-    }
-
-    public int getH() {
-        return h;
-    }
-
-    public void setH(int h) {
-        this.h = h;
-    }
-
 }

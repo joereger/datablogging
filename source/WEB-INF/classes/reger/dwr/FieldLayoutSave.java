@@ -15,6 +15,8 @@ public class FieldLayoutSave {
 
     private UserSession userSession;
 
+    //NOTE: THIS IS THE OLD VERSION OF LAYOUT
+
     public FieldLayoutSave(){
         Debug.debug(5, "DWR FieldLayoutSave", "FieldLayoutSave() object created.");
         HttpServletRequest request = ExecutionContext.get().getHttpServletRequest();

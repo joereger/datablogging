@@ -35,16 +35,20 @@ public class MegaHtmlFormBottom {
                 submittext = "Add Log Entry";
             }
 
-            mb.append("<tr>");
-            mb.append("<td colspan=3 align=center valign=top><input type='submit' value='" + submittext + "' " + disabledFormText + "></td>");
-            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=9>");
-            mb.append("&nbsp;");
-            mb.append("</td>");
-            mb.append("</tr>");
+
+
+            mb.append("<div class=\"row\">");
+            mb.append("<div class=\"span2\">");
+            mb.append("<br/>");
+            mb.append("</div>");
+            mb.append("<div class=\"span10\">");
+
+            mb.append("<input type='submit' value='" + submittext + "' " + disabledFormText + "></td>");
+            mb.append("</div>");
+            mb.append("</div>");
 
             mb.append("</form>");
-            mb.append("</table>");
-            mb.append("</td></tr></table>");
+
             mb.append("<!-- end  log entry table -->");
             mb.append("<br><br>");
 
@@ -54,16 +58,12 @@ public class MegaHtmlFormBottom {
              mb.append("<a name='images'><!-- Begin Images -->");
             //Begin image-add link
             if (displayasadmin) {
-                mb.append("<tr>");
-                mb.append("<td valign=top align=right colspan=3 class=logentryheader>");
-                mb.append("<font face=arial size=-1>");
-                mb.append("<b>");
-                mb.append("Images & Files");
-                mb.append("</b>");
-                mb.append("</font>");
-                mb.append("</td>");
-                mb.append("<td valign=center nowrap bgcolor=#ffffff colspan=3 class=logentrycontent>");
-                mb.append("<font face=arial size=-1>");
+                mb.append("<div class=\"row\">");
+                mb.append("<div class=\"span2\">");
+                mb.append("<strong>Images & Files</strong>");
+                mb.append("</div>");
+                mb.append("<div class=\"span10\">");
+
                 if (pageProps.entry.eventid != -1) {
                     if (!editLayout) {
 
@@ -94,8 +94,8 @@ public class MegaHtmlFormBottom {
                     mb.append("You can add images after the entry is created.");
                 }
                 mb.append("</font>");
-                mb.append("</td>");
-                mb.append("</tr>");
+                mb.append("</div>");
+                mb.append("</div>");
             }
             //End image-add link
 
@@ -106,13 +106,14 @@ public class MegaHtmlFormBottom {
             if (request.getParameter("imagetagid") != null && reger.core.Util.isinteger(request.getParameter("imagetagid"))) {
                 imagetagid = Integer.parseInt(request.getParameter("imagetagid"));
             }
-            mb.append("<tr>");
-            mb.append("<td colspan=3 align=right valign=top>");
-            mb.append("</td>");
-            mb.append("<td valign=top colspan=3 >");
+            mb.append("<div class=\"row\">");
+            mb.append("<div class=\"span2\">");
+            mb.append("<br/>");
+            mb.append("</div>");
+            mb.append("<div class=\"span10\">");
             mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, imagetagid, displayasadmin, userSession, -1, perpage, request));
-            mb.append("</td>");
-            mb.append("</tr>");
+            mb.append("</div>");
+            mb.append("</div>");
 
             mb.append("<!-- End Images -->");
 
@@ -121,10 +122,11 @@ public class MegaHtmlFormBottom {
             //Approve?
             if (displayasadmin && userSession.getAccountuser().userCanDoAcl("APPROVEENTRIES", userSession.getAccount().getAccountid())) {
                 if (pageProps.entry.isApproved == 0) {
-                    mb.append("<tr>");
-                    mb.append("<td colspan=3 bgcolor=#cccccc align=right valign=top><font face=arial size=-1><b>Approve?</b></font><br><font face=arial size=-2><b></b></font><br>");
-                    mb.append("</td>");
-                    mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap>");
+                    mb.append("<div class=\"row\">");
+                    mb.append("<div class=\"span2\">");
+                    mb.append("<br/>");
+                    mb.append("</div>");
+                    mb.append("<div class=\"span10\">");
                     mb.append("<input type='radio' name='isapproved' value='1' " + disabledFormText + " ");
                     if (pageProps.entry.isApproved != 0) {
                         mb.append("checked");
@@ -139,8 +141,9 @@ public class MegaHtmlFormBottom {
                     mb.append("> ");
                     mb.append("<font face=arial size=-2>No, Do Not Approve</font>");
 
-                    mb.append("</font></td>");
-                    mb.append("</tr>");
+                    mb.append("</font>");
+                    mb.append("</div>");
+                    mb.append("</div>");
                 } else {
                     mb.append("<input type='hidden' name='isapproved' value='1'>");
                 }
@@ -162,18 +165,18 @@ public class MegaHtmlFormBottom {
             }
 
             //Smart Entry Tags
-            mb.append("<tr>");
-            mb.append("<td colspan=3 align=right valign=top class=logentryheader><font face=arial size=-1><b>");
-            if (displayasadmin) {
-                mb.append("Tags</b></font>");
-            } else {
-                if (pageProps.entry.entryKeywordTagsWithLinks!=null && pageProps.entry.entryKeywordTagsWithLinks.length()>0){
-                    mb.append("Tags");
+            mb.append("<div class=\"row\">");
+            mb.append("<div class=\"span2\">");
+                if (displayasadmin) {
+                    mb.append("<strong>Tags</strong>");
+                } else {
+                    if (pageProps.entry.entryKeywordTagsWithLinks!=null && pageProps.entry.entryKeywordTagsWithLinks.length()>0){
+                        mb.append("Tags");
+                    }
                 }
-            }
-            mb.append("</b></font><br>");
-            mb.append("</td>");
-            mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
+            mb.append("</div>");
+            mb.append("<div class=\"span10\">");
+
             if (displayasadmin) {
                 //This is where the admin side is shown.
                 //Users can enter and edit tag information here as a single input text field
@@ -183,8 +186,8 @@ public class MegaHtmlFormBottom {
                 //Readers view keyword tags as links to the keyword tag page.
                 mb.append(pageProps.entry.entryKeywordTagsWithLinks);
             }
-            mb.append("</td>");
-            mb.append("</tr>");
+            mb.append("</div>");
+            mb.append("</div>");
 
             //Location
             if (displayasadmin) {
@@ -202,20 +205,19 @@ public class MegaHtmlFormBottom {
                 String searchterms = pageProps.entry.title + " " + pageProps.entry.comments;
                 reger.RelatedLinks relatedLinks = reger.cache.RelatedLinksCache.get(pageProps.entry.eventid, searchterms, userSession);
                 if (relatedLinks.getRelatedLinks().size() > 0) {
-                    mb.append("<tr>");
-                    mb.append("<td colspan=3 align=right valign=top class=logentryheader><font face=arial size=-1><b>");
-                    mb.append("Related Entries");
-                    mb.append("</b></font><br>");
-                    mb.append("</td>");
-                    mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 nowrap class=logentrycontent>");
+                    mb.append("<div class=\"row\">");
+                    mb.append("<div class=\"span2\">");
+                    mb.append("<strong>Related Posts</strong>");
+                    mb.append("</div>");
+                    mb.append("<div class=\"span10\">");
                     //Rip through the related entries
                     //@todo Display rank of related links.  We have relatedLinks.relatedRank[] available with the info.
                     for (Iterator it = relatedLinks.getRelatedLinks().iterator(); it.hasNext();) {
                         RelatedLink rl = (RelatedLink) it.next();
                         mb.append("<a href='" + reger.Entry.entryFileNameStatic(rl.getEventid(), rl.getTitle()) + "'>" + rl.getTitle() + "</a><br>");
                     }
-                    mb.append("</td>");
-                    mb.append("</tr>");
+                    mb.append("</div>");
+                    mb.append("</div>");
                 }
             }
 
@@ -574,12 +576,11 @@ public class MegaHtmlFormBottom {
 
 
 
-                mb.append("<tr>");
-                mb.append("<td colspan=3 align=center valign=top>");
-
-
-                mb.append("</td>");
-                mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3>");
+                mb.append("<div class=\"row\">");
+                mb.append("<div class=\"span2\">");
+                mb.append("<br/>");
+                mb.append("</div>");
+                mb.append("<div class=\"span10\">");
 
                 if (pageProps.action.equals("edit") || pageProps.action.equals("editsubmit")) {
                     mb.append("<table align=right cellspacing=2 cellpadding=4 bgcolor=#ffffff>");
@@ -652,8 +653,8 @@ public class MegaHtmlFormBottom {
 
 
 
-                mb.append("</td>");
-                mb.append("</tr>");
+                mb.append("</div>");
+                mb.append("</div>");
 
                 mb.append("<!-- End Action Buttons -->");
             }
@@ -699,7 +700,7 @@ public class MegaHtmlFormBottom {
 //            mb.append("<!-- End Messages -->");
 
 
-            mb.append("</table>");
+            //mb.append("</table>");
             //mb.append("</td></tr></table>");
 
             mb.append("<!-- end  log entry table -->");

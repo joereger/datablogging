@@ -10,22 +10,11 @@ public class LocationRenderHtml {
         //reger.core.Util.debug(5, "LocationRenderHtml.getHtmlForEntryPageTable()");
         //reger.core.Util.debug(5, "LocationRenderHtml.getHtmlForEntryPageTable()<br>locOfEntry.getLocationname()" + locOfEntry.getLocationname());
         StringBuffer mb = new StringBuffer();
-        mb.append("<tr>");
-        mb.append("<td colspan=3 align=right valign=top class=logentryheader>");
-        mb.append("<font face=arial size=-1><b>Location</b></font>");
+        mb.append("<div class=\"row\">");
+        mb.append("<div class=\"span2\">");
         if (displayasadmin) {
-            mb.append("<br>");
-            mb.append("<font face=arial size=-2>");
-//            mb.append("<b>");
-//            mb.append("Track the physical location of your entries to get maps of your travels.");
-//            mb.append("<br><br>");
-//            mb.append("Choose from a previously created location or enter a new one.  Only Location Name is required... all other fields are optional.");
-//            mb.append("<br><br>");
-//            mb.append("<a href='entries-locations-edit.log'>");
-//            mb.append("All Locations");
-//            mb.append("</a>");
-            mb.append("</b>");
-            mb.append("</font>");
+
+            mb.append("<strong>Location</strong>");
         } else {
             if (locOfEntry!=null && locOfEntry.getLocationid()>0) {
 //                mb.append("<br>");
@@ -43,8 +32,9 @@ public class LocationRenderHtml {
 //                mb.append("</font>");
             }
         }
-        mb.append("</td>");
-        mb.append("<td bgcolor='#ffffff' align=left valign=top colspan=3 class=logentrycontent>");
+        mb.append("&nbsp;</div>");
+        mb.append("<div class=\"span10\">");
+
         if (displayasadmin) {
             if (userSession!=null && userSession.getAccountuser()!=null && userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && locOfEntry!=null){
                 //Get list of locations
@@ -67,8 +57,8 @@ public class LocationRenderHtml {
 
 
 
-        mb.append("</td>");
-        mb.append("</tr>");
+        mb.append("</div>");
+        mb.append("</div>");
 
         return mb.toString();
     }
@@ -80,11 +70,10 @@ public class LocationRenderHtml {
             loc = new Location(0);
         }
 
-        mb.append("<table cellspacing='2' cellpadding='2' border='0'>");
+        mb.append("<div class=\"row\">");
+        mb.append("<div class=\"span2\">");
 
-        //Location name
-        mb.append("<tr>");
-        mb.append("<td valign=bottom align=left colspan=3>");
+
         if (displayasadmin) {
 
 
@@ -99,8 +88,8 @@ public class LocationRenderHtml {
                 mb.append("<font face=arial class=smallfont size=-1>Not Specified</font>");
             }
         }
-        mb.append("</td>");
-        mb.append("</tr>");
+        mb.append("</div>");
+        mb.append("<div class=\"span10\">");
 
 
 //        mb.append("<tr>");
@@ -306,7 +295,8 @@ public class LocationRenderHtml {
 //        }
         //End gps coords
 
-        mb.append("</table>");
+        mb.append("</div>");
+        mb.append("</div>");
 
         if (displayasadmin) {
 //                mb.append("<br>");

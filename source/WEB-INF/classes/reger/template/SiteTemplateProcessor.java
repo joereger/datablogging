@@ -81,7 +81,9 @@ public class SiteTemplateProcessor implements TemplateProcessor {
 
 
         //jQuery
-        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"css/twitter-bootstrap-2.0.1/js/jquery-1.7.1.min.js\"></script>"+"\n");
+        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jQuery/js/jquery-1.7.1.min.js\"></script>"+"\n");
+        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jQuery/js/jquery-ui-1.8.18.custom.min.js\"></script>"+"\n");
+        appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/jQuery/css/smoothness/jquery-ui-1.8.18.custom.css\" type=\"text/css\" />"+"\n");
 
         //prettyPhoto
         appendToHead.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/prettyPhoto3.1.3/css/prettyPhoto.css\" type=\"text/css\" />"+"\n");
@@ -141,6 +143,9 @@ public class SiteTemplateProcessor implements TemplateProcessor {
                 "    $(\"a[rel^='prettyPhoto']\").prettyPhoto();\n" +
                 "  });\n" +
                 "</script>");
+
+
+
 
 
 

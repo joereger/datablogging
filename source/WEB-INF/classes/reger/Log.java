@@ -1,5 +1,8 @@
 package reger;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.log4j.Logger;
 import reger.mega.FieldType;
 import reger.mega.FieldOrderCollection;
 import reger.nestednav.NestedNavItem;
@@ -9,9 +12,11 @@ import reger.core.Debug;
 import reger.cache.LogCache;
 import reger.cache.providers.jboss.Cacheable;
 
+import java.net.URI;
 import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Cacheable
 public class Log implements NestedNavItem {
@@ -101,6 +106,7 @@ public class Log implements NestedNavItem {
                 //Get fields for this log
                 loadFields();
 
+
                 //Debug
                 StringBuffer tmp2 = new StringBuffer();
                 if (fields!=null){
@@ -153,6 +159,8 @@ public class Log implements NestedNavItem {
         this.fields = fields;
         this.fieldshidden = fieldshidden;
     }
+
+
 
 
 

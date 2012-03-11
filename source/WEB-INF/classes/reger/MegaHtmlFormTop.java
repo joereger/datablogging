@@ -70,9 +70,9 @@ public class MegaHtmlFormTop {
 
         String submitstring="";
         if (displayasadmin) {
-            if (pageProps.logProps.megalogtypeicon.equals("")) {
-                pageProps.logProps.megalogtypeicon="logmega.gif";
-            }
+//            if (pageProps.logProps.megalogtypeicon.equals("")) {
+//                pageProps.logProps.megalogtypeicon="logmega.gif";
+//            }
 
             //mb.append("<img src='../images/logimages/"+ pageProps.logProps.megalogtypeicon +"' width=100 height=50 border=0 align=top>");
 
@@ -171,9 +171,8 @@ public class MegaHtmlFormTop {
         //Now we decide whether to put the default form up or the regular form up
         if (pageProps.action.equals("default") || pageProps.action.equals("defaultsubmit")) {
             //Default top
-            mb.append("<!-- begin  log entry table -->");
-            //mb.append("<table cellpadding=0 cellspacing=0 border=0 bgcolor=#000000 ><tr><td>");
-            mb.append("<table cellpadding=5 cellspacing=1  border=0>");
+            //mb.append("<!-- begin  log entry table -->");
+            //mb.append("<table cellpadding=5 cellspacing=1  border=0>");
 
             //Else display the normal form
         } else {
@@ -182,13 +181,10 @@ public class MegaHtmlFormTop {
 
             mb.append("<!-- begin  log entry table -->");
 
+            mb.append("<div class=\"row\">");
+            mb.append("<div class=\"span2\">");
 
-
-            //mb.append("<table cellpadding=0 cellspacing=0 border=0 bgcolor='#999999' width=100% ><tr><td>");
             mb.append("<table cellpadding=5 cellspacing=1  class=logentrytable border=0 width=\"100%\">");
-
-
-
             mb.append("<tr>");
             //Month
             int mm = TimeUtils.getDatePart(TimeUtils.gmttousertime(pageProps.entry.dateGmt, timezoneid), "month");
@@ -245,22 +241,7 @@ public class MegaHtmlFormTop {
             }
             mb.append("<br><font face=arial size=-2 class=smallfont>Year</font></td>");
 
-            //Title
-            mb.append("<td bgcolor='#ffffff' align=left valign=top nowrap colspan=3 class=logentryheader>");
-            //@todo Tabindex working on main entry page
-            if (displayasadmin) {
-                mb.append("<input type='text' name='title' maxlength=255 size=40 value=\"" + reger.core.Util.cleanForHtml(pageProps.entry.title) + "\" tabindex=1 "+disabledFormText+">");
-            } else {
-                mb.append("<h1>"+reger.core.Util.cleanForHtml(pageProps.entry.title));
-                //Display an edit link to site owners
-                if (!displayasadmin) {
-                    if (userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
-                        mb.append(" <a class=\"btn btn-success btn-small\" href='myhome/entry.log?eventid="+pageProps.entry.eventid+"&action=edit'><i class=\"icon-edit icon-white\"></i> Edit</a><br/>");
-                    }
-                }
-                mb.append("</h1>");
-            }
-            mb.append("</td>");
+
 
             mb.append("</tr>");
 
@@ -335,9 +316,32 @@ public class MegaHtmlFormTop {
             }
 
             mb.append("</td>");
+            mb.append("</tr>");
+            mb.append("</table>");
+
+            mb.append("</div>");
+            mb.append("<div class=\"span10\">");
+
+
+
+            //Title
+            //@todo Tabindex working on main entry page
+            if (displayasadmin) {
+                mb.append("<input type='text' name='title' maxlength=255 size=40 value=\"" + reger.core.Util.cleanForHtml(pageProps.entry.title) + "\" tabindex=1 "+disabledFormText+">");
+            } else {
+                mb.append("<h1>"+reger.core.Util.cleanForHtml(pageProps.entry.title));
+                //Display an edit link to site owners
+                if (!displayasadmin) {
+                    if (userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){
+                        mb.append(" <a class=\"btn btn-success btn-small\" href='myhome/entry.log?eventid="+pageProps.entry.eventid+"&action=edit'><i class=\"icon-edit icon-white\"></i> Edit</a><br/>");
+                    }
+                }
+                mb.append("</h1>");
+            }
+            mb.append("<br/><br/>");
+
 
             //Body
-            mb.append("<td bgcolor='#ffffff' align=left valign=top rowspan=2 colspan=3 class=logentrycontent>");
 
             //Update the entrymode if necessary
             if (request.getParameter("toggleentrymode")!=null && request.getParameter("toggleentrymode").equals("true")){
@@ -358,26 +362,26 @@ public class MegaHtmlFormTop {
 
 
 
-                    //Polls
-                    if (!displayasadmin && pageProps.entry.getPolls().size()>0){
-                        mb.append("<div style=\"float: right; width: 200px;\">");
-                        for (Iterator it = pageProps.entry.getPolls().iterator(); it.hasNext(); ) {
-                            Poll poll = (Poll)it.next();
-                            mb.append(reger.ui.RoundedCorners.start("poll"+poll.getPollid(), "ffffff", "cccccc", 100));
-                            if(poll.getIsopen()){
-                                mb.append(PollFormHtml.getPollForm(poll));
-                            } else {
-                                mb.append(PollResultsHtml.getResultsGraphOnly(poll, request, pageProps, userSession, 300));
-                                mb.append("<br>");
-                                mb.append("<font face=arial size=-2>");
-                                mb.append("<a href='entries-poll-votes.log?pollid="+poll.getPollid()+"'>");
-                                mb.append("View Results");
-                                mb.append("</a>");
-                            }
-                            mb.append(reger.ui.RoundedCorners.end("poll"+poll.getPollid()));
-                        }
-                        mb.append("</div>");
-                    }
+//                    //Polls
+//                    if (!displayasadmin && pageProps.entry.getPolls().size()>0){
+//                        mb.append("<div style=\"float: right; width: 200px;\">");
+//                        for (Iterator it = pageProps.entry.getPolls().iterator(); it.hasNext(); ) {
+//                            Poll poll = (Poll)it.next();
+//                            mb.append(reger.ui.RoundedCorners.start("poll"+poll.getPollid(), "ffffff", "cccccc", 100));
+//                            if(poll.getIsopen()){
+//                                mb.append(PollFormHtml.getPollForm(poll));
+//                            } else {
+//                                mb.append(PollResultsHtml.getResultsGraphOnly(poll, request, pageProps, userSession, 300));
+//                                mb.append("<br>");
+//                                mb.append("<font face=arial size=-2>");
+//                                mb.append("<a href='entries-poll-votes.log?pollid="+poll.getPollid()+"'>");
+//                                mb.append("View Results");
+//                                mb.append("</a>");
+//                            }
+//                            mb.append(reger.ui.RoundedCorners.end("poll"+poll.getPollid()));
+//                        }
+//                        mb.append("</div>");
+//                    }
 
 
 
@@ -390,12 +394,12 @@ public class MegaHtmlFormTop {
 
 
                     //Put body of blog post onto screen
-                    mb.append("<font face=arial size=-1>"+commentsTmp+"</font>");
+                    mb.append(commentsTmp);
                 }
             }
 
-            mb.append("</td>");
-            mb.append("</tr>");
+            mb.append("</div>");
+            mb.append("</div>");
 
 //
 //            //Show the timezone
@@ -419,22 +423,22 @@ public class MegaHtmlFormTop {
 
 
             //Show the author
-            try{
-                mb.append("<tr><td colspan=3 valign=top class=logentryheader>");
-                //mb.append("<font face=arial size=-2 class=smallfont>Author: <b><a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"' onclick=\"leaveEntryPage(this.href); return false;\">"+pageProps.entry.author+"</b></font>");
-                if (!editLayout && pageProps.entry.accountuserid>0){
-//                    Accountuser au = new Accountuser(pageProps.entry.accountuserid, true);
-//                    mb.append("<font face=arial size=-2 class=smallfont>");
-//                    mb.append("Author:<br>");
-//                    mb.append("<a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"'>");
-//                    mb.append("<img src = '"+au.primaryImage(userSession, true)+"' width=50 border=0><br>");
-//                    mb.append(au.getFriendlyname());
-//                    mb.append("</b></font></a>");
-                }
-                mb.append("</td></tr>");
-            } catch (Exception e){
-                reger.core.Debug.errorsave(e, "MegaHtmlFormTop.java");
-            }
+//            try{
+//                mb.append("<tr><td colspan=3 valign=top class=logentryheader>");
+//                //mb.append("<font face=arial size=-2 class=smallfont>Author: <b><a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"' onclick=\"leaveEntryPage(this.href); return false;\">"+pageProps.entry.author+"</b></font>");
+//                if (!editLayout && pageProps.entry.accountuserid>0){
+////                    Accountuser au = new Accountuser(pageProps.entry.accountuserid, true);
+////                    mb.append("<font face=arial size=-2 class=smallfont>");
+////                    mb.append("Author:<br>");
+////                    mb.append("<a href='"+pageProps.pathToAppRoot+"author.log?accountuserid="+pageProps.entry.accountuserid+"'>");
+////                    mb.append("<img src = '"+au.primaryImage(userSession, true)+"' width=50 border=0><br>");
+////                    mb.append(au.getFriendlyname());
+////                    mb.append("</b></font></a>");
+//                }
+//                mb.append("</td></tr>");
+//            } catch (Exception e){
+//                reger.core.Debug.errorsave(e, "MegaHtmlFormTop.java");
+//            }
 
 
 

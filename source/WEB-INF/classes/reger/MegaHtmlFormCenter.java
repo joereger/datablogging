@@ -25,12 +25,11 @@ public class MegaHtmlFormCenter {
         int logid = 0;
 
 
-        mb.append("<tr>");
-
-            mb.append("<td bgcolor=#ffffff colspan=3 align=left valign=top>");
-            mb.append("</td>");
-
-            mb.append("<td bgcolor=#ffffff colspan=3 align=left valign=top>");
+        mb.append("<div class=\"row\">");
+        mb.append("<div class=\"span2\">");
+        mb.append("<br/>");
+        mb.append("</div>");
+        mb.append("<div class=\"span10\">");
 
 
 //        if (displayasadmin && userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){
@@ -90,8 +89,9 @@ public class MegaHtmlFormCenter {
         //Display the fields
         mb.append(FieldLayout.getHtml(0, pageProps.logProps.logid, LAYOUTMODE, userSession, "entry.log", "logs-field.log", "logs-newfield.log", pageProps));
 
-        mb.append("</td>");
-        mb.append("</tr>");
+        mb.append("</div>");
+        mb.append("</div>");
+        mb.append("<br/><br/>");
 
 
 
