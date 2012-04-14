@@ -52,9 +52,9 @@ public class MarketingSiteTemplateProcessor implements TemplateProcessor {
 
         //Figure out what AdminTools and LoggedInBar look like
         StringBuffer appendToTop = new StringBuffer();
-        appendToTop.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/nav.css\" type=\"text/css\" />");
-        appendToTop.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />");
-        appendToTop.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />");
+//        appendToTop.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/nav.css\" type=\"text/css\" />");
+//        appendToTop.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/cssobjectlayouts.css\" type=\"text/css\" />");
+//        appendToTop.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"css/style.css\" type=\"text/css\" />");
         if (userSession.getAccountuser().getIsLoggedIn()){
             appendToTop.append(reger.LoggedInBar.getHtml(userSession, pageProps));
             if (userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && userSession.getAccount().getAdmintools()==1 && userSession.getAccountuser().getAccountid()==userSession.getAccount().getAccountid()){

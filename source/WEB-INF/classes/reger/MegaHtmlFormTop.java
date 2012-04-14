@@ -329,7 +329,7 @@ public class MegaHtmlFormTop {
             if (displayasadmin) {
                 mb.append("<input type='text' name='title' maxlength=255 size=40 value=\"" + reger.core.Util.cleanForHtml(pageProps.entry.title) + "\" tabindex=1 "+disabledFormText+">");
             } else {
-                mb.append("<h1>"+reger.core.Util.cleanForHtml(pageProps.entry.title));
+                mb.append("<h1 class=\"postdetailtitle\">"+reger.core.Util.cleanForHtml(pageProps.entry.title));
                 //Display an edit link to site owners
                 if (!displayasadmin) {
                     if (userSession.getAccountuser().userCanAuthorLog(pageProps.logProps.logid)){

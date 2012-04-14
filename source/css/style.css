@@ -1,289 +1,289 @@
 
 
-.largeFont {
-    font-family: arial, verdana, sans-serif;
-	font-size: 30px;
-    font-weight: bold;
-}
+/*.largeFont {*/
+    /*font-family: arial, verdana, sans-serif;*/
+	/*font-size: 30px;*/
+    /*font-weight: bold;*/
+/*}*/
 
-.regularFont {
-    font-family: arial, verdana, sans-serif;
-	font-size: 14px;
-}
+/*.regularFont {*/
+    /*font-family: arial, verdana, sans-serif;*/
+	/*font-size: 14px;*/
+/*}*/
 
-.smallFont {
-    font-family: arial, verdana, sans-serif;
-	font-size: 12px;
-}
+/*.smallFont {*/
+    /*font-family: arial, verdana, sans-serif;*/
+	/*font-size: 12px;*/
+/*}*/
 
-.tinyFont {
-    font-family: arial, verdana, sans-serif;
-	font-size: 10px;
-}
+/*.tinyFont {*/
+    /*font-family: arial, verdana, sans-serif;*/
+	/*font-size: 10px;*/
+/*}*/
 
-font {
-    font-family: arial, verdana, sans-serif;
-}
+/*font {*/
+    /*font-family: arial, verdana, sans-serif;*/
+/*}*/
 
-TABLE.megafield {
-    border-top: 1px solid #999;
-    border-left: 1px solid #999;
-}
+/*TABLE.megafield {*/
+    /*border-top: 1px solid #999;*/
+    /*border-left: 1px solid #999;*/
+/*}*/
 
-TD.megafieldleft {
-    border-left: 0px solid #999;
-    border-top: 0px solid #999;
-    border-bottom: 1px solid #999;
-    padding: 3px;
-}
+/*TD.megafieldleft {*/
+    /*border-left: 0px solid #999;*/
+    /*border-top: 0px solid #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*padding: 3px;*/
+/*}*/
 
-TD.megafieldright {
-    border-right: 1px solid #999;
-    border-top: 0px solid #999;
-    border-bottom: 1px solid #999;
-    padding: 3px;
-}
+/*TD.megafieldright {*/
+    /*border-right: 1px solid #999;*/
+    /*border-top: 0px solid #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*padding: 3px;*/
+/*}*/
 
-.infobox {
-    border: 1px dotted #999;
-    padding: 3px;
-}
+/*.infobox {*/
+    /*border: 1px dotted #999;*/
+    /*padding: 3px;*/
+/*}*/
 
-TD.loggedinbarsubtable {
-    border: 1px solid #666666;
-}
+/*TD.loggedinbarsubtable {*/
+    /*border: 1px solid #666666;*/
+/*}*/
 
-.loggedinbarlink:link {
-color:#666666; text-decoration:none;
-}
+/*.loggedinbarlink:link {*/
+/*color:#666666; text-decoration:none;*/
+/*}*/
 
-.loggedinbarlink:active {
-color:#666666; text-decoration:underline;
-}
+/*.loggedinbarlink:active {*/
+/*color:#666666; text-decoration:underline;*/
+/*}*/
 
-.loggedinbarlink:visited {
-color:#666666; text-decoration:none;
-}
+/*.loggedinbarlink:visited {*/
+/*color:#666666; text-decoration:none;*/
+/*}*/
 
-.loggedinbarlink:hover {
-color: #000000;
-text-decoration:underline;
-background-color: #ececec;
-}
+/*.loggedinbarlink:hover {*/
+/*color: #000000;*/
+/*text-decoration:underline;*/
+/*background-color: #ececec;*/
+/*}*/
 
-.loggedinbartextlarge {
-color:#000000;
-text-decoration:none;
-font-size: 16px
-}
+/*.loggedinbartextlarge {*/
+/*color:#000000;*/
+/*text-decoration:none;*/
+/*font-size: 16px*/
+/*}*/
 
-.loggedinbartext {
-color:#666666;
-text-decoration:none;
-font-size: 10px;
-font-weight: bold;
-}
+/*.loggedinbartext {*/
+/*color:#666666;*/
+/*text-decoration:none;*/
+/*font-size: 10px;*/
+/*font-weight: bold;*/
+/*}*/
 
-.loggedinbartextsmall {
-color:#000000;
-text-decoration:none;
-font-size: 8px
-}
+/*.loggedinbartextsmall {*/
+/*color:#000000;*/
+/*text-decoration:none;*/
+/*font-size: 8px*/
+/*}*/
 
-TD.adminhometopborder {
+/*TD.adminhometopborder {*/
 
-    padding: 4px;
+    /*padding: 4px;*/
 
-}
+/*}*/
 
-TD.adminhomelogactions {
+/*TD.adminhomelogactions {*/
 
-    border-left: 1px solid #999;
-    border-bottom: 1px solid #999;
-    padding: 4px;
+    /*border-left: 1px solid #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*padding: 4px;*/
 
-}
+/*}*/
 
-TD.adminhomecpactions {
+/*TD.adminhomecpactions {*/
 
-    border-left: 1px solid #999;
-    border-bottom: 1px solid #999;
-    border-right: 1px solid #999;
-    padding: 4px;
+    /*border-left: 1px solid #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*border-right: 1px solid #999;*/
+    /*padding: 4px;*/
 
-}
+/*}*/
 
-TD.adminhomeprivate {
+/*TD.adminhomeprivate {*/
 
-    border-left: 1px dotted #999;
-    border-bottom: 1px dotted #999;
-    border-right: 1px solid #999;
-    padding: 4px;
+    /*border-left: 1px dotted #999;*/
+    /*border-bottom: 1px dotted #999;*/
+    /*border-right: 1px solid #999;*/
+    /*padding: 4px;*/
 
-}
+/*}*/
 
-TD.adminhomevisible {
+/*TD.adminhomevisible {*/
 
-    border-left: 1px dotted #999;
-    border-bottom: 1px solid #999;
-    border-right: 1px solid #999;
-    padding: 4px;
+    /*border-left: 1px dotted #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*border-right: 1px solid #999;*/
+    /*padding: 4px;*/
 
-}
-
-
-TD.twopaneboxleft {
-    border-left: 1px solid #999;
-    border-top: 3px solid #999;
-    border-bottom: 1px solid #999;
-    border-right: 1px dotted #999;
-    padding: 6px;
-}
-
-TD.twopaneboxright {
-    border-right: 1px solid #999;
-    border-top: 3px solid #999;
-    border-bottom: 1px solid #999;
-    padding: 6px;
-}
-
-TABLE.greysolidborder {
-    border: 1px solid #999;
-}
-
-DIV.greybox {
-    border: 1px dotted #999;
-    background: #e6e6e6;
-    padding: 5px;
-}
-
-DIV.yellowbox {
-    border: 1px dotted #999;
-    background: #ffffcc;
-    padding: 5px;
-}
-
-DIV.greenbox {
-    border: 1px dotted #999;
-    background: #00ff00;
-    padding: 5px;
-}
-
-DIV.redbox {
-    border: 1px dotted #999;
-    background: #ff0000;
-    padding: 5px;
-}
-
-DIV.bluebox {
-    border: 1px dotted #999;
-    background: #99ccff;
-    padding: 5px;
-}
+/*}*/
 
 
-.episodeicon {
-    border-left: 1px solid #999;
-    border-top: 1px solid #999;
-    border-bottom: 1px solid #999;
-    border-right: 1px solid #999;
-	margin: 1px;
-}
-.episodeicon:hover {
-    background: #ffcc00;
-    border-left: 1px solid #999;
-    border-top: 1px solid #999;
-    border-bottom: 1px solid #999;
-    border-right: 1px solid #999;
-	margin: 1px;
-}
-.episodeicon a {
-	color: #666666;
-	text-decoration:none;
-	font-size: 8px;
-	font-family: arial, verdana, sans-serif;
-	font-weight: bold;
-}
-.episodefooter {
-	background: #ffffff;
-    border-left: 1px solid #999;
-    border-top: 3px solid #999;
-    border-bottom: 0px solid #999;
-    border-right: 1px solid #999;
-	margin: 0px;
-}
-.episodewrapper {
-    border-left: 1px solid #999;
-    border-top: 3px solid #999;
-    border-bottom: 1px solid #999;
-    border-right: 1px solid #999;
-	margin: 0px;
-	padding: 0px;
-}
-.episodeinnerwrapper {
-	margin: 10px;
-	padding: 10px;
-}
-TD.episodetitle {
-	color:#666666;
-	background: #e6e6e6;
-	text-decoration:none;
-	font-size: 12px;
-	font-family: arial, verdana, sans-serif;
-	font-weight: bold;
-	padding: 3px;
-}
-TD.episodedesc {
-	color:#666666;
-	background: #e6e6e6;
-	text-decoration:none;
-	font-size: 8px;
-	font-family: arial, verdana, sans-serif;
-	font-weight: bold;
-	padding: 3px;
-}
-TD.episodedate {
-	color:#666666;
-	text-decoration:none;
-	font-size: 8px;
-	font-family: arial, verdana, sans-serif;
-	font-weight: bold;
-}
+/*TD.twopaneboxleft {*/
+    /*border-left: 1px solid #999;*/
+    /*border-top: 3px solid #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*border-right: 1px dotted #999;*/
+    /*padding: 6px;*/
+/*}*/
 
-.tpleftpadding {
-	background: #ffffff;
-}
+/*TD.twopaneboxright {*/
+    /*border-right: 1px solid #999;*/
+    /*border-top: 3px solid #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*padding: 6px;*/
+/*}*/
 
-.tpcenter {
-	background: #cccccc;
-	border-top: 1px solid #000000;
-	border-bottom: 1px solid #000000;
-	border-left: 1px solid #000000;
-	border-right: 0px solid #000000;
-}
+/*TABLE.greysolidborder {*/
+    /*border: 1px solid #999;*/
+/*}*/
 
-.tpright {
-	background: #999999;
-	border-top: 1px solid #000000;
-	border-bottom: 1px solid #000000;
-	border-left: 0px solid #000000;
-	border-right: 1px solid #000000;
-}
+/*DIV.greybox {*/
+    /*border: 1px dotted #999;*/
+    /*background: #e6e6e6;*/
+    /*padding: 5px;*/
+/*}*/
 
-.fieldbasicinfo {
-	padding: 3px;
-	border-top: 0px solid #000000;
-	border-bottom: 0px solid #cccccc;
-	border-left: 0px solid #000000;
-	border-right: 0px solid #cccccc;
+/*DIV.yellowbox {*/
+    /*border: 1px dotted #999;*/
+    /*background: #ffffcc;*/
+    /*padding: 5px;*/
+/*}*/
 
-}
+/*DIV.greenbox {*/
+    /*border: 1px dotted #999;*/
+    /*background: #00ff00;*/
+    /*padding: 5px;*/
+/*}*/
 
-.fielddata {
-    padding: 3px;
-	border-top: 0px solid #000000;
-	border-bottom: 0px solid #000000;
-	border-left: 0px solid #cccccc;
-	border-right: 0px solid #000000;
-}
+/*DIV.redbox {*/
+    /*border: 1px dotted #999;*/
+    /*background: #ff0000;*/
+    /*padding: 5px;*/
+/*}*/
+
+/*DIV.bluebox {*/
+    /*border: 1px dotted #999;*/
+    /*background: #99ccff;*/
+    /*padding: 5px;*/
+/*}*/
+
+
+/*.episodeicon {*/
+    /*border-left: 1px solid #999;*/
+    /*border-top: 1px solid #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*border-right: 1px solid #999;*/
+	/*margin: 1px;*/
+/*}*/
+/*.episodeicon:hover {*/
+    /*background: #ffcc00;*/
+    /*border-left: 1px solid #999;*/
+    /*border-top: 1px solid #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*border-right: 1px solid #999;*/
+	/*margin: 1px;*/
+/*}*/
+/*.episodeicon a {*/
+	/*color: #666666;*/
+	/*text-decoration:none;*/
+	/*font-size: 8px;*/
+	/*font-family: arial, verdana, sans-serif;*/
+	/*font-weight: bold;*/
+/*}*/
+/*.episodefooter {*/
+	/*background: #ffffff;*/
+    /*border-left: 1px solid #999;*/
+    /*border-top: 3px solid #999;*/
+    /*border-bottom: 0px solid #999;*/
+    /*border-right: 1px solid #999;*/
+	/*margin: 0px;*/
+/*}*/
+/*.episodewrapper {*/
+    /*border-left: 1px solid #999;*/
+    /*border-top: 3px solid #999;*/
+    /*border-bottom: 1px solid #999;*/
+    /*border-right: 1px solid #999;*/
+	/*margin: 0px;*/
+	/*padding: 0px;*/
+/*}*/
+/*.episodeinnerwrapper {*/
+	/*margin: 10px;*/
+	/*padding: 10px;*/
+/*}*/
+/*TD.episodetitle {*/
+	/*color:#666666;*/
+	/*background: #e6e6e6;*/
+	/*text-decoration:none;*/
+	/*font-size: 12px;*/
+	/*font-family: arial, verdana, sans-serif;*/
+	/*font-weight: bold;*/
+	/*padding: 3px;*/
+/*}*/
+/*TD.episodedesc {*/
+	/*color:#666666;*/
+	/*background: #e6e6e6;*/
+	/*text-decoration:none;*/
+	/*font-size: 8px;*/
+	/*font-family: arial, verdana, sans-serif;*/
+	/*font-weight: bold;*/
+	/*padding: 3px;*/
+/*}*/
+/*TD.episodedate {*/
+	/*color:#666666;*/
+	/*text-decoration:none;*/
+	/*font-size: 8px;*/
+	/*font-family: arial, verdana, sans-serif;*/
+	/*font-weight: bold;*/
+/*}*/
+
+/*.tpleftpadding {*/
+	/*background: #ffffff;*/
+/*}*/
+
+/*.tpcenter {*/
+	/*background: #cccccc;*/
+	/*border-top: 1px solid #000000;*/
+	/*border-bottom: 1px solid #000000;*/
+	/*border-left: 1px solid #000000;*/
+	/*border-right: 0px solid #000000;*/
+/*}*/
+
+/*.tpright {*/
+	/*background: #999999;*/
+	/*border-top: 1px solid #000000;*/
+	/*border-bottom: 1px solid #000000;*/
+	/*border-left: 0px solid #000000;*/
+	/*border-right: 1px solid #000000;*/
+/*}*/
+
+/*.fieldbasicinfo {*/
+	/*padding: 3px;*/
+	/*border-top: 0px solid #000000;*/
+	/*border-bottom: 0px solid #cccccc;*/
+	/*border-left: 0px solid #000000;*/
+	/*border-right: 0px solid #cccccc;*/
+
+/*}*/
+
+/*.fielddata {*/
+    /*padding: 3px;*/
+	/*border-top: 0px solid #000000;*/
+	/*border-bottom: 0px solid #000000;*/
+	/*border-left: 0px solid #cccccc;*/
+	/*border-right: 0px solid #000000;*/
+/*}*/
 

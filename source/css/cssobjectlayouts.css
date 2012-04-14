@@ -2,99 +2,99 @@
 
 /*TwoColWithHeaderFooter - CSS Version*/
 
-#tchfcontainercss {
-	position: relative;
-    border-top: 0px solid gray;
-    border-right: 1px solid gray;
-    border-bottom: 1px solid gray;
-    border-left: 1px solid gray;
-    margin: 10px;
-    padding: 0px;
-    font-family: arial, verdana, sans-serif;
-}
+/*#tchfcontainercss {*/
+	/*position: relative;*/
+    /*border-top: 0px solid gray;*/
+    /*border-right: 1px solid gray;*/
+    /*border-bottom: 1px solid gray;*/
+    /*border-left: 1px solid gray;*/
+    /*margin: 10px;*/
+    /*padding: 0px;*/
+    /*font-family: arial, verdana, sans-serif;*/
+/*}*/
 
-#tchfbannercss {
-    border-top: 4px solid black;
-    border-bottom: 1px dotted gray;
-    padding: 3px;
-    margin-bottom: 0px;
-    background-color: #e6e6e6;
-    color: #999999;
-    font-size: 25px;
-    font-weight: bold;
+/*#tchfbannercss {*/
+    /*border-top: 4px solid black;*/
+    /*border-bottom: 1px dotted gray;*/
+    /*padding: 3px;*/
+    /*margin-bottom: 0px;*/
+    /*background-color: #e6e6e6;*/
+    /*color: #999999;*/
+    /*font-size: 25px;*/
+    /*font-weight: bold;*/
 
-}
+/*}*/
 
-#tchfcontentcss {
-    padding: 10px;
-    margin-left: 33%;
-    background-color: white;
-    font-size: 12px;
-    font-weight: bold;
-}
+/*#tchfcontentcss {*/
+    /*padding: 10px;*/
+    /*margin-left: 33%;*/
+    /*background-color: white;*/
+    /*font-size: 12px;*/
+    /*font-weight: bold;*/
+/*}*/
 
-#tchfsidebarcss {
-	border-right: 1px dotted gray;
-	border-bottom: 1px dotted gray;
-    float: left;
-    width: 30%;
-    margin: 0;
-    margin-right: 0px;
-    padding: 10px;
-    font-size: 12px;
-    font-weight: bold;
-}
+/*#tchfsidebarcss {*/
+	/*border-right: 1px dotted gray;*/
+	/*border-bottom: 1px dotted gray;*/
+    /*float: left;*/
+    /*width: 30%;*/
+    /*margin: 0;*/
+    /*margin-right: 0px;*/
+    /*padding: 10px;*/
+    /*font-size: 12px;*/
+    /*font-weight: bold;*/
+/*}*/
 
-#tchffootercss {
-    clear: both;
-    padding: 10px;
-    margin-top: 0px;
-    border-top: 1px dotted gray;
-    background-color: white;
-    font-size: 10px;
-    font-weight: bold;
-}
+/*#tchffootercss {*/
+    /*clear: both;*/
+    /*padding: 10px;*/
+    /*margin-top: 0px;*/
+    /*border-top: 1px dotted gray;*/
+    /*background-color: white;*/
+    /*font-size: 10px;*/
+    /*font-weight: bold;*/
+/*}*/
 
 /*TwoColWithHeaderFooter - HTML Version*/
 
-#tchfcontainer {
-    border-top: 0px solid gray;
-    border-right: 1px solid gray;
-    border-bottom: 1px solid gray;
-    border-left: 1px solid gray;
-    font-family: arial, verdana, sans-serif;
-}
+/*#tchfcontainer {*/
+    /*border-top: 0px solid gray;*/
+    /*border-right: 1px solid gray;*/
+    /*border-bottom: 1px solid gray;*/
+    /*border-left: 1px solid gray;*/
+    /*font-family: arial, verdana, sans-serif;*/
+/*}*/
 
-#tchfbanner {
-    border-top: 4px solid black;
-    border-bottom: 1px dotted gray;
-    background-color: #e6e6e6;
-    color: #999999;
-    font-size: 25px;
-    font-weight: bold;
-}
+/*#tchfbanner {*/
+    /*border-top: 4px solid black;*/
+    /*border-bottom: 1px dotted gray;*/
+    /*background-color: #e6e6e6;*/
+    /*color: #999999;*/
+    /*font-size: 25px;*/
+    /*font-weight: bold;*/
+/*}*/
 
-#tchfcontent {
-    padding: 10px;
-    background-color: white;
-    font-size: 12px;
-    font-weight: bold;
-}
+/*#tchfcontent {*/
+    /*padding: 10px;*/
+    /*background-color: white;*/
+    /*font-size: 12px;*/
+    /*font-weight: bold;*/
+/*}*/
 
-#tchfsidebar {
-	border-left: 1px dotted gray;
-    padding: 10px;
-    font-size: 12px;
-    font-weight: bold;
-}
+/*#tchfsidebar {*/
+	/*border-left: 1px dotted gray;*/
+    /*padding: 10px;*/
+    /*font-size: 12px;*/
+    /*font-weight: bold;*/
+/*}*/
 
-#tchffooter {
-    padding: 10px;
-    border-bottom: 1px dotted gray;
-    background-color: white;
-    font-size: 10px;
-    font-weight: bold;
-	height: 25px;
-}
+/*#tchffooter {*/
+    /*padding: 10px;*/
+    /*border-bottom: 1px dotted gray;*/
+    /*background-color: white;*/
+    /*font-size: 10px;*/
+    /*font-weight: bold;*/
+	/*height: 25px;*/
+/*}*/
 
 

@@ -74,7 +74,7 @@ public class HpTemplateTagRandomFiles implements HpTemplateTag{
             int counter=0;
             int activeCounter=0;
 
-            mb.append("<h2>Random Images</h2>");
+            mb.append("<h2>random images</h2>");
 
             //mb.append("<div style=\"width:100%; text-align:right;\">"+"\n");
             mb.append("<div style=\"width:100px;\">"+"\n");
