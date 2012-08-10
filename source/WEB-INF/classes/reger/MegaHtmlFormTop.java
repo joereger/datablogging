@@ -88,7 +88,7 @@ public class MegaHtmlFormTop {
 //                mb.append("<span style=\"background: #f6f6f6; float: right; border: 1px dotted #999; padding:3px; width: 25%;\">");
 //                mb.append("<font face=arial size=-1><b>These default values make it faster and easier to log.  You can always change values when you create or edit an entry.</b></font><br>");
 //                mb.append("</span>");
-                mb.append("<img src='../images/logimages/"+ pageProps.logProps.megalogtypeicon +"' width=100 height=50 border=0 align=top>");
+               // mb.append("<img src='../images/logimages/"+ pageProps.logProps.megalogtypeicon +"' width=100 height=50 border=0 align=top>");
                 mb.append("<font face=arial size=+3>Default Values For Posts on "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</font><br>");
                 mb.append("<div style=\"clear:both;\"><br><br></div>");
             } else {
@@ -102,7 +102,7 @@ public class MegaHtmlFormTop {
 //                    mb.append("<font face=arial size=-2>Post to this log via <a href='tools-emailapi-emailaddresses.log'>email</a>.</font><br>");
 //                    mb.append("<font face=arial size=-2><a href='logs-log-properties.log?logid="+pageProps.logProps.logid+"'>Customize</a> this log.</font><br>");
 //                    mb.append("</span>");
-                    mb.append("<img src='../images/logimages/"+ pageProps.logProps.megalogtypeicon +"' width=100 height=50 border=0 align=top>");
+                   // mb.append("<img src='../images/logimages/"+ pageProps.logProps.megalogtypeicon +"' width=100 height=50 border=0 align=top>");
                     mb.append("<h1>New Post to "+reger.core.Util.cleanForHtml(pageProps.logProps.megalogname)+"</h1><br>");
                     mb.append("<div style=\"clear:both;\"><br><br></div>");
 
