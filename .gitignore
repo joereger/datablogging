@@ -1,6 +1,6 @@
 logs
-/buildscripts/*.properties
-/buildscripts/*.number
+buildscripts/*.properties
+buildscripts/*.number
 project/project
 project/target
 target
@@ -8,6 +8,7 @@ tmp
 .history
 dist
 /source/.idea
+source/.idea
 *.iml
 /out
 /.idea_modules

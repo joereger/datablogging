@@ -1,8 +1,6 @@
 
-<project name="RegerCom" default="QuickBuild" basedir=".">
-  <description>
-        The core build script.
-  </description>
+<project name="RegerCom" default="QuickBuildClean" basedir=".">
+
 
   <!-- Import properties file -->
   <property file="Regercom.properties"/>
@@ -189,24 +187,24 @@
 		<delete file="${tomcat.app.name}-(bld${build.number})-${build.time}.war"/>
     </target>
 
-    <taskdef name="hibernatetool"
-        classname="org.hibernate.tool.ant.HibernateToolTask"
-        classpathref="lib.classpath"/>
-    <target name="hibernategen" description="Builds a war file.">
-        <hibernatetool destdir="${sourcedir}/hibernate/generatedclasses/">
-            <jdbcconfiguration
-             propertyfile="hibernateforant.properties"
-             packagename="reger.dao.hibernate"
-             revengfile="${sourcedir}/WEB-INF/classes/hibernate.reveng.xml"
-            />
-            <!-- Annotated pojos -->
-            <!--<hbm2java jdk5="true" ejb3="true"/>-->
-            <!--<hbm2cfgxml ejb3="true"/>-->
-            <!-- XML Config -->
-            <hbm2java jdk5="true" ejb3="false"/>
-            <hbm2hbmxml/>
-            <hbm2cfgxml/>
-        </hibernatetool>
-    </target>
+    <!--<taskdef name="hibernatetool"-->
+        <!--classname="org.hibernate.tool.ant.HibernateToolTask"-->
+        <!--classpathref="lib.classpath"/>-->
+    <!--<target name="hibernategen" description="Builds a war file.">-->
+        <!--<hibernatetool destdir="${sourcedir}/hibernate/generatedclasses/">-->
+            <!--<jdbcconfiguration-->
+             <!--propertyfile="hibernateforant.properties"-->
+             <!--packagename="reger.dao.hibernate"-->
+             <!--revengfile="${sourcedir}/WEB-INF/classes/hibernate.reveng.xml"-->
+            <!--/>-->
+            <!--&lt;!&ndash; Annotated pojos &ndash;&gt;-->
+            <!--&lt;!&ndash;<hbm2java jdk5="true" ejb3="true"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<hbm2cfgxml ejb3="true"/>&ndash;&gt;-->
+            <!--&lt;!&ndash; XML Config &ndash;&gt;-->
+            <!--<hbm2java jdk5="true" ejb3="false"/>-->
+            <!--<hbm2hbmxml/>-->
+            <!--<hbm2cfgxml/>-->
+        <!--</hibernatetool>-->
+    <!--</target>-->
     
 </project>
