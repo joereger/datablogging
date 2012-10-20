@@ -1,0 +1,76 @@
+<%@ page import="reger.core.db.Db"%>
+<%@ page import="org.jinstagram.auth.model.Token" %>
+<%@ page import="org.jinstagram.auth.model.Verifier" %>
+<%@ page import="org.jinstagram.auth.InstagramAuthService" %>
+<%@ page import="org.jinstagram.auth.oauth.InstagramService" %>
+<%@ page import="org.jinstagram.Instagram" %>
+<%@ page import="org.jinstagram.entity.users.feed.MediaFeedData" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.jinstagram.entity.users.feed.MediaFeed" %>
+<%@ page import="org.jinstagram.entity.common.*" %>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Instagram";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "toolsinstagram";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+if (request.getParameter("code")!=null && !request.getParameter("code").equals("")){
+    InstagramService service =  new InstagramAuthService()
+                                    .apiKey(userSession.getPl().getInstagramclientid())
+                                    .apiSecret(userSession.getPl().getInstagramclientsecret())
+                                    .callback(userSession.getPl().getInstagramredirecturi())
+                                    .build();
+    Token EMPTY_TOKEN = null;
+    Verifier verifier = new Verifier(request.getParameter("code"));
+    Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
+
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("UPDATE instagram SET access_token='"+reger.core.Util.cleanForSQL(accessToken.getToken())+"' WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+    //-----------------------------------
+    //-----------------------------------
+    if (count==0){
+        //-----------------------------------
+        //-----------------------------------
+        int identity = Db.RunSQLInsert("INSERT INTO instagram(accountid, access_token) VALUES('"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(accessToken.getToken())+"')");
+        //-----------------------------------
+        //-----------------------------------
+    }
+
+    response.sendRedirect(pageProps.pathToAppRoot + "myhome/tools-instagram.log");
+    return;
+
+}
+
+
+
+
+%>
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

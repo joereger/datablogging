@@ -20,6 +20,7 @@ try {
         //Save the error to the database
         Debug.errorsave(exception, "", request.getRequestURL().toString(), request);
         e.printStackTrace();
+        System.out.print(e.getMessage());
     }
 
 

@@ -30,6 +30,7 @@ public class UpgradeCheckAtStartup {
             maxVer = maxVer + 1;
         }
         reger.core.dbupgrade.RequiredDatabaseVersion.maxversion = maxVer;
+        System.out.println("maxVer="+maxVer);
 
         //Make sure we have the database table to support the database version status
         if (!checkThatDatabaseVersionTableExists()){
@@ -38,6 +39,7 @@ public class UpgradeCheckAtStartup {
 
         //Get the highest version stored in the database version table
         int currentDatabaseVersion = getMaxVersionFromDatabase();
+        System.out.println("currentDatabaseVersion="+currentDatabaseVersion);
 
         //Figure out the target version
         if (reger.core.dbupgrade.RequiredDatabaseVersion.version<=0){
@@ -51,6 +53,8 @@ public class UpgradeCheckAtStartup {
         while (currentDatabaseVersion<reger.core.dbupgrade.RequiredDatabaseVersion.version && keepWorking && ServerLicense.licenseAllowsCurrentApplicationVersion()) {
             //Get the highest version stored in the database version table
             currentDatabaseVersion = getMaxVersionFromDatabase();
+            System.out.println("currentDatabaseVersion="+currentDatabaseVersion);
+
 
             //If, after checking it out in the database, we're still not on the correct version
             if (currentDatabaseVersion<reger.core.dbupgrade.RequiredDatabaseVersion.version){

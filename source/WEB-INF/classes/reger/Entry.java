@@ -1,19 +1,34 @@
 package reger;
 
+
+import org.apache.http.client.*;
+import org.apache.http.StatusLine;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import reger.Media.MediaType;
+import reger.Media.MediaTypeFactory;
 import reger.cache.LogCache;
 import reger.cache.providers.jboss.Cacheable;
-import reger.core.Debug;
-import reger.core.TimeUtils;
-import reger.core.Util;
-import reger.core.ValidationException;
+import reger.core.*;
 import reger.core.db.Db;
 import reger.groups.EventToGroup;
+import reger.instagram.SaveInstagram;
 import reger.linkrot.AnchorFinder;
 import reger.mega.FieldType;
 import reger.poll.Poll;
 import reger.xforms.EventXformData;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -121,6 +136,8 @@ public class Entry {
     public String entryKeywordTagsWithLinks = "";
 
     private ArrayList<Poll> polls = new ArrayList<Poll>();
+
+    private ArrayList<String> instagramimgs = new ArrayList<String>();
 
     /**
      * Constructor:
@@ -319,6 +336,15 @@ public class Entry {
             this.entryKeywordTags = request.getParameter("entrykeywordtags").toLowerCase();
         }
 
+        //Instagram
+        instagramimgs = new ArrayList<String>();
+        if (request.getParameterValues("instagramimg") != null) {
+            String[] inInstagramimgs = request.getParameterValues("instagramimg");
+            for (int i = 0; i < inInstagramimgs.length; i++) {
+                instagramimgs.add(inInstagramimgs[i]);
+            }
+        }
+
     }
 
     public boolean isInGroup(int groupid){
@@ -505,6 +531,9 @@ public class Entry {
 
         //Episodes
         saveEpisodes();
+
+        //Instagram
+        saveInstagram();
 
         //Parse through fields and call save method on megadata
         if (fields != null) {
@@ -1057,6 +1086,135 @@ public class Entry {
 
 
     }
+
+
+
+
+
+    private void saveInstagram(){
+        if (instagramimgs!=null && instagramimgs.size()>0){
+            for (Iterator<String> iterator = instagramimgs.iterator(); iterator.hasNext();) {
+                String imgurl = iterator.next();
+                saveInstagramSingleImage(imgurl);
+            }
+        }
+    }
+
+    private void saveInstagramSingleImage(String imgurl){
+        try{
+            byte[] bytes = null;
+
+            //Call API
+            HttpClient client = new DefaultHttpClient();
+            HttpGet method = new HttpGet(imgurl);
+            HttpResponse response = client.execute(method);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                bytes = EntityUtils.toByteArray(entity);
+                System.out.println("downloaded from instagram "+imgurl+" bytes.length="+bytes.length);
+            } else {
+                throw new IOException("Download failed, HTTP response code "
+                        + statusCode + " - " + statusLine.getReasonPhrase());
+            }
+
+            if (bytes==null || bytes.length==0){
+                return;
+            }
+
+
+            //Get the filename
+            String filename = imgurl;
+
+            //Make sure there's enough space left for this user
+            //Get the size of the incoming file...
+//            long contentlength=bytes.length;
+            reger.Account acct = new reger.Account(accountid);
+//            long freespace = acct.getFreespace();
+//            if ((long)contentlength>freespace) {
+//                Debug.debug(3, "SaveInstagram", "Failed due to freeSpace limitations.<br>contentlength=" + contentlength + "<br>freeSpace=" + freespace);
+//                return;
+//            }
+
+
+
+            //Calculate the new dated directory name
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH)+1;
+            int day = cal.get(Calendar.DATE)+1;
+            String monthStr = String.valueOf(month);
+            if (monthStr.length()==1){
+                monthStr = "0"+monthStr;
+            }
+            String datedDirectoryName = year+"/"+monthStr;
+
+            //Figure out a filename
+            String incomingname = "instagram-"+year+"-"+"-"+month+"-"+day+"-"+ RandomString.randomAlphabetic(5)+".jpg";
+            String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
+            String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
+
+            //Create directory
+            String filesdirectory = acct.getPathToAccountFiles() + datedDirectoryName + "/";
+            File dir = new File(filesdirectory);
+            dir.mkdirs();
+            File dirThumbs = new File(filesdirectory+".thumbnails/");
+            dirThumbs.mkdirs();
+
+            //Test for file existence... if it exists does, add an incrementer
+            String finalfilename = incomingname;
+            File savedFile  = new File(filesdirectory, finalfilename);
+            int incrementer = 0;
+            while (savedFile.exists()){
+                incrementer=incrementer+1;
+                finalfilename = incomingnamebase+"-"+incrementer;
+                if (!incomingnameext.equals("")){
+                    finalfilename = finalfilename + "." + incomingnameext;
+                }
+                savedFile  = new File(filesdirectory, finalfilename);
+            }
+
+            Debug.debug(3, "SaveInstagram", "finalfilename="+datedDirectoryName+"/"+finalfilename);
+
+
+             //Save the file with the updated filename
+             //Turn the content into an inputstream
+             FileOutputStream fileOut = new FileOutputStream(savedFile);
+             try{
+                    fileOut.write(bytes);
+             } catch (java.lang.ClassCastException ccex){
+                Debug.errorsave(ccex, "Error saving file from SaveInstagram");
+             }
+             fileOut.close();
+
+            ThumbnailCreator.createThumbnail(savedFile);
+
+            Debug.debug(3, "SaveInstagram", "File should be saved to filesystem now.="+finalfilename);
+
+
+            //Finalize the subject
+            String finalsubject = "";
+
+            //-----------------------------------
+            //-----------------------------------
+            int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename, accountid, filename) VALUES('" + eventid + "', '" + reger.core.Util.cleanForSQL(datedDirectoryName + "/" + finalfilename) + "', '" + bytes.length + "', '" + reger.core.Util.cleanForSQL(finalsubject) + "', '" + reger.core.Util.cleanForSQL(incomingname) + "', '" + accountid + "', '" + reger.core.Util.cleanForSQL(datedDirectoryName + "/" + finalfilename) + "')");
+            //-----------------------------------
+            //-----------------------------------
+
+            //Get a MediaType handler
+            MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
+            //Handle any parsing required
+            mt.saveToDatabase(filesdirectory+finalfilename, imageid);
+
+        } catch (Exception ex){
+            Debug.errorsave(ex, "SaveInstagram");
+        }
+    }
+
+
+
+
 
 
     public boolean isSpellingError(javax.servlet.http.HttpServletRequest request) {

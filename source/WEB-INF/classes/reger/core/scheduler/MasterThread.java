@@ -61,6 +61,7 @@ public class MasterThread extends Thread {
             }
 
 		    //Check database version.  Runs one time.
+            System.out.println("Running database upgrade check.");
 		    currentStatus = "Running database upgrade check.";
 		    reger.core.dbupgrade.UpgradeCheckAtStartup dbcheck = new reger.core.dbupgrade.UpgradeCheckAtStartup();
 		    dbcheck.doCheck();

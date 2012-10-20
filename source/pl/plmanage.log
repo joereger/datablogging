@@ -637,6 +637,25 @@ if (!pageProps.action.equals("deletestart")) {
 
     mb.append("</DIV>");
 
+
+
+    mb.append("<br><br>");
+
+    mb.append("<DIV class=yellowbox>");
+
+
+    mb.append("<font face=arial size=-1><strong>Instagram Client ID</strong></font><br>");
+    mb.append("<input type='text' name='instagramclientid' value=\""+Util.cleanForHtml(pl.getInstagramclientid())+"\" size='30' maxlength='255'><br/>");
+
+    mb.append("<font face=arial size=-1><strong>Instagram Client Secret</strong></font><br>");
+    mb.append("<input type='text' name='instagramclientsecret' value=\""+Util.cleanForHtml(pl.getInstagramclientsecret())+"\" size='30' maxlength='255'><br/>");
+
+    mb.append("<font face=arial size=-1><strong>Instagram Redirect URI</strong></font><br>");
+    mb.append("<input type='text' name='instagramredirecturi' value=\""+Util.cleanForHtml(pl.getInstagramredirecturi())+"\" size='30' maxlength='255'><br/>");
+
+    mb.append("</DIV>");
+
+
     mb.append("<br><br>");
 
     mb.append("<DIV class=yellowbox>");

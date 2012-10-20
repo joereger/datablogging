@@ -1,4 +1,6 @@
 logs
+/buildscripts/*.properties
+/buildscripts/*.number
 project/project
 project/target
 target

@@ -1,10 +1,18 @@
 package reger;
 
+import org.jinstagram.Instagram;
+import org.jinstagram.auth.model.Token;
+import org.jinstagram.entity.common.Caption;
+import org.jinstagram.entity.common.ImageData;
+import org.jinstagram.entity.common.Images;
+import org.jinstagram.entity.users.feed.MediaFeed;
+import org.jinstagram.entity.users.feed.MediaFeedData;
 import reger.core.db.Db;
 import reger.core.Debug;
 
 import javax.xml.ws.Endpoint;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -60,7 +68,7 @@ public class MegaHtmlFormBottom {
             if (displayasadmin) {
                 mb.append("<div class=\"row\">");
                 mb.append("<div class=\"span2\">");
-                mb.append("<strong>Images & Files</strong>");
+                mb.append("<strong>Images</strong>");
                 mb.append("</div>");
                 mb.append("<div class=\"span10\">");
 
@@ -99,6 +107,7 @@ public class MegaHtmlFormBottom {
             }
             //End image-add link
 
+
             //Output the images in html format, but only if we're not doing a preview
             int perpage = 500;
             //Imagetagid
@@ -116,6 +125,95 @@ public class MegaHtmlFormBottom {
             mb.append("</div>");
 
             mb.append("<!-- End Images -->");
+
+
+            //Start Instagram
+            if (displayasadmin) {
+                String access_token = "";
+                //-----------------------------------
+                //-----------------------------------
+                String[][] rstEv= Db.RunSQL("SELECT instagramid, access_token FROM instagram WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+                //-----------------------------------
+                //-----------------------------------
+                if (rstEv!=null && rstEv.length>0){
+                    access_token = rstEv[0][1];
+                }
+                if (access_token!=null && !access_token.equals("")){
+                    mb.append("<div class=\"row\">");
+                    mb.append("<div class=\"span2\">");
+                    mb.append("<a id=\"instgrm\">");
+                    mb.append("<strong>Instagram</strong> ");
+                    mb.append("<a href=\"#instgrm\" class=\"show_hide\">show/hide</a><br/><br/>");
+                    mb.append("</div>");
+                    mb.append("<div class=\"span10\">");
+
+                    //mb.append("<a id=\"instgrm\">");
+                    //mb.append("<a href=\"#instgrm\" class=\"show_hide\">show/hide</a><br/><br/>");
+                    //mb.append("<div class=\"slidingDiv\">");
+
+
+
+                    //mb.append("<button id=\"hidr\">hide</button>");
+                    //mb.append("<button id=\"showr\">show</button>");
+
+                    mb.append("<div class=\"slidingDiv\">");
+                    try{
+                        Token token = new Token(access_token, userSession.getPl().getInstagramclientsecret());
+                        Instagram instagram = new Instagram(token);
+                        MediaFeed mediaFeed = instagram.getUserFeeds();
+                        List<MediaFeedData> mediaFeeds = mediaFeed.getData();
+                        if (mediaFeeds!=null){
+                            mb.append("<ul class=\"thumbnails\">");
+                            for (MediaFeedData mediaData : mediaFeeds) {
+                                Images images = mediaData.getImages();
+                                ImageData stdImg = images.getStandardResolution();
+                                mb.append("<li class=\"span2\">");
+                                    mb.append("<div class=\"thumbnail\">");
+                                        mb.append("<img src=\""+stdImg.getImageUrl()+"\">");
+                                        mb.append("<input type=\"checkbox\" name=\"instagramimg\" value=\""+stdImg.getImageUrl()+"\"> add to post");
+                                    mb.append("</div>");
+                                mb.append("</li>");
+                            }
+                            mb.append("</ul>");
+                        }
+                    } catch (Exception ex){
+                        Debug.errorsave(ex, "Instagram");
+                    }
+                    mb.append("</div>");
+
+
+
+
+                    mb.append("</div>");
+                    mb.append("</div>");
+
+                    mb.append("<script type=\"text/javascript\">");
+                    mb.append("$(document).ready(function(){");
+                    mb.append("        $(\".slidingDiv\").hide();");
+                    mb.append("        $(\".show_hide\").show();");
+                    mb.append("    $('.show_hide').click(function(){");
+                    mb.append("    $(\".slidingDiv\").slideToggle();");
+                    mb.append("    });");
+                    mb.append("});");
+                    mb.append("</script>");
+
+
+
+//                    mb.append("<script>");
+//                    mb.append("$(\"#hidr\").click(function () {");
+//                    mb.append("  $(\"#instagrams\").hide(2000)");
+//                    mb.append("});");
+//                    mb.append("$(\"#showr\").click(function () {");
+//                    mb.append("  $(\"#instagrams\").show(2000);");
+//                    mb.append("});");
+//                    mb.append("</script>");
+                }
+
+
+            }
+            //End Instagram
+
+
 
 
 
@@ -168,7 +266,7 @@ public class MegaHtmlFormBottom {
             mb.append("<div class=\"row\">");
             mb.append("<div class=\"span2\">");
                 if (displayasadmin) {
-                    mb.append("<strong>Tags</strong>");
+                    mb.append("<strong>Post Tags</strong>");
                 } else {
                     if (pageProps.entry.entryKeywordTagsWithLinks!=null && pageProps.entry.entryKeywordTagsWithLinks.length()>0){
                         mb.append("Tags");

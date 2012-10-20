@@ -24,6 +24,7 @@ public class UserSession implements java.io.Serializable {
     private HashMap attributes = new HashMap();
 
     public UserSession(javax.servlet.http.HttpServletRequest request){
+
         reger.core.Debug.debug(5, "UserSession.java", "New UserSession created.");
         //Get the basic information
         processNewRequest(request);

@@ -174,14 +174,18 @@ public class ImageListHtml {
             //-----------------------------------
             //-----------------------------------
             if (rstImagelist != null) {
+                mb.append("<ul class=\"thumbnails\">");
                 for (int i = 0; i < rstImagelist.length; i++) {
                     String mediaoutPath = "";
                     mb.append("<!-- Begin individual image listing -->");
-                    mb.append("<tr>");
-                    mb.append("<td valign=middle align=center>");
+                    mb.append("<li class=\"span3\">");
+                    mb.append("<div class=\"thumbnail\">");
 
-                    mb.append("</td>");
-                    mb.append("<td valign=middle align=center colspan=2>");
+
+                    //mb.append("<tr>");
+                    //mb.append("<td valign=middle align=center>");
+                    //mb.append("</td>");
+                    //mb.append("<td valign=middle align=center colspan=2>");
 
                     mediaoutPath = "../";
 
@@ -210,9 +214,26 @@ public class ImageListHtml {
 
 
 
+                    //if (userSessionOfPersonViewing.getAccountuser().getEntrymode()==reger.Vars.ENTRYMODESIMPLE) {
+                        //mb.append("<br/><a href=\"javascript:appendImageTag("+rstImagelist[i][0]+")\"><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">Add to Post Body</font></a></font><br/>");
+                    //}
+
+                    mb.append("<center><textarea cols='30' rows='3' name='imagedescription-" + rstImagelist[i][0] + "' style='width:95%; font: 10pt monospace'>" + reger.core.Util.cleanForHtml(rstImagelist[i][1]) + "</textarea></center>");
+
+                    mb.append("<div style=\"float:right;\">");
                     if (userSessionOfPersonViewing.getAccountuser().getEntrymode()==reger.Vars.ENTRYMODESIMPLE) {
-                        mb.append("<br/><a href=\"javascript:appendImageTag("+rstImagelist[i][0]+")\"><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">Add to Post Body</font></a>");
+                        mb.append("<a href=\"javascript:appendImageTag("+rstImagelist[i][0]+")\"><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">Add to Post Body</font></a></font><br/>");
                     }
+                    mb.append("<input type='checkbox' name='delete-" + rstImagelist[i][0] + "' value='yes'> <font face=arial size=-2>Delete?</font></div>");
+
+
+                    //Image Keyword Tags
+                    String imageTags = reger.Tag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
+                    mb.append("<br>");
+                    mb.append("<font face=arial size=-2>Tags <input type='text' name='imagetag-" + rstImagelist[i][0] + "' value=\"" + reger.core.Util.cleanForHtml(imageTags) + "\" maxlength='254' style=\"font-size: 10px;\" class=\"span1\"><br>");
+
+
+
 //                    if (!rstImagelist[i][6].equals("")) {
 //                        mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 10px;\">" + FilenameUtils.getName(rstImagelist[i][10]) + "</font>");
 //                    }
@@ -220,11 +241,9 @@ public class ImageListHtml {
 //                        mb.append("<br><font face=arial size=-2 class=smallfont style=\"font-size: 9px;\">" + rstImagelist[i][7] + " bytes</font>");
 //                    }
 
-                    mb.append("</td>");
-                    mb.append("<td valign=top bgcolor=#ffffff colspan=9>");
-                    mb.append("<div style=\"float:right;\"><input type='checkbox' name='delete-" + rstImagelist[i][0] + "' value='yes'> <font face=arial size=-2>Delete?</font></div>");
-                    mb.append("<font face=arial size=-2>Description:</font><br>");
-                    mb.append("<textarea cols='30' rows='3' name='imagedescription-" + rstImagelist[i][0] + "' style='width: 100%;font: 10pt monospace'>" + reger.core.Util.cleanForHtml(rstImagelist[i][1]) + "</textarea>");
+
+
+
 
                     //Display the entry that this image came from
                     if (eventid <= 0) {
@@ -238,20 +257,16 @@ public class ImageListHtml {
                         mb.append("</font>");
                     }
 
-                    //Image Keyword Tags
-                    String imageTags = reger.Tag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
-                    mb.append("<br>");
-                    String helpImagetags = Help.tip("Keyword Tags", "Keyword Tags help you organize and retrieve your files.  Type words that relate to the file.  For example: \"car outside oldsmobile\".  Separate keywords with a space.  Create multi-word tags with quotes (example: car \"blue interior\" oldsmobile.)", false, mediaoutPath);
-                    mb.append("<font face=arial size=-2>Tags " + helpImagetags + ":</font><br><input type='text' name='imagetag-" + rstImagelist[i][0] + "' value=\"" + reger.core.Util.cleanForHtml(imageTags) + "\" size='35' maxlength='254' style=\"font-size: 10px;\"><br>");
 
 
-
-                    mb.append("</td>");
-                    mb.append("</tr>");
-
+                    //mb.append("</td>");
+                    //mb.append("</tr>");
+                    mb.append("</div>");
+                    mb.append("</li>");
 
                     mb.append("<!-- End individual image listing -->");
                 }
+                mb.append("</div>");
             }
 
             //Paging footer
