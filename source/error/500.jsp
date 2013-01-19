@@ -1,6 +1,17 @@
 <%@ page isErrorPage="true" %>
 <%@ page import="reger.core.Debug"%>
 
+
+<%
+exception.printStackTrace();
+
+try {
+    //out.println(reger.core.ErrorDissect.dissect(exception, request));
+} catch (Exception e) {
+    //out.println(reger.core.ErrorDissect.dissect(exception, request));
+}
+%>
+
 <%
 
 
@@ -42,13 +53,7 @@ try {
 <strong><font face=arial size=+3>We're sorry.  There has been an error.  The system administrator has been notified.:</font></strong>
 <br>
 
-<%
-try {
-    //out.println(reger.core.ErrorDissect.dissect(exception, request));
-} catch (Exception e) {
-    //out.println(reger.core.ErrorDissect.dissect(exception, request));
-}
-%>
+
 
 </body>
 </html>

@@ -1,0 +1,106 @@
+<%@ page import="reger.core.db.Db"%>
+<%@ page import="org.jinstagram.auth.model.Token" %>
+<%@ page import="org.jinstagram.auth.model.Verifier" %>
+<%@ page import="org.jinstagram.auth.InstagramAuthService" %>
+<%@ page import="org.jinstagram.auth.oauth.InstagramService" %>
+<%@ page import="org.jinstagram.Instagram" %>
+<%@ page import="org.jinstagram.entity.users.feed.MediaFeedData" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.jinstagram.entity.users.feed.MediaFeed" %>
+<%@ page import="org.jinstagram.entity.common.*" %>
+<%@ page import="com.dropbox.client2.DropboxAPI" %>
+<%@ page import="com.dropbox.client2.session.AppKeyPair" %>
+<%@ page import="reger.dropbox.Dropbox" %>
+<%@ page import="com.dropbox.client2.session.WebAuthSession" %>
+<%@ page import="com.dropbox.client2.session.AccessTokenPair" %>
+<%@ page import="com.dropbox.client2.session.RequestTokenPair" %>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Dropbox";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "toolsdropbox";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+int dropboxid = 0;
+String access_key = "";
+String access_secret = "";
+String oauth_token = "";
+//-----------------------------------
+//-----------------------------------
+String[][] rstEv= Db.RunSQL("SELECT dropboxid, access_key, access_secret, oauth_token FROM dropbox WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+//-----------------------------------
+//-----------------------------------
+if (rstEv!=null && rstEv.length>0){
+    dropboxid = Integer.parseInt(rstEv[0][0]);
+    access_key = rstEv[0][1];
+    access_secret = rstEv[0][2];
+    oauth_token = rstEv[0][3];
+}
+
+
+if (request.getParameter("oauth_token")!=null && !request.getParameter("oauth_token").equals("")){
+
+
+    mb.append("<br/>access_key="+access_key);
+    mb.append("<br/>access_secret="+access_secret);
+    mb.append("<br/>oauth_token="+oauth_token);
+
+
+    AppKeyPair appKeys = new AppKeyPair(Dropbox.APP_KEY, Dropbox.APP_SECRET);
+    WebAuthSession sess = new WebAuthSession(appKeys, Dropbox.ACCESS_TYPE);
+    String token = sess.retrieveWebAccessToken(new RequestTokenPair(access_key, access_secret));
+
+    mb.append("<br/>sess.getAccessTokenPair().key="+sess.getAccessTokenPair().key);
+    mb.append("<br/>sess.getAccessTokenPair().secret="+sess.getAccessTokenPair().secret);
+    mb.append("<br/>token="+token);
+
+
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("UPDATE dropbox SET oauth_token='"+reger.core.Util.cleanForSQL(request.getParameter("oauth_token"))+"', access_key='"+reger.core.Util.cleanForSQL(sess.getAccessTokenPair().key)+"', access_secret='"+reger.core.Util.cleanForSQL(sess.getAccessTokenPair().secret)+"' WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+    //-----------------------------------
+    //-----------------------------------
+
+    DropboxAPI<WebAuthSession> mDBApi = new DropboxAPI<WebAuthSession>(sess);
+
+        mb.append("<br/>displayname="+mDBApi.accountInfo().displayName);
+
+
+    //response.sendRedirect(pageProps.pathToAppRoot + "myhome/tools-dropbox.log");
+    //return;
+
+}
+
+
+
+
+%>
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+        StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>
