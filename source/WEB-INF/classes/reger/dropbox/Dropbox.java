@@ -6,6 +6,7 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session;
 import com.dropbox.client2.session.WebAuthSession;
+import reger.core.Debug;
 import reger.core.db.Db;
 
 import java.io.File;
@@ -75,6 +76,44 @@ public class Dropbox {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+
+    public static String getAutoBlogPath(int accountid){
+        String autoblogpath = "";
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstCheck= Db.RunSQL("SELECT autoblogpath FROM dropbox WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstCheck!=null && rstCheck.length>0){
+        	autoblogpath = rstCheck[0][0];
+        }
+        return autoblogpath;
+    }
+
+
+
+    public static void processAutoBlogPath(int accountid){
+        try{
+            DropboxAPI.Entry rootdir = api.metadata(path, 0, null, true, null);
+
+            for (Iterator<DropboxAPI.Entry> iterator = rootdir.contents.iterator(); iterator.hasNext();) {
+
+                DropboxAPI.Entry entry = iterator.next();
+
+                if (entry.isDir){
+                    mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
+                } else {
+                    mb.append("<br/>"+entry.fileName());
+                }
+
+            }
+
+
+        } catch (Exception ex){
+            Debug.errorsave(ex, "Dropbox");
         }
     }
 

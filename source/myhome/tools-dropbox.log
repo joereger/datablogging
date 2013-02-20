@@ -47,6 +47,20 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
     return;
 }
 
+if (request.getParameter("action")!=null && request.getParameter("action").equals("choosepath")){
+
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("UPDATE dropbox SET autoblogpath='"+reger.core.Util.cleanForSQL(request.getParameter("path"))+"' WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+    //-----------------------------------
+    //-----------------------------------
+
+}
+
+
+
+
+
 
 
 DropboxAPI<WebAuthSession> api = Dropbox.getApi(userSession.getAccount().getAccountid());
@@ -66,7 +80,7 @@ if (api==null){
     if (count==0){
         //-----------------------------------
         //-----------------------------------
-        int identity = Db.RunSQLInsert("INSERT INTO dropbox(accountid, access_key, access_secret) VALUES('"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(webauthinfo.requestTokenPair.key)+"', '"+reger.core.Util.cleanForSQL(webauthinfo.requestTokenPair.secret)+"')");
+        int identity = Db.RunSQLInsert("INSERT INTO dropbox(accountid, access_key, access_secret, autoblogpath) VALUES('"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(webauthinfo.requestTokenPair.key)+"', '"+reger.core.Util.cleanForSQL(webauthinfo.requestTokenPair.secret)+"', '')");
         //-----------------------------------
         //-----------------------------------
     }
@@ -76,7 +90,17 @@ if (api==null){
 } else {
 
     mb.append("<h3>Congrats... you're authenticated!</h3>");
-    mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=unlink\">unauthenticate</a><br/><br/><br/>");
+    mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=unlink\">unauthenticate</a><br/>");
+    mb.append("Auto-Blog-Path="+Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()));
+
+
+
+    DropboxAPI.Entry autoblogdir = api.metadata(autoblogpath, 0, null, true, null);
+
+
+
+
+    mb.append("<br/><br/><br/>");
 
     try{
 
@@ -97,7 +121,7 @@ if (api==null){
             DropboxAPI.Entry entry = iterator.next();
 
             if (entry.isDir){
-                mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a>");
+                mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
             } else {
                 mb.append("<br/>"+entry.fileName());
             }

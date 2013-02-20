@@ -28,3 +28,6 @@ quickbuild.compiled.destination.directory=C:/RegerProject/Tomcat/webapps/ROOT/WE
 quickbuild.tomcat.root.directory=C:/RegerProject/Tomcat/webapps/ROOT/
 
 --Sit back and enjoy the show!
+
+Run ant task from command line:
+ant -f build.xml QuickBuildWithTomcatRestart
