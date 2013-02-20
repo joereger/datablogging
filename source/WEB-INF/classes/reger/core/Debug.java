@@ -10,7 +10,7 @@ import java.util.*;
 public class Debug {
 
     public static void logtodb(String whattolog, String label){
-        //System.out.println(label + ": " + whattolog);
+        System.out.println(label + ": " + whattolog);
         Logger logger = Logger.getLogger(Debug.class);
         logger.debug(label+": "+whattolog);
         //-----------------------------------

@@ -84,7 +84,7 @@ public class Dropbox {
         String autoblogpath = "";
         //-----------------------------------
         //-----------------------------------
-        String[][] rstCheck= Db.RunSQL("SELECT autoblogpath FROM dropbox WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+        String[][] rstCheck = Db.RunSQL("SELECT autoblogpath FROM dropbox WHERE accountid='"+accountid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstCheck!=null && rstCheck.length>0){
@@ -97,24 +97,50 @@ public class Dropbox {
 
     public static void processAutoBlogPath(int accountid){
         try{
-            DropboxAPI.Entry rootdir = api.metadata(path, 0, null, true, null);
+            DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
+            String path = getAutoBlogPath(accountid);
 
-            for (Iterator<DropboxAPI.Entry> iterator = rootdir.contents.iterator(); iterator.hasNext();) {
+            if (path==null || path.equals("")){
+                Debug.logtodb("path empty", "Dropbox");
+                return;
+            }
 
-                DropboxAPI.Entry entry = iterator.next();
+            if (api!=null){
 
-                if (entry.isDir){
-                    mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
-                } else {
-                    mb.append("<br/>"+entry.fileName());
+                DropboxAPI.Entry rootdir = api.metadata(path, 0, null, true, null);
+
+                for (Iterator<DropboxAPI.Entry> iterator = rootdir.contents.iterator(); iterator.hasNext();) {
+
+                    DropboxAPI.Entry entry = iterator.next();
+
+                    if (entry.isDir){
+                        //mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
+                    } else {
+                        //mb.append("<br/>"+entry.fileName());
+                    }
+
                 }
 
+            } else {
+                Debug.logtodb("api==null", "Dropbox");
             }
 
 
         } catch (Exception ex){
             Debug.errorsave(ex, "Dropbox");
         }
+    }
+
+    public static boolean isPathAlreadyInUse(int accountid, String path){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstCheck = Db.RunSQL("SELECT dropboxpostid FROM dropboxpost WHERE accountid='"+accountid+"' and path='"+reger.core.Util.cleanForSQL(path)+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstCheck!=null && rstCheck.length>0){
+            return true;
+        }
+        return false;
     }
 
 }

@@ -12,6 +12,7 @@ source/.idea
 *.iml
 /out
 /.idea_modules
+.idea/
 /.classpath
 /.project
 /.settings
