@@ -11,6 +11,7 @@ import reger.core.Debug;
 import reger.cache.LogCache;
 import reger.cache.providers.jboss.Cacheable;
 import reger.groups.Group;
+import reger.util.Num;
 
 import java.util.*;
 
@@ -136,6 +137,23 @@ public class Accountuser implements java.io.Serializable {
 //        populate();
 //        userAuthenticate(email, password);
 //    }
+
+
+    public static int getDefaultAccountuseridForAccount(int accountid){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstAccountuser= Db.RunSQL("SELECT accountuserid FROM accountuser WHERE accountuser.accountid='"+accountid+"' LIMIT 0,1");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstAccountuser!=null && rstAccountuser.length>0){
+            if(Num.isinteger( rstAccountuser[0][0])){
+                return Integer.parseInt(rstAccountuser[0][0]);
+            }
+        }
+        return -1;
+    }
+
+
 
     public void populate(){
         //-----------------------------------

@@ -57,6 +57,10 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 
 }
 
+if (request.getParameter("action")!=null && request.getParameter("action").equals("processautoblogpath")){
+    Dropbox.processAutoBlogPath(userSession.getAccount().getAccountid(), 0);
+}
+
 
 
 
@@ -80,7 +84,7 @@ if (api==null){
     if (count==0){
         //-----------------------------------
         //-----------------------------------
-        int identity = Db.RunSQLInsert("INSERT INTO dropbox(accountid, access_key, access_secret, autoblogpath) VALUES('"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(webauthinfo.requestTokenPair.key)+"', '"+reger.core.Util.cleanForSQL(webauthinfo.requestTokenPair.secret)+"', '')");
+        int identity = Db.RunSQLInsert("INSERT INTO dropbox(accountid, access_key, access_secret, autoblogpath, logid) VALUES('"+userSession.getAccount().getAccountid()+"', '"+reger.core.Util.cleanForSQL(webauthinfo.requestTokenPair.key)+"', '"+reger.core.Util.cleanForSQL(webauthinfo.requestTokenPair.secret)+"', '', 0)");
         //-----------------------------------
         //-----------------------------------
     }
@@ -91,11 +95,11 @@ if (api==null){
 
     mb.append("<h3>Congrats... you're authenticated!</h3>");
     mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=unlink\">unauthenticate</a><br/>");
-    mb.append("Auto-Blog-Path="+Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()));
+    mb.append("Auto-Blog-Path="+Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())+" <a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=processautoblogpath\">process</a>");
 
 
 
-    DropboxAPI.Entry autoblogdir = api.metadata(autoblogpath, 0, null, true, null);
+    DropboxAPI.Entry autoblogdir = api.metadata(Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()), 0, null, true, null);
 
 
 

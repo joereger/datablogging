@@ -1019,6 +1019,18 @@ public class Account implements java.io.Serializable {
         return isValid;
     }
 
+    public static int getDefaultLogid(int accountid){
+            //-----------------------------------
+            //-----------------------------------
+            String[][] rstPass= Db.RunSQL("SELECT logid FROM megalog WHERE accountid='"+accountid+"'");
+            //-----------------------------------
+            //-----------------------------------
+            if (rstPass!=null && rstPass.length>0){
+                return Integer.parseInt(rstPass[0][0]);
+            }
+            return 0;
+        }
+
 
 
     public static String validateServername(String accounturl, int accountid){
