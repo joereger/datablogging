@@ -91,15 +91,15 @@ if (pageProps.action.equals("createaccount")) {
         errortext = errortext + "You must agree to the "+userSession.getPl().getTermsofuselinktext()+".<br>";
     }
     //Make sure jcaptcha passes
-    Boolean isResponseCorrect =Boolean.FALSE;
+    Boolean isResponseCorrect =Boolean.TRUE;
     String captchaId = request.getSession().getId();
     String resp = request.getParameter("j_captcha_response");
     try {
-        isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
+        //isResponseCorrect = CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, resp);
     } catch (CaptchaServiceException e) {
-         isResponseCorrect = new Boolean(false);
-         Debug.debug(5, "jcaptcha - signup.log", e);
-         Debug.debug(5, "jcaptcha - signup.log", "captchaId on previous error="+ captchaId);
+         //isResponseCorrect = new Boolean(false);
+         //Debug.debug(5, "jcaptcha - signup.log", e);
+         //Debug.debug(5, "jcaptcha - signup.log", "captchaId on previous error="+ captchaId);
     }
     if (!isResponseCorrect.booleanValue()){
         errortext = errortext + "You failed to correctly type the letters into the box.<br>";

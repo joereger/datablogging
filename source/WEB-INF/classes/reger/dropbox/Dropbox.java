@@ -126,9 +126,10 @@ public class Dropbox {
 
                     if (entry.isDir){
                         //mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
-                        if (!isPathAlreadyInUse(accountid, entry.path)){
+                        if (!isPathAlreadyInUse(accountid, entry.fileName())){
                             Debug.logtodb("Dropbox processAutoBlogPath()", "found directory entry.filename="+entry.fileName());
-                            createPostFromPath(accountid, logid, entry.fileName());
+                            createPostFromPath(accountid, logid, entry.path);
+
                         }
                     } else {
                         Debug.logtodb("Dropbox processAutoBlogPath()", "found file "+entry.fileName());
@@ -161,10 +162,50 @@ public class Dropbox {
     public static void createPostFromPath(int accountid, int logid, String path){
         try{
 
-            //Create an instance of the backend object
-            reger.Entry entry = new reger.Entry();
+            //Connect to Dropbox
+            DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
 
-            try {
+            if (api!=null){
+
+                DropboxAPI.Entry rootdir = api.metadata(path, 0, null, true, null);
+
+                String dirname = rootdir.fileName();
+                Debug.logtodb("dirname="+dirname, "Dropbox createPostFromPath()");
+
+                //Set post date by breaking up directory name in format of
+                //   2013-04-21-My Post Title Here
+                Calendar dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
+                try{
+                    String[] dirparts = dirname.split("-");
+                    String yyyyStr = dirparts[0];
+                    String mmStr = dirparts[1];
+                    String ddStr = dirparts[2];
+                    Calendar date = TimeUtils.formtocalendar(yyyyStr, mmStr, ddStr, "12", "0", "0", "PM");
+                    dateGmt = TimeUtils.usertogmttime(date, date.getTimeZone().getID());
+                } catch (Exception ex){
+                    Debug.errorsave(ex, "Dropbox creating date from subject, will use NOW");
+                    dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
+                }
+
+                //Set post title from directory name
+                //   2013-04-21-My Post Title Here
+                String postTitle = "Blog Post";
+                try {
+                    StringBuffer tmpPostTitle = new StringBuffer();
+                    String[] dirparts = dirname.split("-");
+                    for (int i = 3; i < dirparts.length; i++) {
+                        String part = dirparts[i];
+                        if (tmpPostTitle.length()>0){tmpPostTitle.append("-");}
+                        tmpPostTitle.append(part);
+                    }
+                    postTitle = tmpPostTitle.toString();
+                }  catch (Exception ex){
+                    Debug.errorsave(ex, "Dropbox creating date from subject, will use BLOG POST");
+                    postTitle = "Blog Post";
+                }
+
+                //Create an instance of the backend object
+                reger.Entry entry = new reger.Entry();
 
                 //Get this user's timezone
                 String timezoneid = reger.Account.getTimezoneidFromAccountid(accountid);
@@ -183,7 +224,7 @@ public class Dropbox {
                 entry.accountid = accountid;
 
                 //Set the title
-                entry.title=reger.core.Util.truncateString(path, 255);
+                entry.title=reger.core.Util.truncateString(postTitle, 255);
 
                 //If the title is blank, use the description
                 if (entry.title==null || entry.title.equals("")){
@@ -202,7 +243,7 @@ public class Dropbox {
 
                 //Populate the date/time vars in the event object
                 //@todo pull date from path
-                entry.dateGmt = reger.core.TimeUtils.nowInGmtCalendar();
+                entry.dateGmt = dateGmt;
 
                 //Set the author in the EmailApi posts.
                 entry.accountuserid = accountuserid;
@@ -219,13 +260,54 @@ public class Dropbox {
 
                 Debug.debug(3, "Dropbox", "Dropbox.java - createPostFromPath() Ready to start processing files.");
 
-                //@todo process files
+                //Back to Dropbox... let's iterate and get soem files
+                for (Iterator<DropboxAPI.Entry> iterator = rootdir.contents.iterator(); iterator.hasNext();) {
+
+                    DropboxAPI.Entry dbentry = iterator.next();
+
+                    if (dbentry.isDir){
+                        //mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
+                        if (!isPathAlreadyInUse(accountid, dbentry.path)){
+                            Debug.logtodb("Dropbox createPostFromPath()", "found directory entry.filename="+dbentry.fileName());
+                            //createPostFromPath(accountid, logid, dbentry.fileName());
+                        }
+                    } else {
+                        Debug.logtodb("Dropbox createPostFromPath()", "found file " + dbentry.fileName());
+
+
+                        //START TEST
+                        //Create or find the entry
+                        try{
+                            //Save the entry to the database
+                            entry.comments = entry.comments + " " + dbentry.fileName();
+                            entry.editEntryAll(accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
+                        } catch (ValidationException error){
+                            //@todo Handle the exception and send it back to user via email?
+                            Debug.debug(3, "Dropbox", "Dropbox save post Error:" + error.getErrorsAsSingleString());
+                        }
+                        //END TEST
+
+                    }
+
+                }
 
                 Debug.debug(3, "Dropbox", "Dropbox.java - createPostFromPath() Done processing files.");
 
 
-            } catch (Exception e) {
-                Debug.errorsave(e, "Dropbox");
+
+
+
+
+                //@todo Must write to dropboxpath to make sure this post isn't re-created next time
+                //-----------------------------------
+                //-----------------------------------
+                int dropboxpostid = Db.RunSQLInsert("INSERT INTO dropboxpost(accountid, path) VALUES('"+accountid+"', '"+ reger.core.Util.cleanForSQL(rootdir.fileName()) +"')");
+                //-----------------------------------
+                //-----------------------------------
+
+
+            } else {
+                Debug.logtodb("api==null", "Dropbox when trying to create a post");
             }
 
 
