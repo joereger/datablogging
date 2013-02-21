@@ -58,7 +58,11 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 }
 
 if (request.getParameter("action")!=null && request.getParameter("action").equals("processautoblogpath")){
-    Dropbox.processAutoBlogPath(userSession.getAccount().getAccountid(), 0);
+    Dropbox.processAutoBlogPath(userSession.getAccount().getAccountid(), 0, false);
+}
+
+if (request.getParameter("action")!=null && request.getParameter("action").equals("processautoblogpathforce")){
+    Dropbox.processAutoBlogPath(userSession.getAccount().getAccountid(), 0, true);
 }
 
 
@@ -95,7 +99,7 @@ if (api==null){
 
     mb.append("<h3>Congrats... you're authenticated!</h3>");
     mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=unlink\">unauthenticate</a><br/>");
-    mb.append("Auto-Blog-Path="+Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())+" <a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=processautoblogpath\">process</a>");
+    mb.append("Auto-Blog-Path="+Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())+" <a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=processautoblogpath\">process</a> - <a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=processautoblogpathforce\">process force</a>");
 
 
 

@@ -1,6 +1,7 @@
 package reger.dropbox;
 
 import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.RESTUtility;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
@@ -8,7 +9,7 @@ import com.dropbox.client2.session.Session;
 import com.dropbox.client2.session.WebAuthSession;
 import reger.Account;
 import reger.Accountuser;
-import reger.api.EmailApiAddress;
+import reger.core.DateDiff;
 import reger.core.Debug;
 import reger.core.TimeUtils;
 import reger.core.ValidationException;
@@ -18,9 +19,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -101,7 +102,7 @@ public class Dropbox {
 
 
 
-    public static void processAutoBlogPath(int accountid, int logid){
+    public static void processAutoBlogPath(int accountid, int logid, boolean forcenow){
         try{
             if (logid==0){
                 logid = Account.getDefaultLogid(accountid);
@@ -128,7 +129,14 @@ public class Dropbox {
                         //mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
                         if (!isPathAlreadyInUse(accountid, entry.fileName())){
                             Debug.logtodb("Dropbox processAutoBlogPath()", "found directory entry.filename="+entry.fileName());
-                            createPostFromPath(accountid, logid, entry.path);
+
+                            //If was last updated 5 mins ago
+                            if (!isUpdatedInLastXMinutes(accountid, entry.path, 5) || forcenow){
+
+                                //Create it
+                                createPostFromPath(accountid, logid, entry.path);
+
+                            }
 
                         }
                     } else {
@@ -145,6 +153,62 @@ public class Dropbox {
         } catch (Exception ex){
             Debug.errorsave(ex, "Dropbox");
         }
+    }
+
+    public static boolean isUpdatedInLastXMinutes(int accountid, String path, int xMinutes){
+        try{
+
+            DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
+
+            if (path==null || path.equals("")){
+                Debug.logtodb("path empty", "Dropbox");
+                return false;
+            }
+
+            if (api!=null){
+
+                DropboxAPI.Entry rootdir = api.metadata(path, 0, null, true, null);
+
+                //Check the root dir
+                if (true){
+                    Date modified = RESTUtility.parseDate(rootdir.modified);
+                    String modifiedStr = TimeUtils.dateformatcompactwithtime(TimeUtils.getCalFromDate(modified));
+                    Calendar d1 = Calendar.getInstance();
+                    Calendar d2 = TimeUtils.getCalFromDate(modified);
+                    int minutesAgo = DateDiff.dateDiff("minute", d1, d2);
+                    if (minutesAgo<=xMinutes){
+                        Debug.logtodb(path+" updated "+minutesAgo+" min ago","Dropbox isUpdatedInLastXMinutes()");
+                        return true;
+                    }
+                }
+
+
+                for (Iterator<DropboxAPI.Entry> iterator = rootdir.contents.iterator(); iterator.hasNext();) {
+
+                    DropboxAPI.Entry entry = iterator.next();
+
+                    Date modified = RESTUtility.parseDate(rootdir.modified);
+                    String modifiedStr = TimeUtils.dateformatcompactwithtime(TimeUtils.getCalFromDate(modified));
+                    Calendar d1 = Calendar.getInstance();
+                    Calendar d2 = TimeUtils.getCalFromDate(modified);
+                    int minutesAgo = DateDiff.dateDiff("minute", d1, d2);
+                    if (minutesAgo<=xMinutes){
+                        Debug.logtodb(entry.fileName() + " updated "+minutesAgo+" min ago","Dropbox isUpdatedInLastXMinutes()");
+                        return true;
+                    }
+
+                }
+
+            } else {
+                Debug.logtodb("api==null", "Dropbox");
+            }
+
+
+        } catch (Exception ex){
+            Debug.errorsave(ex, "Dropbox");
+        }
+        Debug.logtodb("not updated in last "+xMinutes+" min","Dropbox isUpdatedInLastXMinutes()");
+        return false;
     }
 
     public static boolean isPathAlreadyInUse(int accountid, String path){
@@ -275,17 +339,7 @@ public class Dropbox {
                         Debug.logtodb("Dropbox createPostFromPath()", "found file " + dbentry.fileName());
 
 
-                        //START TEST
-                        //Create or find the entry
-                        try{
-                            //Save the entry to the database
-                            entry.comments = entry.comments + " " + dbentry.fileName();
-                            entry.editEntryAll(accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
-                        } catch (ValidationException error){
-                            //@todo Handle the exception and send it back to user via email?
-                            Debug.debug(3, "Dropbox", "Dropbox save post Error:" + error.getErrorsAsSingleString());
-                        }
-                        //END TEST
+                        //@todo save image
 
                     }
 
