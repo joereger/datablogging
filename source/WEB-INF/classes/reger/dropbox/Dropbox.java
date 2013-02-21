@@ -128,12 +128,14 @@ public class Dropbox {
                     if (entry.isDir){
                         //mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
                         if (!isPathAlreadyInUse(accountid, entry.fileName())){
-                            Debug.logtodb("Dropbox processAutoBlogPath()", "found directory entry.filename="+entry.fileName());
+                            Debug.logtodb("found directory entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
 
                             //If was last updated 5 mins ago
-                            if (!isUpdatedInLastXMinutes(accountid, entry.path, 5) || forcenow){
+                            int REFRAIN_TIME = 3;
+                            if (!isUpdatedInLastXMinutes(accountid, entry.path, REFRAIN_TIME) || forcenow){
 
                                 //Create it
+                                Debug.logtodb("WILL CREATE POST", "Dropbox processAutoBlogPath()");
                                 createPostFromPath(accountid, logid, entry.path);
 
                             }
@@ -187,7 +189,7 @@ public class Dropbox {
 
                     DropboxAPI.Entry entry = iterator.next();
 
-                    Date modified = RESTUtility.parseDate(rootdir.modified);
+                    Date modified = RESTUtility.parseDate(entry.modified);
                     String modifiedStr = TimeUtils.dateformatcompactwithtime(TimeUtils.getCalFromDate(modified));
                     Calendar d1 = Calendar.getInstance();
                     Calendar d2 = TimeUtils.getCalFromDate(modified);
