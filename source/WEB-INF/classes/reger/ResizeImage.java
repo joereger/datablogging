@@ -9,6 +9,8 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.swing.ImageIcon;
 //import com.sun.image.codec.jpeg.*;
 
+import org.apache.commons.io.FileUtils;
+import org.imgscalr.Scalr;
 import reger.core.Debug;
 
 
@@ -20,10 +22,38 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.plugins.jpeg.*;
 
 
+
 /**
  * Resize an image that already exists on the filesystem
  */
 public class ResizeImage{
+
+
+    public static boolean resizeNEW(String inimagelocation, String outimagelocation, int maxwidth){
+
+        try {
+            File in = new File(inimagelocation);
+            File out = new File(outimagelocation);
+            FileUtils.copyFile(in, out);
+            resizeInPlace(outimagelocation, maxwidth);
+        } catch (IOException e) {
+            Debug.errorsave(e, "ResizeImage resize()");
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean resizeInPlace(String fileloc, int maxwidth){
+        try {
+            BufferedImage img = ImageIO.read(new File(fileloc));
+            BufferedImage resized = Scalr.resize(img, maxwidth);
+            ImageIO.write(resized, "JPEG", new File(fileloc));
+        } catch (IOException e) {
+            Debug.errorsave(e, "ResizeImage resizeInPlace()");
+            return false;
+        }
+        return true;
+    }
 
     public static boolean resize(String inimagelocation, String outimagelocation, int maxwidth) throws IOException {
         try {

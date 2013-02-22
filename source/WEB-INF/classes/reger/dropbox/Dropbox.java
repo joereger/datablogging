@@ -8,11 +8,9 @@ import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session;
 import com.dropbox.client2.session.WebAuthSession;
 import org.apache.jcs.engine.control.event.ElementEvent;
-import reger.Account;
-import reger.Accountuser;
+import reger.*;
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
-import reger.ThumbnailCreator;
 import reger.core.DateDiff;
 import reger.core.Debug;
 import reger.core.TimeUtils;
@@ -347,8 +345,18 @@ public class Dropbox {
                     } else {
                         Debug.logtodb("Dropbox createPostFromPath()", "found file " + dbentry.fileName());
 
-                        saveImage(accountid, dbentry.path, dbentry.fileName(), entry.eventid);
-                        //@todo save image
+                        int imageid = saveImage(accountid, dbentry.path, dbentry.fileName(), entry.eventid, entry);
+
+                        //Add the image to the body of the post
+                        if (imageid>0 && dbentry.fileName().indexOf("[big]")>-1){
+                            entry.comments = entry.comments + "<$image id=\""+imageid+"\"$>";
+                        }
+                        try{
+                            entry.editEntryAll(accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
+                        } catch (ValidationException error){
+                            Debug.debug(3, "Dropbox", "Dropbox save post Error:" + error.getErrorsAsSingleString());
+                        }
+
 
                     }
 
@@ -375,7 +383,7 @@ public class Dropbox {
         }
     }
 
-    public static void saveImage(int accountid, String dbFilePath, String dbFileName, int eventid){
+    public static int saveImage(int accountid, String dbFilePath, String dbFileName, int eventid, Entry entry){
         try{
             //Connect to Dropbox
             DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
@@ -427,8 +435,14 @@ public class Dropbox {
                     DropboxAPI.DropboxFileInfo info = api.getFile(dbFilePath, null, outputStream, null);
                     Debug.logtodb("The file's rev is: " + info.getMetadata().rev, "Dropbox save file");
 
+                    //Create thumbnail
                     ThumbnailCreator.createThumbnail(savedFile);
 
+                    //Resize
+                    long startTime = new Date().getTime();
+                    Debug.logtodb("Start resize", "Dropbox Resize File");
+                    ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
+                    Debug.logtodb("End resize, took "+(new Date().getTime()-startTime)+" millis", "Dropbox Resize File");
 
                     //-----------------------------------
                     //-----------------------------------
@@ -443,6 +457,9 @@ public class Dropbox {
 
                     //Refresh entry cache
                     reger.cache.EntryCache.flush(eventid);
+
+
+                    return imageid;
 
                 } catch (DropboxException e) {
                     Debug.errorsave(e, "Dropbox save file");
@@ -463,6 +480,7 @@ public class Dropbox {
         } catch (Exception ex){
                 Debug.errorsave(ex, "Dropbox saveImage()");
         }
+        return 0;
     }
 
 }
