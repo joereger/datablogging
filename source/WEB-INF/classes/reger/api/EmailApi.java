@@ -652,9 +652,6 @@ public class EmailApi {
 
                     Debug.debug(3, "EmailApi", "About to decode multipart.bodyPart with filename=" + filename);
 
-
-
-
                     //Make sure there's enough space left for this user
                     //Get the size of the incoming file
                     contentlength=bits.length - 1;
@@ -662,7 +659,6 @@ public class EmailApi {
                     long freespace = acct.getFreespace();
                     if ((long)contentlength>freespace) {
                         Debug.debug(3, "EmailApi", "Failed due to freeSpace limitations.<br>contentlength=" + contentlength + "<br>freeSpace=" + freespace);
-
                         return false;
                     }
 
@@ -688,7 +684,7 @@ public class EmailApi {
                     File dirThumbs = new File(filesdirectory+".thumbnails/");
                     dirThumbs.mkdirs();
 
-                    //Test for file existence... if it exists does, add an incrementer
+                    //Test for file existence... if it exists then increment
                     String finalfilename = incomingname;
                     File savedFile  = new File(filesdirectory, finalfilename);
                     int incrementer = 0;

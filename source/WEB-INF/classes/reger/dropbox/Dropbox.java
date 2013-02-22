@@ -7,8 +7,12 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session;
 import com.dropbox.client2.session.WebAuthSession;
+import org.apache.jcs.engine.control.event.ElementEvent;
 import reger.Account;
 import reger.Accountuser;
+import reger.Media.MediaType;
+import reger.Media.MediaTypeFactory;
+import reger.ThumbnailCreator;
 import reger.core.DateDiff;
 import reger.core.Debug;
 import reger.core.TimeUtils;
@@ -213,6 +217,9 @@ public class Dropbox {
         return false;
     }
 
+
+
+
     public static boolean isPathAlreadyInUse(int accountid, String path){
         //-----------------------------------
         //-----------------------------------
@@ -340,7 +347,7 @@ public class Dropbox {
                     } else {
                         Debug.logtodb("Dropbox createPostFromPath()", "found file " + dbentry.fileName());
 
-
+                        saveImage(accountid, dbentry.path, dbentry.fileName(), entry.eventid);
                         //@todo save image
 
                     }
@@ -348,10 +355,6 @@ public class Dropbox {
                 }
 
                 Debug.debug(3, "Dropbox", "Dropbox.java - createPostFromPath() Done processing files.");
-
-
-
-
 
 
                 //@todo Must write to dropboxpath to make sure this post isn't re-created next time
@@ -369,6 +372,96 @@ public class Dropbox {
 
         } catch (Exception ex){
             Debug.errorsave(ex, "Dropbox");
+        }
+    }
+
+    public static void saveImage(int accountid, String dbFilePath, String dbFileName, int eventid){
+        try{
+            //Connect to Dropbox
+            DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
+            if (api!=null){
+                DropboxAPI.Entry rootdir = api.metadata(dbFilePath, 0, null, true, null);
+
+
+
+                //Figure out a filename
+                String incomingname = dbFileName;
+                String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
+                String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
+
+                //Calculate the new dated directory name
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH)+1;
+                String monthStr = String.valueOf(month);
+                if (monthStr.length()==1){
+                    monthStr = "0"+monthStr;
+                }
+                String datedDirectoryName = year+"/"+monthStr;
+
+                //Create directory
+                Account account = new Account(accountid);
+                String filesdirectory = account.getPathToAccountFiles() + datedDirectoryName + "/";
+                File dir = new File(filesdirectory);
+                dir.mkdirs();
+                File dirThumbs = new File(filesdirectory+".thumbnails/");
+                dirThumbs.mkdirs();
+
+                //Test for file existence... if it exists then increment
+                String finalfilename = incomingname;
+                File savedFile  = new File(filesdirectory, finalfilename);
+                int incrementer = 0;
+                while (savedFile.exists()){
+                    incrementer=incrementer+1;
+                    finalfilename = incomingnamebase+"-"+incrementer;
+                    if (!incomingnameext.equals("")){
+                        finalfilename = finalfilename + "." + incomingnameext;
+                    }
+                    savedFile  = new File(filesdirectory, finalfilename);
+                }
+
+                //Now write dropbox file to this file
+                FileOutputStream outputStream = null;
+                try {
+                    outputStream = new FileOutputStream(savedFile);
+                    DropboxAPI.DropboxFileInfo info = api.getFile(dbFilePath, null, outputStream, null);
+                    Debug.logtodb("The file's rev is: " + info.getMetadata().rev, "Dropbox save file");
+
+                    ThumbnailCreator.createThumbnail(savedFile);
+
+
+                    //-----------------------------------
+                    //-----------------------------------
+                    int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"', '"+info.getFileSize()+"', '"+reger.core.Util.cleanForSQL("")+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"')");
+                    //-----------------------------------
+                    //-----------------------------------
+
+                    //Get a MediaType handler
+                    MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
+                    //Handle any parsing required
+                    mt.saveToDatabase(filesdirectory+finalfilename, imageid);
+
+                    //Refresh entry cache
+                    reger.cache.EntryCache.flush(eventid);
+
+                } catch (DropboxException e) {
+                    Debug.errorsave(e, "Dropbox save file");
+                } catch (FileNotFoundException e) {
+                    Debug.errorsave(e, "Dropbox save file");
+                } finally {
+                    if (outputStream != null) {
+                        try {
+                            outputStream.close();
+                        } catch (IOException e) {}
+                    }
+                }
+
+
+            }
+
+
+        } catch (Exception ex){
+                Debug.errorsave(ex, "Dropbox saveImage()");
         }
     }
 
