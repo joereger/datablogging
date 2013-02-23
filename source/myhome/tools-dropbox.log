@@ -93,22 +93,27 @@ if (api==null){
         //-----------------------------------
     }
 
-    mb.append("Please <a href=\""+webauthinfo.url+"\">authorize</a> within Dropbox.");
+    mb.append("<div class=\"well span12\">");
+    mb.append("Please <a href=\""+webauthinfo.url+"\">authorize</a> Dropbox.");
+    mb.append("</div>");
 
 } else {
 
-    mb.append("<h3>Congrats... you're authenticated!</h3>");
-    mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=unlink\">unauthenticate</a><br/>");
-    mb.append("Auto-Blog-Path="+Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())+" <a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=processautoblogpath\">process</a> - <a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=processautoblogpathforce\">process force</a>");
 
+    mb.append("<div class=\"well span12\">");
+        mb.append("<h3>Congrats... you're authenticated!</h3>");
+        mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=unlink\">unauthenticate</a><br/>");
+        mb.append("Your Chosen Path Is: "+Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())+" ");
+        if (Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())!=null && !Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()).equals("")){
+            mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=processautoblogpathforce\"></a>");
+        }
+    mb.append("</div>");
 
 
     DropboxAPI.Entry autoblogdir = api.metadata(Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()), 0, null, true, null);
 
 
 
-
-    mb.append("<br/><br/><br/>");
 
     try{
 
