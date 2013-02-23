@@ -88,6 +88,7 @@ public class Loader extends HttpServlet {
         tThr.addScheduledTask(new BandwidthTest());
         tThr.addScheduledTask(new DeleteUnusedTags());
         tThr.addScheduledTask(new RelatedLinksFlush());
+        tThr.addScheduledTask(new ProcessDropboxAutoBlog());
         //@todo Allow plugin tasks here
         //Run the thread
         tThr.setPriority(Thread.MIN_PRIORITY);

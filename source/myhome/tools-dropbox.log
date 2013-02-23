@@ -1,5 +1,7 @@
 <%@ page import="reger.core.db.Db"%>
+<%@ page import="reger.Log"%>
 <%@ page import="reger.core.*"%>
+<%@ page import="reger.cache.*"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.dropbox.client2.session.WebAuthSession" %>
 <%@ page import="com.dropbox.client2.DropboxAPI" %>
@@ -48,21 +50,27 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 }
 
 if (request.getParameter("action")!=null && request.getParameter("action").equals("choosepath")){
-
     //-----------------------------------
     //-----------------------------------
     int count = Db.RunSQLUpdate("UPDATE dropbox SET autoblogpath='"+reger.core.Util.cleanForSQL(request.getParameter("path"))+"' WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
     //-----------------------------------
     //-----------------------------------
+}
 
+if (request.getParameter("action")!=null && request.getParameter("action").equals("chooselogid")){
+    //-----------------------------------
+    //-----------------------------------
+    int count = Db.RunSQLUpdate("UPDATE dropbox SET logid='"+reger.core.Util.cleanForSQL(request.getParameter("logid"))+"' WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+    //-----------------------------------
+    //-----------------------------------
 }
 
 if (request.getParameter("action")!=null && request.getParameter("action").equals("processautoblogpath")){
-    Dropbox.processAutoBlogPath(userSession.getAccount().getAccountid(), 0, false);
+    Dropbox.processAutoBlogPath(userSession.getAccount().getAccountid(), false);
 }
 
 if (request.getParameter("action")!=null && request.getParameter("action").equals("processautoblogpathforce")){
-    Dropbox.processAutoBlogPath(userSession.getAccount().getAccountid(), 0, true);
+    Dropbox.processAutoBlogPath(userSession.getAccount().getAccountid(), true);
 }
 
 
@@ -71,9 +79,15 @@ if (request.getParameter("action")!=null && request.getParameter("action").equal
 
 
 
-DropboxAPI<WebAuthSession> api = Dropbox.getApi(userSession.getAccount().getAccountid());
+DropboxAPI<WebAuthSession> api = null;
+boolean apiIsGood = false;
+try{
+    api = Dropbox.getApi(userSession.getAccount().getAccountid());
+    String test = api.accountInfo().displayName;
+    apiIsGood = true;
+} catch (Exception ex){}
 
-if (api==null){
+if (api==null || !apiIsGood){
 
     // And later in some initialization function:
     AppKeyPair appKeys = new AppKeyPair(Dropbox.APP_KEY, Dropbox.APP_SECRET);
@@ -93,34 +107,61 @@ if (api==null){
         //-----------------------------------
     }
 
+    mb.append("<div class=\"row\">");
     mb.append("<div class=\"well span12\">");
-    mb.append("Please <a href=\""+webauthinfo.url+"\">authorize</a> Dropbox.");
+    mb.append("<h1>Please <a href=\""+webauthinfo.url+"\">authorize</a> your account.</h1>");
+    mb.append("</div>");
     mb.append("</div>");
 
 } else {
 
-
+    mb.append("<div class=\"row\">");
     mb.append("<div class=\"well span12\">");
-        mb.append("<h3>Congrats... you're authenticated!</h3>");
-        mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=unlink\">unauthenticate</a><br/>");
-        mb.append("Your Chosen Path Is: "+Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())+" ");
+        mb.append("<h3>Authenticated to account '"+api.accountInfo().displayName+"' <a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=unlink\">revoke access</a></h3>");
+        //mb.append("<br/>");
         if (Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())!=null && !Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()).equals("")){
-            mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=processautoblogpathforce\"></a>");
+            mb.append("<a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=processautoblogpathforce\">Create Blog Posts From '"+Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())+"' Now</a>");
         }
+    mb.append("</div>");
     mb.append("</div>");
 
 
-    DropboxAPI.Entry autoblogdir = api.metadata(Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()), 0, null, true, null);
+    mb.append("<div class=\"well span3\">");
+    mb.append("<div class=\"well span2\">");
+    mb.append("<h3>Instructions</h3>");
+    mb.append("Blogging with Dropbox");
+    mb.append("</div>");
+
+    mb.append("<p>Choose a Dropbox directory and Log to blog to.</p>");
+
+    mb.append("<p>Within Dropbox, create directories with names like:");
+    mb.append("<br/>2013-02-27-This is a Great Blog Post");
+    mb.append("<br/>2013-01-16-Another Blog Post Here");
+    mb.append("</p>");
+
+    mb.append("<p>A blog post will be created for each directory and will include the images in that directory.</p>");
+
+    mb.append("</div>");
 
 
 
+    mb.append("<div class=\"row\">");
+    mb.append("<div class=\"well span4\">");
+
+
+    mb.append("<div class=\"well span3\">");
+    mb.append("<h3>Directory to Blog From</h3>");
+    if (Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())!=null && !Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()).equals("")){
+        mb.append(Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()));
+    } else {
+        mb.append("Please choose one below");
+    }
+    mb.append("</div>");
+    mb.append("<br clear='all'>");
 
     try{
 
-
-
-
-        mb.append("<br/>Dropbox Account: "+api.accountInfo().displayName+"<br/>");
+        DropboxAPI.Entry autoblogdir = api.metadata(Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()), 0, null, true, null);
 
         String path = "/";
         if (request.getParameter("path")!=null){
@@ -134,9 +175,9 @@ if (api==null){
             DropboxAPI.Entry entry = iterator.next();
 
             if (entry.isDir){
-                mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
+                mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Choose</a>)");
             } else {
-                mb.append("<br/>"+entry.fileName());
+                mb.append("<br/>"+entry.fileName()+"");
             }
 
         }
@@ -144,6 +185,39 @@ if (api==null){
     } catch (Exception ex){
         ex.printStackTrace();
     }
+    mb.append("</div>");
+
+
+
+    mb.append("<div class=\"well span3\">");
+
+
+    mb.append("<div class=\"well span2\">");
+        mb.append("<h3>Log To Post To</h3>");
+        if (Dropbox.getLog(userSession.getAccount().getAccountid())!=null){
+            mb.append(Dropbox.getLog(userSession.getAccount().getAccountid()).getName());
+        } else {
+            mb.append("Please choose one below");
+        }
+        mb.append("</div>");
+        mb.append("<br clear='all'>");
+
+        for (Iterator it = userSession.getAccount().getAlllogsforaccountid().iterator(); it.hasNext(); ) {
+           Integer logid = (Integer)it.next();
+            Log log = LogCache.get(logid);
+
+
+            mb.append("<br/><a href='tools-dropbox.log?action=chooselogid&logid="+log.getLogid()+"'>"+log.getName()+"</a>");
+        }
+
+    mb.append("</div>");
+
+
+
+
+
+
+    mb.append("</div>");
 
 
 }

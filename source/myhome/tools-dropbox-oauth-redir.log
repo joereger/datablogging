@@ -83,8 +83,8 @@ if (request.getParameter("oauth_token")!=null && !request.getParameter("oauth_to
         mb.append("<br/>displayname="+mDBApi.accountInfo().displayName);
 
 
-    //response.sendRedirect(pageProps.pathToAppRoot + "myhome/tools-dropbox.log");
-    //return;
+    response.sendRedirect(pageProps.pathToAppRoot + "myhome/tools-dropbox.log");
+    return;
 
 }
 

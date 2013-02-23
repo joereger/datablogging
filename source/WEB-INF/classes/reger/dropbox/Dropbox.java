@@ -8,6 +8,7 @@ import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session;
 import com.dropbox.client2.session.WebAuthSession;
 import org.apache.jcs.engine.control.event.ElementEvent;
+import org.apache.tools.ant.util.FileUtils;
 import reger.*;
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
@@ -16,11 +17,10 @@ import reger.core.Debug;
 import reger.core.TimeUtils;
 import reger.core.ValidationException;
 import reger.core.db.Db;
+import reger.dao.Pl;
+import reger.util.Num;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Date;
@@ -102,13 +102,32 @@ public class Dropbox {
         return autoblogpath;
     }
 
-
-
-    public static void processAutoBlogPath(int accountid, int logid, boolean forcenow){
-        try{
-            if (logid==0){
-                logid = Account.getDefaultLogid(accountid);
+    public static Log getLog(int accountid){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstCheck = Db.RunSQL("SELECT logid FROM dropbox WHERE accountid='"+accountid+"'");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstCheck!=null && rstCheck.length>0){
+            String logStr = rstCheck[0][0];
+            if (Num.isinteger(logStr)){
+                if (Integer.parseInt(rstCheck[0][0])>0){
+                    Log log = new Log(Integer.parseInt(logStr));
+                    return log;
+                }
             }
+        }
+        return null;
+    }
+
+
+
+    public static void processAutoBlogPath(int accountid, boolean forcenow){
+        try{
+
+            Log log = getLog(accountid);
+            if (log==null || log.getLogid()<=0){return;}
+            int logid = log.getLogid();
 
 
             DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
@@ -345,7 +364,7 @@ public class Dropbox {
                     } else {
                         Debug.logtodb("Dropbox createPostFromPath()", "found file " + dbentry.fileName());
 
-                        int imageid = saveImage(accountid, dbentry.path, dbentry.fileName(), entry.eventid, entry);
+                        int imageid = saveImage(accountid, dbentry.path, dbentry.fileName(), entry.eventid, entry, accountuserOfPersonAccessing, plOfEntry);
 
                         //Add the image to the body of the post
                         if (imageid>0 && dbentry.fileName().indexOf("[big]")>-1){
@@ -383,14 +402,22 @@ public class Dropbox {
         }
     }
 
-    public static int saveImage(int accountid, String dbFilePath, String dbFileName, int eventid, Entry entry){
+    public static int saveImage(int accountid, String dbFilePath, String dbFileName, int eventid, Entry entry, Accountuser accountuserOfPersonAccessing, PrivateLabel plOfEntry){
+        Debug.logtodb("dbFilePath="+dbFilePath, "Dropbox.saveImage()");
         try{
             //Connect to Dropbox
             DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
             if (api!=null){
                 DropboxAPI.Entry rootdir = api.metadata(dbFilePath, 0, null, true, null);
 
-
+                //Make sure there's enough space left for this user
+                //Just make sure there's some free space left
+                reger.Account acct = new reger.Account(accountid);
+                long freespace = acct.getFreespace();
+                if (freespace>0) {
+                    Debug.debug(3, "Dropbox", "Failed because there's no more free space on this account.");
+                    return 0;
+                }
 
                 //Figure out a filename
                 String incomingname = dbFileName;
@@ -434,6 +461,20 @@ public class Dropbox {
                     outputStream = new FileOutputStream(savedFile);
                     DropboxAPI.DropboxFileInfo info = api.getFile(dbFilePath, null, outputStream, null);
                     Debug.logtodb("The file's rev is: " + info.getMetadata().rev, "Dropbox save file");
+
+                    String mimetype = info.getMimeType();
+                    Debug.logtodb("The file's mimetype is: " + info.getMimeType(), "Dropbox save file");
+                    Debug.logtodb("info.getMimeType().substring(0,5): " + info.getMimeType().substring(0, 5), "Dropbox save file");
+                    if (info.getMimeType().equals("text/plain")){
+                        processTextFile(accountid, entry, savedFile, accountuserOfPersonAccessing, plOfEntry);
+                        return 0;
+                    }
+                    if (!info.getMimeType().substring(0,5).equals("image")){
+                        try{
+                            FileUtils.delete(savedFile);
+                        } catch (Exception ex){Debug.errorsave(ex, "Dropbox delete file");}
+                        return 0;
+                    }
 
                     //Create thumbnail
                     ThumbnailCreator.createThumbnail(savedFile);
@@ -482,5 +523,36 @@ public class Dropbox {
         }
         return 0;
     }
+
+    private static void processTextFile(int accountid, Entry entry, File txtFile, Accountuser accountuserOfPersonAccessing, PrivateLabel plOfEntry){
+       try{
+           entry.comments = entry.comments + deserializeString(txtFile);
+           entry.editEntryAll(new Account(accountid), accountuserOfPersonAccessing, plOfEntry);
+       } catch (ValidationException error){
+           Debug.debug(3, "Dropbox", "Dropbox save post Error:" + error.getErrorsAsSingleString());
+       }
+       try{
+            FileUtils.delete(txtFile);
+       } catch (Exception ex){Debug.errorsave(ex, "Dropbox process txt file");}
+    }
+
+
+    public static String deserializeString(File file) {
+        try{
+          int len;
+          char[] chr = new char[4096];
+          final StringBuffer buffer = new StringBuffer();
+          final FileReader reader = new FileReader(file);
+          try {
+              while ((len = reader.read(chr)) > 0) {
+                  buffer.append(chr, 0, len);
+              }
+          } finally {
+              reader.close();
+          }
+          return buffer.toString();
+        } catch (Exception ex){Debug.errorsave(ex, "Dropbox deserialize txt file");}
+        return "";
+      }
 
 }
