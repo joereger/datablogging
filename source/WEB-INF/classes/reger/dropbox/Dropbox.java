@@ -364,7 +364,15 @@ public class Dropbox {
                     } else {
                         Debug.logtodb("Dropbox createPostFromPath()", "found file " + dbentry.fileName());
 
-                        int imageid = saveImage(accountid, dbentry.path, dbentry.fileName(), entry.eventid, entry, accountuserOfPersonAccessing, plOfEntry);
+                        int imageid = 0;
+                        boolean keepTrying = true;
+                        int attempts = 0;
+                        while (keepTrying && attempts<=10){
+                            try{
+                                imageid = saveImage(accountid, dbentry.path, dbentry.fileName(), entry.eventid, entry, accountuserOfPersonAccessing, plOfEntry);
+                                keepTrying = false;
+                            } catch (Exception ex){attempts++;}
+                        }
 
                         //Add the image to the body of the post
                         if (imageid>0 && dbentry.fileName().indexOf("[big]")>-1){
@@ -402,126 +410,115 @@ public class Dropbox {
         }
     }
 
-    public static int saveImage(int accountid, String dbFilePath, String dbFileName, int eventid, Entry entry, Accountuser accountuserOfPersonAccessing, PrivateLabel plOfEntry){
+    public static int saveImage(int accountid, String dbFilePath, String dbFileName, int eventid, Entry entry, Accountuser accountuserOfPersonAccessing, PrivateLabel plOfEntry) throws Exception {
         Debug.logtodb("dbFilePath="+dbFilePath, "Dropbox.saveImage()");
-        try{
-            //Connect to Dropbox
-            DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
-            if (api!=null){
-                DropboxAPI.Entry rootdir = api.metadata(dbFilePath, 0, null, true, null);
 
-                //Make sure there's enough space left for this user
-                //Just make sure there's some free space left
-                reger.Account acct = new reger.Account(accountid);
-                long freespace = acct.getFreespace();
-                if (freespace>0) {
-                    Debug.debug(3, "Dropbox", "Failed because there's no more free space on this account.");
-                    return 0;
-                }
+        //Connect to Dropbox
+        DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
+        if (api!=null){
+            DropboxAPI.Entry rootdir = api.metadata(dbFilePath, 0, null, true, null);
 
-                //Figure out a filename
-                String incomingname = dbFileName;
-                String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
-                String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
-
-                //Calculate the new dated directory name
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH)+1;
-                String monthStr = String.valueOf(month);
-                if (monthStr.length()==1){
-                    monthStr = "0"+monthStr;
-                }
-                String datedDirectoryName = year+"/"+monthStr;
-
-                //Create directory
-                Account account = new Account(accountid);
-                String filesdirectory = account.getPathToAccountFiles() + datedDirectoryName + "/";
-                File dir = new File(filesdirectory);
-                dir.mkdirs();
-                File dirThumbs = new File(filesdirectory+".thumbnails/");
-                dirThumbs.mkdirs();
-
-                //Test for file existence... if it exists then increment
-                String finalfilename = incomingname;
-                File savedFile  = new File(filesdirectory, finalfilename);
-                int incrementer = 0;
-                while (savedFile.exists()){
-                    incrementer=incrementer+1;
-                    finalfilename = incomingnamebase+"-"+incrementer;
-                    if (!incomingnameext.equals("")){
-                        finalfilename = finalfilename + "." + incomingnameext;
-                    }
-                    savedFile  = new File(filesdirectory, finalfilename);
-                }
-
-                //Now write dropbox file to this file
-                FileOutputStream outputStream = null;
-                try {
-                    outputStream = new FileOutputStream(savedFile);
-                    DropboxAPI.DropboxFileInfo info = api.getFile(dbFilePath, null, outputStream, null);
-                    Debug.logtodb("The file's rev is: " + info.getMetadata().rev, "Dropbox save file");
-
-                    String mimetype = info.getMimeType();
-                    Debug.logtodb("The file's mimetype is: " + info.getMimeType(), "Dropbox save file");
-                    Debug.logtodb("info.getMimeType().substring(0,5): " + info.getMimeType().substring(0, 5), "Dropbox save file");
-                    if (info.getMimeType().equals("text/plain")){
-                        processTextFile(accountid, entry, savedFile, accountuserOfPersonAccessing, plOfEntry);
-                        return 0;
-                    }
-                    if (!info.getMimeType().substring(0,5).equals("image")){
-                        try{
-                            FileUtils.delete(savedFile);
-                        } catch (Exception ex){Debug.errorsave(ex, "Dropbox delete file");}
-                        return 0;
-                    }
-
-                    //Create thumbnail
-                    ThumbnailCreator.createThumbnail(savedFile);
-
-                    //Resize
-                    long startTime = new Date().getTime();
-                    Debug.logtodb("Start resize", "Dropbox Resize File");
-                    ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
-                    Debug.logtodb("End resize, took "+(new Date().getTime()-startTime)+" millis", "Dropbox Resize File");
-
-                    //-----------------------------------
-                    //-----------------------------------
-                    int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"', '"+info.getFileSize()+"', '"+reger.core.Util.cleanForSQL("")+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"')");
-                    //-----------------------------------
-                    //-----------------------------------
-
-                    //Get a MediaType handler
-                    MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
-                    //Handle any parsing required
-                    mt.saveToDatabase(filesdirectory+finalfilename, imageid);
-
-                    //Refresh entry cache
-                    reger.cache.EntryCache.flush(eventid);
-
-
-                    return imageid;
-
-                } catch (DropboxException e) {
-                    Debug.errorsave(e, "Dropbox save file");
-                } catch (FileNotFoundException e) {
-                    Debug.errorsave(e, "Dropbox save file");
-                } finally {
-                    if (outputStream != null) {
-                        try {
-                            outputStream.close();
-                        } catch (IOException e) {}
-                    }
-                }
-
-
+            //Make sure there's enough space left for this user
+            //Just make sure there's some free space left
+            reger.Account acct = new reger.Account(accountid);
+            long freespace = acct.getFreespace();
+            if (freespace>0) {
+                Debug.debug(3, "Dropbox", "Failed because there's no more free space on this account.");
+                return 0;
             }
 
+            //Figure out a filename
+            String incomingname = dbFileName;
+            String incomingnamebase = reger.core.Util.getFilenameBase(incomingname);
+            String incomingnameext = reger.core.Util.getFilenameExtension(incomingname);
 
-        } catch (Exception ex){
-                Debug.errorsave(ex, "Dropbox saveImage()");
+            //Calculate the new dated directory name
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH)+1;
+            String monthStr = String.valueOf(month);
+            if (monthStr.length()==1){
+                monthStr = "0"+monthStr;
+            }
+            String datedDirectoryName = year+"/"+monthStr;
+
+            //Create directory
+            Account account = new Account(accountid);
+            String filesdirectory = account.getPathToAccountFiles() + datedDirectoryName + "/";
+            File dir = new File(filesdirectory);
+            dir.mkdirs();
+            File dirThumbs = new File(filesdirectory+".thumbnails/");
+            dirThumbs.mkdirs();
+
+            //Test for file existence... if it exists then increment
+            String finalfilename = incomingname;
+            File savedFile  = new File(filesdirectory, finalfilename);
+            int incrementer = 0;
+            while (savedFile.exists()){
+                incrementer=incrementer+1;
+                finalfilename = incomingnamebase+"-"+incrementer;
+                if (!incomingnameext.equals("")){
+                    finalfilename = finalfilename + "." + incomingnameext;
+                }
+                savedFile  = new File(filesdirectory, finalfilename);
+            }
+
+            //Now write dropbox file to this file
+            FileOutputStream outputStream = null;
+
+            outputStream = new FileOutputStream(savedFile);
+            DropboxAPI.DropboxFileInfo info = api.getFile(dbFilePath, null, outputStream, null);
+            Debug.logtodb("The file's rev is: " + info.getMetadata().rev, "Dropbox save file");
+
+            String mimetype = info.getMimeType();
+            Debug.logtodb("The file's mimetype is: " + info.getMimeType(), "Dropbox save file");
+            Debug.logtodb("info.getMimeType().substring(0,5): " + info.getMimeType().substring(0, 5), "Dropbox save file");
+            if (info.getMimeType().equals("text/plain")){
+                processTextFile(accountid, entry, savedFile, accountuserOfPersonAccessing, plOfEntry);
+                return 0;
+            }
+            if (!info.getMimeType().substring(0,5).equals("image")){
+                try{
+                    FileUtils.delete(savedFile);
+                } catch (Exception ex){Debug.errorsave(ex, "Dropbox delete file");}
+                return 0;
+            }
+
+            //Create thumbnail
+            ThumbnailCreator.createThumbnail(savedFile);
+
+            //Resize
+            long startTime = new Date().getTime();
+            Debug.logtodb("Start resize", "Dropbox Resize File");
+            ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
+            Debug.logtodb("End resize, took "+(new Date().getTime()-startTime)+" millis", "Dropbox Resize File");
+
+            //-----------------------------------
+            //-----------------------------------
+            int imageid = Db.RunSQLInsert("INSERT INTO image(eventid, image, sizeinbytes, description, originalfilename, accountid, filename) VALUES('"+eventid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"', '"+info.getFileSize()+"', '"+reger.core.Util.cleanForSQL("")+"', '"+reger.core.Util.cleanForSQL(incomingname)+"', '"+accountid+"', '"+reger.core.Util.cleanForSQL(datedDirectoryName+"/"+finalfilename)+"')");
+            //-----------------------------------
+            //-----------------------------------
+
+            //Get a MediaType handler
+            MediaType mt = MediaTypeFactory.getHandlerByFileExtension(incomingnameext);
+            //Handle any parsing required
+            mt.saveToDatabase(filesdirectory+finalfilename, imageid);
+
+            //Refresh entry cache
+            reger.cache.EntryCache.flush(eventid);
+
+            //Closeth thy streams, young man
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {}
+            }
+
+            //return imageid
+            return imageid;
+
         }
-        return 0;
+        throw new Exception();
     }
 
     private static void processTextFile(int accountid, Entry entry, File txtFile, Accountuser accountuserOfPersonAccessing, PrivateLabel plOfEntry){
