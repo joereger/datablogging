@@ -732,8 +732,8 @@ public class Entry {
 
                 String ext = FilenameUtils.getExtension(rstThumbs[i][2]);
 
-                //Don't do a thumbnail for videos
-                if (ext.indexOf("wmv")==-1){
+                //Don't do a thumbnail for videos or if it's already in there
+                if (ext.indexOf("wmv")==-1 && !isImageInBodyAsTag(comments, Integer.parseInt(rstThumbs[i][0]))){
                     filethumbs.append("<a href='mediaouthtml.log?imageid="+rstThumbs[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
                     filethumbs.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                     filethumbs.append("</a>");
@@ -878,6 +878,18 @@ public class Entry {
 
         return true;
 
+    }
+
+    private static boolean isImageInBodyAsTag(String body, int imageid){
+        try{
+            String tagToLookFor = "<$image id=\""+imageid+"\"$>";
+            if (body.indexOf(tagToLookFor)>-1){
+                return true;
+            }
+        } catch (Exception ex){
+            Debug.errorsave(ex, "Entry");
+        }
+        return false;
     }
 
     public void loadPolls(){
