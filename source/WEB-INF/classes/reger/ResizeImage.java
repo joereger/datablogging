@@ -29,7 +29,7 @@ import javax.imageio.plugins.jpeg.*;
 public class ResizeImage{
 
 
-    public static boolean resizeNEW(String inimagelocation, String outimagelocation, int maxwidth){
+    public static boolean resize(String inimagelocation, String outimagelocation, int maxwidth){
 
         try {
             File in = new File(inimagelocation);
@@ -55,7 +55,7 @@ public class ResizeImage{
         return true;
     }
 
-    public static boolean resize(String inimagelocation, String outimagelocation, int maxwidth) throws IOException {
+    public static boolean resizeOLD(String inimagelocation, String outimagelocation, int maxwidth) throws IOException {
         try {
           reger.core.Debug.debug(5, "ResizeImage.java", "resize() called<br>inimagelocation:"+inimagelocation+"<br>outimagelocation:"+outimagelocation);
 

@@ -371,7 +371,7 @@ public class Dropbox {
                             try{
                                 imageid = saveImage(accountid, dbentry.path, dbentry.fileName(), entry.eventid, entry, accountuserOfPersonAccessing, plOfEntry);
                                 keepTrying = false;
-                            } catch (Exception ex){attempts++;}
+                            } catch (Exception ex){attempts++;Debug.errorsave(ex, "Dropbox in while loop saving image attempts="+attempts);}
                         }
 
                         //Add the image to the body of the post
