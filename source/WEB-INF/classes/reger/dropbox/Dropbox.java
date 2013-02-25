@@ -345,12 +345,12 @@ public class Dropbox {
                     entry.editEntryAll(accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
                 } catch (ValidationException error){
                     //@todo Handle the exception and send it back to user via email?
-                    Debug.debug(3, "Dropbox", "Dropbox save post Error:" + error.getErrorsAsSingleString());
+                    Debug.debug(2, "Dropbox", "Dropbox save post Error:" + error.getErrorsAsSingleString());
                 }
 
-                Debug.debug(3, "Dropbox", "Dropbox.java - createPostFromPath() Ready to start processing files.");
+                Debug.debug(2, "Dropbox", "Dropbox.java - createPostFromPath() Ready to start processing files.");
 
-                //Back to Dropbox... let's iterate and get soem files
+                //Back to Dropbox... let's iterate and get some files
                 for (Iterator<DropboxAPI.Entry> iterator = rootdir.contents.iterator(); iterator.hasNext();) {
 
                     DropboxAPI.Entry dbentry = iterator.next();
@@ -422,8 +422,8 @@ public class Dropbox {
             //Just make sure there's some free space left
             reger.Account acct = new reger.Account(accountid);
             long freespace = acct.getFreespace();
-            if (freespace>0) {
-                Debug.debug(3, "Dropbox", "Failed because there's no more free space on this account.");
+            if (freespace<100000) {
+                Debug.debug(3, "Dropbox", "Failed because there's no more free space on this account. freespace="+freespace);
                 return 0;
             }
 
