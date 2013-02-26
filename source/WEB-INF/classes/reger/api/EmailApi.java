@@ -1,12 +1,12 @@
 package reger.api;
 
+import reger.*;
 import reger.core.db.Db;
 import reger.core.ValidationException;
 import reger.core.Debug;
 import reger.core.TimeUtils;
 import reger.Media.MediaType;
 import reger.Media.MediaTypeFactory;
-import reger.ThumbnailCreator;
 
 import javax.mail.BodyPart;
 import javax.mail.internet.MimeMessage;
@@ -466,6 +466,14 @@ public class EmailApi {
                     entry.title=reger.core.Util.truncateString(subject, 255);
                 }
 
+                //New sherrif in town... let's just create a new post based on the damn subject of the thing
+                if (isMultipart){
+                    overridecamphonesubjecttext = subject;
+                    entry.title = reger.core.Util.truncateString(subject, 255);
+                    consolidatecamphonetoonedailyentry = 0;
+                }
+
+
                 //If the title is blank, use the description
                 if (entry.title==null || entry.title.equals("")) {
                     entry.title=reger.core.Util.truncateString(body ,255);
@@ -508,6 +516,8 @@ public class EmailApi {
                 //Set the author in the EmailApi posts.
                 entry.accountuserid = accountuserid;
 
+
+
                 //Create or find the entry
                 if (mailtype==EMAILPOST || (mailtype==CAMPHONEPOST && consolidatecamphonetoonedailyentry==0)){
                     try{
@@ -548,6 +558,8 @@ public class EmailApi {
 
                     //Debug.debug(3, "EmailApi", "timezoneid:"+timezoneid+"<br>reger.core.TimeUtils.dateformatfordb(tmpCal): " +reger.core.TimeUtils.dateformatfordb(tmpCal)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDay): " +reger.core.TimeUtils.dateformatfordb(startOfDay)+ "<br>reger.core.TimeUtils.dateformatfordb(startOfDayGMT):" + reger.core.TimeUtils.dateformatfordb(startOfDayGMT) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDay): " + reger.core.TimeUtils.dateformatfordb(endOfDay) + "<br>reger.core.TimeUtils.dateformatfordb(endOfDayGMT): " + reger.core.TimeUtils.dateformatfordb(endOfDayGMT));
 
+
+
                     //And then search for an eventid within this range.
                     //-----------------------------------
                     //-----------------------------------
@@ -585,7 +597,7 @@ public class EmailApi {
                 //Deal with attachments
                 if (isMultipart){
                     for(int i=0; i<multiPart.getCount(); i++){
-                        findAttachments(multiPart.getBodyPart(i), entry.eventid);
+                        findAttachments(multiPart.getBodyPart(i), entry.eventid, consolidatecamphonetoonedailyentry, entry, accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
                     }
                 }
 
@@ -598,21 +610,21 @@ public class EmailApi {
 
     }
 
-    private void findAttachments(BodyPart bodyPart, int eventid){
+    private void findAttachments(BodyPart bodyPart, int eventid, int consolidatecamphonetoonedailyentry, Entry entry, Account accountOfEntry, Accountuser accountuserOfPersonAccessing, PrivateLabel plOfEntry){
         try {
             Debug.debug(3, "EmailApi", "bodyPart.getContentType()=" + bodyPart.getContentType() + "<br>Deciding whether to treat as an attachment.");
             if (bodyPart.getFileName()!=null && !bodyPart.getFileName().equals("")){
                 Debug.debug(3, "EmailApi", "Filename is not null");
-                treatBodyPartAsAttachment(eventid, bodyPart);
+                treatBodyPartAsAttachment(eventid, bodyPart, consolidatecamphonetoonedailyentry, entry, accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
             } else if (bodyPart.getContentType().toLowerCase().indexOf("multipart")>-1){
                 Debug.debug(3, "EmailApi", "Is multipart");
                 MimeMultipart nestedMultiPart = (MimeMultipart)bodyPart.getContent();
                 for(int i=0; i<nestedMultiPart.getCount(); i++){
-                    findAttachments(nestedMultiPart.getBodyPart(i), eventid);
+                    findAttachments(nestedMultiPart.getBodyPart(i), eventid, consolidatecamphonetoonedailyentry, entry, accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
                 }
             } else if (bodyPart.getContentType().toLowerCase().indexOf("image")>-1){
                 Debug.debug(3, "EmailApi", "Is image... will treat as a body part");
-                treatBodyPartAsAttachment(eventid, bodyPart);
+                treatBodyPartAsAttachment(eventid, bodyPart, consolidatecamphonetoonedailyentry, entry, accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
             } else if (bodyPart.getContentType().toLowerCase().indexOf("message")>-1){
                 Debug.debug(3, "EmailApi", "Is message");
                 MimeMessage nestedMsg = (MimeMessage)bodyPart.getContent();
@@ -621,7 +633,7 @@ public class EmailApi {
                     javax.mail.internet.MimePartDataSource mpds = new javax.mail.internet.MimePartDataSource(nestedMsg);
                     MimeMultipart nestedMultiPart = new javax.mail.internet.MimeMultipart(mpds);
                     for(int i=0; i<nestedMultiPart.getCount(); i++){
-                        findAttachments(nestedMultiPart.getBodyPart(i), eventid);
+                        findAttachments(nestedMultiPart.getBodyPart(i), eventid,  consolidatecamphonetoonedailyentry, entry, accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
                     }
                 }
             } else {
@@ -636,7 +648,7 @@ public class EmailApi {
      * This method attaches all attachments from a message to an event.
      * @param eventid
      */
-    public boolean treatBodyPartAsAttachment(int eventid, BodyPart bodyPart) {
+    public boolean treatBodyPartAsAttachment(int eventid, BodyPart bodyPart, int consolidatecamphonetoonedailyentry, Entry entry, Account accountOfEntry, Accountuser accountuserOfPersonAccessing, PrivateLabel plOfEntry) {
 
         try {
             //Start with the #1, not #0 (which is the main body)
@@ -761,8 +773,22 @@ public class EmailApi {
                     //Do the imagetags
                     reger.Tag.addMultipleTagsToImage(camphoneimagetags, imageid);
 
+                    //If it's not consolidated, make image big
+                    if (consolidatecamphonetoonedailyentry==0){
+                        entry.comments = entry.comments + "<$image id=\""+imageid+"\"$>";
+                        try{
+                            entry.editEntryAll(accountOfEntry, accountuserOfPersonAccessing, plOfEntry);
+                            Debug.debug(3, "EmailApi", "EmailApi.java - Edited eventid to add image big:" + entry.eventid);
+                        } catch (ValidationException error){
+                            //@todo Handle the exception and send it back to user via email?
+                            Debug.debug(3, "EmailApi", "EmailApi.java - There was an error in EmailApi.java:" + error.getErrorsAsSingleString());
+
+                        }
+                    }
+
                     //Refresh entry cache
                     reger.cache.EntryCache.flush(eventid);
+
 
                     Debug.debug(3, "EmailApi", "Imageid="+imageid);
                 //}
