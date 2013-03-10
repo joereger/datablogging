@@ -1,10 +1,7 @@
 package reger.api;
 
+import reger.*;
 import reger.core.db.Db;
-import reger.Accountuser;
-import reger.Account;
-import reger.PrivateLabel;
-import reger.ThumbnailCreator;
 import reger.core.ValidationException;
 import reger.core.Debug;
 import reger.core.TimeUtils;
@@ -451,6 +448,9 @@ public class MetaWebLogApi {
                 fileOut.write(bits);
 
                 ThumbnailCreator.createThumbnail(savedFile);
+
+                //Resize to 1600
+                ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
 
 
                 //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???

@@ -1,9 +1,6 @@
 package reger.filesync.server;
 
-import reger.Accountuser;
-import reger.Account;
-import reger.PrivateLabel;
-import reger.ThumbnailCreator;
+import reger.*;
 import reger.systemprops.AllSystemProperties;
 import reger.core.TimeUtils;
 import reger.cache.AccountCache;
@@ -93,6 +90,8 @@ public class FileSyncServer {
                         reger.core.Debug.debug(5, "FileSyncServer.java", e);
                     }
                     ThumbnailCreator.createThumbnail(fileObj);
+                    //Resize to 1600
+                    ResizeImage.resizeInPlace(fileObj.getAbsolutePath(), 1600);
                     account.updateSpaceused();
                     Hashtable out = new Hashtable();
                     out.put("success", "1");

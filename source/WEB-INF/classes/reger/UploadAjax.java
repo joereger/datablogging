@@ -97,6 +97,8 @@ public class UploadAjax {
                 savedFile  = new File(filesdirectory, finalfilename);
             }
 
+
+
             Debug.debug(1, "UploadAjax.java", "reger.UploadAjax.save() - finalfilename="+finalfilename);
 
             Debug.debug(1, "UploadAjax.java", "reger.UploadAjax.save() - (first check)hasenoughfreespace=" + hasenoughfreespace);
@@ -173,6 +175,9 @@ public class UploadAjax {
                     //Create a thumbnail
                     ThumbnailCreator.createThumbnail(savedFile);
                     filenameandpath = path+ File.separator+finalfilename;
+
+                    //Resize to 1600
+                    ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
 
                     //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???
 

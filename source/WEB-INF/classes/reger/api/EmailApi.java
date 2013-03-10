@@ -742,6 +742,9 @@ public class EmailApi {
 
                     ThumbnailCreator.createThumbnail(savedFile);
 
+                    //Resize to 1600
+                    ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
+
                     Debug.debug(3, "EmailApi", "File should be saved to filesystem now.="+finalfilename);
 
 

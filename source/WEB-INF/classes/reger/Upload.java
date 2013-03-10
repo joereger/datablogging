@@ -200,6 +200,9 @@ public class Upload {
                                     ThumbnailCreator.createThumbnail(savedFile);
                                     filenameandpath = path+java.io.File.separator+finalfilename;
 
+                                    //Resize to 1600
+                                    ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
+
                                     //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???
 
                                     Debug.debug(4, "Upload.java", "reger.Upload.save() - file written to filesystem");

@@ -487,11 +487,9 @@ public class Dropbox {
             //Create thumbnail
             ThumbnailCreator.createThumbnail(savedFile);
 
-            //Resize
-            long startTime = new Date().getTime();
-            Debug.logtodb("Start resize", "Dropbox Resize File");
+            //Resize to 1600
             ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
-            Debug.logtodb("End resize, took "+(new Date().getTime()-startTime)+" millis", "Dropbox Resize File");
+
 
             //-----------------------------------
             //-----------------------------------
