@@ -76,18 +76,19 @@ public class AllTemplatesInSystem {
             //because they're stored in the database to reference the template.
 
             //Site Templates
-            allTemplates.put(-1, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/beautiful/template.html"), -1, Template.TEMPLATETYPESITE, "Beautiful"));
-            allTemplates.put(-2, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/branches/template.html"), -2, Template.TEMPLATETYPESITE, "Branches"));
-            allTemplates.put(-3, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/gothictrees/template.html"), -3, Template.TEMPLATETYPESITE, "Gothic Trees"));
-            allTemplates.put(-4, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/nigglish/template.html"), -4, Template.TEMPLATETYPESITE, "Nigglish"));
-            allTemplates.put(-5, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/spanishvacation/template.html"), -5, Template.TEMPLATETYPESITE, "Spanish Vacation"));
+            //allTemplates.put(-1, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/beautiful/template.html"), -1, Template.TEMPLATETYPESITE, "Beautiful"));
+            //allTemplates.put(-2, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/branches/template.html"), -2, Template.TEMPLATETYPESITE, "Branches"));
+            //allTemplates.put(-3, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/gothictrees/template.html"), -3, Template.TEMPLATETYPESITE, "Gothic Trees"));
+            //allTemplates.put(-4, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/nigglish/template.html"), -4, Template.TEMPLATETYPESITE, "Nigglish"));
+            //allTemplates.put(-5, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/spanishvacation/template.html"), -5, Template.TEMPLATETYPESITE, "Spanish Vacation"));
+            allTemplates.put(-6, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/site/bigbgimage/template.html"), -6, Template.TEMPLATETYPESITE, "Background Slideshow"));
 
             //Entry Templates
-            allTemplates.put(-101, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/beautiful/template.html"), -101, Template.TEMPLATETYPEENTRYLIST, "Beautiful"));
-            allTemplates.put(-102, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/branches/template.html"), -102, Template.TEMPLATETYPEENTRYLIST, "Branches"));
-            allTemplates.put(-103, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/gothictrees/template.html"), -103, Template.TEMPLATETYPEENTRYLIST, "Gothic Trees"));
-            allTemplates.put(-104, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/nigglish/template.html"), -104, Template.TEMPLATETYPEENTRYLIST, "Nigglish"));
-            allTemplates.put(-105, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/spanishvacation/template.html"), -105, Template.TEMPLATETYPEENTRYLIST, "Spanish Vacation"));
+            //allTemplates.put(-101, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/beautiful/template.html"), -101, Template.TEMPLATETYPEENTRYLIST, "Beautiful"));
+            //allTemplates.put(-102, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/branches/template.html"), -102, Template.TEMPLATETYPEENTRYLIST, "Branches"));
+            //allTemplates.put(-103, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/gothictrees/template.html"), -103, Template.TEMPLATETYPEENTRYLIST, "Gothic Trees"));
+            //allTemplates.put(-104, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/nigglish/template.html"), -104, Template.TEMPLATETYPEENTRYLIST, "Nigglish"));
+            //allTemplates.put(-105, new Template(new File(WebAppRootDir.getWebAppRootPath()+"templates/entrylist/spanishvacation/template.html"), -105, Template.TEMPLATETYPEENTRYLIST, "Spanish Vacation"));
 
         } catch (Exception e){
             reger.core.Debug.errorsave(e, "Failed to load a template from the filesystem: AllTemplatesInSystem.");

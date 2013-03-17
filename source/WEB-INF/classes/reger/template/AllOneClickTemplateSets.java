@@ -19,11 +19,11 @@ public class AllOneClickTemplateSets {
     public static void load(){
         allOneClickTemplateSets = new Hashtable();
         allOneClickTemplateSets.put(0, new OneClickTemplateSet(0, 0, 0, 0, "Default System", WebAppRootDir.getWebAppRootPath()+"templates/site/default/images/thumbnail.jpg"));
-        allOneClickTemplateSets.put(1, new OneClickTemplateSet(1, -1, -101, 0, "Beautiful", WebAppRootDir.getWebAppRootPath()+"templates/site/beautiful/images/thumbnail.jpg"));
-        allOneClickTemplateSets.put(2, new OneClickTemplateSet(2, -2, -102, 0, "Branches", WebAppRootDir.getWebAppRootPath()+"templates/site/branches/images/thumbnail.jpg"));
-        allOneClickTemplateSets.put(3, new OneClickTemplateSet(3, -3, -103, 0, "Gothic Trees", WebAppRootDir.getWebAppRootPath()+"templates/site/gothictrees/images/thumbnail.jpg"));
-        allOneClickTemplateSets.put(4, new OneClickTemplateSet(4, -4, -104, 0, "Nigglish", WebAppRootDir.getWebAppRootPath()+"templates/site/nigglish/images/thumbnail.jpg"));
-        allOneClickTemplateSets.put(5, new OneClickTemplateSet(5, -5, -105, 0, "Spanish Vacation", WebAppRootDir.getWebAppRootPath()+"templates/site/spanishvacation/images/thumbnail.jpg"));
+        //allOneClickTemplateSets.put(1, new OneClickTemplateSet(1, -1, -101, 0, "Beautiful", WebAppRootDir.getWebAppRootPath()+"templates/site/beautiful/images/thumbnail.jpg"));
+        //allOneClickTemplateSets.put(2, new OneClickTemplateSet(2, -2, -102, 0, "Branches", WebAppRootDir.getWebAppRootPath()+"templates/site/branches/images/thumbnail.jpg"));
+        //allOneClickTemplateSets.put(3, new OneClickTemplateSet(3, -3, -103, 0, "Gothic Trees", WebAppRootDir.getWebAppRootPath()+"templates/site/gothictrees/images/thumbnail.jpg"));
+        //allOneClickTemplateSets.put(4, new OneClickTemplateSet(4, -4, -104, 0, "Nigglish", WebAppRootDir.getWebAppRootPath()+"templates/site/nigglish/images/thumbnail.jpg"));
+        //allOneClickTemplateSets.put(5, new OneClickTemplateSet(5, -5, -105, 0, "Spanish Vacation", WebAppRootDir.getWebAppRootPath()+"templates/site/spanishvacation/images/thumbnail.jpg"));
 
     }
 
