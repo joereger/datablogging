@@ -30,6 +30,10 @@ public class Megalog  implements java.io.Serializable {
      private int nestednavorder;
      private String fieldorder;
      private String hiddenfields;
+     private String customdomain1;
+     private String customdomain2;
+     private String customdomain3;
+
 
 
     //Association
@@ -67,25 +71,7 @@ public class Megalog  implements java.io.Serializable {
         this.nestednavorder = nestednavorder;
     }
     
-    /** full constructor */
-    public Megalog(int logid, Integer accountid, Integer eventtypeid, String name, Integer logaccess, String password, String message, boolean showonhomepage, int maintemplateid, int entlisttemplateid, int nestednavparenttype, int nestednavparentid, int nestednavorder, String fieldorder, String hiddenfields) {
-        this.logid = logid;
-        this.accountid = accountid;
-        this.eventtypeid = eventtypeid;
-        this.name = name;
-        this.logaccess = logaccess;
-        this.password = password;
-        this.message = message;
-        this.showonhomepage = showonhomepage;
-        this.maintemplateid = maintemplateid;
-        this.entlisttemplateid = entlisttemplateid;
-        this.nestednavparenttype = nestednavparenttype;
-        this.nestednavparentid = nestednavparentid;
-        this.nestednavorder = nestednavorder;
-        this.fieldorder = fieldorder;
-        this.hiddenfields = hiddenfields;
-    }
-    
+
 
    
     // Property accessors
@@ -209,13 +195,29 @@ public class Megalog  implements java.io.Serializable {
     public void setHiddenfields(String hiddenfields) {
         this.hiddenfields = hiddenfields;
     }
-   
 
 
+    public String getCustomdomain1() {
+        return customdomain1;
+    }
 
+    public void setCustomdomain1(String customdomain1) {
+        this.customdomain1 = customdomain1;
+    }
 
+    public String getCustomdomain2() {
+        return customdomain2;
+    }
 
+    public void setCustomdomain2(String customdomain2) {
+        this.customdomain2 = customdomain2;
+    }
 
+    public String getCustomdomain3() {
+        return customdomain3;
+    }
 
-
+    public void setCustomdomain3(String customdomain3) {
+        this.customdomain3 = customdomain3;
+    }
 }

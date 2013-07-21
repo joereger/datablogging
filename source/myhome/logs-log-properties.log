@@ -62,6 +62,21 @@ if (pageProps.action.equals("go")) {
     } else {
         log.setPassword("");
     }
+    if (request.getParameter("customdomain1")!=null && !request.getParameter("customdomain1").equals("")){
+        log.setCustomdomain1(request.getParameter("customdomain1"));
+    } else {
+        log.setCustomdomain1("");
+    }
+    if (request.getParameter("customdomain2")!=null && !request.getParameter("customdomain2").equals("")){
+        log.setCustomdomain2(request.getParameter("customdomain2"));
+    } else {
+        log.setCustomdomain2("");
+    }
+    if (request.getParameter("customdomain3")!=null && !request.getParameter("customdomain3").equals("")){
+        log.setCustomdomain3(request.getParameter("customdomain3"));
+    } else {
+        log.setCustomdomain3("");
+    }
 
     //Save
     log.save();
@@ -134,6 +149,24 @@ mb.append(reger.formControl.radioList(radiosShowOnHp, showHpText, "showonhomepag
 mb.append("</td>");
 mb.append("<td  valign=top align=left>");
 mb.append("<font face=arial size=-1><strong>Visible on Homepage?</strong></font><br><font face=arial size=-2><strong>Your web log homepage is an important place.  It's the place where your visitors get their first glimpse of you and where they find updates.  Sometimes you want to keep track of things and keep them public, but you don't necessarily want them to take up space on your homepage.  This allows you to have a log's entries not appear on the home page.  Note: This is different than making a log private.  By deciding to not show on the homepage you are not restricting access to the log... you are just making users click the log directly before they see its log entries.  We hope this makes sense.  If not, play around with it a bit.  You can always switch it back.</strong></font></td>");
+mb.append("</tr>");
+
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left ><input type=text name=customdomain1 value=\""+Util.cleanForHtml(log.getCustomdomain1())+"\"></td>");
+mb.append("<td valign=top align=left bgcolor='#ffffff'><font face=arial size=-1><strong>Custom Domain 1:</strong></font><br><font face=arial size=-2><strong>Assign a unique domain name to this specific log.  Example: work.joereger.com</strong></font></td>");
+mb.append("</tr>");
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left ><input type=text name=customdomain2 value=\""+Util.cleanForHtml(log.getCustomdomain2())+"\"></td>");
+mb.append("<td valign=top align=left bgcolor='#ffffff'><font face=arial size=-1><strong>Custom Domain 2</strong></font><br><font face=arial size=-2><strong></strong></font></td>");
+mb.append("</tr>");
+
+
+mb.append("<tr>");
+mb.append("<td valign=top align=left ><input type=text name=customdomain3 value=\""+Util.cleanForHtml(log.getCustomdomain3())+"\"></td>");
+mb.append("<td valign=top align=left bgcolor='#ffffff'><font face=arial size=-1><strong>Custom Domain 3</strong></font><br><font face=arial size=-2><strong></strong></font></td>");
 mb.append("</tr>");
 
 

@@ -3,7 +3,8 @@
                  reger.template.HpTemplateProcessor,
                  reger.template.Template,
                  reger.template.AllTemplatesInSystem,
-                 reger.core.db.Db"%>
+                 reger.core.db.Db,
+                 reger.Account"%>
 <%@ page import="reger.AccountCounts"%>
 
 <%
@@ -14,7 +15,7 @@ pageProps.siteSection=pageProps.PUBLICSITE;
 pageProps.isPasswordProtected = false;
 pageProps.trafficType=reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE;
 pageProps.pathToAppRoot="";
-pageProps.helpText="This is your weblog's home page.  People who visit your weblog won't see this help box or the Logged In bar at the top of the screen.  They'll simply see your weblog.  Prove this to yourself by logging out (top right of screen) and going to your site.<br><br>It's easy to customize the look of your weblog by going to your Admin Tools and choosing the Settings Tab. Try it now.  The bar above this box has a link called My Admin Tools that allows you to get back to the control center of your site.<br><br>Use the links at the top of the screen to toggle between your public site and the tools you use to manage your site.";
+pageProps.helpText="This is your blog's home page.  People who visit your weblog won't see this help box or the Logged In bar at the top of the screen.  They'll simply see your weblog.  Prove this to yourself by logging out (top right of screen) and going to your site.<br><br>It's easy to customize the look of your weblog by going to your Admin Tools and choosing the Settings Tab. Try it now.  The bar above this box has a link called My Admin Tools that allows you to get back to the control center of your site.<br><br>Use the links at the top of the screen to toggle between your public site and the tools you use to manage your site.";
 /*----------------------------------------------------*/
 %>
 
@@ -22,33 +23,20 @@ pageProps.helpText="This is your weblog's home page.  People who visit your webl
 
 
 <%
+//If it's a customdomain tied to a log then redirect there
+int logIdByCustomDomain = Account.findLogidByCustomDomain(userSession.getAccount().getAccountid(), userSession.getUrlSplitter());
+if (logIdByCustomDomain>0) {
+    response.sendRedirect(pageProps.pathToAppRoot + "logmain"+logIdByCustomDomain+".log");
+    return;
+}
+%>
+
+
+<%
 /*----------------------------------------------------*/
 /*                  Main Body                         */
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
-
-
-//mb.append("<script type=\"text/javascript\" src=\"/js/lightwindow/javascript/prototype.js\"></script>\n" +
-//"<script type=\"text/javascript\" src=\"/js/lightwindow/javascript/scriptaculous.js?load=effects\"></script>\n" +
-//"<script type=\"text/javascript\" src=\"/js/lightwindow/javascript/lightwindow.js\"></script>\n" +
-//"<link rel=\"stylesheet\" href=\"/js/lightwindow/css/lightwindow.css\" type=\"text/css\" media=\"screen\" />");
-
-//mb.append("<link rel=\"stylesheet\" href=\"/js/Multibox/_common/css/main.css\" type=\"text/css\" media=\"all\">\n" +
-//"<link href=\"/js/Multibox/multibox/multibox.css\" rel=\"stylesheet\" type=\"text/css\" />\n" +
-//"<!--[if lte IE 6]><link rel=\"stylesheet\" href=\"/js/Multibox/multibox/ie6.css\" type=\"text/css\" media=\"all\" /><![endif]-->\n" +
-//"<script type=\"text/javascript\" src=\"/js/Multibox/_common/js/mootools.js\"></script>\n" +
-//"<script type=\"text/javascript\" src=\"/js/Multibox/multibox/overlay.js\"></script>\n" +
-//"<script type=\"text/javascript\" src=\"/js/Multibox/multibox/multibox.js\"></script>\n" +
-//"<style type=\"text/css\">\n" +
-//"#htmlElement {\n" +
-//"\tpadding: 10px;\n" +
-//"\tbackground-color: #000;\n" +
-//"}\n" +
-//"</style>\n");
-
-//mb.append("<script type=\"text/javascript\" src=\"/js/thickbox/jquery.js\"></script>\n" +
-//"<script type=\"text/javascript\" src=\"/js/thickbox/thickbox.js\"></script>\n"+
-//"<link rel=\"stylesheet\" href=\"/js/thickbox/thickbox.css\" type=\"text/css\" media=\"screen\" />");
 
 
 //If it's not a calendar query or a search, do the dynamic html box thingy
@@ -71,13 +59,6 @@ if (request.getParameter("viewmonth")==null && request.getParameter("viewdate")=
     mb.append(reger.htmlListEvents.getList(userSession, -1, reger.core.Util.getCurrentPage(request.getParameter("currentpage")),request.getParameter("viewdate"), request.getParameter("viewmonth"), "index.log", -1, true, request));
 }
 
-
-//mb.append("<script type=\"text/javascript\">\n" +
-//"\t\t\tvar box = {};\n" +
-//"\t\t\twindow.addEvent('domready', function(){\n" +
-//"\t\t\t\tbox = new MultiBox('mb', {descClassName: 'multiBoxDesc', useOverlay: true});\n" +
-//"\t\t\t});\n" +
-//"\t\t</script>");
 
 %>
 

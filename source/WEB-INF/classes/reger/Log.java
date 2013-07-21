@@ -41,6 +41,9 @@ public class Log implements NestedNavItem {
     private int nestednavparenttype=NestedNavItem.NESTEDNAVITEMBASE;
     private int nestednavparentid=0;
     private int nestednavorder=0;
+    private String customdomain1;
+    private String customdomain2;
+    private String customdomain3;
 
     public Log(int logid){
         load(logid);
@@ -50,7 +53,7 @@ public class Log implements NestedNavItem {
         reger.core.Debug.debug(5, "Log.java", "Load() called for logid="+logid);
         //-----------------------------------
         //-----------------------------------
-        String[][] rstLog= Db.RunSQL("SELECT logid, accountid, eventtypeid, name, logaccess, password, message, showonhomepage, maintemplateid, entlisttemplateid, nestednavparenttype, nestednavparentid, nestednavorder, fieldorder, hiddenfields FROM megalog WHERE logid='"+logid+"'");
+        String[][] rstLog= Db.RunSQL("SELECT logid, accountid, eventtypeid, name, logaccess, password, message, showonhomepage, maintemplateid, entlisttemplateid, nestednavparenttype, nestednavparentid, nestednavorder, fieldorder, hiddenfields, customdomain1, customdomain2, customdomain3 FROM megalog WHERE logid='"+logid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstLog!=null && rstLog.length>0){
@@ -90,6 +93,14 @@ public class Log implements NestedNavItem {
                         Debug.errorsave(e, "");
                     }
                 }
+
+
+                customdomain1=rstLog[i][15];
+                customdomain2=rstLog[i][16];
+                customdomain3=rstLog[i][17];
+
+
+
                 //Get fieldOrderCollection
                 if (fieldorder!=null && !fieldorder.equals("")){
                     fieldOrderCollection = new FieldOrderCollection(fieldorder);
@@ -212,7 +223,7 @@ public class Log implements NestedNavItem {
 
         //-----------------------------------
         //-----------------------------------
-        int countLogUpdate = Db.RunSQLUpdate("UPDATE megalog SET name='"+ Util.cleanForSQL(name) +"', message='"+ Util.cleanForSQL(message) +"', showonhomepage='"+ showonhomepageTxt +"', logaccess='"+ logaccess +"', password='"+ Util.cleanForSQL(password) +"', maintemplateid='"+maintemplateid+"', entlisttemplateid='"+entlisttemplateid+"', nestednavparenttype='"+nestednavparenttype+"', nestednavparentid='"+nestednavparentid+"', nestednavorder='"+nestednavorder+"', fieldorder='"+reger.core.Util.cleanForSQL(fieldorder)+"' , hiddenfields='"+reger.core.Util.cleanForSQL(hiddenfieldsForSql.toString())+"' WHERE logid='"+ logid +"'");
+        int countLogUpdate = Db.RunSQLUpdate("UPDATE megalog SET name='"+ Util.cleanForSQL(name) +"', message='"+ Util.cleanForSQL(message) +"', showonhomepage='"+ showonhomepageTxt +"', logaccess='"+ logaccess +"', password='"+ Util.cleanForSQL(password) +"', maintemplateid='"+maintemplateid+"', entlisttemplateid='"+entlisttemplateid+"', nestednavparenttype='"+nestednavparenttype+"', nestednavparentid='"+nestednavparentid+"', nestednavorder='"+nestednavorder+"', fieldorder='"+reger.core.Util.cleanForSQL(fieldorder)+"' , hiddenfields='"+reger.core.Util.cleanForSQL(hiddenfieldsForSql.toString())+"', customdomain1='"+reger.core.Util.cleanForSQL(customdomain1)+"', customdomain2='"+reger.core.Util.cleanForSQL(customdomain2)+"', customdomain3='"+reger.core.Util.cleanForSQL(customdomain3)+"' WHERE logid='"+ logid +"'");
         //-----------------------------------
         //-----------------------------------
 
@@ -545,5 +556,27 @@ public class Log implements NestedNavItem {
         return fieldOrderCollection;
     }
 
+    public String getCustomdomain1() {
+        return customdomain1;
+    }
 
+    public void setCustomdomain1(String customdomain1) {
+        this.customdomain1 = customdomain1;
+    }
+
+    public String getCustomdomain2() {
+        return customdomain2;
+    }
+
+    public void setCustomdomain2(String customdomain2) {
+        this.customdomain2 = customdomain2;
+    }
+
+    public String getCustomdomain3() {
+        return customdomain3;
+    }
+
+    public void setCustomdomain3(String customdomain3) {
+        this.customdomain3 = customdomain3;
+    }
 }

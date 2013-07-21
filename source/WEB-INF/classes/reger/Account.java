@@ -9,6 +9,7 @@ import reger.core.licensing.RegerLicensingApiClient;
 import reger.cache.LogCache;
 import reger.cache.providers.jboss.Cacheable;
 import reger.files.FileAcl;
+import reger.util.Num;
 
 import java.util.*;
 
@@ -611,17 +612,31 @@ public class Account implements java.io.Serializable {
         return siteRootUrl;
     }
 
+    public static int findLogidByCustomDomain(int accountid, reger.UrlSplitter urlSplitter){
+        //-----------------------------------
+        //-----------------------------------
+        String[][] rstGet= Db.RunSQL("SELECT logid FROM megalog WHERE accountid='"+accountid+"' AND (customdomain1='"+urlSplitter.getRawIncomingServername()+"' OR customdomain2='"+urlSplitter.getRawIncomingServername()+"' OR customdomain3='"+urlSplitter.getRawIncomingServername()+"')");
+        //-----------------------------------
+        //-----------------------------------
+        if (rstGet!=null && rstGet.length>0){
+        if (Num.isinteger(rstGet[0][0]))
+            return Integer.parseInt(rstGet[0][0]);
+        }
+        return 0;
+    }
+
     /**
      * Checks to make sure that we're still on the same web site.
      * Each page calls this function.
      */
     public static int findAccountid(reger.UrlSplitter urlSplitter){
         if (!urlSplitter.getRawIncomingServername().equals("")){
-            reger.core.Debug.debug(4, "Account.java", "Calling findAccountid() database search for account.");
+            reger.core.Debug.debug(3, "Account.java", "Calling findAccountid() database search for account.");
             //-----------------------------------
             //-----------------------------------
-            String[][] rstAccount= Db.RunSQL("SELECT DISTINCT accountid FROM account, pl "+
-            "WHERE account.plid=pl.plid AND "+
+            String[][] rstAccount= Db.RunSQL("SELECT DISTINCT account.accountid FROM account, pl, megalog "+
+            "WHERE account.plid=pl.plid AND account.accountid=megalog.accountid AND "+
+            "("+
             //Case for http://user.plbasedomain/
             "(concat(account.accounturl, \".\", pl.plbasedomain)='"+reger.core.Util.cleanForSQL(urlSplitter.getServername())+"')"+
             " OR "+
@@ -636,7 +651,16 @@ public class Account implements java.io.Serializable {
             " OR "+
             //Case for http://customservername3/
             "(account.customservername3='"+urlSplitter.getRawIncomingServername()+"')"+
-            " ");
+            " OR "+
+            //Case for http://customdomain1/
+            "(megalog.customdomain1='"+urlSplitter.getRawIncomingServername()+"')"+
+            " OR "+
+            //Case for http://customdomain2/
+            "(megalog.customdomain2='"+urlSplitter.getRawIncomingServername()+"')"+
+            " OR "+
+            //Case for http://customdomain3/
+            "(megalog.customdomain3='"+urlSplitter.getRawIncomingServername()+"')"+
+            " )");
             //-----------------------------------
             //-----------------------------------
             if (rstAccount!=null && rstAccount.length>0){
@@ -660,6 +684,7 @@ public class Account implements java.io.Serializable {
                 }
                 //return reger.cache.AccountCache.get(Integer.parseInt(rstAccount[0][0]));
                 //return new reger.Account(Integer.parseInt(rstAccount[0][0]));
+                reger.core.Debug.debug(3, "Account.java", "Returning accountid="+rstAccount[0][0]);
                 return Integer.parseInt(rstAccount[0][0]);
             }
         }

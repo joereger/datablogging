@@ -65,5 +65,14 @@
         <property name="hiddenfields" type="string">
             <column name="hiddenfields" length="65535" />
         </property>
+        <property name="customdomain1" type="string">
+            <column name="customdomain1" length="255" />
+        </property>
+        <property name="customdomain2" type="string">
+            <column name="customdomain2" length="255" />
+        </property>
+        <property name="customdomain3" type="string">
+            <column name="customdomain3" length="255" />
+        </property>
     </class>
 </hibernate-mapping>
