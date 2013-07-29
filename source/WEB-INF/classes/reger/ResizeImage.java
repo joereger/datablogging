@@ -45,9 +45,31 @@ public class ResizeImage{
 
     public static boolean resizeInPlace(String fileloc, int maxwidth){
         try {
-            BufferedImage img = ImageIO.read(new File(fileloc));
+            reger.core.Debug.debug(3, "ResizeImage.java", "resizeInPlace() called fileloc="+fileloc);
+            File file = new File(fileloc);
+            if (file==null){
+                reger.core.Debug.debug(3, "ResizeImage.java", "file==null");
+            } else {
+                reger.core.Debug.debug(3, "ResizeImage.java", "file!=null");
+            }
+            if (file.exists()){
+                reger.core.Debug.debug(3, "ResizeImage.java", "file.exists()==true file.length()="+file.length());
+            } else {
+                reger.core.Debug.debug(3, "ResizeImage.java", "file.exists()==false");
+            }
+            if (file.canRead()){
+                reger.core.Debug.debug(3, "ResizeImage.java", "file.canRead()==true");
+            } else {
+                reger.core.Debug.debug(3, "ResizeImage.java", "file.canRead()==false");
+            }
+            BufferedImage img = ImageIO.read(file);
+            if (img==null){
+                reger.core.Debug.debug(3, "ResizeImage.java", "img==null");
+            } else {
+                reger.core.Debug.debug(3, "ResizeImage.java", "img!=null img.getWidth()="+img.getWidth());
+            }
             BufferedImage resized = Scalr.resize(img, maxwidth);
-            ImageIO.write(resized, "JPEG", new File(fileloc));
+            ImageIO.write(resized, "JPEG", file);
         } catch (IOException e) {
             Debug.errorsave(e, "ResizeImage resizeInPlace()");
             return false;

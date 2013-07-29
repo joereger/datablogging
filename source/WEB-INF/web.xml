@@ -156,6 +156,16 @@
     </servlet-mapping>
 
 
+    <servlet>
+      <servlet-name>UploadAjax</servlet-name>
+      <servlet-class>reger.UploadAjax</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadAjax</servlet-name>
+        <url-pattern>/UploadAjax</url-pattern>
+    </servlet-mapping>
+
+
    <servlet-mapping>
         <servlet-name>dwr-invoker</servlet-name>
         <url-pattern>/dwr/*</url-pattern>

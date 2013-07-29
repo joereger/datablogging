@@ -18,7 +18,7 @@ public class NavPanelLevelZero {
         mb.append("    <div class=\"navbar navbar-fixed-top\">" + "\n");
         mb.append("      <div class=\"navbar-inner\">" + "\n");
         mb.append("        <div class=\"container\">" + "\n");
-        mb.append("            <ul class=\"nav\">" + "\n");
+        mb.append("            <ul class=\"nav navbar-nav\">" + "\n");
 
         //Need one for each button
         String url = "";

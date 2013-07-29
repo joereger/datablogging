@@ -54,7 +54,7 @@ public class MegaHtmlFormTop {
         }
 
         //This is the hidelayer/showlayer
-        mb.append("<SCRIPT language=\"JavaScript1.2\" src=\""+pageProps.pathToAppRoot+"js/hideshowlayer.js\" type=\"text/javascript\"></SCRIPT>");
+        //mb.append("<SCRIPT language=\"JavaScript1.2\" src=\""+pageProps.pathToAppRoot+"js/hideshowlayer.js\" type=\"text/javascript\"></SCRIPT>");
 
 
         //Popup script

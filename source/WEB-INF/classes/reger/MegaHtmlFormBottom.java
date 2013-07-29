@@ -75,27 +75,57 @@ public class MegaHtmlFormBottom {
                 if (pageProps.entry.eventid != -1) {
                     if (!editLayout) {
 
-                        mb.append("" + "\n");
-                        mb.append("<div id=\"file-uploader-demo1\">" + "\n");
-                        mb.append("<noscript>" + "\n");
-                        mb.append("<p>Please enable JavaScript to use file uploader.</p>" + "\n");
-                        mb.append("</noscript>" + "\n");
-                        mb.append("</div>" + "\n");
+//                        mb.append("" + "\n");
+//                        mb.append("<div id=\"file-uploader-demo1\">" + "\n");
+//                        mb.append("<noscript>" + "\n");
+//                        mb.append("<p>Please enable JavaScript to use file uploader.</p>" + "\n");
+//                        mb.append("</noscript>" + "\n");
+//                        mb.append("</div>" + "\n");
+//
+//                        mb.append("<script src=\""+pageProps.pathToAppRoot+"js/valums-file-uploader-0c701eb/client/fileuploader.js\" type=\"text/javascript\"></script>" + "\n");
+//                        mb.append("<script>" + "\n");
+//
+//                        mb.append("$(document).ready(function()" + "\n");
+//                        mb.append("{" + "\n");
+//                        mb.append("var uploader = new qq.FileUploader({" + "\n");
+//                        mb.append("element: document.getElementById('file-uploader-demo1')," + "\n");
+//                        mb.append("action: 'upload-requestprocessor-ajax.log?eventid="+pageProps.entry.eventid+"'," + "\n");
+//                        mb.append("debug: true" + "\n");
+//                        mb.append("});" + "\n");
+//                        mb.append("});" + "\n");
+//
+//                        mb.append("</script>" + "\n");
+//                        mb.append("" + "\n");
 
-                        mb.append("<script src=\""+pageProps.pathToAppRoot+"js/valums-file-uploader-0c701eb/client/fileuploader.js\" type=\"text/javascript\"></script>" + "\n");
-                        mb.append("<script>" + "\n");
 
-                        mb.append("$(document).ready(function()" + "\n");
-                        mb.append("{" + "\n");
-                        mb.append("var uploader = new qq.FileUploader({" + "\n");
-                        mb.append("element: document.getElementById('file-uploader-demo1')," + "\n");
-                        mb.append("action: 'upload-requestprocessor-ajax.log?eventid="+pageProps.entry.eventid+"'," + "\n");
-                        mb.append("debug: true" + "\n");
-                        mb.append("});" + "\n");
-                        mb.append("});" + "\n");
 
-                        mb.append("</script>" + "\n");
-                        mb.append("" + "\n");
+
+
+                          mb.append("<link href=\""+pageProps.pathToAppRoot+"js/jquery.fineuploader-3.7.1/fineuploader-3.7.1.min.css\" rel=\"stylesheet\">\n" +
+                                  "    <div id=\"jquery-wrapped-fine-uploader\"></div>\n" +
+                                  "    <script src=\""+pageProps.pathToAppRoot+"js/jquery.fineuploader-3.7.1/jquery.fineuploader-3.7.1.js\"></script>\n" +
+                                  "    <script>\n" +
+                                  "      $(document).ready(function () {\n" +
+                                  "        $('#jquery-wrapped-fine-uploader').fineUploader({\n" +
+                                  "          request: {\n" +
+                                  "            endpoint: '"+pageProps.pathToAppRoot+"UploadAjax?eventid="+pageProps.entry.eventid+"&fineupload=1'\n" +
+                                  "          }\n" +
+                                  "        });\n" +
+                                  "      });\n" +
+                                  "    </script>");
+
+
+//                          mb.append("<script src=\""+pageProps.pathToAppRoot+"js/uploadifive1.1.2/jquery.uploadifive.min.js\" type=\"text/javascript\"></script>");
+//                          mb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\""+pageProps.pathToAppRoot+"js/uploadifive1.1.2/uploadifive.css\">");
+//                          mb.append("<input id=\"file_upload\" type=\"file\" name=\"file_upload\" />");
+//                          mb.append("<script type=\"text/javascript\">");
+//                          mb.append("$(function() {\n" +
+//                                  "    $('#file_upload').uploadifive({\n" +
+//                                  "        'uploadScript' : 'upload-requestprocessor-ajax.log?eventid="+pageProps.entry.eventid+"'\n" +
+//                                  "        // Put your options here\n" +
+//                                  "    });\n" +
+//                                  "});");
+//                          mb.append("</script>");
 
                     }
                 } else {
@@ -130,89 +160,89 @@ public class MegaHtmlFormBottom {
 
 
             //Start Instagram
-            if (displayasadmin) {
-                String access_token = "";
-                //-----------------------------------
-                //-----------------------------------
-                String[][] rstEv= Db.RunSQL("SELECT instagramid, access_token FROM instagram WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
-                //-----------------------------------
-                //-----------------------------------
-                if (rstEv!=null && rstEv.length>0){
-                    access_token = rstEv[0][1];
-                }
-                if (access_token!=null && !access_token.equals("")){
-                    mb.append("<div class=\"row\">");
-                    mb.append("<div class=\"span2\">");
-                    mb.append("<a id=\"instgrm\">");
-                    mb.append("<strong>Instagram</strong> ");
-                    mb.append("<a href=\"#instgrm\" class=\"show_hide\">show/hide</a><br/><br/>");
-                    mb.append("</div>");
-                    mb.append("<div class=\"span10\">");
-
-                    //mb.append("<a id=\"instgrm\">");
-                    //mb.append("<a href=\"#instgrm\" class=\"show_hide\">show/hide</a><br/><br/>");
-                    //mb.append("<div class=\"slidingDiv\">");
-
-
-
-                    //mb.append("<button id=\"hidr\">hide</button>");
-                    //mb.append("<button id=\"showr\">show</button>");
-
-                    mb.append("<div class=\"slidingDiv\">");
-                    try{
-                        Token token = new Token(access_token, userSession.getPl().getInstagramclientsecret());
-                        Instagram instagram = new Instagram(token);
-                        MediaFeed mediaFeed = instagram.getUserFeeds();
-                        List<MediaFeedData> mediaFeeds = mediaFeed.getData();
-                        if (mediaFeeds!=null){
-                            mb.append("<ul class=\"thumbnails\">");
-                            for (MediaFeedData mediaData : mediaFeeds) {
-                                Images images = mediaData.getImages();
-                                ImageData stdImg = images.getStandardResolution();
-                                mb.append("<li class=\"span2\">");
-                                    mb.append("<div class=\"thumbnail\">");
-                                        mb.append("<img src=\""+stdImg.getImageUrl()+"\">");
-                                        mb.append("<input type=\"checkbox\" name=\"instagramimg\" value=\""+stdImg.getImageUrl()+"\"> add to post");
-                                    mb.append("</div>");
-                                mb.append("</li>");
-                            }
-                            mb.append("</ul>");
-                        }
-                    } catch (Exception ex){
-                        Debug.errorsave(ex, "Instagram");
-                    }
-                    mb.append("</div>");
-
-
-
-
-                    mb.append("</div>");
-                    mb.append("</div>");
-
-                    mb.append("<script type=\"text/javascript\">");
-                    mb.append("$(document).ready(function(){");
-                    mb.append("        $(\".slidingDiv\").hide();");
-                    mb.append("        $(\".show_hide\").show();");
-                    mb.append("    $('.show_hide').click(function(){");
-                    mb.append("    $(\".slidingDiv\").slideToggle();");
-                    mb.append("    });");
-                    mb.append("});");
-                    mb.append("</script>");
-
-
-
-//                    mb.append("<script>");
-//                    mb.append("$(\"#hidr\").click(function () {");
-//                    mb.append("  $(\"#instagrams\").hide(2000)");
-//                    mb.append("});");
-//                    mb.append("$(\"#showr\").click(function () {");
-//                    mb.append("  $(\"#instagrams\").show(2000);");
+//            if (displayasadmin) {
+//                String access_token = "";
+//                //-----------------------------------
+//                //-----------------------------------
+//                String[][] rstEv= Db.RunSQL("SELECT instagramid, access_token FROM instagram WHERE accountid='"+userSession.getAccount().getAccountid()+"'");
+//                //-----------------------------------
+//                //-----------------------------------
+//                if (rstEv!=null && rstEv.length>0){
+//                    access_token = rstEv[0][1];
+//                }
+//                if (access_token!=null && !access_token.equals("")){
+//                    mb.append("<div class=\"row\">");
+//                    mb.append("<div class=\"span2\">");
+//                    mb.append("<a id=\"instgrm\">");
+//                    mb.append("<strong>Instagram</strong> ");
+//                    mb.append("<a href=\"#instgrm\" class=\"show_hide\">show/hide</a><br/><br/>");
+//                    mb.append("</div>");
+//                    mb.append("<div class=\"span10\">");
+//
+//                    //mb.append("<a id=\"instgrm\">");
+//                    //mb.append("<a href=\"#instgrm\" class=\"show_hide\">show/hide</a><br/><br/>");
+//                    //mb.append("<div class=\"slidingDiv\">");
+//
+//
+//
+//                    //mb.append("<button id=\"hidr\">hide</button>");
+//                    //mb.append("<button id=\"showr\">show</button>");
+//
+//                    mb.append("<div class=\"slidingDiv\">");
+//                    try{
+//                        Token token = new Token(access_token, userSession.getPl().getInstagramclientsecret());
+//                        Instagram instagram = new Instagram(token);
+//                        MediaFeed mediaFeed = instagram.getUserFeeds();
+//                        List<MediaFeedData> mediaFeeds = mediaFeed.getData();
+//                        if (mediaFeeds!=null){
+//                            mb.append("<ul class=\"thumbnails\">");
+//                            for (MediaFeedData mediaData : mediaFeeds) {
+//                                Images images = mediaData.getImages();
+//                                ImageData stdImg = images.getStandardResolution();
+//                                mb.append("<li class=\"span2\">");
+//                                    mb.append("<div class=\"thumbnail\">");
+//                                        mb.append("<img src=\""+stdImg.getImageUrl()+"\">");
+//                                        mb.append("<input type=\"checkbox\" name=\"instagramimg\" value=\""+stdImg.getImageUrl()+"\"> add to post");
+//                                    mb.append("</div>");
+//                                mb.append("</li>");
+//                            }
+//                            mb.append("</ul>");
+//                        }
+//                    } catch (Exception ex){
+//                        Debug.errorsave(ex, "Instagram");
+//                    }
+//                    mb.append("</div>");
+//
+//
+//
+//
+//                    mb.append("</div>");
+//                    mb.append("</div>");
+//
+//                    mb.append("<script type=\"text/javascript\">");
+//                    mb.append("$(document).ready(function(){");
+//                    mb.append("        $(\".slidingDiv\").hide();");
+//                    mb.append("        $(\".show_hide\").show();");
+//                    mb.append("    $('.show_hide').click(function(){");
+//                    mb.append("    $(\".slidingDiv\").slideToggle();");
+//                    mb.append("    });");
 //                    mb.append("});");
 //                    mb.append("</script>");
-                }
-
-
-            }
+//
+//
+//
+////                    mb.append("<script>");
+////                    mb.append("$(\"#hidr\").click(function () {");
+////                    mb.append("  $(\"#instagrams\").hide(2000)");
+////                    mb.append("});");
+////                    mb.append("$(\"#showr\").click(function () {");
+////                    mb.append("  $(\"#instagrams\").show(2000);");
+////                    mb.append("});");
+////                    mb.append("</script>");
+//                }
+//
+//
+//            }
             //End Instagram
 
 

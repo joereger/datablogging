@@ -257,6 +257,13 @@
     </rule>
 
     <rule>
+        <name>Image</name>
+        <note>imageid</note>
+        <from>/imageid/([0-9]+)</from>
+        <to>/mediaout.log?imageid=$1</to>
+    </rule>
+
+    <rule>
         <name>Media files done in a way to preserve</name>
         <note>The main redirect. </note>
         <from>/js/fckeditor/editor/dialog/mediaout.log(\?)*(.*)</from>
