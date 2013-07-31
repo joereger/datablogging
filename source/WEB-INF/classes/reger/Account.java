@@ -73,6 +73,8 @@ public class Account implements java.io.Serializable {
     private License accountLicense;
     private String googlemapsapikey;
     private Calendar datemarkedinactive = Calendar.getInstance();
+    private boolean issplashpageon=false;
+    private String splashpagehtml="";
 
 
 
@@ -158,7 +160,9 @@ public class Account implements java.io.Serializable {
         "googlemapsapikey,"+             //43
         "datemarkedinactive,"+            //44
         "aboutthisblogtitle,"+            //45
-        "aboutthisbloghtml"+            //46
+        "aboutthisbloghtml,"+            //46
+        "issplashpageon,"+            //47
+        "splashpagehtml"+            //48
         " FROM account WHERE accountid='"+accountid+"'" +
         " ORDER BY customservername DESC LIMIT 0,1");
         //-----------------------------------
@@ -254,6 +258,8 @@ public class Account implements java.io.Serializable {
             datemarkedinactive = TimeUtils.dbstringtocalendar(rs[0][44]);
             aboutthisblogtitle = rs[0][45];
             aboutthisbloghtml = rs[0][46];
+            issplashpageon = Util.booleanFromSQLText(rs[0][47]);
+            splashpagehtml = rs[0][48];
 
             //Set the site root url
             siteRootUrl = setSiteRootUrlViaAccountid(accountid);
@@ -360,7 +366,7 @@ public class Account implements java.io.Serializable {
             //Write the preferences to the database
             //-----------------------------------
             //-----------------------------------
-            int count = Db.RunSQLUpdate("UPDATE account SET timezoneid='"+timezoneid+"', homepagetitle='"+ reger.core.Util.cleanForSQL(homepagetitle) +"', homepagehtml='"+ reger.core.Util.cleanForSQL(homepagehtml) +"', homepagecalendar='"+ homepagecalendar +"', messagesstatus='"+ messagesstatus +"', messagesapproval='"+ messagesapproval +"', admintools='"+ admintools +"', jspopup='"+ jspopup +"', pingweblogscom='"+ pingweblogscom +"', showhometab='"+ reger.core.Util.booleanAsSQLText(showhometab) +"', hometabtext='"+ reger.core.Util.cleanForSQL(hometabtext) +"', showlogintab='"+ reger.core.Util.booleanAsSQLText(showlogintab) +"', displaycharsinsummary='"+ displaycharsinsummary +"', displaynumberofentries='"+ displaynumberofentries +"', userelatedlinks='"+ userelatedlinks +"', favesiteon='"+ favesiteon +"', onthisday='"+ onthisday +"', customservername='"+ reger.core.Util.cleanForSQL(customservername) +"', customservername2='"+ reger.core.Util.cleanForSQL(customservername2) +"', customservername3='"+ reger.core.Util.cleanForSQL(customservername3) +"', emailnewsletter='"+ emailnewsletter +"', emailsendhour='"+ emailsendhour +"', issearchmysiteon='"+issearchmysiteon+"', istrackbackon='"+reger.core.Util.booleanAsSQLText(istrackbackon)+"', islistedindirectory='"+reger.core.Util.booleanAsSQLText(islistedindirectory)+"', trackbackrequiresapproval='"+reger.core.Util.booleanAsSQLText(trackbackrequiresapproval)+"', istimeperiodon='"+reger.core.Util.booleanAsSQLText(istimeperiodon)+"', accountemail='"+reger.core.Util.cleanForSQL(accountemail)+"', newslettersubject='"+reger.core.Util.cleanForSQL(newslettersubject)+"', googlemapsapikey='"+reger.core.Util.cleanForSQL(googlemapsapikey)+"', entlisttemplateid='"+entlisttemplateid+"', sitetemplateid='"+sitetemplateid+"', hptemplateid='"+hptemplateid+"', aboutthisblogtitle='"+reger.core.Util.cleanForSQL(aboutthisblogtitle)+"', aboutthisbloghtml='"+reger.core.Util.cleanForSQL(aboutthisbloghtml)+"'   WHERE accountid='"+ accountid +"'");
+            int count = Db.RunSQLUpdate("UPDATE account SET timezoneid='"+timezoneid+"', homepagetitle='"+ reger.core.Util.cleanForSQL(homepagetitle) +"', homepagehtml='"+ reger.core.Util.cleanForSQL(homepagehtml) +"', homepagecalendar='"+ homepagecalendar +"', messagesstatus='"+ messagesstatus +"', messagesapproval='"+ messagesapproval +"', admintools='"+ admintools +"', jspopup='"+ jspopup +"', pingweblogscom='"+ pingweblogscom +"', showhometab='"+ reger.core.Util.booleanAsSQLText(showhometab) +"', hometabtext='"+ reger.core.Util.cleanForSQL(hometabtext) +"', showlogintab='"+ reger.core.Util.booleanAsSQLText(showlogintab) +"', displaycharsinsummary='"+ displaycharsinsummary +"', displaynumberofentries='"+ displaynumberofentries +"', userelatedlinks='"+ userelatedlinks +"', favesiteon='"+ favesiteon +"', onthisday='"+ onthisday +"', customservername='"+ reger.core.Util.cleanForSQL(customservername) +"', customservername2='"+ reger.core.Util.cleanForSQL(customservername2) +"', customservername3='"+ reger.core.Util.cleanForSQL(customservername3) +"', emailnewsletter='"+ emailnewsletter +"', emailsendhour='"+ emailsendhour +"', issearchmysiteon='"+issearchmysiteon+"', istrackbackon='"+reger.core.Util.booleanAsSQLText(istrackbackon)+"', islistedindirectory='"+reger.core.Util.booleanAsSQLText(islistedindirectory)+"', trackbackrequiresapproval='"+reger.core.Util.booleanAsSQLText(trackbackrequiresapproval)+"', istimeperiodon='"+reger.core.Util.booleanAsSQLText(istimeperiodon)+"', accountemail='"+reger.core.Util.cleanForSQL(accountemail)+"', newslettersubject='"+reger.core.Util.cleanForSQL(newslettersubject)+"', googlemapsapikey='"+reger.core.Util.cleanForSQL(googlemapsapikey)+"', entlisttemplateid='"+entlisttemplateid+"', sitetemplateid='"+sitetemplateid+"', hptemplateid='"+hptemplateid+"', aboutthisblogtitle='"+reger.core.Util.cleanForSQL(aboutthisblogtitle)+"', aboutthisbloghtml='"+reger.core.Util.cleanForSQL(aboutthisbloghtml)+"', issplashpageon='"+Util.booleanAsSQLText(issplashpageon)+"', splashpagehtml='"+reger.core.Util.cleanForSQL(splashpagehtml)+"'   WHERE accountid='"+ accountid +"'");
             //-----------------------------------
             //-----------------------------------
         } catch (ValidationException v) {
@@ -631,7 +637,7 @@ public class Account implements java.io.Serializable {
      */
     public static int findAccountid(reger.UrlSplitter urlSplitter){
         if (!urlSplitter.getRawIncomingServername().equals("")){
-            reger.core.Debug.debug(3, "Account.java", "Calling findAccountid() database search for account.");
+            reger.core.Debug.debug(4, "Account.java", "Calling findAccountid() database search for account.");
             //-----------------------------------
             //-----------------------------------
             String[][] rstAccount= Db.RunSQL("SELECT DISTINCT account.accountid FROM account, pl, megalog "+
@@ -1375,5 +1381,22 @@ public class Account implements java.io.Serializable {
 
     public void setAboutthisblogtitle(String aboutthisblogtitle) {
         this.aboutthisblogtitle = aboutthisblogtitle;
+    }
+
+
+    public boolean getIssplashpageon() {
+        return issplashpageon;
+    }
+
+    public void setIssplashpageon(boolean issplashpageon) {
+        this.issplashpageon = issplashpageon;
+    }
+
+    public String getSplashpagehtml() {
+        return splashpagehtml;
+    }
+
+    public void setSplashpagehtml(String splashpagehtml) {
+        this.splashpagehtml = splashpagehtml;
     }
 }

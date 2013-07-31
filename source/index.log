@@ -31,6 +31,16 @@ if (logIdByCustomDomain>0) {
 }
 %>
 
+<%
+//If this domain's splash page is on
+System.out.println("request.getRequestURI()="+ request.getRequestURI());
+if (userSession.getAccount().getIssplashpageon() && (request.getRequestURI().equals("") || request.getRequestURI().equals("/"))) {
+    //If this is a root domain call with no other url output the splash
+    response.getWriter().print(userSession.getAccount().getSplashpagehtml());
+    return;
+}
+%>
+
 
 <%
 /*----------------------------------------------------*/
@@ -67,24 +77,6 @@ if (request.getParameter("viewmonth")==null && request.getParameter("viewdate")=
 /*                  Side Column                       */
         StringBuffer sc = new StringBuffer();
 /*----------------------------------------------------*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 %>
 

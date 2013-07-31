@@ -139,6 +139,8 @@ public class Entry {
 
     private ArrayList<String> instagramimgs = new ArrayList<String>();
 
+    public boolean ishtml=false;
+
     /**
      * Constructor:
      */
@@ -345,6 +347,12 @@ public class Entry {
             }
         }
 
+        if (request.getParameter("ishtml")!=null && request.getParameter("ishtml").equals("true")) {
+            this.ishtml = true;
+        } else {
+            this.ishtml = false;
+        }
+
     }
 
     public boolean isInGroup(int groupid){
@@ -522,7 +530,7 @@ public class Entry {
         //Edit the entry in the database
         //-------------------------------------------------
         //---------------------=======---------------------
-        int rs2 = reger.core.db.Db.RunSQLUpdate("UPDATE event SET locationid='" + locationid + "', date='" + TimeUtils.dateformatfordb(dateGmt) + "', title='" + reger.core.Util.cleanForSQL(title) + "', comments='" + reger.core.Util.cleanForSQL(comments) + "', favorite='" + favorite + "', isdraft='" + isDraft + "', sizeinbytes='" + reger.core.Util.sizeInBytes(comments) + "', isapproved='" + isApproved + "', accountuserid='" + accountuserid + "', istemporary='0', isflaggedformoderator='" + isflaggedformoderator + "', lastmodifiedbyuserdate='" + reger.core.TimeUtils.dateformatfordb(lastmodifiedbyuserdate) + "', ismoderatorapproved='" + ismoderatorapproved + "', requiresmoderatorapproval='" + requiresmoderatorapproval + "', entrykey='"+reger.core.Util.cleanForSQL(entryKey)+"' WHERE eventid='" + this.eventid + "' AND accountid='" + accountid + "'");
+        int rs2 = reger.core.db.Db.RunSQLUpdate("UPDATE event SET locationid='" + locationid + "', date='" + TimeUtils.dateformatfordb(dateGmt) + "', title='" + reger.core.Util.cleanForSQL(title) + "', comments='" + reger.core.Util.cleanForSQL(comments) + "', favorite='" + favorite + "', isdraft='" + isDraft + "', sizeinbytes='" + reger.core.Util.sizeInBytes(comments) + "', isapproved='" + isApproved + "', accountuserid='" + accountuserid + "', istemporary='0', isflaggedformoderator='" + isflaggedformoderator + "', lastmodifiedbyuserdate='" + reger.core.TimeUtils.dateformatfordb(lastmodifiedbyuserdate) + "', ismoderatorapproved='" + ismoderatorapproved + "', requiresmoderatorapproval='" + requiresmoderatorapproval + "', entrykey='"+reger.core.Util.cleanForSQL(entryKey)+"', ishtml="+reger.core.Util.booleanAsSQLText(ishtml)+" WHERE eventid='" + this.eventid + "' AND accountid='" + accountid + "'");
         //---------------------=======---------------------
         //-------------------------------------------------
 
@@ -627,7 +635,7 @@ public class Entry {
         //First, set all of the public properties to values from the database
         //-----------------------------------
         //-----------------------------------
-        String[][] rstEventdetails = reger.core.db.Db.RunSQL("SELECT date, megalog.eventtypeid, title, comments, favorite, locationid, event.logid, isdraft, isapproved, accountuserid, isflaggedformoderator, ismoderatorapproved, istemporary, lastmodifiedbyuserdate, entrykey, megalog.accountid FROM event, megalog WHERE eventid='" + eventid + "' AND event.logid=megalog.logid");
+        String[][] rstEventdetails = reger.core.db.Db.RunSQL("SELECT date, megalog.eventtypeid, title, comments, favorite, locationid, event.logid, isdraft, isapproved, accountuserid, isflaggedformoderator, ismoderatorapproved, istemporary, lastmodifiedbyuserdate, entrykey, megalog.accountid, ishtml FROM event, megalog WHERE eventid='" + eventid + "' AND event.logid=megalog.logid");
         //-----------------------------------
         //-----------------------------------
         if (rstEventdetails != null && rstEventdetails.length > 0) {
@@ -678,6 +686,10 @@ public class Entry {
             if(reger.core.Util.isinteger(rstEventdetails[0][15])){
                 accountid = Integer.parseInt(rstEventdetails[0][15]);
             }
+            ishtml = reger.core.Util.booleanFromSQLText(rstEventdetails[0][16]);
+
+
+
             java.util.Vector vec = EventTagLink.getAllTagsForEntry(this.eventid);
             // Get all tags for an event
             try{

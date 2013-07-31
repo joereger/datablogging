@@ -390,7 +390,9 @@ public class MegaHtmlFormTop {
                     String commentsTmp = MegaHtmlFormTopImageTags.replaceImageTagsWithHtml(pageProps.entry, request.getParameter("entrykey"));
 
                     //Convert line breaks to <br>
-                    commentsTmp = commentsTmp.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
+                    if (!pageProps.entry.ishtml){
+                        commentsTmp = commentsTmp.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
+                    }
 
 
                     //Put body of blog post onto screen

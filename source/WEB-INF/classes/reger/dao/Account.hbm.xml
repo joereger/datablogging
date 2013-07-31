@@ -251,6 +251,13 @@
         <property name="datemarkedinactive" type="timestamp">
             <column name="datemarkedinactive" length="19" not-null="true" />
         </property>
+        <property name="issplashpageon" type="boolean">
+            <column name="issplashpageon" />
+        </property>
+        <property name="splashpagehtml" type="string">
+            <column name="splashpagehtml" />
+        </property>
+
 
     </class>
 </hibernate-mapping>

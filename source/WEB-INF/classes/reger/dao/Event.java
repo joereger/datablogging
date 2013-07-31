@@ -34,6 +34,7 @@ public class Event  implements java.io.Serializable {
      private boolean isflaggedformoderator;
      private boolean requiresmoderatorapproval;
      private String entrykey;
+     private boolean ishtml;
 
      //Association
      private Set<Image> images = new HashSet<Image>();
@@ -343,11 +344,11 @@ public class Event  implements java.io.Serializable {
     }
 
 
+    public boolean getIshtml() {
+        return ishtml;
+    }
 
-
-
-
-
-
-
+    public void setIshtml(boolean ishtml) {
+        this.ishtml = ishtml;
+    }
 }

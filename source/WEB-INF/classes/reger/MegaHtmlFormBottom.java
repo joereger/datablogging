@@ -75,31 +75,6 @@ public class MegaHtmlFormBottom {
                 if (pageProps.entry.eventid != -1) {
                     if (!editLayout) {
 
-//                        mb.append("" + "\n");
-//                        mb.append("<div id=\"file-uploader-demo1\">" + "\n");
-//                        mb.append("<noscript>" + "\n");
-//                        mb.append("<p>Please enable JavaScript to use file uploader.</p>" + "\n");
-//                        mb.append("</noscript>" + "\n");
-//                        mb.append("</div>" + "\n");
-//
-//                        mb.append("<script src=\""+pageProps.pathToAppRoot+"js/valums-file-uploader-0c701eb/client/fileuploader.js\" type=\"text/javascript\"></script>" + "\n");
-//                        mb.append("<script>" + "\n");
-//
-//                        mb.append("$(document).ready(function()" + "\n");
-//                        mb.append("{" + "\n");
-//                        mb.append("var uploader = new qq.FileUploader({" + "\n");
-//                        mb.append("element: document.getElementById('file-uploader-demo1')," + "\n");
-//                        mb.append("action: 'upload-requestprocessor-ajax.log?eventid="+pageProps.entry.eventid+"'," + "\n");
-//                        mb.append("debug: true" + "\n");
-//                        mb.append("});" + "\n");
-//                        mb.append("});" + "\n");
-//
-//                        mb.append("</script>" + "\n");
-//                        mb.append("" + "\n");
-
-
-
-
 
                           mb.append("<link href=\""+pageProps.pathToAppRoot+"js/jquery.fineuploader-3.7.1/fineuploader-3.7.1.min.css\" rel=\"stylesheet\">\n" +
                                   "    <div id=\"jquery-wrapped-fine-uploader\"></div>\n" +
@@ -114,18 +89,6 @@ public class MegaHtmlFormBottom {
                                   "      });\n" +
                                   "    </script>");
 
-
-//                          mb.append("<script src=\""+pageProps.pathToAppRoot+"js/uploadifive1.1.2/jquery.uploadifive.min.js\" type=\"text/javascript\"></script>");
-//                          mb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\""+pageProps.pathToAppRoot+"js/uploadifive1.1.2/uploadifive.css\">");
-//                          mb.append("<input id=\"file_upload\" type=\"file\" name=\"file_upload\" />");
-//                          mb.append("<script type=\"text/javascript\">");
-//                          mb.append("$(function() {\n" +
-//                                  "    $('#file_upload').uploadifive({\n" +
-//                                  "        'uploadScript' : 'upload-requestprocessor-ajax.log?eventid="+pageProps.entry.eventid+"'\n" +
-//                                  "        // Put your options here\n" +
-//                                  "    });\n" +
-//                                  "});");
-//                          mb.append("</script>");
 
                     }
                 } else {

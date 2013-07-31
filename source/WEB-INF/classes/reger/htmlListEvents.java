@@ -187,7 +187,9 @@ public class htmlListEvents {
 
                 //Replace any image tags with html for images
                 String entrybody = MegaHtmlFormTopImageTags.replaceImageTagsWithHtml(entry, "");
-                entrybody = entrybody.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
+                if (!entry.ishtml){
+                    entrybody = entrybody.replaceAll( reger.Vars.CARRIAGERETURN + reger.Vars.LINEBREAK, "<br>");
+                }
                 //How many chars to display?
                 int displaycharsinsummary = userSession.getAccount().getDisplaycharsinsummary();
                 if ((displaycharsinsummary <= 0) || (displaycharsinsummary >= entrybody.length())) {

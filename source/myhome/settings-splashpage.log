@@ -1,0 +1,100 @@
+<%@ page import="reger.core.db.Db"%>
+<%
+/*----------------------------------------------------*/
+/*                  Page Config                       */
+reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
+pageProps.siteSection=pageProps.ADMINSITE;
+pageProps.title = "Splash Page";
+pageProps.isPasswordProtected = true;
+pageProps.navButtonName = "settingssplashpage";
+pageProps.aclObjectName = "CUSTOMIZE";
+pageProps.trafficType=reger.Vars.TRAFFICTYPEADMINMISC;
+pageProps.pathToAppRoot="../";
+/*----------------------------------------------------*/
+%>
+
+<%@ include file="../globalheader.jsp" %>
+
+<%
+/*----------------------------------------------------*/
+/*                  Main Body                         */
+        StringBuffer mb = new StringBuffer();
+/*----------------------------------------------------*/
+
+
+
+String errortext="";
+
+
+if (pageProps.action.equals("save")) {
+
+
+	boolean issplashpageon = false;
+	if (request.getParameter("issplashpageon")!=null && request.getParameter("issplashpageon").equals("1")){issplashpageon=true;}
+
+    //-----------------------------------
+	//-----------------------------------
+	int count = Db.RunSQLUpdate("UPDATE account SET issplashpageon='"+reger.core.Util.booleanAsSQLText(issplashpageon)+"', splashpagehtml='"+ reger.core.Util.cleanForSQL(request.getParameter("splashpagehtml")) +"' WHERE accountid='"+ userSession.getAccount().getAccountid() +"'");
+	//-----------------------------------
+	//-----------------------------------
+
+    userSession.getAccount().setIssplashpageon(issplashpageon);
+    userSession.getAccount().setSplashpagehtml(request.getParameter("splashpagehtml"));
+
+}
+
+
+
+
+
+
+
+//Show any errors
+if (!errortext.equals("")) {
+	mb.append(reger.InfoBox.get(reger.InfoBox.BOXTYPEERROR, pageProps.pathToAppRoot, errortext));
+}
+
+
+
+
+mb.append("<form action='settings-splashpage.log' method=post>");
+mb.append("<input type=hidden name=action value=save>");
+mb.append("<br/>");
+mb.append("<input type='submit' value='Save Splash Page' class='btn btn-success'>");
+mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+
+String chk = "";
+if (!userSession.getAccount().getIssplashpageon()){chk=" checked";}
+mb.append("<input type='radio' name='issplashpageon' value='0' "+chk+">Splash Page Off &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+if (userSession.getAccount().getIssplashpageon()){chk=" checked";}
+mb.append("<input type='radio' name='issplashpageon' value='1' "+chk+">Splash Page On");
+mb.append("<br/><br/>");
+
+mb.append("<textarea name='splashpagehtml' style='width: 100%; height: 600px;'>"+userSession.getAccount().getSplashpagehtml()+"</textarea>");
+
+
+mb.append("</form>");
+
+
+mb.append("<br/><br/>");
+
+if (userSession.getAccount().getIssplashpageon()){
+   mb.append("<iframe src='/' style='width: 100%; height: 800px;'></iframe>");
+}
+
+
+
+%>
+
+<%
+/*----------------------------------------------------*/
+/*                  Side Column                       */
+    StringBuffer sc = new StringBuffer();
+/*----------------------------------------------------*/
+
+//sc.append("This is a ");
+//sc.append("side column section.");
+%>
+
+
+<%@ include file="../globalfooter.jsp" %>

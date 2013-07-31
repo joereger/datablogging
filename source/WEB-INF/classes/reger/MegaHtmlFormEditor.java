@@ -45,7 +45,7 @@ public class MegaHtmlFormEditor {
                     "</script>");
 
             mb.append("<textarea id=\"redactor_content\" name=\"comments\">"+pageProps.entry.comments+"</textarea>");
-
+            mb.append("<input type=\"hidden\" name=\"ishtml\" value=\"true\">");
 
 
 

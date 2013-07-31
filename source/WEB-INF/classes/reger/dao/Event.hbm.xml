@@ -137,5 +137,8 @@
         <property name="entrykey" type="string">
             <column name="entrykey" />
         </property>
+        <property name="ishtml" type="boolean">
+            <column name="ishtml" />
+        </property>
     </class>
 </hibernate-mapping>
