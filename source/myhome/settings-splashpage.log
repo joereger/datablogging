@@ -64,9 +64,9 @@ mb.append("<input type='submit' value='Save Splash Page' class='btn btn-success'
 mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 
 String chk = "";
-if (!userSession.getAccount().getIssplashpageon()){chk=" checked";}
+if (!userSession.getAccount().getIssplashpageon()){chk=" checked";} else {chk="";}
 mb.append("<input type='radio' name='issplashpageon' value='0' "+chk+">Splash Page Off &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-if (userSession.getAccount().getIssplashpageon()){chk=" checked";}
+if (userSession.getAccount().getIssplashpageon()){chk=" checked";} else {chk="";}
 mb.append("<input type='radio' name='issplashpageon' value='1' "+chk+">Splash Page On");
 mb.append("<br/><br/>");
 
