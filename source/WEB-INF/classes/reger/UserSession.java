@@ -120,11 +120,9 @@ public class UserSession implements java.io.Serializable {
         return outUrl;
     }
 
-//    public String baseUrl(){
-//        if (account!=null){
-//
-//        }
-//    }
+    public String siteRootUrl(){
+        return urlSplitter.getSiterooturl();
+    }
 
 
 

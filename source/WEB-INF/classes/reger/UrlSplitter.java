@@ -71,9 +71,9 @@ public class UrlSplitter implements java.io.Serializable {
 
         //Set the siteRawUrl based on whether or not we have a virtualDir
         if (virtualdir==null || virtualdir.equals("")){
-            siterooturl = servername;
+            siterooturl = scheme+servername;
         } else {
-            siterooturl = servername + "/~" + virtualdir;
+            siterooturl = scheme+servername + "/~" + virtualdir;
         }
 
         //Set the port
