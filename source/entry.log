@@ -39,20 +39,17 @@ if (pageProps.entry.isDraft==1 || pageProps.entry.isApproved==0){
 
 //Want to make sure the url displayed to the user is always the same so that url-based embed things work (Disqus)
 try{
-    //String entryurl="entry.log?logid=" + rsEvent[i][5] + "&eventid=" + rsEvent[i][4];
-    //String entryurl="entry-logid" + rsEvent[i][5] + "-eventid" + rsEvent[i][4] + ".log";
     String entryurl = reger.Entry.entryFileNameStatic(pageProps.entry.logid, pageProps.entry.eventid, pageProps.entry.title);
     String entryurlComplete = userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl;
     Object originalRequestUriObj = request.getAttribute("javax.servlet.forward.request_uri");
     String originalRequestUri = "";
     if (originalRequestUriObj!=null && originalRequestUriObj instanceof String){
         originalRequestUri = (String)originalRequestUriObj;
+    } else {
+        originalRequestUri = request.getRequestURI();
     }
-    //Add the servername and port
-    //mb.append("<br/><br/>"+ErrorDissect.ServletUtilsdissect(request)+"<br/><br/>");
-    //if (request.getLocalPort()!=80 && request.getLocalPort()!=443) {
-    //    entryurlComplete = "" + userSession.getAccount().getSiteRootUrl(userSession) + ":" + request.getLocalPort() + "/" + entryurl;
-    //}
+    System.out.println("originalRequestUri:"+originalRequestUri);
+    System.out.println("entryurl:"+entryurl);
     if (originalRequestUri!=null && !originalRequestUri.equals("") && originalRequestUri.indexOf(entryurl)<=-1 && request.getMethod().equalsIgnoreCase("GET")){
         Debug.debug(4, "entry.log", "originalRequestUri="+originalRequestUri);
         Debug.debug(4, "entry.log", "entryurl        ="+entryurl);
