@@ -120,6 +120,12 @@ public class UserSession implements java.io.Serializable {
         return outUrl;
     }
 
+//    public String baseUrl(){
+//        if (account!=null){
+//
+//        }
+//    }
+
 
 
     public void setAttribute(String attributename, Object obj){

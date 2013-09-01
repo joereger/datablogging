@@ -1,35 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
-    <!-- Start Chiba Additions -->
-    <!--<context-param>-->
-        <!--<param-name>chiba.docs</param-name>-->
-        <!--<param-value>documents</param-value>-->
-    <!--</context-param>-->
-    <!--<context-param>-->
-        <!--<param-name>chiba.forms</param-name>-->
-        <!--<param-value>forms</param-value>-->
-    <!--</context-param>-->
-    <!--<context-param>-->
-        <!--<param-name>chiba.tmp</param-name>-->
-        <!--<param-value>tmp</param-value>-->
-    <!--</context-param>-->
-    <!--<context-param>-->
-        <!--<param-name>chiba.upload</param-name>-->
-        <!--<param-value>upload</param-value>-->
-    <!--</context-param>-->
-    <!--<context-param>-->
-        <!--<param-name>debug</param-name>-->
-        <!--<param-value>true</param-value>-->
-    <!--</context-param>-->
-    <!--<context-param>-->
-        <!--<param-name>error.page</param-name>-->
-        <!--<param-value>/error/500.jsp</param-value>-->
-    <!--</context-param>-->
-    <!--<context-param>-->
-        <!--<param-name>chiba.xforms.stylesPath</param-name>-->
-        <!--<param-value>/forms/xslt</param-value>-->
-    <!--</context-param>-->
-    <!-- End Chiba Additions -->
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>
         <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
@@ -42,21 +12,6 @@
         <filter-name>UrlRewriteFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <!-- Start Chiba Additions -->
-    <!--<servlet>-->
-        <!--<servlet-name>XFormsServlet</servlet-name>-->
-        <!--<servlet-class>reger.xforms.chiba.adapter.servlet.ChibaServlet</servlet-class>-->
-
-         <!--<init-param>-->
-             <!--<param-name>chiba.config</param-name>-->
-             <!--<param-value>WEB-INF/chibaConfig.xml</param-value>-->
-         <!--</init-param>-->
-    <!--</servlet>-->
-    <!--<servlet>-->
-        <!--<servlet-name>ShowAttachmentServlet</servlet-name>-->
-        <!--<servlet-class>reger.xforms.chiba.adapter.servlet.ShowAttachmentServlet</servlet-class>-->
-    <!--</servlet>-->
-    <!-- End Chiba Additions -->
     <listener>
         <listener-class>reger.scheduledtasks.AppStartupAndShutdown</listener-class>
     </listener>
@@ -131,20 +86,6 @@
         <url-pattern>/~*/js/fckeditor/editor/filemanager/upload/simpleuploader</url-pattern>
    </servlet-mapping>
    <!-- End fckeditor -->
-   <!-- Start Chiba Additions -->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>dwr-invoker</servlet-name>-->
-        <!--<url-pattern>/flux/*</url-pattern>-->
-    <!--</servlet-mapping>-->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>XFormsServlet</servlet-name>-->
-        <!--<url-pattern>/XFormsServlet</url-pattern>-->
-    <!--</servlet-mapping>-->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>ShowAttachmentServlet</servlet-name>-->
-        <!--<url-pattern>/ShowAttachmentServlet</url-pattern>-->
-    <!--</servlet-mapping>-->
-   <!-- End Chiba Additions -->
 
    <servlet>
       <servlet-name>FieldLayoutSaveAjax</servlet-name>

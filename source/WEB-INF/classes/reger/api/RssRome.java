@@ -162,7 +162,7 @@ public class RssRome {
                     item.setLink(itemLink);
 
                     //Guid
-                    String entryurlGuid=reger.Entry.entryFileNameStaticNoWords(entry.logid, entry.eventid);
+                    String entryurlGuid=reger.Entry.entryFileNameStatic(entry.logid, entry.eventid, entry.title);
                     String itemLinkGuid="" +userSession.getAccount().getSiteRootUrl(userSession) +"/" + entryurlGuid;
                     Guid guid = new Guid();
                     guid.setPermaLink(true);

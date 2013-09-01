@@ -151,6 +151,36 @@ public class GlobalHeader {
                         //out.println("<br>This account has exceeded its available bandwidth for this month.");
                         return;
                     }
+                    //Redirect to the main url
+                    String baseUrlForAccount = userSession.getAccount().getSiteRootUrl(userSession);
+                    String requestedUrl = userSession.getUrlSplitter().getScheme()+"://"+request.getServerName();
+                    //System.out.println("baseUrlForAccount="+baseUrlForAccount);
+                    //System.out.println("requestedUrl="+requestedUrl);
+                    if (!requestedUrl.equals(baseUrlForAccount)){
+                        System.out.println("Need to 301 redirect");
+
+                        String urlRequested = "";
+                        String queryString = "";
+                        if (request.getAttribute("javax.servlet.forward.request_uri")!=null && request.getAttribute("javax.servlet.forward.request_uri").toString().length()>0){
+                            //This was a forwarded request
+                            urlRequested = request.getAttribute("javax.servlet.forward.request_uri").toString();
+                            if (request.getAttribute("javax.servlet.forward.query_string")!=null && request.getAttribute("javax.servlet.forward.query_string").toString().length()>0){
+                                queryString = "?" + request.getAttribute("javax.servlet.forward.query_string").toString();
+                            }
+                        } else {
+                            //This was not a forwarded request
+                            urlRequested = request.getRequestURI();
+                            if (request.getQueryString()!=null && request.getQueryString().length()>0){
+                                queryString = "?" + request.getQueryString();
+                            }
+                        }
+
+                        System.out.println("301 redirecting to: "+baseUrlForAccount+urlRequested+queryString);
+                        response.setStatus(301);
+                        response.setHeader( "Location", baseUrlForAccount+urlRequested+queryString);
+                        response.setHeader( "Connection", "close" );
+                        return;
+                    }
                 }
             }
             

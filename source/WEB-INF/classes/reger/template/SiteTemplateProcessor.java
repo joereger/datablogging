@@ -67,6 +67,11 @@ public class SiteTemplateProcessor implements TemplateProcessor {
         //Figure out what AdminTools and LoggedInBar look like
         StringBuffer appendToHead = new StringBuffer();
 
+        //Base URL
+        appendToHead.append("<base href=\"/\"><!--[if lte IE 6]></base><![endif]-->"+"\n");
+
+
+
         //jQuery
         appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jQuery/js/jquery-1.9.1.min.js\"></script>"+"\n");
         appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/jQuery/js/jquery-ui-1.8.18.custom.min.js\"></script>"+"\n");
@@ -198,7 +203,7 @@ public class SiteTemplateProcessor implements TemplateProcessor {
 
     public static String appendCanonicalToHead(UserSession userSession, javax.servlet.http.HttpServletRequest request){
         String out = "";
-        userSession.getUrlSplitter().getRequest_uri();
+        //userSession.getUrlSplitter().getRequest_uri();
         return out;
     }
 

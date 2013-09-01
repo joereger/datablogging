@@ -125,6 +125,25 @@
         <to>/entry.log?eventid=$1&amp;$4</to>
     </rule>
 
+    <!-- Start New Event/Post Rules -->
+
+    <rule>
+        <name>Entry Redirect Without Logid</name>
+        <note>The main redirect.</note>
+        <from>/post/([0-9]+)/(\?)*(.*)</from>
+        <to>/entry.log?eventid=$1&amp;$3</to>
+    </rule>
+
+    <rule>
+        <name>Entry Redirect With Only Eventid And Title</name>
+        <note>The main redirect. </note>
+        <from>/post/([0-9]+)/(.*)/(\?)*(.*)</from>
+        <to>/entry.log?eventid=$1&amp;$4</to>
+    </rule>
+
+
+    <!-- End New Event/Post Rules -->
+
     <!-- Log Rules -->
     <rule>
         <name>Main Log Page</name>
