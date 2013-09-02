@@ -48,6 +48,18 @@ try{
     } else {
         originalRequestUri = request.getRequestURI();
     }
+    String queryString = "";
+    if (request.getAttribute("javax.servlet.forward.request_uri")!=null && request.getAttribute("javax.servlet.forward.request_uri").toString().length()>0){
+        //This was a forwarded request
+        if (request.getAttribute("javax.servlet.forward.query_string")!=null && request.getAttribute("javax.servlet.forward.query_string").toString().length()>0){
+            queryString = "?" + request.getAttribute("javax.servlet.forward.query_string").toString();
+        }
+    } else {
+        //This was not a forwarded request
+        if (request.getQueryString()!=null && request.getQueryString().length()>0){
+            queryString = "?" + request.getQueryString();
+        }
+    }
     System.out.println("originalRequestUri:"+originalRequestUri);
     System.out.println("entryurl:"+entryurl);
     if (originalRequestUri!=null && !originalRequestUri.equals("") && originalRequestUri.indexOf(entryurl)<=-1 && request.getMethod().equalsIgnoreCase("GET")){
@@ -56,7 +68,7 @@ try{
         Debug.debug(4, "entry.log", "entryurlComplete="+entryurlComplete);
         Debug.debug(4, "entry.log", "redrecting to "+entryurlComplete.trim());
         response.setStatus(301);
-        response.setHeader( "Location", entryurlComplete.trim());
+        response.setHeader( "Location", entryurlComplete.trim()+queryString);
         response.setHeader( "Connection", "close" );
         return;
     }

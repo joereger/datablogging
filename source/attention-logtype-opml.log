@@ -58,7 +58,7 @@ doc.addContent(opml);
                 //outline
                 Element outline = new Element("outline");
                 outline.setAttribute("text", log.getName());
-                outline.setAttribute("url", userSession.getAccount().getSiteRootUrl(userSession)+"/"+"logmain"+log.getEventtypeid()+".log");
+                outline.setAttribute("url", userSession.getAccount().getSiteRootUrl(userSession)+"/"+"blog/"+log.getEventtypeid()+"/");
                 outline.setAttribute("schema", userSession.getAccount().getSiteRootUrl(userSession)+"/"+"logtype-schema-"+log.getEventtypeid()+".xsd");
                 body.addContent(outline);
             }

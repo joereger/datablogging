@@ -229,7 +229,7 @@ public class MegaLogTypeHtmlrender {
         if (rstLog!=null &&  rstLog.length>0) {
             for(int i=0; i<rstLog.length; i++){
                 //The link
-                String logurl="logmain"+rstLog[i][0]+".log";
+                String logurl="blog/"+rstLog[i][0]+"/";
 
                 //The baseurl
                 reger.Account acct = new reger.Account(Integer.parseInt(rstLog[i][2]));

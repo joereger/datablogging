@@ -29,6 +29,9 @@ public class pagingLinkPrint {
         //String thispagename = request.getServletPath();
         reger.core.Debug.debug(5, "pagingLinkPrint.java", reger.core.ErrorDissect.ServletUtilsdissect(request));
         String thispagename = reger.core.Util.getJspName(request.getRequestURL().toString());
+        if (request.getAttribute("javax.servlet.forward.request_uri")!=null && request.getAttribute("javax.servlet.forward.request_uri").toString().length()>0){
+            thispagename = request.getAttribute("javax.servlet.forward.request_uri").toString();
+        }
         if (thispagename.equals(request.getServerName().toString())){
             thispagename = "index.log";
         }

@@ -4,7 +4,6 @@
                  reger.template.HpTemplateProcessor,
                  reger.Log"%>
 <%@ page import="reger.cache.LogCache"%>
-<%@ page import="reger.cache.LogCache"%>
 <%
 /*----------------------------------------------------*/
 /*                  Page Config                       */
@@ -36,8 +35,50 @@ mb.append("<script type=\"text/javascript\" src=\"/js/lightwindow/javascript/pro
 "<link rel=\"stylesheet\" href=\"/js/lightwindow/css/lightwindow.css\" type=\"text/css\" media=\"screen\" />");
 
 
-
 Log log = LogCache.get(pageProps.logProps.logid);
+
+
+if (log!=null){
+    //Want to make sure the url displayed to the user is always correct
+    try{
+        String logurl = "blog/"+log.getLogid()+"/";
+        String logurlComplete = userSession.getAccount().getSiteRootUrl(userSession) + "/" + logurl;
+        Object originalRequestUriObj = request.getAttribute("javax.servlet.forward.request_uri");
+        String originalRequestUri = "";
+        if (originalRequestUriObj!=null && originalRequestUriObj instanceof String){
+            originalRequestUri = (String)originalRequestUriObj;
+        } else {
+            originalRequestUri = request.getRequestURI();
+        }
+        String queryString = "";
+        if (request.getAttribute("javax.servlet.forward.request_uri")!=null && request.getAttribute("javax.servlet.forward.request_uri").toString().length()>0){
+            //This was a forwarded request
+            if (request.getAttribute("javax.servlet.forward.query_string")!=null && request.getAttribute("javax.servlet.forward.query_string").toString().length()>0){
+                queryString = "?" + request.getAttribute("javax.servlet.forward.query_string").toString();
+            }
+        } else {
+            //This was not a forwarded request
+            if (request.getQueryString()!=null && request.getQueryString().length()>0){
+                queryString = "?" + request.getQueryString();
+            }
+        }
+        System.out.println("originalRequestUri:"+originalRequestUri);
+        System.out.println("logurl:"+ logurl);
+        if (originalRequestUri!=null && !originalRequestUri.equals("") && originalRequestUri.indexOf(logurl)<=-1 && request.getMethod().equalsIgnoreCase("GET")){
+            System.out.println("301 redrecting to "+ logurlComplete.trim()+queryString);
+            response.setStatus(301);
+            response.setHeader( "Location", logurlComplete.trim()+queryString);
+            response.setHeader( "Connection", "close" );
+            return;
+        }
+    } catch (Exception ex){
+        Debug.errorsave(ex, "entry.log unique url");
+    }
+}
+
+
+
+
 if(log!=null){
     Template template = AllTemplatesInSystem.getTemplateByTemplateid(log.getMaintemplateid(), Template.TEMPLATETYPEHOMEPAGE);
     String tmp = "";
@@ -55,6 +96,10 @@ if(log!=null){
     response.sendRedirect("index.log");
     return;
 }
+
+
+
+
 
 %>
 
