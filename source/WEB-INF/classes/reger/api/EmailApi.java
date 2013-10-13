@@ -459,6 +459,8 @@ public class EmailApi {
                 entry.accountid = accountid;
 
                 //Set the title
+                Debug.debug(3, "EmailApi", "EmailApi newPost() - mailtype=" + mailtype);
+                Debug.debug(3, "EmailApi", "EmailApi newPost() - overridecamphonesubject=" + overridecamphonesubject);
                 if (mailtype==CAMPHONEPOST && overridecamphonesubject==1){
                     overridecamphonesubjecttext = overridecamphonesubjecttext.replaceAll("\\<\\$Date\\$\\>", reger.core.TimeUtils.dateformatFullNoTime(reger.core.TimeUtils.nowInUserTimezone(timezoneid)));
                     entry.title=reger.core.Util.truncateString(overridecamphonesubjecttext, 255);
@@ -467,11 +469,11 @@ public class EmailApi {
                 }
 
                 //New sherrif in town... let's just create a new post based on the damn subject of the thing
-                if (isMultipart){
-                    overridecamphonesubjecttext = subject;
-                    entry.title = reger.core.Util.truncateString(subject, 255);
-                    consolidatecamphonetoonedailyentry = 0;
-                }
+//                if (isMultipart){
+//                    overridecamphonesubjecttext = subject;
+//                    entry.title = reger.core.Util.truncateString(subject, 255);
+//                    consolidatecamphonetoonedailyentry = 0;
+//                }
 
 
                 //If the title is blank, use the description
@@ -491,7 +493,7 @@ public class EmailApi {
                 if (mailtype==CAMPHONEPOST && ignorecamphonebody==1){
                     entry.comments="";
                 } else {
-                    entry.comments=body;
+                    entry.comments=entry.comments+"<br/>"+body;
                 }
 
                 //Set the draft/live status
