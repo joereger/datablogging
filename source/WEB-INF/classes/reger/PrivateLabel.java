@@ -624,7 +624,7 @@ public class PrivateLabel {
         marketingsitehptemplateid = reger.core.RequestParam.getInt(request, "marketingsitehptemplateid", marketingsitehptemplateid);
         defaulteventtypeid = reger.core.RequestParam.getInt(request, "defaulteventtypeid", defaulteventtypeid);
         encryptedlicense = reger.core.RequestParam.getString(request, "encryptedlicense", "");
-        plLicense = plLicense = new License(reger.licensing.ServerLicense.getLicense(), encryptedlicense);
+        plLicense = new License(reger.licensing.ServerLicense.getLicense(), encryptedlicense);
         baseaccountprice = reger.core.RequestParam.getDouble(request, "baseaccountprice", baseaccountprice);
         priceper100mbstorage = reger.core.RequestParam.getDouble(request, "priceper100mbstorage", priceper100mbstorage);
         pricepergbbandwidth = reger.core.RequestParam.getDouble(request, "pricepergbbandwidth", priceper100mbstorage);

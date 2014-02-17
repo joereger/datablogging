@@ -56,23 +56,30 @@ public class License implements java.io.Serializable {
         synchronized(allPropTypes){
             allPropTypes = new HashMap();
             allPropTypes.put(PROPSTRINGLICENSEID, new LicenseProp(PROPSTRINGLICENSEID, "0"));
-            allPropTypes.put(PROPSTRINGLICENSETYPE, new LicenseProp(PROPSTRINGLICENSETYPE, "0"));
-            allPropTypes.put(PROPSTRINGMAXUSERS, new LicenseProp(PROPSTRINGMAXUSERS, "3"));
-            allPropTypes.put(PROPSTRINGMAXPRIVATELABELS, new LicenseProp(PROPSTRINGMAXPRIVATELABELS, "1"));
+            allPropTypes.put(PROPSTRINGLICENSETYPE, new LicenseProp(PROPSTRINGLICENSETYPE, "3"));
+            allPropTypes.put(PROPSTRINGMAXUSERS, new LicenseProp(PROPSTRINGMAXUSERS, "10000"));
+            allPropTypes.put(PROPSTRINGMAXPRIVATELABELS, new LicenseProp(PROPSTRINGMAXPRIVATELABELS, "1000"));
             allPropTypes.put(PROPSTRINGISCOMMERCIAL, new LicenseProp(PROPSTRINGISCOMMERCIAL, "0"));
-            allPropTypes.put(PROPSTRINGMINBASEACCOUNTPRICE, new LicenseProp(PROPSTRINGMINBASEACCOUNTPRICE, "2.95"));
-            allPropTypes.put(PROPSTRINGMINPRICEPER100MBSTORAGE, new LicenseProp(PROPSTRINGMINPRICEPER100MBSTORAGE, ".35"));
-            allPropTypes.put(PROPSTRINGMINPRICEPERGBBANDWIDTH, new LicenseProp(PROPSTRINGMINPRICEPERGBBANDWIDTH, ".5"));
-            allPropTypes.put(PROPSTRINGMAXSPACEINBYTES, new LicenseProp(PROPSTRINGMAXSPACEINBYTES, "0"));
-            allPropTypes.put(PROPSTRINGMAXBANDWIDTH, new LicenseProp(PROPSTRINGMAXBANDWIDTH, "0"));
-            allPropTypes.put(PROPSTRINGEXPDATEGMT, new LicenseProp(PROPSTRINGEXPDATEGMT, reger.core.TimeUtils.dateformatfordb(reger.core.TimeUtils.nowInGmtCalendar())));
+            allPropTypes.put(PROPSTRINGMINBASEACCOUNTPRICE, new LicenseProp(PROPSTRINGMINBASEACCOUNTPRICE, "0.0"));
+            allPropTypes.put(PROPSTRINGMINPRICEPER100MBSTORAGE, new LicenseProp(PROPSTRINGMINPRICEPER100MBSTORAGE, ".0"));
+            allPropTypes.put(PROPSTRINGMINPRICEPERGBBANDWIDTH, new LicenseProp(PROPSTRINGMINPRICEPERGBBANDWIDTH, ".0"));
+            allPropTypes.put(PROPSTRINGMAXSPACEINBYTES, new LicenseProp(PROPSTRINGMAXSPACEINBYTES, "1073741824000"));
+            allPropTypes.put(PROPSTRINGMAXBANDWIDTH, new LicenseProp(PROPSTRINGMAXBANDWIDTH, "1073741824000"));
+            allPropTypes.put(PROPSTRINGEXPDATEGMT, new LicenseProp(PROPSTRINGEXPDATEGMT, reger.core.TimeUtils.dateformatfordb(reger.core.TimeUtils.xYearsAgoEnd(Calendar.getInstance(), -100))));
             allPropTypes.put(PROPSTRINGRANDOMSALT, new LicenseProp(PROPSTRINGRANDOMSALT, reger.core.RandomString.randomAlphanumeric(10)));
             allPropTypes.put(PROPSTRINGISCHARGEDTOCREDITCARD, new LicenseProp(PROPSTRINGISCHARGEDTOCREDITCARD, "0"));
-            allPropTypes.put(PROPSTRINGAMOUNT, new LicenseProp(PROPSTRINGAMOUNT, "2.95"));
+            allPropTypes.put(PROPSTRINGAMOUNT, new LicenseProp(PROPSTRINGAMOUNT, "0.0"));
             allPropTypes.put(PROPSTRINGCHARGEEVERY, new LicenseProp(PROPSTRINGCHARGEEVERY, "1"));
             allPropTypes.put(PROPSTRINGCHARGEEVERYUNITS, new LicenseProp(PROPSTRINGCHARGEEVERYUNITS, String.valueOf(License.CHARGEEVERYMONTHS)));
             allPropTypes.put(PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS, new LicenseProp(PROPSTRINGINDIVIDUALUSERSPAYTOUPGRADEACCOUNTS, "0"));
             allPropTypes.put(PROPSTRINGISRECURRINGBILLING, new LicenseProp(PROPSTRINGISRECURRINGBILLING, "0"));
+        }
+    }
+
+    public License(){
+        //Loads default values above
+        if (allPropTypes==null){
+            loadPropTypes();
         }
     }
 
@@ -81,21 +88,24 @@ public class License implements java.io.Serializable {
         if (allPropTypes==null){
             loadPropTypes();
         }
-        loadEncryptedLicense(parentLicense, encryptedLicense);
+        //HACK TO KILL LICENSING
+        //loadEncryptedLicense(parentLicense, encryptedLicense);
     }
 
     public License(License parentLicense, HashMap props){
         if (allPropTypes==null){
             loadPropTypes();
         }
-        createLicense(parentLicense, props);
+        //HACK TO KILL LICENSING
+        //createLicense(parentLicense, props);
     }
 
     public License(HashMap props){
         if (allPropTypes==null){
             loadPropTypes();
         }
-        createLicense(null, props);
+        //HACK TO KILL LICENSING
+        //createLicense(null, props);
     }
 
 

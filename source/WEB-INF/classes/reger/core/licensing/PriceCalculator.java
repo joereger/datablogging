@@ -19,6 +19,9 @@ public class PriceCalculator {
         //Price
         price = basePrice + storagePrice + bandwidthPrice;
 
+        //HACK TO NEVER CHARGE
+        price = 0.0;
+
         return price;
     }
 
