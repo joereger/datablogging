@@ -53,14 +53,6 @@
         <to type="redirect" last="true">/$1$2/myhome/</to>
     </rule>
 
-    <!--
-    <rule>
-        <name>Forgotten Trailing Slash on Virtual Directory</name>
-        <note>When users type just the virtual directory and forget the slash</note>
-        <from>/(~|\%7e)([a-zA-Z0-9\-]*)/files/(.*)</from>
-        <to type="redirect" last="true">/$1$2/mediaout.log?file=$3</to>
-    </rule>
-    -->
 
     <rule>
         <name>Forgotten Trailing Slash on Virtual Directory</name>
@@ -92,51 +84,67 @@
     <!-- Event Rules -->
     <rule>
         <name>Entry Redirect Without Logid</name>
-        <note>The main redirect.</note>
         <from>/entry-([0-9]+).log(\?)*(.*)</from>
         <to>/entry.log?eventid=$1&amp;$3</to>
     </rule>
 
     <rule>
         <name>Entry Redirect Without Logid</name>
-        <note>The main redirect.</note>
         <from>/entry-eventid([0-9]+).log(\?)*(.*)</from>
         <to>/entry.log?eventid=$1&amp;$3</to>
     </rule>
 
     <rule>
         <name>Entry Redirect With Logid</name>
-        <note>The main redirect.</note>
         <from>/entry-logid([0-9]+)-eventid([0-9]+).log(\?)*(.*)</from>
         <to>/entry.log?logid=$1&amp;eventid=$2&amp;$4</to>
     </rule>
 
     <rule>
         <name>Entry Redirect With Logid And Title</name>
-        <note>The main redirect. </note>
         <from>/entry-logid([0-9]+)-eventid([0-9]+)-(.*).log(\?)*(.*)</from>
         <to>/entry.log?logid=$1&amp;eventid=$2&amp;$5</to>
     </rule>
 
     <rule>
         <name>Entry Redirect With Only Eventid And Title</name>
-        <note>The main redirect. </note>
         <from>/entry-eventid([0-9]+)-(.*).log(\?)*(.*)</from>
         <to>/entry.log?eventid=$1&amp;$4</to>
     </rule>
 
+    <!-- Start New Event/Post Rules -->
+
+    <rule>
+        <name>Entry Redirect Without Logid</name>
+        <from>/post/([0-9]+)/(\?)*(.*)</from>
+        <to>/entry.log?eventid=$1&amp;$3</to>
+    </rule>
+
+    <rule>
+        <name>Entry Redirect With Only Eventid And Title</name>
+        <from>/post/([0-9]+)/(.*)/(\?)*(.*)</from>
+        <to>/entry.log?eventid=$1&amp;$4</to>
+    </rule>
+
+
+    <!-- End New Event/Post Rules -->
+
     <!-- Log Rules -->
     <rule>
         <name>Main Log Page</name>
-        <note>The main log page.</note>
         <from>/logmain([0-9]+).log(\?)*(.*)</from>
+        <to>/logmain.log?logid=$1&amp;$3</to>
+    </rule>
+
+    <rule>
+        <name>Main Log Page</name>
+        <from>/blog/([0-9]+)/(\?)*(.*)</from>
         <to>/logmain.log?logid=$1&amp;$3</to>
     </rule>
 
     <!-- Static content page Rules -->
     <rule>
         <name>Static Content Page</name>
-        <note>The main redirect.</note>
         <from>/contentpage([0-9]+).log(\?)*(.*)</from>
         <to>/contentpage.log?contentpageid=$1&amp;$3</to>
     </rule>
@@ -145,21 +153,18 @@
     <!-- Graph Pages -->
     <rule>
         <name>Graph Page Logid and Megachartid</name>
-        <note>The main graph page.</note>
         <from>/graphpage-logid([0-9]+)-megachartid([0-9]+).log(\?)*(.*)</from>
         <to>/graphs-detail.log?megachartid=$2&amp;$4</to>
     </rule>
 
     <rule>
         <name>Graph Page Only Logid</name>
-        <note>The main graph page.</note>
         <from>/graphpage-logid([0-9]+).log(\?)*(.*)</from>
         <to>/graphs-detail.log?logid=$1&amp;$3</to>
     </rule>
 
     <rule>
         <name>Graph Page Only Logid</name>
-        <note>The main graph page.</note>
         <from>/graphs-detail-graphid([0-9]+).log(\?)*(.*)</from>
         <to>/graphs-detail.log?megachartid=$1&amp;$3</to>
     </rule>
@@ -167,7 +172,6 @@
     <!-- Trackback -->
     <rule>
         <name>Trackback</name>
-        <note>The trackback url.</note>
         <from>/trackback-eventid([0-9]+).log(\?)*(.*)</from>
         <to>/trackback.log?eventid=$1&amp;$3</to>
     </rule>
@@ -175,7 +179,6 @@
     <!-- Rss -->
     <rule>
         <name>Rss</name>
-        <note>The rss url.</note>
         <from>/rss.xml(\?)*(.*)</from>
         <to>/rss-rome.log?logid=-1&amp;type=rss_2.0&amp;$2</to>
     </rule>
@@ -183,28 +186,24 @@
 
     <rule>
         <name>Rss</name>
-        <note>The rss url.</note>
         <from>/rss-logid([0-9]+).xml(\?)*(.*)</from>
         <to>/rss-rome.log?logid=$1&amp;type=rss_2.0&amp;$3</to>
     </rule>
 
     <rule>
         <name>Rss Login</name>
-        <note>The rss login url.</note>
         <from>/rss-logid([0-9]+).xml\?password=(.*)</from>
         <to>/rss-rome.log?logid=$1&amp;type=rss_2.0&amp;password=$2</to>
     </rule>
 
     <rule>
         <name>Rss2</name>
-        <note>The rss url.</note>
         <from>/(.*)-logid([0-9]+).xml(\?)*(.*)</from>
         <to>/rss-rome.log?logid=$2&amp;type=$1&amp;$4</to>
     </rule>
 
     <rule>
         <name>RssAll</name>
-        <note>The rss url.</note>
         <from>/(.*)-all.xml(\?)*(.*)</from>
         <to>/rss-rome.log?logid=-1&amp;type=$1&amp;$3</to>
     </rule>
@@ -213,7 +212,6 @@
     <!-- Invitation -->
     <rule>
         <name>Invitation</name>
-        <note>The invitations url.</note>
         <from>/about/login-fid-([0-9]+).log(\?)*(.*)</from>
         <to>/about/login.log?friendinvitationid=$1&amp;$3</to>
     </rule>
@@ -221,7 +219,6 @@
     <!-- Invitation -->
     <rule>
         <name>Invitation</name>
-        <note>The invitations url.</note>
         <from>/about/login-fid-([0-9]+)-fkey-([a-zA-Z0-9\-]*).log(\?)*(.*)</from>
         <to>/about/login.log?friendinvitationid=$1&amp;friendinvitationkey=$2&amp;$4</to>
     </rule>
@@ -229,21 +226,18 @@
     <!-- Media File -->
     <rule>
         <name>Media files done in a way to preserve extensions</name>
-        <note>The main redirect. </note>
         <from>/mediaout-imageid([0-9]+)-isprofileimage(.*)-entrykey(.*)-ext.(.*)(\?)*(.*)</from>
         <to>/mediaout.log?imageid=$1&amp;isProfileImage=$2&amp;entrykey=$3&amp;$6</to>
     </rule>
 
     <rule>
         <name>Media files done in a way to preserve extensions</name>
-        <note>The main redirect. </note>
         <from>/mediaout-imageid([0-9]+).(.*)(\?)*(.*)</from>
         <to>/mediaout.log?imageid=$1&amp;$6</to>
     </rule>
 
     <rule>
         <name>File Access</name>
-        <note>Allows access to the files in user's file dir.</note>
         <from>/files/(.*)(\?)*(.*)</from>
         <to>/mediaout.log?file=$2&amp;$4</to>
     </rule>
@@ -251,21 +245,18 @@
 
     <rule>
         <name>Media files done in a way to preserve</name>
-        <note>img filenames good</note>
         <from>/mediaout/(.*)(\?)*(.*)</from>
         <to>/mediaout.log?$3</to>
     </rule>
 
     <rule>
         <name>Image</name>
-        <note>imageid</note>
         <from>/imageid/([0-9]+)</from>
         <to>/mediaout.log?imageid=$1</to>
     </rule>
 
     <rule>
         <name>Media files done in a way to preserve</name>
-        <note>The main redirect. </note>
         <from>/js/fckeditor/editor/dialog/mediaout.log(\?)*(.*)</from>
         <to>/mediaout.log?$2</to>
     </rule>
@@ -274,7 +265,6 @@
 
     <rule>
         <name>Media files done in a way to preserve</name>
-        <note>The main redirect. </note>
         <from>/js/fckeditor/editor/mediaout.log(\?)*(.*)</from>
         <to>/mediaout.log?$2</to>
     </rule>
@@ -285,7 +275,6 @@
 
     <rule>
         <name>Robotstxt</name>
-        <note>Redirect robots.txt to robots.log.</note>
         <from>/robots.txt</from>
         <to>/robots.log</to>
     </rule>
@@ -294,7 +283,6 @@
 
     <rule>
         <name>OPML Log Type List</name>
-        <note>OPML formatted list of log types</note>
         <from>/attention-logtypes.opml(\?)*(.*)</from>
         <to>/attention-logtype-opml.log?$2</to>
     </rule>

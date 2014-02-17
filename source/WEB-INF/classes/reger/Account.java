@@ -614,7 +614,7 @@ public class Account implements java.io.Serializable {
                 }
             }
         }
-        reger.core.Debug.debug(5, "Account.java", "setSiteRootUrlViaAccountid("+accountid+") siteRootUrl: "+siteRootUrl);
+        reger.core.Debug.debug(3, "Account.java", "setSiteRootUrlViaAccountid("+accountid+") siteRootUrl: "+siteRootUrl);
         return siteRootUrl;
     }
 

@@ -92,7 +92,7 @@ if (api==null || !apiIsGood){
     // And later in some initialization function:
     AppKeyPair appKeys = new AppKeyPair(Dropbox.APP_KEY, Dropbox.APP_SECRET);
     WebAuthSession sess = new WebAuthSession(appKeys, Dropbox.ACCESS_TYPE);
-    WebAuthSession.WebAuthInfo webauthinfo = sess.getAuthInfo("http://"+userSession.getUrlSplitter().getSiterooturl()+"/myhome/tools-dropbox-oauth-redir.log");
+    WebAuthSession.WebAuthInfo webauthinfo = sess.getAuthInfo(userSession.getUrlSplitter().getSiterooturl()+"/myhome/tools-dropbox-oauth-redir.log");
 
     //-----------------------------------
     //-----------------------------------

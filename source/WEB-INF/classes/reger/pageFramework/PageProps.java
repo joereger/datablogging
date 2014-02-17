@@ -71,7 +71,6 @@ public class PageProps{
     public String onunloadJavascriptMethod;
 
 
-
 	/**
 	* Populates the object
 	*/
@@ -116,12 +115,14 @@ public class PageProps{
 
 	}
 
+
 	public boolean isRequestSSL(javax.servlet.http.HttpServletRequest request){
 	    if (request.isSecure()){
             return true;
         }
         return false;
     }
+
 
 
 }

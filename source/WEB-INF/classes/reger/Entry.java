@@ -1342,14 +1342,7 @@ public class Entry {
 //    }
 
 
-    /**
-     * Creates the url of format entry-logid1-eventid2374-this-is-the-title.log
-     * Use this if you haven't instantiated the event class.
-     *
-     * @param logid
-     * @param eventid
-     * @param title
-     */
+
     public static String entryFileNameStatic(int logid, int eventid, String title) {
         String stripped = reger.linkrot.GenerateKeywords.removePunctuation(title);
         String[] words = stripped.split(" ");
@@ -1357,28 +1350,19 @@ public class Entry {
         String wordswithdashes = "";
 
         for (int i = 0; i < words.length && i < 5; i++) {
-            wordswithdashes = wordswithdashes + "-" + words[i];
+            if (words[i]!=null && words[i].length()>0){
+                if (i>0){ wordswithdashes = wordswithdashes + "-"; }
+                wordswithdashes = wordswithdashes + words[i];
+            }
         }
 
-        String filename = "entry-logid" + logid + "-eventid" + eventid + wordswithdashes + ".log";
+        //String filename = "entry-logid" + logid + "-eventid" + eventid + wordswithdashes + ".log";
+        String filename = "post/" + eventid + "/" + wordswithdashes + "/";
 
         return filename;
     }
 
-    public static String entryFileNameStaticNoWords(int logid, int eventid) {
 
-        String filename = "entry-logid" + logid + "-eventid" + eventid + ".log";
-
-        return filename;
-    }
-
-    /**
-     * Creates the url of format entry-logid1-eventid2374-this-is-the-title.log
-     * Use this if you haven't instantiated the event class.
-     *
-     * @param eventid
-     * @param title
-     */
     public static String entryFileNameStatic(int eventid, String title) {
         String stripped = reger.linkrot.GenerateKeywords.removePunctuation(title);
         String[] words = stripped.split(" ");
@@ -1386,10 +1370,14 @@ public class Entry {
         String wordswithdashes = "";
 
         for (int i = 0; i < words.length && i < 5; i++) {
-            wordswithdashes = wordswithdashes + "-" + words[i];
+            if (words[i]!=null && words[i].length()>0){
+                if (i>0){ wordswithdashes = wordswithdashes + "-"; }
+                wordswithdashes = wordswithdashes + words[i];
+            }
         }
 
-        String filename = "entry-eventid" + eventid + wordswithdashes + ".log";
+        //String filename = "entry-eventid" + eventid + wordswithdashes + ".log";
+        String filename = "post/" + eventid + "/" + wordswithdashes + "/";
 
         return filename;
     }

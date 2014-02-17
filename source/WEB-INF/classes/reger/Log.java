@@ -386,7 +386,7 @@ public class Log implements NestedNavItem {
      * The url that this item should link to
      */
     public String getNestedNavLinkUrl() {
-        return "logmain"+getLogid()+".log";
+        return "blog/"+getLogid()+"/";
     }
 
     /**

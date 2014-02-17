@@ -48,13 +48,15 @@ try {
 <head>
 <title>500 Error</title>
 </head>
-<body bgcolor=#ffcc00>
-
-<strong><font face=arial size=+3>We're sorry.  There has been an error.  The system administrator has been notified.:</font></strong>
-<br>
-
-
-
+<body bgcolor=#ffffff>
+<br><br><br><br>
+<blockquote><blockquote>
+<strong><blink><font face=arial size=+3 color=#cccccc style="font-size: 76px;">Oops, there has been an error.</font></blink></strong>
+<br><br>
+<blockquote><blockquote>
+<strong><font face=arial size=-1 color=#666666 style="font-size: 12px;">Terribly sorry about that.</font></strong>
+</blockquote></blockquote>
+</blockquote></blockquote>
 </body>
 </html>
 

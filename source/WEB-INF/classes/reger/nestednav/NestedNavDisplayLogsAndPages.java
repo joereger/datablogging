@@ -64,7 +64,7 @@ public class NestedNavDisplayLogsAndPages implements NestedNavDisplay{
 
 
                 if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPEMEGALOG){
-                    mb.append("        <li><a href=\"logmain"+navItem.getThisNestedNavId()+".log\">"+nestingNbsp+navItem.getNestedNavLinkText()+"</a></li>" + "\n");
+                    mb.append("        <li><a href=\"blog/"+navItem.getThisNestedNavId()+"/\">"+nestingNbsp+navItem.getNestedNavLinkText()+"</a></li>" + "\n");
                 } else if (navItem.getThisNestedNavType()==NestedNavItem.NESTEDNAVTYPECONTENTPAGE) {
                     mb.append("        <li><a href=\"contentpage"+navItem.getThisNestedNavId()+".log\">"+nestingNbsp+navItem.getNestedNavLinkText()+"</a></li>" + "\n");
                 } else {

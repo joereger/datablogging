@@ -1995,7 +1995,7 @@ public class Accountuser implements java.io.Serializable {
                         mb.append("</b>");
                         mb.append("</font>");
                         mb.append("<font face=arial size=-2>");
-                        mb.append(" (<a href='"+acct.getSiteRootUrl(userSession)+"/logmain"+log.getLogid()+".log'>");
+                        mb.append(" (<a href='"+acct.getSiteRootUrl(userSession)+"/blog/"+log.getLogid()+"/'>");
                         mb.append("View");
                         mb.append("</a>)");
                         if (userCanAuthorLog(log.getLogid()) && userCanDoAcl("ADDEDITENTRIES", accountid.intValue())){

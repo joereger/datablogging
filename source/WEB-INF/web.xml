@@ -1,46 +1,58 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+    <!--<filter>-->
+    <!--<filter-name>UrlRewriteFilter</filter-name>-->
+    <!--<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>-->
+    <!--<init-param>-->
+    <!--<param-name>logLevel</param-name>-->
+    <!--<param-value>sysout:DEBUG</param-value>-->
+    <!--</init-param>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+    <!--<filter-name>UrlRewriteFilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>
         <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-        <init-param>
-            <param-name>logLevel</param-name>
-            <param-value>sysout:DEBUG</param-value>
-        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>UrlRewriteFilter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
+
 
     <listener>
         <listener-class>reger.scheduledtasks.AppStartupAndShutdown</listener-class>
     </listener>
 
     <servlet>
-      <servlet-name>Loader</servlet-name>
-      <servlet-class>reger.scheduledtasks.Loader</servlet-class>
-      <load-on-startup>1</load-on-startup>
-   </servlet>
-   <servlet>
-      <servlet-name>jcaptcha</servlet-name>
-      <servlet-class>reger.jcaptcha.ImageCaptchaServlet</servlet-class>
-      <load-on-startup>0</load-on-startup>
-   </servlet>
-   <servlet>
+        <servlet-name>Loader</servlet-name>
+        <servlet-class>reger.scheduledtasks.Loader</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>jcaptcha</servlet-name>
+        <servlet-class>reger.jcaptcha.ImageCaptchaServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet>
         <servlet-name>dwr-invoker</servlet-name>
         <servlet-class>uk.ltd.getahead.dwr.DWRServlet</servlet-class>
         <init-param>
-        <param-name>debug</param-name>
-        <param-value>true</param-value>
+            <param-name>debug</param-name>
+            <param-value>true</param-value>
         </init-param>
-   </servlet>
-   <!-- Start filesync -->
+    </servlet>
+    <!-- Start filesync -->
     <servlet>
         <servlet-name>FileSyncSaveFileOnServer</servlet-name>
         <servlet-class>reger.filesync.server.soap.SaveFileOnServer</servlet-class>
-   </servlet>
-   <servlet-mapping>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>FileSyncSaveFileOnServer</servlet-name>
         <url-pattern>/soap/FileSyncSaveFileOnServer</url-pattern>
     </servlet-mapping>
@@ -51,8 +63,8 @@
     <servlet>
         <servlet-name>FileSyncDownloadFileFromServer</servlet-name>
         <servlet-class>reger.filesync.server.soap.DownloadFileFromServer</servlet-class>
-   </servlet>
-   <servlet-mapping>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>FileSyncDownloadFileFromServer</servlet-name>
         <url-pattern>/soap/FileSyncDownloadFileFromServer</url-pattern>
     </servlet-mapping>
@@ -60,37 +72,37 @@
         <servlet-name>FileSyncDownloadFileFromServer</servlet-name>
         <url-pattern>/~*/soap/FileSyncDownloadFileFromServer</url-pattern>
     </servlet-mapping>
-   <!-- End filesync -->
-   <!-- Start fckeditor -->
-   <servlet>
+    <!-- End filesync -->
+    <!-- Start fckeditor -->
+    <servlet>
         <servlet-name>ConnectorServlet</servlet-name>
         <servlet-class>reger.fckeditor.ConnectorServlet</servlet-class>
-   </servlet>
-   <servlet>
+    </servlet>
+    <servlet>
         <servlet-name>SimpleUploaderServlet</servlet-name>
         <servlet-class>reger.fckeditor.SimpleUploaderServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>ConnectorServlet</servlet-name>
         <url-pattern>/js/fckeditor/editor/filemanager/browser/default/connectors/jsp/connector</url-pattern>
-   </servlet-mapping>
-   <servlet-mapping>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ConnectorServlet</servlet-name>
         <url-pattern>/~*/js/fckeditor/editor/filemanager/browser/default/connectors/jsp/connector</url-pattern>
-   </servlet-mapping>
-   <servlet-mapping>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>SimpleUploaderServlet</servlet-name>
         <url-pattern>/js/fckeditor/editor/filemanager/upload/simpleuploader</url-pattern>
-   </servlet-mapping>
-   <servlet-mapping>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>SimpleUploaderServlet</servlet-name>
         <url-pattern>/~*/js/fckeditor/editor/filemanager/upload/simpleuploader</url-pattern>
-   </servlet-mapping>
+    </servlet-mapping>
+    <!-- End fckeditor -->
 
-
-   <servlet>
-      <servlet-name>FieldLayoutSaveAjax</servlet-name>
-      <servlet-class>reger.mega.FieldLayoutSaveAjax</servlet-class>
+    <servlet>
+        <servlet-name>FieldLayoutSaveAjax</servlet-name>
+        <servlet-class>reger.mega.FieldLayoutSaveAjax</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>FieldLayoutSaveAjax</servlet-name>
@@ -99,8 +111,8 @@
 
 
     <servlet>
-      <servlet-name>UploadAjax</servlet-name>
-      <servlet-class>reger.UploadAjax</servlet-class>
+        <servlet-name>UploadAjax</servlet-name>
+        <servlet-class>reger.UploadAjax</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UploadAjax</servlet-name>
@@ -108,7 +120,7 @@
     </servlet-mapping>
 
 
-   <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>dwr-invoker</servlet-name>
         <url-pattern>/dwr/*</url-pattern>
     </servlet-mapping>
@@ -116,7 +128,7 @@
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha</url-pattern>
     </servlet-mapping>
-   <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>

@@ -120,6 +120,10 @@ public class UserSession implements java.io.Serializable {
         return outUrl;
     }
 
+    public String siteRootUrl(){
+        return urlSplitter.getSiterooturl();
+    }
+
 
 
     public void setAttribute(String attributename, Object obj){

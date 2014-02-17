@@ -26,7 +26,7 @@ pageProps.helpText="This is your blog's home page.  People who visit your weblog
 //If it's a customdomain tied to a log then redirect there
 int logIdByCustomDomain = Account.findLogidByCustomDomain(userSession.getAccount().getAccountid(), userSession.getUrlSplitter());
 if (logIdByCustomDomain>0) {
-    response.sendRedirect(pageProps.pathToAppRoot + "logmain"+logIdByCustomDomain+".log");
+    response.sendRedirect(pageProps.pathToAppRoot + "blog/"+logIdByCustomDomain+"/");
     return;
 }
 %>

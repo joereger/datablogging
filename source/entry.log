@@ -39,26 +39,37 @@ if (pageProps.entry.isDraft==1 || pageProps.entry.isApproved==0){
 
 //Want to make sure the url displayed to the user is always the same so that url-based embed things work (Disqus)
 try{
-    //String entryurl="entry.log?logid=" + rsEvent[i][5] + "&eventid=" + rsEvent[i][4];
-    //String entryurl="entry-logid" + rsEvent[i][5] + "-eventid" + rsEvent[i][4] + ".log";
     String entryurl = reger.Entry.entryFileNameStatic(pageProps.entry.logid, pageProps.entry.eventid, pageProps.entry.title);
-    String entryurlComplete = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl;
+    String entryurlComplete = userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl;
     Object originalRequestUriObj = request.getAttribute("javax.servlet.forward.request_uri");
     String originalRequestUri = "";
     if (originalRequestUriObj!=null && originalRequestUriObj instanceof String){
         originalRequestUri = (String)originalRequestUriObj;
+    } else {
+        originalRequestUri = request.getRequestURI();
     }
-    //Add the servername and port
-    //mb.append("<br/><br/>"+ErrorDissect.ServletUtilsdissect(request)+"<br/><br/>");
-    //if (request.getLocalPort()!=80 && request.getLocalPort()!=443) {
-    //    entryurlComplete = "" + userSession.getAccount().getSiteRootUrl(userSession) + ":" + request.getLocalPort() + "/" + entryurl;
-    //}
+    String queryString = "";
+    if (request.getAttribute("javax.servlet.forward.request_uri")!=null && request.getAttribute("javax.servlet.forward.request_uri").toString().length()>0){
+        //This was a forwarded request
+        if (request.getAttribute("javax.servlet.forward.query_string")!=null && request.getAttribute("javax.servlet.forward.query_string").toString().length()>0){
+            queryString = "?" + request.getAttribute("javax.servlet.forward.query_string").toString();
+        }
+    } else {
+        //This was not a forwarded request
+        if (request.getQueryString()!=null && request.getQueryString().length()>0){
+            queryString = "?" + request.getQueryString();
+        }
+    }
+    System.out.println("originalRequestUri:"+originalRequestUri);
+    System.out.println("entryurl:"+entryurl);
     if (originalRequestUri!=null && !originalRequestUri.equals("") && originalRequestUri.indexOf(entryurl)<=-1 && request.getMethod().equalsIgnoreCase("GET")){
         Debug.debug(4, "entry.log", "originalRequestUri="+originalRequestUri);
         Debug.debug(4, "entry.log", "entryurl        ="+entryurl);
         Debug.debug(4, "entry.log", "entryurlComplete="+entryurlComplete);
         Debug.debug(4, "entry.log", "redrecting to "+entryurlComplete.trim());
-        response.sendRedirect(entryurlComplete.trim());
+        response.setStatus(301);
+        response.setHeader( "Location", entryurlComplete.trim()+queryString);
+        response.setHeader( "Connection", "close" );
         return;
     }
 } catch (Exception ex){
@@ -66,17 +77,16 @@ try{
 }
 
 //Output javascript for disqus
-    if (1==1){
-        //Note that I'm using the version of the url without words on it for disqus
-        String entryurl = reger.Entry.entryFileNameStaticNoWords(pageProps.entry.logid, pageProps.entry.eventid);
-        String entryurlComplete = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl;
-        mb.append("\n\n<script type=\"text/javascript\">var disqus_url=\""+entryurlComplete+"\";</script>\n\n");
-    }
+//if (1==1){
+    //Note that I'm using the version of the url without words on it for disqus
+    //String entryurl = reger.Entry.entryFileNameStaticNoWords(pageProps.entry.logid, pageProps.entry.eventid);
+    //String entryurlComplete = "" + userSession.getAccount().getSiteRootUrl(userSession) + "/" + entryurl;
+    //mb.append("\n\n<script type=\"text/javascript\">var disqus_url=\""+entryurlComplete+"\";</script>\n\n");
+//}
 
-//Start the page
+
 //Determine which mode to display the page
 boolean displayasadmin=false;
-
 //Append the top of the form
 mb.append(reger.MegaHtmlFormTop.getHtml(userSession, pageProps, displayasadmin, request, userSession.getAccount().getTimezoneid()));
 //Append the center of the page
