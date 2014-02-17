@@ -1,8 +1,11 @@
 package reger.core.scheduler;
 
 import reger.core.Debug;
+import reger.util.Num;
 
-import java.net.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * This class creates a listener with SMTPListenerConnHandler which
@@ -74,7 +77,7 @@ public class SmtpListener implements Runnable  {
     public void run()  {
         bindPort25();
         if (!isPortSuccessfullyBound){
-            bindPort8025();
+            bindPortFromConfig();
         }
     }
 
@@ -120,13 +123,24 @@ public class SmtpListener implements Runnable  {
         //System.out.println("REGER: SMTP Listener thread at end of run() method.");
     }
 
-    public void bindPort8025(){
-        Debug.debug(4, "", "Starting SMTP listener on: " + reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP") +" port 8025");
+    //was port 8025
+    public void bindPortFromConfig(){
+
+        Debug.debug(4, "", "Starting SMTP listener on: " + reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP") +" port from config");
         try {
+
+            int port = 8025;
+            if (Num.isinteger(reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERPORT"))){
+                port = Integer.parseInt(reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERPORT"));
+            }
+
+            Debug.debug(4, "", "Starting SMTP listener on: " + reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP") +" port "+port);
+
+
             if (reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP").equals("*")){
-                slisten = new ServerSocket(8025);
+                slisten = new ServerSocket(port);
             } else {
-                slisten = new ServerSocket(8025, 50, InetAddress.getByName(reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP")));
+                slisten = new ServerSocket(port, 50, InetAddress.getByName(reger.systemprops.AllSystemProperties.getProp("EMAILLISTENERIP")));
             }
             isPortSuccessfullyBound = true;
             keepMeRunning = true;
@@ -146,7 +160,7 @@ public class SmtpListener implements Runnable  {
             //System.out.println("REGER: SMTP Listener did not bind to port 25: " + e.getMessage());
             e.printStackTrace();
             Debug.debug(4, "", e);
-            Debug.debug(4, "", "SMTP Listener did not bind to port 8025.  Incoming email API will not function properly.");
+            Debug.debug(4, "", "SMTP Listener did not bind to port from system properties.  Incoming email API will not function properly.");
             //reger.core.EmailSend.sendMail(reger.Vars.EMAILDEFAULTTO, reger.Vars.EMAILDEFAULTTO, "Weblogs SMTP Listener Failed to Bind to Port 25", "This is generally caused by another service running on port 25 or by a conflict with Tomcat on startup.  It can generally be fixed by restarting Tomcat.");
         } catch (java.net.SocketException sockex){
             //System.out.println("REGER: SMTP Listener socket exception: " + sockex.getMessage());

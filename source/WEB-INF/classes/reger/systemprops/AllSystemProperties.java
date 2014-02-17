@@ -10,7 +10,7 @@ public class AllSystemProperties {
     private static SystemProperty[] properties;
 
     public static void loadProperties(){
-        properties = new SystemProperty[12];
+        properties = new SystemProperty[13];
         properties[0] = new PathUploadMedia();
         properties[1] = new EmailServer();
         properties[2] = new EmailListenerIsOn();
@@ -23,6 +23,7 @@ public class AllSystemProperties {
         properties[9] = new LicensingServerUrl();
         properties[10] = new IsLinkrotFixerOn();
         properties[11] = new ForcePort();
+        properties[12] = new EmailListenerPort();
     }
 
     public static SystemProperty[] getAllSystemProperties(){
