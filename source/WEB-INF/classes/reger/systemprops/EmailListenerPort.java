@@ -6,8 +6,8 @@ public class EmailListenerPort extends SystemProperty{
 
     public EmailListenerPort(){
         setPropertyName("EMAILLISTENERPORT");
-        setPropertyDefault("8025");
-        setPropertyDescription("port that email server should listen on.");
+        setPropertyDefault("25");
+        setPropertyDescription("port that email server should listen on.  default of 25.");
         load();
     }
 

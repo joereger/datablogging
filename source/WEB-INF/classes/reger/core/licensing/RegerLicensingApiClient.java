@@ -107,25 +107,29 @@ public class RegerLicensingApiClient {
         try{
 
             //Build up the parameters
-            Vector params = new Vector ();
-            if (encryptedLicense==null){
-                encryptedLicense = "";
-            }
-            params.addElement(encryptedLicense);
+            //Vector params = new Vector ();
+            //if (encryptedLicense==null){
+            //    encryptedLicense = "";
+            //}
+            //params.addElement(encryptedLicense);
 
             //Call the remote method
-            XmlRpcClient xmlrpc = new XmlRpcClient(licensingServerUrl);
-            Hashtable result = (Hashtable) xmlrpc.execute("regerlicensingapi.isLicenseBillingOk", params);
+            //XmlRpcClient xmlrpc = new XmlRpcClient(licensingServerUrl);
+            //Hashtable result = (Hashtable) xmlrpc.execute("regerlicensingapi.isLicenseBillingOk", params);
+
+            //HACK TO KILL LICENSING
+            Hashtable result = new Hashtable();
+            result.put("successful", "true");
 
             Debug.logHashTableToDb("Result after calling regerlicensingapi.isLicenseBillingOk", result);
 
             return result;
-        } catch (MalformedURLException urle){
-            Debug.errorsave(urle, "");
-            return errorMessage("The URL for the licensing server is invalid.  Please contact reger.com for a fix.");
-        } catch (IOException ioex){
-            Debug.errorsave(ioex, "");
-            return errorMessage("The datablogging server was unable to connect to the internet in order to communicate with the licensing server.");
+//        } catch (MalformedURLException urle){
+//            Debug.errorsave(urle, "");
+//            return errorMessage("The URL for the licensing server is invalid.  Please contact reger.com for a fix.");
+//        } catch (IOException ioex){
+//            Debug.errorsave(ioex, "");
+//            return errorMessage("The datablogging server was unable to connect to the internet in order to communicate with the licensing server.");
         } catch (Exception e){
             Debug.errorsave(e, "");
             return errorMessage("There was an unknown error: " + e.getMessage());

@@ -1310,12 +1310,16 @@ public class Account implements java.io.Serializable {
     }
 
     private void setBillingIsNotOkInDb(String billingerror){
+
+        //HACK TO KILL LICENSING
+        setBillingIsOkInDb();
+
         //-----------------------------------
         //-----------------------------------
-        int count = Db.RunSQLUpdate("UPDATE account SET isbillingokencrypted='"+reger.core.Util.cleanForSQL(reger.IsBillingOk.getIsbillingokString(false, accountid))+"', billingerror='"+reger.core.Util.cleanForSQL(billingerror)+"' WHERE accountid='"+accountid+"'");
+        //int count = Db.RunSQLUpdate("UPDATE account SET isbillingokencrypted='"+reger.core.Util.cleanForSQL(reger.IsBillingOk.getIsbillingokString(false, accountid))+"', billingerror='"+reger.core.Util.cleanForSQL(billingerror)+"' WHERE accountid='"+accountid+"'");
         //-----------------------------------
         //-----------------------------------
-        this.billingerror = billingerror;
+        //this.billingerror = billingerror;
     }
 
     public Calendar getLastbillingcheck() {

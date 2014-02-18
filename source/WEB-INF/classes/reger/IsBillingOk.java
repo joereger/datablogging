@@ -35,7 +35,9 @@ public class IsBillingOk {
                 }
             }
         }
-        return false;
+        return true;
+        //HACK TO KILL LICENSING
+        //return false;
     }
 
 
@@ -47,11 +49,12 @@ public class IsBillingOk {
 
         //Add boolean to props
         HashMap props = new HashMap();
-        if(isbillingok){
+        //HACK TO KILL LICENSING
+        //if(isbillingok){
             props.put(PROPSTRINGISBILLINGOK, "1");
-        } else {
-            props.put(PROPSTRINGISBILLINGOK, "0");
-        }
+        //} else {
+        //    props.put(PROPSTRINGISBILLINGOK, "0");
+        //}
 
         //Add the accountid
         props.put(PROPSTRINGACCOUNTID, String.valueOf(accountid));
