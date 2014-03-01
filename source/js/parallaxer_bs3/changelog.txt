@@ -1,0 +1,6 @@
+08/21/2013:
+- update to Bootstrap 3.0. stable version
+- update jquery.scrollTo plugin to 1.4.6 latest version
+- fix some col-*-* div's classes to Bootstrap 3.0. default
+- update top .navbar structure to Bootstrap latest version
+- update .panel to Bootstrap 3.0. html structure
