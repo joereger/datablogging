@@ -11,7 +11,7 @@ public class LocationRenderHtml {
         //reger.core.Util.debug(5, "LocationRenderHtml.getHtmlForEntryPageTable()<br>locOfEntry.getLocationname()" + locOfEntry.getLocationname());
         StringBuffer mb = new StringBuffer();
         mb.append("<div class=\"row\">");
-        mb.append("<div class=\"span2\">");
+        mb.append("<div class=\"col-md-2\">");
         if (displayasadmin) {
 
             mb.append("<strong>Location</strong>");
@@ -33,7 +33,7 @@ public class LocationRenderHtml {
             }
         }
         mb.append("&nbsp;</div>");
-        mb.append("<div class=\"span10\">");
+        mb.append("<div class=\"col-md-10\">");
 
         if (displayasadmin) {
             if (userSession!=null && userSession.getAccountuser()!=null && userSession.getAccount()!=null && userSession.getAccount().getAccountid()>0 && locOfEntry!=null){
@@ -71,7 +71,7 @@ public class LocationRenderHtml {
         }
 
         mb.append("<div class=\"row\">");
-        mb.append("<div class=\"span2\">");
+        mb.append("<div class=\"col-md-2\">");
 
 
         if (displayasadmin) {
@@ -89,7 +89,7 @@ public class LocationRenderHtml {
             }
         }
         mb.append("</div>");
-        mb.append("<div class=\"span10\">");
+        mb.append("<div class=\"col-md-10\">");
 
 
 //        mb.append("<tr>");

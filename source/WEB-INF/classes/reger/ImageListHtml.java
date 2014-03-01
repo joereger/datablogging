@@ -178,7 +178,7 @@ public class ImageListHtml {
                 for (int i = 0; i < rstImagelist.length; i++) {
                     String mediaoutPath = "";
                     mb.append("<!-- Begin individual image listing -->");
-                    mb.append("<li class=\"span3\">");
+                    mb.append("<li class=\"col-md-3\">");
                     mb.append("<div class=\"thumbnail\">");
 
 
@@ -230,7 +230,7 @@ public class ImageListHtml {
                     //Image Keyword Tags
                     String imageTags = reger.Tag.getStringOfAllTagsForImage(Integer.parseInt(rstImagelist[i][0]));
                     mb.append("<br>");
-                    mb.append("<font face=arial size=-2>Tags <input type='text' name='imagetag-" + rstImagelist[i][0] + "' value=\"" + reger.core.Util.cleanForHtml(imageTags) + "\" maxlength='254' style=\"font-size: 10px;\" class=\"span1\"><br>");
+                    mb.append("<font face=arial size=-2>Tags <input type='text' name='imagetag-" + rstImagelist[i][0] + "' value=\"" + reger.core.Util.cleanForHtml(imageTags) + "\" maxlength='254' style=\"font-size: 10px;\" class=\"col-md-1\"><br>");
 
 
 

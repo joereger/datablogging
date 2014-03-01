@@ -17,7 +17,7 @@ public interface EntryListTemplateTag extends TemplateTag{
      * It takes in these elements and then spits out what the
      * tag should be replaced with on the screen.
      */
-    public String getValue(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, Entry entry);
+    public String getValue(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, Entry entry, int numberOnPage);
 
 
 }

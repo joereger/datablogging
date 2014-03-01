@@ -390,7 +390,7 @@ public class MegaLogTypeHtmlrender {
         //Append the paginglinks to the top of the page
         mb.append(pagingLinks);
 
-
+        int numberOnPage = 0;
 
         String author="";
 
@@ -444,7 +444,7 @@ public class MegaLogTypeHtmlrender {
                 //Call the tRexEntry Engine
                 String templateText = reger.template.AllTemplatesInSystem.getSystemDefaultByType(Template.TEMPLATETYPEENTRYLIST).getTemplate();
 
-
+                 numberOnPage++;
 
 
                 //If we're on edit.log and the logged-in user can't administer this logid then don't display the result

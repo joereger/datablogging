@@ -135,17 +135,17 @@ public class FieldLayout {
         String spansize2 = "";
         String spansize3 = "";
         if (totalColumns==1){
-            spansize1 = "span8";
-            spansize2 = "span1";
-            spansize3 = "span1";
+            spansize1 = "col-md-8";
+            spansize2 = "col-md-1";
+            spansize3 = "col-md-1";
         } else if (totalColumns==2){
-            spansize1 = "span4";
-            spansize2 = "span4";
-            spansize3 = "span1";
+            spansize1 = "col-md-4";
+            spansize2 = "col-md-4";
+            spansize3 = "col-md-1";
         } else {
-            spansize1 = "span3";
-            spansize2 = "span3";
-            spansize3 = "span3";
+            spansize1 = "col-md-3";
+            spansize2 = "col-md-3";
+            spansize3 = "col-md-3";
         }
 
 

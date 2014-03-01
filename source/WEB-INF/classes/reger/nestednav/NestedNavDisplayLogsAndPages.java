@@ -52,7 +52,7 @@ public class NestedNavDisplayLogsAndPages implements NestedNavDisplay{
 
         String nestingNbsp = "";
         for(int i=2; i<=currentNestedLevel; i++){
-            nestingNbsp = nestingNbsp + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            //nestingNbsp = nestingNbsp + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         }
 
 

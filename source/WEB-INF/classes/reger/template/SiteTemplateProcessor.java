@@ -79,8 +79,8 @@ public class SiteTemplateProcessor implements TemplateProcessor {
 
 
         //Twitter Bootstrap
-        appendToHead.append("<link href=\""+pageProps.pathToAppRoot+"js/bootstrap-2.3.2/css/bootstrap.min.css\" rel=\"stylesheet\">");
-        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/bootstrap-2.3.2/js/bootstrap.min.js\"></script>"+"\n");
+        appendToHead.append("<link href=\""+pageProps.pathToAppRoot+"js/bootstrap-3.1.1-dist/css/bootstrap.min.css\" rel=\"stylesheet\">");
+        appendToHead.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/bootstrap-3.1.1-dist/js/bootstrap.min.js\"></script>"+"\n");
 
 
         //prettyPhoto

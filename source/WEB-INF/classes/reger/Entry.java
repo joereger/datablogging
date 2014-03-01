@@ -122,10 +122,10 @@ public class Entry {
     //Counts
     public int messagecount = 0;
     public int filecount = 0;
+    public int firstImageid = 0;
     public StringBuffer filethumbs = new StringBuffer();
     public StringBuffer filethumbsrss = new StringBuffer();
     public StringBuffer filethumbslightbox = new StringBuffer();
-    public StringBuffer filethumbspolaroid = new StringBuffer();
     public StringBuffer videolist = new StringBuffer();
 
     //Xform
@@ -735,9 +735,7 @@ public class Entry {
             filethumbs = new StringBuffer();
             filethumbsrss = new StringBuffer();
             filethumbslightbox = new StringBuffer();
-            filethumbslightbox.append("<ul class=\"thumbnails\">" + "\n");
-            filethumbspolaroid = new StringBuffer();
-            filethumbspolaroid.append("<ul class=\"polaroids\">");
+            filethumbslightbox.append("<ul class=\"thumbnails_prettyphoto\">" + "\n");
             videolist = new StringBuffer();
             for (int i = 0; i < rstThumbs.length; i++) {
                 Account account = new Account(accountid);
@@ -745,7 +743,13 @@ public class Entry {
                 String ext = FilenameUtils.getExtension(rstThumbs[i][2]);
 
                 //Don't do a thumbnail for videos or if it's already in there
-                if (ext.indexOf("wmv")==-1 && !isImageInBodyAsTag(comments, Integer.parseInt(rstThumbs[i][0]))){
+                //if (ext.indexOf("wmv")==-1 && !isImageInBodyAsTag(comments, Integer.parseInt(rstThumbs[i][0]))){
+                if (ext.indexOf("wmv")==-1 && ext.indexOf("mov")==-1){
+
+                    if (firstImageid==0 && Util.isinteger(rstThumbs[i][0])){
+                        firstImageid = Integer.parseInt(rstThumbs[i][0]);
+                    }
+
                     filethumbs.append("<a href='mediaouthtml.log?imageid="+rstThumbs[i][0]+"' onclick=\"javascript:NewWindow(this.href,'name','0','0','yes');return false;\">");
                     filethumbs.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
                     filethumbs.append("</a>");
@@ -756,36 +760,14 @@ public class Entry {
 
                     //prettyPhoto + jQuery, can you bring it... finally?
                     filethumbslightbox.append("<li>" + "\n");
-                    filethumbslightbox.append("<div class=\"thumbnail\">" + "\n");
-//                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
-                        filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"\" title=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-                        filethumbslightbox.append("</a>");
-//                    } else {
-//                        ext = "html";
-//                        filethumbslightbox.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" title=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-//                        filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
-//                        filethumbslightbox.append("</a>");
-//                    }
-                    filethumbslightbox.append("</div>" + "\n");
+                    //filethumbslightbox.append("<div class=\"thumbnail_prettyphoto\">" + "\n");
+                    filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"\" title=\"Image\" rel=\"prettyPhoto[Images"+eventid+"]\">");
+                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                    filethumbslightbox.append("</a>");
+                    //filethumbslightbox.append("</div>" + "\n");
                     filethumbslightbox.append("</li>" + "\n");
 
 
-                    //Polaroid
-//                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
-                        filethumbspolaroid.append("<li>");
-                        filethumbspolaroid.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"\" title=\""+""+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-                        filethumbspolaroid.append("<img alt=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes'>");
-                        filethumbspolaroid.append("</a>");
-                        filethumbspolaroid.append("</li>");
-//                    } else {
-//                        ext = "html";
-//                        filethumbspolaroid.append("<li>");
-//                        filethumbspolaroid.append("<a href=\"mediaouthtml.log?imageid="+rstThumbs[i][0]+"&ext=page."+ext+"\" title=\""+""+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-//                        filethumbspolaroid.append("<img alt=\""+ Util.cleanForjavascript(rstThumbs[i][1])+"\" src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes'>");
-//                        filethumbspolaroid.append("</a>");
-//                        filethumbspolaroid.append("</li>");
-//                    }
 
                 }
 
@@ -818,8 +800,7 @@ public class Entry {
             }
             filethumbslightbox.append("</ul>" + "\n");
 
-            filethumbspolaroid.append("</ul>");
-            filethumbspolaroid.append("<br clear=\"all\">");
+
 
         }
 

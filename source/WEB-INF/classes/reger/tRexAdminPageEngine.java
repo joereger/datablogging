@@ -30,8 +30,8 @@ public class tRexAdminPageEngine {
         ap.append("<link rel=\"stylesheet\" href=\""+pageProps.pathToAppRoot+"js/jQuery/css/smoothness/jquery-ui-1.8.18.custom.css\" type=\"text/css\" />"+"\n");
 
         //Twitter Bootstrap
-        ap.append("<link href=\""+pageProps.pathToAppRoot+"js/bootstrap-2.3.2/css/bootstrap.min.css\" rel=\"stylesheet\">");
-        ap.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/bootstrap-2.3.2/js/bootstrap.min.js\"></script>"+"\n");
+        ap.append("<link href=\""+pageProps.pathToAppRoot+"js/bootstrap-3.1.1-dist/css/bootstrap.min.css\" rel=\"stylesheet\">");
+        ap.append("<script type=\"text/javascript\" src=\""+pageProps.pathToAppRoot+"js/bootstrap-3.1.1-dist/js/bootstrap.min.js\"></script>"+"\n");
 
 
         //prettyPhoto
@@ -92,7 +92,7 @@ public class tRexAdminPageEngine {
         ap.append("    <div class=\"container\">" + "\n");
 
         ap.append("     <div class=\"row\">" + "\n");
-        ap.append("          <div class=\"span12\">" + "\n");
+        ap.append("          <div class=\"col-md-12\">" + "\n");
 
         ap.append("            <!-- Start Main Body -->" + "\n");
         //Page title

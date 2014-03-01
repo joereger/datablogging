@@ -132,7 +132,7 @@ if (request.getParameter("returnurl")!=null && !request.getParameter("returnurl"
 
 
 mb.append("<div class=\"row\">");
-mb.append("<div class=\"span4\">");
+mb.append("<div class=\"col-md-4\">");
 mb.append("<h1>Logs and Pages</h1>");
 reger.nestednav.NestedNavDisplayLayoutManager navMgrDisplay = new reger.nestednav.NestedNavDisplayLayoutManager();
 mb.append(navMgrDisplay.outputNavBarHtml(userSession.getAccount().getNestedNavCollection(), userSession, request));
@@ -141,7 +141,7 @@ mb.append("</div>");
 
 
 
-mb.append("<div class=\"span4\">");
+mb.append("<div class=\"col-md-4\">");
     mb.append("<h1>Recent Posts</h1>");
 
     mb.append("<table class=\"table table-striped\">");
@@ -189,7 +189,7 @@ mb.append("<div class=\"span4\">");
 
 
 
-mb.append("<div class=\"span4\">");
+mb.append("<div class=\"col-md-4\">");
     mb.append("<h1>Drafts</h1>");
 
     //Draft entries start

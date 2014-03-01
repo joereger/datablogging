@@ -477,7 +477,7 @@ mb.append("<br/><br/>");
                     mb.append(" checked");
                 }
                 mb.append("> Last ");
-                mb.append("<select class=\"span1\" name=lastxdays "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=lastxdays "+dropdownstyle+">");
                 for(int i=0; i<60; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getLastxdays()==i){
@@ -493,7 +493,7 @@ mb.append("<br/><br/>");
                     mb.append(" checked");
                 }
                 mb.append("> Last ");
-                mb.append("<select class=\"span1\" name=lastxweeks "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=lastxweeks "+dropdownstyle+">");
                 for(int i=0; i<16; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getLastxweeks()==i){
@@ -509,7 +509,7 @@ mb.append("<br/><br/>");
                     mb.append(" checked");
                 }
                 mb.append("> Last ");
-                mb.append("<select class=\"span1\" name=lastxmonths "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=lastxmonths "+dropdownstyle+">");
                 for(int i=0; i<24; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getLastxmonths()==i){
@@ -525,7 +525,7 @@ mb.append("<br/><br/>");
                     mb.append(" checked");
                 }
                 mb.append("> Last ");
-                mb.append("<select class=\"span1\" name=lastxyears "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=lastxyears "+dropdownstyle+">");
                 for(int i=0; i<100; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getLastxyears()==i){
@@ -543,7 +543,7 @@ mb.append("<br/><br/>");
                 mb.append("> Date Range:");
                 mb.append("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From:<br>");
                 mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-                mb.append("<select class=\"span1\" name=daterangefromyyyy "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=daterangefromyyyy "+dropdownstyle+">");
                 for(int i=1970; i<=2020; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangefromyyyy()==i){
@@ -553,7 +553,7 @@ mb.append("<br/><br/>");
                 }
                 mb.append("</select>");
                 mb.append(" / ");
-                mb.append("<select class=\"span1\" name=daterangefrommm "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=daterangefrommm "+dropdownstyle+">");
                 for(int i=1; i<=12; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangefrommm()==i){
@@ -563,7 +563,7 @@ mb.append("<br/><br/>");
                 }
                 mb.append("</select>");
                 mb.append(" / ");
-                mb.append("<select class=\"span1\" name=daterangefromdd "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=daterangefromdd "+dropdownstyle+">");
                 for(int i=0; i<=31; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangefromdd()==i){
@@ -574,7 +574,7 @@ mb.append("<br/><br/>");
                 mb.append("</select>");
                 mb.append("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:<br>");
                 mb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-                mb.append("<select class=\"span1\" name=daterangetoyyyy "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=daterangetoyyyy "+dropdownstyle+">");
                 for(int i=1970; i<=2020; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangetoyyyy()==i){
@@ -584,7 +584,7 @@ mb.append("<br/><br/>");
                 }
                 mb.append("</select>");
                 mb.append(" / ");
-                mb.append("<select class=\"span1\" name=daterangetomm "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=daterangetomm "+dropdownstyle+">");
                 for(int i=1; i<=12; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangetomm()==i){
@@ -594,7 +594,7 @@ mb.append("<br/><br/>");
                 }
                 mb.append("</select>");
                 mb.append(" / ");
-                mb.append("<select class=\"span1\" name=daterangetodd "+dropdownstyle+">");
+                mb.append("<select class=\"col-md-1\" name=daterangetodd "+dropdownstyle+">");
                 for(int i=1; i<=31; i++){
                    mb.append("<option value="+i);
                    if (megaChart.getDaterangetodd()==i){

@@ -36,15 +36,24 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
     /**
      * Override so it can be called without an author tag
      */
-    public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, Entry entry) {
-        return entryout(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, -1, entry);
+    public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, Entry entry, int numberOnPage) {
+        return entryout(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, -1, entry, numberOnPage);
     }
+
+    public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, Entry entry) {
+        return entryout(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, -1, entry, 1);
+    }
+
 
   /**
     * tRex is the template engine.  It's robust but fast... like tRex.
     * This version of tRex builds events from templates.
     */
-    public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, Entry entry) {
+  public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, Entry entry) {
+    return entryout(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, accountuserid, entry, 1);
+  }
+
+    public static StringBuffer entryout(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, Entry entry, int numberOnPage) {
         //Make sure we have a template
         if (templateentry.equals("")) {
             EntryListTemplateProcessor enttp = new EntryListTemplateProcessor();
@@ -65,7 +74,7 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
             //Go get the tag that can handle this syntax
             EntryListTemplateTag tag = getTagBySyntax(m.group());
             if (tag!=null){
-                m.appendReplacement(en, reger.core.Util.cleanForAppendreplacement(tag.getValue(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, accountuserid, entry)));
+                m.appendReplacement(en, reger.core.Util.cleanForAppendreplacement(tag.getValue(templateentry, entrydate, logentrytitle, logentryurl, logentrybody, logname, imagescount, messagescount, accountuserid, entry, numberOnPage)));
             }
 
         }
@@ -111,7 +120,7 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
     }
 
     private static void loadTags(){
-        tags = new EntryListTemplateTag[15];
+        tags = new EntryListTemplateTag[16];
         tags[0] = new EntryListTemplateTagLogentryTitle();
         tags[1] = new EntryListTemplateTagLogentryUrl();
         tags[2] = new EntryListTemplateTagLogentryBody();
@@ -126,7 +135,8 @@ public class EntryListTemplateProcessor implements TemplateProcessor {
         tags[11]= new EntryListTemplateTagFileThumbs();
         tags[12]= new EntryListTemplateTagFileThumbsLightbox();
         tags[13]= new EntryListTemplateTagVideoList();
-        tags[14]= new EntryListTemplateTagFileThumbsPolaroid();
+        tags[14]= new EntryListTemplateTagNumberOnPage();
+        tags[15]= new EntryListTemplateTagParallaxStyle();
     }
 
     public TemplateTag[] getTagsThisProcessorCanHandle(){

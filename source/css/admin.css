@@ -59,4 +59,8 @@
 /*}*/
 /*.subnav .nav > li:first-child > a, .subnav .nav > li:first-child > a:hover {*/
     /*border-radius: 0 0 0 0;*/
+/*}*/
+
+li {
+    display: inline;
 }

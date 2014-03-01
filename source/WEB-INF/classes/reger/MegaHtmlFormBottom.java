@@ -46,10 +46,10 @@ public class MegaHtmlFormBottom {
 
 
             mb.append("<div class=\"row\">");
-            mb.append("<div class=\"span2\">");
+            mb.append("<div class=\"col-md-2\">");
             mb.append("<br/>");
             mb.append("</div>");
-            mb.append("<div class=\"span10\">");
+            mb.append("<div class=\"col-md-10\">");
 
             mb.append("<input type='submit' value='" + submittext + "' " + disabledFormText + "></td>");
             mb.append("</div>");
@@ -67,10 +67,10 @@ public class MegaHtmlFormBottom {
             //Begin image-add link
             if (displayasadmin) {
                 mb.append("<div class=\"row\">");
-                mb.append("<div class=\"span2\">");
+                mb.append("<div class=\"col-md-2\">");
                 mb.append("<strong>Images</strong>");
                 mb.append("</div>");
-                mb.append("<div class=\"span10\">");
+                mb.append("<div class=\"col-md-10\">");
 
                 if (pageProps.entry.eventid != -1) {
                     if (!editLayout) {
@@ -109,10 +109,10 @@ public class MegaHtmlFormBottom {
                 imagetagid = Integer.parseInt(request.getParameter("imagetagid"));
             }
             mb.append("<div class=\"row\">");
-            mb.append("<div class=\"span2\">");
+            mb.append("<div class=\"col-md-2\">");
             mb.append("<br/>");
             mb.append("</div>");
-            mb.append("<div class=\"span10\">");
+            mb.append("<div class=\"col-md-10\">");
             mb.append(reger.ImageListHtml.htmlOut(userSession.getAccount().getAccountid(), pageProps.entry.eventid, imagetagid, displayasadmin, userSession, -1, perpage, request));
             mb.append("</div>");
             mb.append("</div>");
@@ -135,12 +135,12 @@ public class MegaHtmlFormBottom {
 //                }
 //                if (access_token!=null && !access_token.equals("")){
 //                    mb.append("<div class=\"row\">");
-//                    mb.append("<div class=\"span2\">");
+//                    mb.append("<div class=\"col-md-2\">");
 //                    mb.append("<a id=\"instgrm\">");
 //                    mb.append("<strong>Instagram</strong> ");
 //                    mb.append("<a href=\"#instgrm\" class=\"show_hide\">show/hide</a><br/><br/>");
 //                    mb.append("</div>");
-//                    mb.append("<div class=\"span10\">");
+//                    mb.append("<div class=\"col-md-10\">");
 //
 //                    //mb.append("<a id=\"instgrm\">");
 //                    //mb.append("<a href=\"#instgrm\" class=\"show_hide\">show/hide</a><br/><br/>");
@@ -162,7 +162,7 @@ public class MegaHtmlFormBottom {
 //                            for (MediaFeedData mediaData : mediaFeeds) {
 //                                Images images = mediaData.getImages();
 //                                ImageData stdImg = images.getStandardResolution();
-//                                mb.append("<li class=\"span2\">");
+//                                mb.append("<li class=\"col-md-2\">");
 //                                    mb.append("<div class=\"thumbnail\">");
 //                                        mb.append("<img src=\""+stdImg.getImageUrl()+"\">");
 //                                        mb.append("<input type=\"checkbox\" name=\"instagramimg\" value=\""+stdImg.getImageUrl()+"\"> add to post");
@@ -216,10 +216,10 @@ public class MegaHtmlFormBottom {
             if (displayasadmin && userSession.getAccountuser().userCanDoAcl("APPROVEENTRIES", userSession.getAccount().getAccountid())) {
                 if (pageProps.entry.isApproved == 0) {
                     mb.append("<div class=\"row\">");
-                    mb.append("<div class=\"span2\">");
+                    mb.append("<div class=\"col-md-2\">");
                     mb.append("<br/>");
                     mb.append("</div>");
-                    mb.append("<div class=\"span10\">");
+                    mb.append("<div class=\"col-md-10\">");
                     mb.append("<input type='radio' name='isapproved' value='1' " + disabledFormText + " ");
                     if (pageProps.entry.isApproved != 0) {
                         mb.append("checked");
@@ -259,7 +259,7 @@ public class MegaHtmlFormBottom {
 
             //Smart Entry Tags
             mb.append("<div class=\"row\">");
-            mb.append("<div class=\"span2\">");
+            mb.append("<div class=\"col-md-2\">");
                 if (displayasadmin) {
                     mb.append("<strong>Post Tags</strong>");
                 } else {
@@ -268,7 +268,7 @@ public class MegaHtmlFormBottom {
                     }
                 }
             mb.append("</div>");
-            mb.append("<div class=\"span10\">");
+            mb.append("<div class=\"col-md-10\">");
 
             if (displayasadmin) {
                 //This is where the admin side is shown.
@@ -299,10 +299,10 @@ public class MegaHtmlFormBottom {
                 reger.RelatedLinks relatedLinks = reger.cache.RelatedLinksCache.get(pageProps.entry.eventid, searchterms, userSession);
                 if (relatedLinks.getRelatedLinks().size() > 0) {
                     mb.append("<div class=\"row\">");
-                    mb.append("<div class=\"span2\">");
+                    mb.append("<div class=\"col-md-2\">");
                     mb.append("<strong>Related Posts</strong>");
                     mb.append("</div>");
-                    mb.append("<div class=\"span10\">");
+                    mb.append("<div class=\"col-md-10\">");
                     //Rip through the related entries
                     //@todo Display rank of related links.  We have relatedLinks.relatedRank[] available with the info.
                     for (Iterator it = relatedLinks.getRelatedLinks().iterator(); it.hasNext();) {
@@ -670,10 +670,10 @@ public class MegaHtmlFormBottom {
 
 
                 mb.append("<div class=\"row\">");
-                mb.append("<div class=\"span2\">");
+                mb.append("<div class=\"col-md-2\">");
                 mb.append("<br/>");
                 mb.append("</div>");
-                mb.append("<div class=\"span10\">");
+                mb.append("<div class=\"col-md-10\">");
 
                 if (pageProps.action.equals("edit") || pageProps.action.equals("editsubmit")) {
                     mb.append("<table align=right cellspacing=2 cellpadding=4 bgcolor=#ffffff>");

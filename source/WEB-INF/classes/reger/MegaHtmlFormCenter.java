@@ -26,10 +26,10 @@ public class MegaHtmlFormCenter {
 
 
         mb.append("<div class=\"row\">");
-        mb.append("<div class=\"span2\">");
+        mb.append("<div class=\"col-md-2\">");
         mb.append("<br/>");
         mb.append("</div>");
-        mb.append("<div class=\"span10\">");
+        mb.append("<div class=\"col-md-10\">");
 
 
 //        if (displayasadmin && userSession.getAccountuser().userCanDoAcl("MASTERADMIN", userSession.getAccount().getAccountid())){

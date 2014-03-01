@@ -39,7 +39,7 @@ public class EntryListTemplateTagAgoGraphic1 implements EntryListTemplateTag{
      * It takes in these elements and then spits out what the
      * tag should be replaced with on the screen.
      */
-    public String getValue(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, Entry entry) {
+    public String getValue(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, Entry entry, int numberOnPage) {
         //Agotext is based on a GMT date so I must convert from this calendar to a gmt one
         Calendar tmpCal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(entrydate, entrydate.getTimeZone().getID(), "GMT");
         return reger.core.TimeUtils.agoGraphicText(tmpCal);

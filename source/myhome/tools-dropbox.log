@@ -108,7 +108,7 @@ if (api==null || !apiIsGood){
     }
 
     mb.append("<div class=\"row\">");
-    mb.append("<div class=\"well span12\">");
+    mb.append("<div class=\"well col-md-12\">");
     mb.append("<h1>Please <a href=\""+webauthinfo.url+"\">authorize</a> your account.</h1>");
     mb.append("</div>");
     mb.append("</div>");
@@ -116,7 +116,7 @@ if (api==null || !apiIsGood){
 } else {
 
     mb.append("<div class=\"row\">");
-    mb.append("<div class=\"well span12\">");
+    mb.append("<div class=\"well col-md-12\">");
         mb.append("<h3>Authenticated to account '"+api.accountInfo().displayName+"' <a href=\""+pageProps.pathToAppRoot+"myhome/tools-dropbox.log?action=unlink\">revoke access</a></h3>");
         //mb.append("<br/>");
         if (Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())!=null && !Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()).equals("")){
@@ -126,8 +126,8 @@ if (api==null || !apiIsGood){
     mb.append("</div>");
 
 
-    mb.append("<div class=\"well span3\">");
-    mb.append("<div class=\"well span2\">");
+    mb.append("<div class=\"well col-md-3\">");
+    mb.append("<div class=\"well col-md-2\">");
     mb.append("<h3>Instructions</h3>");
     mb.append("Blogging with Dropbox");
     mb.append("</div>");
@@ -146,10 +146,10 @@ if (api==null || !apiIsGood){
 
 
     mb.append("<div class=\"row\">");
-    mb.append("<div class=\"well span4\">");
+    mb.append("<div class=\"well col-md-4\">");
 
 
-    mb.append("<div class=\"well span3\">");
+    mb.append("<div class=\"well col-md-3\">");
     mb.append("<h3>Directory to Blog From</h3>");
     if (Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid())!=null && !Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()).equals("")){
         mb.append(Dropbox.getAutoBlogPath(userSession.getAccount().getAccountid()));
@@ -189,10 +189,10 @@ if (api==null || !apiIsGood){
 
 
 
-    mb.append("<div class=\"well span3\">");
+    mb.append("<div class=\"well col-md-3\">");
 
 
-    mb.append("<div class=\"well span2\">");
+    mb.append("<div class=\"well col-md-2\">");
         mb.append("<h3>Log To Post To</h3>");
         if (Dropbox.getLog(userSession.getAccount().getAccountid())!=null){
             mb.append(Dropbox.getLog(userSession.getAccount().getAccountid()).getName());

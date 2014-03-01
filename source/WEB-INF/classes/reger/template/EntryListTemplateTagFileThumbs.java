@@ -35,7 +35,7 @@ public class EntryListTemplateTagFileThumbs implements EntryListTemplateTag{
      * It takes in these elements and then spits out what the
      * tag should be replaced with on the screen.
      */
-    public String getValue(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, reger.Entry entry) {
+    public String getValue(String templateentry, Calendar entrydate, String logentrytitle, String logentryurl, String logentrybody, String logname, int imagescount, int messagescount, int accountuserid, reger.Entry entry, int numberOnPage) {
         return entry.filethumbs.toString();
     }
 

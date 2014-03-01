@@ -20,7 +20,7 @@ public class NavPanelLevelOne {
 
         mb.append("    <div class=\"container\">" + "\n");
         mb.append("    <div class=\"row\">" + "\n");
-        mb.append("    <div class=\"span12\">" + "\n");
+        mb.append("    <div class=\"col-md-12\">" + "\n");
         mb.append("    <div class=\"subnav\" style=\"position:relative; top: -55px;\">" + "\n");
 
         mb.append("      <ul class=\"nav nav-pills\">" + "\n");
