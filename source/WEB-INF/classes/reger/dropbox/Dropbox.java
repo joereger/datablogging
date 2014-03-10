@@ -7,7 +7,6 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session;
 import com.dropbox.client2.session.WebAuthSession;
-import org.apache.jcs.engine.control.event.ElementEvent;
 import org.apache.tools.ant.util.FileUtils;
 import reger.*;
 import reger.Media.MediaType;
@@ -17,13 +16,12 @@ import reger.core.Debug;
 import reger.core.TimeUtils;
 import reger.core.ValidationException;
 import reger.core.db.Db;
-import reger.dao.Pl;
 import reger.util.Num;
 
 import java.io.*;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -487,8 +485,11 @@ public class Dropbox {
             //Create thumbnail
             ThumbnailCreator.createThumbnail(savedFile);
 
+
             //Resize to 1600
-            ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
+            if (info.getMimeType().indexOf("gif")!=-1){
+                ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
+            }
 
 
             //-----------------------------------
