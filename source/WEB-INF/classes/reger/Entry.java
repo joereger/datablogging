@@ -762,7 +762,7 @@ public class Entry {
                     filethumbslightbox.append("<li>" + "\n");
                     //filethumbslightbox.append("<div class=\"thumbnail_prettyphoto\">" + "\n");
                     filethumbslightbox.append("<a href=\"mediaout/file."+ext+"?imageid="+rstThumbs[i][0]+"\" title=\"Image\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\">");
+                    filethumbslightbox.append("<img src='mediaout.log?imageid="+rstThumbs[i][0]+"&isthumbnail=yes' border=0 align=top style=\"margin: 3px;\" width=\"100\">");
                     filethumbslightbox.append("</a>");
                     //filethumbslightbox.append("</div>" + "\n");
                     filethumbslightbox.append("</li>" + "\n");

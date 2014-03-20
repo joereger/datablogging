@@ -117,7 +117,7 @@ public class Debug {
 
 
     public static void debug(int debugLevel, String label, String whatToLog){
-        //System.out.println(label + ": " + whatToLog);
+        System.out.println(label + ": " + whatToLog);
         Logger logger = Logger.getLogger(Debug.class);
         //logger.debug(label+": "+whatToLog);
         if (debugLevel<= DegubLevel.getDebugLevel()){
@@ -127,7 +127,7 @@ public class Debug {
 
 
     public static void debug(int debugLevel, String label, Throwable e){
-        //System.out.println(label + ": " + "");
+        System.out.println(label + ": " + "");
         Logger logger = Logger.getLogger(Debug.class);
         if (debugLevel<= DegubLevel.getDebugLevel()){
             errorsave(e, label, -1, "", null);

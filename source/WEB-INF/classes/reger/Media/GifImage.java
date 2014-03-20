@@ -1,8 +1,10 @@
 package reger.Media;
 
+import org.apache.commons.io.FileUtils;
 import reger.core.Debug;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 
 /**
  * Handles standard images.
@@ -22,7 +24,9 @@ public class GifImage implements MediaType {
     public void createThumbnail(String pathToFile, String pathToThumbnail) {
         try{
             //Just a general thumbnail
-            reger.ResizeImage.resize(pathToFile, pathToThumbnail, 100);
+            //reger.ResizeImage.resize(pathToFile, pathToThumbnail, 100);
+            FileUtils.copyFile(new File(pathToFile), new File(pathToThumbnail));
+
         } catch (Throwable e) {
             Debug.errorsave(e, "");
         }

@@ -487,7 +487,8 @@ public class Dropbox {
 
 
             //Resize to 1600
-            if (info.getMimeType().indexOf("gif")!=-1){
+            //Debug.debug(4, "Dropbox.java", "info.getMimeType()="+info.getMimeType()+" ");
+            if (info.getMimeType().indexOf("gif")==-1){
                 ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
             }
 

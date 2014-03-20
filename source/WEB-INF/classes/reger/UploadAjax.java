@@ -154,7 +154,9 @@ public class UploadAjax extends HttpServlet {
                                 filenameandpath = path + File.separator+finalfilename;
 
                                 //Resize to 1600
-                                ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
+                                if (incomingname.indexOf("gif")==-1){
+                                    ResizeImage.resizeInPlace(savedFile.getAbsolutePath(), 1600);
+                                }
 
                                 //@todo Exif data extraction from image with http://www.drewnoakes.com/code/exif/ ???
 
