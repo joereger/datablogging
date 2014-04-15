@@ -140,7 +140,7 @@ public class GlobalHeader {
                         }
                     }
                     //Make sure this account has enough free bandwidth to be serving pages
-                    Debug.debug(4, "GlobalHeader", "globalheader.log<br>userSession.getAccount().getBandwidthused()=" + String.valueOf(new Long(userSession.getAccount().getBandwidthused())) + "<br>userSession.getAccount().getMaxbandwidth()=" + String.valueOf(new Long(userSession.getAccount().getMaxbandwidth())));
+                    //Debug.debug(4, "GlobalHeader", "globalheader.log<br>userSession.getAccount().getBandwidthused()=" + String.valueOf(new Long(userSession.getAccount().getBandwidthused())) + "<br>userSession.getAccount().getMaxbandwidth()=" + String.valueOf(new Long(userSession.getAccount().getMaxbandwidth())));
                     if (userSession.getAccount().getMaxbandwidth()>0 && userSession.getAccount().getBandwidthused()>userSession.getAccount().getMaxbandwidth() && pageProps.siteSection==pageProps.PUBLICSITE && (pageProps.adminSection==null || !pageProps.adminSection.equals("LOGIN"))){
                         try {
                             response.sendRedirect(pageProps.pathToAppRoot + "notenoughbandwidthavailable.log");

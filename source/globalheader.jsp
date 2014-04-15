@@ -6,7 +6,7 @@ Logger logger = Logger.getLogger(this.getClass().getName());
 //executionTime Object Creation for Performance Analysis
 reger.executionTime executionTime = new reger.executionTime();
 
-Debug.debug(4, "globalheader.ini", "++++++++++++<br>Start Request:<br>"+request.getRequestURI());
+Debug.debug(4, "globalheader.ini", "++++++++++++Start Request: "+request.getRequestURI());
 
 //This code holds sessions in an application variable.
 //This must be done because Tomcat's session cookie has a scope set to the current host.

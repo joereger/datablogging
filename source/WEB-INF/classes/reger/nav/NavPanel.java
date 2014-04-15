@@ -26,7 +26,7 @@ public class NavPanel {
         this.navButtons = AllNavButtons.getAllButtonsWithSameParent(parentNavButtonName);
         this.parentNavButtonName = parentNavButtonName;
         this.currentNavButtonName = currentNavButtonName;
-        Debug.debug(5, "", "NavPanel Created.  <br>currentNavButtonName = " + currentNavButtonName + "<br>parentNavButton = " + parentNavButtonName);
+        //Debug.debug(5, "", "NavPanel Created.  <br>currentNavButtonName = " + currentNavButtonName + "<br>parentNavButton = " + parentNavButtonName);
         navLevel = levelsNested();
         //this.navPanelConfig = new NavPanelConfig(levelsNested());
 
@@ -39,7 +39,7 @@ public class NavPanel {
         this.navButtons = navButtons;
         this.parentNavButtonName = parentNavButtonName;
         this.currentNavButtonName = currentNavButtonName;
-        Debug.debug(5, "", "Custom NavPanel Created.  <br>currentNavButtonName = " + currentNavButtonName + "<br>parentNavButton = " + parentNavButtonName);
+        //Debug.debug(5, "", "Custom NavPanel Created.  <br>currentNavButtonName = " + currentNavButtonName + "<br>parentNavButton = " + parentNavButtonName);
         navLevel = initialNavLevel;
         //this.navPanelConfig = new NavPanelConfig(levelsNested());
 
@@ -87,7 +87,7 @@ public class NavPanel {
         int levelsNested = 0;
 
         while (true){
-            Debug.debug(5, "", "NavPanel While Loop.  <br>currentNavButton.navButtonName = " + currentNavButton.navButtonName);
+            //Debug.debug(5, "", "NavPanel While Loop.  <br>currentNavButton.navButtonName = " + currentNavButton.navButtonName);
             //Increment the safety counter
             safetyCounter = safetyCounter + 1;
 

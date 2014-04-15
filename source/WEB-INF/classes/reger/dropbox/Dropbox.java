@@ -123,6 +123,8 @@ public class Dropbox {
     public static void processAutoBlogPath(int accountid, boolean forcenow){
         try{
 
+            Debug.logtodb("call initiated for accountid="+accountid, "Dropbox processAutoBlogPath()");
+
             Log log = getLog(accountid);
             if (log==null || log.getLogid()<=0){return;}
             int logid = log.getLogid();
@@ -138,41 +140,48 @@ public class Dropbox {
 
             if (api!=null){
 
+                Debug.logtodb("api!=null", "Dropbox processAutoBlogPath()");
+
                 DropboxAPI.Entry rootdir = api.metadata(path, 0, null, true, null);
 
                 for (Iterator<DropboxAPI.Entry> iterator = rootdir.contents.iterator(); iterator.hasNext();) {
 
                     DropboxAPI.Entry entry = iterator.next();
 
+                    Debug.logtodb("found entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
+
                     if (entry.isDir){
+                        Debug.logtodb("it's a directory entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
                         //mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
                         if (!isPathAlreadyInUse(accountid, entry.fileName())){
-                            Debug.logtodb("found directory entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
+                            Debug.logtodb("it's not in use entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
 
                             //If was last updated 5 mins ago
                             int REFRAIN_TIME = 3;
                             if (!isUpdatedInLastXMinutes(accountid, entry.path, REFRAIN_TIME) || forcenow){
 
                                 //Create it
-                                Debug.logtodb("WILL CREATE POST", "Dropbox processAutoBlogPath()");
+                                Debug.logtodb("WILL CREATE POST", "Dropbox processAutoBlogPath(entry.path="+entry.path+")");
                                 createPostFromPath(accountid, logid, entry.path);
-
+                                Debug.logtodb("DONE CREATING POST", "Dropbox processAutoBlogPath(entry.path="+entry.path+")");
+                            } else {
+                                Debug.logtodb("path updated in last "+REFRAIN_TIME+" minutes "+entry.fileName(), "Dropbox processAutoBlogPath()");
                             }
 
+                        } else {
+                            Debug.logtodb("it's already in use entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
                         }
-                    } else {
-                        Debug.logtodb("Dropbox processAutoBlogPath()", "found file "+entry.fileName());
                     }
 
                 }
 
             } else {
-                Debug.logtodb("api==null", "Dropbox");
+                Debug.logtodb("api==null", "Dropbox processAutoBlogPath()");
             }
 
 
         } catch (Exception ex){
-            Debug.errorsave(ex, "Dropbox");
+            Debug.errorsave(ex, "Dropbox processAutoBlogPath()");
         }
     }
 

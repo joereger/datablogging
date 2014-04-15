@@ -16,7 +16,7 @@ public class NestedNavPanels {
 
     public NestedNavPanels(PageProps pageProps, UserSession userSession, HttpServletRequest request){
 
-        Debug.debug(5, "", "NestedNavPanels Created.  <br>pageProps.navButtonName = " + pageProps.navButtonName);
+        //Debug.debug(5, "", "NestedNavPanels Created.  <br>pageProps.navButtonName = " + pageProps.navButtonName);
 
         //Reset the html vars
         topHtml="";
@@ -36,7 +36,7 @@ public class NestedNavPanels {
 
 
         while (true){
-            Debug.debug(5, "", "NestedNavPanels While Loop.  <br>currentNavButton.navButtonName = " + currentNavButton.navButtonName);
+            //Debug.debug(5, "", "NestedNavPanels While Loop.  <br>currentNavButton.navButtonName = " + currentNavButton.navButtonName);
             //Add the current button
             navPathToLevelZero = reger.core.Util.addToStringArray(navPathToLevelZero, currentNavButton.navButtonName);
             //Increment the safety counter

@@ -16,5 +16,5 @@ try{
     reger.core.Debug.errorsave(t, "globalfooter.jsp", "Error shutting down hibernate session");
 }
 
-reger.core.Debug.debug(4, "globalfooter.ini", "End Request:<br>"+request.getRequestURI()+"<br>++++++++++++");
+reger.core.Debug.debug(4, "globalfooter.ini", "End Request: "+request.getRequestURI()+"++++++++++++");
 %>

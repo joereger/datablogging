@@ -95,11 +95,11 @@ public class UserSession implements java.io.Serializable {
 
     public String getUrlWithPortSmartlyAttached(String inUrl){
         String outUrl = inUrl;
-        reger.core.Debug.debug(5, "UserSession.java", "inUrl = " + inUrl);
+        //reger.core.Debug.debug(5, "UserSession.java", "inUrl = " + inUrl);
         try{
             //Parse the incoming URL
             java.net.URL urlParsed = new java.net.URL(inUrl);
-            reger.core.Debug.debug(5, "UserSession.java", "urlParsed.toString() = " + urlParsed.toString() + "<br>urlParsed.getProtocol() = "+urlParsed.getProtocol()+"<br>getUrlSplitter().getPort() = "+getUrlSplitter().getPort());
+            //reger.core.Debug.debug(5, "UserSession.java", "urlParsed.toString() = " + urlParsed.toString() + "<br>urlParsed.getProtocol() = "+urlParsed.getProtocol()+"<br>getUrlSplitter().getPort() = "+getUrlSplitter().getPort());
 
             //Now create a new version of the URL, manually controlling the port num, scheme
             int port = getUrlSplitter().getPort();
@@ -116,7 +116,7 @@ public class UserSession implements java.io.Serializable {
         } catch (Exception ex){
             reger.core.Debug.debug(5, "UserSession.java", ex);
         }
-        reger.core.Debug.debug(5, "UserSession.java", "outUrl = " + outUrl);
+        //reger.core.Debug.debug(5, "UserSession.java", "outUrl = " + outUrl);
         return outUrl;
     }
 

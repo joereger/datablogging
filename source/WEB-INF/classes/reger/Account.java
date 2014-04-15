@@ -703,7 +703,7 @@ public class Account implements java.io.Serializable {
     }
 
     public String getSiteRootUrl(UserSession userSession){
-        reger.core.Debug.debug(5, "Account.java", "sending inUrl="+userSession.getUrlSplitter().getScheme()+"://"+siteRootUrl);
+        //reger.core.Debug.debug(5, "Account.java", "sending inUrl="+userSession.getUrlSplitter().getScheme()+"://"+siteRootUrl);
         return userSession.getUrlWithPortSmartlyAttached(userSession.getUrlSplitter().getScheme()+"://"+siteRootUrl);
     }
 
