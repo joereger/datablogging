@@ -44,6 +44,7 @@ public class Log implements NestedNavItem {
     private String customdomain1;
     private String customdomain2;
     private String customdomain3;
+    private int hideolderthanxdays=0;
 
     public Log(int logid){
         load(logid);
@@ -53,7 +54,7 @@ public class Log implements NestedNavItem {
         reger.core.Debug.debug(5, "Log.java", "Load() called for logid="+logid);
         //-----------------------------------
         //-----------------------------------
-        String[][] rstLog= Db.RunSQL("SELECT logid, accountid, eventtypeid, name, logaccess, password, message, showonhomepage, maintemplateid, entlisttemplateid, nestednavparenttype, nestednavparentid, nestednavorder, fieldorder, hiddenfields, customdomain1, customdomain2, customdomain3 FROM megalog WHERE logid='"+logid+"'");
+        String[][] rstLog= Db.RunSQL("SELECT logid, accountid, eventtypeid, name, logaccess, password, message, showonhomepage, maintemplateid, entlisttemplateid, nestednavparenttype, nestednavparentid, nestednavorder, fieldorder, hiddenfields, customdomain1, customdomain2, customdomain3, hideolderthanxdays FROM megalog WHERE logid='"+logid+"'");
         //-----------------------------------
         //-----------------------------------
         if (rstLog!=null && rstLog.length>0){
@@ -99,6 +100,7 @@ public class Log implements NestedNavItem {
                 customdomain2=rstLog[i][16];
                 customdomain3=rstLog[i][17];
 
+                hideolderthanxdays=Integer.parseInt(rstLog[i][18]);
 
 
                 //Get fieldOrderCollection
@@ -223,7 +225,7 @@ public class Log implements NestedNavItem {
 
         //-----------------------------------
         //-----------------------------------
-        int countLogUpdate = Db.RunSQLUpdate("UPDATE megalog SET name='"+ Util.cleanForSQL(name) +"', message='"+ Util.cleanForSQL(message) +"', showonhomepage='"+ showonhomepageTxt +"', logaccess='"+ logaccess +"', password='"+ Util.cleanForSQL(password) +"', maintemplateid='"+maintemplateid+"', entlisttemplateid='"+entlisttemplateid+"', nestednavparenttype='"+nestednavparenttype+"', nestednavparentid='"+nestednavparentid+"', nestednavorder='"+nestednavorder+"', fieldorder='"+reger.core.Util.cleanForSQL(fieldorder)+"' , hiddenfields='"+reger.core.Util.cleanForSQL(hiddenfieldsForSql.toString())+"', customdomain1='"+reger.core.Util.cleanForSQL(customdomain1)+"', customdomain2='"+reger.core.Util.cleanForSQL(customdomain2)+"', customdomain3='"+reger.core.Util.cleanForSQL(customdomain3)+"' WHERE logid='"+ logid +"'");
+        int countLogUpdate = Db.RunSQLUpdate("UPDATE megalog SET name='"+ Util.cleanForSQL(name) +"', message='"+ Util.cleanForSQL(message) +"', showonhomepage='"+ showonhomepageTxt +"', logaccess='"+ logaccess +"', password='"+ Util.cleanForSQL(password) +"', maintemplateid='"+maintemplateid+"', entlisttemplateid='"+entlisttemplateid+"', nestednavparenttype='"+nestednavparenttype+"', nestednavparentid='"+nestednavparentid+"', nestednavorder='"+nestednavorder+"', fieldorder='"+reger.core.Util.cleanForSQL(fieldorder)+"' , hiddenfields='"+reger.core.Util.cleanForSQL(hiddenfieldsForSql.toString())+"', customdomain1='"+reger.core.Util.cleanForSQL(customdomain1)+"', customdomain2='"+reger.core.Util.cleanForSQL(customdomain2)+"', customdomain3='"+reger.core.Util.cleanForSQL(customdomain3)+"',  hideolderthanxdays='"+hideolderthanxdays+"' WHERE logid='"+ logid +"'");
         //-----------------------------------
         //-----------------------------------
 
@@ -579,4 +581,8 @@ public class Log implements NestedNavItem {
     public void setCustomdomain3(String customdomain3) {
         this.customdomain3 = customdomain3;
     }
+
+    public int getHideolderthanxdays() { return hideolderthanxdays; }
+
+    public void setHideolderthanxdays(int hideolderthanxdays) { this.hideolderthanxdays = hideolderthanxdays; }
 }

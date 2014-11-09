@@ -37,6 +37,23 @@ if (pageProps.entry.isDraft==1 || pageProps.entry.isApproved==0){
     return;
 }
 
+//Hide posts older than hideolderthanxdays unless the user is logged in
+try{
+    Debug.debug(1, "entry.log", "checking hideolderthanxdays");
+    if (pageProps.logProps.hideolderthanxdays > 0 && (userSession.getAccountuser()==null || userSession.getAccountuser().isLoggedIn==false )){
+        Debug.debug(4, "entry.log", "this log has hideolderthanxdays set to "+pageProps.logProps.hideolderthanxdays);
+        java.util.Calendar today = java.util.Calendar.getInstance();
+        int entryDaysAgo = reger.core.DateDiff.dateDiff("day", today, pageProps.entry.dateGmt);
+        if (Math.abs(entryDaysAgo) > pageProps.logProps.hideolderthanxdays){
+            Debug.debug(4, "entry.log", "entry is older than "+pageProps.logProps.hideolderthanxdays+" days so sending 404");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+    }
+} catch (Exception ex){
+    Debug.errorsave(ex, "entry.log hideolderthanxdays");
+}
+
 //Want to make sure the url displayed to the user is always the same so that url-based embed things work (Disqus)
 try{
     String entryurl = reger.Entry.entryFileNameStatic(pageProps.entry.logid, pageProps.entry.eventid, pageProps.entry.title);

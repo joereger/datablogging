@@ -10,6 +10,7 @@ public class logProps{
 	public String megalogtypeicon;
 	public int showlocation;
 	public int eventtypeid=-1;
+	public int hideolderthanxdays;
 
     /**
      *
@@ -25,7 +26,7 @@ public class logProps{
 	public void populateLogidData(int incominglogid, int accountid){
 		//-----------------------------------
 		//-----------------------------------
-		String[][] rsLogid= reger.core.db.Db.RunSQL("SELECT logid, name, logaccess, icon, showlocation, megalog.eventtypeid FROM megalog, megalogtype WHERE megalog.logid='"+ incominglogid +"' AND megalog.eventtypeid=megalogtype.eventtypeid AND megalog.accountid='"+ accountid +"'");
+		String[][] rsLogid= reger.core.db.Db.RunSQL("SELECT logid, name, logaccess, icon, showlocation, megalog.eventtypeid, megalog.hideolderthanxdays FROM megalog, megalogtype WHERE megalog.logid='"+ incominglogid +"' AND megalog.eventtypeid=megalogtype.eventtypeid AND megalog.accountid='"+ accountid +"'");
 		//-----------------------------------
 		//-----------------------------------
 		if (rsLogid!=null && rsLogid.length>0){
@@ -35,6 +36,7 @@ public class logProps{
 			megalogtypeicon=rsLogid[0][3];
 			showlocation=Integer.parseInt(rsLogid[0][4]);
 			eventtypeid=Integer.parseInt(rsLogid[0][5]);
+			hideolderthanxdays=Integer.parseInt(rsLogid[0][6]);
 		}
 	}
 

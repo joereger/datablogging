@@ -77,6 +77,11 @@ if (pageProps.action.equals("go")) {
     } else {
         log.setCustomdomain3("");
     }
+    if (request.getParameter("hideolderthanxdays")!=null && !request.getParameter("hideolderthanxdays").equals("")){
+        log.setHideolderthanxdays(Integer.parseInt(request.getParameter("hideolderthanxdays")));
+    } else {
+        log.setHideolderthanxdays(0);
+    }
 
     //Save
     log.save();
@@ -151,11 +156,16 @@ mb.append("<td  valign=top align=left>");
 mb.append("<font face=arial size=-1><strong>Visible on Homepage?</strong></font><br><font face=arial size=-2><strong>Your web log homepage is an important place.  It's the place where your visitors get their first glimpse of you and where they find updates.  Sometimes you want to keep track of things and keep them public, but you don't necessarily want them to take up space on your homepage.  This allows you to have a log's entries not appear on the home page.  Note: This is different than making a log private.  By deciding to not show on the homepage you are not restricting access to the log... you are just making users click the log directly before they see its log entries.  We hope this makes sense.  If not, play around with it a bit.  You can always switch it back.</strong></font></td>");
 mb.append("</tr>");
 
+mb.append("<tr>");
+mb.append("<td valign=top align=left ><input type=text name=hideolderthanxdays value=\""+log.getHideolderthanxdays()+"\"></td>");
+mb.append("<td valign=top align=left bgcolor='#ffffff'><font face=arial size=-1><strong>Hide Posts Older than X Days</strong></font><br><font face=arial size=-2><strong>For example, 365 means that posts over a year old will not appear unless you are logged in.  Defaults to 0 which shows all posts.</strong></font></td>");
+mb.append("</tr>");
+
 
 
 mb.append("<tr>");
 mb.append("<td valign=top align=left ><input type=text name=customdomain1 value=\""+Util.cleanForHtml(log.getCustomdomain1())+"\"></td>");
-mb.append("<td valign=top align=left bgcolor='#ffffff'><font face=arial size=-1><strong>Custom Domain 1:</strong></font><br><font face=arial size=-2><strong>Assign a unique domain name to this specific log.  Example: work.joereger.com</strong></font></td>");
+mb.append("<td valign=top align=left bgcolor='#ffffff'><font face=arial size=-1><strong>Custom Domain 1</strong></font><br><font face=arial size=-2><strong>Assign a unique domain name to this specific log.  Example: work.joereger.com</strong></font></td>");
 mb.append("</tr>");
 
 mb.append("<tr>");
