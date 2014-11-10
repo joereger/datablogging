@@ -1,5 +1,6 @@
 package reger;
 
+import reger.cache.LogCache;
 import reger.core.Util;
 import reger.core.db.Db;
 import reger.core.Debug;
@@ -299,67 +300,82 @@ public class ImageListHtml {
         //Make sure we're not in admin mode just about to create an entry
         if (eventid>0) {
 
+            Entry entry = new Entry(eventid);
 
-
-
-            mb.append("\n\n\n");
-            mb.append("<!-- Begin Images -->");
-
-
-            mb.append("<ul class=\"thumbnails\">" + "\n");
-
-
-            //reger.core.Util.logtodb(sqlSelect+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry+sqlOrderBy);
-            //-----------------------------------
-            //-----------------------------------
-            String[][] rstImagelist = reger.core.db.Db.RunSQL(sqlBuilder(false, userSessionOfPersonViewing, accountid, tagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey));
-            //-----------------------------------
-            //-----------------------------------
-            if (rstImagelist != null) {
-                for (int i = 0; i < rstImagelist.length; i++) {
-                    mb.append("\n");
-
-
-
-                    String ext = FilenameUtils.getExtension(rstImagelist[i][10]);
-
-
-                    mb.append("<li style=\"width:100px;\">" + "\n");
-                    mb.append("<div class=\"thumbnail\">" + "\n");
-
-
-//                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
-                        mb.append("<a href=\"mediaout/file."+ext+"?imageid="+rstImagelist[i][0]+"&entrykey="+entrykeyQueryString+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-                        mb.append("<img src=\"mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "\" border=0>" + "\n");
-                        mb.append("</a>" + "\n");
-//                    } else {
-//                        mb.append("<a href=\"mediaouthtml.log?imageid="+rstImagelist[i][0]+"&ext=page."+ext+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
-//                        mb.append("<img src=\"mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "\" border=0>" + "\n");
-//                        mb.append("</a>" + "\n");
-//                    }
-
-                    String imageTags = reger.Tag.getStringOfAllTagsForImageAsLinks(Integer.parseInt(rstImagelist[i][0]), "");
-                    if (imageTags!=null && imageTags.length()>0){
-                        mb.append("<h5>"+imageTags+"</h5>" + "\n");
+            //Hide posts older than hideolderthanxdays unless the user is logged in
+            Log log = LogCache.get(entry.logid);
+            boolean hidebecauseolderthanxdays = false;
+            try{
+                if (log.getHideolderthanxdays() > 0 && (userSessionOfPersonViewing.getAccountuser()==null || userSessionOfPersonViewing.getAccountuser().isLoggedIn==false )){
+                    java.util.Calendar today = java.util.Calendar.getInstance();
+                    int entryDaysAgo = reger.core.DateDiff.dateDiff("day", today, entry.dateGmt);
+                    if (Math.abs(entryDaysAgo) > log.getHideolderthanxdays()){
+                        hidebecauseolderthanxdays = true;
                     }
-
-                    if (rstImagelist[i][1]!=null && rstImagelist[i][1].length()>0){
-                        //mb.append("<p>"+reger.core.Util.cleanForHtml(rstImagelist[i][1])+"</p>" + "\n");
-                    }
-
-                    mb.append("</div>" + "\n");
-                    mb.append("</li>" + "\n");
-
-
-
-
                 }
+            } catch (Exception ex){
+                Debug.errorsave(ex, "ImageListHtml hideolderthanxdays");
             }
 
-            mb.append("</ul>" + "\n");
-            mb.append("<!-- End Images  -->" + "\n");
-            mb.append("\n\n\n");
+            if (hidebecauseolderthanxdays==false) {
 
+
+                mb.append("\n\n\n");
+                mb.append("<!-- Begin Images -->");
+
+
+                mb.append("<ul class=\"thumbnails\">" + "\n");
+
+
+                //reger.core.Util.logtodb(sqlSelect+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry+sqlOrderBy);
+                //-----------------------------------
+                //-----------------------------------
+                String[][] rstImagelist = reger.core.db.Db.RunSQL(sqlBuilder(false, userSessionOfPersonViewing, accountid, tagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey));
+                //-----------------------------------
+                //-----------------------------------
+                if (rstImagelist != null) {
+                    for (int i = 0; i < rstImagelist.length; i++) {
+
+
+                        mb.append("\n");
+
+                        String ext = FilenameUtils.getExtension(rstImagelist[i][10]);
+
+
+                        mb.append("<li style=\"width:100px;\">" + "\n");
+                        mb.append("<div class=\"thumbnail\">" + "\n");
+
+
+                        //                    if (ext.indexOf("jpg")>-1 || ext.indexOf("gif")>-1 || ext.indexOf("png")>-1){
+                        mb.append("<a href=\"mediaout/file." + ext + "?imageid=" + rstImagelist[i][0] + "&entrykey=" + entrykeyQueryString + "\" rel=\"prettyPhoto[Images" + eventid + "]\">");
+                        mb.append("<img src=\"mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "\" border=0>" + "\n");
+                        mb.append("</a>" + "\n");
+                        //                    } else {
+                        //                        mb.append("<a href=\"mediaouthtml.log?imageid="+rstImagelist[i][0]+"&ext=page."+ext+"\" rel=\"prettyPhoto[Images"+eventid+"]\">");
+                        //                        mb.append("<img src=\"mediaout.log?logid=" + rstImagelist[i][8] + "&imageid=" + rstImagelist[i][0] + "&isthumbnail=yes" + entrykeyQueryString + "\" border=0>" + "\n");
+                        //                        mb.append("</a>" + "\n");
+                        //                    }
+
+                        String imageTags = reger.Tag.getStringOfAllTagsForImageAsLinks(Integer.parseInt(rstImagelist[i][0]), "");
+                        if (imageTags != null && imageTags.length() > 0) {
+                            mb.append("<h5>" + imageTags + "</h5>" + "\n");
+                        }
+
+                        if (rstImagelist[i][1] != null && rstImagelist[i][1].length() > 0) {
+                            //mb.append("<p>"+reger.core.Util.cleanForHtml(rstImagelist[i][1])+"</p>" + "\n");
+                        }
+
+                        mb.append("</div>" + "\n");
+                        mb.append("</li>" + "\n");
+
+
+                    }
+                }
+
+                mb.append("</ul>" + "\n");
+                mb.append("<!-- End Images  -->" + "\n");
+                mb.append("\n\n\n");
+            }
         }
 
         return mb;

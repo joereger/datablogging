@@ -93,14 +93,12 @@ public class htmlListEvents {
         String from = "event event";
         String tagSql = "";
         String tagId = request.getParameter("tagid");
-//        String tag = request.getParameter("tag");
         if ((tagId != null) && (tagId.trim().length() > 0)) {
             from += ", tag tag, eventtaglink eventtaglink";
             tagSql += " AND tag.tagid='" + tagId + "' AND eventtaglink.tagid=tag.tagid and event.eventid=eventtaglink.eventid ";
         }
-//        if ((tag != null) && (tag.trim().length() > 0)) {
-//            System.out.println("TAG IS **** " + tag);
-//        }
+
+
 
         //This section builds one of two sets of SQL queries.
         //In each set is a main that returns a limited number of records.
@@ -227,15 +225,33 @@ public class htmlListEvents {
                     logname = log.getName();
                 }
 
-                //increment the numberOnPage count
-                numberOnPage++;
-
-                //If we're on edit.log and the logged-in user can't administer this logid then don't display the result.
-                if (!thispagename.equals("entries.log")) {
-                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid, entry, numberOnPage));
-                } else if ((thispagename.equals("entries.log") && userSession.getAccountuser().userCanViewLog(entry.logid))) {
-                    list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurladmin, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid, entry, numberOnPage));
+                //Hide posts older than hideolderthanxdays unless the user is logged in
+                boolean hidebecauseolderthanxdays = false;
+                try{
+                    if (log.getHideolderthanxdays() > 0 && (userSession.getAccountuser()==null || userSession.getAccountuser().isLoggedIn==false )){
+                        java.util.Calendar today = java.util.Calendar.getInstance();
+                        int entryDaysAgo = reger.core.DateDiff.dateDiff("day", today, entry.dateGmt);
+                        if (Math.abs(entryDaysAgo) > log.getHideolderthanxdays()){
+                            hidebecauseolderthanxdays = true;
+                        }
+                    }
+                } catch (Exception ex){
+                    Debug.errorsave(ex, "entry.log hideolderthanxdays");
                 }
+
+                //Add to the stringbuffer for output
+                if (hidebecauseolderthanxdays==false){
+                    //increment the numberOnPage count
+                    numberOnPage++;
+
+                    //If we're on edit.log and the logged-in user can't administer this logid then don't display the result.
+                    if (!thispagename.equals("entries.log")) {
+                        list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurl, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid, entry, numberOnPage));
+                    } else if ((thispagename.equals("entries.log") && userSession.getAccountuser().userCanViewLog(entry.logid))) {
+                        list.append(reger.template.EntryListTemplateProcessor.entryout(templateText, reger.core.TimeUtils.gmttousertime(entry.dateGmt, userSession.getAccount().getTimezoneid()), entry.title, entryurladmin, entrybody, logname, entry.filecount, entry.messagecount, entry.accountuserid, entry, numberOnPage));
+                    }
+                }
+
             }
         } else {
             //list.append("<font class=bigfont face=arial size=+1>No entries found.</font><br>");

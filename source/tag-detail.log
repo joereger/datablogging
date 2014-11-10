@@ -21,14 +21,14 @@
     StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-    mb.append(reger.SideColumn.sideColTableStart("Smart Tags"));
-    mb.append(reger.SideColumn.sideColHeaderRow("Smart Tags"));
+    mb.append(reger.SideColumn.sideColTableStart("Tags"));
+    mb.append(reger.SideColumn.sideColHeaderRow("Tags"));
     StringBuffer qs = new StringBuffer();
     String tag = request.getParameter("tag");
     qs.append("<font face=arial size=+1 class=largefont>"+ tag +"</font>");
     qs.append("<br><a href='tags.log?tag="+ tag +"'><font siz=+4 face=arial>All Tags</font></a>");
     mb.append(reger.SideColumn.sideColContentRow(qs.toString()));
-    mb.append(reger.SideColumn.sideColTableEnd("Smart Tags"));
+    mb.append(reger.SideColumn.sideColTableEnd("Tags"));
 
 
     mb.append("<table cellpadding=0 width=100% cellspacing=0 border=0>");

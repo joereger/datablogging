@@ -61,7 +61,7 @@ public class SiteTemplateTagInfoNavbar implements SiteTemplateTag{
         } else {
             out.append("s");
         }
-        out.append("</a></li>");
+        out.append("</a> </li>");
                 
         //-
         out.append("<li><a href=\"files.log\">"+ acctCounts.getFilecount() + " Image");
@@ -70,36 +70,36 @@ public class SiteTemplateTagInfoNavbar implements SiteTemplateTag{
         } else {
             out.append("s");
         }
-        out.append("</a></li>");
+        out.append("</a> </li>");
 
         //-
-        out.append("<li><a href=\"tags.log\">"+ acctCounts.getTagCount() + " Tag");
-        if (acctCounts.getTagCount() == 1) {
-            out.append("");
-        } else {
-            out.append("s");
-        }
-        out.append("</a></li>");
+//        out.append("<li><a href=\"tags.log\">"+ acctCounts.getTagCount() + " Tag");
+//        if (acctCounts.getTagCount() == 1) {
+//            out.append("");
+//        } else {
+//            out.append("s");
+//        }
+//        out.append("</a></li>");
                 
         //-
-        out.append("<li><a href=\"locations.log\">"+ acctCounts.getLocationcount() + " Location");
-        if (acctCounts.getLocationcount()==1) {
-            out.append("");
-        } else {
-            out.append("s");
-        }
-        out.append("</a></li>");
+//        out.append("<li><a href=\"locations.log\">"+ acctCounts.getLocationcount() + " Location");
+//        if (acctCounts.getLocationcount()==1) {
+//            out.append("");
+//        } else {
+//            out.append("s");
+//        }
+//        out.append("</a> </li>");
                 
 
         
         //-
-        out.append("<li><a href=\"graphs.log\">"+ acctCounts.getGraphcount() + " Graph");
-        if (acctCounts.getGraphcount()==1) {
-            out.append("");
-        } else {
-            out.append("s");
-        }
-        out.append("</a></li>");
+//        out.append("<li><a href=\"graphs.log\">"+ acctCounts.getGraphcount() + " Graph");
+//        if (acctCounts.getGraphcount()==1) {
+//            out.append("");
+//        } else {
+//            out.append("s");
+//        }
+//        out.append("</a></li>");
                 
         
 
