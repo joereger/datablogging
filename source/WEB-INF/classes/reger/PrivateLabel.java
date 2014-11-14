@@ -370,7 +370,7 @@ public class PrivateLabel {
                 err.append("Plid=" + rstPl[i][0] + "<br>");
             }
             err.append("This is a problem because it means that for the URL above multiple private labels are found, but only one can be returned.  This means that at least one site is obscured, unavailable.  To correct, the plbasedomain of the private labels above needs to be made such that it does not conflict.  In theory the software has safeguards against this so manual database editing may have happened.  Or a bug in the software.");
-            Debug.logtodb(err.toString(), "");
+            Debug.debug(2, "PrivateLabel.java", err.toString());
         }
         //No private label found
         Debug.debug(5, "", "PrivateLabel.java - No plid found. urlSplitter.getServername()="+ urlSplitter.getServername());

@@ -95,7 +95,7 @@ public class DatabaseToString {
             String tables = props.getProperty("tableName");
             ResultSet rs = dbMetaData.getTables(catalog, schema, tables, null);
             if (! rs.next()) {
-                Debug.logtodb("Unable to find any tables matching: catalog="+catalog+" schema="+schema+" tables="+tables, "");
+                System.out.println("Unable to find any tables matching: catalog="+catalog+" schema="+schema+" tables="+tables);
                 rs.close();
             } else {
                 // Right, we have some tables, so we can go to work.

@@ -145,10 +145,8 @@ public class MasterThread extends Thread {
 			//Debug
 			//String c1 = reger.core.TimeUtils.dateformatcompactwithtime(cal1);
 			//String c2 = reger.core.TimeUtils.dateformatcompactwithtime(cal2);
-			//reger.core.Util.logtodb("MasterThread.wasTaskRunInLastXMinutes()<br>cal1=" + c1 + "<br>cal2=" + c2);
 			//Calculate the time diff
 			tasklastrun=reger.core.DateDiff.dateDiff("minute", cal2, cal1);
-			//reger.core.Util.logtodb("MasterThread.wasTaskRunInLastXMinutes()<br>tasklastrun=" + tasklastrun);
 			//Determine the outcome
 			if (tasklastrun<=xMinutes) {
 				result = true;
@@ -211,7 +209,7 @@ public class MasterThread extends Thread {
 
 
         //Log the new thread to the DB
-        Debug.logtodb("The wheels on the bus are turning.<br>Application startup at:" + reger.core.TimeUtils.dateformatfordb(Calendar.getInstance()) + "<br>This is not an error... it's a good thing.", "");
+        System.out.println("The wheels on the bus are turning.<br>Application startup This is not an error... it's a good thing.");
 
     }
 

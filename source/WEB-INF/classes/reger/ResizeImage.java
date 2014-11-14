@@ -130,7 +130,7 @@ public class ResizeImage{
             reger.core.Debug.debug(5, "ResizeImage.java", "fail creating thumbnail: "+e.getMessage());
             Debug.errorsave(e, "ResizeImage.java");
             if (!reger.core.Util.copyFile(reger.Vars.THUMBNAILGENERIC + "", outimagelocation)) {
-                Debug.logtodb("Unsuccessful copy of THUMBNAILGENERIC.  See ResizeImage.java around line 49.  Error will be saved to database in next error entry.", "");
+                Debug.debug(2, "ResizeImage.java","Unsuccessful copy of THUMBNAILGENERIC.  See ResizeImage.java around line 49.  Error will be saved to database in next error entry.");
                 Debug.errorsave(e, "");
             }
             return false;

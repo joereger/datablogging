@@ -81,8 +81,6 @@ public class htmlListEvents {
 
             //Create the sql
             viewdatesql = " AND event.date>'" + viewstartStr + "' AND event.date<'" + viewendStr + "'";
-
-            //reger.core.Util.logtodb("viewdatesql: " + viewdatesql);
         }
 
         //Field list.  Do this to keep the resulting array the same for all queries
@@ -126,7 +124,6 @@ public class htmlListEvents {
             counttotal = Integer.parseInt(rsEventCount[0][0]);
         }
 
-        //reger.core.Util.logtodb("sql htmlListEvents.java: "+sql);
         //Return the actual records needed
         //-----------------------------------
         //-----------------------------------

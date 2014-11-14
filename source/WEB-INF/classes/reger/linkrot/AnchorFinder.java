@@ -20,12 +20,6 @@ public class AnchorFinder {
         // Loop through
         while(m.find()) {
 
-            //reger.core.Util.logtodb("Found anchor tag: " + m.group() + "<br>Groupcount(): " + m.groupCount());
-
-            //for(int i=0; i<=m.groupCount(); i++){
-                //reger.core.Util.logtodb("m.group("+i+"): " + m.group(i));
-            //}
-
             //Get the whole anchor tag
             String wholeAnchortag = m.group();
 
@@ -36,7 +30,7 @@ public class AnchorFinder {
             anchors = reger.core.Util.addToStringArray(anchors, url);
 
             //titleKeywords = m.group(1);
-            //reger.core.Util.logtodb("Found title: " + titleKeywords);
+
 
         }
 
@@ -46,15 +40,11 @@ public class AnchorFinder {
     public static String getUrlFromAnchorTag(String wholeAnchor){
         String url = "";
 
-        //reger.core.Util.logtodb("WholeAnchor: " + reger.core.Util.xmlclean(wholeAnchor));
-
-
         int length = wholeAnchor.length();
 
         int hrefloc = wholeAnchor.indexOf("href");
 
         //String hreftoend = wholeAnchor.substring(hrefloc, length);
-        //reger.core.Util.logtodb("hreftoend:" + hreftoend);
 
         int startingpoint = hrefloc + 4;
 
@@ -103,12 +93,11 @@ public class AnchorFinder {
             }
         }
 
-        //reger.core.Util.logtodb("startOfUrl=" + startOfUrl + "<br>endOfUrl=" + endOfUrl);
 
         if ((startOfUrl>0 && endOfUrl>0) && (startOfUrl<endOfUrl)){
             url = wholeAnchor.substring(startOfUrl, endOfUrl);
         }
-        //reger.core.Util.logtodb("URL: " + url);
+
 
         return url;
     }

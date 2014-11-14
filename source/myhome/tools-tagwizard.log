@@ -41,7 +41,6 @@ int perpage = 50;
 
 
 //Start paging
-//reger.core.Util.logtodb(sqlSelectCount+sqlFrom+sqlWhere+sqlEventid+sqltagid+sqlLiveEntry);
 //-----------------------------------
 //-----------------------------------
 String[][] rstCount= Db.RunSQL(reger.ImageListHtml.sqlBuilder(true, userSession, userSession.getAccount().getAccountid(), -1, -1, false, true));
@@ -51,8 +50,6 @@ int recordcount = 0;
 if (rstCount!=null && rstCount.length>0){
     recordcount = Integer.parseInt(rstCount[0][0]);
 }
-
-//reger.core.Util.logtodb("ImageListHtml.java - recordcount=" + recordcount);
 
 if (currentpage<0){
     currentpage=1;
@@ -98,7 +95,6 @@ if (pageProps.action.equals("edittags")){
             }
             if (request.getParameter("tag-"+rstImages[i][0])!=null){
                 effectiveTag = effectiveTag + " " + request.getParameter("tag-"+rstImages[i][0]);
-                //reger.core.Util.logtodb("request.getParameter(\"tag-\"+rstImages[i][0])=" + request.getParameter("tag-"+rstImages[i][0]));
             }
 
             reger.Tag.addMultipleTagsToImage(effectiveTag, Integer.parseInt(rstImages[i][0]));
@@ -128,9 +124,6 @@ mb.append("<input type=hidden name='action' value='edittags'>");
 
 
 mb.append("<table cellpadding=5 cellspacing=2 border=0>");
-
-//reger.core.Util.logtodb("tools-tagwizard.log<br>" + reger.ImageListHtml.sqlBuilder(false, userSession, userSession.getAccount().getAccountid(), -1, -1, false, true)+sqlLimit);
-
 
 mb.append("<tr>");
 mb.append("<td valign=top align=left colspan=3>");

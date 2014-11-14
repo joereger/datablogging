@@ -32,8 +32,7 @@ userSession.getAccount().refresh();
 if (pageProps.action.equals("setsupercookie")) {
 	Cookie userCookie = new Cookie("testcookie", "supercookieon");
     userCookie.setMaxAge(60*60*24*365);
-    userCookie.setDomain("." + userSession.getPl().getServernameMinusOneHost());
-    Debug.logtodb("userSession.getPl().getServernameMinusOneHost()=" + userSession.getPl().getServernameMinusOneHost(), "");
+    userCookie.setDomain("." + userSession.getPl().getServernameMinusOneHost());;
     if (reger.systemprops.AllSystemProperties.getProp("SSLISON").equals("1")){
         userCookie.setSecure(true);
     }

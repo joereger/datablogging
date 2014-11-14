@@ -24,8 +24,6 @@ pageProps.pathToAppRoot="../";
 
 String cookieDomain = userSession.getUrlSplitter().getRawIncomingServername();
 
-//reger.core.Util.logtodb("Supercookie: cookieDomain=" + cookieDomain);
-
 if (pageProps.action.equals("setsupercookie")) {
 	Cookie userCookie = new Cookie("supercookie-" + userSession.getAccount().getAccountid(), "supercookieon");
     userCookie.setMaxAge(60*60*24*365);

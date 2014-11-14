@@ -51,9 +51,7 @@ public class Rss {
         		//Correct format
                 //Sat, 07 Sep 2002 0:00:01 GMT
                 Calendar gmttime = reger.core.TimeUtils.gmttousertime(rstEvent[i][0], userSession.getAccount().getTimezoneid());
-                //reger.core.Util.logtodb("after gmttousertime() - " + reger.core.TimeUtils.dateformatfordb(gmttime) + " - " + gmttime.toString());
                 gmttime = reger.core.TimeUtils.usertogmttime(gmttime, userSession.getAccount().getTimezoneid());
-                //reger.core.Util.logtodb("after usertogmttime() - " + reger.core.TimeUtils.dateformatfordb(gmttime) + " - " + gmttime.toString());
 
                 //Founder & Owner Rights
                 //String jrdirectory="";

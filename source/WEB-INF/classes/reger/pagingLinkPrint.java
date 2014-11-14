@@ -35,8 +35,6 @@ public class pagingLinkPrint {
         if (thispagename.equals(request.getServerName().toString())){
             thispagename = "index.log";
         }
-        //reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));
-
 
         //Create the output stringbuffer
         StringBuffer html = new StringBuffer();
@@ -110,8 +108,6 @@ public static StringBuffer getImagePageNumbers(int counttotal, int currentpage, 
         //Get the script name
         //String thispagename = request.getServletPath();
         String thispagename = reger.core.Util.getJspName(request.getRequestURL().toString());
-        //reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));
-        //thispagename = "http://localhost/~pawan/tag-detail.log";
 
         //Create the output stringbuffer
         StringBuffer html = new StringBuffer();

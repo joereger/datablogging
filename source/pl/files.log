@@ -92,10 +92,6 @@ if (request.getParameter("eventtypeid")!=null && Util.isinteger(request.getParam
 String sql = selectSql + fromSql + whereSql + orderbySql;
 String countSql = countSelectSql + fromSql + whereSql + orderbySql;
 
-
-
-
-//reger.core.Util.logtodb("accounts.log: " + countSql);
 //Get a count of records
 int totalrecords = 0;
 //-----------------------------------
@@ -131,7 +127,6 @@ mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Image Descriptio
 mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Site</td>");
 mb.append("</tr>");
 
-//reger.core.Util.logtodb("accounts.log: " + sql);
 //-----------------------------------
 //-----------------------------------
 String[][] rstAccounts= Db.RunSQL(sql);

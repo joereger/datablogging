@@ -131,7 +131,6 @@ public class Version182ToVersion183 implements UpgradeDatabaseOneVersion{
                 }
             }
         }
-        reger.core.Debug.logtodb(debug.toString(), "Version182ToVersion183.java");
     }
 
     //Sample sql statements

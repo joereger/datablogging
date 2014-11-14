@@ -78,8 +78,6 @@ public class FindInterfaceImplementations {
         // URL url = ClassLoader.getSystemClassLoader().getResource(name);
         //mb.append(name+"->"+url+"<br>");
 
-        //reger.core.Util.logtodb(mb.toString());
-
         // Happens only if the jar file is not well constructed, i.e.
         // if the directories do not appear alone in the jar file like here:
         //

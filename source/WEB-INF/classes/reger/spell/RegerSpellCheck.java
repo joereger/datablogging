@@ -213,7 +213,7 @@ public class RegerSpellCheck implements SpellCheckListener {
 
     public String replaceWithChosenRecommendation(HttpServletRequest request){
 
-        //reger.core.Util.logtodb("RegerSpellCheck.java - 1");
+
 
         //HttpSession session = request.getSession(true);
         //StringBuffer entryText = new StringBuffer((String) session.getAttribute("entryText"));
@@ -221,7 +221,6 @@ public class RegerSpellCheck implements SpellCheckListener {
         StringBuffer entryText = new StringBuffer(textToSpellCheck);
         ArrayList events = spellCheckEvents;
 
-        //reger.core.Util.logtodb("RegerSpellCheck.java - 2");
 
         SpellCheckEvent event = null;
         String oldWord = null;
@@ -230,10 +229,10 @@ public class RegerSpellCheck implements SpellCheckListener {
         int end = -1;
         int wordnum=0;
         for(ListIterator it=events.listIterator(events.size()); it.hasPrevious();){
-            //reger.core.Util.logtodb("RegerSpellCheck.java - 3");
+
             event = (SpellCheckEvent)it.previous();
             oldWord = event.getInvalidWord();
-            //reger.core.Util.logtodb("RegerSpellCheck.java - 4 - oldWord=" + oldWord);
+
             wordnum=wordnum+1;
             if (request.getParameter("replacementWords-" + wordnum + "-manual")!=null && !request.getParameter("replacementWords-" + wordnum + "-manual").equals("")){
                 newWord =  request.getParameter("replacementWords-" + wordnum + "-manual");
@@ -246,14 +245,14 @@ public class RegerSpellCheck implements SpellCheckListener {
                 end = start + oldWord.length();
                 entryText.replace( start, end, newWord );
             }
-            //reger.core.Util.logtodb("RegerSpellCheck.java - 5");
+
         }
 
-        //reger.core.Util.logtodb("RegerSpellCheck.java - 6");
+
 
         //clearSessionVars(request);
 
-        //reger.core.Util.logtodb("RegerSpellCheck.java - 7");
+
 
         return entryText.toString();
     }

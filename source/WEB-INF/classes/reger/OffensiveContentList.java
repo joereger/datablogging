@@ -33,7 +33,6 @@ public class OffensiveContentList {
      * default system list.
      */
     public Vector getWordsForPl(int plid){
-        //reger.core.Util.logtodb("OffensiveContentList.getWordsForPl()");
         Vector out = new Vector();
         if (treemapOfOffensivePlVectors==null || !treemapOfOffensivePlVectors.containsKey(new Integer(plid))){
             forceReloadPlid(plid);
@@ -44,7 +43,6 @@ public class OffensiveContentList {
     }
 
     private void forceReloadDefaults(){
-        //reger.core.Util.logtodb("OffensiveContentList.forceReloadDefaults()");
         offensivesystem = new java.util.Vector();
         //-----------------------------------
         //-----------------------------------
@@ -59,7 +57,6 @@ public class OffensiveContentList {
     }
 
     private void forceReloadPlid(int plid){
-        //reger.core.Util.logtodb("OffensiveContentList.forceReloadPlid()");
         Vector offensivepl = new java.util.Vector();
         //-----------------------------------
         //-----------------------------------

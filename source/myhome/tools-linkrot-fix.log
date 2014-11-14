@@ -89,15 +89,10 @@ if (pageProps.action.equals("fix")){
         int lengthofcomments = comm.length();
         int endofurl = startofurl + originalurl.length();
 
-        //Debug
-        //reger.core.Util.logtodb("originalurl: " + originalurl + "<br>comm: " + reger.core.Util.xmlclean(comm));
-        //reger.core.Util.logtodb("startofurl: " + startofurl + "<br>lengthofcomments: " + lengthofcomments + "<br>endofurl: " + endofurl);
-
         if ((startofurl>0 && endofurl>0) && (startofurl<endofurl)){
             //String left = comm.substring(0,startofurl);
             //String middle = newurl;
             //String right = comm.substring(endofurl, lengthofcomments);
-            //reger.core.Util.logtodb("left: " + reger.core.Util.xmlclean(left) + "<br>middle: " + middle + "<br>right: " + reger.core.Util.xmlclean(right));
 
             //Do the string replacement
             String tmp = "";

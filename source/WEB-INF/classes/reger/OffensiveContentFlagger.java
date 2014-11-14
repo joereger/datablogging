@@ -24,7 +24,6 @@ public class OffensiveContentFlagger {
 
      */
     public static boolean isOffensive(reger.Entry entry, int plid){
-        //reger.core.Util.logtodb("OffensiveContentFlagger.isOffensive()");
         return isOffensive(entryToString(entry), plid);
     }
 

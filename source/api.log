@@ -28,8 +28,6 @@ pageProps.pathToAppRoot="";
 //Create our output stream to the browser
 OutputStream outStream = response.getOutputStream();
 
-//reger.core.Util.logtodb("Made it to api.log.");
-
 XmlRpc.setDebug(true);
 XmlRpc.setDriver("org.apache.xerces.parsers.SAXParser");
 
@@ -39,15 +37,9 @@ xmlrpc.addHandler ("blogger", new reger.api.BloggerApi());
 xmlrpc.addHandler ("metaWeblog", new reger.api.MetaWebLogApi());
 xmlrpc.addHandler ("filesync", new reger.filesync.server.FileSyncServer());
 
-//reger.core.Util.logtodb("Created the XmlRpcServer object in api.log.");
-//reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));
-
 byte[] result = xmlrpc.execute(request.getInputStream());
 response.setContentType ("text/xml");
 response.setContentLength (result.length);
-
-//reger.core.Util.logtodb("Have generated result.");
-//reger.core.Util.logtodb(result);
 
 outStream.write (result);
 outStream.flush ();

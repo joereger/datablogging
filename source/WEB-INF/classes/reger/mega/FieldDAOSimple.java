@@ -15,7 +15,6 @@ public class FieldDAOSimple implements FieldDAO{
 
 
     public void saveData(int megafieldid, int eventid, int logid) {
-        //reger.core.Util.logtodb("In FieldDAOSimple.saveData.  About to call sm.saveData<br>magefieldid:"+megafieldid+"<br>this.value: " +this.value+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         if (!value.equals("")){
 
             //First, delete any existing value
@@ -72,7 +71,6 @@ public class FieldDAOSimple implements FieldDAO{
     public void loadData(int megafieldid, int eventid, int logid) {
 
         //Get the value for this eventid
-        //reger.core.Util.logtodb("Going to Database in FieldDAOListOfOptions.loadData for<br>megafieldid: " +megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         //-----------------------------------
         //-----------------------------------
         String[][] rstVal= Db.RunSQL("SELECT megavalue FROM megavalue WHERE megavalue.eventid='"+eventid+"' AND megavalue.megafieldid='"+megafieldid+"'");

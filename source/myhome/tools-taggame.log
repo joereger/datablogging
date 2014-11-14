@@ -71,8 +71,6 @@ mb.append("<input type=hidden name='action' value='edittags'>");
 
 mb.append("<table cellpadding=5 cellspacing=2 border=0>");
 
-//reger.core.Util.logtodb("tools-tagwizard.log<br>" + reger.ImageListHtml.sqlBuilder(false, userSession, userSession.getAccount().getAccountid(), -1, -1, false, true)+sqlLimit);
-
 
 mb.append("<tr>");
 mb.append("<td valign=top align=left>");

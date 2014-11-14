@@ -73,7 +73,6 @@ if (pageProps.action.equals("search") && request.getParameter("servername")!=nul
 }
 
 
-//reger.core.Util.logtodb("accounts.log: " + countSql);
 //Get a count of records
 int totalrecords = 0;
 //-----------------------------------
@@ -108,7 +107,7 @@ mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>URL</td>");
 mb.append("<td valign=top align=left bgcolor=#cccccc class=acct>Private Label</td>");
 mb.append("</tr>");
 
-//reger.core.Util.logtodb("accounts.log: " + sql);
+
 //-----------------------------------
 //-----------------------------------
 String[][] rstAccounts= Db.RunSQL(sql);

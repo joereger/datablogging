@@ -18,7 +18,6 @@ public class FieldDAOListOfOptions implements FieldDAO{
 
 
     public void saveData(int megafieldid, int eventid, int logid) {
-        //reger.core.Util.logtodb("In FieldDAOListOfOptions.saveData.  About to call sm.saveData<br>magefieldid:"+megafieldid+"<br>this.value: " +this.value+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         if (!value.equals("")){
             int myidentity = -1;
             //See if this option already exists
@@ -108,7 +107,6 @@ public class FieldDAOListOfOptions implements FieldDAO{
         //Get possible values
         loadPossibleValues(megafieldid, logid);
         //Get the value for this eventid
-        //reger.core.Util.logtodb("Going to Database in FieldDAOListOfOptions.loadData for<br>megafieldid: " +megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         //-----------------------------------
         //-----------------------------------
         String[][] rstVal= Db.RunSQL("SELECT megaoption.megaoptionid, optiontext FROM megavalue, megaoption WHERE megavalue.megavalue=megaoption.megaoptionid AND megavalue.eventid='"+eventid+"' AND megavalue.megafieldid='"+megafieldid+"'");

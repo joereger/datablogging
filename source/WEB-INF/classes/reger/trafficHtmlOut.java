@@ -20,23 +20,19 @@ public class trafficHtmlOut {
         //Get current time
         java.util.Calendar tdate=java.util.Calendar.getInstance();
 
-        //reger.core.Util.logtodb("Creation: "+reger.core.TimeUtils.dateformatfordb(tdate));
 
         //Convert to user time
         //tdate=reger.core.TimeUtils.gmttousertime(tdate, "EST");
         tdate=reger.core.TimeUtils.convertFromOneTimeZoneToAnother(tdate, tdate.getTimeZone().getID(), userSession.getAccount().getTimezoneid());
 
-        //reger.core.Util.logtodb("Convert to user time: "+reger.core.TimeUtils.dateformatfordb(tdate));
 
         //Get the start date
         tdate=reger.core.TimeUtils.xDaysAgoStart(tdate, daysago);
 
-        //reger.core.Util.logtodb("Get start date ( daysago="+daysago+" ): "+reger.core.TimeUtils.dateformatfordb(tdate));
 
         //Convert to a server time for query
         tdate=reger.core.TimeUtils.usertogmttime(tdate, userSession.getAccount().getTimezoneid());
 
-        //reger.core.Util.logtodb("Convert to server time: "+reger.core.TimeUtils.dateformatfordb(tdate));
 
         return reger.core.TimeUtils.dateformatfordb(tdate);
     }
@@ -50,7 +46,6 @@ public class trafficHtmlOut {
 
         String sql="SELECT SUM(count) FROM traffic WHERE datetime>'"+ getTimeAgo(daysago, userSession) +"' AND traffic.traffictypeid='"+reger.Vars.TRAFFICTYPEPUBLICHOMEPAGE+"' AND accountid='"+ userSession.getAccount().getAccountid() +"'";
 
-        //reger.core.Util.logtodb(sql);
 
         sb.append("<table cellpadding=0 cellspacing=1 border=0>" );
 
@@ -98,8 +93,6 @@ public class trafficHtmlOut {
         }
 
         String sql="SELECT SUM(traffic.count) as sumcnt, event.title, traffic.eventid, event.eventtypeid, event.logid FROM traffic, event, megalog WHERE traffic.traffictypeid='"+reger.Vars.TRAFFICTYPEPUBLICENTRYDETAIL+"' AND traffic.datetime>'"+ getTimeAgo(daysago, userSession) +"' AND traffic.eventid=event.eventid AND traffic.eventid>0 AND traffic.accountid='"+ userSession.getAccount().getAccountid() +"'" + filterAdminEntries + " AND traffic.logid=megalog.logid AND "+userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid())+" "+logidSql+" GROUP BY traffic.eventid, event.title, event.eventtypeid, event.logid ORDER BY sumcnt DESC";
-
-        //reger.core.Util.logtodb("entryTrafficList():"+sql);
 
         sb.append("<table cellpadding=0 cellspacing=1 border=0>" );
 
@@ -175,8 +168,6 @@ public class trafficHtmlOut {
         //-----------------------------------
         //-----------------------------------
 
-        //reger.core.Util.logtodb("SELECT YEAR(datetime) as yr, MONTH(datetime) as mn, DAYOFMONTH(datetime) as dy, sum(count), datetime FROM traffic WHERE eventid='"+ eventid +"' AND accountid='"+ userSession.getAccount().getAccountid() +"' GROUP BY yr, mn, dy ORDER BY yr DESC, mn DESC, dy DESC");
-
         int width=0;
         java.util.Calendar rollingDate = java.util.Calendar.getInstance();
         if (rstToday!=null && rstToday.length>0){
@@ -184,8 +175,6 @@ public class trafficHtmlOut {
 
         		if (reger.core.Util.isnumeric(rstToday[i][3]) && counttotal>0) {
                     width=(int)((Double.parseDouble(rstToday[i][3])/counttotal)*500);
-                    //reger.core.Util.logtodb("rstToday[i][3]: "+ rstToday[i][3] +" counttotal: "+ counttotal + " width:" + width);
-                    //reger.core.Util.logtodb("Integer.parseInt(rstToday[i][3])/counttotal:" + Integer.parseInt(rstToday[i][3])/counttotal);
 
                 } else {
                     width=0;
@@ -198,16 +187,11 @@ public class trafficHtmlOut {
 
                 java.util.Calendar currentDate=reger.core.TimeUtils.gmttousertime(reger.core.TimeUtils.minTime(reger.core.TimeUtils.dbstringtocalendar(rstToday[i][4])), "GMT");
 
-                //reger.core.Util.logtodb("Out: currentDate=" + reger.core.TimeUtils.dateformatfordb(currentDate) + " rollingDate="+reger.core.TimeUtils.dateformatfordb(rollingDate) + " rstToday[i][4]:"+ rstToday[i][4]);
-
-                //reger.core.Util.logtodb("datediff(rollingDate, currentDate)=" + reger.core.DateDiff.DateDiff("day", rollingDate, currentDate));
 
                 if (reger.core.DateDiff.dateDiff("day", rollingDate, currentDate)>1) {
                     int maxtimes=reger.core.DateDiff.dateDiff("day" ,rollingDate, currentDate)-1;
-                    //reger.core.Util.logtodb("maxtimes="+maxtimes);
                     for(int j=0; j<=(maxtimes-1); j++){
 
-                        //reger.core.Util.logtodb("In j="+j+": currentDate=" + reger.core.TimeUtils.dateformatfordb(currentDate) + " rollingDate="+reger.core.TimeUtils.dateformatfordb(rollingDate));
 
                         //Increment rollingdate
                         rollingDate.add(java.util.Calendar.DATE, -1);

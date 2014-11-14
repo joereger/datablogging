@@ -95,7 +95,6 @@ public class FieldParam {
     public String validate(){
         String errortext = "";
 
-        //reger.core.Util.logtodb("type=" + type + "<br>value=" + value + "<br>name=" + name + "<br>FieldParam.ParamTypeText=" + FieldParam.ParamTypeText);
 
         //Requiredness
         if (isRequired && value.equals("")){
@@ -170,7 +169,6 @@ public class FieldParam {
 
     public void loadFromRequest(javax.servlet.http.HttpServletRequest request){
         if (request.getParameter("fieldparam-" + onewordDatabaseKey)!=null){
-            //reger.core.Util.logtodb("Found a fieldparam in request: fieldparam-" + onewordDatabaseKey + "=" + request.getParameter("fieldparam-" + onewordDatabaseKey) + "<br>type=" + type);
             value = request.getParameter("fieldparam-" + onewordDatabaseKey);
         }
     }

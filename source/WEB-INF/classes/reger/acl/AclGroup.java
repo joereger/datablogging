@@ -60,7 +60,6 @@ public class AclGroup {
             for(int i=0; i<rstAcls.length; i++){
                 AclObject tmpAclObject = reger.acl.AllAclObjects.getAclObjectById(Integer.parseInt(rstAcls[i][0]));
                 aclObjectsThisGroupCanDo = AddToArray.addToAclObjectArray(aclObjectsThisGroupCanDo, tmpAclObject);
-                //reger.core.Util.logtodb("--Done adding aclobjectid=" + rstAcls[i][0] + " to aclObjectsThisGroupCanDo.length=" + aclObjectsThisGroupCanDo.length);
             }
         }
     }

@@ -95,8 +95,6 @@ try {
         rstPolar[0] = rstPolarOriginal;
         rstPolar[1] = rstPolarComparison;
 
-        //reger.core.Util.logtodb("Got second set of data.");
-        //reger.core.Util.logDoubleStringArrayToDb("rstPolar[0]", rstPolar[1]);
     }
 
 
@@ -171,7 +169,6 @@ try {
                         if (xaxisColumn==0){
                             Second sec = new Second(Integer.parseInt(rstPolar[k][i][xaxisColumn]), 0, 0, 1, 1, 1970);
                             timeseries.add(sec, Double.parseDouble(rstPolar[k][i][yaxisColumn]));
-                            //reger.core.Util.logtodb("Data added to timeseries." + sec.toString());
                          }
                     }
                 }

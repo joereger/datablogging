@@ -34,8 +34,6 @@ public class PlEventtypeOrder {
             pleventtypeidJustBelow = Integer.parseInt(rstLower[0][0]);
         }
 
-        //Util.logtodb("Ready to swap.<br>currentorder=" + currentorder + "<br>pleventtypeid=" + pleventtypeid + "<br>pleventtypeidJustBelow=" + pleventtypeidJustBelow );
-
         //If there is one below and the current fieldorder isn't at the top, swap these two
         if (currentorder>0 && pleventtypeidJustBelow>0){
             swapFieldOrder(pleventtypeid, pleventtypeidJustBelow);
@@ -70,7 +68,6 @@ public class PlEventtypeOrder {
             pleventtypeidJustAbove = Integer.parseInt(rstLower[0][0]);
         }
 
-        //Util.logtodb("Ready to swap.<br>currentorder=" + currentorder + "<br>pleventtypeid=" + pleventtypeid + "<br>pleventtypeidJustAbove=" + pleventtypeidJustAbove );
 
         //If there is one below and the current fieldorder isn't at the top, swap these two
         if (currentorder>0 && pleventtypeidJustAbove>0){
@@ -82,8 +79,6 @@ public class PlEventtypeOrder {
 
 
     public static void swapFieldOrder(int pleventtypeidA, int pleventtypeidB){
-        //Util.logtodb("Into swap.<br>pleventtypeidA=" + pleventtypeidA + "<br>pleventtypeidB=" + pleventtypeidB);
-
         //Get the fieldorder of A
         int orderA = 0;
         //-----------------------------------
@@ -105,8 +100,6 @@ public class PlEventtypeOrder {
         if (rstFieldB!=null && rstFieldB.length>0){
         	orderB = Integer.parseInt(rstFieldB[0][0]);
         }
-
-        //Util.logtodb("Just before == compare.<br>pleventtypeidA=" + pleventtypeidA + "<br>pleventtypeidB=" + pleventtypeidB);
 
         //If they're both the same then we need to increment B
         if (pleventtypeidA == pleventtypeidB){

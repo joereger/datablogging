@@ -192,7 +192,7 @@ public class Generator {
                 }
             }
         }
-        reger.core.Debug.logtodb("Unable to find primary key for table: "+tablename, "Generator.java");
+        System.out.println("Generator.log: Unable to find primary key for table: " + tablename);
         return "";
     }
 

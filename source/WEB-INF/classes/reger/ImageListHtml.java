@@ -123,7 +123,6 @@ public class ImageListHtml {
         //Make sure we're not in admin mode just about to create an entry
         if (eventid>0) {
             //Start paging
-            //reger.core.Util.logtodb(sqlSelectCount+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry);
             //-----------------------------------
             //-----------------------------------
             String[][] rstCount = Db.RunSQL(sqlBuilder(true, userSessionOfPersonViewing, accountid, tagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey));
@@ -134,7 +133,6 @@ public class ImageListHtml {
                 recordcount = Integer.parseInt(rstCount[0][0]);
             }
 
-            //reger.core.Util.logtodb("ImageListHtml.java - recordcount=" + recordcount);
 
             if (currentpage < 0) {
                 currentpage = 1;
@@ -167,8 +165,6 @@ public class ImageListHtml {
             //End paging
 
 
-
-            //reger.core.Util.logtodb(sqlSelect+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry+sqlOrderBy);
             //-----------------------------------
             //-----------------------------------
             String[][] rstImagelist = reger.core.db.Db.RunSQL(sqlBuilder(false, userSessionOfPersonViewing, accountid, tagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey) + sqlLimit);
@@ -326,8 +322,6 @@ public class ImageListHtml {
 
                 mb.append("<ul class=\"thumbnails\">" + "\n");
 
-
-                //reger.core.Util.logtodb(sqlSelect+sqlFrom+sqlWhere+sqlEventid+sqlImagetagid+sqlLiveEntry+sqlOrderBy);
                 //-----------------------------------
                 //-----------------------------------
                 String[][] rstImagelist = reger.core.db.Db.RunSQL(sqlBuilder(false, userSessionOfPersonViewing, accountid, tagid, eventid, displayOnlyImagesFromLiveEntries, false, false, entrykey));

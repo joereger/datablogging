@@ -31,7 +31,7 @@ public class ProcessDropboxAutoBlog implements ScheduledTask{
     }
 
     public void doTask(){
-        Debug.logtodb("Running doTask()", "ProcessDropboxAutoBlog");
+        Debug.debug(3, "Running doTask()", "ProcessDropboxAutoBlog");
         int accountsProcessed = 0;
         try {
             //-----------------------------------

@@ -116,13 +116,13 @@ if (pageProps.action.equals("update")){
         String value = request.getParameter(key);
 
         if (key.length()>7){
-            //reger.core.Util.logtodb("key: " + key + " - substring(0,7): " + key.substring(0,7));
+
         }
 
 
         if (key.length()>7 && key.substring(0,7).equals("errorid")){
             int errorid = Integer.parseInt(key.substring(8,key.length()));
-            //reger.core.Util.logtodb("key: " + key + " - value: " + value + " - errorid: " + errorid);
+
             //Update
             //-----------------------------------
             //-----------------------------------

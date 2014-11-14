@@ -45,8 +45,6 @@ public class CalendarHtmlPluginAdvanced implements CalendarDayPlugin{
             }
 
 
-            //reger.core.Util.logtodb("sql: " + sql);
-
             //create array with all dates for this logid
 
             Calendar userdate;

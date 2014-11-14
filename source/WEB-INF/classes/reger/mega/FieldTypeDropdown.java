@@ -220,7 +220,6 @@ public class FieldTypeDropdown extends Field implements FieldType, ChartField{
      * Accept an http request and populate the data of this object
      */
      public void populateFromRequest(javax.servlet.http.HttpServletRequest request){
-        //reger.core.Util.logtodb("Populating from request object.");
 
         //Find the value
         if (request.getParameter("megafieldid-" + this.megafieldid)!=null){
@@ -234,7 +233,6 @@ public class FieldTypeDropdown extends Field implements FieldType, ChartField{
             fieldData.add(0, new FieldData(NAMEOFDATAVALUE, request.getParameter("megafieldid-new-" + this.megafieldid)));
         }
 
-        //reger.core.Util.logtodb("Value is set from request object to: " + value);
      }
 
      /**
@@ -264,7 +262,6 @@ public class FieldTypeDropdown extends Field implements FieldType, ChartField{
      * Validate the currently stored value in the field.
      */
      public String validateCurrentData(){
-        //reger.core.Util.logtodb("Validating data.  this.value=" + this.value);
         String errortext = "";
 
         //Check requiredness
@@ -296,7 +293,6 @@ public class FieldTypeDropdown extends Field implements FieldType, ChartField{
     public void saveToDb(int eventid, int logid) {
         FieldDAOListOfOptions sm = new FieldDAOListOfOptions();
         sm.setValue(this.fieldData.get(0).getValue());
-        //reger.core.Util.logtodb("In FieldTypeDropdown.saveToDb.  About to call sm.saveData<br>this.value: " +this.value+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         sm.saveData(this.megafieldid, eventid, logid);
     }
 

@@ -53,8 +53,6 @@ public class Version175ToVersion176 implements UpgradeDatabaseOneVersion{
                     }
                 }
             }
-            reger.core.Debug.logtodb(debug.toString(), "Version174ToVersion175.java");
-
 
 
 

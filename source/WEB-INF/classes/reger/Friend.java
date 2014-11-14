@@ -184,7 +184,6 @@ public class Friend {
             }
             tst.append("<br><b>HashMap("+e.getKey()+"):</b> " + tstTmp);
         }
-        Debug.logtodb("<br><b>Contents of the Friends HashMap:</b>" + tst, "");
 
     }
 

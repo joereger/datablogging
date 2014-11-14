@@ -176,7 +176,6 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
      * Accept an http request and populate the data of this object
      */
      public void populateFromRequest(HttpServletRequest request){
-        //reger.core.Util.logtodb("Populating from request object.");
 
         //Find the value
         if (request.getParameter("megafieldid-" + this.megafieldid)!=null){
@@ -190,7 +189,6 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
             this.fieldData.get(0).setValue(request.getParameter("megafieldid-new-" + this.megafieldid));
         }
 
-        //reger.core.Util.logtodb("Value is set from request object to: " + value);
      }
 
      /**
@@ -198,7 +196,6 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
      * Use a FieldDAO object to do this.
      */
      public void loadDataForEventid(int eventid, int logid){
-        //reger.core.Util.logtodb("Getting data for<br>megafieldid: " +this.megafieldid+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         FieldDAOSimple sm = new FieldDAOSimple();
         sm.loadData(this.megafieldid, eventid, logid);
         this.fieldData.get(0).setValue(sm.value);
@@ -218,7 +215,6 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
      * Validate the currently stored value in the field.
      */
      public String validateCurrentData(){
-        //reger.core.Util.logtodb("Validating data.  this.value=" + this.value);
         String errortext = "";
 
         //Check requiredness
@@ -249,7 +245,6 @@ public class FieldTypeTextbox extends Field implements FieldType, ChartField{
     public void saveToDb(int eventid, int logid) {
         FieldDAOSimple sm = new FieldDAOSimple();
         sm.setValue(this.fieldData.get(0).getValue());
-        //reger.core.Util.logtodb("In FieldTypeDropdown.saveToDb.  About to call sm.saveData<br>this.value: " +this.value+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         sm.saveData(this.megafieldid, eventid, logid);
     }
 

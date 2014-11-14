@@ -218,8 +218,6 @@ public class Accountuser implements java.io.Serializable {
                 }
             }
         }
-
-        //reger.core.Util.logtodb("Accountuser.populate() complete.  accountuserid=" + accountuserid);
     }
 
     /**
@@ -318,7 +316,6 @@ public class Accountuser implements java.io.Serializable {
                 populate();
                 //Save the last login date to the database
                 saveLastLoginDate();
-                //reger.core.Util.logtodb("Accountuser.userAuthenticateEmailsecret().  ");
                 //Return
                 return true;
             }
@@ -1002,7 +999,6 @@ public class Accountuser implements java.io.Serializable {
 
     public void grantAcl(int aclobjectid, int accountidRelatedTo){
         if (accountuserid>0){
-            //reger.core.Util.logtodb("Granting accountuserid="+accountuserid+" aclaclobjectid=" + aclobjectid + " on accountid=" + accountidRelatedTo);
             //-----------------------------------
             //-----------------------------------
             int count = Db.RunSQLUpdate("DELETE FROM accountuseracl WHERE accountuserid='"+accountuserid+"' AND accountid='"+accountidRelatedTo+"' AND aclobjectid='"+aclobjectid+"'");
@@ -1511,7 +1507,6 @@ public class Accountuser implements java.io.Serializable {
                 }
                 if (request.getParameter("fielddata-accountuserfieldid-" + rstAcUf[i][0])!=null && !request.getParameter("fielddata-accountuserfieldid-" + rstAcUf[i][0]).equals("")){
                     body = request.getParameter("fielddata-accountuserfieldid-" + rstAcUf[i][0]);
-                    //reger.core.Util.logtodb("title=" + title + "<br>body=" + body);
                 }
                 if (!title.equals("")){
                     accountuserfields.add(new Accountuserfield(Integer.parseInt(rstAcUf[i][0]), title, body, Integer.parseInt(rstAcUf[i][3])));
@@ -1981,7 +1976,6 @@ public class Accountuser implements java.io.Serializable {
                 Vector allLogs = LogCache.allLogsForAccount(accountid.intValue());
                 for (int j = 0; j < allLogs.size(); j++) {
                     Log log = (Log) allLogs.get(j);
-                    //reger.core.Util.logtodb("Logid=" + log.getLogid() + "<br>userCanViewLog(log.getLogid())=" + userCanViewLog(log.getLogid()));
                     if (userCanViewLog(log.getLogid()) || userCanAuthorLog(log.getLogid())){
                         if (log.getLogaccess()==reger.Vars.LOGACCESSPRIVATE){
                             mb.append("<img src='"+acct.getSiteRootUrl(userSession)+"/images/icon-private.gif' border=0>");

@@ -53,7 +53,7 @@ public class Version140ToVersion141 implements UpgradeDatabaseOneVersion{
                         if (result.get("encryptedlicense")!=null && !((String)result.get("encryptedlicense")).equals("")){
                             encryptedlicense = (String)result.get("encryptedlicense");
                         } else {
-                            Debug.logtodb("Upgrading Error for VIP Accountid=" + rstAcct[i][0] + "<br>This license may not be properly configured.  Please check.<br>Errormessage=" + result.get("errormessage"), "");
+                           //
                         }
                     } else if (reger.core.Util.isinteger(rstAcct[i][2]) &&  Integer.parseInt(rstAcct[i][2])==reger.Vars.ACCTYPETRIAL){
                         //Expiration date - Restart the trial period

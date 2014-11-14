@@ -79,14 +79,11 @@ public class GlobalHeader {
 
             //Deal with HTTP/HTTPS
             //First, figure out which protocol is being used a
-            //reger.core.Util.logtodb("++++++++++New Page: " + request.getServerName() + request.getContextPath() + request.getServletPath());
             pageProps.isCurrentRequestSSL = pageProps.isRequestSSL(request);
-            //reger.core.Util.logtodb("Successfully determined isCurrentRequestSSL:" + pageProps.isCurrentRequestSSL + "<br>getProtocol()=" + request.getProtocol());
             //Next, if the page requires SSL but it isn't SSL and SSL is on for this instance we need to do a redirect
             if (!request.isSecure() && reger.systemprops.AllSystemProperties.getProp("SSLISON").equals("1")){
                 //Redirect to https
                 try {
-                    //reger.core.Util.logtodb(reger.core.ErrorDissect.ServletUtilsdissect(request));
                     String qs = "";
                     if (request.getQueryString()!=null){
                         qs = "?" + request.getQueryString();
@@ -96,7 +93,7 @@ public class GlobalHeader {
                     if(URL.substring(0,7).equals("http://")){
                         URL = "https://" + URL.substring(7, URL.length());
                     } else {
-                        Debug.logtodb("globalheader.jsp - Somebody accessed an https:// site via a protocol other than http:// or https://.  The URL is: " + URL, "");
+                        Debug.debug(3, "globalheader.jsp - Somebody accessed an https:// site via a protocol other than http:// or https://.  The URL is: " + URL, "");
                     }
                     //Append the  querystring
                     URL = URL + qs;
@@ -110,7 +107,7 @@ public class GlobalHeader {
                 //out.println("<br>You must access this site via secure https://.");
                 return;
             }
-            //reger.core.Util.logtodb("Past https block.");
+
 
 
 
@@ -237,7 +234,6 @@ public class GlobalHeader {
 
 
             //Make sure the user is allowed to use this ACL object
-            //reger.core.Util.logtodb("acl:" + pageProps.aclObjectName + "<br>userSession.getAccountuser().userCanDoAcl(pageProps.aclObjectName, userSession.getAccount().getAccountid())" + userSession.getAccountuser().userCanDoAcl(pageProps.aclObjectName, userSession.getAccount().getAccountid()));
             if ((pageProps.isPasswordProtected) && (!userSession.getAccountuser().userCanDoAcl(pageProps.aclObjectName, userSession.getAccount().getAccountid()))){
                 Debug.debug(4, "GlobalHeader", "Bounced to /login.log because user can't do acl.");
                 response.sendRedirect(pageProps.pathToAppRoot + "login.log");
@@ -262,7 +258,6 @@ public class GlobalHeader {
                 }
 
                 if (!passedvalidation) {
-                    //reger.core.Util.logtodb("No logid or eventid found on the page.");
                     try {
                         Debug.debug(4, "GlobalHeader", "Bounced to /login.log because pageProps.passedvalidation=FALSE.");
                         response.sendRedirect("index.log?msg=invalid");

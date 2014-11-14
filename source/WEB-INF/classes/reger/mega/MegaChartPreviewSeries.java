@@ -48,8 +48,6 @@ public class MegaChartPreviewSeries extends reger.mega.MegaChartSeries {
     }
 
     private String[] previewDataGet(int megafieldid, int Megadatatype, int howmanydatapoints, boolean isYaxis){
-        //reger.core.Util.logtodb("previewDataGet(megafieldid="+megafieldid+", Megadatatype="+Megadatatype+", howmanydatapoints="+howmanydatapoints +", isYaxis="+isYaxis);
-
         if (megafieldid>0){
             if (Megadatatype==reger.mega.DataTypeString.DATATYPEID){
                 return previewDataAlpha(howmanydatapoints);

@@ -30,7 +30,6 @@ public class Http {
      */
     public void getUrl(String urlToGet, int bytesToGet){
         if (urlToGet!=null && !urlToGet.equals("")){
-            //reger.core.Util.logtodb("getUrl called. urlToGet=" + urlToGet);
 
             //Save the url
             this.url = urlToGet;
@@ -56,7 +55,6 @@ public class Http {
 
             //Retry up to 3 times.
             for (int attempt = 0; statusCode == -1 && attempt < 3 && goodURI && method.validate(); attempt++) {
-                //reger.core.Util.logtodb("attempt="+attempt+"<br> urlToGet=" + urlToGet);
 
                 try {
                     //This is a problem
@@ -82,14 +80,12 @@ public class Http {
                     //How many times should the buffer be filled?
                     //This is just a way to limit the amount of data collected.
                     int bufferCounts=1;
-                    //reger.core.Util.logtodb("Before while loop.  attempt="+attempt+"<br> urlToGet=" + urlToGet);
                     while (is!=null && buff!=null && (k=is.read(buff))!=-1 && bufferCounts<=1){
                         xOutputStream.write(buff,0,k);
                         if (bytesToGet>0){
                             bufferCounts=bufferCounts+1;
                         }
                     }
-                    //reger.core.Util.logtodb("After while loop. attempt="+attempt+"<br> urlToGet=" + urlToGet);
                     responsebody = responsebody + xOutputStream.toString();
                     if (is!=null){
                         is.close();
@@ -99,8 +95,6 @@ public class Http {
                     //Set the flag
                     successfulCallWasMade = true;
 
-                    //Debug
-                    //reger.core.Util.logtodb("statusCode:" + statusCode);
 
                 } catch (HttpRecoverableException e) {
                     //Do nothing... retry

@@ -39,8 +39,6 @@ public class ImageOrder {
             }
         }
 
-        //Util.logtodb("Ready to swap.<br>currentorder=" + currentorder + "<br>pleventtypeid=" + pleventtypeid + "<br>pleventtypeidJustBelow=" + pleventtypeidJustBelow );
-
         //If there is one below and the current fieldorder isn't at the top, swap these two
         if (currentorder>0 && imageidJustBelow>0){
             swapOrder(imageid, imageidJustBelow);
@@ -79,8 +77,6 @@ public class ImageOrder {
             }
         }
 
-        //Util.logtodb("Ready to swap.<br>currentorder=" + currentorder + "<br>pleventtypeid=" + pleventtypeid + "<br>pleventtypeidJustAbove=" + pleventtypeidJustAbove );
-
         //If there is one below and the current fieldorder isn't at the top, swap these two
         if (currentorder>0 && imageidJustAbove>0){
             swapOrder(imageid, imageidJustAbove);
@@ -91,7 +87,6 @@ public class ImageOrder {
 
 
     public static void swapOrder(int imageidA, int imageidB){
-        //Util.logtodb("Into swap.<br>pleventtypeidA=" + pleventtypeidA + "<br>pleventtypeidB=" + pleventtypeidB);
 
         //Get the fieldorder of A
         int orderA = 0;
@@ -118,8 +113,6 @@ public class ImageOrder {
         	    orderB = Integer.parseInt(rstFieldB[0][0]);
             }
         }
-
-        //Util.logtodb("Just before == compare.<br>pleventtypeidA=" + pleventtypeidA + "<br>pleventtypeidB=" + pleventtypeidB);
 
         //If they're both the same then we need to increment B
         if (imageidA == imageidB){

@@ -182,7 +182,6 @@ public class RssRome {
 
                     //Item Description
                     //char apost = '\u2019';
-                    //reger.core.Util.logtodb("Before \u2019 : " + rstEvent[i][4]);
                     //String itemDescription = rstEvent[i][4].replace(apost, "'");
                     //String itemDescription = rstEvent[i][4].replaceAll("\\\u2019", "'");
                     //String itemDescription = reger.core.Util.cleanForHtmlAdvanced(rstEvent[i][4]);
@@ -192,7 +191,6 @@ public class RssRome {
                     }
                     itemDescription = itemDescription + "<br><br>";
                     itemDescription = itemDescription + entry.filethumbsrss;
-                    //reger.core.Util.logtodb("After: " + itemDescription);
                     Description desc = new Description();
                     desc.setValue(itemDescription);
                     item.setDescription(desc);
@@ -619,12 +617,10 @@ public class RssRome {
 
                     //Item Description
                     //char apost = '\u2019';
-                    //reger.core.Util.logtodb("Before \u2019 : " + rstEvent[i][4]);
                     //String itemDescription = rstEvent[i][4].replace(apost, "'");
                     //String itemDescription = rstEvent[i][4].replaceAll("\\\u2019", "'");
                     //String itemDescription = reger.core.Util.cleanForHtmlAdvanced(rstEvent[i][4]);
                     String itemDescription = entry.comments;
-                    //reger.core.Util.logtodb("After: " + itemDescription);
                     SyndContentImpl description = new SyndContentImpl();
                     description.setType("text/plain");
                     description.setValue(itemDescription);

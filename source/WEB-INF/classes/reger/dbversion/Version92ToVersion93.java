@@ -30,9 +30,7 @@ public class Version92ToVersion93 implements UpgradeDatabaseOneVersion{
 //            //-----------------------------------
 //            if (rstEvType!=null && rstEvType.length>0){
 //                for(int i=0; i<rstEvType.length; i++){
-//                    reger.core.Util.logtodb("Start fix field layouts for eventtypeid=" + rstEvType[i][0]);
 //                    fixFields(Integer.parseInt(rstEvType[i][0]));
-//                    reger.core.Util.logtodb("End fix field layouts for eventtypeid=" + rstEvType[i][0]);
 //                }
 //            }
 

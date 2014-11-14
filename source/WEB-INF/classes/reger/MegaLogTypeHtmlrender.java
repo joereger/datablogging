@@ -208,7 +208,6 @@ public class MegaLogTypeHtmlrender {
 
 
 
-        //reger.core.Util.logtodb("sql htmlListEvents.java: "+sql);
         //Return the actual records needed
         //-----------------------------------
         //-----------------------------------
@@ -371,8 +370,6 @@ public class MegaLogTypeHtmlrender {
         int counttotal=numberOfRecentEntriesBasedOnEventtypeid(eventtypeid, userSession);
 
 
-
-        //reger.core.Util.logtodb("sql htmlListEvents.java: "+sql);
         //Return the actual records needed
         //-----------------------------------
         //-----------------------------------

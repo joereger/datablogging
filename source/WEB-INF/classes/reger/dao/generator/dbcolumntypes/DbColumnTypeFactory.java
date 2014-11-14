@@ -25,7 +25,7 @@ public class DbColumnTypeFactory {
         } else if (type.indexOf("float")>-1){
             return new DbTypeDouble();
         } else {
-            reger.core.Debug.logtodb("Unknown database column type encountered: "+type, "DbColumnTypeFactory.java");
+            System.out.println("DbColumnTypeFactory: Unknown database column type encountered: " + type);
             return new DbTypeString();
         }
     }

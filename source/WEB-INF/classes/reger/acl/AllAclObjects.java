@@ -16,7 +16,6 @@ public class AllAclObjects {
     }
 
     private static void refreshAclObjects(){
-        //reger.core.Util.logtodb("AllAclObjects.refreshAclObjects() Start");
 
         //Setup
         allAclObjects = new AclObject[0];

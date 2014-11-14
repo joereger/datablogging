@@ -41,9 +41,6 @@ public class CalendarHtmlPlugin implements CalendarDayPlugin{
                 sql="SELECT date, eventid, title, event.logid FROM event, megalog WHERE megalog.logid='" + logid + "' AND "+reger.Entry.sqlOfLiveEntry+" AND megalog.accountid='" + userSession.getAccount().getAccountid() + "' AND date>'"+reger.core.TimeUtils.dateformatfordb(startdate)+"' AND date<'"+reger.core.TimeUtils.dateformatfordb(enddate)+"' AND " + userSession.getAccountuser().LogsUserCanViewQueryend(userSession.getAccount().getAccountid()) + " AND megalog.logid=event.logid ORDER BY date DESC";
             }
 
-
-            //reger.core.Util.logtodb("sql: " + sql);
-
             //create array with all dates for this logid
 
             Calendar userdate;

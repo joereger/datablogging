@@ -40,17 +40,11 @@ public class TimeLine {
         //If they're the same, we need to get all time periods that cross the boundary of the time listed
         if (boundaryDateGMT!=null && lowestDateGMT==null && highestDateGMT==null){
 
-            //reger.core.Util.logtodb("BoundaryDateGMT=" + boundaryDateGMT.toString());
-            //reger.core.Util.logtodb("dateformatfordb(boundaryDateGMT)=" +reger.core.TimeUtils.dateformatfordb(boundaryDateGMT));
-
             String dateSql = "(   startdate<='" + reger.core.TimeUtils.dateformatfordb(boundaryDateGMT) + "' AND (enddate>='"+reger.core.TimeUtils.dateformatfordb(boundaryDateGMT)+"'";
             if (nowInGMT.after(boundaryDateGMT)){
                 dateSql = dateSql + " OR isopenended='1'";
             }
             dateSql = dateSql + ")   )";
-
-            //reger.core.Util.logtodb(dateSql);
-
 
             //Get the lowest date
             //-----------------------------------
@@ -79,8 +73,6 @@ public class TimeLine {
             } else {
                 this.highestDateGMT = nowInGMT;
             }
-
-            //reger.core.Util.logtodb("SELECT timeperiodid FROM timeperiod WHERE accountid='"+accountid+"' AND "+privateSql+" AND "+dateSql+" ORDER BY startDate DESC");
 
             //Go find time periods in this timeline, based on the date
             //-----------------------------------

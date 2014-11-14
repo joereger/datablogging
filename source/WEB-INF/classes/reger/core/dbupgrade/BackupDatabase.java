@@ -20,7 +20,7 @@ public class BackupDatabase {
             //file.mkdirs();
         //}
 
-        Debug.logtodb("Database Backup Directory: " + dirname, "");
+        System.out.println("Database Backup Directory: " + dirname);
 
         //-----------------------------------
         //-----------------------------------
@@ -37,7 +37,7 @@ public class BackupDatabase {
                 //-----------------------------------
                 if (rstBackup!=null && rstBackup.length>0){
                     for(int j=0; j<rstBackup.length; j++){
-                        Debug.logtodb("Table:" + rstBackup[j][0] + "<br>Operation:" + rstBackup[j][1] + "<br>MessageType:" + rstBackup[j][2] + "<br>MessageText:" + rstBackup[j][3], "");
+                        System.out.println("Table:" + rstBackup[j][0] + "<br>Operation:" + rstBackup[j][1] + "<br>MessageType:" + rstBackup[j][2] + "<br>MessageText:" + rstBackup[j][3]);
                     }
                 }
 

@@ -49,8 +49,6 @@ public class NestedNavCollection  {
 
     public ArrayList<NestedNavItem> getChildrenUserCanView(NestedNavItem parent, Accountuser accountuser){
         ArrayList<NestedNavItem> itemsUserCanView = getNavItemsUserCanView(allNestedNavItems, accountuser);
-        //reger.core.Util.logtodb("NestedNavCollection.getChildrenUserCanView() - allNestedNavItems.length=" + allNestedNavItems.length);
-        //reger.core.Util.logtodb("NestedNavCollection.getChildrenUserCanView() - itemsUserCanView.length=" + itemsUserCanView.length);
         return getAllChildrenApplyNoPermissions(itemsUserCanView, parent);
     }
 

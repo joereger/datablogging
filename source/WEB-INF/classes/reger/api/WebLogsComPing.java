@@ -54,8 +54,6 @@ public class WebLogsComPing {
                         //String key = (String)e.nextElement();
                         //resultStr=resultStr+">>key=" + key + " - value=" + result.get(key).toString();
                     //}
-
-                    //reger.core.Util.logtodb("weblogs.com ping result: " + resultStr);
                 } catch (Exception e) {
                     Debug.errorsave(e, "");
                 }

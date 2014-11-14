@@ -42,7 +42,7 @@ public class ChartFieldFactory {
         } else if (fieldtype==FieldType.YAXISCOUNT) {
             return new ChartFieldEntrycount();
         } else {
-            Debug.logtodb("No handler found: ChartFieldFactory.getHandlerByFieldtype - incoming fieldtype=" + fieldtype, "");
+            Debug.debug(3, "No handler found: ChartFieldFactory.getHandlerByFieldtype - incoming fieldtype=" + fieldtype, "");
             return null;
         }
     }

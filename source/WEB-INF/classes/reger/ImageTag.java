@@ -34,10 +34,8 @@ public class ImageTag {
     public static int saveImageTag(int imageid, String tag){
         tag=tag.toLowerCase();
         if (!tag.equals("")){
-            //reger.core.Util.logtodb("ImageTag.saveImageTag("+imageid+", "+tag+")");
             //First, see if the tag exists
             int imagetagid = getImagetagidFromTagText(tag);
-            //reger.core.Util.logtodb("Checked for existing: imagetagid=" + imagetagid);
             if (imagetagid<0){
                 //If not, create it
                 //-----------------------------------
@@ -54,10 +52,9 @@ public class ImageTag {
             //-----------------------------------
             if (rstImage!=null && rstImage.length>0){
                 //If so, do nothing
-                //reger.core.Util.logtodb("Nothing to do.");
+
             } else {
                 //If not, create the association
-                //reger.core.Util.logtodb("Creating the imagetagimagelink.");
                 //-----------------------------------
                 //-----------------------------------
                 int identity = Db.RunSQLInsert("INSERT INTO imagetagimagelink(imageid, imagetagid) VALUES('"+imageid+"', '"+imagetagid+"')");

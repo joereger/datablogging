@@ -41,8 +41,6 @@ public class Version23ToVersion24 implements UpgradeDatabaseOneVersion{
 //                                int count = Db.RunSQLUpdate("UPDATE accountuser SET username='"+reger.core.Util.cleanForSQL(newUserName)+"' WHERE accountuserid='"+rstFindUsers[j][0]+"'");
 //                                //-----------------------------------
 //                                //-----------------------------------
-//                                //Note this change in the log
-//                                Debug.logtodb("Username changed from " + oldUserName + " to " + newUserName + " for accountuserid=" + rstFindUsers[j][0], "");
 //                                //Send them a notification email
 //                                StringBuffer message = new StringBuffer();
 //                                message.append("Your username has changed from '" + oldUserName + "' to '" + newUserName + "'.  We apologize for the inconvenience.  If you don't like the new username you can log back into your account and change it to something easier to remember.  If you have questions, please email help@reger.com.  Best, Joe Reger");

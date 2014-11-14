@@ -225,8 +225,6 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
      * Accept an http request and populate the data of this object
      */
      public void populateFromRequest(HttpServletRequest request){
-        //reger.core.Util.logtodb("Populating from request object.");
-
         //Conversion from time needed
         int h=0;
         int m=0;
@@ -244,7 +242,6 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
         //Finally, set the value
         this.fieldData.get(0).setValue(String.valueOf((h*3600)+(m*60)+(s)));
 
-        //reger.core.Util.logtodb("Value is set from request object to: " + value);
      }
 
      /**
@@ -273,7 +270,6 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
      * Validate the currently stored value in the field.
      */
      public String validateCurrentData(){
-        //reger.core.Util.logtodb("Validating data.  this.value=" + this.value);
         String errortext = "";
 
         //Check requiredness
@@ -304,7 +300,6 @@ public class FieldTypeTimeperiod extends Field implements FieldType, ChartField{
     public void saveToDb(int eventid, int logid) {
         FieldDAOSimple sm = new FieldDAOSimple();
         sm.setValue(this.fieldData.get(0).getValue());
-        //reger.core.Util.logtodb("In FieldTypeDropdown.saveToDb.  About to call sm.saveData<br>this.value: " +this.value+ "<br>eventid: " + eventid + "<br>logid: " + logid);
         sm.saveData(this.megafieldid, eventid, logid);
     }
 

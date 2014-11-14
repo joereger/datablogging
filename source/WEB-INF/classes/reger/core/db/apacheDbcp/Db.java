@@ -82,8 +82,7 @@ public class Db {
   * Run SQL, return a String Array
   */
   public static String[][] RunSQL(String sql, int recordstoreturn) {
-    //reger.core.Util.logtodb("SQL: " + sql);
-    //System.out.println("Reger.com: RunSql called: " + sql);
+
 
   	Connection conn=null;
 	Statement stmt=null;

@@ -109,7 +109,7 @@ public class InvitationProcessor {
                         try{
                             groupMembership.save();
                         } catch (ValidationException vex){
-                            reger.core.Debug.logtodb(vex.getErrorsAsSingleString(), "InvitationProcessor.java");
+
                         }
                     }
                 }

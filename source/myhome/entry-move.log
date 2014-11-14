@@ -87,7 +87,6 @@ String[][] rstLogtype= Db.RunSQL("SELECT eventtypeid FROM megalog WHERE logid='"
 if (rstLogtype!=null && rstLogtype.length>0){
     for(int i=0; i<rstLogtype.length; i++){
         currentEventtypeid = Integer.parseInt(rstLogtype[i][0]);
-        //reger.core.Util.logtodb("currentEventtypeid:" + currentEventtypeid);
     }
 }
 

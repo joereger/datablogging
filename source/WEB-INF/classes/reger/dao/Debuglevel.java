@@ -10,8 +10,7 @@ package reger.dao;
 public class Debuglevel  implements java.io.Serializable {
 
 
-    // Fields    
-
+    // Fields
      private int debuglevelid;
      private int debuglevel;
 

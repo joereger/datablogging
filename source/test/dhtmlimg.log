@@ -44,7 +44,6 @@ int zoomWidth = 100;
 
 //Now in user's timezone
 Calendar nowForUser = reger.core.TimeUtils.nowInUserTimezone(userSession.getAccountuser().getUsertimezoneid());
-//reger.core.Util.logtodb("nowForUser:" + reger.core.TimeUtils.dateformatdateMmddyyyy(nowForUser));
 //Start date
 Calendar defaultStartDate = reger.core.TimeUtils.xMonthsAgoStart(nowForUser, 3);
 int startyear = defaultStartDate.get(Calendar.YEAR);
@@ -60,8 +59,6 @@ if (request.getParameter("startday")!=null && reger.core.Util.isinteger(request.
     startday = Integer.parseInt(request.getParameter("startday"));
 }
 Calendar actualStartDate = reger.core.TimeUtils.formtocalendar(startyear, startmonth+1, startday, 0, 0, 0, "am");
-//reger.core.Util.logtodb("startyear: " + startyear + " startmonth: " + startmonth + " startday: " + startday);
-//reger.core.Util.logtodb("actualStartDate:" + reger.core.TimeUtils.dateformatdateMmddyyyy(actualStartDate));
 
 //End Date
 int endyear = nowForUser.get(Calendar.YEAR);
@@ -77,8 +74,7 @@ if (request.getParameter("endday")!=null && reger.core.Util.isinteger(request.ge
     endday = Integer.parseInt(request.getParameter("endday"));
 }
 Calendar actualEndDate = reger.core.TimeUtils.formtocalendar(endyear, endmonth+1, endday, 0, 0, 0, "am");
-//reger.core.Util.logtodb("endyear: " + endyear + " endmonth: " + endmonth + " endday: " + endday);
-//reger.core.Util.logtodb("actualEndDate:" + reger.core.TimeUtils.dateformatdateMmddyyyy(actualEndDate));
+
 
 //Form begin
 mb.append("<form method=post action='dhtmlimg.log'>");

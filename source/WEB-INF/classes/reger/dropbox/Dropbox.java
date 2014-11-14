@@ -123,7 +123,7 @@ public class Dropbox {
     public static void processAutoBlogPath(int accountid, boolean forcenow){
         try{
 
-            Debug.logtodb("call initiated for accountid="+accountid, "Dropbox processAutoBlogPath()");
+            Debug.debug(3, "call initiated for accountid=" + accountid, "Dropbox processAutoBlogPath()");
 
             Log log = getLog(accountid);
             if (log==null || log.getLogid()<=0){return;}
@@ -134,13 +134,13 @@ public class Dropbox {
             String path = getAutoBlogPath(accountid);
 
             if (path==null || path.equals("")){
-                Debug.logtodb("path empty", "Dropbox");
+                Debug.debug(3, "path empty", "Dropbox");
                 return;
             }
 
             if (api!=null){
 
-                Debug.logtodb("api!=null", "Dropbox processAutoBlogPath()");
+                Debug.debug(3, "api!=null", "Dropbox processAutoBlogPath()");
 
                 DropboxAPI.Entry rootdir = api.metadata(path, 0, null, true, null);
 
@@ -148,35 +148,35 @@ public class Dropbox {
 
                     DropboxAPI.Entry entry = iterator.next();
 
-                    Debug.logtodb("found entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
+                    Debug.debug(3, "found entry.filename=" + entry.fileName(), "Dropbox processAutoBlogPath()");
 
                     if (entry.isDir){
-                        Debug.logtodb("it's a directory entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
+                        Debug.debug(3, "it's a directory entry.filename=" + entry.fileName(), "Dropbox processAutoBlogPath()");
                         //mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
                         if (!isPathAlreadyInUse(accountid, entry.fileName())){
-                            Debug.logtodb("it's not in use entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
+                            Debug.debug(3, "it's not in use entry.filename=" + entry.fileName(), "Dropbox processAutoBlogPath()");
 
                             //If was last updated 5 mins ago
                             int REFRAIN_TIME = 3;
                             if (!isUpdatedInLastXMinutes(accountid, entry.path, REFRAIN_TIME) || forcenow){
 
                                 //Create it
-                                Debug.logtodb("WILL CREATE POST", "Dropbox processAutoBlogPath(entry.path="+entry.path+")");
+                                Debug.debug(3, "WILL CREATE POST", "Dropbox processAutoBlogPath(entry.path=" + entry.path + ")");
                                 createPostFromPath(accountid, logid, entry.path);
-                                Debug.logtodb("DONE CREATING POST", "Dropbox processAutoBlogPath(entry.path="+entry.path+")");
+                                Debug.debug(3, "DONE CREATING POST", "Dropbox processAutoBlogPath(entry.path=" + entry.path + ")");
                             } else {
-                                Debug.logtodb("path updated in last "+REFRAIN_TIME+" minutes "+entry.fileName(), "Dropbox processAutoBlogPath()");
+                                Debug.debug(3, "path updated in last " + REFRAIN_TIME + " minutes " + entry.fileName(), "Dropbox processAutoBlogPath()");
                             }
 
                         } else {
-                            Debug.logtodb("it's already in use entry.filename="+entry.fileName(), "Dropbox processAutoBlogPath()");
+                            Debug.debug(3, "it's already in use entry.filename=" + entry.fileName(), "Dropbox processAutoBlogPath()");
                         }
                     }
 
                 }
 
             } else {
-                Debug.logtodb("api==null", "Dropbox processAutoBlogPath()");
+                Debug.debug(3, "api==null", "Dropbox processAutoBlogPath()");
             }
 
 
@@ -191,7 +191,7 @@ public class Dropbox {
             DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
 
             if (path==null || path.equals("")){
-                Debug.logtodb("path empty", "Dropbox");
+                Debug.debug(3, "path empty", "Dropbox");
                 return false;
             }
 
@@ -207,7 +207,7 @@ public class Dropbox {
                     Calendar d2 = TimeUtils.getCalFromDate(modified);
                     int minutesAgo = DateDiff.dateDiff("minute", d1, d2);
                     if (minutesAgo<=xMinutes){
-                        Debug.logtodb(path+" updated "+minutesAgo+" min ago","Dropbox isUpdatedInLastXMinutes()");
+                        Debug.debug(3, path + " updated " + minutesAgo + " min ago", "Dropbox isUpdatedInLastXMinutes()");
                         return true;
                     }
                 }
@@ -223,21 +223,21 @@ public class Dropbox {
                     Calendar d2 = TimeUtils.getCalFromDate(modified);
                     int minutesAgo = DateDiff.dateDiff("minute", d1, d2);
                     if (minutesAgo<=xMinutes){
-                        Debug.logtodb(entry.fileName() + " updated "+minutesAgo+" min ago","Dropbox isUpdatedInLastXMinutes()");
+                        Debug.debug(3, entry.fileName() + " updated " + minutesAgo + " min ago", "Dropbox isUpdatedInLastXMinutes()");
                         return true;
                     }
 
                 }
 
             } else {
-                Debug.logtodb("api==null", "Dropbox");
+                Debug.debug(3, "api==null", "Dropbox");
             }
 
 
         } catch (Exception ex){
             Debug.errorsave(ex, "Dropbox");
         }
-        Debug.logtodb("not updated in last "+xMinutes+" min","Dropbox isUpdatedInLastXMinutes()");
+        Debug.debug(3, "not updated in last " + xMinutes + " min", "Dropbox isUpdatedInLastXMinutes()");
         return false;
     }
 
@@ -267,7 +267,7 @@ public class Dropbox {
                 DropboxAPI.Entry rootdir = api.metadata(path, 0, null, true, null);
 
                 String dirname = rootdir.fileName();
-                Debug.logtodb("dirname="+dirname, "Dropbox createPostFromPath()");
+                Debug.debug(3, "dirname=" + dirname, "Dropbox createPostFromPath()");
 
                 //Set post date by breaking up directory name in format of
                 //   2013-04-21-My Post Title Here
@@ -365,11 +365,11 @@ public class Dropbox {
                     if (dbentry.isDir){
                         //mb.append("<br/><a href='tools-dropbox.log?path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>"+entry.fileName()+"</a> (<a href='tools-dropbox.log?action=choosepath&path="+ URLEncoder.encode(entry.path, "UTF-8")+"'>Use This</a>)");
                         if (!isPathAlreadyInUse(accountid, dbentry.path)){
-                            Debug.logtodb("Dropbox createPostFromPath()", "found directory entry.filename="+dbentry.fileName());
+                            Debug.debug(3, "Dropbox createPostFromPath()", "found directory entry.filename=" + dbentry.fileName());
                             //createPostFromPath(accountid, logid, dbentry.fileName());
                         }
                     } else {
-                        Debug.logtodb("Dropbox createPostFromPath()", "found file " + dbentry.fileName());
+                        Debug.debug(3, "Dropbox createPostFromPath()", "found file " + dbentry.fileName());
 
                         int imageid = 0;
                         boolean keepTrying = true;
@@ -408,7 +408,7 @@ public class Dropbox {
 
 
             } else {
-                Debug.logtodb("api==null", "Dropbox when trying to create a post");
+                Debug.debug(3, "api==null", "Dropbox when trying to create a post");
             }
 
 
@@ -418,7 +418,7 @@ public class Dropbox {
     }
 
     public static int saveImage(int accountid, String dbFilePath, String dbFileName, int eventid, Entry entry, Accountuser accountuserOfPersonAccessing, PrivateLabel plOfEntry) throws Exception {
-        Debug.logtodb("dbFilePath="+dbFilePath, "Dropbox.saveImage()");
+        Debug.debug(3, "dbFilePath=" + dbFilePath, "Dropbox.saveImage()");
 
         //Connect to Dropbox
         DropboxAPI<WebAuthSession> api = Dropbox.getApi(accountid);
@@ -475,11 +475,11 @@ public class Dropbox {
 
             outputStream = new FileOutputStream(savedFile);
             DropboxAPI.DropboxFileInfo info = api.getFile(dbFilePath, null, outputStream, null);
-            Debug.logtodb("The file's rev is: " + info.getMetadata().rev, "Dropbox save file");
+            Debug.debug(3, "The file's rev is: " + info.getMetadata().rev, "Dropbox save file");
 
             String mimetype = info.getMimeType();
-            Debug.logtodb("The file's mimetype is: " + info.getMimeType(), "Dropbox save file");
-            Debug.logtodb("info.getMimeType().substring(0,5): " + info.getMimeType().substring(0, 5), "Dropbox save file");
+            Debug.debug(3, "The file's mimetype is: " + info.getMimeType(), "Dropbox save file");
+            Debug.debug(3, "info.getMimeType().substring(0,5): " + info.getMimeType().substring(0, 5), "Dropbox save file");
             if (info.getMimeType().equals("text/plain")){
                 processTextFile(accountid, entry, savedFile, accountuserOfPersonAccessing, plOfEntry);
                 return 0;

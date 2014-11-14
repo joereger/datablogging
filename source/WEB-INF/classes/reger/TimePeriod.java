@@ -64,7 +64,6 @@ public class TimePeriod {
                 this.endDateGMT = reger.core.TimeUtils.nowInUserTimezone("GMT");
             }
 
-            //reger.core.Util.logtodb("In DB:<br>startDateGMT: " + rstTp[0][1] + "<br>endDateGMT: " + rstTp[0][2]);
 
             populateStartTimeFromCal(startDateGMT);
             populateEndTimeFromCal(endDateGMT);
@@ -627,7 +626,6 @@ public class TimePeriod {
                 startHour=startHour;
             }
 
-            //reger.core.Util.logtodb("Start Time is set by cal=" + reger.core.TimeUtils.dateformatfordb(cal));
 
 	}
 

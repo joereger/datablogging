@@ -25,7 +25,7 @@ public class NestedNavPanels {
         //Safety in case pageProps.navButtonName is not set
         if (pageProps.navButtonName==null){
             pageProps.navButtonName = "";
-            Debug.logtodb("PageProps.navButtonName not set.  PageProps.title=" + pageProps.title, "");
+            Debug.debug(3, "PageProps.navButtonName not set.  PageProps.title=" + pageProps.title, "");
         }
 
         //Get the current NavButton

@@ -56,14 +56,12 @@ public class EmailSubscription implements ScheduledTask{
 
                         //Get now in servertime
                         Calendar cal = Calendar.getInstance();
-                        //reger.core.Util.logtodb("Now in servertime: " + reger.core.TimeUtils.dateformatfordb(cal));
 
                         //Save server timezoneid
                         String servertimezoneid = cal.getTimeZone().getID().toString();
 
                         //Convert now to usertime
                         cal = reger.core.TimeUtils.nowInUserTimezone(rstAcct[k][1]);
-                        //reger.core.Util.logtodb("Converted to usertime: " + reger.core.TimeUtils.dateformatfordb(cal));
 
                         //Manually set usertime hour to emailsendhour
                         int emailsendhourfromdb = 0;
@@ -73,16 +71,13 @@ public class EmailSubscription implements ScheduledTask{
                             //Do nothing
                         }
                         cal = reger.core.TimeUtils.dbstringtocalendar(cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.DAY_OF_MONTH)+" "+emailsendhourfromdb+":00:00");
-                        //reger.core.Util.logtodb("Manually changed hour: " + reger.core.TimeUtils.dateformatfordb(cal));
 
                         //Convert to servertime
                         cal = reger.core.TimeUtils.convertFromOneTimeZoneToAnother(cal, rstAcct[k][1], servertimezoneid);
-                        //reger.core.Util.logtodb("Converted back to servertime: " + reger.core.TimeUtils.dateformatfordb(cal));
 
                         //Get hour... that's email send hour in servertime terms
                         int emailsendhourcalculated = cal.get(Calendar.HOUR_OF_DAY);
 
-                        //reger.core.Util.logtodb("EmailSubscription.java<br>emailsendhour from DB=" + emailsendhourfromdb + "<br>emailsendhour calculated=" + emailsendhourcalculated + "<br>account timezoneid=" + rstAcct[k][1] + "<br>server timezoneid=" + servertimezoneid);
 
                         //-----------------------------------
                         //-----------------------------------

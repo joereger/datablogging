@@ -21,8 +21,6 @@ public class Google {
 //        String directive = "search";
 //        String directiveArg = searchString;
 //
-//        //Debug
-//        //reger.core.Util.logtodb("Google API Call: <br>clientkey:" + clientKey + "<br>Directive:" + directive + "<br>Args:" + directiveArg);
 //
 //        //Create a Google Search object, set our authorization key
 //        GoogleSearch s = new GoogleSearch();

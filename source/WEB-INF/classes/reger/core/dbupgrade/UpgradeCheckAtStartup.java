@@ -72,11 +72,11 @@ public class UpgradeCheckAtStartup {
                 try{
                     //Do the upgrade
                     System.out.println("Reger.com UpgradeCheckAtStartup.java: Start Db Upgrade from "+currentDatabaseVersion+" to "+(currentDatabaseVersion+1)+".");
-                    Debug.logtodb("Start upgrade database to version " + (currentDatabaseVersion+1), "");
+                    System.out.println("Start upgrade database to version " + (currentDatabaseVersion + 1));
                     UpgradeDatabaseOneVersion upg = (UpgradeDatabaseOneVersion)(Class.forName("reger.dbversion.Version"+currentDatabaseVersion+"ToVersion" + (currentDatabaseVersion+1)).newInstance());
                     upg.doUpgrade();
-                    updateDatabase((currentDatabaseVersion+1));
-                    Debug.logtodb("End upgrade database to version " + (currentDatabaseVersion+1), "");
+                    updateDatabase((currentDatabaseVersion + 1));
+                    System.out.println("End upgrade database to version " + (currentDatabaseVersion + 1));
                     System.out.println("Reger.com UpgradeCheckAtStartup.java: End Db Upgrade from "+currentDatabaseVersion+" to "+(currentDatabaseVersion+1)+".");
                 } catch (ClassNotFoundException ex){
                     //Class isn't found, report it and exit
@@ -84,7 +84,7 @@ public class UpgradeCheckAtStartup {
                     ex.printStackTrace();
                     keepWorking = false;
                     reger.core.dbupgrade.RequiredDatabaseVersion.error = reger.core.dbupgrade.RequiredDatabaseVersion.error + reger.core.ErrorDissect.dissect(ex);
-                    Debug.logtodb("Error: Upgrade database to version " + (currentDatabaseVersion+1) + ".  Class not found.", "");
+                    System.out.println("Error: Upgrade database to version " + (currentDatabaseVersion + 1) + ".  Class not found.");
                 } catch (Exception e){
                     //Some other sort of error
                     System.out.println("Reger.com UpgradeCheckAtStartup.java: Error upgrading Db:" + e.getMessage());
@@ -92,7 +92,7 @@ public class UpgradeCheckAtStartup {
                     Debug.errorsave(e, "");
                     keepWorking = false;
                     reger.core.dbupgrade.RequiredDatabaseVersion.error = reger.core.dbupgrade.RequiredDatabaseVersion.error + reger.core.ErrorDissect.dissect(e);
-                    Debug.logtodb("Error: Upgrade database to version " + (currentDatabaseVersion+1) + " had issues recorded.", "");
+                    System.out.println("Error: Upgrade database to version " + (currentDatabaseVersion + 1) + " had issues recorded.");
                 }
 
             } else {
@@ -104,7 +104,7 @@ public class UpgradeCheckAtStartup {
         if (currentDatabaseVersion==reger.core.dbupgrade.RequiredDatabaseVersion.version){
             //Successful upgrade through all versions
             reger.core.dbupgrade.RequiredDatabaseVersion.havecorrectversion = true;
-            Debug.logtodb("The correct database version is installed.  Version: " + currentDatabaseVersion, "");
+            System.out.println("The correct database version is installed.  Version: " + currentDatabaseVersion);
         }
 
     }

@@ -189,7 +189,6 @@ public class Upload {
                                     hasenoughfreespace=false;
                                 }
 
-                                //reger.core.Util.logtodb("Just checked space.");
 
                                 Debug.debug(4, "Upload.java", "reger.Upload.save() - (second check)hasenoughfreespace=" + hasenoughfreespace);
 

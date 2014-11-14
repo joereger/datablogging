@@ -654,8 +654,6 @@ public class Util {
         if (b.length>0){
             //Extend a by the length of b
             a = reger.core.Util.extendArray(a, b.length);
-            //Debug
-            //reger.core.Util.logtodb("a.length.origSize:" + origSize + "<br>b.length:" + b.length + "<br>a.length.new:" + a.length);
             //Now add the values of b to a
             for(int i=origSize; i<a.length; i++){
                 a[i] = b[i-origSize];
@@ -843,8 +841,7 @@ public class Util {
 //             out.close();
         } catch (Exception e){
             Debug.errorsave(e, "");
-            //@todo Uncomment this prior to production release.
-            Debug.logtodb("Error copying file.<br>Source=" + source.getAbsolutePath() + "<br>Dest=" + dest.getAbsolutePath(), "");
+            System.out.println("Error copying file. Source=" + source.getAbsolutePath() + " Dest=" + dest.getAbsolutePath());
             return false;
         }
         return true;
@@ -1092,7 +1089,7 @@ public class Util {
                 instring=instring.replaceAll(">", "&gt;");
                 instring=instring.replaceAll("&nbsp;", " ");
                 instring=instring.replaceAll("&", "&amp;");
-                instring=instring.replaceAll("’", "'");
+                instring=instring.replaceAll("ï¿½", "'");
 
 
 
@@ -1601,7 +1598,7 @@ public class Util {
 //                            break;
 //
 //                        default:
-//                            reger.core.Util.logtodb("Util.java - getBytesFromBufferedImage(). Invalid code in '"+code+"'");
+//
 //                            break;
 //                    }
 //                    index++;

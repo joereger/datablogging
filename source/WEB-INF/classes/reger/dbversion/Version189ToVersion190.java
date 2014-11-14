@@ -91,7 +91,6 @@ public class Version189ToVersion190 implements UpgradeDatabaseOneVersion {
                                     //-----------------------------------
                                 }
                             } else {
-                                reger.core.Debug.logtodb("Unknown database column type encountered: "+type, "DbColumnTypeFactory.java");
 
                             }
 

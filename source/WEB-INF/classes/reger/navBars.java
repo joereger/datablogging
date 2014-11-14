@@ -54,7 +54,6 @@ public class navBars {
         } else {
             flag="off";
         }
-        //reger.core.Util.logtodb("navBars.java: showhometab=" + showhometab + "<br>userSession.getAccount().getShowhometab()=" + userSession.getAccount().getShowhometab());
         if (showhometab){
             if (hometabtext.equals("")){
                 hometabtext="Home";

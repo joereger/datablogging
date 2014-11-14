@@ -72,11 +72,6 @@ public class NavPanel {
 
 
     public int levelsNested(){
-        //Safety in case pageProps.navButtonName is not set
-//        if (this.currentNavButtonName==null){
-//            this.currentNavButtonName = "adminhome";
-//            reger.core.Util.logtodb("Navpanel.currentNavButtonName not set.");
-//        }
 
         //Get the current NavButton
         NavButton currentNavButton = AllNavButtons.getByName(this.currentNavButtonName);

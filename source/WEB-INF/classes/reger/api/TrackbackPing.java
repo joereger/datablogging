@@ -137,7 +137,6 @@ public class TrackbackPing extends Thread {
         int statusCode = -1;
         //I will retry up to 3 times.
         for (int attempt = 0; statusCode == -1 && attempt < 3; attempt++) {
-            //reger.core.Util.logtodb("attempt="+attempt+"<br> urlToPing=" + urlToPing);
 
             try {
                 // execute the method.
@@ -182,7 +181,6 @@ public class TrackbackPing extends Thread {
                 }
                 //If it's not found, delete it from the Db... user has erased it
                 if (!itIsInCurrentList){
-                    //reger.core.Util.logtodb("Deleting:" + rstTrB[i][1] +" with url: " + rstTrB[i][0]);
                     //-----------------------------------
                     //-----------------------------------
                     int count = Db.RunSQLUpdate("DELETE FROM trackback WHERE trackbackid='"+rstTrB[i][1]+"'");

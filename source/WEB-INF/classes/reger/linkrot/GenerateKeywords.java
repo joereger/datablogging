@@ -55,13 +55,7 @@ public class GenerateKeywords {
         Matcher m = p.matcher(webPage);
         // Loop through
         if(m.find()) {
-            //reger.core.Util.logtodb("Found title: " + m.group() + "<br>Groupcount(): " + m.groupCount());
-            //for(int i=0; i<=m.groupCount(); i++){
-                //reger.core.Util.logtodb("m.group("+i+"): " + m.group(i));
-            //}
-
             titleKeywords = m.group(1);
-            //reger.core.Util.logtodb("Found title: " + titleKeywords);
         }
 
         titleKeywords = truncateToXWords(titleKeywords, 3);
@@ -73,11 +67,9 @@ public class GenerateKeywords {
     public static String truncateToXWords(String inString, int numberofwords){
 
         String out = "";
-        //reger.core.Util.logtodb("Title:" + inString);
         String[] words = inString.split("\\b");
         int count = 0;
         for (int i = 0; i < words.length; i++) {
-            //reger.core.Util.logtodb("Found title: " + words[i]);
             if (words[i].length()>2 && count<numberofwords){
                 out = out + words[i] + " ";
                 count=count+1;
@@ -125,7 +117,6 @@ public class GenerateKeywords {
         int length = -1;
         String tmp = "";
 
-        //reger.core.Util.logtodb("Before remove style:"+reger.core.Util.xmlclean(webPage));
         int infiniteLoopSafetyCounter = 0;
         while (webPage.indexOf("<style")>0 && infiniteLoopSafetyCounter<200){
             infiniteLoopSafetyCounter = infiniteLoopSafetyCounter + 1;
@@ -138,10 +129,6 @@ public class GenerateKeywords {
                 webPage = tmp;
             }
         }
-        //reger.core.Util.logtodb("After remove style:"+reger.core.Util.xmlclean(webPage));
-
-        //Debug
-        Debug.debug(5, "", "GenerateKeywords.removeStyles() - end");
 
         return webPage;
     }

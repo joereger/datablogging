@@ -9,18 +9,18 @@ import java.util.*;
  */
 public class Debug {
 
-    public static void logtodb(String whattolog, String label){
+    private static void logtodb(String whattolog, String label){
         System.out.println(label + ": " + whattolog);
         Logger logger = Logger.getLogger(Debug.class);
         logger.debug(label+": "+whattolog);
         //-----------------------------------
         //-----------------------------------
-        int identity = reger.core.db.Db.RunSQLInsert("INSERT INTO error(date, description, label) VALUES('"+ TimeUtils.nowInGmtString()+"', '"+ Util.cleanForSQL(whattolog) +"', '"+reger.core.Util.cleanForSQL(label)+"')");
+        int identity = reger.core.db.Db.RunSQLInsert("INSERT INTO error(date, description, label) VALUES('" + TimeUtils.nowInGmtString() + "', '" + Util.cleanForSQL(whattolog) + "', '" + reger.core.Util.cleanForSQL(label) + "')");
         //-----------------------------------
         //-----------------------------------
     }
 
-    public static void logtodb(byte[] whattolog, String label){
+    private static void logtodb(byte[] whattolog, String label){
         StringBuffer mb = new StringBuffer();
         for (int i = 0; i < whattolog.length; i++) {
             mb.append(Byte.toString(whattolog[i]));
@@ -144,20 +144,20 @@ public class Debug {
     //Log various things to db
 
 
-    public static void logDoubleIntArrayToDb(String desc, int[][] array){
-        StringBuffer tst = new StringBuffer();
-        if (array==null){
-            array = new int[0][0];
-        }
-        for (int i = 0; i < array.length; i++) {
-            StringBuffer tstTmp = new StringBuffer();
-            for (int j = 0; j < array[i].length; j++) {
-                tstTmp.append("<br>" + array[i][j]);
-            }
-            tst.append("<br><b>Contents of Array["+i+"][]:</b>" + tstTmp);
-        }
-        logtodb(desc + "<br><b>Contents of the Double Array:</b>" + tst, "");
-    }
+//    public static void logDoubleIntArrayToDb(String desc, int[][] array){
+//        StringBuffer tst = new StringBuffer();
+//        if (array==null){
+//            array = new int[0][0];
+//        }
+//        for (int i = 0; i < array.length; i++) {
+//            StringBuffer tstTmp = new StringBuffer();
+//            for (int j = 0; j < array[i].length; j++) {
+//                tstTmp.append("<br>" + array[i][j]);
+//            }
+//            tst.append("<br><b>Contents of Array["+i+"][]:</b>" + tstTmp);
+//        }
+//        logtodb(desc + "<br><b>Contents of the Double Array:</b>" + tst, "");
+//    }
 
 
     public static void logRequestObjectToDb(javax.servlet.http.HttpServletRequest request){

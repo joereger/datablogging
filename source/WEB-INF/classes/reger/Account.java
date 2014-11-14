@@ -671,7 +671,6 @@ public class Account implements java.io.Serializable {
             //-----------------------------------
             if (rstAccount!=null && rstAccount.length>0){
                 //This sets the account as the active account for this UserSession
-                //reger.core.Util.logtodb("New Account object created.  Accountid=" + rstAccount[0][0]);
                 //If more than one account is returned, we have a problem
                 if (rstAccount.length>1){
                     StringBuffer err = new StringBuffer();
@@ -686,11 +685,11 @@ public class Account implements java.io.Serializable {
                         err.append("Accountid=" + rstAccount[i][0] + "<br>");
                     }
                     err.append("This is a problem because it means that for the URL above multiple sites are found, but only one can be returned.  This means that at least one site is obscured, unavailable.  To correct, the accounturl of the accounts above needs to be made such that it does not conflict.  In theory the software has safeguards against this so manual database editing may have happened.  Or a bug in the software.");
-                    Debug.logtodb(err.toString(), "");
+                    Debug.debug(2, "Account.java", err.toString());
                 }
                 //return reger.cache.AccountCache.get(Integer.parseInt(rstAccount[0][0]));
                 //return new reger.Account(Integer.parseInt(rstAccount[0][0]));
-                reger.core.Debug.debug(3, "Account.java", "Returning accountid="+rstAccount[0][0]);
+                Debug.debug(3, "Account.java", "Returning accountid="+rstAccount[0][0]);
                 return Integer.parseInt(rstAccount[0][0]);
             }
         }
@@ -1045,8 +1044,6 @@ public class Account implements java.io.Serializable {
             isValid=true;
         }
 
-        //reger.core.Util.logtodb("isLogidValidForAccountid - accountid=" + accountid + "  logid=" + logid + " isValid=" + isValid);
-
         return isValid;
     }
 
@@ -1285,7 +1282,7 @@ public class Account implements java.io.Serializable {
                 setBillingIsOkInDb();
             }
         } else {
-            Debug.logtodb("NULL accountLicense found on accountid=" + accountid, "");
+            Debug.debug(3, "NULL accountLicense found on accountid=" + accountid, "Account.java");
         }
 
         //Update the last checked date

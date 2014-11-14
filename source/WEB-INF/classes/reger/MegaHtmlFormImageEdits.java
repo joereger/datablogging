@@ -9,8 +9,6 @@ public class MegaHtmlFormImageEdits {
     public static boolean saveEdits(reger.UserSession userSession, reger.pageFramework.PageProps pageProps, javax.servlet.http.HttpServletRequest request){
         if (pageProps.action.equals("editsubmit")) {
 
-            //reger.core.Util.logtodb("Made it to edit image: pageProps.action=" + pageProps.action);
-
             //Do Updates to the images first
             //-----------------------------------
             //-----------------------------------
@@ -19,7 +17,6 @@ public class MegaHtmlFormImageEdits {
             //-----------------------------------
             if (rstImagelistUpdate!=null){
                 for(int i=0; i<rstImagelistUpdate.length; i++){
-                    //reger.core.Util.logtodb("MegaHtmlFormImageEdits - imageid=" + rstImagelistUpdate[i][0]);
                     //Get the imagetags
                     String imagetag = "";
                     if (request.getParameter("imagetag-" + rstImagelistUpdate[i][0])!=null && !request.getParameter("imagetag-" + rstImagelistUpdate[i][0]).equals("")) {
@@ -52,7 +49,6 @@ public class MegaHtmlFormImageEdits {
 //                        }
 //                    }
 //
-//                    //reger.core.Util.logtodb("<br>imageid:" + rstImagelistUpdate[i][0] + "<br>imagecategoryid:" + rstImagelistUpdate[i][2] + "<br>imagecategoryidforscreen:" + imagecategoryidforscreen);
 
 
                     //If we have edits, save them
@@ -84,8 +80,6 @@ public class MegaHtmlFormImageEdits {
 
                         //Update the AccountCounts cache
                         reger.cache.AccountCountCache.flushByAccountid(userSession.getAccount().getAccountid());
-
-                        //reger.core.Util.logtodb("DELETE FROM image WHERE imageid='"+ rstImagelistUpdate[i][0] +"'");
 
                     } else {//End deleting
                         //Move this image up or down if we have to

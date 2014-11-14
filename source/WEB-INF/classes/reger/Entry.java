@@ -222,10 +222,8 @@ public class Entry {
             if ((request.getParameter("usespellingrecommendations") != null) && reger.core.Util.isinteger(request.getParameter("usespellingrecommendations"))) {
                 if (Integer.parseInt(request.getParameter("usespellingrecommendations")) == 1) {
                     //So we need to do the
-                    //reger.core.Util.logtodb("Starting to replace spelling errors with recommendations.");
                     reger.spell.RegerSpellCheck spellCheck = new reger.spell.RegerSpellCheck(originalEntryTextBeforeSpellcheck);
                     this.comments = spellCheck.replaceWithChosenRecommendation(request);
-                    //reger.core.Util.logtodb("Done replacing spelling errors with recommendations.");
                 }
             }
         }
@@ -508,7 +506,6 @@ public class Entry {
 
         //Set lastmodifiedbyuserdate to now
         lastmodifiedbyuserdate = reger.core.TimeUtils.nowInGmtCalendar();
-        //reger.core.Util.logtodb("isflaggedformoderator=" + isflaggedformoderator + "<br>ismoderatorapproved=" + ismoderatorapproved);
 
         //Save location
         if (location != null) {
@@ -1460,7 +1457,6 @@ public class Entry {
                 newEventTypeId = Integer.parseInt(rstLogtype[i][0]);
 
                 //If they're not the same then we need to delete any megafield data
-                //reger.core.Util.logtodb("oldEventtypeid=" + oldEventtypeid + "<br>newEventTypeId=" + newEventTypeId);
                 if (oldEventtypeid != newEventTypeId) {
                     deleteOnlyMegaData();
                 } else {

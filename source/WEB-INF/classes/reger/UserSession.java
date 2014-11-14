@@ -29,14 +29,11 @@ public class UserSession implements java.io.Serializable {
         //Get the basic information
         processNewRequest(request);
         if (accountuser!=null && !accountuser.isLoggedIn){
-            //reger.core.Util.logtodb("UserSession - accountuser not logged in.");
             //Now, see if the incoming request has a persistent login cookie
             Cookie[] cookies = request.getCookies();
             if (cookies!=null && cookies.length>0){
-                //reger.core.Util.logtodb("UserSession - cookies found.");
                 for (int i = 0; i < cookies.length; i++) {
                     if (cookies[i].getName().equals(reger.PersistentLogin.cookieName)){
-                        //reger.core.Util.logtodb("UserSession - persistent cookie found.");
                         int accountuseridFromCookie = reger.PersistentLogin.checkPersistentLogin(cookies[i]);
                         if (accountuseridFromCookie>-1){
                             accountuser = new reger.Accountuser(accountid);

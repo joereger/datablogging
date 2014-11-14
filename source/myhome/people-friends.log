@@ -36,8 +36,6 @@ pageProps.pathToAppRoot="../";
 //Do a data load
 //friend.dataload(1000);
 
-//reger.core.Util.logtodb("Done loading Friends HashMap.");
-
 //Get the relationship between two
 //int[][] allPaths = friend.getAllRelationships(24, 578);
 //reger.core.Util.logDoubleIntArrayToDb("AllFriends::::::", allPaths);

@@ -60,7 +60,7 @@ public class Version181ToVersion182 implements UpgradeDatabaseOneVersion{
         }
 
         //Save a record of what happened
-        reger.core.Debug.logtodb(debug.toString(), "Version181ToVersion182.java");
+
 
     }
 

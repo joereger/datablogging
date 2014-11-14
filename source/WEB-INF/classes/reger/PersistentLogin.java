@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 /**
  * Handles functions regarding persistent login via a browser cookie.
- * The cookie should consist of the user’s username, followed by a
+ * The cookie should consist of the userï¿½s username, followed by a
  * separator character (-), followed by some large random number.
  * The server keeps a table of number->username associations, which is
  * looked up to verify the validity of the cookie. If the cookie supplies
@@ -163,10 +163,6 @@ public class PersistentLogin {
             for(int i=0; i<rstPers.length; i++){
                 //Get the last active date
                 Calendar lastActive = reger.core.TimeUtils.dbstringtocalendar(rstPers[i][1]);
-
-                //String c1 = reger.core.TimeUtils.dateformatcompactwithtime(lastActive);
-                //String c2 = reger.core.TimeUtils.dateformatcompactwithtime(now);
-                //reger.core.Util.logtodb("PersistentLogin.deleteOldPersistentLogins()<br>cal1=" + c1 + "<br>cal2=" + c2 + "<br>diff= " + reger.core.DateDiff.DateDiff("day", lastActive, now));
 
                 if (reger.core.DateDiff.dateDiff("day", now, lastActive)>daysToKeepPersistentRecordWithoutLogin){
                    //-----------------------------------

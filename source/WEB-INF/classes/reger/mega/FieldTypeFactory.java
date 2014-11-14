@@ -25,7 +25,7 @@ public class FieldTypeFactory {
         } else if (fieldtype==FieldType.FIELDTYPECONTAINER){
             return new FieldTypeContainer();
         } else {
-            Debug.logtodb("No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming fieldtype=" + fieldtype, "");
+            Debug.debug(3, "No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming fieldtype=" + fieldtype, "");
             return null;
         }
     }
@@ -48,7 +48,7 @@ public class FieldTypeFactory {
         } else if (field.getFieldtype()==FieldType.FIELDTYPECONTAINER){
             return new FieldTypeContainer((FieldTypeContainer)field);
         } else {
-            Debug.logtodb("No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming field.getFieldname()=" + field.getFieldname(), "");
+            Debug.debug(3, "No handler found: FieldTypeFactory.getHandlerByFieldtype - incoming field.getFieldname()=" + field.getFieldname(), "");
             return null;
         }
     }
