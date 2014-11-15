@@ -35,9 +35,7 @@ try {
     }
 
 
-    //Do the redirect
-    response.sendRedirect("index.log");
-    return;
+
 
 } catch (Throwable e){
     e.printStackTrace();
@@ -46,16 +44,12 @@ try {
 
 <html>
 <head>
-<title>500 Error</title>
+    <title>500 Error</title>
 </head>
 <body bgcolor=#ffffff>
 <br><br><br><br>
 <blockquote><blockquote>
-<strong><blink><font face=arial size=+3 color=#cccccc style="font-size: 76px;">Oops, there has been an error.</font></blink></strong>
-<br><br>
-<blockquote><blockquote>
-<strong><font face=arial size=-1 color=#666666 style="font-size: 12px;">Terribly sorry about that.</font></strong>
-</blockquote></blockquote>
+    <strong><blink><font face=arial size=+4 color=#cccccc style="font-size: 76px;">500 error</font></blink></strong>
 </blockquote></blockquote>
 </body>
 </html>

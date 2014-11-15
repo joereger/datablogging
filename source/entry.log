@@ -33,7 +33,7 @@ pageProps.entry = reger.cache.EntryCache.get(tmpEventid);
 //Hide draft and unapproved entries
 if (pageProps.entry.isDraft==1 || pageProps.entry.isApproved==0){
     Debug.debug(4, "entry.log", "redirecting to index because entry is draft or not approved");
-    response.sendRedirect("index.log");
+    response.sendError(HttpServletResponse.SC_NOT_FOUND);
     return;
 }
 

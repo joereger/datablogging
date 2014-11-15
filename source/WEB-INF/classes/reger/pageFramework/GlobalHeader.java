@@ -260,7 +260,7 @@ public class GlobalHeader {
                 if (!passedvalidation) {
                     try {
                         Debug.debug(4, "GlobalHeader", "Bounced to /login.log because pageProps.passedvalidation=FALSE.");
-                        response.sendRedirect("index.log?msg=invalid");
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND);
                         return;
                     } catch (Exception e){
                         Debug.errorsave(e, "GlobalHeader");

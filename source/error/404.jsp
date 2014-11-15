@@ -47,11 +47,6 @@ try {
         Debug.errorsave(e, "");
     }
 
-
-    //Do the redirect
-    //response.sendRedirect("index.log");
-    //return;
-
 } catch (Throwable e){
     e.printStackTrace();
 }
