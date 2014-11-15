@@ -93,7 +93,7 @@ if(log!=null){
     //Output the page layout
     mb.append(HpTemplateProcessor.getHtml(tmp, userSession, request, pageProps));
 } else {
-    response.sendRedirect("index.log");
+    response.sendError(HttpServletResponse.SC_NOT_FOUND);
     return;
 }
 

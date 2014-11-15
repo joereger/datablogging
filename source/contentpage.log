@@ -25,8 +25,11 @@ pageProps.pathToAppRoot="";
 if (request.getParameter("contentpageid")!=null && reger.core.Util.isinteger(request.getParameter("contentpageid"))){
     ContentPage contentPage = new ContentPage();
     contentPage = new ContentPage(Integer.parseInt(request.getParameter("contentpageid")));
-    if (contentPage.userCanViewNavItem(userSession.getAccountuser())){
+    if (contentPage.userCanViewNavItem(userSession.getAccountuser()) && contentPage.getContent()!==null && contentPage.getContent().length()>0){
         mb.append(contentPage.getContent());
+    } else {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        return;
     }
 }
 

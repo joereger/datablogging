@@ -4,7 +4,7 @@ import reger.nestednav.NestedNavItem;
 import reger.core.db.Db;
 import reger.cache.providers.jboss.Cacheable;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.ArrayList;
 
 /**
@@ -229,6 +229,7 @@ public class ContentPage implements NestedNavItem{
                 }
             }
         }
+
         return false;
     }
 
@@ -264,8 +265,6 @@ public class ContentPage implements NestedNavItem{
     public void setContent(String content) {
         this.content = content;
     }
-
-
 
     public int getSizeinbytes() {
         return sizeinbytes;
