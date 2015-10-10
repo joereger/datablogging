@@ -19,15 +19,15 @@ pageProps.pathToAppRoot="";
         StringBuffer mb = new StringBuffer();
 /*----------------------------------------------------*/
 
-if (userSession.getAccount().getIstimeperiodon()){
-    //Display a timeline
-    mb.append(reger.ui.BubbleBox.start("Time Periods", pageProps.pathToAppRoot));
-    reger.TimeLine tl = new reger.TimeLine(null, null, null, userSession.getAccount().getAccountid(), userSession);
-    mb.append(tl.getTimelineHtml(pageProps.pathToAppRoot, 600));
-    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
-} else {
-    mb.append("The Time Periods feature is currently turned off for this web log.");
-}
+//if (userSession.getAccount().getIstimeperiodon()){
+//    //Display a timeline
+//    mb.append(reger.ui.BubbleBox.start("Time Periods", pageProps.pathToAppRoot));
+//    reger.TimeLine tl = new reger.TimeLine(null, null, null, userSession.getAccount().getAccountid(), userSession);
+//    mb.append(tl.getTimelineHtml(pageProps.pathToAppRoot, 600));
+//    mb.append(reger.ui.BubbleBox.end(pageProps.pathToAppRoot));
+//} else {
+//    mb.append("The Time Periods feature is currently turned off for this web log.");
+//}
 
 
 %>

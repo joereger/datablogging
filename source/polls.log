@@ -13,7 +13,7 @@
 /*                  Page Config                       */
 reger.pageFramework.PageProps pageProps = new reger.pageFramework.PageProps();
 pageProps.siteSection = reger.pageFramework.PageProps.PUBLICSITE;
-pageProps.isPasswordProtected = false;
+pageProps.isPasswordProtected = true;
 pageProps.isLogidRequired = false;
 pageProps.isEventidRequired = false;
 pageProps.trafficType = reger.Vars.TRAFFICTYPEPUBLICMISC;
